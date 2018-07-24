@@ -1,0 +1,31 @@
+[package]
+name = "ox"
+version = "0.1.0"
+authors = ["Arvid E. Picciani <aep@exys.org>"]
+
+[dependencies]
+snow                = "0.3.0-alpha5"
+failure             = "0.1.1"
+byteorder           = "1.2.3"
+rand                = {version = "=0.5.0-pre.2"}
+subtle              = "0.6.3"
+ed25519-dalek       = "0.6.2"
+x25519-dalek        = { version = "0.2.0", default-features = false, features = ["std", "u64_backend", "rand"] }
+bs58                = "0.2"
+crc8                = "0.1"
+sha2                = "0.7"
+clear_on_drop       = "0.2.3"
+prost               = "0.4.0"
+prost-derive        = "0.4.0"
+bytes               = "0.4.8"
+log                 = "0.4.3"
+env_logger          = "0.5.10"
+hex                 = "0.3.2"
+tokio               = "0.1.7"
+futures             = "0.1"
+lazy_static         = "1.1.0"
+
+
+[build-dependencies]
+prost-build = "0.4.0"
+

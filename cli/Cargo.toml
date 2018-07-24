@@ -1,0 +1,18 @@
+[package]
+name = "cli"
+version = "0.1.0"
+authors = ["Arvid E. Picciani <aep@exys.org>"]
+
+[dependencies]
+clap                = "2.32.0"
+failure             = "0.1.1"
+tokio               = "0.1.7"
+futures             = "0.1"
+prost               = "0.4.0"
+log                 = "0.4.3"
+rand                = {version = "=0.5.0-pre.2"}
+env_logger          = "0.5.10"
+ox                  = {path = "../ox"}
+serde               = "1.0"
+serde_derive        = "1.0"
+toml                = "0.4"

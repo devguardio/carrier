@@ -1,0 +1,67 @@
+syntax = "proto3";
+package ox.broker.v1;
+
+message AnnounceRequest {
+}
+
+message AnnounceResponse {
+    bool ok = 1;
+}
+
+message SetSourceShadow {
+    bytes  key       = 1;
+    bytes  value     = 2;
+}
+
+message SetShadowResponse {
+    bool ok = 1;
+}
+
+message GetSourceShadow {
+    bytes  key       = 1;
+}
+
+message GetShadowResponse {
+    bool   ok        = 1;
+    bytes  key       = 2;
+    bytes  value     = 3;
+
+}
+message Connect1Request {
+    string  target  = 1;
+    uint64  channel = 2;
+    bytes   kex     = 3;
+}
+
+message Connect1Response {
+    bool    ok      = 1;
+}
+
+message Connect2Request {
+    string  source  = 1;
+    uint64  channel = 2;
+    bytes   kex     = 3;
+
+    uint64  proxy_mine   = 4;
+    uint64  proxy_them   = 5;
+}
+
+message Connect2Response {
+    uint64 token   = 1;
+    uint64 channel = 2;
+}
+
+message Broker{
+    oneof m {
+        AnnounceRequest      announce_request   = 1;
+        AnnounceResponse     announce_response  = 2;
+        Connect1Request      connect1_request   = 3;
+        Connect1Response     connect1_response  = 4;
+        Connect2Request      connect2_request   = 5;
+        Connect2Response     connect2_response  = 6;
+        SetSourceShadow      set_source_shadow  = 7;
+        SetShadowResponse    set_shadow_response = 8;
+        GetSourceShadow      get_source_shadow  = 9;
+        GetShadowResponse    get_shadow_response = 10;
+    }
+}

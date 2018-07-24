@@ -1,0 +1,36 @@
+syntax = "proto3";
+package ox.certificate.v1;
+
+message AccessClaim {
+    Identity accessto  = 1;
+    Identity grantee   = 2;
+}
+
+message Headers {
+    map<string,string> headers = 1;
+}
+
+message Claim {
+    oneof claim {
+        AccessClaim     access  = 1;
+        Headers         headers = 2;
+    }
+}
+
+message Identity {
+    int32 algo = 1;
+    bytes key  = 2;
+}
+
+message CertificateProof {
+    Identity    identity        = 1;
+    repeated Claim claims       = 2;
+}
+
+message Address {
+    int32 algo   = 1;
+    bytes kex    = 2;
+    int32 serial = 3;
+}
+
+

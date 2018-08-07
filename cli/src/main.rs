@@ -13,6 +13,8 @@ extern crate serde;
 extern crate serde_derive;
 extern crate toml;
 extern crate trust_dns_resolver;
+extern crate url;
+extern crate hpack;
 
 mod broker;
 use broker::main_broker;
@@ -35,6 +37,7 @@ use std::io::Read;
 use trust_dns_resolver::Resolver;
 use trust_dns_resolver::config::*;
 use rand::Rng;
+use url::Url;
 
 #[derive(Serialize, Deserialize)]
 struct Secrets {
@@ -77,18 +80,23 @@ fn main_kv(
         .map_err(|e| error!("{}", e))
 }
 
-fn main_client(
+
+fn main_io(
     secret: identity::Secret,
     addr: SocketAddr,
     x: identity::Address,
-    target: String,
+    url: String,
 ) -> impl Future<Item = (), Error = ()> {
+    let url = Url::parse(&url).unwrap();
+    let target = url.host_str().expect("missing target identity").to_string();
+    let path   = url.path().to_string();
+
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
-    info!("connecting to {}", addr);
+    info!("connecting via {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
         .and_then(move |ctrl| {
-            info!("connected to {}", ctrl.identity());
+            info!("via broker {}", ctrl.identity());
 
             let (xsecret, xpublic) = identity::generate_x25519();
             let expect = ep.expect(xsecret, identity::Identity::parse(&target).unwrap());
@@ -98,46 +106,135 @@ fn main_client(
                 channel: expect.channel(),
                 kex:     xpublic.to_vec(),
             });
-            let fut = ctrl
+            ctrl
                 .send(ox::broker::encode(msg).unwrap())
                 .and_then(|ctrl| ctrl.into_future().map_err(|(e, _)| e))
-                .and_then(|(msg, ctrl)| {
-                    if let Some(msg) = msg {
-                        info!("message {:?}", ox::broker::decode(&msg).unwrap());
-                    }
-
-                    Deadline::new(expect, Instant::now() + Duration::from_secs(5))
-                        .map_err(|e| {
-                            if e.is_elapsed() {
-                                endpoint::EndpointError::Timeout.into()
-                            } else if e.is_timer() {
-                                e.into_timer().unwrap().into()
-                            } else if e.is_inner() {
-                                e.into_inner().unwrap().into()
-                            } else {
-                                panic!("wtf DeadlineError has no cause");
-                            }
-                        })
-                        .and_then(move |rq| {
-                            info!("connection from axiom {}", rq.identity());
-                            let ch = ep.accept(rq, &secret).unwrap();
-                            let (tx, rx) = ch.split();
-
-                            Stdin::new().fold(tx, |tx, msg| tx.send(msg)).and_then(|_| {
-                                drop(rx);
-                                Ok(())
-                            })
-                        })
-                        .and_then(|_| {
-                            drop(ctrl);
-                            Ok(())
-                        })
-                });
-            fut
+                .map(|(msg, ctrl)| (ep, expect, msg, ctrl))
         })
-        .and_then(move |_| Ok(()))
+        .and_then(|(ep, expect, msg, ctrl)| {
+            if let Some(msg) = msg {
+                let msg = ox::broker::decode(&msg).unwrap();
+                if let proto::broker::M::Connect1Response(proto::Connect1Response{ok}) = msg {
+                    if !ok {
+                        error!("no route");
+                        std::process::exit(4);
+                    }
+                }
+            }
+
+            Deadline::new(expect, Instant::now() + Duration::from_secs(5))
+                .map_err(|e| {
+                    if e.is_elapsed() {
+                        endpoint::EndpointError::Timeout.into()
+                    } else if e.is_timer() {
+                        e.into_timer().unwrap().into()
+                    } else if e.is_inner() {
+                        e.into_inner().unwrap().into()
+                    } else {
+                        panic!("wtf DeadlineError has no cause");
+                    }
+                })
+                .map(|v|(ep, ctrl, v))
+        })
+        .and_then(move |(mut ep,ctrl,rq)| {
+            info!("established route to peer {}", rq.identity());
+            let ch = ep.accept(rq, &secret).unwrap();
+
+            let mut encoder = hpack::Encoder::new();
+            let headers = vec![
+                (":path".as_bytes(), path.as_bytes()),
+            ];
+            let bin = encoder.encode(headers);
+
+            ch.send(bin)
+                .and_then(|ch| ch.into_future().map_err(|(e, _)| e))
+                .map(|(msg, ch)| (ep, ctrl, ch, msg))
+        })
+        .and_then(|(mut ep, ctrl, ch, msg)| {
+            if let Some(msg) = msg {
+                let mut decoder = hpack::Decoder::new();
+                let header_list = decoder.decode(&msg).unwrap();
+                for header in header_list {
+                    info!("{} : {}",
+                          String::from_utf8_lossy(&header.0),
+                          String::from_utf8_lossy(&header.1),
+                          );
+                }
+            }
+
+            let (tx, rx) = ch.split();
+
+            Stdin::new().fold(tx, |tx, msg| tx.send(msg)).and_then(|_| {
+                drop(rx);
+                Ok(())
+            })
+            .and_then(|_|Ok((ep,ctrl)))
+        })
+        .and_then(|_| {
+            Ok(())
+        })
         .map_err(|e| error!("{}", e))
 }
+
+
+fn axiom_srv_ping(ch : endpoint::Channel) -> impl Future<Item = (), Error = Error> {
+    let (tx, rx) = ch.split();
+    rx.fold(tx, |tx, msg|{
+        info!(">> {}", String::from_utf8_lossy(&msg));
+        tx.send(msg)
+    }).and_then(|_|Ok(()))
+}
+
+fn axiom_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
+    channel
+        .into_future()
+        .map_err(|(e, _)| e)
+        .and_then(|(msg, ch)|{
+            let path = if let Some(msg) = msg {
+                let mut decoder = hpack::Decoder::new();
+                let header_list = decoder.decode(&msg).unwrap();
+                let mut path = None;
+                for header in header_list {
+                    info!("{} : {}",
+                          String::from_utf8_lossy(&header.0),
+                          String::from_utf8_lossy(&header.1),
+                          );
+                    if header.0 == b":path" {
+                        path = Some(String::from_utf8_lossy(&header.1).to_string());
+                    }
+                }
+                path
+            } else {
+                None
+            };
+
+            match path.as_ref().map(|v|v.as_ref()) {
+                Some("/ping") => {
+                    let mut encoder = hpack::Encoder::new();
+                    let headers = vec![
+                        (":status".as_bytes(), "200".as_bytes()),
+                    ];
+                    let bin = encoder.encode(headers);
+                    Box::new(ch.send(bin)
+                        .and_then(|ch|axiom_srv_ping(ch)))
+                        as Box<Future<Item=(),Error=Error> + Send + Sync>
+                },
+                _ => {
+                    let mut encoder = hpack::Encoder::new();
+                    let headers = vec![
+                        (":status".as_bytes(), "400".as_bytes()),
+                    ];
+                    let bin = encoder.encode(headers);
+                    Box::new(ch.send(bin)
+                             .and_then(|_|Ok(())))
+                }
+            }
+
+        }).and_then(|ch|{
+            Ok(())
+        })
+}
+
 
 fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
     -> impl Future<Item = (), Error = ()>
@@ -182,7 +279,6 @@ fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
 
                     let mut x = [0; 32];
                     x.copy_from_slice(&kex);
-
                     let ft = ep
                         .connect(addr_.clone(), identity::Address(x), secret.clone(), Some((proxy_mine, proxy_them)))
                         .unwrap();
@@ -197,10 +293,7 @@ fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
                     let ft =
                         ft.and_then(|ch| {
                             info!("connected to peer {}", ch.identity());
-                            ch.for_each(|msg| {
-                                println!("{}", String::from_utf8_lossy(&msg));
-                                Ok(())
-                            })
+                            axiom_srv(ch)
                         }).map_err(|e| error!("peer: {}", e));
                     tokio::spawn(ft);
                 }
@@ -212,7 +305,7 @@ fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
 
 pub fn main() {
     if let Err(_) = env::var("RUST_LOG") {
-        env::set_var("RUST_LOG", "info");
+        env::set_var("RUST_LOG", "cli=info,ox=info");
     }
     env_logger::init();
 
@@ -287,14 +380,17 @@ pub fn main() {
         .subcommand(SubCommand::with_name("broker").about("run broker"))
         .subcommand(SubCommand::with_name("axiom"))
         .subcommand(
-            SubCommand::with_name("client").arg(
-                Arg::with_name("target")
+            SubCommand::with_name("io")
+            .about("connect local stdio to carrier channel")
+            .arg(
+                Arg::with_name("url")
                     .help("where you want to connect to")
                     .takes_value(true)
                     .required(true)
                     .index(1),
-            ),
-        );
+                    )
+            )
+        ;
 
     let matches = clap.get_matches();
 
@@ -428,14 +524,14 @@ pub fn main() {
                 )
             }));
         },
-        ("client", Some(submatches)) => {
+        ("io", Some(submatches)) => {
             let secret = get_secrets();
             let broker = get_broker();
 
-            let target = submatches.value_of("target").unwrap().to_string();
+            let url = submatches.value_of("url").unwrap().to_string();
 
             tokio::run(futures::lazy(move || {
-                main_client(secret.0, broker.addr, broker.x, target)
+                main_io(secret.0, broker.addr, broker.x, url)
             }));
         }
         ("axiom", Some(submatches)) => {

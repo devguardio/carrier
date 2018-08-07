@@ -34,6 +34,7 @@ pub mod stream;
 pub mod transport;
 pub mod shadow;
 pub mod xlog;
+pub mod dns;
 
 pub use identity::Identity;
 pub use identity::Secret;

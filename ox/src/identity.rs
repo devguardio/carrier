@@ -22,6 +22,7 @@ pub enum IdentityError {
 #[derive(Clone)]
 pub struct Secret(pub(crate) ClearOnDrop<Vec<u8>>);
 pub struct Signature(pub [u8; 64]);
+#[derive(Clone)]
 pub struct Address(pub [u8; 32]);
 
 impl Secret {
@@ -272,6 +273,18 @@ impl Identity {
 impl fmt::Display for Identity {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
         self.public_id().fmt(fmt)
+    }
+}
+
+impl fmt::Display for Address {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        self.to_string().fmt(fmt)
+    }
+}
+
+impl fmt::Debug for Address {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        self.to_string().fmt(fmt)
     }
 }
 

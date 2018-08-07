@@ -32,7 +32,9 @@ use tokio::io::AsyncRead;
 use tokio::timer::Deadline;
 use std::fs::File;
 use std::io::Read;
-
+use trust_dns_resolver::Resolver;
+use trust_dns_resolver::config::*;
+use rand::Rng;
 
 #[derive(Serialize, Deserialize)]
 struct Secrets {
@@ -42,7 +44,7 @@ struct Secrets {
 
 fn main_kv(
     secret:     identity::Secret,
-    addr:       String,
+    addr:       SocketAddr,
     x:          identity::Address,
     msg:        proto::broker::M,
     shadowkey:  Option<Secret>,
@@ -77,7 +79,7 @@ fn main_kv(
 
 fn main_client(
     secret: identity::Secret,
-    addr: String,
+    addr: SocketAddr,
     x: identity::Address,
     target: String,
 ) -> impl Future<Item = (), Error = ()> {
@@ -137,7 +139,9 @@ fn main_client(
         .map_err(|e| error!("{}", e))
 }
 
-fn main_axiom(secret: identity::Secret, addr: String, x: identity::Address) -> impl Future<Item = (), Error = ()> {
+fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
+    -> impl Future<Item = (), Error = ()>
+{
     let addr_ = addr.clone();
     let (xsecret, xpublic) = identity::generate_x25519();
 
@@ -319,9 +323,16 @@ pub fn main() {
     };
 
     let get_broker = || {
-        let broker_addr = env::var("CARRIER_BROKER_ADDR").unwrap_or("127.0.0.1:8443".to_string());
-        let broker_x = get_secrets().0.to_x25519();
-        (broker_addr, broker_x)
+        let resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default()).unwrap();
+        let response = resolver.txt_lookup("carrier.devguard.io.").unwrap();
+
+        let txt : Vec<dns::DnsRecord> = response.iter().flat_map(|txt|{
+            txt.txt_data()
+                .iter()
+                .map(|txt|String::from_utf8_lossy(&txt).to_string())
+        }).filter_map(|s|dns::DnsRecord::from_signed_txt(s)).collect();
+
+        rand::thread_rng().choose(&txt).cloned().expect("no addresses")
     };
 
     match matches.subcommand() {
@@ -377,7 +388,7 @@ pub fn main() {
         }
         ("set", Some(submatches)) => {
             let (secret, shadow) = get_secrets();
-            let (broker_addr, broker_x) = get_broker();
+            let broker = get_broker();
 
             let key   = submatches.value_of("key").unwrap().to_string();
             let value = submatches.value_of("value").unwrap().to_string();
@@ -386,7 +397,7 @@ pub fn main() {
             let value = ox::shadow::encrypt(value, shadow).unwrap();
 
             tokio::run(futures::lazy(move || {
-                main_kv(secret, broker_addr, broker_x,
+                main_kv(secret, broker.addr, broker.x,
                         proto::broker::M::SetSourceShadow(
                             proto::SetSourceShadow{
                                 key,
@@ -399,7 +410,7 @@ pub fn main() {
         },
         ("get", Some(submatches)) => {
             let (secret, _) = get_secrets();
-            let (broker_addr, broker_x) = get_broker();
+            let broker = get_broker();
 
             let key   = submatches.value_of("key").unwrap().to_string();
             let key   = key.into_bytes();
@@ -407,7 +418,7 @@ pub fn main() {
             let shadow = Secret::parse(submatches.value_of("shadowkey").unwrap().to_string()).unwrap();
 
             tokio::run(futures::lazy(move || {
-                main_kv(secret, broker_addr, broker_x,
+                main_kv(secret, broker.addr, broker.x,
                         proto::broker::M::GetSourceShadow(
                             proto::GetSourceShadow{
                                 key,
@@ -419,19 +430,19 @@ pub fn main() {
         },
         ("client", Some(submatches)) => {
             let secret = get_secrets();
-            let (broker_addr, broker_x) = get_broker();
+            let broker = get_broker();
 
             let target = submatches.value_of("target").unwrap().to_string();
 
             tokio::run(futures::lazy(move || {
-                main_client(secret.0, broker_addr, broker_x, target)
+                main_client(secret.0, broker.addr, broker.x, target)
             }));
         }
         ("axiom", Some(submatches)) => {
             let secret = get_secrets();
-            let (broker_addr, broker_x) = get_broker();
+            let broker = get_broker();
 
-            tokio::run(futures::lazy(move || main_axiom(secret.0, broker_addr, broker_x)));
+            tokio::run(futures::lazy(move || main_axiom(secret.0, broker.addr, broker.x)));
         }
         ("broker", Some(_submatches)) => {
             let secret = get_secrets();

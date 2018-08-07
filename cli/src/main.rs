@@ -12,6 +12,7 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 extern crate toml;
+extern crate trust_dns_resolver;
 
 mod broker;
 use broker::main_broker;
@@ -32,6 +33,7 @@ use tokio::timer::Deadline;
 use std::fs::File;
 use std::io::Read;
 
+
 #[derive(Serialize, Deserialize)]
 struct Secrets {
     identity: String,
@@ -39,36 +41,35 @@ struct Secrets {
 }
 
 fn main_kv(
-    secret: identity::Secret,
-    addr: String,
-    x: identity::Address,
-    msg: proto::broker::M,
-    shadowkey: Option<Secret>,
+    secret:     identity::Secret,
+    addr:       String,
+    x:          identity::Address,
+    msg:        proto::broker::M,
+    shadowkey:  Option<Secret>,
 ) -> impl Future<Item = (), Error = ()> {
+
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
     info!("connecting to {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
         .and_then(move |ctrl| {
             info!("connected to {}", ctrl.identity());
-            let fut = ctrl
-                .send(ox::broker::encode(msg).unwrap())
-                .and_then(|ctrl| ctrl.into_future().map_err(|(e, _)| e))
-                .and_then(|(msg, ctrl)| {
-                    let msg = msg.map(|msg|ox::broker::decode(&msg).unwrap());
-                    match msg {
-                        None => error!("connection closed"),
-                        Some(proto::broker::M::SetShadowResponse(proto::SetShadowResponse{..})) => {
-                        },
-                        Some(proto::broker::M::GetShadowResponse(proto::GetShadowResponse{ok, key,value})) => {
-                            let value = ox::shadow::decrypt(value, shadowkey.unwrap()).unwrap();
-                            println!("{}", String::from_utf8_lossy(&value));
-                        }
-                        Some(any) => error!("unexpected ctrl message: {:?}", any),
-                    }
-                    Ok(())
-                });
-            fut
+            ctrl.send(ox::broker::encode(msg).unwrap())
+        })
+        .and_then(|ctrl| ctrl.into_future().map_err(|(e, _)| e))
+        .and_then(|(msg, ctrl)| {
+            let msg = msg.map(|msg|ox::broker::decode(&msg).unwrap());
+            match msg {
+                None => error!("connection closed"),
+                Some(proto::broker::M::SetShadowResponse(proto::SetShadowResponse{..})) => {
+                },
+                Some(proto::broker::M::GetShadowResponse(proto::GetShadowResponse{ok, key,value})) => {
+                    let value = ox::shadow::decrypt(value, shadowkey.unwrap()).unwrap();
+                    println!("{}", String::from_utf8_lossy(&value));
+                }
+                Some(any) => error!("unexpected ctrl message: {:?}", any),
+            }
+            Ok(())
         })
         .and_then(move |_| Ok(()))
         .map_err(|e| error!("{}", e))
@@ -253,6 +254,16 @@ pub fn main() {
                     )
             )
         .subcommand(
+            SubCommand::with_name("dns")
+            .about("create dns record")
+            .arg(
+                Arg::with_name("ip")
+                    .takes_value(true)
+                    .required(true)
+                    .index(1),
+                    )
+            )
+        .subcommand(
             SubCommand::with_name("get")
             .about("get shadow value from carrier for key")
             .arg(
@@ -308,7 +319,7 @@ pub fn main() {
     };
 
     let get_broker = || {
-        let broker_addr = env::var("CARRIER_BEARER_ADDR").unwrap_or("127.0.0.1:8443".to_string());
+        let broker_addr = env::var("CARRIER_BROKER_ADDR").unwrap_or("127.0.0.1:8443".to_string());
         let broker_x = get_secrets().0.to_x25519();
         (broker_addr, broker_x)
     };
@@ -362,7 +373,7 @@ pub fn main() {
         }
         ("identity", Some(_submatches)) => {
             let secret = get_secrets();
-            println!("identity:   {}", secret.0.identity());
+            println!("{}", secret.0.identity());
         }
         ("set", Some(submatches)) => {
             let (secret, shadow) = get_secrets();
@@ -425,6 +436,15 @@ pub fn main() {
         ("broker", Some(_submatches)) => {
             let secret = get_secrets();
             tokio::run(futures::lazy(|| main_broker(secret.0)));
+        }
+        ("dns", Some(submatches)) => {
+            let ip = submatches.value_of("ip").unwrap().to_string();
+            let secrets = get_secrets();
+            let broker_x = secrets.0.to_x25519();
+            let txt = format!("carrier=1 {} 8443 {}", ip, broker_x.to_string());
+            let sig = secrets.0.sign(b"carrier dns record", txt.as_bytes());
+
+            println!("\"{} {}\"", txt, sig.to_string());
         }
         _ => unreachable!(),
     }

@@ -155,6 +155,52 @@ impl Address {
 
         Ok(Address(b))
     }
+}
+
+impl Signature{
+    pub fn to_string(&self) -> String{
+        let mut v = Vec::new();
+        v.push(8 as u8);
+        v.push(2 as u8);
+        v.extend_from_slice(&self.0);
+
+        let mut crc8 = crc8::Crc8::create_lsb(130);
+        let crc = crc8.calc(&v.as_ref(), v.len() as i32, 0);
+        v.push(crc);
+
+        bs58::encode(v).with_alphabet(bs58::alphabet::BITCOIN).into_string()
+    }
+
+    pub fn parse<S: AsRef<str>>(s: S) -> Result<Self, Error> {
+        let s = s.as_ref();
+        let s = bs58::decode(s).with_alphabet(bs58::alphabet::BITCOIN).into_vec()?;
+        if s.len() < 65 {
+            return Err(IdentityError::InvalidAddress.into());
+        }
+
+        let mut crc8 = crc8::Crc8::create_lsb(130);
+        let crc = crc8.calc(&s, s.len() as i32 - 1, 0);
+
+        if crc != s[s.len() - 1] {
+            return Err(IdentityError::InvalidAddress.into());
+        }
+
+        if s[0] != 8 {
+            return Err(IdentityError::InvalidAddress.into());
+        }
+        if s[1] != 2 {
+            return Err(IdentityError::InvalidAddress.into());
+        }
+
+        if s.len() - 3 < 64 {
+            return Err(IdentityError::InvalidAddress.into());
+        }
+
+        let mut b = [0;64];
+        b.copy_from_slice(&s[2..s.len() - 1]);
+
+        Ok(Signature(b))
+    }
 
 }
 
@@ -212,14 +258,14 @@ impl Identity {
         purpose: &[u8],
         text: &[u8],
         signature: &Signature,
-    ) -> Result<bool, ed25519_dalek::errors::DecodingError> {
+    ) -> Result<bool, Error> {
         let sig = ed25519_dalek::Signature::from_bytes(&signature.0)?;
         let pk = ed25519_dalek::PublicKey::from_bytes(&self.key)?;
 
         let mut stext = purpose.to_vec();
         stext.extend_from_slice(&text);
 
-        Ok(pk.verify::<sha2::Sha512>(&stext, &sig))
+        Ok(pk.verify::<sha2::Sha512>(&stext, &sig).is_ok())
     }
 }
 

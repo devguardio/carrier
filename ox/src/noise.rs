@@ -29,6 +29,7 @@ enum NoiseError {
 }
 
 pub struct Transport {
+    counter:             u64,
     noise:               snow::Session,
     pub(crate) debug_id: String,
     this_channel:        ChannelId,
@@ -56,21 +57,22 @@ pub struct HandshakeBuilder {
 }
 
 enum SendMode<'a> {
-    Transport(&'a [u8]),
+    Transport(u64, &'a [u8]),
     I2R(ChannelId, Identity, u64),
     R2I(ChannelId, Identity),
 }
 
 fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Result<packet::EncryptedPacket, Error> {
-    let counter = if let &SendMode::Transport(_) = &payload {
-        noise.sending_nonce()? + 1
+
+    let counter = if let &SendMode::Transport(counter, _) = &payload {
+        Some(counter)
     } else {
-        0
+        None
     };
 
     let mut inbuf = Vec::new();
     let overhead = match payload {
-        SendMode::Transport(b) => {
+        SendMode::Transport(_,b) => {
             assert!(b.len() + 100 < u16::max_value() as usize);
             inbuf.write_u16::<BigEndian>(b.len() as u16)?;
             inbuf.extend_from_slice(b);
@@ -101,7 +103,13 @@ fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Re
     inbuf.extend_from_slice(vec![0u8; padding].as_ref());
 
     let mut buf = vec![0; inbuf.len() + overhead];
-    let len = noise.write_message(&inbuf, &mut buf)?;
+
+    let (len,counter) = if let Some(counter) = counter {
+        (noise.write_message_with_nonce(counter, &inbuf, &mut buf)?, counter + 1)
+    } else {
+        (noise.write_message(&inbuf, &mut buf)?, 0)
+    };
+
     buf.truncate(len);
 
     if cfg!(test) && !noise.was_write_payload_encrypted() {
@@ -120,14 +128,13 @@ fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Re
 
 impl Transport {
     pub fn send(&mut self, payload: &[u8]) -> Result<packet::EncryptedPacket, Error> {
-        let pkt = send(&mut self.noise, self.peer_channel, SendMode::Transport(payload))?;
+        self.counter += 1;
+        let pkt = send(&mut self.noise, self.peer_channel, SendMode::Transport(self.counter, payload))?;
         assert_eq!(pkt.payload.len() % 256, 0);
         Ok(pkt)
     }
 
     pub fn recv(&mut self, pkt: packet::EncryptedPacket) -> Result<Vec<u8>, Error> {
-        self.noise.set_receiving_nonce(pkt.counter - 1)?;
-
         if pkt.receiver != self.this_channel {
             return Err(NoiseError::WrongChannel {
                 dest: pkt.receiver,
@@ -136,7 +143,7 @@ impl Transport {
         }
 
         let mut outbuf = vec![0; pkt.payload.len()];
-        let len = self.noise.read_message(&pkt.payload, &mut outbuf)?;
+        let len = self.noise.read_message_with_nonce(pkt.counter - 1, &pkt.payload, &mut outbuf)?;
         outbuf.truncate(len);
 
         if len < 2 {
@@ -172,7 +179,8 @@ impl HandshakeResponder {
 
         Ok((
             Transport {
-                noise:        self.noise.into_transport_mode()?,
+                counter:      0,
+                noise:        self.noise.into_stateless_transport_mode()?,
                 debug_id:     self.debug_id,
                 this_channel: channel,
                 peer_channel: self.peer_channel,
@@ -217,7 +225,8 @@ impl HandshakeRequester {
 
         Ok((
             Transport {
-                noise:        self.noise.into_transport_mode()?,
+                counter:      0,
+                noise:        self.noise.into_stateless_transport_mode()?,
                 debug_id:     self.debug_id,
                 this_channel: self.this_channel,
                 peer_channel: self.them_channel,

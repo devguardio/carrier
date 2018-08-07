@@ -24,7 +24,8 @@ features:
 - [ ] stream shell executable from archon
 - [ ] cli
 - [ ] ebpf routing
-- [ ] shadow broker
+- [ ] staking
+- [x] shadow broker
 
 TODO:
 

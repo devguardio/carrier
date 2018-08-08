@@ -23,7 +23,6 @@ extern crate tokio;
 #[macro_use]
 extern crate lazy_static;
 
-pub mod broker;
 pub mod endpoint;
 pub mod identity;
 pub mod noise;

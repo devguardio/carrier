@@ -15,6 +15,8 @@ extern crate toml;
 extern crate trust_dns_resolver;
 extern crate url;
 extern crate hpack;
+#[macro_use]
+extern crate lazy_static;
 
 mod broker;
 use broker::main_broker;
@@ -42,15 +44,19 @@ use url::Url;
 #[derive(Serialize, Deserialize)]
 struct Secrets {
     identity: String,
-    shadow:   String,
 }
 
-fn main_kv(
+struct SecretsParsed {
+    pub identity: Secret,
+}
+
+fn main_publish(
     secret:     identity::Secret,
     addr:       SocketAddr,
     x:          identity::Address,
-    msg:        proto::broker::M,
-    shadowkey:  Option<Secret>,
+    topic:      identity::Address,
+    value:      Vec<u8>,
+
 ) -> impl Future<Item = (), Error = ()> {
 
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
@@ -58,27 +64,44 @@ fn main_kv(
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
         .and_then(move |ctrl| {
-            info!("connected to {}", ctrl.identity());
-            ctrl.send(ox::broker::encode(msg).unwrap())
+            proto::Broker::publish(ctrl, proto::PublishRequest{
+                address: topic.to_string(),
+                value:   value,
+            })
         })
-        .and_then(|ctrl| ctrl.into_future().map_err(|(e, _)| e))
-        .and_then(|(msg, ctrl)| {
-            let msg = msg.map(|msg|ox::broker::decode(&msg).unwrap());
-            match msg {
-                None => error!("connection closed"),
-                Some(proto::broker::M::SetShadowResponse(proto::SetShadowResponse{..})) => {
-                },
-                Some(proto::broker::M::GetShadowResponse(proto::GetShadowResponse{ok, key,value})) => {
-                    let value = ox::shadow::decrypt(value, shadowkey.unwrap()).unwrap();
-                    println!("{}", String::from_utf8_lossy(&value));
-                }
-                Some(any) => error!("unexpected ctrl message: {:?}", any),
-            }
+        .and_then(move |(ctrl, resp)|{
+            info!("<< {:?}", resp);
             Ok(())
         })
-        .and_then(move |_| Ok(()))
         .map_err(|e| error!("{}", e))
 }
+
+fn main_subscribe(
+    secret:     identity::Secret,
+    addr:       SocketAddr,
+    x:          identity::Address,
+    topic:      identity::Address,
+    ssecret:    identity::Secret,
+
+) -> impl Future<Item = (), Error = ()> {
+
+    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
+    info!("connecting to {}", addr);
+    ep.connect(addr, x, secret.clone(), None)
+        .unwrap()
+        .and_then(move |ctrl| {
+            proto::Broker::subscribe(ctrl, proto::SubscribeRequest{
+                address: topic.to_string(),
+            })
+            .for_each(move |msg|{
+                let msg = ox::shadow::decrypt(msg.value, &ssecret).unwrap();
+                info!("{}", String::from_utf8_lossy(&msg));
+                Ok(())
+            })
+        })
+        .map_err(|e| error!("{}", e))
+}
+/*
 
 
 fn main_io(
@@ -175,7 +198,6 @@ fn main_io(
         })
         .map_err(|e| error!("{}", e))
 }
-
 
 fn axiom_srv_ping(ch : endpoint::Channel) -> impl Future<Item = (), Error = Error> {
     let (tx, rx) = ch.split();
@@ -302,6 +324,7 @@ fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
         })
         .map_err(|e| error!("{}", e))
 }
+*/
 
 pub fn main() {
     if let Err(_) = env::var("RUST_LOG") {
@@ -335,42 +358,56 @@ pub fn main() {
         )
         .subcommand(SubCommand::with_name("gen").about("generate new identity"))
         .subcommand(
-            SubCommand::with_name("set")
-            .about("set shadow key/value on carrier")
+            SubCommand::with_name("publish")
+            .about("publish shadow key/value on carrier")
             .arg(
-                Arg::with_name("key")
+                Arg::with_name("address")
+                    .help("x25519 address of topic to publish on")
                     .takes_value(true)
                     .required(true)
                     .index(1),
                     )
             .arg(
                 Arg::with_name("value")
+                    .help("plaintext value")
                     .takes_value(true)
                     .required(true)
                     .index(2),
                     )
             )
         .subcommand(
+            SubCommand::with_name("mkshadow")
+            .about("create a shadow address")
+        )
+        .subcommand(
             SubCommand::with_name("dns")
             .about("create dns record")
             .arg(
-                Arg::with_name("ip")
+                Arg::with_name("priority")
                     .takes_value(true)
                     .required(true)
                     .index(1),
                     )
+            .arg(
+                Arg::with_name("ip")
+                    .takes_value(true)
+                    .required(true)
+                    .index(2),
+                    )
             )
         .subcommand(
-            SubCommand::with_name("get")
-            .about("get shadow value from carrier for key")
+            SubCommand::with_name("subscribe")
+            .about("subscribe to shadow")
             .arg(
-                Arg::with_name("key")
+                Arg::with_name("address")
+                    .help("x25519 address of topic to publish on")
                     .takes_value(true)
                     .required(true)
                     .index(1),
                     )
             .arg(
                 Arg::with_name("shadowkey")
+                    .help("shadow descyption keys")
                     .takes_value(true)
                     .required(true)
                     .index(2),
@@ -411,11 +448,9 @@ pub fn main() {
         File::open(filename).expect("cannot open file").read_to_string(&mut buffer);
         let secrets: Secrets = toml::from_str(&buffer).expect("error while reading secrets toml");
 
-        (
-            identity::Secret::parse(secrets.identity).unwrap(),
-            identity::Address::parse(secrets.shadow).unwrap(),
-        )
-
+        SecretsParsed {
+            identity: identity::Secret::parse(secrets.identity).unwrap()
+        }
     };
 
     let get_broker = || {
@@ -457,14 +492,8 @@ pub fn main() {
             rng.try_fill_bytes(&mut identity).unwrap();
             let identity = Secret::from_bytes(&mut identity);
 
-            let mut shadow = vec![0; 32];
-            let mut rng = rand::OsRng::new().unwrap();
-            rng.try_fill_bytes(&mut shadow).unwrap();
-            let shadow = Secret::from_bytes(&mut shadow);
-
             let fi = toml::to_vec(&Secrets {
                 identity: identity.to_string(),
-                shadow:   shadow.to_x25519().to_string(),
             }).unwrap();
 
             f.write_all(&fi).unwrap();
@@ -474,36 +503,56 @@ pub fn main() {
             fs::set_permissions(&fp, perms).unwrap();
             drop(f);
 
-            let secret = identity::Secret::from_file(defaultfile.to_str().unwrap()).unwrap();
             println!("identity:  {}", identity.identity());
-            println!("shadowkey: {}", shadow.to_string());
+        }
+        ("mkshadow", Some(_submatches)) => {
+            use rand::RngCore;
+
+            let secrets = get_secrets();
+
+            let mut secret = vec![0; 32];
+            let mut rng = rand::OsRng::new().unwrap();
+            rng.try_fill_bytes(&mut secret).unwrap();
+            let secret = Secret::from_bytes(&mut secret);
+
+            let address = secret.to_x25519();
+
+            println!("address: {}", address.to_string());
+            println!("secret:  {}", secret.to_string());
         }
         ("identity", Some(_submatches)) => {
-            let secret = get_secrets();
-            println!("{}", secret.0.identity());
+            let secrets = get_secrets();
+            println!("{}", secrets.identity.identity());
         }
-        ("set", Some(submatches)) => {
-            let (secret, shadow) = get_secrets();
+        ("publish", Some(submatches)) => {
+            let secrets = get_secrets();
             let broker = get_broker();
 
-            let key   = submatches.value_of("key").unwrap().to_string();
-            let value = submatches.value_of("value").unwrap().to_string();
+            let address = submatches.value_of("address").unwrap().to_string();
+            let value   = submatches.value_of("value").unwrap().to_string();
 
-            let key   = key.into_bytes();
-            let value = ox::shadow::encrypt(value, shadow).unwrap();
+            let address = identity::Address::parse(address).unwrap();
+            let value   = ox::shadow::encrypt(value, address.clone()).unwrap();
 
             tokio::run(futures::lazy(move || {
-                main_kv(secret, broker.addr, broker.x,
-                        proto::broker::M::SetSourceShadow(
-                            proto::SetSourceShadow{
-                                key,
-                                value
-                            }
-                        ),
-                        None
-                )
+                main_publish(secrets.identity, broker.addr, broker.x, address, value)
             }));
         },
+        ("subscribe", Some(submatches)) => {
+            let secrets = get_secrets();
+            let broker = get_broker();
+
+            let address = submatches.value_of("address").unwrap().to_string();
+            let ssecret = submatches.value_of("shadowkey").unwrap().to_string();
+
+            let address = identity::Address::parse(address).unwrap();
+            let ssecret = identity::Secret::parse(ssecret).unwrap();
+
+            tokio::run(futures::lazy(move || {
+                main_subscribe(secrets.identity, broker.addr, broker.x, address, ssecret)
+            }));
+        },
+        /*
         ("get", Some(submatches)) => {
             let (secret, _) = get_secrets();
             let broker = get_broker();
@@ -540,16 +589,18 @@ pub fn main() {
 
             tokio::run(futures::lazy(move || main_axiom(secret.0, broker.addr, broker.x)));
         }
+        */
         ("broker", Some(_submatches)) => {
-            let secret = get_secrets();
-            tokio::run(futures::lazy(|| main_broker(secret.0)));
+            let secrets = get_secrets();
+            tokio::run(futures::lazy(|| main_broker(secrets.identity)));
         }
         ("dns", Some(submatches)) => {
+            let prio = submatches.value_of("priority").unwrap().to_string();
             let ip = submatches.value_of("ip").unwrap().to_string();
             let secrets = get_secrets();
-            let broker_x = secrets.0.to_x25519();
-            let txt = format!("carrier=1 {} 8443 {}", ip, broker_x.to_string());
-            let sig = secrets.0.sign(b"carrier dns record", txt.as_bytes());
+            let broker_x = secrets.identity.to_x25519();
+            let txt = format!("carrier={} {} 8443 {}", prio, ip, broker_x.to_string());
+            let sig = secrets.identity.sign(b"carrier dns record", txt.as_bytes());
 
             println!("\"{} {}\"", txt, sig.to_string());
         }

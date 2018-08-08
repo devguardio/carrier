@@ -16,7 +16,7 @@ pub fn encrypt(value: String, shadowkey: Address) -> Result<Vec<u8>, Error> {
     Ok(r)
 }
 
-pub fn decrypt(value: Vec<u8>, shadowkey: Secret) -> Result<Vec<u8>, Error> {
+pub fn decrypt(value: Vec<u8>, shadowkey: &Secret) -> Result<Vec<u8>, Error> {
     let mut noise = Builder::new("Noise_N_25519_ChaChaPoly_BLAKE2s".parse().unwrap())
         .local_private_key(&shadowkey.0)
         .prologue("shadow broker kv".as_bytes())

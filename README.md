@@ -25,13 +25,10 @@ features:
 - [ ] cli
 - [ ] ebpf routing
 - [ ] staking
+- [ ] self-updating
 - [x] shadow broker
-
-TODO:
-
-- [ ] ssh is implemented using port forwarding to an actual sshd, as long as the crypto has not been reviewed.
-- [ ] packet counters are predictable to a middleman, it's unclear if that weakens the crypto
-- [ ] randomize ping interval
+- [ ] CRDT shadows
+- [ ] Delegation for shadow keys (maybe using Attribute Based Encryption)
 
 
 usage

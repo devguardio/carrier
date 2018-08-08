@@ -27,33 +27,3 @@ pub fn decrypt(value: Vec<u8>, shadowkey: &Secret) -> Result<Vec<u8>, Error> {
     r.truncate(len);
     Ok(r)
 }
-
-
-#[derive(Clone)]
-pub struct ShadowDb {
-    db: Arc<Mutex<HashMap<Vec<u8>, Vec<u8>>>>,
-}
-
-
-
-impl ShadowDb {
-    pub fn new() -> Self {
-        Self {
-            db: Arc::new(Mutex::new(HashMap::new())),
-        }
-    }
-
-    pub fn get(&self, id: &Identity, key: &[u8]) -> Option<Vec<u8>> {
-        let mut k = id.to_string().into_bytes();
-        k.extend_from_slice(key);
-
-        self.db.lock().unwrap().get(&k).cloned()
-    }
-
-    pub fn set(&self, id: &Identity, key: &[u8], value: Vec<u8>) {
-        let mut k = id.to_string().into_bytes();
-        k.extend_from_slice(key);
-
-        self.db.lock().unwrap().insert(k, value);
-    }
-}

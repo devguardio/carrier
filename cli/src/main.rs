@@ -17,6 +17,8 @@ extern crate url;
 extern crate hpack;
 #[macro_use]
 extern crate lazy_static;
+extern crate tokio_file_unix;
+extern crate tokio_codec;
 
 mod broker;
 use broker::main_broker;
@@ -40,6 +42,7 @@ use trust_dns_resolver::Resolver;
 use trust_dns_resolver::config::*;
 use rand::Rng;
 use url::Url;
+use std::io;
 
 #[derive(Serialize, Deserialize)]
 struct Secrets {
@@ -101,18 +104,34 @@ fn main_subscribe(
         })
         .map_err(|e| error!("{}", e))
 }
-/*
 
+fn stdio_channel(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
+    let stdin = Stdin::new();
+    let (tx,rx) = channel.split();
 
-fn main_io(
+    let fw1 = stdin.fold(tx, |tx, item|{
+        tx.send(item)
+    }).and_then(|_|Ok(()));
+
+    let stdout = io::stdout();
+    let fw2 = rx.fold(stdout, |mut stdout, item|{
+        use std::io::Write;
+        stdout.write(&item);
+        stdout.flush().unwrap();
+        Ok(stdout) as Result<_,Error>
+    }).and_then(|_|Ok(()));
+
+    fw1.select(fw2).map_err(|(e,_)|e).and_then(|_|Ok(()))
+}
+fn main_connect(
     secret: identity::Secret,
     addr: SocketAddr,
     x: identity::Address,
     url: String,
 ) -> impl Future<Item = (), Error = ()> {
-    let url = Url::parse(&url).unwrap();
-    let target = url.host_str().expect("missing target identity").to_string();
-    let path   = url.path().to_string();
+    let url     = Url::parse(&url).unwrap();
+    let target  = url.host_str().expect("missing target identity").to_string();
+    let path    = url.path().to_string();
 
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
     info!("connecting via {}", addr);
@@ -124,28 +143,20 @@ fn main_io(
             let (xsecret, xpublic) = identity::generate_x25519();
             let expect = ep.expect(xsecret, identity::Identity::parse(&target).unwrap());
 
-            let msg = proto::broker::M::Connect1Request(proto::Connect1Request {
-                target:  target,
-                channel: expect.channel(),
-                kex:     xpublic.to_vec(),
-            });
-            ctrl
-                .send(ox::broker::encode(msg).unwrap())
-                .and_then(|ctrl| ctrl.into_future().map_err(|(e, _)| e))
-                .map(|(msg, ctrl)| (ep, expect, msg, ctrl))
+            proto::Broker::connect(ctrl, proto::ConnectRequest{
+                address:    xpublic.to_vec(),
+                channel:    expect.channel(),
+                identity:   target,
+            }).map(|(ctrl, resp)|(ep, expect,ctrl, resp))
         })
-        .and_then(|(ep, expect, msg, ctrl)| {
-            if let Some(msg) = msg {
-                let msg = ox::broker::decode(&msg).unwrap();
-                if let proto::broker::M::Connect1Response(proto::Connect1Response{ok}) = msg {
-                    if !ok {
-                        error!("no route");
-                        std::process::exit(4);
-                    }
-                }
+        .and_then(|(ep, expect, ctrl, msg)|{
+            info!("<< {:?}", msg);
+            if !msg.ok {
+                error!("no route");
+                std::process::exit(4);
             }
 
-            Deadline::new(expect, Instant::now() + Duration::from_secs(5))
+            Deadline::new(expect, Instant::now() + Duration::from_secs(10))
                 .map_err(|e| {
                     if e.is_elapsed() {
                         endpoint::EndpointError::Timeout.into()
@@ -154,7 +165,7 @@ fn main_io(
                     } else if e.is_inner() {
                         e.into_inner().unwrap().into()
                     } else {
-                        panic!("wtf DeadlineError has no cause");
+                        unreachable!();
                     }
                 })
                 .map(|v|(ep, ctrl, v))
@@ -163,41 +174,95 @@ fn main_io(
             info!("established route to peer {}", rq.identity());
             let ch = ep.accept(rq, &secret).unwrap();
 
-            let mut encoder = hpack::Encoder::new();
-            let headers = vec![
-                (":path".as_bytes(), path.as_bytes()),
-            ];
-            let bin = encoder.encode(headers);
-
-            ch.send(bin)
-                .and_then(|ch| ch.into_future().map_err(|(e, _)| e))
-                .map(|(msg, ch)| (ep, ctrl, ch, msg))
-        })
-        .and_then(|(mut ep, ctrl, ch, msg)| {
-            if let Some(msg) = msg {
-                let mut decoder = hpack::Decoder::new();
-                let header_list = decoder.decode(&msg).unwrap();
-                for header in header_list {
-                    info!("{} : {}",
-                          String::from_utf8_lossy(&header.0),
-                          String::from_utf8_lossy(&header.1),
-                          );
-                }
-            }
-
-            let (tx, rx) = ch.split();
-
-            Stdin::new().fold(tx, |tx, msg| tx.send(msg)).and_then(|_| {
-                drop(rx);
-                Ok(())
-            })
-            .and_then(|_|Ok((ep,ctrl)))
-        })
-        .and_then(|_| {
-            Ok(())
+            stdio_channel(ch)
+                .and_then(move |_|{
+                    drop(ctrl);
+                    drop(ep);
+                    Ok(())
+                })
         })
         .map_err(|e| error!("{}", e))
 }
+
+fn sshd_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
+    use tokio::net::TcpStream;
+
+    TcpStream::connect(&("127.0.0.1:22".parse().unwrap()))
+        .map_err(Error::from)
+        .and_then(|sock|{
+            let sock =  tokio_codec::Framed::new(sock, tokio_codec::BytesCodec::new());
+
+            let (tx1,rx1) = channel.split();
+            let (tx2,rx2) = sock.split();
+
+            let fw1 = rx1.fold(tx2, |tx, item|{
+                tx.send(item.into())
+            }).and_then(|_|Ok(()));
+
+            let fw2 = rx2.map_err(Error::from)
+                .and_then(|mut item|{
+                    let mut fragments = Vec::new();
+                    while item.len() > 1000 {
+                        let item2 = item.split_off(1000);
+                        fragments.push(item);
+                        item = item2;
+                    }
+                    if item.len() > 0 {
+                        fragments.push(item);
+                    }
+                    Ok(futures::stream::iter_ok(fragments.into_iter()))
+                })
+                .flatten()
+                .fold(tx1, |tx, item|{
+                    tx.send(item.to_vec())
+                })
+                .and_then(|_|Ok(()));
+
+            fw1.select(fw2).map_err(|(e,_)|e).and_then(|_|Ok(()))
+        })
+}
+
+fn main_sshd(
+    secret: identity::Secret,
+    addr: SocketAddr,
+    x: identity::Address,
+) -> impl Future<Item = (), Error = ()> {
+    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
+    info!("connecting via {}", addr);
+    ep.connect(addr, x, secret.clone(), None)
+        .unwrap()
+        .and_then(move |ctrl| {
+            info!("via broker {}", ctrl.identity());
+            proto::Broker::listen(ctrl, proto::ListenRequest{
+                from_channel: 10000,
+                to_channel:   90000,
+            })
+            .for_each(move |msg|{
+                info!("CONN request: {} {} {} {} {}",
+                      msg.identity, msg.channel_mine, msg.channel_them, msg.proxy_mine, msg.proxy_them);
+
+                let mut x = [0; 32];
+                x.copy_from_slice(&msg.address);
+                let ft = ep
+                    .connect(addr, identity::Address(x), secret.clone(),
+                        Some((msg.channel_mine, msg.proxy_mine, msg.proxy_them))
+                    )
+                    .unwrap();
+
+                let ft =
+                    ft.and_then(|ch| {
+                        info!("connected to peer {}", ch.identity());
+                        sshd_srv(ch)
+                    }).map_err(|e| error!("peer: {}", e));
+                tokio::spawn(ft);
+                Ok(())
+            })
+        })
+        .map_err(|e| error!("{}", e))
+}
+
+/*
+
 
 fn axiom_srv_ping(ch : endpoint::Channel) -> impl Future<Item = (), Error = Error> {
     let (tx, rx) = ch.split();
@@ -415,9 +480,9 @@ pub fn main() {
             )
         .subcommand(SubCommand::with_name("identity").about("print public identity"))
         .subcommand(SubCommand::with_name("broker").about("run broker"))
-        .subcommand(SubCommand::with_name("axiom"))
+        .subcommand(SubCommand::with_name("sshd"))
         .subcommand(
-            SubCommand::with_name("io")
+            SubCommand::with_name("connect")
             .about("connect local stdio to carrier channel")
             .arg(
                 Arg::with_name("url")
@@ -552,44 +617,22 @@ pub fn main() {
                 main_subscribe(secrets.identity, broker.addr, broker.x, address, ssecret)
             }));
         },
-        /*
-        ("get", Some(submatches)) => {
-            let (secret, _) = get_secrets();
-            let broker = get_broker();
-
-            let key   = submatches.value_of("key").unwrap().to_string();
-            let key   = key.into_bytes();
-
-            let shadow = Secret::parse(submatches.value_of("shadowkey").unwrap().to_string()).unwrap();
-
-            tokio::run(futures::lazy(move || {
-                main_kv(secret, broker.addr, broker.x,
-                        proto::broker::M::GetSourceShadow(
-                            proto::GetSourceShadow{
-                                key,
-                            }
-                        ),
-                        Some(shadow)
-                )
-            }));
-        },
-        ("io", Some(submatches)) => {
-            let secret = get_secrets();
+        ("connect", Some(submatches)) => {
+            let secrets = get_secrets();
             let broker = get_broker();
 
             let url = submatches.value_of("url").unwrap().to_string();
 
             tokio::run(futures::lazy(move || {
-                main_io(secret.0, broker.addr, broker.x, url)
+                main_connect(secrets.identity, broker.addr, broker.x, url)
             }));
         }
-        ("axiom", Some(submatches)) => {
+        ("sshd", Some(submatches)) => {
             let secret = get_secrets();
             let broker = get_broker();
 
-            tokio::run(futures::lazy(move || main_axiom(secret.0, broker.addr, broker.x)));
+            tokio::run(futures::lazy(move || main_sshd(secret.identity, broker.addr, broker.x)));
         }
-        */
         ("broker", Some(_submatches)) => {
             let secrets = get_secrets();
             tokio::run(futures::lazy(|| main_broker(secrets.identity)));
@@ -609,13 +652,18 @@ pub fn main() {
 }
 
 struct Stdin {
-    inner: tokio::io::Stdin,
+    inner: Box<tokio::io::AsyncRead + Send>,
 }
 
 impl Stdin {
     pub fn new() -> Self {
+
+        let stdin = tokio_file_unix::raw_stdin().unwrap();
+        let file = tokio_file_unix::File::new_nb(stdin).unwrap();
+        let reader = file.into_reader(&tokio::reactor::Handle::current()).unwrap();
+
         Self {
-            inner: tokio::io::stdin(),
+            inner: Box::new(reader),
         }
     }
 }

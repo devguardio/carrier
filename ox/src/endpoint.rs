@@ -230,13 +230,24 @@ impl Endpoint {
         to: A,
         x: Address,
         secret: Secret,
-        proxy: Option<(ChannelId, ChannelId)>,
+        proxy: Option<(ChannelId, ChannelId, ChannelId)>,
     ) -> Result<ConnectFuture, Error> {
         let addr = to.to_socket_addrs()?.next().ok_or(EndpointError::NoAddr)?;
-        let (rx, channel) = self.alloc_channel_with(|channel| {
+
+        let (rx, channel)  = if let Some((my,_,_)) = proxy {
+            let mut channels = self.channels.lock().unwrap();
+            assert!(channels.len() < u16::max_value() as usize);
             let (inc_tx, inc_rx) = mpsc::channel(100);
-            (ChannelBus::User { inc: inc_tx }, (inc_rx, channel))
-        });
+            let i = ChannelBus::User { inc: inc_tx };
+            assert!(channels.insert(my, i).is_none());
+            self.wrk.try_send(EndpointWorkerCmd::Hup).unwrap();
+            (inc_rx, my)
+        } else {
+            self.alloc_channel_with(|channel| {
+                let (inc_tx, inc_rx) = mpsc::channel(100);
+                (ChannelBus::User { inc: inc_tx }, (inc_rx, channel))
+            })
+        };
 
         let mut sock = UdpSocket::from_std(self.stdsock.try_clone()?, &tokio::reactor::Handle::current())?;
 
@@ -247,7 +258,7 @@ impl Endpoint {
 
         let (noise, pkt) = noise::HandshakeBuilder::new()
             .with_sender_channel(channel)
-            .with_proxy(proxy)
+            .with_proxy(proxy.map(|(_,a,b)|(a,b)))
             .initiate(&x.0, &secret, timestamp)?;
 
         let pkt = pkt.encode();
@@ -738,9 +749,15 @@ impl Stream for Channel {
 
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
         match self.rx.poll() {
-            Ok(Async::Ready(None)) => Ok(Async::Ready(None)),
-            Ok(Async::Ready(Some(None))) => Ok(Async::Ready(None)),
-            Ok(Async::Ready(Some(Some(v)))) => Ok(Async::Ready(Some(v))),
+            Ok(Async::Ready(None))          => Ok(Async::Ready(None)),
+            Ok(Async::Ready(Some(None)))    => {
+                futures::task::current().notify();
+                Ok(Async::Ready(None))
+            },
+            Ok(Async::Ready(Some(Some(v)))) => {
+                futures::task::current().notify();
+                Ok(Async::Ready(Some(v)))
+            },
             Ok(Async::NotReady) => Ok(Async::NotReady),
             Err(_) => unreachable!(),
         }

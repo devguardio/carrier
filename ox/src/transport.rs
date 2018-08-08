@@ -189,13 +189,17 @@ impl Channel {
         // loss detection
 
         if now >= self.deadline {
-            let loss = self.recovery.on_loss_detection_alarm(now);
-            self.handle_loss(loss);
+            if self.recovery.bytes_in_flight() == 0 {
+                //TODO too much traffic
+                self.outqueue.push_back(Frame::Ping);
+            } else {
+                let loss = self.recovery.on_loss_detection_alarm(now);
+                self.handle_loss(loss);
+            }
         }
         self.deadline = if let Some(deadline) = self.recovery.loss_detection_alarm() {
             deadline
         } else {
-            //TODO this triggers TLP, which confuses recovery
             now + IDLE_TIMER
         };
         if self.deadline <= now {
@@ -233,6 +237,7 @@ impl Channel {
                 frame.encode(&mut pkt)?;
                 frames.push(frame);
             }
+            assert_ne!(frames.len(), 0, "bug: trying to send empty packet. outqueue is {}", self.outqueue.len());
 
             let pkt = self.noise.send(&pkt)?;
 
@@ -281,8 +286,11 @@ impl Channel {
         Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now)))
     }
 
+
     /// queue a message
     pub fn message<M: Into<Vec<u8>>>(&mut self, msg: M) {
+        let msg = msg.into();
+        assert!(msg.len() < 1200, "message too big {}", msg.len());
         self.outqueue.push_back(Frame::Message {
             order:   self.scounter,
             payload: msg.into(),

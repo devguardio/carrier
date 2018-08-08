@@ -20,7 +20,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
     use failure::Error;
     use std::io::Read;
     use prost::Message;
-    use futures::{Future, Stream, Sink};
+    use futures::{self, Future, Stream, Sink, Async};
 
 
     #[derive(Debug, Fail)]
@@ -58,7 +58,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
 
         buf.push_str(r#"
     pub fn dispatch<S, T>(s: S, t: T)
-        -> impl Future<Item=(S, T), Error = Error> + Sync + Send
+        -> impl Future<Item=(), Error = Error> + Sync + Send
         where T: Service + Sync + Send + 'static,
               S: Stream<Item=Vec<u8>, Error=Error>,
               S: Sink<SinkItem=Vec<u8>, SinkError=Error>,
@@ -87,12 +87,19 @@ impl prost_build::ServiceGenerator for ServiceGen {
 
             if method.server_streaming {
                 buf.push_str("
-                    let f = f.fold(s,|s,o|{
+                    let (tx, rx) = s.split();
+
+                    let end = rx.into_future().map_err(|(e,_)|e).and_then(|_|Ok(()));
+
+                    let f = f.fold(tx,|tx,o|{
                         let mut v = Vec::new();
                         o.encode(&mut v).unwrap();
-                        s.send(v)
-                    }).and_then(|s|Ok((s,t)));
-                    Ok(Box::new(f) as Box<Future<Item=(S, T), Error = Error> + Sync + Send>)
+                        tx.send(v)
+                    }).and_then(|_|Ok(()));
+
+                    let f = end.select(f).map_err(|(e,_)|e).and_then(|_|Ok(()));
+
+                    Ok(Box::new(f) as Box<Future<Item=(), Error = Error> + Sync + Send>)
                 },\n");
             } else {
                 buf.push_str("
@@ -100,8 +107,8 @@ impl prost_build::ServiceGenerator for ServiceGen {
                         let mut v = Vec::new();
                         o.encode(&mut v)?;
                         Ok(s.send(v))
-                    }).flatten().map(|s|(s,t));
-                    Ok(Box::new(f) as Box<Future<Item=(S, T), Error = Error> + Sync + Send>)
+                    }).flatten().map(|_|());
+                    Ok(Box::new(f) as Box<Future<Item=(), Error = Error> + Sync + Send>)
                 },\n");
             }
         }

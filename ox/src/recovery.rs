@@ -169,6 +169,11 @@ impl QuicRecovery {
         }
     }
 
+    /// current free space in sending window
+    pub fn bytes_in_flight(&self) -> usize {
+        self.bytes_in_flight
+    }
+
     pub fn loss_detection_alarm(&self) -> Option<u64> {
         self.loss_detection_alarm
     }

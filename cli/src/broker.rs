@@ -7,7 +7,91 @@ use std::net::SocketAddr;
 use std::sync::{Arc, Mutex};
 use tokio;
 use futures::sync::mpsc;
+use std::num::Wrapping;
 
+
+struct Subscription {
+    inner:  mpsc::Receiver<proto::SubscribeStream>,
+    rmid:   u64,
+    address: String,
+}
+
+impl Stream for Subscription {
+    type Item  = proto::SubscribeStream;
+    type Error = Error;
+    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
+        self.inner.poll().map_err(|()|unreachable!())
+    }
+}
+
+impl Drop for Subscription {
+    fn drop(&mut self) {
+        let mut br = SHADOWBROKER.lock().unwrap();
+        if let Some(lane) = br.lanes.get_mut(&self.address) {
+            lane.remove(&self.rmid);
+        }
+    }
+}
+
+struct ShadowBroker {
+    store: HashMap<String, HashMap<String, Vec<u8>>>,
+    lanes:  HashMap<String, HashMap<u64, mpsc::Sender<proto::SubscribeStream>>>,
+    subcounter: Wrapping<u64>,
+}
+
+impl ShadowBroker {
+    fn new() -> Self {
+        Self {
+            store: HashMap::new(),
+            lanes: HashMap::new(),
+            subcounter: Wrapping(0),
+        }
+    }
+
+    fn publish(&mut self, id: String, address: String, value: Vec<u8>) {
+
+        if let Some(lane) = self.lanes.get_mut(&address) {
+            for (_,sub) in lane.iter_mut() {
+                sub.try_send(proto::SubscribeStream {
+                    identity: id.clone(),
+                    value:    value.clone(),
+                });
+            }
+        }
+
+        self.store.entry(address).or_insert(HashMap::new())
+            .insert(id, value);
+
+    }
+
+    fn subscribe(&mut self, address: String) -> Subscription {
+
+        //TODO this will only work for 100 devices.
+        //we need a more clever api to deal with this
+        let (mut tx,rx) = mpsc::channel(100);
+        self.subcounter += Wrapping(1);
+        let scr = Subscription {
+            inner:   rx,
+            rmid:    self.subcounter.0,
+            address: address.clone(),
+        };
+
+        if let Some(stored) = self.store.get(&address) {
+            for (k,v) in stored {
+                tx.try_send(proto::SubscribeStream {
+                    identity: k.clone(),
+                    value:    v.clone(),
+                });
+            }
+        }
+
+        self.lanes.entry(address).or_insert(HashMap::new())
+            .insert(self.subcounter.0, tx);
+
+
+        scr
+    }
+}
 
 struct Listener {
     tx:   mpsc::Sender<proto::ListenStream>,
@@ -28,8 +112,8 @@ impl Listener {
 }
 
 lazy_static! {
-    static ref SHADOWSTORE: Mutex<HashMap<String, HashMap<String, Vec<u8>>>> = {
-        Mutex::new(HashMap::new())
+    static ref SHADOWBROKER: Mutex<ShadowBroker> = {
+        Mutex::new(ShadowBroker::new())
     };
 
     static ref LISTENERS: Mutex<HashMap<String, Listener>> = {
@@ -38,7 +122,7 @@ lazy_static! {
 }
 
 struct Service {
-    debug_id:   String,
+    connection_id:   String,
     addr:       SocketAddr,
 
     identity:   Identity,
@@ -49,7 +133,7 @@ impl proto::Broker::Service for Service {
     fn connect(&mut self, msg: proto::ConnectRequest)
         -> Box<Stream<Item=proto::ConnectResponse, Error=Error> + Sync + Send + 'static>
     {
-        info!("[{}] connect request to {}", self.debug_id, msg.identity);
+        info!("[{}] connect request to {}", self.connection_id, msg.identity);
 
         if let Some(listener) = LISTENERS.lock().unwrap().get_mut(&msg.identity) {
 
@@ -100,11 +184,7 @@ impl proto::Broker::Service for Service {
     {
         info!("PUBLISH {} {} {:x?}", msg.address, self.identity, msg.value);
 
-        {
-            let mut shadowstore = SHADOWSTORE.lock().unwrap();
-            let shadow = shadowstore.entry(msg.address).or_insert(HashMap::new());
-            shadow.insert(self.identity.to_string(), msg.value);
-        }
+        SHADOWBROKER.lock().unwrap().publish(self.identity.to_string(), msg.address, msg.value);
 
         Box::new(futures::future::ok(proto::PublishResponse{
             ok: true
@@ -115,29 +195,10 @@ impl proto::Broker::Service for Service {
         -> Box<Stream<Item=proto::SubscribeStream, Error=Error> + Sync + Send + 'static>
     {
         info!("SUBSCRIBE {} {}", msg.address, self.identity);
-        let stored = {
-            let mut shadowstore = SHADOWSTORE.lock().unwrap();
-            shadowstore.get(&msg.address).cloned()
-        };
 
-        let stored1 = stored.clone().unwrap_or_else(||HashMap::new()).into_iter();
-        let stored2 = stored.unwrap_or_else(||HashMap::new()).into_iter();
+        let subscription = SHADOWBROKER.lock().unwrap().subscribe(msg.address);
 
-        let st = futures::stream::iter_ok::<_,Error>(stored1).map(|(k,v)|{
-            proto::SubscribeStream {
-                identity: k,
-                value:    v,
-            }
-        });
-
-        let sttest = futures::stream::iter_ok::<_,Error>(stored2).map(|(k,v)|{
-            proto::SubscribeStream {
-                identity: k,
-                value:    v,
-            }
-        });
-
-        Box::new(st.chain(sttest))
+        Box::new(subscription)
     }
 }
 
@@ -148,9 +209,9 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
     let listener = ep.lock().unwrap().listen(secret.clone());
     listener
         .for_each(move |handshake| {
-            let debug_id = format!("{}:{}", handshake.addr(), handshake.identity());
-            let debug_id_ = debug_id.clone();
-            info!("[{}] incomming connection", debug_id);
+            let connection_id = format!("{}:{}", handshake.addr(), handshake.identity());
+            let connection_id_ = connection_id.clone();
+            info!("[{}] incomming connection", connection_id);
 
             let channel = ep.lock().unwrap().accept(handshake, &secret).unwrap();
             let addr = channel.addr().clone();
@@ -158,14 +219,14 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
 
             let mut service = Service{
                 identity:   identity.clone(),
-                debug_id:   debug_id.clone(),
+                connection_id:   connection_id.clone(),
                 addr:       addr,
                 ep:         ep.clone(),
             };
 
             let ft = proto::Broker::dispatch(channel, service)
                 .and_then(move |_| {
-                    trace!("[{}] dispatch ended", debug_id);
+                    trace!("[{}] dispatch ended", connection_id);
 
                     let mut removeme = false;
                     let mut registry = LISTENERS.lock().unwrap();
@@ -178,7 +239,7 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
 
                     Ok(())
                 })
-                .map_err(move |e| error!("[{}] channel error: {}", debug_id_, e));
+                .map_err(move |e| error!("[{}] channel error: {}", connection_id_, e));
 
             tokio::spawn(ft);
             Ok(())

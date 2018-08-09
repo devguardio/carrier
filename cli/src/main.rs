@@ -642,7 +642,7 @@ pub fn main() {
             let ip = submatches.value_of("ip").unwrap().to_string();
             let secrets = get_secrets();
             let broker_x = secrets.identity.to_x25519();
-            let txt = format!("carrier={} {} 8443 {}", prio, ip, broker_x.to_string());
+            let txt = format!("carrier={} {}:8443 {}", prio, ip, broker_x.to_string());
             let sig = secrets.identity.sign(b"carrier dns record", txt.as_bytes());
 
             println!("\"{} {}\"", txt, sig.to_string());

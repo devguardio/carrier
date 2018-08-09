@@ -650,6 +650,7 @@ impl Future for ChannelWorker {
         };
 
         if stop {
+            self.transport.close();
             if let Ok(pkt) = self.transport.disconnect() {
                 match self.sock.poll_send_to(&pkt, &self.addr) {
                     Ok(Async::Ready(len)) if len == pkt.len() => (),
@@ -671,7 +672,7 @@ impl Future for ChannelWorker {
                     Ok(ChannelProgress::Close) => {
                         self.ctx.try_send(None).ok();
                     }
-                    Ok(ChannelProgress::Disconnect) => (),
+                    Ok(ChannelProgress::Disconnect) => break,
                     Err(e) => {
                         error!("transport progress error (while stopping): {}", e);
                         break;

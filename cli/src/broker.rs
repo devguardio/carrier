@@ -1,5 +1,5 @@
 use failure::Error;
-use futures::{self, Future, Sink, Stream};
+use futures::{self, Future, Sink, Stream, Async};
 use ox::*;
 use std::collections::HashMap;
 use std::mem;
@@ -15,8 +15,6 @@ struct Listener {
 
     cur_channel: u64,
     max_channel: u64,
-
-    proxies:    Vec<endpoint::Proxy>,
 }
 
 impl Listener {
@@ -49,7 +47,7 @@ struct Service {
 
 impl proto::Broker::Service for Service {
     fn connect(&mut self, msg: proto::ConnectRequest)
-        -> Box<Future<Item=proto::ConnectResponse, Error=Error> + Sync + Send + 'static>
+        -> Box<Stream<Item=proto::ConnectResponse, Error=Error> + Sync + Send + 'static>
     {
         info!("[{}] connect request to {}", self.debug_id, msg.identity);
 
@@ -70,16 +68,15 @@ impl proto::Broker::Service for Service {
             };
 
             if listener.tx.try_send(rsp).is_ok() {
-                listener.proxies.push(proxy);
                 return Box::new(futures::future::ok(proto::ConnectResponse {
                     ok: true,
-                }))
+                }).into_stream().chain(Never::hold(proxy)))
             }
         }
 
         Box::new(futures::future::ok(proto::ConnectResponse {
             ok: false,
-        }))
+        }).into_stream())
     }
 
     fn listen(&mut self, msg: proto::ListenRequest)
@@ -92,7 +89,6 @@ impl proto::Broker::Service for Service {
             addr: self.addr.clone(),
             cur_channel: msg.from_channel,
             max_channel: msg.to_channel,
-            proxies:    Vec::new(),
         };
         LISTENERS.lock().unwrap().insert(self.identity.to_string(), lst);
 
@@ -189,4 +185,33 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
         })
         .and_then(|_| Ok(()))
         .map_err(|e| error!("listener error: {}", e))
+}
+
+
+
+
+//holds a resource inside a future chain forever
+//only useful in combination with select on another future
+
+use std::marker::PhantomData;
+struct Never<T, H> {
+    phantom: PhantomData<T>,
+    hodl:    H,
+}
+
+impl<T, H> Never<T, H> {
+    pub fn hold(h: H) -> Self {
+        Self {
+            phantom: PhantomData::default(),
+            hodl: h,
+        }
+    }
+}
+
+impl<T,H> Stream for Never<T,H>{
+    type Item = T;
+    type Error = Error;
+    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
+        Ok(Async::NotReady)
+    }
 }

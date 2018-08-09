@@ -58,7 +58,7 @@ message Connect2Response {
 }
 
 service Broker {
-    rpc connect(ConnectRequest)         returns (ConnectResponse)  {}
+    rpc connect(ConnectRequest)         returns (stream ConnectResponse)  {}
     rpc publish(PublishRequest)         returns (PublishResponse)   {}
     rpc subscribe(SubscribeRequest)     returns (stream SubscribeStream)   {}
     rpc listen(ListenRequest)           returns (stream ListenStream) {}

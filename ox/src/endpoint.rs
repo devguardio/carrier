@@ -377,7 +377,7 @@ impl Endpoint {
 
 impl Drop for Proxy {
     fn drop(&mut self) {
-        trace!("proxy is dropped, removing {} and {}", self.in_chan_a, self.in_chan_b);
+        debug!("proxy is dropped, removing {} and {}", self.in_chan_a, self.in_chan_b);
         self.wrk
             .try_send(EndpointWorkerCmd::RemoveChannel(self.in_chan_a))
             .unwrap();

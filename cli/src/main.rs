@@ -147,11 +147,11 @@ fn main_connect(
                 address:    xpublic.to_vec(),
                 channel:    expect.channel(),
                 identity:   target,
-            }).map(|(ctrl, resp)|(ep, expect,ctrl, resp))
+            }).into_future().map_err(|(e,_)|e).map(|(resp, ctrl)|(ep, expect,ctrl, resp))
         })
         .and_then(|(ep, expect, ctrl, msg)|{
             info!("<< {:?}", msg);
-            if !msg.ok {
+            if msg.is_none() || !msg.unwrap().ok {
                 error!("no route");
                 std::process::exit(4);
             }

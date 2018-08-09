@@ -65,6 +65,8 @@ struct ChannelWorker {
 
     wrk:        mpsc::Sender<EndpointWorkerCmd>,
     channel:    ChannelId,
+
+    stop:       bool,
 }
 
 pub enum ChannelBus {
@@ -158,8 +160,9 @@ impl Channel {
             addr: addr.clone(),
             deadline: tokio::timer::Delay::new(Instant::now()),
             channel,
+            stop: false,
         };
-        tokio::spawn(wrk);
+        tokio::spawn(wrk.and_then(|_|Ok(trace!("channel worker is done"))));
 
         Channel {
             addr,
@@ -557,16 +560,38 @@ impl Future for ChannelWorker {
     type Item = ();
     type Error = ();
 
+    // close scenarios:
+    //   1. consumer channel is dropped:
+    //      - set stop=true
+    //      - queue a close
+    //      - wait for bytes in flight to be 0
+    //      - send a disconnect
+    //      - flush out remaining transport progress
+    //      - stop worker
+    //   2. endpoint is dropped
+    //      - send a disconnect
+    //      - flush out remaining transport progress
+    //      - stop worker
+    //   3. received close
+    //      - just fwd to consumer
+    //   4. received disconnect
+    //      - send a disconnect (not nessesary, but makes code equal to 2)
+    //      - flush out remaining transport progress
+    //      - stop worker
+    //   5. transport error
+    //      - stop worker immediately
+
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-        let mut stop = false;
+        let mut disconnect = false;
+        let mut qstop      = false;
 
         // do not progress if the consumer is full
         match self.ctx.poll_ready() {
             Ok(Async::Ready(_)) => (),
             Ok(Async::NotReady) => return Ok(Async::NotReady),
-            Err(e) => {
-                stop = true;
-                trace!("stopping channel worker because: {}", e);
+            Err(_) => {
+                // do not apply close scenario 1,
+                // because there might be remaining frames in crx
             }
         };
 
@@ -591,6 +616,7 @@ impl Future for ChannelWorker {
                 futures::task::current().notify();
             }
             Ok(ChannelProgress::Close) => {
+                // close scenario 3
                 if let Err(e) = self.ctx.try_send(None) {
                     warn!("ChannelWorker:ctx.try_send {}", e);
                 }
@@ -598,8 +624,8 @@ impl Future for ChannelWorker {
             }
             Ok(ChannelProgress::Disconnect) => {
                 info!("channel disconnected");
-                futures::task::current().notify();
-                return Ok(Async::Ready(()));
+                // close scenario 4
+                disconnect = true;
             }
             Err(e) => {
                 error!("transport progress error: {}", e);
@@ -607,11 +633,22 @@ impl Future for ChannelWorker {
             }
         }
 
+        // close scenario 1
+        if self.stop && self.transport.bytes_in_flight() == 0 {
+            trace!("all packets ackd in stop mode, disconnecting");
+            disconnect = true;
+        }
+
         if self.transport.window() > 0 {
             match self.crx.poll()? {
                 Async::Ready(None) => {
-                    trace!("stopping channel worker because Channel is dropped");
-                    stop = true;
+                    // close scenario 1
+                    if !self.stop {
+                        trace!("stopping channel worker because Channel is dropped");
+                        self.stop = true;
+                        self.transport.close();
+                        futures::task::current().notify();
+                    }
                 }
                 Async::Ready(Some(None)) => {
                     self.transport.close();
@@ -627,8 +664,9 @@ impl Future for ChannelWorker {
 
         match self.rx.poll()? {
             Async::Ready(None) => {
+                // close scenario 2
                 trace!("stopping channel worker because Endpoint is dropped");
-                stop = true;
+                disconnect = true;
             }
             Async::Ready(Some((pkt, addr))) => {
                 if self.addr != addr {
@@ -649,8 +687,7 @@ impl Future for ChannelWorker {
             Async::NotReady => (),
         };
 
-        if stop {
-            self.transport.close();
+        if disconnect {
             if let Ok(pkt) = self.transport.disconnect() {
                 match self.sock.poll_send_to(&pkt, &self.addr) {
                     Ok(Async::Ready(len)) if len == pkt.len() => (),

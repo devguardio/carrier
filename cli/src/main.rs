@@ -76,7 +76,7 @@ fn main_publish(
             info!("<< {:?}", resp);
             Ok(())
         })
-        .map_err(|e| error!("{}", e))
+        .map_err(|e|error!("{}", e))
 }
 
 fn main_subscribe(
@@ -519,8 +519,9 @@ pub fn main() {
     };
 
     let get_broker = || {
+        let domain = env::var("CARRIER_DOMAIN").unwrap_or("carrier.devguard.io.".to_string());
         let resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default()).unwrap();
-        let response = resolver.txt_lookup("carrier.devguard.io.").unwrap();
+        let response = resolver.txt_lookup(&domain).unwrap();
 
         let txt : Vec<dns::DnsRecord> = response.iter().flat_map(|txt|{
             txt.txt_data()

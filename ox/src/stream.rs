@@ -39,6 +39,7 @@ impl OrderedStream {
 
     pub fn push(&mut self, frame: Frame) -> Result<(), Error> {
         let order = frame.order();
+        trace!("stream pushed frame with order {} {:?}", order, frame);
         assert!(order > 0);
 
         if self.producer + MAX_REORDERING < order {

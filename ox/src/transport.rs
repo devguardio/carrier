@@ -69,6 +69,10 @@ impl Channel {
         }
     }
 
+    pub fn bytes_in_flight(&self) -> usize {
+        self.recovery.bytes_in_flight()
+    }
+
     pub fn window(&self) -> usize {
         self.recovery.window()
     }

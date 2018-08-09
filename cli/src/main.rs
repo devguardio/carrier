@@ -2,7 +2,7 @@ extern crate clap;
 extern crate env_logger;
 extern crate failure;
 extern crate futures;
-extern crate ox;
+extern crate carrier;
 extern crate rand;
 extern crate tokio;
 #[macro_use]
@@ -27,7 +27,7 @@ use clap::{App, Arg, SubCommand};
 use failure::Error;
 use futures::Async;
 use futures::{Future, Sink, Stream};
-use ox::*;
+use carrier::*;
 use rand::Rng;
 use std::env;
 use std::fs;
@@ -96,7 +96,7 @@ fn main_subscribe(
                     address: topic.to_string(),
                 },
             ).for_each(move |msg| {
-                let value = ox::shadow::decrypt(msg.value, &ssecret).unwrap();
+                let value = carrier::shadow::decrypt(msg.value, &ssecret).unwrap();
                 println!("{}: {}", msg.identity, String::from_utf8_lossy(&value));
                 Ok(())
             })
@@ -262,139 +262,9 @@ fn main_sshd(secret: identity::Secret, addr: SocketAddr, x: identity::Address) -
         .map_err(|e| error!("{}", e))
 }
 
-/*
-
-
-fn axiom_srv_ping(ch : endpoint::Channel) -> impl Future<Item = (), Error = Error> {
-    let (tx, rx) = ch.split();
-    rx.fold(tx, |tx, msg|{
-        info!(">> {}", String::from_utf8_lossy(&msg));
-        tx.send(msg)
-    }).and_then(|_|Ok(()))
-}
-
-fn axiom_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
-    channel
-        .into_future()
-        .map_err(|(e, _)| e)
-        .and_then(|(msg, ch)|{
-            let path = if let Some(msg) = msg {
-                let mut decoder = hpack::Decoder::new();
-                let header_list = decoder.decode(&msg).unwrap();
-                let mut path = None;
-                for header in header_list {
-                    info!("{} : {}",
-                          String::from_utf8_lossy(&header.0),
-                          String::from_utf8_lossy(&header.1),
-                          );
-                    if header.0 == b":path" {
-                        path = Some(String::from_utf8_lossy(&header.1).to_string());
-                    }
-                }
-                path
-            } else {
-                None
-            };
-
-            match path.as_ref().map(|v|v.as_ref()) {
-                Some("/ping") => {
-                    let mut encoder = hpack::Encoder::new();
-                    let headers = vec![
-                        (":status".as_bytes(), "200".as_bytes()),
-                    ];
-                    let bin = encoder.encode(headers);
-                    Box::new(ch.send(bin)
-                        .and_then(|ch|axiom_srv_ping(ch)))
-                        as Box<Future<Item=(),Error=Error> + Send + Sync>
-                },
-                _ => {
-                    let mut encoder = hpack::Encoder::new();
-                    let headers = vec![
-                        (":status".as_bytes(), "400".as_bytes()),
-                    ];
-                    let bin = encoder.encode(headers);
-                    Box::new(ch.send(bin)
-                             .and_then(|_|Ok(())))
-                }
-            }
-
-        }).and_then(|ch|{
-            Ok(())
-        })
-}
-
-
-fn main_axiom(secret: identity::Secret, addr: SocketAddr, x: identity::Address)
-    -> impl Future<Item = (), Error = ()>
-{
-    let addr_ = addr.clone();
-    let (xsecret, xpublic) = identity::generate_x25519();
-
-    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
-    info!("connecting to {}", addr);
-    ep.connect(addr, x, secret.clone(), None)
-        .unwrap()
-        .and_then(move |channel| {
-            info!("connected to {}", channel.identity());
-            let (xsecret, xpublic) = identity::generate_x25519();
-            let msg = proto::broker::M::AnnounceRequest(proto::AnnounceRequest {});
-            let fut = channel
-                .send(ox::broker::encode(msg)?)
-                .and_then(|channel| channel.into_future().map_err(|(e, _)| e))
-                .and_then(|(msg, channel)| {
-                    if let Some(msg) = msg {
-                        info!("message {:?}", ox::broker::decode(&msg).unwrap());
-                    } else {
-                        error!("control channel is dead? wtf");
-                    }
-                    Ok(channel)
-                });
-            Ok(fut)
-        })
-        .flatten()
-        .and_then(move |channel| {
-            let (tx, rx) = channel.split();
-            rx.fold(tx, move |mut tx, msg| {
-                if let proto::broker::M::Connect2Request(proto::Connect2Request {
-                    source,
-                    channel,
-                    proxy_mine,
-                    proxy_them,
-                    kex,
-                }) = ox::broker::decode(&msg).unwrap()
-                {
-                    info!("CONN request: {} {} {} {}", source, channel, proxy_mine, proxy_them);
-
-                    let mut x = [0; 32];
-                    x.copy_from_slice(&kex);
-                    let ft = ep
-                        .connect(addr_.clone(), identity::Address(x), secret.clone(), Some((proxy_mine, proxy_them)))
-                        .unwrap();
-
-                    tx.start_send(
-                        ox::broker::encode(proto::broker::M::Connect2Response(proto::Connect2Response {
-                            token:   proxy_them,
-                            channel: ft.channel(),
-                        })).unwrap(),
-                    );
-
-                    let ft =
-                        ft.and_then(|ch| {
-                            info!("connected to peer {}", ch.identity());
-                            axiom_srv(ch)
-                        }).map_err(|e| error!("peer: {}", e));
-                    tokio::spawn(ft);
-                }
-                Ok(tx) as Result<_, Error>
-            }).and_then(|_| Ok(()))
-        })
-        .map_err(|e| error!("{}", e))
-}
-*/
-
 pub fn main() {
     if let Err(_) = env::var("RUST_LOG") {
-        env::set_var("RUST_LOG", "cli=info,ox=info");
+        env::set_var("RUST_LOG", "carrier=info");
     }
     env_logger::init();
 
@@ -408,11 +278,11 @@ pub fn main() {
     Secrets have to be 64 bytes of high quality randomness.
     By default the secret is loaded from ~/.devguard/secret.
     You can generate a new secret by running
-        ox gen
+        $ carrier gen
     The secrets file can also be set in an environment variable
-        export CARRIER_SECRET_FILE=~/.devguard/secret
+        $ export CARRIER_SECRET_FILE=~/.devguard/secret
     finally you can override all of the previous like so:
-        ox --secret ~/.devguard/secret identity
+        $ carrier --secret ~/.devguard/secret identity
     ",
         )
         .arg(
@@ -592,7 +462,7 @@ pub fn main() {
             let value = submatches.value_of("value").unwrap().to_string();
 
             let address = identity::Address::parse(address).unwrap();
-            let value = ox::shadow::encrypt(value, address.clone()).unwrap();
+            let value = carrier::shadow::encrypt(value, address.clone()).unwrap();
 
             tokio::run(futures::lazy(move || {
                 main_publish(secrets.identity, broker.addr, broker.x, address, value)

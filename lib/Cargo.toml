@@ -1,0 +1,34 @@
+[package]
+name    = "carrier"
+version = "0.1.1"
+authors = ["Arvid E. Picciani <arvid@devguard.io>"]
+license = "MIT"
+description = "carrier is a generic secure message system for IoT"
+homepage = "https://devguard.io"
+
+[dependencies]
+bs58                = "0.2.1"
+byteorder           = "1.2.4"
+bytes               = "0.4.9"
+clear_on_drop       = "0.2.3"
+crc8                = "0.1.1"
+ed25519-dalek       = "0.8.0"
+env_logger          = "0.5.12"
+failure             = "0.1.2"
+futures             = "0.1.23"
+hex                 = "0.3.2"
+lazy_static         = "1.1.0"
+log                 = "0.4.3"
+prost               = "0.4.0"
+prost-derive        = "0.4.0"
+rand                = "0.5"
+sha2                = "0.7.1"
+snow                = "0.4.0-alpha1"
+subtle              = "0.7.0"
+tokio               = "0.1.7"
+x25519-dalek        = { version = "0.3.0", default-features = false, features = ["std", "u64_backend"] }
+
+
+[build-dependencies]
+prost-build = "0.4.0"
+

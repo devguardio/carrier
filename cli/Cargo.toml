@@ -1,24 +1,32 @@
 [package]
-name = "cli"
-version = "0.1.0"
-authors = ["Arvid E. Picciani <aep@exys.org>"]
+name    = "carrier-cli"
+version = "0.1.1"
+authors = ["Arvid E. Picciani <arvid@devguard.io>"]
+license = "MIT"
+description = "carrier is a generic secure message system for IoT"
+homepage = "https://devguard.io"
 
 [dependencies]
+carrier             = {path = "../lib", version="0.1.0"}
 clap                = "2.32.0"
-failure             = "0.1.2"
-tokio               = "0.1.7"
-futures             = "0.1"
-prost               = "0.4.0"
-log                 = "0.4.3"
-rand                = "0.5"
 env_logger          = "0.5.12"
-ox                  = {path = "../ox"}
+failure             = "0.1.2"
+futures             = "0.1"
+hpack               = "0.3.0"
+lazy_static         = "1.1.0"
+log                 = "0.4.3"
+prost               = "0.4.0"
+rand                = "0.5"
 serde               = "1.0"
 serde_derive        = "1.0"
+tokio               = "0.1.7"
+tokio-codec         = "0.1.0"
+tokio-file-unix     = "0.5.1"
 toml                = "0.4"
 trust-dns-resolver  = "0.10.0-alpha.2"
 url                 = "1.7.1"
-hpack               = "0.3.0"
-lazy_static         = "1.1.0"
-tokio-file-unix     = "0.5.1"
-tokio-codec         = "0.1.0"
+
+
+[[bin]]
+name = "carrier"
+path = "src/main.rs"

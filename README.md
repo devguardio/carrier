@@ -1,12 +1,13 @@
 [![Build Status](https://travis-ci.org/aep/devguard.svg?branch=master)](https://travis-ci.org/aep/devguard)
 
-0x is a generic secure transport layer for IoT systems
+carrier is a generic secure message system for IoT
 -----------
 
  - based on the NOISE protocol framework
  - connect to any device using just its Ed25519 public id
  - peer to peer with assisted nat traversal
  - certificate chains to support sane human to many many devices authorizations
+ - mqtt like pub/sub over anonymous encrypted shadows
 
 features:
 
@@ -22,7 +23,7 @@ features:
 - [ ] GRPC
 - [ ] pty
 - [ ] stream shell executable from archon
-- [ ] cli
+- [x] cli
 - [ ] ebpf routing
 - [ ] staking
 - [ ] self-updating
@@ -31,27 +32,50 @@ features:
 - [ ] Delegation for shadow keys (maybe using Attribute Based Encryption)
 
 
-usage
-----
-
-
+setup
+--------
 ```
-$ git clone https://github.com/aep/0x.git
-$ cd 0x
-$ cargo install --features ssh
+$ cargo install carrier-cli
 
 # generate a new identity
-$ ox gen
+$ carrier gen
 oWDw4B1f88jiGj71qMCYTL8RCCdpRYfgbSNXQSDVByRVHV9
+```
 
-# start the ssh daemon, which forwards your local ssh port 22 to the bearer
-$ ox sshd
+pubsub
+----
+```
+$ carrier mkshadow
+address: oTBLtqxSmzPc4yeMinMfFe1RboBJBeMKcvEMr7c2gnE88pP
+secret:  oNqWCfg4UQJXVsRMxVviZojUPe8oRGYZG6tiKDPJm7j1u1d
 
-# in a new terminal or on another machine, open an ssh session
-# this will connect to root, so make sure that key is in /root/.authorized_keys
-$ ox ssh oWDw4B1f88jiGj71qMCYTL8RCCdpRYfgbSNXQSDVByRVHV9 ~/.ssh/id_rsa
+$ carrier publish oTBLtqxSmzPc4yeMinMfFe1RboBJBeMKcvEMr7c2gnE88pP "hello world"
+$ carrier subscribe oTBLtqxSmzPc4yeMinMfFe1RboBJBeMKcvEMr7c2gnE88pP oNqWCfg4UQJXVsRMxVviZojUPe8oRGYZG6tiKDPJm7j1u1d 
+oWDw4B1f88jiGj71qMCYTL8RCCdpRYfgbSNXQSDVByRVHV9: hello world
 
 ```
+
+
+remote access via ssh
+----
+```
+# start the ssh daemon, which forwards your local ssh port 22 to the broker
+$ carrier sshd
+
+To access this host add the following to your ~/ssh/config
+
+Host mything
+    StrictHostKeyChecking no
+    ProxyCommand carrier connect carrier://oWDw4B1f88jiGj71qMCYTL8RCCdpRYfgbSNXQSDVByRVHV9/ssh
+
+and then just
+
+$ ssh mything
+
+```
+
+
+
 
 
 testing lossy networks

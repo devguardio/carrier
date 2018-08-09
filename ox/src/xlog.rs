@@ -1,11 +1,9 @@
-use std::collections::HashMap;
 use identity::Identity;
+use std::collections::HashMap;
 use std::sync::Mutex;
 
 lazy_static! {
-    static ref LATEST: Mutex<HashMap<String, u64>> = {
-        Mutex::new(HashMap::new())
-    };
+    static ref LATEST: Mutex<HashMap<String, u64>> = { Mutex::new(HashMap::new()) };
 }
 
 pub fn advance(id: &Identity, timestamp: u64) -> bool {
@@ -23,4 +21,3 @@ pub fn advance(id: &Identity, timestamp: u64) -> bool {
 
     r
 }
-

@@ -1,26 +1,22 @@
 extern crate prost_build;
 
+struct ServiceGen {}
 
-struct ServiceGen{
-}
-
-impl ServiceGen{
+impl ServiceGen {
     pub fn new() -> Self {
-        Self {
-        }
+        Self {}
     }
 }
 
 impl prost_build::ServiceGenerator for ServiceGen {
-
     fn generate(&mut self, service: prost_build::Service, buf: &mut String) {
-
         buf.push_str(&format!("#[allow(non_snake_case)]\npub mod {} {{\n", service.name));
-        buf.push_str(r#"
+        buf.push_str(
+            r#"
     use failure::Error;
     use std::io::Read;
     use prost::Message;
-    use futures::{self, Future, Stream, Sink, Async};
+    use futures::{Future, Stream, Sink};
 
 
     #[derive(Debug, Fail)]
@@ -33,7 +29,8 @@ impl prost_build::ServiceGenerator for ServiceGen {
     }
 
 
- "#);
+ "#,
+        );
 
         // trait
         buf.push_str(&format!("   pub trait Service {{\n"));
@@ -41,22 +38,25 @@ impl prost_build::ServiceGenerator for ServiceGen {
             assert!(method.name.len() < 250);
 
             if method.server_streaming {
-                buf.push_str(&format!("        fn {}(&mut self, super::{}) \
-                                      -> Box<Stream<Item=super::{}, Error=Error> + Sync + Send>;\n",
-                method.name, method.input_type, method.output_type));
+                buf.push_str(&format!(
+                    "        fn {}(&mut self, super::{}) \
+                     -> Box<Stream<Item=super::{}, Error=Error> + Sync + Send>;\n",
+                    method.name, method.input_type, method.output_type
+                ));
             } else {
-                buf.push_str(&format!("        fn {}(&mut self, super::{}) \
-                                      -> Box<Future <Item=super::{}, Error=Error> + Sync + Send>;\n",
-                method.name, method.input_type, method.output_type));
+                buf.push_str(&format!(
+                    "        fn {}(&mut self, super::{}) \
+                     -> Box<Future <Item=super::{}, Error=Error> + Sync + Send>;\n",
+                    method.name, method.input_type, method.output_type
+                ));
             }
         }
         buf.push_str(&format!("    }}\n"));
 
-
-
         //  ------------dispatch ------------
 
-        buf.push_str(r#"
+        buf.push_str(
+            r#"
     pub fn dispatch<S, T>(s: S, t: T)
         -> impl Future<Item=(), Error = Error> + Sync + Send
         where T: Service + Sync + Send + 'static,
@@ -75,18 +75,23 @@ impl prost_build::ServiceGenerator for ServiceGen {
             let mut name = vec![0;l[0] as usize];
             r.read_exact(&mut name)?;
             match name.as_slice() {
-"#);
+"#,
+        );
         for method in &service.methods {
-            buf.push_str(&format!(r#"
+            buf.push_str(&format!(
+                r#"
                 b"{}" => {{
                     let mut v = Vec::new();
                     r.read_to_end(&mut v)?;
                     let msg = super::{}::decode(&v)?;
                     let f = t.{}(msg);
-            "#, method.name, method.input_type, method.name));
+            "#,
+                method.name, method.input_type, method.name
+            ));
 
             if method.server_streaming {
-                buf.push_str("
+                buf.push_str(
+                    "
                     let (tx, rx) = s.split();
 
                     let end = rx.into_future().map_err(|(e,_)|e).and_then(|_|Ok(()));
@@ -100,50 +105,54 @@ impl prost_build::ServiceGenerator for ServiceGen {
                     let f = end.select(f).map_err(|(e,_)|e).and_then(|_|Ok(()));
 
                     Ok(Box::new(f) as Box<Future<Item=(), Error = Error> + Sync + Send>)
-                },\n");
+                },\n",
+                );
             } else {
-                buf.push_str("
+                buf.push_str(
+                    "
                     let f = f.and_then(|o|{
                         let mut v = Vec::new();
                         o.encode(&mut v)?;
                         Ok(s.send(v))
                     }).flatten().map(|_|());
                     Ok(Box::new(f) as Box<Future<Item=(), Error = Error> + Sync + Send>)
-                },\n");
+                },\n",
+                );
             }
         }
 
-
-
-
-        buf.push_str(r#"
+        buf.push_str(
+            r#"
                 other => {
                     Err(ServiceError::NoSuchFn{name: String::from_utf8_lossy(other).to_string()}.into())
                 },
-"#);
+"#,
+        );
         buf.push_str("            }\n");
         buf.push_str("        }).flatten()\n");
         buf.push_str("    }\n");
 
-
-
         // -------------- call --------------------
 
         for method in &service.methods {
-
             if method.server_streaming {
-                buf.push_str(&format!("\n    \
-                    pub fn {}<S>(s: S, i: super::{})\n    \
-                    -> impl Stream<Item=super::{}, Error = Error> + Sync + Send\n"
-                    , method.name, method.input_type, method.output_type));
+                buf.push_str(&format!(
+                    "\n    \
+                     pub fn {}<S>(s: S, i: super::{})\n    \
+                     -> impl Stream<Item=super::{}, Error = Error> + Sync + Send\n",
+                    method.name, method.input_type, method.output_type
+                ));
             } else {
-                buf.push_str(&format!("\n    \
-                    pub fn {}<S>(s: S, i: super::{})\n    \
-                    -> impl Future<Item=(S, super::{}), Error = Error> + Sync + Send\n"
-                    , method.name, method.input_type, method.output_type));
+                buf.push_str(&format!(
+                    "\n    \
+                     pub fn {}<S>(s: S, i: super::{})\n    \
+                     -> impl Future<Item=(S, super::{}), Error = Error> + Sync + Send\n",
+                    method.name, method.input_type, method.output_type
+                ));
             }
 
-            buf.push_str(&format!("    \
+            buf.push_str(&format!(
+                "    \
     where S: Stream<Item=Vec<u8>, Error=Error>,
           S: Sink<SinkItem=Vec<u8>, SinkError=Error>,
           S: Send + Sync,
@@ -152,10 +161,14 @@ impl prost_build::ServiceGenerator for ServiceGen {
         v.push({}u8);
         v.extend_from_slice(b\"{}\");
         i.encode(&mut v).unwrap();
-", method.name.len(), method.name));
+",
+                method.name.len(),
+                method.name
+            ));
 
             if method.server_streaming {
-                buf.push_str(&format!("
+                buf.push_str(&format!(
+                    "
         s.send(v).and_then(|s|{{
             Ok(s.and_then(|msg|{{
                 let msg = super::{}::decode(msg)?;
@@ -163,9 +176,12 @@ impl prost_build::ServiceGenerator for ServiceGen {
             }}))
         }}).into_stream().flatten()
     }}
-", method.output_type));
+",
+                    method.output_type
+                ));
             } else {
-                buf.push_str(&format!("
+                buf.push_str(&format!(
+                    "
         s.send(v)
             .and_then(|s|s.into_future().map_err(|(e,_)|e))
             .and_then(|(msg,s)|{{
@@ -176,21 +192,19 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 Ok((s,msg))
             }})
     }}
-", method.output_type));
-
+",
+                    method.output_type
+                ));
             }
         }
 
-    buf.push_str("}\n");
+        buf.push_str("}\n");
     }
 
-    fn finalize(&mut self, _buf: &mut String) {
-    }
-
+    fn finalize(&mut self, _buf: &mut String) {}
 }
 
 fn main() {
-
     let mut config = prost_build::Config::new();
     config.service_generator(Box::new(ServiceGen::new()));
 

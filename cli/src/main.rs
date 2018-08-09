@@ -11,14 +11,14 @@ extern crate prost;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
+extern crate hpack;
 extern crate toml;
 extern crate trust_dns_resolver;
 extern crate url;
-extern crate hpack;
 #[macro_use]
 extern crate lazy_static;
-extern crate tokio_file_unix;
 extern crate tokio_codec;
+extern crate tokio_file_unix;
 
 mod broker;
 use broker::main_broker;
@@ -28,21 +28,19 @@ use failure::Error;
 use futures::Async;
 use futures::{Future, Sink, Stream};
 use ox::*;
-use std::collections::HashMap;
+use rand::Rng;
 use std::env;
 use std::fs;
+use std::fs::File;
+use std::io;
+use std::io::Read;
 use std::net::SocketAddr;
-use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
 use tokio::io::AsyncRead;
 use tokio::timer::Deadline;
-use std::fs::File;
-use std::io::Read;
-use trust_dns_resolver::Resolver;
 use trust_dns_resolver::config::*;
-use rand::Rng;
+use trust_dns_resolver::Resolver;
 use url::Url;
-use std::io;
 
 #[derive(Serialize, Deserialize)]
 struct Secrets {
@@ -54,51 +52,52 @@ struct SecretsParsed {
 }
 
 fn main_publish(
-    secret:     identity::Secret,
-    addr:       SocketAddr,
-    x:          identity::Address,
-    topic:      identity::Address,
-    value:      Vec<u8>,
-
+    secret: identity::Secret,
+    addr: SocketAddr,
+    x: identity::Address,
+    topic: identity::Address,
+    value: Vec<u8>,
 ) -> impl Future<Item = (), Error = ()> {
-
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
     info!("connecting to {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
         .and_then(move |ctrl| {
-            proto::Broker::publish(ctrl, proto::PublishRequest{
-                address: topic.to_string(),
-                value:   value,
-            })
+            proto::Broker::publish(
+                ctrl,
+                proto::PublishRequest {
+                    address: topic.to_string(),
+                    value:   value,
+                },
+            )
         })
-        .and_then(move |(ctrl, resp)|{
+        .and_then(move |(_ctrl, resp)| {
             info!("<< {:?}", resp);
             Ok(())
         })
-        .map_err(|e|error!("{}", e))
+        .map_err(|e| error!("{}", e))
 }
 
 fn main_subscribe(
-    secret:     identity::Secret,
-    addr:       SocketAddr,
-    x:          identity::Address,
-    topic:      identity::Address,
-    ssecret:    identity::Secret,
-
+    secret: identity::Secret,
+    addr: SocketAddr,
+    x: identity::Address,
+    topic: identity::Address,
+    ssecret: identity::Secret,
 ) -> impl Future<Item = (), Error = ()> {
-
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
     info!("connecting to {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
         .and_then(move |ctrl| {
-            proto::Broker::subscribe(ctrl, proto::SubscribeRequest{
-                address: topic.to_string(),
-            })
-            .for_each(move |msg|{
-                let msg = ox::shadow::decrypt(msg.value, &ssecret).unwrap();
-                info!("{}", String::from_utf8_lossy(&msg));
+            proto::Broker::subscribe(
+                ctrl,
+                proto::SubscribeRequest {
+                    address: topic.to_string(),
+                },
+            ).for_each(move |msg| {
+                let value = ox::shadow::decrypt(msg.value, &ssecret).unwrap();
+                println!("{}: {}", msg.identity, String::from_utf8_lossy(&value));
                 Ok(())
             })
         })
@@ -107,21 +106,20 @@ fn main_subscribe(
 
 fn stdio_channel(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
     let stdin = Stdin::new();
-    let (tx,rx) = channel.split();
+    let (tx, rx) = channel.split();
 
-    let fw1 = stdin.fold(tx, |tx, item|{
-        tx.send(item)
-    }).and_then(|_|Ok(()));
+    let fw1 = stdin.fold(tx, |tx, item| tx.send(item)).and_then(|_| Ok(()));
 
     let stdout = io::stdout();
-    let fw2 = rx.fold(stdout, |mut stdout, item|{
-        use std::io::Write;
-        stdout.write(&item);
-        stdout.flush().unwrap();
-        Ok(stdout) as Result<_,Error>
-    }).and_then(|_|Ok(()));
+    let fw2 =
+        rx.fold(stdout, |mut stdout, item| {
+            use std::io::Write;
+            stdout.write(&item).unwrap();
+            stdout.flush().unwrap();
+            Ok(stdout) as Result<_, Error>
+        }).and_then(|_| Ok(()));
 
-    fw1.select(fw2).map_err(|(e,_)|e).and_then(|_|Ok(()))
+    fw1.select(fw2).map_err(|(e, _)| e).and_then(|_| Ok(()))
 }
 fn main_connect(
     secret: identity::Secret,
@@ -129,9 +127,9 @@ fn main_connect(
     x: identity::Address,
     url: String,
 ) -> impl Future<Item = (), Error = ()> {
-    let url     = Url::parse(&url).unwrap();
-    let target  = url.host_str().expect("missing target identity").to_string();
-    let path    = url.path().to_string();
+    let url = Url::parse(&url).unwrap();
+    let target = url.host_str().expect("missing target identity").to_string();
+    let path = url.path().to_string();
 
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
     info!("connecting via {}", addr);
@@ -143,13 +141,18 @@ fn main_connect(
             let (xsecret, xpublic) = identity::generate_x25519();
             let expect = ep.expect(xsecret, identity::Identity::parse(&target).unwrap());
 
-            proto::Broker::connect(ctrl, proto::ConnectRequest{
-                address:    xpublic.to_vec(),
-                channel:    expect.channel(),
-                identity:   target,
-            }).into_future().map_err(|(e,_)|e).map(|(resp, ctrl)|(ep, expect,ctrl, resp))
+            proto::Broker::connect(
+                ctrl,
+                proto::ConnectRequest {
+                    address:  xpublic.to_vec(),
+                    channel:  expect.channel(),
+                    identity: target,
+                },
+            ).into_future()
+                .map_err(|(e, _)| e)
+                .map(|(resp, ctrl)| (ep, expect, ctrl, resp))
         })
-        .and_then(|(ep, expect, ctrl, msg)|{
+        .and_then(|(ep, expect, ctrl, msg)| {
             info!("<< {:?}", msg);
             if msg.is_none() || !msg.unwrap().ok {
                 error!("no route");
@@ -168,18 +171,17 @@ fn main_connect(
                         unreachable!();
                     }
                 })
-                .map(|v|(ep, ctrl, v))
+                .map(|v| (ep, ctrl, v))
         })
-        .and_then(move |(mut ep,ctrl,rq)| {
+        .and_then(move |(mut ep, ctrl, rq)| {
             info!("established route to peer {}", rq.identity());
             let ch = ep.accept(rq, &secret).unwrap();
 
-            stdio_channel(ch)
-                .and_then(move |_|{
-                    drop(ctrl);
-                    drop(ep);
-                    Ok(())
-                })
+            stdio_channel(ch).and_then(move |_| {
+                drop(ctrl);
+                drop(ep);
+                Ok(())
+            })
         })
         .map_err(|e| error!("{}", e))
 }
@@ -189,18 +191,17 @@ fn sshd_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error>
 
     TcpStream::connect(&("127.0.0.1:22".parse().unwrap()))
         .map_err(Error::from)
-        .and_then(|sock|{
-            let sock =  tokio_codec::Framed::new(sock, tokio_codec::BytesCodec::new());
+        .and_then(|sock| {
+            let sock = tokio_codec::Framed::new(sock, tokio_codec::BytesCodec::new());
 
-            let (tx1,rx1) = channel.split();
-            let (tx2,rx2) = sock.split();
+            let (tx1, rx1) = channel.split();
+            let (tx2, rx2) = sock.split();
 
-            let fw1 = rx1.fold(tx2, |tx, item|{
-                tx.send(item.into())
-            }).and_then(|_|Ok(()));
+            let fw1 = rx1.fold(tx2, |tx, item| tx.send(item.into())).and_then(|_| Ok(()));
 
-            let fw2 = rx2.map_err(Error::from)
-                .and_then(|mut item|{
+            let fw2 = rx2
+                .map_err(Error::from)
+                .and_then(|mut item| {
                     let mut fragments = Vec::new();
                     while item.len() > 1000 {
                         let item2 = item.split_off(1000);
@@ -213,41 +214,41 @@ fn sshd_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error>
                     Ok(futures::stream::iter_ok(fragments.into_iter()))
                 })
                 .flatten()
-                .fold(tx1, |tx, item|{
-                    tx.send(item.to_vec())
-                })
-                .and_then(|_|Ok(()));
+                .fold(tx1, |tx, item| tx.send(item.to_vec()))
+                .and_then(|_| Ok(()));
 
-            fw1.select(fw2).map_err(|(e,_)|e).and_then(|_|Ok(()))
+            fw1.select(fw2).map_err(|(e, _)| e).and_then(|_| Ok(()))
         })
 }
 
-fn main_sshd(
-    secret: identity::Secret,
-    addr: SocketAddr,
-    x: identity::Address,
-) -> impl Future<Item = (), Error = ()> {
+fn main_sshd(secret: identity::Secret, addr: SocketAddr, x: identity::Address) -> impl Future<Item = (), Error = ()> {
     let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
     info!("connecting via {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
         .and_then(move |ctrl| {
             info!("via broker {}", ctrl.identity());
-            proto::Broker::listen(ctrl, proto::ListenRequest{
-                from_channel: 10000,
-                to_channel:   90000,
-            })
-            .for_each(move |msg|{
-                info!("CONN request: {} {} {} {} {}",
-                      msg.identity, msg.channel_mine, msg.channel_them, msg.proxy_mine, msg.proxy_them);
+            proto::Broker::listen(
+                ctrl,
+                proto::ListenRequest {
+                    from_channel: 10000,
+                    to_channel:   90000,
+                },
+            ).for_each(move |msg| {
+                info!(
+                    "CONN request: {} {} {} {} {}",
+                    msg.identity, msg.channel_mine, msg.channel_them, msg.proxy_mine, msg.proxy_them
+                );
 
                 let mut x = [0; 32];
                 x.copy_from_slice(&msg.address);
-                let ft = ep
-                    .connect(addr, identity::Address(x), secret.clone(),
-                        Some((msg.channel_mine, msg.proxy_mine, msg.proxy_them))
-                    )
-                    .unwrap();
+                let ft =
+                    ep.connect(
+                        addr,
+                        identity::Address(x),
+                        secret.clone(),
+                        Some((msg.channel_mine, msg.proxy_mine, msg.proxy_them)),
+                    ).unwrap();
 
                 let ft =
                     ft.and_then(|ch| {
@@ -424,75 +425,61 @@ pub fn main() {
         .subcommand(SubCommand::with_name("gen").about("generate new identity"))
         .subcommand(
             SubCommand::with_name("publish")
-            .about("publish shadow key/value on carrier")
-            .arg(
-                Arg::with_name("address")
-                    .help("x25519 address of topic to publish on")
-                    .takes_value(true)
-                    .required(true)
-                    .index(1),
-                    )
-            .arg(
-                Arg::with_name("value")
-                    .help("plaintext value")
-                    .takes_value(true)
-                    .required(true)
-                    .index(2),
-                    )
-            )
-        .subcommand(
-            SubCommand::with_name("mkshadow")
-            .about("create a shadow address")
+                .about("publish shadow key/value on carrier")
+                .arg(
+                    Arg::with_name("address")
+                        .help("x25519 address of topic to publish on")
+                        .takes_value(true)
+                        .required(true)
+                        .index(1),
+                )
+                .arg(
+                    Arg::with_name("value")
+                        .help("plaintext value")
+                        .takes_value(true)
+                        .required(true)
+                        .index(2),
+                ),
         )
+        .subcommand(SubCommand::with_name("mkshadow").about("create a shadow address"))
         .subcommand(
             SubCommand::with_name("dns")
-            .about("create dns record")
-            .arg(
-                Arg::with_name("priority")
-                    .takes_value(true)
-                    .required(true)
-                    .index(1),
-                    )
-            .arg(
-                Arg::with_name("ip")
-                    .takes_value(true)
-                    .required(true)
-                    .index(2),
-                    )
-            )
+                .about("create dns record")
+                .arg(Arg::with_name("priority").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("ip").takes_value(true).required(true).index(2)),
+        )
         .subcommand(
             SubCommand::with_name("subscribe")
-            .about("subscribe to shadow")
-            .arg(
-                Arg::with_name("address")
-                    .help("x25519 address of topic to publish on")
-                    .takes_value(true)
-                    .required(true)
-                    .index(1),
-                    )
-            .arg(
-                Arg::with_name("shadowkey")
-                    .help("shadow descyption keys")
-                    .takes_value(true)
-                    .required(true)
-                    .index(2),
-                    )
-            )
+                .about("subscribe to shadow")
+                .arg(
+                    Arg::with_name("address")
+                        .help("x25519 address of topic to publish on")
+                        .takes_value(true)
+                        .required(true)
+                        .index(1),
+                )
+                .arg(
+                    Arg::with_name("shadowkey")
+                        .help("shadow descyption keys")
+                        .takes_value(true)
+                        .required(true)
+                        .index(2),
+                ),
+        )
         .subcommand(SubCommand::with_name("identity").about("print public identity"))
         .subcommand(SubCommand::with_name("broker").about("run broker"))
         .subcommand(SubCommand::with_name("sshd"))
         .subcommand(
             SubCommand::with_name("connect")
-            .about("connect local stdio to carrier channel")
-            .arg(
-                Arg::with_name("url")
-                    .help("where you want to connect to")
-                    .takes_value(true)
-                    .required(true)
-                    .index(1),
-                    )
-            )
-        ;
+                .about("connect local stdio to carrier channel")
+                .arg(
+                    Arg::with_name("url")
+                        .help("where you want to connect to")
+                        .takes_value(true)
+                        .required(true)
+                        .index(1),
+                ),
+        );
 
     let matches = clap.get_matches();
 
@@ -510,11 +497,14 @@ pub fn main() {
         };
 
         let mut buffer = String::new();
-        File::open(filename).expect("cannot open file").read_to_string(&mut buffer);
+        File::open(filename)
+            .expect("cannot open file")
+            .read_to_string(&mut buffer)
+            .unwrap();
         let secrets: Secrets = toml::from_str(&buffer).expect("error while reading secrets toml");
 
         SecretsParsed {
-            identity: identity::Secret::parse(secrets.identity).unwrap()
+            identity: identity::Secret::parse(secrets.identity).unwrap(),
         }
     };
 
@@ -523,11 +513,15 @@ pub fn main() {
         let resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default()).unwrap();
         let response = resolver.txt_lookup(&domain).unwrap();
 
-        let txt : Vec<dns::DnsRecord> = response.iter().flat_map(|txt|{
-            txt.txt_data()
-                .iter()
-                .map(|txt|String::from_utf8_lossy(&txt).to_string())
-        }).filter_map(|s|dns::DnsRecord::from_signed_txt(s)).collect();
+        let txt: Vec<dns::DnsRecord> = response
+            .iter()
+            .flat_map(|txt| {
+                txt.txt_data()
+                    .iter()
+                    .map(|txt| String::from_utf8_lossy(&txt).to_string())
+            })
+            .filter_map(|s| dns::DnsRecord::from_signed_txt(s))
+            .collect();
 
         rand::thread_rng().choose(&txt).cloned().expect("no addresses")
     };
@@ -595,15 +589,15 @@ pub fn main() {
             let broker = get_broker();
 
             let address = submatches.value_of("address").unwrap().to_string();
-            let value   = submatches.value_of("value").unwrap().to_string();
+            let value = submatches.value_of("value").unwrap().to_string();
 
             let address = identity::Address::parse(address).unwrap();
-            let value   = ox::shadow::encrypt(value, address.clone()).unwrap();
+            let value = ox::shadow::encrypt(value, address.clone()).unwrap();
 
             tokio::run(futures::lazy(move || {
                 main_publish(secrets.identity, broker.addr, broker.x, address, value)
             }));
-        },
+        }
         ("subscribe", Some(submatches)) => {
             let secrets = get_secrets();
             let broker = get_broker();
@@ -617,7 +611,7 @@ pub fn main() {
             tokio::run(futures::lazy(move || {
                 main_subscribe(secrets.identity, broker.addr, broker.x, address, ssecret)
             }));
-        },
+        }
         ("connect", Some(submatches)) => {
             let secrets = get_secrets();
             let broker = get_broker();
@@ -628,7 +622,7 @@ pub fn main() {
                 main_connect(secrets.identity, broker.addr, broker.x, url)
             }));
         }
-        ("sshd", Some(submatches)) => {
+        ("sshd", Some(_submatches)) => {
             let secret = get_secrets();
             let broker = get_broker();
 
@@ -658,7 +652,6 @@ struct Stdin {
 
 impl Stdin {
     pub fn new() -> Self {
-
         let stdin = tokio_file_unix::raw_stdin().unwrap();
         let file = tokio_file_unix::File::new_nb(stdin).unwrap();
         let reader = file.into_reader(&tokio::reactor::Handle::current()).unwrap();

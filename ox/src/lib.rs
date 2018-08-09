@@ -23,17 +23,17 @@ extern crate tokio;
 #[macro_use]
 extern crate lazy_static;
 
+pub mod dns;
 pub mod endpoint;
 pub mod identity;
 pub mod noise;
 pub mod packet;
 pub mod recovery;
 pub mod replay;
+pub mod shadow;
 pub mod stream;
 pub mod transport;
-pub mod shadow;
 pub mod xlog;
-pub mod dns;
 
 pub use identity::Identity;
 pub use identity::Secret;

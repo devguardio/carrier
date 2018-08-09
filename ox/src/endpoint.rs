@@ -1,7 +1,7 @@
 use failure::Error;
 use futures::sync::mpsc;
 use futures::{self, Async, AsyncSink, Future, Poll, Sink, Stream};
-use identity::{Identity, Secret, Address};
+use identity::{Address, Identity, Secret};
 use noise;
 use packet::ChannelId;
 use packet::EncryptedPacket;
@@ -57,16 +57,16 @@ struct ChannelWorker {
     crx: mpsc::Receiver<Option<Vec<u8>>>,
     ctx: mpsc::Sender<Option<Vec<u8>>>,
 
-    transport:  transport::Channel,
-    rx:         mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
-    sock:       UdpSocket,
-    addr:       SocketAddr,
-    deadline:   tokio::timer::Delay,
+    transport: transport::Channel,
+    rx:        mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
+    sock:      UdpSocket,
+    addr:      SocketAddr,
+    deadline:  tokio::timer::Delay,
 
-    wrk:        mpsc::Sender<EndpointWorkerCmd>,
-    channel:    ChannelId,
+    wrk:     mpsc::Sender<EndpointWorkerCmd>,
+    channel: ChannelId,
 
-    stop:       bool,
+    stop: bool,
 }
 
 pub enum ChannelBus {
@@ -162,7 +162,7 @@ impl Channel {
             channel,
             stop: false,
         };
-        tokio::spawn(wrk.and_then(|_|Ok(trace!("channel worker is done"))));
+        tokio::spawn(wrk.and_then(|_| Ok(trace!("channel worker is done"))));
 
         Channel {
             addr,
@@ -237,7 +237,7 @@ impl Endpoint {
     ) -> Result<ConnectFuture, Error> {
         let addr = to.to_socket_addrs()?.next().ok_or(EndpointError::NoAddr)?;
 
-        let (rx, channel)  = if let Some((my,_,_)) = proxy {
+        let (rx, channel) = if let Some((my, _, _)) = proxy {
             let mut channels = self.channels.lock().unwrap();
             assert!(channels.len() < u16::max_value() as usize);
             let (inc_tx, inc_rx) = mpsc::channel(100);
@@ -261,7 +261,7 @@ impl Endpoint {
 
         let (noise, pkt) = noise::HandshakeBuilder::new()
             .with_sender_channel(channel)
-            .with_proxy(proxy.map(|(_,a,b)|(a,b)))
+            .with_proxy(proxy.map(|(_, a, b)| (a, b)))
             .initiate(&x.0, &secret, timestamp)?;
 
         let pkt = pkt.encode();
@@ -583,7 +583,6 @@ impl Future for ChannelWorker {
 
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
         let mut disconnect = false;
-        let mut qstop      = false;
 
         // do not progress if the consumer is full
         match self.ctx.poll_ready() {
@@ -787,15 +786,15 @@ impl Stream for Channel {
 
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
         match self.rx.poll() {
-            Ok(Async::Ready(None))          => Ok(Async::Ready(None)),
-            Ok(Async::Ready(Some(None)))    => {
+            Ok(Async::Ready(None)) => Ok(Async::Ready(None)),
+            Ok(Async::Ready(Some(None))) => {
                 futures::task::current().notify();
                 Ok(Async::Ready(None))
-            },
+            }
             Ok(Async::Ready(Some(Some(v)))) => {
                 futures::task::current().notify();
                 Ok(Async::Ready(Some(v)))
-            },
+            }
             Ok(Async::NotReady) => Ok(Async::NotReady),
             Err(_) => unreachable!(),
         }

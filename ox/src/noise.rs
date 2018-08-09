@@ -63,7 +63,6 @@ enum SendMode<'a> {
 }
 
 fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Result<packet::EncryptedPacket, Error> {
-
     let counter = if let &SendMode::Transport(counter, _) = &payload {
         Some(counter)
     } else {
@@ -72,7 +71,7 @@ fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Re
 
     let mut inbuf = Vec::new();
     let overhead = match payload {
-        SendMode::Transport(_,b) => {
+        SendMode::Transport(_, b) => {
             assert!(b.len() + 100 < u16::max_value() as usize);
             inbuf.write_u16::<BigEndian>(b.len() as u16)?;
             inbuf.extend_from_slice(b);
@@ -104,7 +103,7 @@ fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Re
 
     let mut buf = vec![0; inbuf.len() + overhead];
 
-    let (len,counter) = if let Some(counter) = counter {
+    let (len, counter) = if let Some(counter) = counter {
         (noise.write_message_with_nonce(counter, &inbuf, &mut buf)?, counter + 1)
     } else {
         (noise.write_message(&inbuf, &mut buf)?, 0)
@@ -129,7 +128,11 @@ fn send(noise: &mut snow::Session, receiver: ChannelId, payload: SendMode) -> Re
 impl Transport {
     pub fn send(&mut self, payload: &[u8]) -> Result<packet::EncryptedPacket, Error> {
         self.counter += 1;
-        let pkt = send(&mut self.noise, self.peer_channel, SendMode::Transport(self.counter, payload))?;
+        let pkt = send(
+            &mut self.noise,
+            self.peer_channel,
+            SendMode::Transport(self.counter, payload),
+        )?;
         assert_eq!(pkt.payload.len() % 256, 0);
         Ok(pkt)
     }
@@ -143,7 +146,9 @@ impl Transport {
         }
 
         let mut outbuf = vec![0; pkt.payload.len()];
-        let len = self.noise.read_message_with_nonce(pkt.counter - 1, &pkt.payload, &mut outbuf)?;
+        let len = self
+            .noise
+            .read_message_with_nonce(pkt.counter - 1, &pkt.payload, &mut outbuf)?;
         outbuf.truncate(len);
 
         if len < 2 {
@@ -338,8 +343,8 @@ impl HandshakeBuilder {
             return Err(NoiseError::TooSmall.into());
         }
 
-        let channel   = (&outbuf[0..8]).read_u64::<BigEndian>()?;
-        let identity  = Identity::from_ed25519_bytes(&outbuf[8..40]);
+        let channel = (&outbuf[0..8]).read_u64::<BigEndian>()?;
+        let identity = Identity::from_ed25519_bytes(&outbuf[8..40]);
         let timestamp = (&outbuf[40..48]).read_u64::<BigEndian>()?;
 
         let signature = Signature(signature);

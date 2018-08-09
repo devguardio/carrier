@@ -1,26 +1,24 @@
 use failure::Error;
-use futures::{self, Future, Sink, Stream, Async};
+use futures::sync::mpsc;
+use futures::{self, Async, Future, Stream};
 use ox::*;
 use std::collections::HashMap;
-use std::mem;
 use std::net::SocketAddr;
+use std::num::Wrapping;
 use std::sync::{Arc, Mutex};
 use tokio;
-use futures::sync::mpsc;
-use std::num::Wrapping;
-
 
 struct Subscription {
-    inner:  mpsc::Receiver<proto::SubscribeStream>,
-    rmid:   u64,
+    inner:   mpsc::Receiver<proto::SubscribeStream>,
+    rmid:    u64,
     address: String,
 }
 
 impl Stream for Subscription {
-    type Item  = proto::SubscribeStream;
+    type Item = proto::SubscribeStream;
     type Error = Error;
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
-        self.inner.poll().map_err(|()|unreachable!())
+        self.inner.poll().map_err(|()| unreachable!())
     }
 }
 
@@ -34,41 +32,37 @@ impl Drop for Subscription {
 }
 
 struct ShadowBroker {
-    store: HashMap<String, HashMap<String, Vec<u8>>>,
-    lanes:  HashMap<String, HashMap<u64, mpsc::Sender<proto::SubscribeStream>>>,
+    store:      HashMap<String, HashMap<String, Vec<u8>>>,
+    lanes:      HashMap<String, HashMap<u64, mpsc::Sender<proto::SubscribeStream>>>,
     subcounter: Wrapping<u64>,
 }
 
 impl ShadowBroker {
     fn new() -> Self {
         Self {
-            store: HashMap::new(),
-            lanes: HashMap::new(),
+            store:      HashMap::new(),
+            lanes:      HashMap::new(),
             subcounter: Wrapping(0),
         }
     }
 
     fn publish(&mut self, id: String, address: String, value: Vec<u8>) {
-
         if let Some(lane) = self.lanes.get_mut(&address) {
-            for (_,sub) in lane.iter_mut() {
+            for (_, sub) in lane.iter_mut() {
                 sub.try_send(proto::SubscribeStream {
                     identity: id.clone(),
                     value:    value.clone(),
-                });
+                }).ok();
             }
         }
 
-        self.store.entry(address).or_insert(HashMap::new())
-            .insert(id, value);
-
+        self.store.entry(address).or_insert(HashMap::new()).insert(id, value);
     }
 
     fn subscribe(&mut self, address: String) -> Subscription {
-
         //TODO this will only work for 100 devices.
         //we need a more clever api to deal with this
-        let (mut tx,rx) = mpsc::channel(100);
+        let (mut tx, rx) = mpsc::channel(100);
         self.subcounter += Wrapping(1);
         let scr = Subscription {
             inner:   rx,
@@ -77,17 +71,18 @@ impl ShadowBroker {
         };
 
         if let Some(stored) = self.store.get(&address) {
-            for (k,v) in stored {
+            for (k, v) in stored {
                 tx.try_send(proto::SubscribeStream {
                     identity: k.clone(),
                     value:    v.clone(),
-                });
+                }).ok();
             }
         }
 
-        self.lanes.entry(address).or_insert(HashMap::new())
+        self.lanes
+            .entry(address)
+            .or_insert(HashMap::new())
             .insert(self.subcounter.0, tx);
-
 
         scr
     }
@@ -112,88 +107,92 @@ impl Listener {
 }
 
 lazy_static! {
-    static ref SHADOWBROKER: Mutex<ShadowBroker> = {
-        Mutex::new(ShadowBroker::new())
-    };
-
-    static ref LISTENERS: Mutex<HashMap<String, Listener>> = {
-        Mutex::new(HashMap::new())
-    };
+    static ref SHADOWBROKER: Mutex<ShadowBroker> = { Mutex::new(ShadowBroker::new()) };
+    static ref LISTENERS: Mutex<HashMap<String, Listener>> = { Mutex::new(HashMap::new()) };
 }
 
 struct Service {
-    connection_id:   String,
-    addr:       SocketAddr,
+    connection_id: String,
+    addr:          SocketAddr,
 
-    identity:   Identity,
-    ep:         Arc<Mutex<endpoint::Endpoint>>,
+    identity: Identity,
+    ep:       Arc<Mutex<endpoint::Endpoint>>,
 }
 
 impl proto::Broker::Service for Service {
-    fn connect(&mut self, msg: proto::ConnectRequest)
-        -> Box<Stream<Item=proto::ConnectResponse, Error=Error> + Sync + Send + 'static>
-    {
+    fn connect(
+        &mut self,
+        msg: proto::ConnectRequest,
+    ) -> Box<Stream<Item = proto::ConnectResponse, Error = Error> + Sync + Send + 'static> {
         info!("[{}] connect request to {}", self.connection_id, msg.identity);
 
         if let Some(listener) = LISTENERS.lock().unwrap().get_mut(&msg.identity) {
-
             let responder_chan = listener.alloc_channel().unwrap();
 
-            let proxy = self.ep.lock().unwrap().proxy(self.addr, msg.channel, listener.addr, responder_chan).unwrap();
+            let proxy = self
+                .ep
+                .lock()
+                .unwrap()
+                .proxy(self.addr, msg.channel, listener.addr, responder_chan)
+                .unwrap();
 
-            let rsp = proto::ListenStream{
-                identity:   self.identity.to_string(),
-                channel_mine:    responder_chan,
-                channel_them:    msg.channel,
-                address:    msg.address,
+            let rsp = proto::ListenStream {
+                identity:     self.identity.to_string(),
+                channel_mine: responder_chan,
+                channel_them: msg.channel,
+                address:      msg.address,
 
                 proxy_them: proxy.in_chan_a,
                 proxy_mine: proxy.in_chan_b,
             };
 
             if listener.tx.try_send(rsp).is_ok() {
-                return Box::new(futures::future::ok(proto::ConnectResponse {
-                    ok: true,
-                }).into_stream().chain(Never::hold(proxy)))
+                return Box::new(
+                    futures::future::ok(proto::ConnectResponse { ok: true })
+                        .into_stream()
+                        .chain(Never::hold(proxy)),
+                );
             }
         }
 
-        Box::new(futures::future::ok(proto::ConnectResponse {
-            ok: false,
-        }).into_stream())
+        Box::new(futures::future::ok(proto::ConnectResponse { ok: false }).into_stream())
     }
 
-    fn listen(&mut self, msg: proto::ListenRequest)
-        -> Box<Stream<Item=proto::ListenStream, Error=Error> + Sync + Send + 'static>
-    {
+    fn listen(
+        &mut self,
+        msg: proto::ListenRequest,
+    ) -> Box<Stream<Item = proto::ListenStream, Error = Error> + Sync + Send + 'static> {
         let (tx, rx) = mpsc::channel(10);
 
         let lst = Listener {
-            tx:   tx,
-            addr: self.addr.clone(),
+            tx:          tx,
+            addr:        self.addr.clone(),
             cur_channel: msg.from_channel,
             max_channel: msg.to_channel,
         };
         LISTENERS.lock().unwrap().insert(self.identity.to_string(), lst);
 
-        Box::new(rx.map_err(|e|unreachable!()))
+        Box::new(rx.map_err(|()| unreachable!()))
     }
 
-    fn publish(&mut self, msg: proto::PublishRequest)
-        -> Box<Future<Item=proto::PublishResponse, Error=Error> + Sync + Send + 'static>
-    {
+    fn publish(
+        &mut self,
+        msg: proto::PublishRequest,
+    ) -> Box<Future<Item = proto::PublishResponse, Error = Error> + Sync + Send + 'static> {
         info!("PUBLISH {} {} {:x?}", msg.address, self.identity, msg.value);
 
-        SHADOWBROKER.lock().unwrap().publish(self.identity.to_string(), msg.address, msg.value);
+        SHADOWBROKER
+            .lock()
+            .unwrap()
+            .publish(self.identity.to_string(), msg.address, msg.value);
 
-        Box::new(futures::future::ok(proto::PublishResponse{
-            ok: true
-        }))
+        Box::new(futures::future::ok(proto::PublishResponse { ok: true }))
     }
 
-    fn subscribe(&mut self, msg: proto::SubscribeRequest)
-        -> Box<Stream<Item=proto::SubscribeStream, Error=Error> + Sync + Send + 'static>
-    {
+    fn subscribe(
+        &mut self,
+        msg: proto::SubscribeRequest,
+    ) -> Box<Stream<Item = proto::SubscribeStream, Error = Error> + Sync + Send + 'static> {
         info!("SUBSCRIBE {} {}", msg.address, self.identity);
 
         let subscription = SHADOWBROKER.lock().unwrap().subscribe(msg.address);
@@ -217,11 +216,11 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
             let addr = channel.addr().clone();
             let identity = channel.identity().clone();
 
-            let mut service = Service{
-                identity:   identity.clone(),
-                connection_id:   connection_id.clone(),
-                addr:       addr,
-                ep:         ep.clone(),
+            let service = Service {
+                identity:      identity.clone(),
+                connection_id: connection_id.clone(),
+                addr:          addr,
+                ep:            ep.clone(),
             };
 
             let ft = proto::Broker::dispatch(channel, service)
@@ -248,28 +247,26 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
         .map_err(|e| error!("listener error: {}", e))
 }
 
-
-
-
 //holds a resource inside a future chain forever
 //only useful in combination with select on another future
 
 use std::marker::PhantomData;
 struct Never<T, H> {
     phantom: PhantomData<T>,
-    hodl:    H,
+    #[allow(dead_code)]
+    hodl: H,
 }
 
 impl<T, H> Never<T, H> {
     pub fn hold(h: H) -> Self {
         Self {
             phantom: PhantomData::default(),
-            hodl: h,
+            hodl:    h,
         }
     }
 }
 
-impl<T,H> Stream for Never<T,H>{
+impl<T, H> Stream for Never<T, H> {
     type Item = T;
     type Error = Error;
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {

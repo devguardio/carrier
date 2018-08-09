@@ -241,7 +241,12 @@ impl Channel {
                 frame.encode(&mut pkt)?;
                 frames.push(frame);
             }
-            assert_ne!(frames.len(), 0, "bug: trying to send empty packet. outqueue is {}", self.outqueue.len());
+            assert_ne!(
+                frames.len(),
+                0,
+                "bug: trying to send empty packet. outqueue is {}",
+                self.outqueue.len()
+            );
 
             let pkt = self.noise.send(&pkt)?;
 
@@ -289,7 +294,6 @@ impl Channel {
         );
         Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now)))
     }
-
 
     /// queue a message
     pub fn message<M: Into<Vec<u8>>>(&mut self, msg: M) {

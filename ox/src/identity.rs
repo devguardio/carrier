@@ -32,7 +32,7 @@ impl Secret {
 
         let mut f = File::open(filename)?;
 
-        let mut b1 = [0;32];
+        let mut b1 = [0; 32];
         f.read_exact(&mut b1)?;
 
         Ok(Self::from_bytes(&mut b1))
@@ -65,7 +65,7 @@ impl Secret {
         Signature(kp.sign::<sha2::Sha512>(&stext).to_bytes())
     }
 
-    pub fn to_string(&self) -> String{
+    pub fn to_string(&self) -> String {
         let mut v = Vec::new();
         v.push(8 as u8);
         v.push(3 as u8);
@@ -104,16 +104,15 @@ impl Secret {
 
     pub fn to_x25519(&self) -> Address {
         use x25519_dalek::generate_public;
-        let mut secret = [0;32];
+        let mut secret = [0; 32];
         secret.copy_from_slice(&self.0);
         let xpublic = generate_public(&secret);
         Address(xpublic.to_bytes())
     }
 }
 
-
 impl Address {
-    pub fn to_string(&self) -> String{
+    pub fn to_string(&self) -> String {
         let mut v = Vec::new();
         v.push(8 as u8);
         v.push(6 as u8);
@@ -151,15 +150,15 @@ impl Address {
             return Err(IdentityError::InvalidAddress.into());
         }
 
-        let mut b = [0;32];
+        let mut b = [0; 32];
         b.copy_from_slice(&s[2..s.len() - 1]);
 
         Ok(Address(b))
     }
 }
 
-impl Signature{
-    pub fn to_string(&self) -> String{
+impl Signature {
+    pub fn to_string(&self) -> String {
         let mut v = Vec::new();
         v.push(8 as u8);
         v.push(2 as u8);
@@ -197,12 +196,11 @@ impl Signature{
             return Err(IdentityError::InvalidAddress.into());
         }
 
-        let mut b = [0;64];
+        let mut b = [0; 64];
         b.copy_from_slice(&s[2..s.len() - 1]);
 
         Ok(Signature(b))
     }
-
 }
 
 impl Identity {
@@ -254,12 +252,7 @@ impl Identity {
         self.key.as_ref()
     }
 
-    pub fn verify(
-        &self,
-        purpose: &[u8],
-        text: &[u8],
-        signature: &Signature,
-    ) -> Result<bool, Error> {
+    pub fn verify(&self, purpose: &[u8], text: &[u8], signature: &Signature) -> Result<bool, Error> {
         let sig = ed25519_dalek::Signature::from_bytes(&signature.0)?;
         let pk = ed25519_dalek::PublicKey::from_bytes(&self.key)?;
 

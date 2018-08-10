@@ -107,7 +107,7 @@ dependencies = [
 
 [[package]]
 name = "carrier"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "bs58 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "byteorder 1.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -134,9 +134,9 @@ dependencies = [
 
 [[package]]
 name = "carrier-cli"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
- "carrier 0.1.0",
+ "carrier 0.1.1",
  "clap 2.32.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "env_logger 0.5.12 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",

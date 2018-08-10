@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ox.axiom.v1;
+
+message SshIn {
+    bytes  v = 1;
+}
+
+message SshOut {
+    bytes  v = 1;
+}
+
+service Axiom {
+    rpc ssh(stream SshIn)   returns (stream SshOut) {}
+}

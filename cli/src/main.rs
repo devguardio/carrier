@@ -11,7 +11,6 @@ extern crate prost;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
-extern crate hpack;
 extern crate toml;
 extern crate trust_dns_resolver;
 extern crate url;
@@ -62,14 +61,14 @@ fn main_publish(
     info!("connecting to {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
-        .and_then(move |ctrl| {
+        .and_then(move |mut ctrl| {
             proto::Broker::publish(
-                ctrl,
+                &mut ctrl,
                 proto::PublishRequest {
                     address: topic.to_string(),
                     value:   value,
                 },
-            )
+            ).map(|resp|(ctrl,resp))
         })
         .and_then(move |(_ctrl, resp)| {
             info!("<< {:?}", resp);
@@ -89,9 +88,9 @@ fn main_subscribe(
     info!("connecting to {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
-        .and_then(move |ctrl| {
+        .and_then(move |mut ctrl| {
             proto::Broker::subscribe(
-                ctrl,
+                &mut ctrl,
                 proto::SubscribeRequest {
                     address: topic.to_string(),
                 },
@@ -100,15 +99,22 @@ fn main_subscribe(
                 println!("{}: {}", msg.identity, String::from_utf8_lossy(&value));
                 Ok(())
             })
+            .and_then(move |_| {
+                drop(ctrl);
+                Ok(())
+            })
         })
-        .map_err(|e| error!("{}", e))
+        .map_err(|e| error!("final error: {}", e))
 }
 
-fn stdio_channel(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
+fn stdio_channel(stream: endpoint::ChannelStream) -> impl Future<Item = (), Error = Error> {
     let stdin = Stdin::new();
-    let (tx, rx) = channel.split();
+    let (tx, rx) = stream.split();
 
-    let fw1 = stdin.fold(tx, |tx, item| tx.send(item)).and_then(|_| Ok(()));
+    let fw1 = stdin.fold(tx, |tx, item| tx.send(item)).and_then(|_|{
+        debug!("stdin ended");
+        Ok(())
+    });
 
     let stdout = io::stdout();
     let fw2 =
@@ -117,10 +123,14 @@ fn stdio_channel(channel: endpoint::Channel) -> impl Future<Item = (), Error = E
             stdout.write(&item).unwrap();
             stdout.flush().unwrap();
             Ok(stdout) as Result<_, Error>
-        }).and_then(|_| Ok(()));
+        }).and_then(|_|{
+            debug!("stream ended");
+            Ok(())
+        });
 
     fw1.select(fw2).map_err(|(e, _)| e).and_then(|_| Ok(()))
 }
+
 fn main_connect(
     secret: identity::Secret,
     addr: SocketAddr,
@@ -135,26 +145,24 @@ fn main_connect(
     info!("connecting via {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
-        .and_then(move |ctrl| {
+        .and_then(move |mut ctrl| {
             info!("via broker {}", ctrl.identity());
 
             let (xsecret, xpublic) = identity::generate_x25519();
             let expect = ep.expect(xsecret, identity::Identity::parse(&target).unwrap());
 
             proto::Broker::connect(
-                ctrl,
+                &mut ctrl,
                 proto::ConnectRequest {
                     address:  xpublic.to_vec(),
                     channel:  expect.channel(),
                     identity: target,
                 },
-            ).into_future()
-                .map_err(|(e, _)| e)
-                .map(|(resp, ctrl)| (ep, expect, ctrl, resp))
+            ).map(|resp| (ep, expect, ctrl, resp))
         })
         .and_then(|(ep, expect, ctrl, msg)| {
             info!("<< {:?}", msg);
-            if msg.is_none() || !msg.unwrap().ok {
+            if !msg.ok {
                 error!("no route");
                 std::process::exit(4);
             }
@@ -175,9 +183,13 @@ fn main_connect(
         })
         .and_then(move |(mut ep, ctrl, rq)| {
             info!("established route to peer {}", rq.identity());
-            let ch = ep.accept(rq, &secret).unwrap();
+            let mut ch = ep.accept(rq, &secret).unwrap();
 
-            stdio_channel(ch).and_then(move |_| {
+            let stream = ch.open("/giev/ssh".into()).unwrap();
+
+            stdio_channel(stream).and_then(move |_| {
+                trace!("dropping endpoint");
+                drop(ch);
                 drop(ctrl);
                 drop(ep);
                 Ok(())
@@ -186,7 +198,7 @@ fn main_connect(
         .map_err(|e| error!("{}", e))
 }
 
-fn sshd_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error> {
+fn sshd_srv(stream: endpoint::ChannelStream) -> impl Future<Item = (), Error = Error> {
     use tokio::net::TcpStream;
 
     TcpStream::connect(&("127.0.0.1:22".parse().unwrap()))
@@ -194,7 +206,7 @@ fn sshd_srv(channel: endpoint::Channel) -> impl Future<Item = (), Error = Error>
         .and_then(|sock| {
             let sock = tokio_codec::Framed::new(sock, tokio_codec::BytesCodec::new());
 
-            let (tx1, rx1) = channel.split();
+            let (tx1, rx1) = stream.split();
             let (tx2, rx2) = sock.split();
 
             let fw1 = rx1.fold(tx2, |tx, item| tx.send(item.into())).and_then(|_| Ok(()));
@@ -226,10 +238,10 @@ fn main_sshd(secret: identity::Secret, addr: SocketAddr, x: identity::Address) -
     info!("connecting via {}", addr);
     ep.connect(addr, x, secret.clone(), None)
         .unwrap()
-        .and_then(move |ctrl| {
+        .and_then(move |mut ctrl| {
             info!("via broker {}", ctrl.identity());
             proto::Broker::listen(
-                ctrl,
+                &mut ctrl,
                 proto::ListenRequest {
                     from_channel: 10000,
                     to_channel:   90000,
@@ -250,17 +262,28 @@ fn main_sshd(secret: identity::Secret, addr: SocketAddr, x: identity::Address) -
                         Some((msg.channel_mine, msg.proxy_mine, msg.proxy_them)),
                     ).unwrap();
 
-                let ft =
-                    ft.and_then(|ch| {
+                let ft =ft
+                    .and_then(|ch| {
                         info!("connected to peer {}", ch.identity());
-                        sshd_srv(ch)
+                        ch.into_future().map_err(|(e,_)|e)
+                    })
+                    .and_then(|(stream, ch)|{
+                        let (stream, header) = stream.unwrap();
+                        sshd_srv(stream).and_then(|_|{
+                            drop(ch);
+                            Ok(())
+                        })
                     }).map_err(|e| error!("peer: {}", e));
                 tokio::spawn(ft);
+                Ok(())
+            }).and_then(move |_|{
+                drop(ctrl);
                 Ok(())
             })
         })
         .map_err(|e| error!("{}", e))
 }
+
 
 pub fn main() {
     if let Err(_) = env::var("RUST_LOG") {
@@ -393,7 +416,9 @@ pub fn main() {
             .filter_map(|s| dns::DnsRecord::from_signed_txt(s))
             .collect();
 
-        rand::thread_rng().choose(&txt).cloned().expect("no addresses")
+        let record = rand::thread_rng().choose(&txt).cloned().expect("no addresses");
+        debug!("broker record: {:?}", record);
+        record
     };
 
     match matches.subcommand() {

@@ -70,21 +70,23 @@ fn decode_invalid_packets() {
 
 #[derive(Debug, PartialEq)]
 pub enum Frame {
-    Message { order:   u64, payload: Vec<u8> },
-    Ack { delay: u64, acked: Vec<u64> },
+    Header      { stream: u32, payload: Vec<u8> },
+    Stream      { stream: u32, order: u64, payload: Vec<u8>},
+    Ack         { delay:  u64, acked: Vec<u64>},
     Ping,
     Disconnect,
-    Close { order: u64 },
+    Close       { stream: u32, order: u64 },
 }
 
 impl Frame {
     pub fn len(&self) -> usize {
         match self {
-            Frame::Message { payload, .. } => 1 + 8 + 2 + payload.len(),
-            Frame::Ack { acked, .. } => 1 + 2 + 2 + 8 * acked.len(),
-            Frame::Ping => 1,
-            Frame::Disconnect => 1,
-            Frame::Close { .. } => 1 + 8,
+            Frame::Header  { payload, .. }  => 1 + 4 + 2 +     payload.len(),
+            Frame::Stream  { payload, .. }  => 1 + 4 + 8 + 2 + payload.len(),
+            Frame::Ack     { acked, .. }    => 1 + 2 + 2 + 8 * acked.len(),
+            Frame::Ping                     => 1,
+            Frame::Disconnect               => 1,
+            Frame::Close { .. }             => 1 + 4 + 8,
         }
     }
 
@@ -103,8 +105,9 @@ impl Frame {
 
     pub fn order(&self) -> u64 {
         match self {
-            Frame::Message { order, .. } => *order,
-            Frame::Close { order, .. } => *order,
+            Frame::Header {  .. }       => 1,
+            Frame::Stream { order, .. } => *order,
+            Frame::Close  { order, .. } => *order,
             _ => panic!("trying to order unordered frame"),
         }
     }
@@ -112,9 +115,17 @@ impl Frame {
     pub fn encode<W: Write>(&self, mut w: W) -> Result<usize, Error> {
         let len = self.len();
         match self {
-            Frame::Message { order, payload } => {
+            Frame::Header { stream, payload } => {
+                assert!(payload.len() + 12 < u16::max_value() as usize);
+                w.write_u8(0x04)?;
+                w.write_u32::<BigEndian>(*stream)?;
+                w.write_u16::<BigEndian>(payload.len() as u16)?;
+                assert_eq!(w.write(payload)?, payload.len());
+            }
+            Frame::Stream { stream, order, payload } => {
                 assert!(payload.len() + 12 < u16::max_value() as usize);
                 w.write_u8(0x05)?;
+                w.write_u32::<BigEndian>(*stream)?;
                 w.write_u64::<BigEndian>(*order)?;
                 w.write_u16::<BigEndian>(payload.len() as u16)?;
                 assert_eq!(w.write(payload)?, payload.len());
@@ -136,8 +147,9 @@ impl Frame {
             Frame::Disconnect => {
                 w.write_u8(0x03)?;
             }
-            Frame::Close { order } => {
+            Frame::Close { stream, order } => {
                 w.write_u8(0x06)?;
+                w.write_u32::<BigEndian>(*stream)?;
                 w.write_u64::<BigEndian>(*order)?;
             }
         }
@@ -166,16 +178,25 @@ impl Frame {
                 Ok(0x03) => {
                     f.push(Frame::Disconnect);
                 }
+                Ok(0x04) => {
+                    let stream = r.read_u32::<BigEndian>()?;
+                    let len = r.read_u16::<BigEndian>()?;
+                    let mut payload = vec![0; len as usize];
+                    r.read_exact(&mut payload)?;
+                    f.push(Frame::Header { stream, payload });
+                }
                 Ok(0x05) => {
+                    let stream = r.read_u32::<BigEndian>()?;
                     let order = r.read_u64::<BigEndian>()?;
                     let len = r.read_u16::<BigEndian>()?;
                     let mut payload = vec![0; len as usize];
                     r.read_exact(&mut payload)?;
-                    f.push(Frame::Message { order, payload });
+                    f.push(Frame::Stream { stream, order, payload });
                 }
                 Ok(0x06) => {
-                    let order = r.read_u64::<BigEndian>()?;
-                    f.push(Frame::Close { order });
+                    let stream = r.read_u32::<BigEndian>()?;
+                    let order  = r.read_u64::<BigEndian>()?;
+                    f.push(Frame::Close { stream, order });
                 }
                 Ok(typ) => return Err(PacketError::InvalidFrameType { typ }.into()),
             };
@@ -185,7 +206,7 @@ impl Frame {
 
 #[test]
 fn encode_frame() {
-    let frame = Frame::Message {
+    let frame = Frame::Stream {
         order:   0x1223,
         payload: b"hello".to_vec(),
     };
@@ -222,7 +243,7 @@ fn decode_frame() {
 
     let frames = Frame::decode(&r[..]).unwrap();
     assert_eq!(frames.len(), 2);
-    if let Frame::Message { order, ref payload } = frames[0] {
+    if let Frame::Stream { order, ref payload } = frames[0] {
         assert_eq!(order, 0x1223);
         assert_eq!(payload, b"hello");
     } else {

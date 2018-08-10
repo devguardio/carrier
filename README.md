@@ -24,8 +24,8 @@ features:
 - [ ] nat traversal
 - [x] udp
 - [ ] cert chains
-- [ ] high level channels
-- [ ] GRPC
+- [x] high level channels
+- [x] GRPC
 - [ ] pty
 - [ ] stream shell executable from archon
 - [x] cli

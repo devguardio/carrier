@@ -182,8 +182,10 @@ impl QuicRecovery {
     pub fn on_packet_sent(&mut self, seq: u64, frames: Vec<Frame>, now: u64) {
         let (bytes, ackonly) = frames.iter().fold((0, true), |(bytes, ackonly), frame| {
             let ackonly = ackonly && frame.is_ack();
-            (bytes + frame.len(), ackonly)
+            (bytes + if frame.is_ack() {0} else {frame.len()}, ackonly)
         });
+
+        trace!("on_packet_sent seq: {}, frames: {}, bytes: {}, ackonly: {}", seq, frames.len(), bytes, ackonly);
 
         let pkt = Pkt {
             seq,
@@ -394,10 +396,11 @@ impl QuicRecovery {
         };
 
         trace!(
-            "loss detection is {} + {} (bytes in flight {})",
+            "loss detection is {} + {} (bytes in flight {}, q: {})",
             self.time_of_last_sent_retransmittable_packet,
             alarm_duration,
-            self.bytes_in_flight
+            self.bytes_in_flight,
+            self.sent_packets.len(),
         );
         self.loss_detection_alarm = Some(self.time_of_last_sent_retransmittable_packet + alarm_duration);
     }
@@ -416,10 +419,14 @@ impl QuicRecovery {
         keys.sort_unstable();
         for key in keys {
             let mut pkt = self.sent_packets.get_mut(&key).unwrap();
-            if !pkt.ackonly {
-                self.bytes_in_flight -= pkt.bytes;
-                pkt.bytes = 0;
+            if pkt.ackonly {
+                continue
             }
+            if pkt.frames.is_empty() {
+                continue;
+            }
+            self.bytes_in_flight -= pkt.bytes;
+            pkt.bytes = 0;
             r.append(&mut pkt.frames);
             n -= 1;
             if n < 1 {

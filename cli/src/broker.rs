@@ -112,18 +112,20 @@ lazy_static! {
 }
 
 struct Service {
-    connection_id: String,
-    addr:          SocketAddr,
+    connection_id:  String,
+    addr:           SocketAddr,
 
-    identity: Identity,
-    ep:       Arc<Mutex<endpoint::Endpoint>>,
+    identity:       Identity,
+    ep:             Arc<Mutex<endpoint::Endpoint>>,
+    proxies:        Vec<endpoint::Proxy>,
 }
 
 impl proto::Broker::Service for Service {
+
     fn connect(
         &mut self,
         msg: proto::ConnectRequest,
-    ) -> Box<Stream<Item = proto::ConnectResponse, Error = Error> + Sync + Send + 'static> {
+    ) -> Result<Box<Future<Item = proto::ConnectResponse, Error = Error> + Sync + Send + 'static>, Error> {
         info!("[{}] connect request to {}", self.connection_id, msg.identity);
 
         if let Some(listener) = LISTENERS.lock().unwrap().get_mut(&msg.identity) {
@@ -136,6 +138,7 @@ impl proto::Broker::Service for Service {
                 .proxy(self.addr, msg.channel, listener.addr, responder_chan)
                 .unwrap();
 
+
             let rsp = proto::ListenStream {
                 identity:     self.identity.to_string(),
                 channel_mine: responder_chan,
@@ -146,22 +149,21 @@ impl proto::Broker::Service for Service {
                 proxy_mine: proxy.in_chan_b,
             };
 
-            if listener.tx.try_send(rsp).is_ok() {
-                return Box::new(
-                    futures::future::ok(proto::ConnectResponse { ok: true })
-                        .into_stream()
-                        .chain(Never::hold(proxy)),
-                );
-            }
+            listener.tx.try_send(rsp)?;
+            self.proxies.push(proxy);
+            return Ok(Box::new(
+                futures::future::ok(proto::ConnectResponse { ok: true })
+                ));
         }
 
-        Box::new(futures::future::ok(proto::ConnectResponse { ok: false }).into_stream())
+        Ok(Box::new(futures::future::ok(proto::ConnectResponse { ok: false })))
     }
 
     fn listen(
         &mut self,
-        msg: proto::ListenRequest,
-    ) -> Box<Stream<Item = proto::ListenStream, Error = Error> + Sync + Send + 'static> {
+        msg: proto::ListenRequest
+    ) -> Result<Box<Stream<Item = proto::ListenStream, Error = Error> + Sync + Send + 'static>, Error>
+    {
         let (tx, rx) = mpsc::channel(10);
 
         let lst = Listener {
@@ -172,13 +174,14 @@ impl proto::Broker::Service for Service {
         };
         LISTENERS.lock().unwrap().insert(self.identity.to_string(), lst);
 
-        Box::new(rx.map_err(|()| unreachable!()))
+        Ok(Box::new(rx.map_err(|()| unreachable!())))
     }
 
     fn publish(
         &mut self,
         msg: proto::PublishRequest,
-    ) -> Box<Future<Item = proto::PublishResponse, Error = Error> + Sync + Send + 'static> {
+    ) -> Result<Box<Future<Item = proto::PublishResponse, Error = Error> + Sync + Send + 'static>, Error>
+    {
         info!("PUBLISH {} {} {:x?}", msg.address, self.identity, msg.value);
 
         SHADOWBROKER
@@ -186,18 +189,18 @@ impl proto::Broker::Service for Service {
             .unwrap()
             .publish(self.identity.to_string(), msg.address, msg.value);
 
-        Box::new(futures::future::ok(proto::PublishResponse { ok: true }))
+        Ok(Box::new(futures::future::ok(proto::PublishResponse { ok: true })))
     }
 
     fn subscribe(
         &mut self,
         msg: proto::SubscribeRequest,
-    ) -> Box<Stream<Item = proto::SubscribeStream, Error = Error> + Sync + Send + 'static> {
+    ) -> Result<Box<Stream<Item = proto::SubscribeStream, Error = Error> + Sync + Send + 'static>, Error> {
         info!("SUBSCRIBE {} {}", msg.address, self.identity);
 
         let subscription = SHADOWBROKER.lock().unwrap().subscribe(msg.address);
 
-        Box::new(subscription)
+        Ok(Box::new(subscription))
     }
 }
 
@@ -221,9 +224,12 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
                 connection_id: connection_id.clone(),
                 addr:          addr,
                 ep:            ep.clone(),
+                proxies:        Vec::new(),
             };
 
+
             let ft = proto::Broker::dispatch(channel, service)
+                //TODO why is this not inside the listen() api call in an and_then?
                 .and_then(move |_| {
                     trace!("[{}] dispatch ended", connection_id);
 
@@ -246,6 +252,8 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
         .and_then(|_| Ok(()))
         .map_err(|e| error!("listener error: {}", e))
 }
+
+/*
 
 //holds a resource inside a future chain forever
 //only useful in combination with select on another future
@@ -273,3 +281,5 @@ impl<T, H> Stream for Never<T, H> {
         Ok(Async::NotReady)
     }
 }
+
+*/

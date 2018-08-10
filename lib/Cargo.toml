@@ -1,6 +1,6 @@
 [package]
 name    = "carrier"
-version = "0.1.1"
+version = "0.2.0"
 authors = ["Arvid E. Picciani <arvid@devguard.io>"]
 license = "MIT"
 description = "carrier is a generic secure message system for IoT"
@@ -27,8 +27,10 @@ snow                = "0.4.0-alpha1"
 subtle              = "0.7.0"
 tokio               = "0.1.7"
 x25519-dalek        = { version = "0.3.0", default-features = false, features = ["std", "u64_backend"] }
+hpack               = "0.3.0"
 
 
 [build-dependencies]
 prost-build = "0.4.0"
-
+quote = "0.6.5"
+proc-macro2 = "0.4.9"

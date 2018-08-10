@@ -41,21 +41,23 @@ pub enum EndpointError {
 }
 
 pub struct Channel {
-    rx: mpsc::Receiver<Option<Vec<u8>>>,
-    tx: mpsc::Sender<Option<Vec<u8>>>,
-    //cmd: mpsc::Receiver<ChannelWorkerCmd>,
-    identity: Identity,
+    open: mpsc::Sender<(ChannelStream, Vec<u8>)>,
+    newc: mpsc::Receiver<(ChannelStream, Vec<u8>)>,
 
+    identity: Identity,
     addr: SocketAddr,
 }
 
-pub struct ChannelSender {
-    tx: mpsc::Sender<Option<Vec<u8>>>,
+pub struct ChannelStream{
+    tx: mpsc::Sender<Vec<u8>>,
+    rx: mpsc::Receiver<Vec<u8>>,
 }
 
 struct ChannelWorker {
-    crx: mpsc::Receiver<Option<Vec<u8>>>,
-    ctx: mpsc::Sender<Option<Vec<u8>>>,
+    open: mpsc::Receiver<(ChannelStream, Vec<u8>)>,
+    newc: mpsc::Sender<(ChannelStream, Vec<u8>)>,
+
+    streams: HashMap<u32, ChannelStream>,
 
     transport: transport::Channel,
     rx:        mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
@@ -67,6 +69,7 @@ struct ChannelWorker {
     channel: ChannelId,
 
     stop: bool,
+    are_we_initiator: bool,
 }
 
 pub enum ChannelBus {
@@ -139,20 +142,23 @@ pub struct Proxy {
 
 impl Channel {
     fn new(
-        transport: transport::Channel,
-        rx: mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
-        sock: UdpSocket,
-        addr: SocketAddr,
-        wrk: mpsc::Sender<EndpointWorkerCmd>,
-        channel: ChannelId,
-        identity: Identity,
+        transport:  transport::Channel,
+        rx:         mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
+        sock:       UdpSocket,
+        addr:       SocketAddr,
+        wrk:        mpsc::Sender<EndpointWorkerCmd>,
+        channel:    ChannelId,
+        identity:   Identity,
+        are_we_initiator: bool,
+
     ) -> Channel {
         let (tx1, rx1) = futures::sync::mpsc::channel(10);
         let (tx2, rx2) = futures::sync::mpsc::channel(10);
 
         let wrk = ChannelWorker {
-            ctx: tx1,
-            crx: rx2,
+            open: rx2,
+            newc: tx1,
+            streams: HashMap::new(),
             wrk,
             transport,
             rx,
@@ -161,13 +167,14 @@ impl Channel {
             deadline: tokio::timer::Delay::new(Instant::now()),
             channel,
             stop: false,
+            are_we_initiator,
         };
         tokio::spawn(wrk.and_then(|_| Ok(trace!("channel worker is done"))));
 
         Channel {
             addr,
-            tx: tx2,
-            rx: rx1,
+            open: tx2,
+            newc: rx1,
             identity,
         }
     }
@@ -176,12 +183,62 @@ impl Channel {
         &self.identity
     }
 
-    pub fn sender(&self) -> ChannelSender {
-        ChannelSender { tx: self.tx.clone() }
-    }
-
     pub fn addr(&self) -> &SocketAddr {
         &self.addr
+    }
+
+    pub fn open(&mut self, header: Vec<u8>) -> Result<ChannelStream, Error> {
+        let (a,b) = ChannelStream::new();
+        self.open.try_send((a, header))?;
+        Ok(b)
+    }
+}
+
+impl Stream for Channel{
+    type Item  = (ChannelStream, Vec<u8>);
+    type Error = Error;
+
+    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
+        self.newc.poll().map_err(|()|unreachable!())
+    }
+}
+
+
+impl ChannelStream {
+    pub fn new() -> (Self,Self) {
+        let (tx1, rx1) = futures::sync::mpsc::channel(100);
+        let (tx2, rx2) = futures::sync::mpsc::channel(100);
+
+        (ChannelStream{
+            rx: rx2,
+            tx: tx1,
+        },
+        ChannelStream {
+            rx: rx1,
+            tx: tx2,
+        })
+    }
+}
+
+impl Stream for ChannelStream {
+    type Item  = Vec<u8>;
+    type Error = Error;
+
+    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
+        self.rx.poll().map_err(|()|unreachable!())
+    }
+}
+
+impl Sink for ChannelStream {
+    type SinkItem  = Vec<u8>;
+    type SinkError = Error;
+
+    fn poll_complete(&mut self) ->  Result<Async<()>, Self::SinkError> {
+        self.tx.poll_complete().map_err(Error::from)
+    }
+
+    fn start_send(&mut self, item: Self::SinkItem) -> Result<AsyncSink<Self::SinkItem>, Self::SinkError> {
+        self.tx.start_send(item).map_err(Error::from)
     }
 }
 
@@ -327,6 +384,7 @@ impl Endpoint {
             self.wrk.clone(),
             channel,
             hs.identity.clone(),
+            false,
         ))
     }
 
@@ -432,6 +490,7 @@ impl Future for ConnectFuture {
                                 self.wrk.clone(),
                                 self.channel,
                                 identity,
+                                true,
                             )));
                         }
                     }
@@ -563,39 +622,42 @@ impl Future for ChannelWorker {
     // close scenarios:
     //   1. consumer channel is dropped:
     //      - set stop=true
-    //      - queue a close
+    //      - queue a close to all remaining channels
     //      - wait for bytes in flight to be 0
-    //      - send a disconnect
     //      - flush out remaining transport progress
+    //      - send a disconnect
     //      - stop worker
     //   2. endpoint is dropped
-    //      - send a disconnect
+    //      - set stop=true
     //      - flush out remaining transport progress
+    //      - send a disconnect
     //      - stop worker
     //   3. received close
-    //      - just fwd to consumer
+    //      - close stream
     //   4. received disconnect
-    //      - send a disconnect (not nessesary, but makes code equal to 2)
     //      - flush out remaining transport progress
     //      - stop worker
     //   5. transport error
     //      - stop worker immediately
 
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-        let mut disconnect = false;
 
-        // do not progress if the consumer is full
-        match self.ctx.poll_ready() {
+        // --- make no progress if there's a full consumer
+        match self.newc.poll_ready() {
             Ok(Async::Ready(_)) => (),
             Ok(Async::NotReady) => return Ok(Async::NotReady),
-            Err(_) => {
-                // do not apply close scenario 1,
-                // because there might be remaining frames in crx
+            Err(_) => {}
+        };
+        for (_,cs) in &mut self.streams {
+            match cs.tx.poll_ready() {
+                Ok(Async::Ready(_)) => (),
+                Ok(Async::NotReady) => return Ok(Async::NotReady),
+                Err(_) => {}
             }
         };
 
+        // --- transport progress
         self.deadline.poll().ok();
-
         match self.transport.progress(&ChannelWakeupReason::Init) {
             Ok(ChannelProgress::Later(deadline)) => {
                 self.deadline.reset(Instant::now() + deadline);
@@ -608,23 +670,36 @@ impl Future for ChannelWorker {
                 }
                 futures::task::current().notify();
             }
-            Ok(ChannelProgress::ReceiveMessage(msg)) => {
-                if let Err(e) = self.ctx.try_send(Some(msg)) {
-                    warn!("ChannelWorker::ctx.try_send {}", e);
+            Ok(ChannelProgress::ReceiveHeader(stream, header)) => {
+                let (a,b) = ChannelStream::new();
+                if let Err(e) = self.newc.try_send((a,header)) {
+                    error!("ChannelWorker sending newc for stream {}: {}", stream, e);
+                }
+                self.streams.insert(stream, b);
+                futures::task::current().notify();
+            }
+            Ok(ChannelProgress::ReceiveStream(stream, msg)) => {
+                debug!("ChannelProgress::ReceiveStream {} {:?}", stream, msg);
+                match self.streams.get_mut(&stream) {
+                    None => {
+                        warn!("ChannelWorker, stream frame for unregistered stream {}", stream);
+                    },
+                    Some(cs) => {
+                        if let Err(e) = cs.tx.try_send(msg) {
+                            warn!("ChannelWorker::stream {} try_send: {}", stream, e);
+                        }
+                    }
                 }
                 futures::task::current().notify();
             }
-            Ok(ChannelProgress::Close) => {
+            Ok(ChannelProgress::Close(stream)) => {
                 // close scenario 3
-                if let Err(e) = self.ctx.try_send(None) {
-                    warn!("ChannelWorker:ctx.try_send {}", e);
-                }
+                self.streams.remove(&stream);
                 futures::task::current().notify();
             }
             Ok(ChannelProgress::Disconnect) => {
                 info!("channel disconnected");
-                // close scenario 4
-                disconnect = true;
+                return Ok(Async::Ready(()));
             }
             Err(e) => {
                 error!("transport progress error: {}", e);
@@ -632,42 +707,15 @@ impl Future for ChannelWorker {
             }
         }
 
-        // close scenario 1
-        if self.stop && self.transport.bytes_in_flight() == 0 {
-            trace!("all packets ackd in stop mode, disconnecting");
-            disconnect = true;
-        }
-
-        if self.transport.window() > 0 {
-            match self.crx.poll()? {
-                Async::Ready(None) => {
-                    // close scenario 1
-                    if !self.stop {
-                        trace!("stopping channel worker because Channel is dropped");
-                        self.stop = true;
-                        self.transport.close();
-                        futures::task::current().notify();
-                    }
+        // --- receive incomming packets
+        match self.rx.poll() {
+            Ok(Async::Ready(None)) | Err(_) => {
+                if !self.stop {
+                    trace!("stopping channel worker because Endpoint is dropped");
+                    self.stop = true;
                 }
-                Async::Ready(Some(None)) => {
-                    self.transport.close();
-                    futures::task::current().notify();
-                }
-                Async::Ready(Some(Some(msg))) => {
-                    self.transport.message(msg);
-                    futures::task::current().notify();
-                }
-                Async::NotReady => (),
-            };
-        }
-
-        match self.rx.poll()? {
-            Async::Ready(None) => {
-                // close scenario 2
-                trace!("stopping channel worker because Endpoint is dropped");
-                disconnect = true;
             }
-            Async::Ready(Some((pkt, addr))) => {
+            Ok(Async::Ready(Some((pkt, addr)))) => {
                 if self.addr != addr {
                     warn!(
                         "{}",
@@ -683,36 +731,65 @@ impl Future for ChannelWorker {
                 }
                 futures::task::current().notify();
             }
-            Async::NotReady => (),
+            Ok(Async::NotReady) => (),
         };
 
-        if disconnect {
+
+        // ---- poll streams for new data if we have space in the window
+        if !self.stop && self.transport.window() > 0 {
+            let mut removeme = Vec::new();
+            for (id,ch) in &mut self.streams {
+                match ch.rx.poll() {
+                    Ok(Async::Ready(None)) | Err(_) => {
+                        self.transport.close(*id);
+                        removeme.push(*id);
+                        futures::task::current().notify();
+                    }
+                    Ok(Async::Ready(Some(msg))) => {
+                        self.transport.stream(*id, msg);
+                        futures::task::current().notify();
+                    }
+                    Ok(Async::NotReady) => (),
+                }
+            }
+            for id in removeme {
+                trace!("removing stream {}", id);
+                self.streams.remove(&id);
+            }
+
+            match self.open.poll()? {
+                Async::Ready(None) => {
+                    // close scenario 1
+                    if !self.stop {
+                        trace!("stopping channel worker because Channel is dropped");
+                        self.stop = true;
+
+                        for (id,_) in self.streams.drain() {
+                            self.transport.close(id);
+                        }
+
+                        futures::task::current().notify();
+                    }
+                }
+                Async::Ready(Some((ch, header))) => {
+                    let stream = self.transport.open(header, self.are_we_initiator);
+                    trace!("opened new stream {}", stream);
+                    self.streams.insert(stream, ch);
+                    futures::task::current().notify();
+                }
+                Async::NotReady => (),
+            };
+
+        }
+
+        // --- stopping and no bytes left in flight. send disconnect and exit
+        if self.stop && self.transport.bytes_in_flight() == 0 {
+            trace!("all packets ackd in stop mode, disconnecting");
+
             if let Ok(pkt) = self.transport.disconnect() {
                 match self.sock.poll_send_to(&pkt, &self.addr) {
                     Ok(Async::Ready(len)) if len == pkt.len() => (),
                     _ => error!("send didnt work"),
-                }
-            }
-            loop {
-                match self.transport.progress(&ChannelWakeupReason::Init) {
-                    Ok(ChannelProgress::Later(_)) => {
-                        break;
-                    }
-                    Ok(ChannelProgress::SendPacket(pkt)) => match self.sock.poll_send_to(&pkt, &self.addr) {
-                        Ok(Async::Ready(len)) if len == pkt.len() => (),
-                        _ => error!("send didnt work"),
-                    },
-                    Ok(ChannelProgress::ReceiveMessage(msg)) => {
-                        self.ctx.try_send(Some(msg)).ok();
-                    }
-                    Ok(ChannelProgress::Close) => {
-                        self.ctx.try_send(None).ok();
-                    }
-                    Ok(ChannelProgress::Disconnect) => break,
-                    Err(e) => {
-                        error!("transport progress error (while stopping): {}", e);
-                        break;
-                    }
                 }
             }
             return Ok(Async::Ready(()));
@@ -727,77 +804,6 @@ impl Drop for ChannelWorker {
         self.wrk
             .try_send(EndpointWorkerCmd::RemoveChannel(self.channel))
             .unwrap();
-    }
-}
-
-impl Sink for Channel {
-    type SinkItem = Vec<u8>;
-    type SinkError = Error;
-
-    fn poll_complete(&mut self) -> Poll<(), Self::SinkError> {
-        self.tx.poll_complete().map_err(|e| e.into())
-    }
-
-    fn start_send(&mut self, item: Self::SinkItem) -> Result<AsyncSink<Self::SinkItem>, Self::SinkError> {
-        match self.tx.start_send(Some(item)) {
-            Ok(AsyncSink::Ready) => Ok(AsyncSink::Ready),
-            Ok(AsyncSink::NotReady(v)) => Ok(AsyncSink::NotReady(v.unwrap())),
-            Err(e) => Err(e.into()),
-        }
-    }
-
-    fn close(&mut self) -> Poll<(), Self::SinkError> {
-        match self.tx.start_send(None) {
-            Ok(AsyncSink::Ready) => Ok(Async::Ready(())),
-            Ok(AsyncSink::NotReady(_)) => Ok(Async::NotReady),
-            Err(e) => Err(e.into()),
-        }
-    }
-}
-
-impl Sink for ChannelSender {
-    type SinkItem = Vec<u8>;
-    type SinkError = Error;
-
-    fn poll_complete(&mut self) -> Poll<(), Self::SinkError> {
-        self.tx.poll_complete().map_err(|e| e.into())
-    }
-
-    fn start_send(&mut self, item: Self::SinkItem) -> Result<AsyncSink<Self::SinkItem>, Self::SinkError> {
-        match self.tx.start_send(Some(item)) {
-            Ok(AsyncSink::Ready) => Ok(AsyncSink::Ready),
-            Ok(AsyncSink::NotReady(v)) => Ok(AsyncSink::NotReady(v.unwrap())),
-            Err(e) => Err(e.into()),
-        }
-    }
-
-    fn close(&mut self) -> Poll<(), Self::SinkError> {
-        match self.tx.start_send(None) {
-            Ok(AsyncSink::Ready) => Ok(Async::Ready(())),
-            Ok(AsyncSink::NotReady(_)) => Ok(Async::NotReady),
-            Err(e) => Err(e.into()),
-        }
-    }
-}
-
-impl Stream for Channel {
-    type Item = Vec<u8>;
-    type Error = Error;
-
-    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
-        match self.rx.poll() {
-            Ok(Async::Ready(None)) => Ok(Async::Ready(None)),
-            Ok(Async::Ready(Some(None))) => {
-                futures::task::current().notify();
-                Ok(Async::Ready(None))
-            }
-            Ok(Async::Ready(Some(Some(v)))) => {
-                futures::task::current().notify();
-                Ok(Async::Ready(Some(v)))
-            }
-            Ok(Async::NotReady) => Ok(Async::NotReady),
-            Err(_) => unreachable!(),
-        }
     }
 }
 

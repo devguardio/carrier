@@ -3,6 +3,11 @@
 carrier is a generic secure message system for IoT
 -----------
 
+read a full intro here: https://devguard.io/intro.html
+------------
+
+
+
  - based on the NOISE protocol framework
  - connect to any device using just its Ed25519 public id
  - peer to peer with assisted nat traversal

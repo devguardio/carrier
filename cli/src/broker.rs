@@ -1,7 +1,7 @@
+use carrier::*;
 use failure::Error;
 use futures::sync::mpsc;
 use futures::{self, Async, Future, Stream};
-use carrier::*;
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::num::Wrapping;
@@ -112,16 +112,15 @@ lazy_static! {
 }
 
 struct Service {
-    connection_id:  String,
-    addr:           SocketAddr,
+    connection_id: String,
+    addr:          SocketAddr,
 
-    identity:       Identity,
-    ep:             Arc<Mutex<endpoint::Endpoint>>,
-    proxies:        Vec<endpoint::Proxy>,
+    identity: Identity,
+    ep:       Arc<Mutex<endpoint::Endpoint>>,
+    proxies:  Vec<endpoint::Proxy>,
 }
 
 impl proto::Broker::Service for Service {
-
     fn connect(
         &mut self,
         msg: proto::ConnectRequest,
@@ -138,7 +137,6 @@ impl proto::Broker::Service for Service {
                 .proxy(self.addr, msg.channel, listener.addr, responder_chan)
                 .unwrap();
 
-
             let rsp = proto::ListenStream {
                 identity:     self.identity.to_string(),
                 channel_mine: responder_chan,
@@ -151,9 +149,7 @@ impl proto::Broker::Service for Service {
 
             listener.tx.try_send(rsp)?;
             self.proxies.push(proxy);
-            return Ok(Box::new(
-                futures::future::ok(proto::ConnectResponse { ok: true })
-                ));
+            return Ok(Box::new(futures::future::ok(proto::ConnectResponse { ok: true })));
         }
 
         Ok(Box::new(futures::future::ok(proto::ConnectResponse { ok: false })))
@@ -161,9 +157,8 @@ impl proto::Broker::Service for Service {
 
     fn listen(
         &mut self,
-        msg: proto::ListenRequest
-    ) -> Result<Box<Stream<Item = proto::ListenStream, Error = Error> + Sync + Send + 'static>, Error>
-    {
+        msg: proto::ListenRequest,
+    ) -> Result<Box<Stream<Item = proto::ListenStream, Error = Error> + Sync + Send + 'static>, Error> {
         let (tx, rx) = mpsc::channel(10);
 
         let lst = Listener {
@@ -180,8 +175,7 @@ impl proto::Broker::Service for Service {
     fn publish(
         &mut self,
         msg: proto::PublishRequest,
-    ) -> Result<Box<Future<Item = proto::PublishResponse, Error = Error> + Sync + Send + 'static>, Error>
-    {
+    ) -> Result<Box<Future<Item = proto::PublishResponse, Error = Error> + Sync + Send + 'static>, Error> {
         info!("PUBLISH {} {} {:x?}", msg.address, self.identity, msg.value);
 
         SHADOWBROKER
@@ -224,9 +218,8 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
                 connection_id: connection_id.clone(),
                 addr:          addr,
                 ep:            ep.clone(),
-                proxies:        Vec::new(),
+                proxies:       Vec::new(),
             };
-
 
             let ft = proto::Broker::dispatch(channel, service)
                 //TODO why is this not inside the listen() api call in an and_then?

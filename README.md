@@ -19,6 +19,7 @@ features:
 - [x] NOISE
 - [x] Ed25519 as identity
 - [x] tokio
+- [ ] MOSH
 - [ ] hash routing
 - [ ] keepalives, timeouts and rekeying
 - [ ] nat traversal

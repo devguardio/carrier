@@ -23,7 +23,13 @@ extern crate tokio;
 #[macro_use]
 extern crate lazy_static;
 extern crate hpack;
+extern crate serde;
+#[macro_use]
+extern crate serde_derive;
+extern crate toml;
+extern crate trust_dns_resolver;
 
+pub mod cli;
 pub mod dns;
 pub mod endpoint;
 pub mod identity;

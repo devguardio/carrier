@@ -182,10 +182,16 @@ impl QuicRecovery {
     pub fn on_packet_sent(&mut self, seq: u64, frames: Vec<Frame>, now: u64) {
         let (bytes, ackonly) = frames.iter().fold((0, true), |(bytes, ackonly), frame| {
             let ackonly = ackonly && frame.is_ack();
-            (bytes + if frame.is_ack() {0} else {frame.len()}, ackonly)
+            (bytes + if frame.is_ack() { 0 } else { frame.len() }, ackonly)
         });
 
-        trace!("on_packet_sent seq: {}, frames: {}, bytes: {}, ackonly: {}", seq, frames.len(), bytes, ackonly);
+        trace!(
+            "on_packet_sent seq: {}, frames: {}, bytes: {}, ackonly: {}",
+            seq,
+            frames.len(),
+            bytes,
+            ackonly
+        );
 
         let pkt = Pkt {
             seq,
@@ -420,7 +426,7 @@ impl QuicRecovery {
         for key in keys {
             let mut pkt = self.sent_packets.get_mut(&key).unwrap();
             if pkt.ackonly {
-                continue
+                continue;
             }
             if pkt.frames.is_empty() {
                 continue;

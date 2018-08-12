@@ -45,10 +45,10 @@ pub struct Channel {
     newc: mpsc::Receiver<(ChannelStream, Vec<u8>)>,
 
     identity: Identity,
-    addr: SocketAddr,
+    pub addr: SocketAddr,
 }
 
-pub struct ChannelStream{
+pub struct ChannelStream {
     tx: mpsc::Sender<Vec<u8>>,
     rx: mpsc::Receiver<Vec<u8>>,
 }
@@ -68,7 +68,7 @@ struct ChannelWorker {
     wrk:     mpsc::Sender<EndpointWorkerCmd>,
     channel: ChannelId,
 
-    stop: bool,
+    stop:             bool,
     are_we_initiator: bool,
 }
 
@@ -142,15 +142,14 @@ pub struct Proxy {
 
 impl Channel {
     fn new(
-        transport:  transport::Channel,
-        rx:         mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
-        sock:       UdpSocket,
-        addr:       SocketAddr,
-        wrk:        mpsc::Sender<EndpointWorkerCmd>,
-        channel:    ChannelId,
-        identity:   Identity,
+        transport: transport::Channel,
+        rx: mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
+        sock: UdpSocket,
+        addr: SocketAddr,
+        wrk: mpsc::Sender<EndpointWorkerCmd>,
+        channel: ChannelId,
+        identity: Identity,
         are_we_initiator: bool,
-
     ) -> Channel {
         let (tx1, rx1) = futures::sync::mpsc::channel(10);
         let (tx2, rx2) = futures::sync::mpsc::channel(10);
@@ -188,52 +187,44 @@ impl Channel {
     }
 
     pub fn open(&mut self, header: Vec<u8>) -> Result<ChannelStream, Error> {
-        let (a,b) = ChannelStream::new();
+        let (a, b) = ChannelStream::new();
         self.open.try_send((a, header))?;
         Ok(b)
     }
 }
 
-impl Stream for Channel{
-    type Item  = (ChannelStream, Vec<u8>);
+impl Stream for Channel {
+    type Item = (ChannelStream, Vec<u8>);
     type Error = Error;
 
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
-        self.newc.poll().map_err(|()|unreachable!())
+        self.newc.poll().map_err(|()| unreachable!())
     }
 }
 
-
 impl ChannelStream {
-    pub fn new() -> (Self,Self) {
+    pub fn new() -> (Self, Self) {
         let (tx1, rx1) = futures::sync::mpsc::channel(100);
         let (tx2, rx2) = futures::sync::mpsc::channel(100);
 
-        (ChannelStream{
-            rx: rx2,
-            tx: tx1,
-        },
-        ChannelStream {
-            rx: rx1,
-            tx: tx2,
-        })
+        (ChannelStream { rx: rx2, tx: tx1 }, ChannelStream { rx: rx1, tx: tx2 })
     }
 }
 
 impl Stream for ChannelStream {
-    type Item  = Vec<u8>;
+    type Item = Vec<u8>;
     type Error = Error;
 
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
-        self.rx.poll().map_err(|()|unreachable!())
+        self.rx.poll().map_err(|()| unreachable!())
     }
 }
 
 impl Sink for ChannelStream {
-    type SinkItem  = Vec<u8>;
+    type SinkItem = Vec<u8>;
     type SinkError = Error;
 
-    fn poll_complete(&mut self) ->  Result<Async<()>, Self::SinkError> {
+    fn poll_complete(&mut self) -> Result<Async<()>, Self::SinkError> {
         self.tx.poll_complete().map_err(Error::from)
     }
 
@@ -289,7 +280,7 @@ impl Endpoint {
         &mut self,
         to: A,
         x: Address,
-        secret: Secret,
+        secret: &Secret,
         proxy: Option<(ChannelId, ChannelId, ChannelId)>,
     ) -> Result<ConnectFuture, Error> {
         let addr = to.to_socket_addrs()?.next().ok_or(EndpointError::NoAddr)?;
@@ -641,20 +632,19 @@ impl Future for ChannelWorker {
     //      - stop worker immediately
 
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-
         // --- make no progress if there's a full consumer
         match self.newc.poll_ready() {
             Ok(Async::Ready(_)) => (),
             Ok(Async::NotReady) => return Ok(Async::NotReady),
             Err(_) => {}
         };
-        for (_,cs) in &mut self.streams {
+        for (_, cs) in &mut self.streams {
             match cs.tx.poll_ready() {
                 Ok(Async::Ready(_)) => (),
                 Ok(Async::NotReady) => return Ok(Async::NotReady),
                 Err(_) => {}
             }
-        };
+        }
 
         // --- transport progress
         self.deadline.poll().ok();
@@ -671,8 +661,8 @@ impl Future for ChannelWorker {
                 futures::task::current().notify();
             }
             Ok(ChannelProgress::ReceiveHeader(stream, header)) => {
-                let (a,b) = ChannelStream::new();
-                if let Err(e) = self.newc.try_send((a,header)) {
+                let (a, b) = ChannelStream::new();
+                if let Err(e) = self.newc.try_send((a, header)) {
                     error!("ChannelWorker sending newc for stream {}: {}", stream, e);
                 }
                 self.streams.insert(stream, b);
@@ -683,7 +673,7 @@ impl Future for ChannelWorker {
                 match self.streams.get_mut(&stream) {
                     None => {
                         warn!("ChannelWorker, stream frame for unregistered stream {}", stream);
-                    },
+                    }
                     Some(cs) => {
                         if let Err(e) = cs.tx.try_send(msg) {
                             warn!("ChannelWorker::stream {} try_send: {}", stream, e);
@@ -734,11 +724,10 @@ impl Future for ChannelWorker {
             Ok(Async::NotReady) => (),
         };
 
-
         // ---- poll streams for new data if we have space in the window
         if !self.stop && self.transport.window() > 0 {
             let mut removeme = Vec::new();
-            for (id,ch) in &mut self.streams {
+            for (id, ch) in &mut self.streams {
                 match ch.rx.poll() {
                     Ok(Async::Ready(None)) | Err(_) => {
                         self.transport.close(*id);
@@ -764,7 +753,7 @@ impl Future for ChannelWorker {
                         trace!("stopping channel worker because Channel is dropped");
                         self.stop = true;
 
-                        for (id,_) in self.streams.drain() {
+                        for (id, _) in self.streams.drain() {
                             self.transport.close(id);
                         }
 
@@ -779,7 +768,6 @@ impl Future for ChannelWorker {
                 }
                 Async::NotReady => (),
             };
-
         }
 
         // --- stopping and no bytes left in flight. send disconnect and exit

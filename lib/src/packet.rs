@@ -70,23 +70,36 @@ fn decode_invalid_packets() {
 
 #[derive(Debug, PartialEq)]
 pub enum Frame {
-    Header      { stream: u32, payload: Vec<u8> },
-    Stream      { stream: u32, order: u64, payload: Vec<u8>},
-    Ack         { delay:  u64, acked: Vec<u64>},
+    Header {
+        stream:  u32,
+        payload: Vec<u8>,
+    },
+    Stream {
+        stream:  u32,
+        order:   u64,
+        payload: Vec<u8>,
+    },
+    Ack {
+        delay: u64,
+        acked: Vec<u64>,
+    },
     Ping,
     Disconnect,
-    Close       { stream: u32, order: u64 },
+    Close {
+        stream: u32,
+        order:  u64,
+    },
 }
 
 impl Frame {
     pub fn len(&self) -> usize {
         match self {
-            Frame::Header  { payload, .. }  => 1 + 4 + 2 +     payload.len(),
-            Frame::Stream  { payload, .. }  => 1 + 4 + 8 + 2 + payload.len(),
-            Frame::Ack     { acked, .. }    => 1 + 2 + 2 + 8 * acked.len(),
-            Frame::Ping                     => 1,
-            Frame::Disconnect               => 1,
-            Frame::Close { .. }             => 1 + 4 + 8,
+            Frame::Header { payload, .. } => 1 + 4 + 2 + payload.len(),
+            Frame::Stream { payload, .. } => 1 + 4 + 8 + 2 + payload.len(),
+            Frame::Ack { acked, .. } => 1 + 2 + 2 + 8 * acked.len(),
+            Frame::Ping => 1,
+            Frame::Disconnect => 1,
+            Frame::Close { .. } => 1 + 4 + 8,
         }
     }
 
@@ -105,9 +118,9 @@ impl Frame {
 
     pub fn order(&self) -> u64 {
         match self {
-            Frame::Header {  .. }       => 1,
+            Frame::Header { .. } => 1,
             Frame::Stream { order, .. } => *order,
-            Frame::Close  { order, .. } => *order,
+            Frame::Close { order, .. } => *order,
             _ => panic!("trying to order unordered frame"),
         }
     }
@@ -195,7 +208,7 @@ impl Frame {
                 }
                 Ok(0x06) => {
                     let stream = r.read_u32::<BigEndian>()?;
-                    let order  = r.read_u64::<BigEndian>()?;
+                    let order = r.read_u64::<BigEndian>()?;
                     f.push(Frame::Close { stream, order });
                 }
                 Ok(typ) => return Err(PacketError::InvalidFrameType { typ }.into()),

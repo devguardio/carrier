@@ -1,18 +1,13 @@
+extern crate carrier;
 extern crate clap;
 extern crate env_logger;
 extern crate failure;
 extern crate futures;
-extern crate carrier;
 extern crate rand;
 extern crate tokio;
 #[macro_use]
 extern crate log;
 extern crate prost;
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-extern crate toml;
-extern crate trust_dns_resolver;
 extern crate url;
 #[macro_use]
 extern crate lazy_static;
@@ -22,11 +17,11 @@ extern crate tokio_file_unix;
 mod broker;
 use broker::main_broker;
 
+use carrier::*;
 use clap::{App, Arg, SubCommand};
 use failure::Error;
 use futures::Async;
 use futures::{Future, Sink, Stream};
-use carrier::*;
 use rand::Rng;
 use std::env;
 use std::fs;
@@ -37,38 +32,25 @@ use std::net::SocketAddr;
 use std::time::{Duration, Instant};
 use tokio::io::AsyncRead;
 use tokio::timer::Deadline;
-use trust_dns_resolver::config::*;
-use trust_dns_resolver::Resolver;
 use url::Url;
-
-#[derive(Serialize, Deserialize)]
-struct Secrets {
-    identity: String,
-}
-
-struct SecretsParsed {
-    pub identity: Secret,
-}
 
 fn main_publish(
     secret: identity::Secret,
-    addr: SocketAddr,
-    x: identity::Address,
     topic: identity::Address,
     value: Vec<u8>,
 ) -> impl Future<Item = (), Error = ()> {
-    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
-    info!("connecting to {}", addr);
-    ep.connect(addr, x, secret.clone(), None)
+    let domain = env::var("CARRIER_DOMAIN").unwrap_or("carrier.devguard.io.".to_string());
+    endpoint::Endpoint::new("0.0.0.0:0")
         .unwrap()
-        .and_then(move |mut ctrl| {
+        .into_via(domain, secret)
+        .and_then(move |(ep, mut ctrl)| {
             proto::Broker::publish(
                 &mut ctrl,
                 proto::PublishRequest {
                     address: topic.to_string(),
                     value:   value,
                 },
-            ).map(|resp|(ctrl,resp))
+            ).map(|resp| (ctrl, resp))
         })
         .and_then(move |(_ctrl, resp)| {
             info!("<< {:?}", resp);
@@ -79,16 +61,14 @@ fn main_publish(
 
 fn main_subscribe(
     secret: identity::Secret,
-    addr: SocketAddr,
-    x: identity::Address,
     topic: identity::Address,
     ssecret: identity::Secret,
 ) -> impl Future<Item = (), Error = ()> {
-    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
-    info!("connecting to {}", addr);
-    ep.connect(addr, x, secret.clone(), None)
+    let domain = env::var("CARRIER_DOMAIN").unwrap_or("carrier.devguard.io.".to_string());
+    endpoint::Endpoint::new("0.0.0.0:0")
         .unwrap()
-        .and_then(move |mut ctrl| {
+        .into_via(domain, secret)
+        .and_then(move |(ep, mut ctrl)| {
             proto::Broker::subscribe(
                 &mut ctrl,
                 proto::SubscribeRequest {
@@ -99,10 +79,10 @@ fn main_subscribe(
                 println!("{}: {}", msg.identity, String::from_utf8_lossy(&value));
                 Ok(())
             })
-            .and_then(move |_| {
-                drop(ctrl);
-                Ok(())
-            })
+                .and_then(move |_| {
+                    drop(ctrl);
+                    Ok(())
+                })
         })
         .map_err(|e| error!("final error: {}", e))
 }
@@ -111,7 +91,7 @@ fn stdio_channel(stream: endpoint::ChannelStream) -> impl Future<Item = (), Erro
     let stdin = Stdin::new();
     let (tx, rx) = stream.split();
 
-    let fw1 = stdin.fold(tx, |tx, item| tx.send(item)).and_then(|_|{
+    let fw1 = stdin.fold(tx, |tx, item| tx.send(item)).and_then(|_| {
         debug!("stdin ended");
         Ok(())
     });
@@ -123,7 +103,7 @@ fn stdio_channel(stream: endpoint::ChannelStream) -> impl Future<Item = (), Erro
             stdout.write(&item).unwrap();
             stdout.flush().unwrap();
             Ok(stdout) as Result<_, Error>
-        }).and_then(|_|{
+        }).and_then(|_| {
             debug!("stream ended");
             Ok(())
         });
@@ -131,21 +111,16 @@ fn stdio_channel(stream: endpoint::ChannelStream) -> impl Future<Item = (), Erro
     fw1.select(fw2).map_err(|(e, _)| e).and_then(|_| Ok(()))
 }
 
-fn main_connect(
-    secret: identity::Secret,
-    addr: SocketAddr,
-    x: identity::Address,
-    url: String,
-) -> impl Future<Item = (), Error = ()> {
+fn main_connect(secret: identity::Secret, url: String) -> impl Future<Item = (), Error = ()> {
     let url = Url::parse(&url).unwrap();
     let target = url.host_str().expect("missing target identity").to_string();
     let path = url.path().to_string();
 
-    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
-    info!("connecting via {}", addr);
-    ep.connect(addr, x, secret.clone(), None)
+    let domain = env::var("CARRIER_DOMAIN").unwrap_or("carrier.devguard.io.".to_string());
+    endpoint::Endpoint::new("0.0.0.0:0")
         .unwrap()
-        .and_then(move |mut ctrl| {
+        .into_via(domain, secret.clone())
+        .and_then(move |(mut ep, mut ctrl)| {
             info!("via broker {}", ctrl.identity());
 
             let (xsecret, xpublic) = identity::generate_x25519();
@@ -233,12 +208,13 @@ fn sshd_srv(stream: endpoint::ChannelStream) -> impl Future<Item = (), Error = E
         })
 }
 
-fn main_sshd(secret: identity::Secret, addr: SocketAddr, x: identity::Address) -> impl Future<Item = (), Error = ()> {
-    let mut ep = endpoint::Endpoint::new("0.0.0.0:0").unwrap();
-    info!("connecting via {}", addr);
-    ep.connect(addr, x, secret.clone(), None)
+fn main_sshd(secret: identity::Secret) -> impl Future<Item = (), Error = ()> {
+    let domain = env::var("CARRIER_DOMAIN").unwrap_or("carrier.devguard.io.".to_string());
+    endpoint::Endpoint::new("0.0.0.0:0")
         .unwrap()
-        .and_then(move |mut ctrl| {
+        .into_via(domain, secret.clone())
+        .and_then(move |(mut ep, mut ctrl)| {
+            let via_addr = ctrl.addr.clone();
             info!("via broker {}", ctrl.identity());
             proto::Broker::listen(
                 &mut ctrl,
@@ -256,36 +232,45 @@ fn main_sshd(secret: identity::Secret, addr: SocketAddr, x: identity::Address) -
                 x.copy_from_slice(&msg.address);
                 let ft =
                     ep.connect(
-                        addr,
+                        via_addr.clone(),
                         identity::Address(x),
-                        secret.clone(),
+                        &secret,
                         Some((msg.channel_mine, msg.proxy_mine, msg.proxy_them)),
                     ).unwrap();
 
-                let ft =ft
-                    .and_then(|ch| {
+                let ft =
+                    ft.and_then(|ch| {
                         info!("connected to peer {}", ch.identity());
-                        ch.into_future().map_err(|(e,_)|e)
-                    })
-                    .and_then(|(stream, ch)|{
-                        let (stream, header) = stream.unwrap();
-                        sshd_srv(stream).and_then(|_|{
-                            drop(ch);
-                            Ok(())
+                        ch.into_future().map_err(|(e, _)| e)
+                    }).and_then(|(stream, ch)| {
+                            let (stream, header) = stream.unwrap();
+                            sshd_srv(stream).and_then(|_| {
+                                drop(ch);
+                                Ok(())
+                            })
                         })
-                    }).map_err(|e| error!("peer: {}", e));
+                        .map_err(|e| error!("peer: {}", e));
                 tokio::spawn(ft);
                 Ok(())
-            }).and_then(move |_|{
-                drop(ctrl);
-                Ok(())
             })
+                .and_then(move |_| {
+                    drop(ctrl);
+                    Ok(())
+                })
         })
         .map_err(|e| error!("{}", e))
 }
 
-
 pub fn main() {
+    match main_() {
+        Ok(_) => (),
+        Err(e) => {
+            error!("{}", e);
+            std::process::exit(4);
+        }
+    }
+}
+pub fn main_() -> Result<(), Error> {
     if let Err(_) = env::var("RUST_LOG") {
         env::set_var("RUST_LOG", "carrier=info");
     }
@@ -304,16 +289,7 @@ pub fn main() {
         $ carrier gen
     The secrets file can also be set in an environment variable
         $ export CARRIER_SECRET_FILE=~/.devguard/secret
-    finally you can override all of the previous like so:
-        $ carrier --secret ~/.devguard/secret identity
     ",
-        )
-        .arg(
-            Arg::with_name("secret")
-                .short("s")
-                .long("secret")
-                .help("load private ed25519 key data from file")
-                .takes_value(true),
         )
         .subcommand(SubCommand::with_name("gen").about("generate new identity"))
         .subcommand(
@@ -376,94 +352,15 @@ pub fn main() {
 
     let matches = clap.get_matches();
 
-    let get_secrets = || {
-        let defaultfile = env::home_dir().unwrap_or("/root/".into()).join(".devguard/secret");
-        let filename = if let Some(filename) = matches.value_of("secret") {
-            filename.to_string()
-        } else if let Ok(filename) = env::var("CARRIER_SECRET_FILE") {
-            filename
-        } else if defaultfile.exists() {
-            defaultfile.to_str().unwrap().to_string()
-        } else {
-            eprintln!("secret required. run carrier gen or see the SECRETS section in help");
-            std::process::exit(3);
-        };
-
-        let mut buffer = String::new();
-        File::open(filename)
-            .expect("cannot open file")
-            .read_to_string(&mut buffer)
-            .unwrap();
-        let secrets: Secrets = toml::from_str(&buffer).expect("error while reading secrets toml");
-
-        SecretsParsed {
-            identity: identity::Secret::parse(secrets.identity).unwrap(),
-        }
-    };
-
-    let get_broker = || {
-        let domain = env::var("CARRIER_DOMAIN").unwrap_or("carrier.devguard.io.".to_string());
-        let resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default()).unwrap();
-        let response = resolver.txt_lookup(&domain).unwrap();
-
-        let txt: Vec<dns::DnsRecord> = response
-            .iter()
-            .flat_map(|txt| {
-                txt.txt_data()
-                    .iter()
-                    .map(|txt| String::from_utf8_lossy(&txt).to_string())
-            })
-            .filter_map(|s| dns::DnsRecord::from_signed_txt(s))
-            .collect();
-
-        let record = rand::thread_rng().choose(&txt).cloned().expect("no addresses");
-        debug!("broker record: {:?}", record);
-        record
-    };
-
     match matches.subcommand() {
         ("gen", Some(_submatches)) => {
-            use rand::RngCore;
-            use std::fs::File;
-            use std::io::Write;
-            use std::os::unix::fs::PermissionsExt;
-
-            let defaultfile = env::home_dir().unwrap_or("/root/".into()).join(".devguard/secret");
-            if defaultfile.exists() {
-                eprintln!("~/.devguard/secret exists, refusing to overwrite");
-                std::process::exit(3);
-            }
-            let dir = env::home_dir().unwrap().join(".devguard/");
-            fs::create_dir_all(&dir).unwrap();
-            let mut perms = fs::metadata(&dir).unwrap().permissions();
-            perms.set_mode(0o700);
-            fs::set_permissions(&dir, perms).unwrap();
-
-            let fp = dir.join("secret");
-            let mut f = File::create(&fp).unwrap();
-
-            let mut identity = vec![0; 32];
-            let mut rng = rand::OsRng::new().unwrap();
-            rng.try_fill_bytes(&mut identity).unwrap();
-            let identity = Secret::from_bytes(&mut identity);
-
-            let fi = toml::to_vec(&Secrets {
-                identity: identity.to_string(),
-            }).unwrap();
-
-            f.write_all(&fi).unwrap();
-
-            let mut perms = fs::metadata(&fp).unwrap().permissions();
-            perms.set_mode(0o400);
-            fs::set_permissions(&fp, perms).unwrap();
-            drop(f);
-
-            println!("identity:  {}", identity.identity());
+            println!("{}", cli::Secrets::gen()?.identity.identity());
+            Ok(())
         }
         ("mkshadow", Some(_submatches)) => {
             use rand::RngCore;
 
-            let secrets = get_secrets();
+            let secrets = cli::Secrets::load()?;
 
             let mut secret = vec![0; 32];
             let mut rng = rand::OsRng::new().unwrap();
@@ -474,14 +371,15 @@ pub fn main() {
 
             println!("address: {}", address.to_string());
             println!("secret:  {}", secret.to_string());
+            Ok(())
         }
         ("identity", Some(_submatches)) => {
-            let secrets = get_secrets();
+            let secrets = cli::Secrets::load()?;
             println!("{}", secrets.identity.identity());
+            Ok(())
         }
         ("publish", Some(submatches)) => {
-            let secrets = get_secrets();
-            let broker = get_broker();
+            let secrets = cli::Secrets::load()?;
 
             let address = submatches.value_of("address").unwrap().to_string();
             let value = submatches.value_of("value").unwrap().to_string();
@@ -489,13 +387,11 @@ pub fn main() {
             let address = identity::Address::parse(address).unwrap();
             let value = carrier::shadow::encrypt(value, address.clone()).unwrap();
 
-            tokio::run(futures::lazy(move || {
-                main_publish(secrets.identity, broker.addr, broker.x, address, value)
-            }));
+            tokio::run(futures::lazy(move || main_publish(secrets.identity, address, value)));
+            Ok(())
         }
         ("subscribe", Some(submatches)) => {
-            let secrets = get_secrets();
-            let broker = get_broker();
+            let secrets = cli::Secrets::load()?;
 
             let address = submatches.value_of("address").unwrap().to_string();
             let ssecret = submatches.value_of("shadowkey").unwrap().to_string();
@@ -504,38 +400,38 @@ pub fn main() {
             let ssecret = identity::Secret::parse(ssecret).unwrap();
 
             tokio::run(futures::lazy(move || {
-                main_subscribe(secrets.identity, broker.addr, broker.x, address, ssecret)
+                main_subscribe(secrets.identity, address, ssecret)
             }));
+            Ok(())
         }
         ("connect", Some(submatches)) => {
-            let secrets = get_secrets();
-            let broker = get_broker();
+            let secrets = cli::Secrets::load()?;
 
             let url = submatches.value_of("url").unwrap().to_string();
 
-            tokio::run(futures::lazy(move || {
-                main_connect(secrets.identity, broker.addr, broker.x, url)
-            }));
+            tokio::run(futures::lazy(move || main_connect(secrets.identity, url)));
+            Ok(())
         }
         ("sshd", Some(_submatches)) => {
-            let secret = get_secrets();
-            let broker = get_broker();
-
-            tokio::run(futures::lazy(move || main_sshd(secret.identity, broker.addr, broker.x)));
+            let secrets = cli::Secrets::load()?;
+            tokio::run(futures::lazy(move || main_sshd(secrets.identity)));
+            Ok(())
         }
         ("broker", Some(_submatches)) => {
-            let secrets = get_secrets();
+            let secrets = cli::Secrets::load()?;
             tokio::run(futures::lazy(|| main_broker(secrets.identity)));
+            Ok(())
         }
         ("dns", Some(submatches)) => {
             let prio = submatches.value_of("priority").unwrap().to_string();
             let ip = submatches.value_of("ip").unwrap().to_string();
-            let secrets = get_secrets();
+            let secrets = cli::Secrets::load()?;
             let broker_x = secrets.identity.to_x25519();
             let txt = format!("carrier={} {}:8443 {}", prio, ip, broker_x.to_string());
             let sig = secrets.identity.sign(b"carrier dns record", txt.as_bytes());
 
             println!("\"{} {}\"", txt, sig.to_string());
+            Ok(())
         }
         _ => unreachable!(),
     }

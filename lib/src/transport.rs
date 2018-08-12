@@ -1,12 +1,12 @@
 use failure::Error;
 use noise;
 use packet::{EncryptedPacket, Frame};
+use rand;
 use recovery;
 use replay;
+use std::collections::HashMap;
 use std::collections::VecDeque;
 use std::time::{Duration, Instant};
-use std::collections::HashMap;
-use rand;
 
 use stream;
 
@@ -120,7 +120,7 @@ impl Channel {
                     }
 
                     let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
-                    ordered.push(Frame::Header {stream, payload })?;
+                    ordered.push(Frame::Header { stream, payload })?;
                 }
                 Frame::Stream { stream, order, payload } => {
                     trace!("[{}] received message {}", self.debug_id, order);
@@ -131,7 +131,7 @@ impl Channel {
                     }
 
                     let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
-                    ordered.push(Frame::Stream {stream, order, payload })?;
+                    ordered.push(Frame::Stream { stream, order, payload })?;
                 }
                 Frame::Disconnect => {
                     trace!("[{}] received disconnect", self.debug_id);
@@ -154,7 +154,7 @@ impl Channel {
                         return Ok(());
                     }
                     let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
-                    ordered.push(Frame::Close{stream, order})?;
+                    ordered.push(Frame::Close { stream, order })?;
                 }
             }
         }
@@ -297,7 +297,7 @@ impl Channel {
         // receive assembled messages
         // TODO this unintentionally gives priority to earlier streams,
         // since the streams first in the hash are always polled first.
-        for (_id,stream) in &mut self.streams {
+        for (_id, stream) in &mut self.streams {
             if let Some(msg) = stream.pop() {
                 match msg {
                     Frame::Header { stream, payload, .. } => {
@@ -308,7 +308,7 @@ impl Channel {
                         trace!("Progress=ReceiveStream");
                         return Ok(ChannelProgress::ReceiveStream(stream, payload));
                     }
-                    Frame::Close { stream ,.. } => {
+                    Frame::Close { stream, .. } => {
                         trace!("Progress=Close");
                         return Ok(ChannelProgress::Close(stream));
                     }
@@ -339,7 +339,7 @@ impl Channel {
 
         let msg = msg.into();
         assert!(msg.len() < 1200, "message too big {}", msg.len());
-        self.outqueue.push_back(Frame::Stream{
+        self.outqueue.push_back(Frame::Stream {
             stream:  stream,
             order:   order,
             payload: msg.into(),
@@ -356,12 +356,12 @@ impl Channel {
         let stream = loop {
             let stream = rand::random::<u32>();
             match (are_we_initiator, stream) {
-                (_,     0) => continue,
-                (true,  s) if s % 2 == 0 => continue,
+                (_, 0) => continue,
+                (true, s) if s % 2 == 0 => continue,
                 (false, s) if s % 2 == 1 => continue,
-                (_,     s) if self.streams.contains_key(&s) => continue,
-                (_,     s) if self.counters.contains_key(&s) => continue,
-                (_,     s) => break s,
+                (_, s) if self.streams.contains_key(&s) => continue,
+                (_, s) if self.counters.contains_key(&s) => continue,
+                (_, s) => break s,
             }
         };
 
@@ -381,19 +381,25 @@ impl Channel {
         assert!(payload.len() < 1200, "message too big {}", payload.len());
 
         if let Some(_) = self.counters.get(&stream) {
-            warn!("[{}] attempting to send header twice on stream {}", self.debug_id, stream);
+            warn!(
+                "[{}] attempting to send header twice on stream {}",
+                self.debug_id, stream
+            );
             return;
         }
         self.counters.insert(stream, 1);
-        self.outqueue.push_back(Frame::Header {stream, payload});
+        self.outqueue.push_back(Frame::Header { stream, payload });
     }
     /// queue a close
     pub fn close(&mut self, stream: u32) {
         let order = match self.counters.get_mut(&stream) {
             None => {
-                warn!("[{}] not sending close for stream {} that never had headers", self.debug_id, stream);
+                warn!(
+                    "[{}] not sending close for stream {} that never had headers",
+                    self.debug_id, stream
+                );
                 return;
-            },
+            }
             Some(order) => {
                 //we're not removing the counrer yet because reuse of the stream id
                 //may lead to corner cases where a header arrives before a close
@@ -402,7 +408,7 @@ impl Channel {
             }
         };
 
-        self.outqueue.push_back(Frame::Close {order, stream});
+        self.outqueue.push_back(Frame::Close { order, stream });
     }
 
     /// create a disconnect packet

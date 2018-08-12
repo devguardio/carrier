@@ -28,6 +28,10 @@ subtle              = "0.7.0"
 tokio               = "0.1.7"
 x25519-dalek        = { version = "0.3.0", default-features = false, features = ["std", "u64_backend"] }
 hpack               = "0.3.0"
+serde               = "1.0"
+serde_derive        = "1.0"
+toml                = "0.4"
+trust-dns-resolver  = "0.10.0-alpha.2"
 
 
 [build-dependencies]

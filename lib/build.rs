@@ -5,8 +5,7 @@ extern crate prost_build;
 extern crate quote;
 extern crate proc_macro2;
 
-use proc_macro2::{Ident, Span, Literal};
-
+use proc_macro2::{Ident, Literal, Span};
 
 struct ServiceGen {}
 
@@ -18,7 +17,6 @@ impl ServiceGen {
 
 impl prost_build::ServiceGenerator for ServiceGen {
     fn generate(&mut self, service: prost_build::Service, buf: &mut String) {
-
         let service_name = Ident::new(&service.name, Span::call_site());
 
         let mut service_trait_fns = Vec::new();
@@ -30,20 +28,30 @@ impl prost_build::ServiceGenerator for ServiceGen {
             let call_name_b = Literal::byte_string(call_name.as_bytes());
 
             let method_name = Ident::new(&method.name, Span::call_site());
-            let input_type  = Ident::new(&method.input_type, Span::call_site());
+            let input_type = Ident::new(&method.input_type, Span::call_site());
             let output_type = Ident::new(&method.output_type, Span::call_site());
-            let out_w       = Ident::new(if method.server_streaming { "Stream" } else { "Future" }, Span::call_site());
+            let out_w = Ident::new(
+                if method.server_streaming { "Stream" } else { "Future" },
+                Span::call_site(),
+            );
 
-            let inp_generic  = if method.client_streaming {quote!{
-                <I: Stream<Item=super::#input_type, Error=Error> + Sync + Send + 'static>
-            }}else {quote!{
-            }};
+            let inp_generic = if method.client_streaming {
+                quote!{
+                    <I: Stream<Item=super::#input_type, Error=Error> + Sync + Send + 'static>
+                }
+            } else {
+                quote!{}
+            };
 
-            let inp = if method.client_streaming {quote!{
-                I
-            }}else {quote!{
-                super::#input_type
-            }};
+            let inp = if method.client_streaming {
+                quote!{
+                    I
+                }
+            } else {
+                quote!{
+                    super::#input_type
+                }
+            };
 
             // --- traits
             service_trait_fns.push(quote!{
@@ -53,36 +61,48 @@ impl prost_build::ServiceGenerator for ServiceGen {
 
             // --- call
 
-            let outstream = if method.server_streaming {quote!{
-                rx.and_then(move |item|{
-                    super::#output_type::decode(&item).map_err(Error::from)
-                })
-            }} else {quote!{
-                rx.into_future().map_err(|(e,_)|e).and_then(|(item,_)|{
-                    match item {
-                        Some(item) => super::#output_type::decode(&item).map_err(Error::from),
-                        None => Err(Error::from(ServiceError::ResponderEof)),
-                    }
-                })
-            }};
+            let outstream = if method.server_streaming {
+                quote!{
+                    rx.and_then(move |item|{
+                        super::#output_type::decode(&item).map_err(Error::from)
+                    })
+                }
+            } else {
+                quote!{
+                    rx.into_future().map_err(|(e,_)|e).and_then(|(item,_)|{
+                        match item {
+                            Some(item) => super::#output_type::decode(&item).map_err(Error::from),
+                            None => Err(Error::from(ServiceError::ResponderEof)),
+                        }
+                    })
+                }
+            };
 
-            let instream = if method.client_streaming {quote!{{
-                i.fold(tx, |tx, item|{
+            let instream = if method.client_streaming {
+                quote!{{
+                    i.fold(tx, |tx, item|{
+                        let mut v = Vec::new();
+                        item.encode(&mut v).unwrap();
+                        tx.send(v)
+                    })
+                }}
+            } else {
+                quote!{{
                     let mut v = Vec::new();
-                    item.encode(&mut v).unwrap();
+                    i.encode(&mut v).unwrap();
                     tx.send(v)
-                })
-            }}} else {quote!{{
-                let mut v = Vec::new();
-                i.encode(&mut v).unwrap();
-                tx.send(v)
-            }}};
+                }}
+            };
 
-            let flatten_wtf = if method.server_streaming {quote!{
-                .into_stream().flatten()
-            }} else {quote!{
-                .flatten()
-            }};
+            let flatten_wtf = if method.server_streaming {
+                quote!{
+                    .into_stream().flatten()
+                }
+            } else {
+                quote!{
+                    .flatten()
+                }
+            };
 
             call_fns.push(quote!{
                 pub fn #method_name #inp_generic (channel: &mut Channel, i: #inp)
@@ -136,22 +156,25 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 }
             });
 
-
             // --- dispatch
 
-            let outstream = if method.server_streaming {quote!{
-                fold(tx,|tx, item| {
-                    let mut v = Vec::new();
-                    item.encode(&mut v).unwrap();
-                    tx.send(v)
-                })
-            }} else {quote!{
-                and_then(|item|{
-                    let mut v = Vec::new();
-                    item.encode(&mut v).unwrap();
-                    tx.send(v)
-                })
-            }};
+            let outstream = if method.server_streaming {
+                quote!{
+                    fold(tx,|tx, item| {
+                        let mut v = Vec::new();
+                        item.encode(&mut v).unwrap();
+                        tx.send(v)
+                    })
+                }
+            } else {
+                quote!{
+                    and_then(|item|{
+                        let mut v = Vec::new();
+                        item.encode(&mut v).unwrap();
+                        tx.send(v)
+                    })
+                }
+            };
 
             let handle_error = quote!{{
                 use hpack::Encoder;
@@ -226,7 +249,6 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 });
             }
         }
-
 
         let tokens = quote! {
             #[allow(non_snake_case)]
@@ -310,13 +332,11 @@ impl prost_build::ServiceGenerator for ServiceGen {
             }
         };
 
-
         let tos = format!("{}", tokens)
             .replace(" { ", " {\n")
             .replace(" } ", " }\n")
             .replace(" ; ", " ;\n");
         buf.push_str(&tos);
-
     }
 
     fn finalize(&mut self, _buf: &mut String) {}

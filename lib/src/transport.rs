@@ -280,12 +280,14 @@ impl Channel {
             let pkt = self.noise.send(&pkt)?;
 
             trace!(
-                "[{}] sending pkt {} with {} frames, {} bytes",
+                "[{}] sending pkt {} with {} frames, {} bytes [{}]",
                 self.debug_id,
                 pkt.counter,
                 frames.len(),
-                pkt.payload.len()
+                pkt.payload.len(),
+                frames.iter().map(|frame|frame.name()).collect::<Vec<&'static str>>().join(",")
             );
+
             self.recovery.on_packet_sent(pkt.counter, frames, now);
 
             let pkt = pkt.encode();
@@ -390,7 +392,7 @@ impl Channel {
         self.counters.insert(stream, 1);
         self.outqueue.push_back(Frame::Header { stream, payload });
     }
-    /// queue a close
+    /// queue a close, stream may still be able to receive (this is half close)
     pub fn close(&mut self, stream: u32) {
         let order = match self.counters.get_mut(&stream) {
             None => {
@@ -409,6 +411,12 @@ impl Channel {
         };
 
         self.outqueue.push_back(Frame::Close { order, stream });
+    }
+
+    /// remove a stream (full close)
+    pub fn remove(&mut self, stream: u32) {
+        self.streams.remove(&stream);
+        self.counters.remove(&stream);
     }
 
     /// create a disconnect packet

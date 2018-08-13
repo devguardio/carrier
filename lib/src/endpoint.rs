@@ -730,7 +730,6 @@ impl Future for ChannelWorker {
             for (id, ch) in &mut self.streams {
                 match ch.rx.poll() {
                     Ok(Async::Ready(None)) | Err(_) => {
-                        self.transport.close(*id);
                         removeme.push(*id);
                         futures::task::current().notify();
                     }
@@ -743,6 +742,8 @@ impl Future for ChannelWorker {
             }
             for id in removeme {
                 trace!("removing stream {}", id);
+                self.transport.close(id);
+                self.transport.remove(id);
                 self.streams.remove(&id);
             }
 

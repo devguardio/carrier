@@ -92,6 +92,18 @@ pub enum Frame {
 }
 
 impl Frame {
+
+    pub fn name(&self) -> &'static str {
+        match self {
+            Frame::Header {..}  => "Header",
+            Frame::Stream {..}  => "Stream",
+            Frame::Ack {..}     => "Ack",
+            Frame::Ping         => "Ping",
+            Frame::Disconnect   => "Disconnect",
+            Frame::Close {..}   => "Close",
+        }
+    }
+
     pub fn len(&self) -> usize {
         match self {
             Frame::Header { payload, .. } => 1 + 4 + 2 + payload.len(),

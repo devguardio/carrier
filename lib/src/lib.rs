@@ -48,5 +48,4 @@ pub use identity::Secret;
 pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/ox.certificate.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/ox.broker.v1.rs"));
-    include!(concat!(env!("OUT_DIR"), "/ox.axiom.v1.rs"));
 }

@@ -35,6 +35,4 @@ trust-dns-resolver  = "0.10.0-alpha.2"
 
 
 [build-dependencies]
-prost-build = "0.4.0"
-quote = "0.6.5"
-proc-macro2 = "0.4.9"
+carrier-build = {path = "../build", version = "0.2.0"}

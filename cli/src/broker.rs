@@ -241,8 +241,7 @@ pub fn main_broker(secret: identity::Secret) -> impl Future<Item = (), Error = (
 
             tokio::spawn(ft);
             Ok(())
-        })
-        .and_then(|_| Ok(()))
+        }).and_then(|_| Ok(()))
         .map_err(|e| error!("listener error: {}", e))
 }
 

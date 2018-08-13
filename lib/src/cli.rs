@@ -58,14 +58,12 @@ impl endpoint::Endpoint {
                         txt.txt_data()
                             .iter()
                             .map(|txt| String::from_utf8_lossy(&txt).to_string())
-                    })
-                    .filter_map(|s| dns::DnsRecord::from_signed_txt(s))
+                    }).filter_map(|s| dns::DnsRecord::from_signed_txt(s))
                     .collect();
                 thread_rng().shuffle(&mut v);
 
                 Ok(v)
-            })
-            .and_then(move |records| {
+            }).and_then(move |records| {
                 loop_fn(
                     (self, secret, records, None),
                     |(ep, secret, records, _): (
@@ -85,12 +83,10 @@ impl endpoint::Endpoint {
                                     Ok(ch) => Ok(Loop::Break((ep, secret, records, Some(ch)))),
                                     Err(_) => Ok(Loop::Continue((ep, secret, records, None))),
                                 }))
-                            })
-                            .flatten()
+                            }).flatten()
                     },
                 )
-            })
-            .and_then(|(ep, _, _, ch)| Ok((ep, ch.unwrap())))
+            }).and_then(|(ep, _, _, ch)| Ok((ep, ch.unwrap())))
     }
 }
 

@@ -51,12 +51,10 @@ fn main_publish(
                     value:   value,
                 },
             ).map(|resp| (ctrl, resp))
-        })
-        .and_then(move |(_ctrl, resp)| {
+        }).and_then(move |(_ctrl, resp)| {
             info!("<< {:?}", resp);
             Ok(())
-        })
-        .map_err(|e| error!("{}", e))
+        }).map_err(|e| error!("{}", e))
 }
 
 fn main_subscribe(
@@ -78,13 +76,11 @@ fn main_subscribe(
                 let value = carrier::shadow::decrypt(msg.value, &ssecret).unwrap();
                 println!("{}: {}", msg.identity, String::from_utf8_lossy(&value));
                 Ok(())
+            }).and_then(move |_| {
+                drop(ctrl);
+                Ok(())
             })
-                .and_then(move |_| {
-                    drop(ctrl);
-                    Ok(())
-                })
-        })
-        .map_err(|e| error!("final error: {}", e))
+        }).map_err(|e| error!("final error: {}", e))
 }
 
 fn stdio_channel(stream: endpoint::ChannelStream) -> impl Future<Item = (), Error = Error> {
@@ -97,8 +93,8 @@ fn stdio_channel(stream: endpoint::ChannelStream) -> impl Future<Item = (), Erro
     });
 
     let stdout = io::stdout();
-    let fw2 =
-        rx.fold(stdout, |mut stdout, item| {
+    let fw2 = rx
+        .fold(stdout, |mut stdout, item| {
             use std::io::Write;
             stdout.write(&item).unwrap();
             stdout.flush().unwrap();
@@ -134,8 +130,7 @@ fn main_connect(secret: identity::Secret, url: String) -> impl Future<Item = (),
                     identity: target,
                 },
             ).map(|resp| (ep, expect, ctrl, resp))
-        })
-        .and_then(|(ep, expect, ctrl, msg)| {
+        }).and_then(|(ep, expect, ctrl, msg)| {
             info!("<< {:?}", msg);
             if !msg.ok {
                 error!("no route");
@@ -153,10 +148,8 @@ fn main_connect(secret: identity::Secret, url: String) -> impl Future<Item = (),
                     } else {
                         unreachable!();
                     }
-                })
-                .map(|v| (ep, ctrl, v))
-        })
-        .and_then(move |(mut ep, ctrl, rq)| {
+                }).map(|v| (ep, ctrl, v))
+        }).and_then(move |(mut ep, ctrl, rq)| {
             info!("established route to peer {}", rq.identity());
             let mut ch = ep.accept(rq, &secret).unwrap();
 
@@ -169,8 +162,7 @@ fn main_connect(secret: identity::Secret, url: String) -> impl Future<Item = (),
                 drop(ep);
                 Ok(())
             })
-        })
-        .map_err(|e| error!("{}", e))
+        }).map_err(|e| error!("{}", e))
 }
 
 fn sshd_srv(stream: endpoint::ChannelStream) -> impl Future<Item = (), Error = Error> {
@@ -199,8 +191,7 @@ fn sshd_srv(stream: endpoint::ChannelStream) -> impl Future<Item = (), Error = E
                         fragments.push(item);
                     }
                     Ok(futures::stream::iter_ok(fragments.into_iter()))
-                })
-                .flatten()
+                }).flatten()
                 .fold(tx1, |tx, item| tx.send(item.to_vec()))
                 .and_then(|_| Ok(()));
 
@@ -230,35 +221,32 @@ fn main_sshd(secret: identity::Secret) -> impl Future<Item = (), Error = ()> {
 
                 let mut x = [0; 32];
                 x.copy_from_slice(&msg.address);
-                let ft =
-                    ep.connect(
+                let ft = ep
+                    .connect(
                         via_addr.clone(),
                         identity::Address(x),
                         &secret,
                         Some((msg.channel_mine, msg.proxy_mine, msg.proxy_them)),
                     ).unwrap();
 
-                let ft =
-                    ft.and_then(|ch| {
+                let ft = ft
+                    .and_then(|ch| {
                         info!("connected to peer {}", ch.identity());
                         ch.into_future().map_err(|(e, _)| e)
                     }).and_then(|(stream, ch)| {
-                            let (stream, header) = stream.unwrap();
-                            sshd_srv(stream).and_then(|_| {
-                                drop(ch);
-                                Ok(())
-                            })
+                        let (stream, header) = stream.unwrap();
+                        sshd_srv(stream).and_then(|_| {
+                            drop(ch);
+                            Ok(())
                         })
-                        .map_err(|e| error!("peer: {}", e));
+                    }).map_err(|e| error!("peer: {}", e));
                 tokio::spawn(ft);
                 Ok(())
+            }).and_then(move |_| {
+                drop(ctrl);
+                Ok(())
             })
-                .and_then(move |_| {
-                    drop(ctrl);
-                    Ok(())
-                })
-        })
-        .map_err(|e| error!("{}", e))
+        }).map_err(|e| error!("{}", e))
 }
 
 pub fn main() {
@@ -290,8 +278,7 @@ pub fn main_() -> Result<(), Error> {
     The secrets file can also be set in an environment variable
         $ export CARRIER_SECRET_FILE=~/.devguard/secret
     ",
-        )
-        .subcommand(SubCommand::with_name("gen").about("generate new identity"))
+        ).subcommand(SubCommand::with_name("gen").about("generate new identity"))
         .subcommand(
             SubCommand::with_name("publish")
                 .about("publish shadow key/value on carrier")
@@ -301,23 +288,20 @@ pub fn main_() -> Result<(), Error> {
                         .takes_value(true)
                         .required(true)
                         .index(1),
-                )
-                .arg(
+                ).arg(
                     Arg::with_name("value")
                         .help("plaintext value")
                         .takes_value(true)
                         .required(true)
                         .index(2),
                 ),
-        )
-        .subcommand(SubCommand::with_name("mkshadow").about("create a shadow address"))
+        ).subcommand(SubCommand::with_name("mkshadow").about("create a shadow address"))
         .subcommand(
             SubCommand::with_name("dns")
                 .about("create dns record")
                 .arg(Arg::with_name("priority").takes_value(true).required(true).index(1))
                 .arg(Arg::with_name("ip").takes_value(true).required(true).index(2)),
-        )
-        .subcommand(
+        ).subcommand(
             SubCommand::with_name("subscribe")
                 .about("subscribe to shadow")
                 .arg(
@@ -326,16 +310,14 @@ pub fn main_() -> Result<(), Error> {
                         .takes_value(true)
                         .required(true)
                         .index(1),
-                )
-                .arg(
+                ).arg(
                     Arg::with_name("shadowkey")
                         .help("shadow descyption keys")
                         .takes_value(true)
                         .required(true)
                         .index(2),
                 ),
-        )
-        .subcommand(SubCommand::with_name("identity").about("print public identity"))
+        ).subcommand(SubCommand::with_name("identity").about("print public identity"))
         .subcommand(SubCommand::with_name("broker").about("run broker"))
         .subcommand(SubCommand::with_name("sshd"))
         .subcommand(

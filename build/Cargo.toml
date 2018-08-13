@@ -1,0 +1,12 @@
+[package]
+name    = "carrier-build"
+version = "0.2.0"
+authors = ["Arvid E. Picciani <arvid@devguard.io>"]
+license = "MIT"
+description = "carrier is a generic secure message system for IoT"
+homepage = "https://devguard.io"
+
+[dependencies]
+prost-build     = "0.4.0"
+quote           = "0.6.5"
+proc-macro2     = "0.4.9"

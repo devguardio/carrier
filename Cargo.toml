@@ -2,5 +2,6 @@
 members = [
     "lib",
     "cli",
+    "build",
 ]
 

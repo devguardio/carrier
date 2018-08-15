@@ -1,65 +1,99 @@
 syntax = "proto3";
-package ox.broker.v1;
+package carrier.broker.v1;
 
-message AnnounceRequest {
+
+message Path {
+    enum Category {
+        Invalid         = 0;
+        Local           = 1;
+        Internet        = 2;
+        BrokerOrigin    = 3;
+    }
+    string ipaddr       = 1;
+    Category category   = 2;
 }
 
-message AnnounceResponse {
-    bool ok = 1;
-}
-
-message PublishRequest {
-    string address   = 1;
-    bytes  value     = 2;
-}
-
-message PublishResponse {
-    bool ok = 1;
+message Filter {
+    oneof m {
+        bool    immediate = 1;
+        bytes   identity  = 2;
+    }
 }
 
 message SubscribeRequest {
-    string address   = 1;
+    bytes    shadow         = 1;
+    repeated Filter filter  = 2;
 }
 
-message SubscribeStream {
-    string identity  = 1;
-    bytes  value     = 2;
+
+message Publish {
+    bytes   identity = 1;
+    bytes   xaddr    = 2;
+}
+
+message Unpublish {
+    bytes   identity = 1;
+}
+
+message Supersede {
+}
+
+message SubscribeChange{
+    oneof m {
+        Publish     publish = 1;
+        Unpublish unpublish = 2;
+        Supersede supersede = 3;
+    }
+}
+
+message PublishRequest {
+    bytes   xaddr    = 1;
+    bytes   shadow   = 2;
+}
+
+message PublishChange{
+    oneof m {
+        Supersede supersede = 1;
+    }
 }
 
 message ConnectRequest {
-    string  identity = 1;
-    bytes   address  = 2;
-    uint64  channel  = 3;
+    bytes   identity        = 1;
+    bytes   shadow          = 2;
+    uint64  timestamp       = 3;
+    bytes   handshake       = 4;
+    repeated Path paths     = 5;
 }
 
 message ConnectResponse {
-    bool    ok      = 1;
-}
-
-message ListenRequest {
-    uint64  from_channel = 1;
-    uint64  to_channel   = 2;
-}
-
-message ListenStream {
-
-    string  identity     = 1;
-    bytes   address      = 2;
-
-    uint64  channel_mine = 3;
-    uint64  channel_them = 4;
-    uint64  proxy_mine   = 5;
-    uint64  proxy_them   = 6;
-}
-
-message Connect2Response {
-    uint64 token   = 1;
-    uint64 channel = 2;
+    bool    ok              = 1;
+    bytes   handshake       = 2;
+    uint64  route           = 3;
+    repeated Path paths     = 4;
 }
 
 service Broker {
-    rpc connect(ConnectRequest)             returns (ConnectResponse)           {}
-    rpc listen(ListenRequest)               returns (stream ListenStream)       {}
-    rpc publish(PublishRequest)             returns (PublishResponse)           {}
-    rpc subscribe(SubscribeRequest)         returns (stream SubscribeStream)    {}
+    rpc subscribe   (SubscribeRequest)  returns (stream SubscribeChange) {}
+    rpc publish     (PublishRequest)    returns (stream PublishChange)   {}
+
+    rpc connect     (ConnectRequest)    returns (stream ConnectResponse) {}
+}
+
+message PeerConnectRequest {
+    bytes   identity        = 1;
+    bytes   shadow          = 2;
+    uint64  timestamp       = 3;
+    bytes   handshake       = 4;
+    uint64  route           = 5;
+    repeated Path paths     = 6;
+}
+
+message PeerConnectResponse {
+    bool    ok              = 1;
+    bytes   handshake       = 2;
+    repeated Path paths     = 3;
+}
+
+service Peer {
+    rpc connect     (PeerConnectRequest)    returns (PeerConnectResponse)        {}
 }

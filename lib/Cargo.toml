@@ -13,10 +13,8 @@ bytes               = "0.4.9"
 clear_on_drop       = "0.2.3"
 crc8                = "0.1.1"
 ed25519-dalek       = "0.8.0"
-env_logger          = "0.5.12"
 failure             = "0.1.2"
 futures             = "0.1.23"
-hex                 = "0.3.2"
 lazy_static         = "1.1.0"
 log                 = "0.4.3"
 prost               = "0.4.0"
@@ -32,6 +30,11 @@ serde               = "1.0"
 serde_derive        = "1.0"
 toml                = "0.4"
 trust-dns-resolver  = "0.10.0-alpha.2"
+futurize            = "0.4.2"
+futurize-derive     = "0.4.1"
+gcmap               = "0.1.4"
+interfaces          = "0.0.4"
+env_logger          = {version = "0.5.12", default-features = false}
 
 
 [build-dependencies]

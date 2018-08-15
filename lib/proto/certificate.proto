@@ -1,36 +1,29 @@
 syntax = "proto3";
-package ox.certificate.v1;
+package carrier.certificate.v1;
 
-message AccessClaim {
-    Identity accessto  = 1;
-    Identity grantee   = 2;
+message Access {
+    bytes   shadow      = 1;
+    bytes   target      = 2;
+    repeated string  resources    = 3;
 }
 
-message Headers {
-    map<string,string> headers = 1;
+enum ClaimOpt{
+    INVALID     = 0;
+    DELEGATION  = 1;
 }
 
 message Claim {
     oneof claim {
-        AccessClaim     access  = 1;
-        Headers         headers = 2;
+        ClaimOpt    opt     = 1;
+        Access      access  = 2;
     }
 }
 
-message Identity {
-    int32 algo = 1;
-    bytes key  = 2;
+message Certificate {
+    uint32  epoch           = 1;
+    bytes   identity        = 2;
+    bytes   authority       = 3;
+    uint64  serial          = 4;
+    bytes   revoker         = 5;
+    repeated Claim  claims  = 6;
 }
-
-message CertificateProof {
-    Identity    identity        = 1;
-    repeated Claim claims       = 2;
-}
-
-message Address {
-    int32 algo   = 1;
-    bytes kex    = 2;
-    int32 serial = 3;
-}
-
-

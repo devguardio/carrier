@@ -1,4 +1,4 @@
-#![recursion_limit = "256"]
+#![recursion_limit = "512"]
 
 extern crate prost_build;
 #[macro_use]
@@ -38,8 +38,70 @@ impl prost_build::ServiceGenerator for ServiceGen {
         for method in &service.methods {
             let call_name = format!("/{}/{}/{}", service.package, service.proto_name, method.name);
             let call_name_b = Literal::byte_string(call_name.as_bytes());
-
             let method_name = Ident::new(&method.name, Span::call_site());
+            let fq_method_name_s = format!("{}::{}", service_name, method.name);
+
+
+            if method.proto_name.starts_with("__raw__") {
+                service_trait_fns.push(quote!{
+                    fn #method_name (&mut self, headers: Vec<(Vec<u8>, Vec<u8>)>, stream: ChannelStream);
+                });
+                dispatch_matchers.push(quote!{
+                    Some(#call_name_b) => {
+                        service.lock().unwrap().#method_name(inheaders, stream);
+                        Box::new(futures::future::ok(()))
+                            as Box<Future<Item = (), Error = ()> + Send + Sync>
+                    }
+                });
+                call_fns.push(quote!{
+                    pub fn #method_name <'b, I> (channel: &mut Channel, headers: I)
+                        -> impl Future<Item=(Vec<(Vec<u8>, Vec<u8>)>, ChannelStream), Error=Error>
+                        where I: IntoIterator<Item = (&'b [u8], &'b [u8])>,
+                    {
+                        let headers = headers.into_iter()
+                            .chain(vec![(":path".as_bytes(), #call_name.as_bytes())].into_iter());
+
+                        use hpack::Encoder;
+                        let mut encoder = Encoder::new();
+                        let headers = encoder.encode(headers);
+                        let stream  = channel.open(headers).unwrap();
+
+                        stream .into_future().map_err(|(e,_)|e).and_then(move |(header, stream)|{
+                            let header = match header {
+                                Some(header)    => header,
+                                None            => return Err(Error::from(ServiceError::HeaderEof)),
+                            };
+
+                            let mut decoder = hpack::Decoder::new();
+                            let header_list = match decoder.decode(&header) {
+                                Err(e) => return Err(Error::from(ServiceError::Hpack{e})),
+                                Ok(v) => v,
+                            };
+                            let mut status = None;
+                            let mut error  = None;
+
+                            for header in &header_list {
+                                if header.0 == b":status" {
+                                    status = Some(header.1.clone());
+                                } else if header.0 == b":error" {
+                                    error = Some(header.1.clone());
+                                }
+                            }
+                            if status != Some("200".into()) {
+                                return Err(Error::from(ServiceError::RemoteError{
+                                    status: status.map(|v|String::from_utf8_lossy(v.as_ref()).to_string()),
+                                    error:  error.map(|v|String::from_utf8_lossy(v.as_ref()).to_string()),
+                                }));
+                            }
+                            Ok((header_list, stream))
+                        })
+                    }
+                });
+                continue;
+            }
+
+
+            let cancel_wrapper_name  = Ident::new(&format!("Cancel{}", method.name), Span::call_site());
             let input_type = Ident::new(&method.input_type, Span::call_site());
             let output_type = Ident::new(&method.output_type, Span::call_site());
             let out_w = Ident::new(
@@ -67,7 +129,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
 
             // --- traits
             service_trait_fns.push(quote!{
-                fn #method_name #inp_generic (&mut self, i: #inp)
+                fn #method_name #inp_generic (&mut self, headers: Vec<(Vec<u8>, Vec<u8>)>, i: #inp)
                     -> Result<Box<dyn #out_w<Item=super::#output_type, Error=Error> + Sync + Send>, Error>;
             });
 
@@ -116,7 +178,43 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 }
             };
 
+
+            let cancelwrapper = if method.server_streaming {quote!{
+                impl<F> Stream for #cancel_wrapper_name<F>
+                    where F: #out_w<Item=super::#output_type, Error=Error>
+                {
+                    type Item   = super::#output_type;
+                    type Error  = Error;
+                    fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
+                        self.f.poll()
+                    }
+                }
+            }} else {quote!{
+                impl<F> Future for #cancel_wrapper_name<F>
+                    where F: #out_w<Item=super::#output_type, Error=Error>
+                {
+                    type Item   = super::#output_type;
+                    type Error  = Error;
+                    fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
+                        self.f.poll()
+                    }
+                }
+            }};
+
             call_fns.push(quote!{
+
+                #[allow(non_camel_case_types)]
+                struct #cancel_wrapper_name<F>
+                    where F: #out_w<Item=super::#output_type, Error=Error>
+                {
+                    f:F,
+                    #[allow(dead_code)]
+                    cancel: oneshot::Sender<()>
+                }
+
+                #cancelwrapper
+
+
                 pub fn #method_name #inp_generic (channel: &mut Channel, i: #inp)
                     -> impl #out_w<Item=super::#output_type, Error=Error>
                 {
@@ -130,12 +228,17 @@ impl prost_build::ServiceGenerator for ServiceGen {
 
                     let (tx,rx) = stream.split();
 
+
+                    let (instream_cancel_tx, instream_cancel_rx) = oneshot::channel::<()>();
+
                     tokio::spawn(
                         #instream
                         .map_err(|e|error!("instream: {}", e))
+                        .select2(instream_cancel_rx.map_err(|_|trace!("instream canceled")))
+                        .map_err(|_|())
                         .and_then(|_|Ok(())));
 
-                    rx.into_future().map_err(|(e,_)|e).and_then(move |(header, rx)|{
+                    let f = rx.into_future().map_err(|(e,_)|e).and_then(move |(header, rx)|{
                         let header = match header {
                             Some(v) => v,
                             None => return Err(Error::from(ServiceError::HeaderEof)),
@@ -164,7 +267,12 @@ impl prost_build::ServiceGenerator for ServiceGen {
                         }
 
                         Ok(#outstream)
-                    })#flatten_wtf
+                    })#flatten_wtf;
+
+                    #cancel_wrapper_name{
+                        f,
+                        cancel: instream_cancel_tx,
+                    }
                 }
             });
 
@@ -223,14 +331,14 @@ impl prost_build::ServiceGenerator for ServiceGen {
                         let instream = rx.and_then(|item| {
                             super::#input_type::decode(&item).map_err(Error::from)
                         });
-                        match service.lock().unwrap().#method_name(Box::new(instream)) {
+                        Box::new(match service.lock().unwrap().#method_name(inheaders, Box::new(instream)) {
                             Ok(v) => {
                                 Box::new(#outsend) as Box<Future<Item=(), Error=Error> + Send + Sync>
                             }
                             Err(e) => {
                                 Box::new(#handle_error) as Box<Future<Item=(), Error=Error> + Send + Sync>
                             }
-                        }
+                        }.map_err(|e|error!("error in rpc handler {} : {}", #fq_method_name_s, e)))
                     },
                 });
             } else {
@@ -247,16 +355,24 @@ impl prost_build::ServiceGenerator for ServiceGen {
                                 Err(ServiceError::CallerEof.into())
                             }
                         }).and_then(move |(rx, item)|{
-                            match { let l = service.lock().unwrap().#method_name(item); l } {
+                            match { let l = service.lock().unwrap().#method_name(inheaders, item); l } {
                                 Ok(v) => {
-                                    Box::new(#outsend.and_then(move |_|{drop(rx); Ok(())}))
-                                        as Box<Future<Item=(), Error=Error> + Send + Sync>
+                                    let rx = rx.for_each(|_|{
+                                        warn!("unexpected data from client after call with singular argument");
+                                        Ok(())
+                                    });
+                                    let ft = #outsend
+                                        .select2(rx)
+                                        .map_err(|e|e.split().0)
+                                        .map(|_|());
+                                    Box::new(ft) as Box<Future<Item=(), Error=Error> + Send + Sync>
                                 }
                                 Err(e) => {
                                     Box::new(#handle_error) as Box<Future<Item=(), Error=Error> + Send + Sync>
                                 }
                             }
-                        })) as Box<Future<Item=(), Error=Error> + Send + Sync>
+                        }).map_err(|e|error!("error in rpc handler {} : {}", #fq_method_name_s, e)))
+                        as Box<Future<Item=(), Error=()> + Send + Sync>
                     },
                 });
             }
@@ -267,22 +383,30 @@ impl prost_build::ServiceGenerator for ServiceGen {
             pub mod #service_name {
 
                 use failure::Error;
+                #[allow(unused_imports)]
                 use prost::Message;
-                use futures::{Future, Stream, Sink};
-                use endpoint::Channel;
+                #[allow(unused_imports)]
+                use futures::{self, Poll, Future, Stream, Sink};
+                #[allow(unused_imports)]
+                use channel::{Channel, ChannelListener, ChannelStream};
                 use hpack;
                 use tokio;
                 use std::sync::{Arc,Mutex};
+                #[allow(unused_imports)]
+                use futures::sync::oneshot;
+
 
                 #[derive(Debug, Fail)]
                 enum ServiceError {
-                    #[fail(display = "unexpected EOF waiting for headers")]
+                    #[fail(display = "stream closed while waiting for headers")]
                     HeaderEof,
 
-                    #[fail(display = "unexpected EOF waiting for response rpc object")]
+                    #[allow(dead_code)]
+                    #[fail(display = "stream closed while waiting for response rpc object")]
                     ResponderEof,
 
-                    #[fail(display = "unexpected EOF waiting for callers rpc object")]
+                    #[fail(display = "stream closed while waiting for callers rpc object")]
+                    #[allow(dead_code)]
                     CallerEof,
 
                     #[fail(display = "remote error : {:?} : {:?}", status, error)]
@@ -303,7 +427,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
 
                 #(#call_fns)*
 
-                pub fn dispatch<T>(channel: Channel, service: T)
+                pub fn dispatch<T>(channel: ChannelListener, service: T)
                     -> impl Future<Item=(), Error = Error> + Sync + Send
 
                     where T: Service + Sync + Send + 'static,
@@ -312,14 +436,14 @@ impl prost_build::ServiceGenerator for ServiceGen {
                     channel.fold(service, |service, (stream, header)|{
                         use hpack::Decoder;
                         let mut decoder = Decoder::new();
-                        let header_list = match decoder.decode(&header) {
+                        let inheaders = match decoder.decode(&header) {
                             Err(e) => return Err(Error::from(ServiceError::Hpack{e})),
                             Ok(v) => v,
                         };
-                        let mut path = None;
-                        for header in header_list {
+                        let mut path : Option<Vec<u8>> = None;
+                        for header in &inheaders {
                             if header.0 == b":path" {
-                                path = Some(header.1);
+                                path = Some(header.1.clone());
                             }
                         }
                         trace!("dispatch {:?}", path.as_ref().map(|v|String::from_utf8_lossy(v)));
@@ -334,9 +458,10 @@ impl prost_build::ServiceGenerator for ServiceGen {
                                 ];
                                 let headers = encoder.encode(headers);
                                 Box::new(stream.send(headers)
+                                    .map_err(|e|error!("error while streaming 404: {}", e))
                                     .and_then(|_|Ok(())))
                             }
-                        }.map_err(|e|error!("dispatch: {}", e));
+                        };
                         tokio::spawn(ft);
                         Ok(service)
                     }).and_then(|_|Ok(()))

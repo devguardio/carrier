@@ -1,0 +1,46 @@
+syntax = "proto3";
+package carrier.axiom.v1;
+
+message None {
+}
+
+message SubscribeConfig {
+    uint32 interval = 1;
+}
+
+message SystemLoad {
+    float load_1    = 1;
+    float load_5    = 2;
+    float load_15   = 3;
+}
+
+
+message Memory {
+    uint64  total = 1;
+    uint64  free  = 2;
+}
+
+message Power {
+    float   remaining_battery_capacity  = 1;
+    uint64  remaining_battery_time      = 2;
+    bool    on_ac_power                 = 3;
+}
+
+message Temperatures {
+    float cpu   = 1;
+}
+
+message SystemStats {
+    uint64        timestamp = 1;
+    SystemLoad      load    = 2;
+    Memory          mem     = 3;
+    Power           power   = 4;
+    Temperatures    temps   = 5;
+    uint64          uptime  = 6;
+
+}
+
+service Axiom {
+    rpc system_stats (SubscribeConfig)   returns (stream SystemStats) {};
+    rpc __raw__mosh (None)          returns (None) {};
+}

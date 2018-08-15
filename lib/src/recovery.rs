@@ -162,6 +162,13 @@ impl QuicRecovery {
 
     /// current free space in sending window
     pub fn window(&self) -> usize {
+        if self.largest_acked_packet + 20 < self.largest_sent_packet {
+            // TODO: not part of the spec.
+            // But if we dont do this, loss_detection_alarm keeps getting reset even we get no ack
+            trace!("no send window because we're loosing too many packets");
+            return 0;
+        }
+
         if self.bytes_in_flight > self.congestion_window as usize {
             0
         } else {
@@ -184,14 +191,6 @@ impl QuicRecovery {
             let ackonly = ackonly && frame.is_ack();
             (bytes + if frame.is_ack() { 0 } else { frame.len() }, ackonly)
         });
-
-        trace!(
-            "on_packet_sent seq: {}, frames: {}, bytes: {}, ackonly: {}",
-            seq,
-            frames.len(),
-            bytes,
-            ackonly
-        );
 
         let pkt = Pkt {
             seq,
@@ -226,12 +225,6 @@ impl QuicRecovery {
 
             if self.sent_packets.contains_key(largest) {
                 self.latest_rtt = now - self.sent_packets[largest].time_sent;
-                trace!(
-                    "self.latest_rtt set to {} - {} = {}",
-                    now,
-                    self.sent_packets[largest].time_sent,
-                    self.latest_rtt,
-                );
                 self.update_rtt(delay.into());
             }
         }
@@ -401,13 +394,6 @@ impl QuicRecovery {
             alarm_duration
         };
 
-        trace!(
-            "loss detection is {} + {} (bytes in flight {}, q: {})",
-            self.time_of_last_sent_retransmittable_packet,
-            alarm_duration,
-            self.bytes_in_flight,
-            self.sent_packets.len(),
-        );
         self.loss_detection_alarm = Some(self.time_of_last_sent_retransmittable_packet + alarm_duration);
     }
 

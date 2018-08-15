@@ -11,14 +11,20 @@ enum PacketError {
     InvalidFrameType { typ: u8 },
 }
 
-//note that channel ids have no defined bye order. using u32 for comparison efficiency only
-pub type ChannelId = u64;
+pub type RoutingKey = u64;
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum RoutingDirection {
+    Initiator2Responder,
+    Responder2Initiator,
+}
 
 pub struct EncryptedPacket {
-    pub(crate) version:  u8,
-    pub(crate) receiver: ChannelId,
-    pub(crate) counter:  u64,
-    pub(crate) payload:  Vec<u8>,
+    pub(crate) version:     u8,
+    pub(crate) route:       RoutingKey,
+    pub(crate) direction:   RoutingDirection,
+    pub(crate) counter:     u64,
+    pub(crate) payload:     Vec<u8>,
 }
 
 impl EncryptedPacket {
@@ -26,7 +32,16 @@ impl EncryptedPacket {
         let version = inbuf.read_u8()?;
         let mut reserved = [0; 3];
         inbuf.read_exact(&mut reserved)?;
-        let receiver = inbuf.read_u64::<BigEndian>()?;
+
+        let mut route = [0;8];
+        inbuf.read_exact(&mut route)?;
+        let direction = match route[7] & 0b00000001 {
+            0 => RoutingDirection::Initiator2Responder,
+            1 => RoutingDirection::Responder2Initiator,
+            _ => unreachable!(),
+        };
+        route[7] &= 0b11111110;
+        let route = route.as_ref().read_u64::<BigEndian>()?;
         let counter = inbuf.read_u64::<BigEndian>()?;
 
         if version != 0x08 || reserved != [0xff, 0xff, 0xff] {
@@ -37,7 +52,8 @@ impl EncryptedPacket {
 
         Ok(EncryptedPacket {
             version,
-            receiver,
+            route,
+            direction,
             counter,
             payload,
         })
@@ -46,7 +62,14 @@ impl EncryptedPacket {
     pub fn encode(mut self) -> Vec<u8> {
         let mut w = [self.version].to_vec();
         w.extend_from_slice(&[0xff; 3]);
-        w.write_u64::<BigEndian>(self.receiver).unwrap();
+
+        let mut route = [0;8];
+        route.as_mut().write_u64::<BigEndian>(self.route).unwrap();
+        match self.direction {
+            RoutingDirection::Initiator2Responder => route[7] &= 0b11111110,
+            RoutingDirection::Responder2Initiator => route[7] |= 0b00000001,
+        };
+        w.write(&route).unwrap();
         w.write_u64::<BigEndian>(self.counter).unwrap();
         w.append(&mut self.payload);
         w

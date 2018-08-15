@@ -19,10 +19,10 @@ features:
 - [x] NOISE
 - [x] Ed25519 as identity
 - [x] tokio
-- [ ] MOSH
-- [ ] hash routing
+- [x] MOSH
+- [x] hash routing
 - [ ] keepalives, timeouts and rekeying
-- [ ] nat traversal
+- [/] nat traversal
 - [x] udp
 - [ ] cert chains
 - [x] high level channels
@@ -34,6 +34,8 @@ features:
 - [ ] staking
 - [ ] self-updating
 - [x] shadow broker
+- [ ] pubsub
+- [ ] tombstones (offline responders if a publisher is unavailable)
 - [ ] CRDT shadows
 - [ ] Delegation for shadow keys (maybe using Attribute Based Encryption)
 
@@ -80,6 +82,13 @@ $ ssh mything
 
 ```
 
+
+
+signature chains
+---------------
+
+- cold storage
+    - db trust anchor
 
 
 

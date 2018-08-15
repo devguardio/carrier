@@ -37,15 +37,6 @@ pub struct Channel {
     deadline: u64,
 }
 
-#[derive(Debug)]
-pub enum ChannelWakeupReason {
-    Init,
-    Again,
-    Recv,
-    Send,
-    Deadline,
-}
-
 pub enum ChannelProgress {
     Later(Duration),
     SendPacket(Vec<u8>),
@@ -79,6 +70,10 @@ impl Channel {
 
     pub fn window(&self) -> usize {
         self.recovery.window()
+    }
+
+    pub fn is_initiator(&self) -> bool {
+        self.noise.is_initiator()
     }
 
     fn now(&self) -> u64 {
@@ -115,6 +110,7 @@ impl Channel {
                     trace!("[{}] received header for stream {}", self.debug_id, stream);
 
                     if !self.streams.contains_key(&stream) && self.streams.len() > 1024 {
+                        //TODO streams are currently not removed
                         error!("[{}] excessive number of streams", self.debug_id);
                         return Ok(());
                     }
@@ -134,7 +130,7 @@ impl Channel {
                     ordered.push(Frame::Stream { stream, order, payload })?;
                 }
                 Frame::Disconnect => {
-                    trace!("[{}] received disconnect", self.debug_id);
+                    trace!("[{}] disconnected", self.debug_id);
                     self.gone = true;
                 }
                 Frame::Ack { delay, acked } => {
@@ -216,9 +212,8 @@ impl Channel {
 
     /// progress the channel and return something that happened
     /// this needs to be polled until it returns Later or Disconnectd
-    pub fn progress(&mut self, wakeup: &ChannelWakeupReason) -> Result<ChannelProgress, Error> {
+    pub fn progress(&mut self) -> Result<ChannelProgress, Error> {
         let now = self.now();
-        trace!("wakeup {} {:?}", now, wakeup);
         // loss detection
 
         if now >= self.deadline {
@@ -292,7 +287,6 @@ impl Channel {
 
             let pkt = pkt.encode();
             assert!(pkt.len() < MAX_PACKET_SIZE);
-            trace!("Progress=SendPacket");
             return Ok(ChannelProgress::SendPacket(pkt));
         }
 
@@ -303,15 +297,12 @@ impl Channel {
             if let Some(msg) = stream.pop() {
                 match msg {
                     Frame::Header { stream, payload, .. } => {
-                        trace!("Progress=ReceiveHeader");
                         return Ok(ChannelProgress::ReceiveHeader(stream, payload));
                     }
                     Frame::Stream { stream, payload, .. } => {
-                        trace!("Progress=ReceiveStream");
                         return Ok(ChannelProgress::ReceiveStream(stream, payload));
                     }
                     Frame::Close { stream, .. } => {
-                        trace!("Progress=Close");
                         return Ok(ChannelProgress::Close(stream));
                     }
                     _ => unreachable!(),
@@ -320,16 +311,9 @@ impl Channel {
         }
 
         if self.gone {
-            trace!("Progress=Disconnect");
             return Ok(ChannelProgress::Disconnect);
         }
 
-        trace!(
-            "Progress=Later deadline: {}  now: {}, so come back in {}ms",
-            self.deadline,
-            now,
-            self.deadline - now
-        );
         Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now)))
     }
 
@@ -397,10 +381,10 @@ impl Channel {
         let order = match self.counters.get_mut(&stream) {
             None => {
                 warn!(
-                    "[{}] not sending close for stream {} that never had headers",
+                    "[{}] sending close for stream {} before we sent any headers",
                     self.debug_id, stream
                 );
-                return;
+                1
             }
             Some(order) => {
                 //we're not removing the counrer yet because reuse of the stream id
@@ -425,5 +409,10 @@ impl Channel {
         Frame::Disconnect.encode(&mut pkt)?;
         let pkt = self.noise.send(&pkt)?;
         Ok(pkt.encode())
+    }
+
+    /// send probe packets
+    pub fn probe(&mut self) {
+        self.outqueue.push_back(Frame::Ping);
     }
 }

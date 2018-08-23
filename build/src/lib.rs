@@ -388,7 +388,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 #[allow(unused_imports)]
                 use futures::{self, Poll, Future, Stream, Sink};
                 #[allow(unused_imports)]
-                use channel::{Channel, ChannelListener, ChannelStream};
+                use carrier::channel::{Channel, ChannelListener, ChannelStream};
                 use hpack;
                 use tokio;
                 use std::sync::{Arc,Mutex};

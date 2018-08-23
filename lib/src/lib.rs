@@ -57,6 +57,10 @@ mod ptrmap;
 pub use identity::Identity;
 pub use identity::Secret;
 
+
+mod carrier {
+    pub use super::*;
+}
 pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/carrier.certificate.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/carrier.broker.v1.rs"));

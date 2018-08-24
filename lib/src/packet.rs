@@ -20,11 +20,11 @@ pub enum RoutingDirection {
 }
 
 pub struct EncryptedPacket {
-    pub(crate) version:     u8,
-    pub(crate) route:       RoutingKey,
-    pub(crate) direction:   RoutingDirection,
-    pub(crate) counter:     u64,
-    pub(crate) payload:     Vec<u8>,
+    pub(crate) version:   u8,
+    pub(crate) route:     RoutingKey,
+    pub(crate) direction: RoutingDirection,
+    pub(crate) counter:   u64,
+    pub(crate) payload:   Vec<u8>,
 }
 
 impl EncryptedPacket {
@@ -33,7 +33,7 @@ impl EncryptedPacket {
         let mut reserved = [0; 3];
         inbuf.read_exact(&mut reserved)?;
 
-        let mut route = [0;8];
+        let mut route = [0; 8];
         inbuf.read_exact(&mut route)?;
         let direction = match route[7] & 0b00000001 {
             0 => RoutingDirection::Initiator2Responder,
@@ -63,7 +63,7 @@ impl EncryptedPacket {
         let mut w = [self.version].to_vec();
         w.extend_from_slice(&[0xff; 3]);
 
-        let mut route = [0;8];
+        let mut route = [0; 8];
         route.as_mut().write_u64::<BigEndian>(self.route).unwrap();
         match self.direction {
             RoutingDirection::Initiator2Responder => route[7] &= 0b11111110,
@@ -79,8 +79,7 @@ impl EncryptedPacket {
 #[test]
 fn decode_with_payload() {
     let pl = EncryptedPacket::decode(&[
-        0x08, 0xff, 0xff, 0xff,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // routing key
+        0x08, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // routing key
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // packet counter
         0xf0, 0x0d, // payload
     ]).unwrap();
@@ -118,15 +117,14 @@ pub enum Frame {
 }
 
 impl Frame {
-
     pub fn name(&self) -> &'static str {
         match self {
-            Frame::Header {..}  => "Header",
-            Frame::Stream {..}  => "Stream",
-            Frame::Ack {..}     => "Ack",
-            Frame::Ping         => "Ping",
-            Frame::Disconnect   => "Disconnect",
-            Frame::Close {..}   => "Close",
+            Frame::Header { .. } => "Header",
+            Frame::Stream { .. } => "Stream",
+            Frame::Ack { .. } => "Ack",
+            Frame::Ping => "Ping",
+            Frame::Disconnect => "Disconnect",
+            Frame::Close { .. } => "Close",
         }
     }
 
@@ -258,9 +256,9 @@ impl Frame {
 #[test]
 fn encode_frame() {
     let frame = Frame::Stream {
-        order:      0x1223,
-        payload:    b"hello".to_vec(),
-        stream:     0x63,
+        order:   0x1223,
+        payload: b"hello".to_vec(),
+        stream:  0x63,
     };
 
     let mut w = Vec::new();
@@ -268,10 +266,10 @@ fn encode_frame() {
     assert_eq!(written, w.len());
     assert_eq!(
         w,
-        &[0x05,
-        0x00, 0x00, 0x00, 0x63,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x23,
-        0x00, 0x05, b'h', b'e', b'l', b'l', b'o']
+        &[
+            0x05, 0x00, 0x00, 0x00, 0x63, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x23, 0x00, 0x05, b'h', b'e', b'l',
+            b'l', b'o'
+        ]
     );
 
     let frame = Frame::Ack {
@@ -291,18 +289,22 @@ fn encode_frame() {
 #[test]
 fn decode_frame() {
     let r = [
-        0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x63,
-        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x23, 0x00, 0x05, b'h', b'e', b'l', b'l',
-        b'o', 0x00, 0x01, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x24, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x12, 0x23, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x63, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x23, 0x00, 0x05,
+        b'h', b'e', b'l', b'l', b'o', 0x00, 0x01, 0x00, 0x05, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12,
+        0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x23, 0x00, 0x00, 0x00,
     ];
 
     let frames = Frame::decode(&r[..]).unwrap();
     assert_eq!(frames.len(), 2);
-    if let Frame::Stream { order, ref payload, stream} = frames[0] {
-        assert_eq!(order,   0x1223);
+    if let Frame::Stream {
+        order,
+        ref payload,
+        stream,
+    } = frames[0]
+    {
+        assert_eq!(order, 0x1223);
         assert_eq!(payload, b"hello");
-        assert_eq!(stream,  0x63);
+        assert_eq!(stream, 0x63);
     } else {
         assert!(false, "expected stream frame");
     }

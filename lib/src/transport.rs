@@ -280,7 +280,11 @@ impl Channel {
                 pkt.counter,
                 frames.len(),
                 pkt.payload.len(),
-                frames.iter().map(|frame|frame.name()).collect::<Vec<&'static str>>().join(",")
+                frames
+                    .iter()
+                    .map(|frame| frame.name())
+                    .collect::<Vec<&'static str>>()
+                    .join(",")
             );
 
             self.recovery.on_packet_sent(pkt.counter, frames, now);

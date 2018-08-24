@@ -1,25 +1,27 @@
 use failure::Error;
-use futures::{Future, Stream, Poll, Async};
 use futures::sync::mpsc;
 use futures::sync::oneshot;
-use packet::{RoutingKey, EncryptedPacket, RoutingDirection};
+use futures::Sink;
+use futures::{Async, Future, Poll, Stream};
+use packet::{EncryptedPacket, RoutingDirection, RoutingKey};
 use rand;
 use std::collections::HashMap;
 use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
 use tokio;
 use tokio::net::UdpSocket;
-use transport::{MAX_PACKET_SIZE};
-use futures::Sink;
+use transport::MAX_PACKET_SIZE;
 
 #[derive(Debug, Fail)]
 pub enum EndpointError {
-
     #[fail(display = "unknown route {}", route)]
-    UnknownChannel { route: RoutingKey},
+    UnknownChannel { route: RoutingKey },
 
-    #[fail(display = "proxy routing error, pkt would be returned to sender: {}", route)]
-    RoutingError{route: RoutingKey},
+    #[fail(
+        display = "proxy routing error, pkt would be returned to sender: {}",
+        route
+    )]
+    RoutingError { route: RoutingKey },
 }
 
 pub enum EndpointWorkerCmd {
@@ -30,7 +32,7 @@ pub enum EndpointWorkerCmd {
 
 #[derive(Clone)]
 pub struct Endpoint {
-    pub work:   mpsc::Sender<EndpointWorkerCmd>,
+    pub work: mpsc::Sender<EndpointWorkerCmd>,
 }
 
 pub enum ChannelBus {
@@ -44,55 +46,46 @@ pub enum ChannelBus {
 }
 
 pub struct Proxy {
-    pub (crate) route:  RoutingKey,
-    pub (crate) work:   mpsc::Sender<EndpointWorkerCmd>,
+    pub(crate) route: RoutingKey,
+    pub(crate) work:  mpsc::Sender<EndpointWorkerCmd>,
 }
 
 struct EndpointWorker {
-    work:       mpsc::Receiver<EndpointWorkerCmd>,
+    work: mpsc::Receiver<EndpointWorkerCmd>,
 
-    stdsock:    StdSocket,
-    sock:       UdpSocket,
+    stdsock: StdSocket,
+    sock:    UdpSocket,
 
-    channels:   HashMap<RoutingKey, ChannelBus>,
+    channels: HashMap<RoutingKey, ChannelBus>,
 }
 
-impl Endpoint{
-
-    pub (crate) fn spawn(stdsock: StdSocket, miosock: UdpSocket) -> Result<Self,Error> {
-        let (tx,rx) = mpsc::channel(10);
+impl Endpoint {
+    pub(crate) fn spawn(stdsock: StdSocket, miosock: UdpSocket) -> Result<Self, Error> {
+        let (tx, rx) = mpsc::channel(10);
         let worker = EndpointWorker {
-            work: rx,
-            stdsock: stdsock,
-            sock:   miosock,
+            work:     rx,
+            stdsock:  stdsock,
+            sock:     miosock,
             channels: HashMap::new(),
         };
         tokio::spawn(worker);
-        Ok(Endpoint {
-            work: tx,
-        })
+        Ok(Endpoint { work: tx })
     }
 
-    pub fn proxy(&mut self, initiator: SocketAddr, responder: SocketAddr)
-        -> impl Future<Item=Proxy, Error=Error>
-    {
-        let bus = ChannelBus::Proxy{initiator, responder};
+    pub fn proxy(&mut self, initiator: SocketAddr, responder: SocketAddr) -> impl Future<Item = Proxy, Error = Error> {
+        let bus = ChannelBus::Proxy { initiator, responder };
 
         let (route_tx, route_rx) = oneshot::channel();
         let work = self.work.clone();
         work.send(EndpointWorkerCmd::AquireChannel(route_tx, bus))
             .map_err(Error::from)
-            .and_then(move |work|{
-                route_rx.map_err(Error::from).and_then(move |route| {
-                    Ok(Proxy{
-                        route,
-                        work: work,
-                    })
-                })
+            .and_then(move |work| {
+                route_rx
+                    .map_err(Error::from)
+                    .and_then(move |route| Ok(Proxy { route, work: work }))
             })
     }
 }
-
 
 impl Proxy {
     pub fn route(&self) -> RoutingKey {
@@ -110,7 +103,7 @@ impl Drop for Proxy {
 }
 
 impl Future for EndpointWorker {
-    type Item  = ();
+    type Item = ();
     type Error = ();
 
     fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
@@ -141,9 +134,7 @@ impl Future for EndpointWorker {
                     self.channels.insert(key, bus);
                     giveroute.send(key).ok();
                 }
-                Async::NotReady => {
-                    break
-                },
+                Async::NotReady => break,
             };
         }
 
@@ -151,9 +142,7 @@ impl Future for EndpointWorker {
         loop {
             let mut buf = [0; MAX_PACKET_SIZE];
             let (len, addr) = match self.sock.poll_recv_from(&mut buf) {
-                Ok(Async::NotReady) => {
-                    break
-                }
+                Ok(Async::NotReady) => break,
                 Err(e) => {
                     error!("endpoint socket error: {}", e);
                     return Ok(Async::Ready(()));
@@ -178,7 +167,7 @@ impl EndpointWorker {
                 ChannelBus::User { inc } => {
                     inc.try_send((pkt, addr))?;
                 }
-                ChannelBus::Proxy {initiator, responder} => {
+                ChannelBus::Proxy { initiator, responder } => {
                     assert_ne!(pkt.route, 0);
                     let to = if pkt.direction == RoutingDirection::Initiator2Responder {
                         responder
@@ -186,7 +175,7 @@ impl EndpointWorker {
                         initiator
                     };
                     if addr == *to {
-                        return Err(Error::from(EndpointError::RoutingError{route: pkt.route}))
+                        return Err(Error::from(EndpointError::RoutingError { route: pkt.route }));
                     }
                     let pkt = pkt.encode();
                     assert_eq!(self.stdsock.send_to(&pkt, *to)?, pkt.len());
@@ -194,8 +183,7 @@ impl EndpointWorker {
             }
             Ok(())
         } else {
-            Err(EndpointError::UnknownChannel { route: pkt.route}.into())
+            Err(EndpointError::UnknownChannel { route: pkt.route }.into())
         }
     }
 }
-

@@ -25,22 +25,26 @@ extern crate hpack;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
+extern crate futurize;
 extern crate toml;
 extern crate trust_dns_resolver;
-extern crate futurize;
 #[macro_use]
 extern crate futurize_derive;
 extern crate gcmap;
 extern crate interfaces;
 
+pub mod certificate;
 pub mod channel;
 pub mod connect;
 pub mod dns;
 pub mod endpoint;
 pub mod identity;
+pub mod keystore;
 pub mod listener;
+pub mod local_addrs;
 pub mod noise;
 pub mod packet;
+mod ptrmap;
 pub mod publisher;
 pub mod recovery;
 pub mod replay;
@@ -49,14 +53,9 @@ pub mod stream;
 pub mod subscriber;
 pub mod transport;
 pub mod xlog;
-pub mod certificate;
-pub mod keystore;
-pub mod local_addrs;
-mod ptrmap;
 
 pub use identity::Identity;
 pub use identity::Secret;
-
 
 mod carrier {
     pub use super::*;

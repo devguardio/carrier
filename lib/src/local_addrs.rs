@@ -12,7 +12,6 @@ pub fn get(port: u16) -> Vec<SocketAddr> {
                 addr.set_port(port);
                 r.push(addr)
             }
-
         }
     }
     r

@@ -397,9 +397,6 @@ fn public_id() {
     );
 }
 
-#[cfg(test)]
-use rand;
-
 #[test]
 fn sign() {
     let client_secret = Secret::from_bytes(&mut [
@@ -410,10 +407,9 @@ fn sign() {
 
     let text = b"beeb bob";
     let signature = client_secret.sign(b"goes on postcards", text);
-    assert_eq!(client_identity.verify(b"goes on postcards", text, &signature), Ok(true));
-    assert_eq!(
-        client_identity.verify(b"does not go on postcards", text, &signature),
-        Ok(false)
+    assert!(client_identity.verify(b"goes on postcards", text, &signature).is_ok());
+    assert!(
+        client_identity.verify(b"does not go on postcards", text, &signature).is_err()
     );
 
     let mut signature_invalid = signature.0.clone();
@@ -425,15 +421,9 @@ fn sign() {
             break;
         }
     }
-    assert_ne!(
-        client_identity.verify(b"goes on postcards", text, &Signature(signature_invalid)),
-        Ok(true)
-    );
+    assert!(client_identity.verify(b"goes on postcards", text, &Signature(signature_invalid)).is_err());
 
     let mut text_invalid = text.to_vec();
     text_invalid[rand::random::<usize>() % text.len()] = 0x00;
-    assert_ne!(
-        client_identity.verify(b"goes on postcards", &text_invalid, &signature),
-        Ok(true)
-    );
+    assert!(client_identity.verify(b"goes on postcards", &text_invalid, &signature).is_err());
 }

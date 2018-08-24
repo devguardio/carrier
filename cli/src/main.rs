@@ -15,6 +15,7 @@ extern crate prost_derive;
 extern crate hpack;
 extern crate tokio_process;
 extern crate bytes;
+extern crate base64;
 extern crate systemstat;
 
 use carrier::*;
@@ -23,9 +24,7 @@ use failure::Error;
 use futures::{Async, Poll};
 use futures::{Future, Sink, Stream};
 use std::env;
-use std::fs::File;
 use std::net::SocketAddr;
-use std::io::Write;
 use tokio::net::UdpSocket;
 use std::process::Command;
 use tokio_process::CommandExt;
@@ -118,17 +117,15 @@ pub fn main_() -> Result<(), Error> {
                         ,
                 )
                 .arg(
-                    Arg::with_name("text")
-                        .long("text")
-                        .help("write human readable interpretation to stdout")
+                    Arg::with_name("assume-identity")
+                        .long("assume-identity")
+                        .help("new certificate has the same identity")
                         ,
                 )
                 .arg(
-                    Arg::with_name("output")
-                        .long("output")
-                        .help("write ephermal to file")
-                        .required(true)
-                        .takes_value(true)
+                    Arg::with_name("text")
+                        .long("text")
+                        .help("write human readable interpretation to stdout")
                         ,
                 )
                 .arg(
@@ -174,41 +171,43 @@ pub fn main_() -> Result<(), Error> {
             let epoch = submatches.value_of("epoch").unwrap().parse().unwrap();
 
 
-            let secrets  = keystore::Secrets::load()?;
+            let secrets     = keystore::Secrets::load()?;
 
             let nusecret    = identity::Secret::gen();
-            let revoker     = identity::Secret::gen();
 
             let mut cert = certificate::Certificate::new(
                 epoch,
                 nusecret.identity(),
                 secrets.identity.identity(),
                 1,
-                revoker.identity()
                 );
 
-            let mut access = submatches.values_of("access").unwrap();
-
-            while let Some(shadow) = access.next() {
-                let target   = access.next().unwrap();
-                let resource = access.next().unwrap();
-                cert.grant_access(
-                    identity::Address::parse(shadow).unwrap(),
-                    identity::Identity::parse(target).unwrap(),
-                    resource.split(',').map(|v|v.trim()));
+            if let Some(mut access) = submatches.values_of("access") {
+                while let Some(shadow) = access.next() {
+                    let target   = access.next().unwrap();
+                    let resource = access.next().unwrap();
+                    cert.grant_access(
+                        identity::Address::parse(shadow).unwrap(),
+                        identity::Identity::parse(target).unwrap(),
+                        resource.split(',').map(|v|v.trim()));
+                }
             }
 
             if submatches.is_present("allow-delegation") {
                 cert.allow_delegation();
             }
 
+            if submatches.is_present("assume-identity") {
+                cert.assume_identity();
+            }
+
 
             let signed = cert.signed(&secrets.identity);
-            let filename = submatches.value_of("output").unwrap().to_string();
-            let mut file = File::create(filename).unwrap();
-            file.write_all(&signed).unwrap();
-            drop(file);
+            let signed = base64::encode(&signed);
 
+            println!("certificate: {}",signed);
+
+            let signed = base64::decode(&signed).unwrap();
             let cert   = certificate::Certificate::from_signed(&signed).unwrap();
             if submatches.is_present("text") {
                 eprintln!("{}", cert);

@@ -12,27 +12,30 @@ pub enum CertificateError {
     InvalidVersion,
 }
 
-
-
 impl fmt::Display for Certificate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Certificate\n")?;
         write!(f, "    at epoch:     {}\n", &self.epoch)?;
         write!(f, "    for identity: {}\n", identity::Identity::from(&self.identity))?;
         write!(f, "    by authority: {}\n", identity::Identity::from(&self.authority))?;
-        write!(f, "    revokable by: {}\n", identity::Identity::from(&self.revoker))?;
 
         for claim in &self.claims {
             match &claim.claim {
                 Some(proto::claim::Claim::Opt(o)) => {
                     match o {
+                        o if proto::ClaimOpt::Assume as i32 == *o => {
+                            write!(f, " Assumes Identity {}\n", identity::Identity::from(&self.authority))?;
+                        },
                         o if proto::ClaimOpt::Delegation as i32 == *o => {
-                            write!(f, "  Delegation Allowed\n")?;
+                            write!(f, " Delegation Allowed\n")?;
                         },
                         o => {
-                            write!(f, "  Invalid Option {}\n", o)?;
+                            write!(f, " Invalid Option {}\n", o)?;
                         }
                     }
+                },
+                Some(proto::claim::Claim::Revoker(a)) => {
+                    write!(f, "  Revokable by    {}\n", identity::Identity::from(&a.identity))?;
                 },
                 Some(proto::claim::Claim::Access(a)) => {
                     write!(f, "  Access\n")?;
@@ -54,7 +57,6 @@ impl Certificate {
         identity:   identity::Identity,
         authority:  identity::Identity,
         serial:     u64,
-        revoker:    identity::Identity,
     )
     -> Certificate
     {
@@ -63,13 +65,16 @@ impl Certificate {
             identity:   identity.as_bytes().to_vec(),
             authority:  authority.as_bytes().to_vec(),
             serial,
-            revoker:    revoker.as_bytes().to_vec(),
             claims:     Vec::new(),
         }
     }
 
     pub fn allow_delegation(&mut self) {
         self.claims.push(proto::Claim{claim: Some(proto::claim::Claim::Opt(proto::ClaimOpt::Delegation as i32))});
+    }
+
+    pub fn assume_identity(&mut self) {
+        self.claims.push(proto::Claim{claim: Some(proto::claim::Claim::Opt(proto::ClaimOpt::Assume as i32))});
     }
 
     pub fn grant_access<I1, I2>(&mut self, shadow: identity::Address, target : identity::Identity, resource: I1)

@@ -80,15 +80,17 @@ impl OrderedStream {
 pub fn overflow() {
     let mut st = OrderedStream::new();
     for i in 1..MAX_QUEUE + 2 {
-        st.push(Frame::Message {
+        st.push(Frame::Stream {
             order:   i as u64,
             payload: Vec::new(),
+            stream:  1,
         }).unwrap();
     }
     assert!(
-        st.push(Frame::Message {
+        st.push(Frame::Stream {
             order:   MAX_QUEUE as u64 + 2,
             payload: Vec::new(),
+            stream:  1,
         }).is_err()
     );
 }
@@ -97,9 +99,10 @@ pub fn overflow() {
 pub fn underflow() {
     let mut st = OrderedStream::new();
     assert!(
-        st.push(Frame::Message {
+        st.push(Frame::Stream {
             order:   MAX_REORDERING + 2,
             payload: Vec::new(),
+            stream:  1,
         }).is_err()
     );
 }
@@ -108,18 +111,20 @@ pub fn underflow() {
 pub fn ordered() {
     let mut st = OrderedStream::new();
     for i in 1..20 {
-        st.push(Frame::Message {
+        st.push(Frame::Stream {
             order:   i as u64,
             payload: vec![i as u8],
+            stream:  1,
         }).unwrap();
     }
 
     for i in 1..20 {
         assert_eq!(
             st.pop().unwrap(),
-            Frame::Message {
+            Frame::Stream {
                 order:   i as u64,
                 payload: vec![i as u8],
+                stream:  1,
             }
         );
     }
@@ -135,18 +140,20 @@ pub fn unordered() {
     let mut st = OrderedStream::new();
 
     for i in pkg {
-        st.push(Frame::Message {
+        st.push(Frame::Stream {
             order:   i as u64,
             payload: vec![i as u8],
+            stream:  1,
         }).unwrap();
     }
 
     for i in 1..20 {
         assert_eq!(
             st.pop().unwrap(),
-            Frame::Message {
+            Frame::Stream {
                 order:   i as u64,
                 payload: vec![i as u8],
+                stream:  1,
             }
         );
     }

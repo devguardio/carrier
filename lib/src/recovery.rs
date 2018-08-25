@@ -568,7 +568,7 @@ fn high_latency() {
     // At 20ms TLP should be triggered
     clock = 20;
     let loss = qr.on_loss_detection_alarm(clock);
-    let re = if let LossDetection::TailLossProbe(re) = loss {
+    let _re = if let LossDetection::TailLossProbe(re) = loss {
         re
     } else {
         panic!("expected TLP")
@@ -590,7 +590,7 @@ fn high_latency() {
     // At 30ms we get another TLP
     clock = 30;
     let loss = qr.on_loss_detection_alarm(clock);
-    let re = if let LossDetection::TailLossProbe(re) = loss {
+    let _re = if let LossDetection::TailLossProbe(re) = loss {
         re
     } else {
         panic!("expected TLP")
@@ -614,7 +614,7 @@ fn high_latency() {
     // At 30+210ms we're getting a RTO
     clock = 30 + 201;
     let loss = qr.on_loss_detection_alarm(clock);
-    let re = if let LossDetection::RetransmissionTimeout(re) = loss {
+    let _re = if let LossDetection::RetransmissionTimeout(re) = loss {
         re
     } else {
         panic!("expected RTO")

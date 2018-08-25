@@ -39,12 +39,12 @@ where
     F: 'static + FnMut(&identity::Identity) -> bool + Send + Sync,
 {
     let (xsecret, xpublic) = identity::generate_x25519();
-    let xaddr = identity::SignedAddress::sign(&secret, identity::Address(xpublic));
+    let xaddr = identity::SignedAddress::sign(&secret, identity::Address::from_array(xpublic));
 
     let publish_change = proto::Broker::publish(
         &mut brk,
         proto::PublishRequest {
-            shadow: shadow.0.to_vec(),
+            shadow: shadow.as_bytes().to_vec(),
             xaddr:  xaddr.to_vec(),
         },
     ).for_each(|s| {
@@ -81,13 +81,13 @@ impl proto::Peer::Service for PublisherService {
         _headers: Vec<(Vec<u8>, Vec<u8>)>,
         msg: proto::PeerConnectRequest,
     ) -> Result<Box<Future<Item = proto::PeerConnectResponse, Error = Error> + Sync + Send + 'static>, Error> {
-        let msgidentity = identity::Identity::from(msg.identity);
+        let msgidentity = identity::Identity::from_bytes(msg.identity)?;
         let msgpaths = msg.paths;
         let msgroute = msg.route;
         info!("connect request from {} :: {:?} ", msgidentity, msgpaths);
 
         let pkt = packet::EncryptedPacket::decode(&msg.handshake).unwrap();
-        let (noise, identity, timestamp) = noise::respond(&self.xsecret.0, None, pkt).unwrap();
+        let (noise, identity, timestamp) = noise::respond(&self.xsecret, None, pkt).unwrap();
 
         if identity != msgidentity || timestamp != msg.timestamp {
             warn!("rejected connect request from {} because of pkt mismatch", msgidentity);

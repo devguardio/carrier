@@ -77,7 +77,7 @@ impl Stream for Listener {
                 Ok(Async::NotReady) => return Ok(Async::NotReady),
                 Err(_) => unreachable!(),
             };
-            let (r, identity, timestamp) = match noise::respond(&self.xsecret.0, None, pkt) {
+            let (r, identity, timestamp) = match noise::respond(&self.xsecret, None, pkt) {
                 Ok(v) => v,
                 Err(e) => {
                     warn!("cannot accept handshake: {}", e);

@@ -41,7 +41,6 @@ impl prost_build::ServiceGenerator for ServiceGen {
             let method_name = Ident::new(&method.name, Span::call_site());
             let fq_method_name_s = format!("{}::{}", service_name, method.name);
 
-
             if method.proto_name.starts_with("__raw__") {
                 service_trait_fns.push(quote!{
                     fn #method_name (&mut self, headers: Vec<(Vec<u8>, Vec<u8>)>, stream: ChannelStream);
@@ -100,8 +99,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 continue;
             }
 
-
-            let cancel_wrapper_name  = Ident::new(&format!("Cancel{}", method.name), Span::call_site());
+            let cancel_wrapper_name = Ident::new(&format!("Cancel{}", method.name), Span::call_site());
             let input_type = Ident::new(&method.input_type, Span::call_site());
             let output_type = Ident::new(&method.output_type, Span::call_site());
             let out_w = Ident::new(
@@ -178,28 +176,31 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 }
             };
 
-
-            let cancelwrapper = if method.server_streaming {quote!{
-                impl<F> Stream for #cancel_wrapper_name<F>
-                    where F: #out_w<Item=super::#output_type, Error=Error>
-                {
-                    type Item   = super::#output_type;
-                    type Error  = Error;
-                    fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
-                        self.f.poll()
+            let cancelwrapper = if method.server_streaming {
+                quote!{
+                    impl<F> Stream for #cancel_wrapper_name<F>
+                        where F: #out_w<Item=super::#output_type, Error=Error>
+                    {
+                        type Item   = super::#output_type;
+                        type Error  = Error;
+                        fn poll(&mut self) -> Poll<Option<Self::Item>, Self::Error> {
+                            self.f.poll()
+                        }
                     }
                 }
-            }} else {quote!{
-                impl<F> Future for #cancel_wrapper_name<F>
-                    where F: #out_w<Item=super::#output_type, Error=Error>
-                {
-                    type Item   = super::#output_type;
-                    type Error  = Error;
-                    fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
-                        self.f.poll()
+            } else {
+                quote!{
+                    impl<F> Future for #cancel_wrapper_name<F>
+                        where F: #out_w<Item=super::#output_type, Error=Error>
+                    {
+                        type Item   = super::#output_type;
+                        type Error  = Error;
+                        fn poll(&mut self) -> Poll<Self::Item, Self::Error> {
+                            self.f.poll()
+                        }
                     }
                 }
-            }};
+            };
 
             call_fns.push(quote!{
 

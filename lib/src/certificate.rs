@@ -14,37 +14,55 @@ pub enum CertificateError {
 
 impl fmt::Display for Certificate {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Certificate\n")?;
-        write!(f, "    at epoch:     {}\n", &self.epoch)?;
-        write!(f, "    for identity: {}\n", identity::Identity::from(&self.identity))?;
-        write!(f, "    by authority: {}\n", identity::Identity::from(&self.authority))?;
+        (move || {
+            write!(f, "Certificate\n")?;
+            write!(f, "    at epoch:     {}\n", &self.epoch)?;
+            write!(
+                f,
+                "    for identity: {}\n",
+                identity::Identity::from_bytes(&self.identity)?
+            )?;
+            write!(
+                f,
+                "    by authority: {}\n",
+                identity::Identity::from_bytes(&self.authority)?
+            )?;
 
-        for claim in &self.claims {
-            match &claim.claim {
-                Some(proto::claim::Claim::Opt(o)) => match o {
-                    o if proto::ClaimOpt::Assume as i32 == *o => {
-                        write!(f, " Assumes Identity {}\n", identity::Identity::from(&self.authority))?;
+            for claim in &self.claims {
+                match &claim.claim {
+                    Some(proto::claim::Claim::Opt(o)) => match o {
+                        o if proto::ClaimOpt::Assume as i32 == *o => {
+                            write!(
+                                f,
+                                " Assumes Identity {}\n",
+                                identity::Identity::from_bytes(&self.authority)?
+                            )?;
+                        }
+                        o if proto::ClaimOpt::Delegation as i32 == *o => {
+                            write!(f, " Delegation Allowed\n")?;
+                        }
+                        o => {
+                            write!(f, " Invalid Option {}\n", o)?;
+                        }
+                    },
+                    Some(proto::claim::Claim::Revoker(a)) => {
+                        write!(
+                            f,
+                            "  Revokable by    {}\n",
+                            identity::Identity::from_bytes(&a.identity)?
+                        )?;
                     }
-                    o if proto::ClaimOpt::Delegation as i32 == *o => {
-                        write!(f, " Delegation Allowed\n")?;
+                    Some(proto::claim::Claim::Access(a)) => {
+                        write!(f, "  Access\n")?;
+                        write!(f, "    shadow:       {}\n", identity::Address::from_bytes(&a.shadow)?)?;
+                        write!(f, "    target:       {}\n", identity::Identity::from_bytes(&a.target)?)?;
+                        write!(f, "    resource:     {}\n", a.resources.join(","))?;
                     }
-                    o => {
-                        write!(f, " Invalid Option {}\n", o)?;
-                    }
-                },
-                Some(proto::claim::Claim::Revoker(a)) => {
-                    write!(f, "  Revokable by    {}\n", identity::Identity::from(&a.identity))?;
+                    None => (),
                 }
-                Some(proto::claim::Claim::Access(a)) => {
-                    write!(f, "  Access\n")?;
-                    write!(f, "    shadow:       {}\n", identity::Address::from(&a.shadow))?;
-                    write!(f, "    target:       {}\n", identity::Identity::from(&a.target))?;
-                    write!(f, "    resource:     {}\n", a.resources.join(","))?;
-                }
-                None => (),
             }
-        }
-        Ok(())
+            Ok(())
+        })().map_err(|_: Error| fmt::Error)
     }
 }
 
@@ -77,7 +95,7 @@ impl Certificate {
         I2: ToString,
     {
         let claim = proto::Access {
-            shadow:    shadow.0.to_vec(),
+            shadow:    shadow.as_bytes().to_vec(),
             target:    target.as_bytes().to_vec(),
             resources: resource.into_iter().map(|v| v.to_string()).collect(),
         };
@@ -94,8 +112,9 @@ impl Certificate {
         c.extend(b);
 
         let sig = signer.sign(b"sign carrier certificate", &c);
-        assert_eq!(sig.0.len(), 64);
-        c.extend_from_slice(&sig.0);
+        let sig = sig.as_bytes();
+        assert_eq!(sig.len(), 64);
+        c.extend_from_slice(sig);
         c
     }
 
@@ -106,13 +125,11 @@ impl Certificate {
 
         let cert = Certificate::decode(&signed[1..signed.len() - 64])?;
 
-        let mut sig = [0; 64];
-        sig.copy_from_slice(&signed[signed.len() - 64..signed.len()]);
-        let sig = identity::Signature(sig);
+        let sig = identity::Signature::from_bytes(&signed[signed.len() - 64..signed.len()])?;
 
         assert_eq!(cert.authority.len(), 32);
 
-        identity::Identity::from(&cert.authority).verify(
+        identity::Identity::from_bytes(&cert.authority)?.verify(
             b"sign carrier certificate",
             &signed[..signed.len() - 64],
             &sig,
@@ -120,4 +137,15 @@ impl Certificate {
 
         Ok(cert)
     }
+}
+
+#[test]
+pub fn basic() {
+    let identity1 = identity::Secret::gen();
+    let identity2 = identity::Secret::gen();
+
+    let mut cert = Certificate::new(32, identity1.identity(), identity2.identity(), 43);
+
+    let signed_good = cert.signed(&identity2);
+    let signed_self = cert.signed(&identity2);
 }

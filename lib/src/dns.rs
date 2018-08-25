@@ -46,7 +46,7 @@ impl DnsRecord {
         let epoch: u16 = s[0].parse().ok()?;
         let priority: u8 = s[1].parse().ok()?;
         let addr: SocketAddr = s[2].parse().ok()?;
-        let x = Address::parse(s[3]).ok()?;
+        let x = s[3].parse().ok()?;
 
         Some(DnsRecord {
             priority,

@@ -12,6 +12,24 @@ use std::net::SocketAddr;
 use tokio;
 use xlog;
 
+macro_rules! wrk_try {
+    ($self:ident, $x:expr) => {
+        match { $x } {
+            Err(e) => return Box::new(futures::future::err((Some($self), e))),
+            Ok(v) => v,
+        }
+    };
+}
+
+macro_rules! wrk_continue {
+    ($self:ident, $x:expr) => {
+        Box::new($x.then(|m| match m {
+            Err(e) => Err((Some($self), e)),
+            Ok(v) => Ok((Some($self), v)),
+        }))
+    };
+}
+
 // ---------
 // a shadow coordinates publishers and subscribers on an address
 // -----------
@@ -75,7 +93,7 @@ impl shadow::Worker for Shadow {
         identity: identity::Identity,
         _msg: proto::SubscribeRequest,
         rpc: mpsc::Sender<proto::SubscribeChange>,
-    ) -> Box<Future<Item = (Option<Self>, usize), Error = ()> + Send + Sync> {
+    ) -> Box<Future<Item = (Option<Self>, usize), Error = (Option<Self>, Error)> + Send + Sync> {
         debug!("[{}] new subscriber {}", self.address, identity);
         let (ptr, old) = self.subscribers.insert(identity, Subscriber { rpc: rpc.clone() });
 
@@ -114,12 +132,13 @@ impl shadow::Worker for Shadow {
         msg: proto::PublishRequest,
         rpc: mpsc::Sender<proto::PublishChange>,
         ipaddr: SocketAddr,
-    ) -> Box<Future<Item = (Option<Self>, usize), Error = ()> + Send + Sync> {
+    ) -> Box<Future<Item = (Option<Self>, usize), Error = (Option<Self>, Error)> + Send + Sync> {
+        let xaddr = wrk_try!(self, identity::SignedAddress::from_bytes(msg.xaddr));
+
         let (mark, old) = self.publishers.insert(
             identity.clone(),
             Publisher {
-                //FIXME: this might panic
-                xaddr: msg.xaddr.clone().into(),
+                xaddr: xaddr.clone(),
                 rpc: rpc.clone(),
                 peer,
                 ipaddr,
@@ -166,7 +185,7 @@ impl shadow::Worker for Shadow {
                     .send(proto::SubscribeChange {
                         m: Some(proto::subscribe_change::M::Publish(proto::Publish {
                             identity: identity.as_bytes().to_vec(),
-                            xaddr:    msg.xaddr.clone(),
+                            xaddr:    xaddr.to_vec(),
                         })),
                     }).map(|_| ())
                     .map_err(|e| error!("{}", e))
@@ -177,7 +196,10 @@ impl shadow::Worker for Shadow {
         Box::new(ft)
     }
 
-    fn unsubscribe(mut self, ptr: usize) -> Box<Future<Item = (Option<Self>, ()), Error = ()> + Send + Sync> {
+    fn unsubscribe(
+        mut self,
+        ptr: usize,
+    ) -> Box<Future<Item = (Option<Self>, ()), Error = (Option<Self>, Error)> + Send + Sync> {
         if let Some((identity, _subscriber)) = self.subscribers.remove_ptr(ptr) {
             debug!("[{}] unsubscribe {}", self.address, identity);
         }
@@ -190,7 +212,10 @@ impl shadow::Worker for Shadow {
         }
     }
 
-    fn unpublish(mut self, ptr: usize) -> Box<Future<Item = (Option<Self>, ()), Error = ()> + Send + Sync> {
+    fn unpublish(
+        mut self,
+        ptr: usize,
+    ) -> Box<Future<Item = (Option<Self>, ()), Error = (Option<Self>, Error)> + Send + Sync> {
         if let Some((identity, _publisher)) = self.publishers.remove_ptr(ptr) {
             debug!("[{}] unpublish {} {:#x}", self.address, identity, ptr);
 
@@ -221,7 +246,9 @@ impl shadow::Worker for Shadow {
     fn get_publisher(
         mut self,
         identity: identity::Identity,
-    ) -> Box<Future<Item = (Option<Self>, Option<(peer::Handle, SocketAddr)>), Error = ()> + Send + Sync> {
+    ) -> Box<
+        Future<Item = (Option<Self>, Option<(peer::Handle, SocketAddr)>), Error = (Option<Self>, Error)> + Send + Sync,
+    > {
         let v = self
             .publishers
             .get_mut(&identity)
@@ -287,18 +314,18 @@ impl broker::Worker for Broker {
         identity: identity::Identity,
         msg: proto::SubscribeRequest,
         rpc: mpsc::Sender<proto::SubscribeChange>,
-    ) -> Box<Future<Item = (Option<Self>, ptrmap::DropHook), Error = ()> + Send + Sync> {
-        let mut shadow = self.shadow(msg.shadow.clone().into()).clone();
-        let ft = shadow
-            .subscribe(identity, msg, rpc)
-            .map_err(|e| error!("{}", e))
-            .and_then(|ptr| {
-                let hook = ptrmap::DropHook::new(move || {
-                    tokio::spawn(shadow.unsubscribe(ptr).map_err(|e| error!("{}", e)));
-                });
-                Ok((Some(self), hook))
+    ) -> Box<Future<Item = (Option<Self>, ptrmap::DropHook), Error = (Option<Self>, Error)> + Send + Sync> {
+        let shadow = wrk_try!(self, identity::Address::from_bytes(&msg.shadow));
+        let mut shadow = self.shadow(shadow).clone();
+
+        let ft = shadow.subscribe(identity, msg, rpc).and_then(|ptr| {
+            let hook = ptrmap::DropHook::new(move || {
+                tokio::spawn(shadow.unsubscribe(ptr).map_err(|e| error!("{}", e)));
             });
-        Box::new(ft)
+            Ok(hook)
+        });
+
+        wrk_continue!(self, ft)
     }
 
     fn publish(
@@ -308,33 +335,35 @@ impl broker::Worker for Broker {
         msg: proto::PublishRequest,
         rpc: mpsc::Sender<proto::PublishChange>,
         ipaddr: SocketAddr,
-    ) -> Box<Future<Item = (Option<Self>, ptrmap::DropHook), Error = ()> + Send + Sync> {
-        let mut shadow = self.shadow(msg.shadow.clone().into()).clone();
-        let ft = shadow
-            .publish(identity, peer, msg, rpc, ipaddr)
-            .map_err(|e| error!("{}", e))
-            .and_then(|ptr| {
-                let hook = ptrmap::DropHook::new(move || {
-                    tokio::spawn(shadow.unpublish(ptr).map_err(|e| error!("{}", e)));
-                });
-                Ok((Some(self), hook))
+    ) -> Box<Future<Item = (Option<Self>, ptrmap::DropHook), Error = (Option<Self>, Error)> + Send + Sync> {
+        let shadow = wrk_try!(self, identity::Address::from_bytes(&msg.shadow));
+        let mut shadow = self.shadow(shadow).clone();
+
+        let ft = shadow.publish(identity, peer, msg, rpc, ipaddr).and_then(|ptr| {
+            let hook = ptrmap::DropHook::new(move || {
+                tokio::spawn(shadow.unpublish(ptr).map_err(|e| error!("{}", e)));
             });
-        Box::new(ft)
+            Ok(hook)
+        });
+
+        wrk_continue!(self, ft)
     }
 
     fn get_publisher(
         mut self,
         shadow: identity::Address,
         identity: identity::Identity,
-    ) -> Box<Future<Item = (Option<Self>, Option<(peer::Handle, SocketAddr)>), Error = ()> + Send + Sync> {
+    ) -> Box<
+        Future<Item = (Option<Self>, Option<(peer::Handle, SocketAddr)>), Error = (Option<Self>, Error)> + Send + Sync,
+    > {
         let ft = if let Some(shadow) = self.shadows.get_mut(&shadow) {
-            let f = shadow.get_publisher(identity).map_err(|e| error!("{}", e));
-            Box::new(f) as Box<Future<Item = Option<_>, Error = ()> + Send + Sync>
+            let f = shadow.get_publisher(identity);
+            Box::new(f) as Box<Future<Item = Option<_>, Error = Error> + Send + Sync>
         } else {
             Box::new(futures::future::ok(None))
         };
 
-        Box::new(ft.map(|v| (Some(self), v)))
+        wrk_continue!(self, ft)
     }
 }
 
@@ -367,20 +396,18 @@ impl peer::Worker for Peer {
     fn connect(
         mut self,
         req: proto::PeerConnectRequest,
-    ) -> Box<Future<Item = (Option<Self>, proto::PeerConnectResponse), Error = ()> + Send + Sync> {
+    ) -> Box<Future<Item = (Option<Self>, proto::PeerConnectResponse), Error = (Option<Self>, Error)> + Send + Sync>
+    {
         let selfipaddr = self.ipaddr.clone();
-        let ft = proto::Peer::connect(&mut self.channel, req)
-            .map_err(|e| error!("{}", e))
-            .map(|v| (Some(self), v))
-            .and_then(move |(this, mut resp)| {
-                resp.paths.push(proto::Path {
-                    category: (proto::path::Category::Internet as i32),
-                    ipaddr:   format!("{}", selfipaddr),
-                });
-                Ok((this, resp))
+        let ft = proto::Peer::connect(&mut self.channel, req).and_then(move |mut resp| {
+            resp.paths.push(proto::Path {
+                category: (proto::path::Category::Internet as i32),
+                ipaddr:   format!("{}", selfipaddr),
             });
+            Ok(resp)
+        });
 
-        Box::new(ft)
+        wrk_continue!(self, ft)
     }
 }
 
@@ -480,6 +507,7 @@ impl proto::Broker::Service for Srv {
         let msgtimestamp = msg.timestamp;
         let msghandshake = msg.handshake;
         let msgshadow = msg.shadow;
+        let msgidentity = msg.identity;
         let mut paths = msg.paths;
         paths.push(proto::Path {
             category: (proto::path::Category::Internet as i32),
@@ -489,58 +517,61 @@ impl proto::Broker::Service for Srv {
         let selfipaddr = self.ipaddr.clone();
         let selfidentity = self.identity.as_bytes().to_vec();
         let mut endpoint = self.endpoint.clone();
-        let shadow = identity::Address::from(&msgshadow);
-        let identity = identity::Identity::from(&msg.identity);
-        let ft = self
-            .broker
-            .get_publisher(shadow, identity)
-            .and_then(move |maybe| {
-                if let Some((mut peer, ipaddr)) = maybe {
-                    let ft = endpoint
-                        .proxy(selfipaddr, ipaddr)
-                        .and_then(move |proxy| {
-                            peer.connect(proto::PeerConnectRequest {
-                                identity:  selfidentity,
-                                shadow:    msgshadow,
-                                timestamp: msgtimestamp,
-                                handshake: msghandshake,
-                                route:     proxy.route(),
-                                paths:     paths,
-                            }).map(|v| (v, proxy))
-                        }).and_then(move |(resp, proxy)| {
-                            if resp.ok {
-                                let ft = futures::stream::once(Ok(proto::ConnectResponse {
-                                    ok:        true,
-                                    handshake: resp.handshake,
-                                    route:     proxy.route(),
-                                    paths:     resp.paths,
-                                }));
-                                let never = futures::future::empty().into_stream();
-                                let never = futurize::mark_stream(never, proxy);
-                                let ft = ft.chain(never);
-                                Ok(Box::new(ft) as Box<Stream<Item = _, Error = _> + Send + Sync>)
-                            } else {
-                                let ft = futures::stream::once(Ok(proto::ConnectResponse {
-                                    ok:        false,
-                                    handshake: Vec::new(),
-                                    route:     0,
-                                    paths:     Vec::new(),
-                                }));
-                                Ok(Box::new(ft) as Box<Stream<Item = _, Error = _> + Send + Sync>)
-                            }
-                        });
 
-                    Ok(Box::new(ft.into_stream().flatten()) as Box<Stream<Item = _, Error = _> + Sync + Send>)
-                } else {
-                    Ok(Box::new(futures::stream::once(Ok(proto::ConnectResponse {
-                        //TODO wait some time here to make it indistinguishable from client reject
-                        ok:        false,
-                        handshake: Vec::new(),
-                        route:     0,
-                        paths:     Vec::new(),
-                    })))
-                        as Box<Stream<Item = _, Error = _> + Sync + Send>)
-                }
+        let ft = identity::Address::from_bytes(&msgshadow)
+            .and_then(|shadow| identity::Identity::from_bytes(msgidentity).map(move |identity| (identity, shadow)));
+
+        let mut broker = self.broker.clone();
+        let ft = futures::future::result(ft)
+            .and_then(move |(identity, shadow)| {
+                broker.get_publisher(shadow, identity).and_then(move |maybe| {
+                    if let Some((mut peer, ipaddr)) = maybe {
+                        let ft = endpoint
+                            .proxy(selfipaddr, ipaddr)
+                            .and_then(move |proxy| {
+                                peer.connect(proto::PeerConnectRequest {
+                                    identity:  selfidentity,
+                                    shadow:    msgshadow,
+                                    timestamp: msgtimestamp,
+                                    handshake: msghandshake,
+                                    route:     proxy.route(),
+                                    paths:     paths,
+                                }).map(|v| (v, proxy))
+                            }).and_then(move |(resp, proxy)| {
+                                if resp.ok {
+                                    let ft = futures::stream::once(Ok(proto::ConnectResponse {
+                                        ok:        true,
+                                        handshake: resp.handshake,
+                                        route:     proxy.route(),
+                                        paths:     resp.paths,
+                                    }));
+                                    let never = futures::future::empty().into_stream();
+                                    let never = futurize::mark_stream(never, proxy);
+                                    let ft = ft.chain(never);
+                                    Ok(Box::new(ft) as Box<Stream<Item = _, Error = _> + Send + Sync>)
+                                } else {
+                                    let ft = futures::stream::once(Ok(proto::ConnectResponse {
+                                        ok:        false,
+                                        handshake: Vec::new(),
+                                        route:     0,
+                                        paths:     Vec::new(),
+                                    }));
+                                    Ok(Box::new(ft) as Box<Stream<Item = _, Error = _> + Send + Sync>)
+                                }
+                            });
+
+                        Ok(Box::new(ft.into_stream().flatten()) as Box<Stream<Item = _, Error = _> + Sync + Send>)
+                    } else {
+                        Ok(Box::new(futures::stream::once(Ok(proto::ConnectResponse {
+                            //TODO wait some time here to make it indistinguishable from client reject
+                            ok:        false,
+                            handshake: Vec::new(),
+                            route:     0,
+                            paths:     Vec::new(),
+                        })))
+                            as Box<Stream<Item = _, Error = _> + Sync + Send>)
+                    }
+                })
             }).into_stream()
             .flatten();
 

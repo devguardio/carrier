@@ -43,7 +43,7 @@ impl Secrets {
         let mut identity = vec![0; 32];
         let mut rng = rand::OsRng::new().unwrap();
         rng.try_fill_bytes(&mut identity).unwrap();
-        let identity = Secret::from_bytes(&mut identity);
+        let identity = Secret::from_bytes(&mut identity).unwrap();
 
         let fi = toml::to_vec(&SecretsToml {
             identity: identity.to_string(),
@@ -77,7 +77,7 @@ impl Secrets {
         let secrets: SecretsToml = toml::from_str(&buffer).expect("error while reading secrets toml");
 
         Ok(Secrets {
-            identity: Secret::parse(secrets.identity).unwrap(),
+            identity: secrets.identity.parse().unwrap(),
         })
     }
 }

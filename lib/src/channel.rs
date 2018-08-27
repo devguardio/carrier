@@ -1,18 +1,18 @@
+use endpoint;
 use failure::Error;
-use futures::{self, Future, Stream, Poll, Async};
 use futures::sync::mpsc;
+use futures::{self, Async, Future, Poll, Stream};
+use futures::{AsyncSink, Sink};
 use identity;
-use packet::{RoutingKey, EncryptedPacket};
+use packet::{EncryptedPacket, RoutingKey};
+use proto;
 use std::collections::HashMap;
+use std::mem;
 use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
-use std::time::{Instant};
+use std::time::Instant;
 use tokio;
 use transport::{self, ChannelProgress};
-use endpoint;
-use futures::{Sink, AsyncSink};
-use std::mem;
-use proto;
 
 pub struct ChannelStream {
     tx: mpsc::Sender<Vec<u8>>,
@@ -20,18 +20,17 @@ pub struct ChannelStream {
 }
 
 pub struct Channel {
-    open:       mpsc::Sender<(ChannelStream, Vec<u8>)>,
-    lst:        Option<ChannelListener>,
+    open: mpsc::Sender<(ChannelStream, Vec<u8>)>,
+    lst:  Option<ChannelListener>,
 
-    identity:   identity::Identity,
-    route:      RoutingKey,
+    identity: identity::Identity,
+    route:    RoutingKey,
 
     // we drop this when we drop. yo dawg.
-    pub bag:   Vec<Box<Send + Sync>>,
+    pub bag: Vec<Box<Send + Sync>>,
 }
 
 pub struct ChannelListener(mpsc::Receiver<(ChannelStream, Vec<u8>)>);
-
 
 enum AddressMode {
     Discovering(HashMap<SocketAddr, (proto::path::Category, usize)>),
@@ -44,34 +43,30 @@ struct ChannelWorker {
 
     streams: HashMap<u32, ChannelStream>,
 
-    transport:  transport::Channel,
-    rx:         mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
-    work:       mpsc::Sender<endpoint::EndpointWorkerCmd>,
-    sock:       StdSocket,
-    addrs:      AddressMode,
-    deadline:   tokio::timer::Delay,
+    transport: transport::Channel,
+    rx:        mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
+    work:      mpsc::Sender<endpoint::EndpointWorkerCmd>,
+    sock:      StdSocket,
+    addrs:     AddressMode,
+    deadline:  tokio::timer::Delay,
 
-    route:      RoutingKey,
+    route: RoutingKey,
 
-    stop:       bool,
+    stop: bool,
 }
-
 
 impl Channel {
     pub fn spawn(
         rx: mpsc::Receiver<(EncryptedPacket, SocketAddr)>,
         identity: identity::Identity,
-        addrs:  Vec<(SocketAddr, proto::path::Category)>,
-        route:  RoutingKey,
-        sock:   StdSocket,
+        addrs: Vec<(SocketAddr, proto::path::Category)>,
+        route: RoutingKey,
+        sock: StdSocket,
         mut transport: transport::Channel,
         work: mpsc::Sender<endpoint::EndpointWorkerCmd>,
-        )
-    -> Self
-    {
+    ) -> Self {
         let (open_tx, open_rx) = mpsc::channel(10);
         let (newc_tx, newc_rx) = mpsc::channel(10);
-
 
         if addrs.len() > 1 {
             transport.probe();
@@ -85,7 +80,7 @@ impl Channel {
             rx,
             work,
             sock,
-            addrs : AddressMode::Discovering(addrs.into_iter().map(|(addr,cat)|(addr,(cat,0))).collect()),
+            addrs: AddressMode::Discovering(addrs.into_iter().map(|(addr, cat)| (addr, (cat, 0))).collect()),
             route,
             stop: false,
             deadline: tokio::timer::Delay::new(Instant::now()),
@@ -93,7 +88,7 @@ impl Channel {
 
         Self {
             open: open_tx,
-            lst:  Some(ChannelListener(newc_rx)),
+            lst: Some(ChannelListener(newc_rx)),
             identity,
             route,
             bag: Vec::new(),
@@ -127,7 +122,6 @@ impl Stream for ChannelListener {
         self.0.poll().map_err(|()| unreachable!())
     }
 }
-
 
 impl Future for ChannelWorker {
     type Item = ();
@@ -179,19 +173,17 @@ impl Future for ChannelWorker {
             Ok(ChannelProgress::SendPacket(pkt)) => {
                 match &self.addrs {
                     AddressMode::Discovering(addrs) => {
-                        for (addr,_) in addrs.iter() {
+                        for (addr, _) in addrs.iter() {
                             match self.sock.send_to(&pkt, addr) {
                                 Ok(len) if len == pkt.len() => (),
                                 e => error!("send to {} didnt work {:?}", addr, e),
                             }
                         }
-                    },
-                    AddressMode::Established(addr, _) => {
-                        match self.sock.send_to(&pkt, &addr) {
-                            Ok(len) if len == pkt.len() => (),
-                            e => error!("send didnt work {:?}", e),
-                        }
                     }
+                    AddressMode::Established(addr, _) => match self.sock.send_to(&pkt, &addr) {
+                        Ok(len) if len == pkt.len() => (),
+                        e => error!("send didnt work {:?}", e),
+                    },
                 }
                 futures::task::current().notify();
             }
@@ -244,22 +236,22 @@ impl Future for ChannelWorker {
                 let settle = if let AddressMode::Discovering(ref mut addrs) = self.addrs {
                     trace!("in discovery: received from {}", addr);
                     let count = {
-                        let (_,count) = addrs.entry(addr).or_insert((proto::path::Category::Internet,0));
+                        let (_, count) = addrs.entry(addr).or_insert((proto::path::Category::Internet, 0));
                         *count += 1;
                         *count
                     };
                     if count >= 5 {
                         let mut m = None;
                         let mut bestest = None;
-                        for (addr,(cat,count)) in &*addrs {
+                        for (addr, (cat, count)) in &*addrs {
                             if *count >= 1 {
                                 if let Some(ref mut bestest) = bestest {
-                                    if *bestest > *cat as i32{
-                                        m       = Some(addr.clone());
+                                    if *bestest > *cat as i32 {
+                                        m = Some(addr.clone());
                                         *bestest = *cat as i32;
                                     }
                                 } else {
-                                    m       = Some(addr.clone());
+                                    m = Some(addr.clone());
                                     bestest = Some(*cat as i32);
                                 }
                             }
@@ -283,20 +275,18 @@ impl Future for ChannelWorker {
 
                 if let AddressMode::Established(ref mut addr_, ref previous) = self.addrs {
                     if addr != *addr_ {
-                        let current_cat = previous.get(addr_).unwrap_or(&(proto::path::Category::Internet,0)).0;
-                        let migrate_cat = previous.get(&addr).unwrap_or(&(proto::path::Category::Internet,0)).0;
+                        let current_cat = previous.get(addr_).unwrap_or(&(proto::path::Category::Internet, 0)).0;
+                        let migrate_cat = previous.get(&addr).unwrap_or(&(proto::path::Category::Internet, 0)).0;
 
                         if current_cat as i32 >= migrate_cat as i32 {
                             warn!(
                                 "channel migration not fully implemented yet. migrating from  {} to {}",
                                 addr_, addr,
-                                );
+                            );
                             *addr_ = addr;
                         }
-
                     }
                 };
-
 
                 futures::task::current().notify();
             }
@@ -357,19 +347,17 @@ impl Future for ChannelWorker {
             if let Ok(pkt) = self.transport.disconnect() {
                 match &self.addrs {
                     AddressMode::Discovering(addrs) => {
-                        for (addr,_) in addrs.iter() {
+                        for (addr, _) in addrs.iter() {
                             match self.sock.send_to(&pkt, addr) {
                                 Ok(len) if len == pkt.len() => (),
                                 e => error!("send to {} didnt work {:?}", addr, e),
                             }
                         }
-                    },
-                    AddressMode::Established(addr, _) => {
-                        match self.sock.send_to(&pkt, &addr) {
-                            Ok(len) if len == pkt.len() => (),
-                            e => error!("send to {} didnt work {:?}", addr, e),
-                        }
                     }
+                    AddressMode::Established(addr, _) => match self.sock.send_to(&pkt, &addr) {
+                        Ok(len) if len == pkt.len() => (),
+                        e => error!("send to {} didnt work {:?}", addr, e),
+                    },
                 }
             }
             return Ok(Async::Ready(()));

@@ -1,0 +1,35 @@
+[package]
+name    = "carrier-core"
+version = "0.2.0"
+authors = ["Arvid E. Picciani <arvid@devguard.io>"]
+license = "MIT"
+description = "carrier is a generic secure message system for IoT"
+homepage = "https://devguard.io"
+
+[dependencies]
+bs58                = "0.2.1"
+byteorder           = "1.2.4"
+clear_on_drop       = "0.2.3"
+crc8                = "0.1.1"
+ed25519-dalek       = "0.8.0"
+failure             = "0.1.2"
+log                 = "0.4.3"
+sha2                = "0.7.1"
+subtle              = "0.7.0"
+x25519-dalek        = {version = "0.3.0", default-features = false, features = ["std", "u64_backend"] }
+env_logger          = {version = "0.5.12", default-features = false}
+snow                = "0.4.0-alpha2"
+rand                = "0.5"
+
+#[dependencies.rand]
+#version = "0.5"
+#features = ["stdweb"]
+
+#[dependencies.snow]
+#path = "/home/aep/proj/snow/"
+#default-features = false
+#features = ["wasm-resolver"]
+
+
+[build-dependencies]
+carrier-build = {path = "../build", version = "0.2.0"}

@@ -35,6 +35,7 @@ futurize-derive     = "0.4.1"
 gcmap               = "0.1.4"
 interfaces          = "0.0.4"
 env_logger          = {version = "0.5.12", default-features = false}
+carrier-core        = {path = "../core"}
 
 
 [build-dependencies]

@@ -1,7 +1,7 @@
 [workspace]
 members = [
+    "core",
     "lib",
     "cli",
     "build",
 ]
-

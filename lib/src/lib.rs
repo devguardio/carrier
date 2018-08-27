@@ -1,3 +1,4 @@
+extern crate carrier_core;
 #[macro_use]
 extern crate failure;
 extern crate bs58;
@@ -25,38 +26,31 @@ extern crate hpack;
 extern crate serde;
 #[macro_use]
 extern crate serde_derive;
+extern crate futurize;
 extern crate toml;
 extern crate trust_dns_resolver;
-extern crate futurize;
 #[macro_use]
 extern crate futurize_derive;
 extern crate gcmap;
 extern crate interfaces;
 
+pub mod certificate;
 pub mod channel;
 pub mod connect;
 pub mod dns;
 pub mod endpoint;
-pub mod identity;
-pub mod listener;
-pub mod noise;
-pub mod packet;
-pub mod publisher;
-pub mod recovery;
-pub mod replay;
-pub mod shadow;
-pub mod stream;
-pub mod subscriber;
-pub mod transport;
-pub mod xlog;
-pub mod certificate;
 pub mod keystore;
+pub mod listener;
 pub mod local_addrs;
 mod ptrmap;
+pub mod publisher;
+pub mod shadow;
+pub mod subscriber;
+pub mod xlog;
 
+pub use carrier_core::*;
 pub use identity::Identity;
 pub use identity::Secret;
-
 
 mod carrier {
     pub use super::*;

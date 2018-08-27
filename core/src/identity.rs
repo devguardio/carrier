@@ -3,9 +3,9 @@ use clear_on_drop::ClearOnDrop;
 use crc8;
 use ed25519_dalek;
 use failure::Error;
+use rand::{self, RngCore};
 use sha2;
 use std::fmt;
-use rand::{self, RngCore};
 
 #[derive(Debug, Fail)]
 pub enum IdentityError {
@@ -14,7 +14,7 @@ pub enum IdentityError {
 }
 
 #[derive(Clone, PartialEq, Eq, Hash)]
-pub struct Identity{
+pub struct Identity {
     algo: u8,
     key:  Vec<u8>,
 }
@@ -123,7 +123,6 @@ impl Secret {
 }
 
 impl Address {
-
     pub fn to_string(&self) -> String {
         let mut v = Vec::new();
         v.push(8 as u8);
@@ -167,17 +166,15 @@ impl Address {
 
         Ok(Address(b))
     }
-
 }
 
 impl<B: AsRef<[u8]>> From<B> for Address {
     fn from(b: B) -> Address {
-        let mut v = [0;32];
+        let mut v = [0; 32];
         v.copy_from_slice(b.as_ref());
         Address(v)
     }
 }
-
 
 impl Signature {
     pub fn to_string(&self) -> String {
@@ -301,7 +298,7 @@ impl fmt::Display for Identity {
     }
 }
 
-impl fmt::Debug for Identity{
+impl fmt::Debug for Identity {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         self.public_id().fmt(fmt)
     }
@@ -325,14 +322,6 @@ impl fmt::Display for Signature {
     }
 }
 
-use subtle::{Choice, ConstantTimeEq};
-
-impl ConstantTimeEq for Identity {
-    fn ct_eq(&self, other: &Self) -> Choice {
-        self.algo.ct_eq(&other.algo) & self.key.ct_eq(&other.key)
-    }
-}
-
 impl SignedAddress {
     pub fn sign(secret: &Secret, address: Address) -> SignedAddress {
         let signature = secret.sign(b"carrier signed exchange address", &address.0);
@@ -343,7 +332,7 @@ impl SignedAddress {
         b.extend_from_slice(&(self.1).0);
         b
     }
-    pub fn verify(&self, identity : &Identity) -> Result<(), Error> {
+    pub fn verify(&self, identity: &Identity) -> Result<(), Error> {
         identity.verify(b"carrier signed exchange address", &(self.0).0, &self.1)
     }
 }
@@ -354,12 +343,12 @@ impl<B: AsRef<[u8]>> From<B> for SignedAddress {
         if b.len() != 96 {
             panic!("SignedAddress::from unexpected len {}", b.len());
         }
-        let (b1,b2) = b.split_at(32);
+        let (b1, b2) = b.split_at(32);
 
-        let mut a1 = [0;32];
+        let mut a1 = [0; 32];
         a1.copy_from_slice(b1.as_ref());
 
-        let mut a2 = [0;64];
+        let mut a2 = [0; 64];
         a2.copy_from_slice(b2.as_ref());
         SignedAddress(Address(a1), Signature(a2))
     }

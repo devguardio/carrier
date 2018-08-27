@@ -1,12 +1,11 @@
+use failure::Error;
+use identity::Secret;
 use rand::{self, RngCore};
 use std::env;
 use std::fs::{self, File};
-use identity::{Secret};
+use std::io::{Read, Write};
 use std::os::unix::fs::PermissionsExt;
 use toml;
-use failure::Error;
-use std::io::{Read, Write};
-
 
 #[derive(Debug, Fail)]
 pub enum KeystoreError {
@@ -82,4 +81,3 @@ impl Secrets {
         })
     }
 }
-

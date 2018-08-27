@@ -20,11 +20,11 @@ pub enum RoutingDirection {
 }
 
 pub struct EncryptedPacket {
-    pub(crate) version:     u8,
-    pub(crate) route:       RoutingKey,
-    pub(crate) direction:   RoutingDirection,
-    pub(crate) counter:     u64,
-    pub(crate) payload:     Vec<u8>,
+    pub version:   u8,
+    pub route:     RoutingKey,
+    pub direction: RoutingDirection,
+    pub counter:   u64,
+    pub payload:   Vec<u8>,
 }
 
 impl EncryptedPacket {
@@ -33,7 +33,7 @@ impl EncryptedPacket {
         let mut reserved = [0; 3];
         inbuf.read_exact(&mut reserved)?;
 
-        let mut route = [0;8];
+        let mut route = [0; 8];
         inbuf.read_exact(&mut route)?;
         let direction = match route[7] & 0b00000001 {
             0 => RoutingDirection::Initiator2Responder,
@@ -63,7 +63,7 @@ impl EncryptedPacket {
         let mut w = [self.version].to_vec();
         w.extend_from_slice(&[0xff; 3]);
 
-        let mut route = [0;8];
+        let mut route = [0; 8];
         route.as_mut().write_u64::<BigEndian>(self.route).unwrap();
         match self.direction {
             RoutingDirection::Initiator2Responder => route[7] &= 0b11111110,
@@ -115,15 +115,14 @@ pub enum Frame {
 }
 
 impl Frame {
-
     pub fn name(&self) -> &'static str {
         match self {
-            Frame::Header {..}  => "Header",
-            Frame::Stream {..}  => "Stream",
-            Frame::Ack {..}     => "Ack",
-            Frame::Ping         => "Ping",
-            Frame::Disconnect   => "Disconnect",
-            Frame::Close {..}   => "Close",
+            Frame::Header { .. } => "Header",
+            Frame::Stream { .. } => "Stream",
+            Frame::Ack { .. } => "Ack",
+            Frame::Ping => "Ping",
+            Frame::Disconnect => "Disconnect",
+            Frame::Close { .. } => "Close",
         }
     }
 

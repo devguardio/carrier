@@ -82,7 +82,7 @@ impl Future for EndpointFuture {
                     .expect("Time went backwards");
                 let timestamp = (timestamp.as_secs() - 1532811611) as u64 * 100 + timestamp.subsec_millis() as u64 / 10;
 
-                let (noise, pkt) = noise::initiate(&record.x.0, &self.secret, timestamp)?;
+                let (noise, pkt) = noise::initiate(&record.x, &self.secret, timestamp)?;
                 let pkt = pkt.encode();
 
                 let stdsock = StdSocket::bind("0.0.0.0:0")?;
@@ -152,7 +152,7 @@ impl Future for EndpointFuture {
                         assert_ne!(route, 0);
 
                         ep.work.try_send(endpoint::EndpointWorkerCmd::InsertChannel(
-                            noise.route(),
+                            route,
                             endpoint::ChannelBus::User { inc: tx },
                         ))?;
 

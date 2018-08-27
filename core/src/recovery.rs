@@ -517,9 +517,10 @@ fn lossless() {
     for _ in 1..11 {
         clock += 1;
         seq += 1;
-        let frame = Frame::Message {
+        let frame = Frame::Stream {
             order:   seq,
             payload: vec![],
+            stream:  1,
         };
         qr.on_packet_sent(seq, vec![frame], clock);
     }
@@ -546,9 +547,10 @@ fn high_latency() {
     for _ in 1..11 {
         clock += 1;
         seq += 1;
-        let frame = Frame::Message {
+        let frame = Frame::Stream {
             order:   seq,
             payload: vec![],
+            stream:  1,
         };
         qr.on_packet_sent(seq, vec![frame], clock);
     }
@@ -566,7 +568,7 @@ fn high_latency() {
     // At 20ms TLP should be triggered
     clock = 20;
     let loss = qr.on_loss_detection_alarm(clock);
-    let re = if let LossDetection::TailLossProbe(re) = loss {
+    let _re = if let LossDetection::TailLossProbe(re) = loss {
         re
     } else {
         panic!("expected TLP")
@@ -588,7 +590,7 @@ fn high_latency() {
     // At 30ms we get another TLP
     clock = 30;
     let loss = qr.on_loss_detection_alarm(clock);
-    let re = if let LossDetection::TailLossProbe(re) = loss {
+    let _re = if let LossDetection::TailLossProbe(re) = loss {
         re
     } else {
         panic!("expected TLP")
@@ -612,7 +614,7 @@ fn high_latency() {
     // At 30+210ms we're getting a RTO
     clock = 30 + 201;
     let loss = qr.on_loss_detection_alarm(clock);
-    let re = if let LossDetection::RetransmissionTimeout(re) = loss {
+    let _re = if let LossDetection::RetransmissionTimeout(re) = loss {
         re
     } else {
         panic!("expected RTO")
@@ -665,9 +667,10 @@ fn low_latency_high_loss() {
     for _ in 1..11 {
         clock += 1;
         seq += 1;
-        let frame = Frame::Message {
+        let frame = Frame::Stream {
             order:   seq,
             payload: vec![0; 1000],
+            stream:  1,
         };
         qr.on_packet_sent(seq, vec![frame], clock);
     }
@@ -689,7 +692,7 @@ fn low_latency_high_loss() {
     let loss = qr.on_ack_received(1, vec![2], clock);
     assert_eq!(
         qr.congestion_window,
-        INITIAL_WINDOW + 1011,
+        INITIAL_WINDOW + 1015,
         "congestion windows should increase by ack'd frame"
     );
     assert_eq!(loss, LossDetection::None);
@@ -706,7 +709,7 @@ fn low_latency_high_loss() {
     let loss = qr.on_ack_received(1, vec![4], clock);
     assert_eq!(
         qr.congestion_window,
-        INITIAL_WINDOW + 2022,
+        INITIAL_WINDOW + 2030,
         "congestion windows should increase by ack'd frame"
     );
     assert_eq!(loss, LossDetection::None);
@@ -729,7 +732,7 @@ fn low_latency_high_loss() {
     };
     assert_eq!(
         qr.congestion_window,
-        (INITIAL_WINDOW + 3033) / 2,
+        (INITIAL_WINDOW + 3045) / 2,
         "congestion windows should be halfed on loss"
     );
     //retransmit packet 1
@@ -741,5 +744,5 @@ fn low_latency_high_loss() {
     clock = 20;
     let loss = qr.on_ack_received(1, vec![5, 4, 3, 2], clock);
     assert_eq!(loss, LossDetection::None);
-    assert_eq!(qr.congestion_window, 8816, "congestion windows should recover");
+    assert_eq!(qr.congestion_window, 8822, "congestion windows should recover");
 }

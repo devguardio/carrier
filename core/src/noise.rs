@@ -1,6 +1,6 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use failure::Error;
-use identity::{Identity, Secret, Signature};
+use identity::{Address, Identity, Secret, Signature};
 use packet::{self, RoutingDirection, RoutingKey};
 use rand;
 use snow::{self, params::NoiseParams, Builder};
@@ -216,7 +216,7 @@ impl HandshakeResponder {
             },
         )?;
         let signature = secret.sign(b"carrier handshake hash 1", self.noise.get_handshake_hash()?);
-        pkt.payload.extend_from_slice(&signature.0);
+        pkt.payload.extend_from_slice(&signature.as_bytes());
         assert_eq!(pkt.payload.len() % 256, 0);
         assert_eq!(pkt.payload.len() % 256, 0);
         assert_ne!(route, 0);
@@ -248,8 +248,8 @@ impl HandshakeRequester {
         }
 
         let cookie = (&outbuf[0..4]).read_u32::<BigEndian>()?;
-        let identity = Identity::from_ed25519_bytes(&outbuf[4..36]);
-        let signature = Signature(signature);
+        let identity = Identity::from_bytes(&outbuf[4..36])?;
+        let signature = Signature::from_array(signature);
 
         if cookie != self.cookie {
             return Err(NoiseError::InvalidCookie.into());
@@ -279,13 +279,13 @@ impl HandshakeRequester {
 }
 
 pub fn initiate(
-    remote_static: &[u8],
+    remote_static: &Address,
     secret: &Secret,
     timestamp: u64,
 ) -> Result<(HandshakeRequester, packet::EncryptedPacket), Error> {
     let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
     let mut noise = Builder::new(params)
-        .remote_public_key(remote_static)
+        .remote_public_key(remote_static.as_bytes())
         .prologue("carrier has arrived".as_bytes())
         .build_initiator()
         .expect("building noise session");
@@ -304,7 +304,7 @@ pub fn initiate(
         },
     )?;
     let signature = secret.sign(b"carrier handshake hash 1", noise.get_handshake_hash()?);
-    pkt.payload.extend_from_slice(&signature.0);
+    pkt.payload.extend_from_slice(&signature.as_bytes());
     assert_eq!(pkt.payload.len() % 256, 0);
 
     let s = HandshakeRequester {
@@ -317,7 +317,7 @@ pub fn initiate(
 }
 
 pub fn respond(
-    secret: &[u8],
+    secret: &Secret,
     public: Option<&[u8]>,
     pkt: packet::EncryptedPacket,
 ) -> Result<(HandshakeResponder, Identity, u64), Error> {
@@ -325,7 +325,7 @@ pub fn respond(
         None => {
             let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
             Builder::new(params)
-                .local_private_key(secret)
+                .local_private_key(secret.as_bytes())
                 .prologue("carrier has arrived".as_bytes())
                 .build_responder()
                 .expect("building noise session")
@@ -333,7 +333,7 @@ pub fn respond(
         Some(public) => {
             let params: NoiseParams = "Noise_KK_25519_AESGCM_SHA256".parse().unwrap();
             Builder::new(params)
-                .local_private_key(secret)
+                .local_private_key(secret.as_bytes())
                 .remote_public_key(public)
                 .prologue("carrier has arrived".as_bytes())
                 .build_responder()
@@ -355,10 +355,10 @@ pub fn respond(
     }
 
     let cookie = (&outbuf[0..4]).read_u32::<BigEndian>()?;
-    let identity = Identity::from_ed25519_bytes(&outbuf[4..36]);
+    let identity = Identity::from_bytes(&outbuf[4..36])?;
     let timestamp = (&outbuf[36..44]).read_u64::<BigEndian>()?;
 
-    let signature = Signature(signature);
+    let signature = Signature::from_array(signature);
 
     identity.verify(b"carrier handshake hash 1", noise.get_handshake_hash()?, &signature)?;
 

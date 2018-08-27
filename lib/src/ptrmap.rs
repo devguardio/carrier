@@ -180,4 +180,5 @@ fn bla() {
     assert_eq!(m.len(), 1);
     assert_eq!(m.get(&1), Some(&3));
     m.remove(&1);
+    drop(ptr);
 }

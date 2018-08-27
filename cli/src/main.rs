@@ -12,6 +12,7 @@ extern crate log;
 extern crate prost;
 #[macro_use]
 extern crate prost_derive;
+extern crate base64;
 extern crate bytes;
 extern crate hpack;
 extern crate systemstat;
@@ -24,9 +25,7 @@ use futures::{Async, Poll};
 use futures::{Future, Sink, Stream};
 use std::collections::HashSet;
 use std::env;
-use std::fs::File;
 use std::io::BufRead;
-use std::io::Write;
 use std::net::SocketAddr;
 use std::process::Command;
 use std::time::{Duration, Instant};
@@ -108,15 +107,13 @@ pub fn main_() -> Result<(), Error> {
                         .long("allow-delegation")
                         .help("Allow to create more sub-certificates"),
                 ).arg(
+                    Arg::with_name("assume-identity")
+                        .long("assume-identity")
+                        .help("new certificate has the same identity"),
+                ).arg(
                     Arg::with_name("text")
                         .long("text")
                         .help("write human readable interpretation to stdout"),
-                ).arg(
-                    Arg::with_name("output")
-                        .long("output")
-                        .help("write ephermal to file")
-                        .required(true)
-                        .takes_value(true),
                 ).arg(
                     Arg::with_name("access")
                         .long("access")
@@ -159,38 +156,35 @@ pub fn main_() -> Result<(), Error> {
             let secrets = keystore::Secrets::load()?;
 
             let nusecret = identity::Secret::gen();
-            let revoker = identity::Secret::gen();
 
-            let mut cert = certificate::Certificate::new(
-                epoch,
-                nusecret.identity(),
-                secrets.identity.identity(),
-                1,
-                revoker.identity(),
-            );
+            let mut cert = certificate::Certificate::new(epoch, nusecret.identity(), secrets.identity.identity(), 1);
 
-            let mut access = submatches.values_of("access").unwrap();
-
-            while let Some(shadow) = access.next() {
-                let target = access.next().unwrap();
-                let resource = access.next().unwrap();
-                cert.grant_access(
-                    identity::Address::parse(shadow).unwrap(),
-                    identity::Identity::parse(target).unwrap(),
-                    resource.split(',').map(|v| v.trim()),
-                );
+            if let Some(mut access) = submatches.values_of("access") {
+                while let Some(shadow) = access.next() {
+                    let target = access.next().unwrap();
+                    let resource = access.next().unwrap();
+                    cert.grant_access(
+                        shadow.parse().unwrap(),
+                        target.parse().unwrap(),
+                        resource.split(',').map(|v| v.trim()),
+                    );
+                }
             }
 
             if submatches.is_present("allow-delegation") {
                 cert.allow_delegation();
             }
 
-            let signed = cert.signed(&secrets.identity);
-            let filename = submatches.value_of("output").unwrap().to_string();
-            let mut file = File::create(filename).unwrap();
-            file.write_all(&signed).unwrap();
-            drop(file);
+            if submatches.is_present("assume-identity") {
+                cert.assume_identity();
+            }
 
+            let signed = cert.signed(&secrets.identity);
+            let signed = base64::encode(&signed);
+
+            println!("certificate: {}", signed);
+
+            let signed = base64::decode(&signed).unwrap();
             let cert = certificate::Certificate::from_signed(&signed).unwrap();
             if submatches.is_present("text") {
                 eprintln!("{}", cert);
@@ -204,9 +198,9 @@ pub fn main_() -> Result<(), Error> {
             let mut secret = vec![0; 32];
             let mut rng = rand::OsRng::new().unwrap();
             rng.try_fill_bytes(&mut secret).unwrap();
-            let secret = Secret::from_bytes(&mut secret);
+            let secret = Secret::from_bytes(&mut secret).unwrap();
 
-            let address = secret.to_x25519();
+            let address = secret.address();
 
             println!("address: {}", address.to_string());
             println!("secret:  {}", secret.to_string());
@@ -219,11 +213,11 @@ pub fn main_() -> Result<(), Error> {
         }
         ("axiom", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
-            let shadow = identity::Address::parse(submatches.value_of("shadow").unwrap().to_string()).unwrap();
+            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
             let acceptable = submatches
                 .values_of("accept")
                 .unwrap()
-                .map(|v| identity::Identity::parse(v).unwrap())
+                .map(|v| v.parse().unwrap())
                 .collect();
             tokio::run(futures::lazy(move || {
                 axiom(secrets.identity, shadow, acceptable).map_err(|e| error!("{}", e))
@@ -239,7 +233,7 @@ pub fn main_() -> Result<(), Error> {
         }
         ("stats", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
-            let shadow = identity::Address::parse(submatches.value_of("shadow").unwrap().to_string()).unwrap();
+            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
             tokio::run(futures::lazy(move || {
                 stats(secrets.identity, shadow).map_err(|e| error!("{}", e))
             }));
@@ -247,8 +241,8 @@ pub fn main_() -> Result<(), Error> {
         }
         ("mosh", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
-            let shadow = identity::Address::parse(submatches.value_of("shadow").unwrap().to_string()).unwrap();
-            let target = identity::Identity::parse(submatches.value_of("target").unwrap().to_string()).unwrap();
+            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
+            let target = submatches.value_of("target").unwrap().to_string().parse().unwrap();
             tokio::run(futures::lazy(move || {
                 mosh(secrets.identity, shadow, target).map_err(|e| error!("{}", e))
             }));
@@ -259,7 +253,7 @@ pub fn main_() -> Result<(), Error> {
 
             let priority: u8 = submatches.value_of("priority").unwrap().parse().unwrap();
             let addr: SocketAddr = submatches.value_of("ip").unwrap().parse().unwrap();
-            let x = secrets.identity.to_x25519();
+            let x = secrets.identity.address();
             let epoch: u16 = submatches.value_of("epoch").unwrap().parse().unwrap();
 
             let dns = dns::DnsRecord {

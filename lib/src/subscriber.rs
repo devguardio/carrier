@@ -26,7 +26,7 @@ pub fn subscribe(
     filters: Vec<proto::Filter>,
 ) -> impl Stream<Item = channel::Channel, Error = Error> {
     let req = proto::SubscribeRequest {
-        shadow: shadow.0.to_vec(),
+        shadow: shadow.as_bytes().to_vec(),
         filter: filters,
     };
     proto::Broker::subscribe(&mut brk, req)
@@ -34,8 +34,8 @@ pub fn subscribe(
             info!("<<< {:?}", m);
             match m.m {
                 Some(proto::subscribe_change::M::Publish(m)) => {
-                    let xaddr = identity::SignedAddress::from(m.xaddr);
-                    let identity = identity::Identity::from(m.identity);
+                    let xaddr = identity::SignedAddress::from_bytes(m.xaddr).unwrap();
+                    let identity = identity::Identity::from_bytes(m.identity).unwrap();
 
                     xaddr.verify(&identity).unwrap();
 
@@ -45,7 +45,7 @@ pub fn subscribe(
                     let timestamp =
                         (timestamp.as_secs() - 1532811611) as u64 * 100 + timestamp.subsec_millis() as u64 / 10;
 
-                    let (mut hs, pkt) = noise::initiate(&(xaddr.0).0, &secret, timestamp).unwrap();
+                    let (mut hs, pkt) = noise::initiate(&xaddr.address(), &secret, timestamp).unwrap();
 
                     let ep = ep.work.clone();
                     let selfsock = sock.try_clone().unwrap();
@@ -64,7 +64,7 @@ pub fn subscribe(
                             identity: identity.as_bytes().to_vec(),
                             timestamp: timestamp,
                             handshake: pkt.encode(),
-                            shadow: shadow.0.to_vec(),
+                            shadow: shadow.as_bytes().to_vec(),
                             paths,
                         },
                     ).into_future()

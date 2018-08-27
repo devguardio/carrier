@@ -7,15 +7,21 @@ message Access {
     repeated string  resources    = 3;
 }
 
+message Revoker {
+    bytes   identity = 1;
+}
+
 enum ClaimOpt{
     INVALID     = 0;
     DELEGATION  = 1;
+    ASSUME      = 2;
 }
 
 message Claim {
     oneof claim {
         ClaimOpt    opt     = 1;
         Access      access  = 2;
+        Revoker     revoker = 3;
     }
 }
 
@@ -24,6 +30,5 @@ message Certificate {
     bytes   identity        = 2;
     bytes   authority       = 3;
     uint64  serial          = 4;
-    bytes   revoker         = 5;
     repeated Claim  claims  = 6;
 }

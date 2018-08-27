@@ -3,10 +3,13 @@ use failure::Error;
 use futures::sync::mpsc;
 use futures::{self, Async, Future, Poll, Stream};
 use futures::{AsyncSink, Sink};
+use headers::Headers;
 use identity;
 use packet::{EncryptedPacket, RoutingKey};
+use prost::Message;
 use proto;
 use std::collections::HashMap;
+use std::marker::PhantomData;
 use std::mem;
 use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
@@ -14,9 +17,23 @@ use std::time::Instant;
 use tokio;
 use transport::{self, ChannelProgress};
 
+#[derive(Debug, Fail)]
+pub enum ChannelError {
+    #[fail(display = "rpc returned status: {:?}", status)]
+    RpcError { headers: Headers, status:  Option<String> },
+}
+
 pub struct ChannelStream {
     tx: mpsc::Sender<Vec<u8>>,
     rx: mpsc::Receiver<Vec<u8>>,
+}
+
+pub struct MessageStream<In, Out> {
+    tx:      mpsc::Sender<Vec<u8>>,
+    rx:      mpsc::Receiver<Vec<u8>>,
+    int:     PhantomData<In>,
+    out:     PhantomData<Out>,
+    headers: Option<Headers>,
 }
 
 pub struct Channel {
@@ -103,9 +120,18 @@ impl Channel {
         self.route
     }
 
-    pub fn open(&mut self, header: Vec<u8>) -> Result<ChannelStream, Error> {
+    pub fn open(&mut self, headers: Headers) -> Result<ChannelStream, Error> {
         let (a, b) = ChannelStream::new();
-        self.open.try_send((a, header))?;
+        self.open.try_send((a, headers.encode()))?;
+        Ok(b)
+    }
+
+    pub fn message<In: Message, Out: Message, P: Into<Vec<u8>>>(
+        &mut self,
+        p: P,
+    ) -> Result<MessageStream<In, Out>, Error> {
+        let (a, b) = MessageStream::new();
+        self.open.try_send((a, Headers::with_path(p).encode()))?;
         Ok(b)
     }
 
@@ -115,11 +141,18 @@ impl Channel {
 }
 
 impl Stream for ChannelListener {
-    type Item = (ChannelStream, Vec<u8>);
+    type Item = (ChannelStream, Headers);
     type Error = Error;
 
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
-        self.0.poll().map_err(|()| unreachable!())
+        match self.0.poll().unwrap() {
+            Async::NotReady => Ok(Async::NotReady),
+            Async::Ready(None) => Ok(Async::Ready(None)),
+            Async::Ready(Some((stream, headers))) => {
+                let headers = Headers::decode(&headers)?;
+                Ok(Async::Ready(Some((stream, headers))))
+            }
+        }
     }
 }
 
@@ -403,5 +436,86 @@ impl Sink for ChannelStream {
 
     fn start_send(&mut self, item: Self::SinkItem) -> Result<AsyncSink<Self::SinkItem>, Self::SinkError> {
         self.tx.start_send(item).map_err(Error::from)
+    }
+}
+
+impl<In, Out> MessageStream<In, Out> {
+    pub fn new() -> (ChannelStream, MessageStream<In, Out>) {
+        let (tx1, rx1) = futures::sync::mpsc::channel(100);
+        let (tx2, rx2) = futures::sync::mpsc::channel(100);
+        (
+            ChannelStream { rx: rx2, tx: tx1 },
+            MessageStream {
+                rx:      rx1,
+                tx:      tx2,
+                int:     PhantomData::default(),
+                out:     PhantomData::default(),
+                headers: None,
+            },
+        )
+    }
+}
+
+impl<In, Out> Stream for MessageStream<In, Out>
+where
+    Out: Message + Default,
+{
+    type Item = Out;
+    type Error = Error;
+
+    fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
+        loop {
+            match self.rx.poll().unwrap() {
+                Async::NotReady => return Ok(Async::NotReady),
+                Async::Ready(None) => return Ok(Async::Ready(None)),
+                Async::Ready(Some(v)) => {
+                    if self.headers.is_none() {
+                        let headers = Headers::decode(&v)?;
+                        debug!("{:?}", headers);
+
+                        {
+                            let mut status = None;
+                            for (k, v) in headers.iter() {
+                                if k == b":status" {
+                                    status = Some(v);
+                                }
+                            }
+                            if status != Some(b"200") {
+                                return Err(Error::from(ChannelError::RpcError {
+                                    headers: headers.clone(),
+                                    status:  status.map(|v| String::from_utf8_lossy(v).to_string()),
+                                }));
+                            }
+                        }
+
+                        self.headers = Some(headers);
+                    } else {
+                        let v = Out::decode(&v)?;
+                        return Ok(Async::Ready(Some(v)));
+                    }
+                }
+            }
+        }
+    }
+}
+
+impl<In, Out> Sink for MessageStream<In, Out>
+where
+    In: Message,
+{
+    type SinkItem = In;
+    type SinkError = Error;
+
+    fn poll_complete(&mut self) -> Result<Async<()>, Self::SinkError> {
+        self.tx.poll_complete().map_err(Error::from)
+    }
+
+    fn start_send(&mut self, item: Self::SinkItem) -> Result<AsyncSink<Self::SinkItem>, Self::SinkError> {
+        let mut buf = Vec::new();
+        item.encode(&mut buf)?;
+        match self.tx.start_send(buf)? {
+            AsyncSink::NotReady(_) => Ok(AsyncSink::NotReady(item)),
+            AsyncSink::Ready => Ok(AsyncSink::Ready),
+        }
     }
 }

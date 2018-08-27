@@ -5,6 +5,7 @@ use futures::sync::mpsc;
 use futures::{self, Future, Sink, Stream};
 use futurize;
 use gcmap::{HashMap, MarkOnDrop};
+use headers::Headers;
 use identity;
 use proto;
 use ptrmap;
@@ -46,7 +47,6 @@ pub mod shadow {
         #[returns = "usize"]
         Publish {
             identity: super::identity::Identity,
-            peer:     super::peer::Handle,
             msg:      super::proto::PublishRequest,
             rpc:      super::mpsc::Sender<super::proto::PublishChange>,
             ipaddr:   super::SocketAddr,
@@ -56,10 +56,6 @@ pub mod shadow {
         },
         Unpublish {
             ptr: usize,
-        },
-        #[returns = "Option<(super::peer::Handle, super::SocketAddr)>"]
-        GetPublisher {
-            identity: super::identity::Identity,
         },
     }
 }
@@ -73,7 +69,6 @@ pub struct Subscriber {
 pub struct Publisher {
     rpc:    mpsc::Sender<proto::PublishChange>,
     xaddr:  identity::SignedAddress,
-    peer:   peer::Handle,
     ipaddr: SocketAddr,
 }
 
@@ -94,7 +89,7 @@ impl shadow::Worker for Shadow {
         _msg: proto::SubscribeRequest,
         rpc: mpsc::Sender<proto::SubscribeChange>,
     ) -> Box<Future<Item = (Option<Self>, usize), Error = (Option<Self>, Error)> + Send + Sync> {
-        debug!("[{}] new subscriber {}", self.address, identity);
+        info!("[{}] new subscriber {}", self.address, identity);
         let (ptr, old) = self.subscribers.insert(identity, Subscriber { rpc: rpc.clone() });
 
         if let Some(old) = old {
@@ -128,7 +123,6 @@ impl shadow::Worker for Shadow {
     fn publish(
         mut self,
         identity: identity::Identity,
-        peer: peer::Handle,
         msg: proto::PublishRequest,
         rpc: mpsc::Sender<proto::PublishChange>,
         ipaddr: SocketAddr,
@@ -140,11 +134,10 @@ impl shadow::Worker for Shadow {
             Publisher {
                 xaddr: xaddr.clone(),
                 rpc: rpc.clone(),
-                peer,
                 ipaddr,
             },
         );
-        debug!("[{}] new publisher {} {:#x}", self.address, identity, mark);
+        info!("[{}] new publisher {} {:#x}", self.address, identity, mark);
 
         let identity_ = identity.clone();
         if let Some(old) = old {
@@ -243,18 +236,6 @@ impl shadow::Worker for Shadow {
             Box::new(futures::future::ok((Some(self), ())))
         }
     }
-    fn get_publisher(
-        mut self,
-        identity: identity::Identity,
-    ) -> Box<
-        Future<Item = (Option<Self>, Option<(peer::Handle, SocketAddr)>), Error = (Option<Self>, Error)> + Send + Sync,
-    > {
-        let v = self
-            .publishers
-            .get_mut(&identity)
-            .map(|v| (v.peer.clone(), v.ipaddr.clone()));
-        Box::new(futures::future::ok((Some(self), v)))
-    }
 }
 
 // ---------
@@ -270,7 +251,7 @@ pub mod broker {
             msg:      super::proto::SubscribeRequest,
             rpc:      super::mpsc::Sender<super::proto::SubscribeChange>,
         },
-        #[returns = "super::ptrmap::DropHook"]
+        #[returns = "(super::MarkOnDrop, super::ptrmap::DropHook)"]
         Publish {
             identity: super::identity::Identity,
             peer:     super::peer::Handle,
@@ -279,15 +260,13 @@ pub mod broker {
             ipaddr:   super::SocketAddr,
         },
         #[returns = "Option<(super::peer::Handle, super::SocketAddr)>"]
-        GetPublisher {
-            shadow:   super::identity::Address,
-            identity: super::identity::Identity,
-        },
+        GetPeer { identity: super::identity::Identity },
     }
 }
 
 struct Broker {
     shadows: HashMap<identity::Address, shadow::Handle>,
+    peers:   HashMap<identity::Identity, (peer::Handle, SocketAddr)>,
 }
 
 impl Broker {
@@ -335,34 +314,30 @@ impl broker::Worker for Broker {
         msg: proto::PublishRequest,
         rpc: mpsc::Sender<proto::PublishChange>,
         ipaddr: SocketAddr,
-    ) -> Box<Future<Item = (Option<Self>, ptrmap::DropHook), Error = (Option<Self>, Error)> + Send + Sync> {
+    ) -> Box<Future<Item = (Option<Self>, (MarkOnDrop, ptrmap::DropHook)), Error = (Option<Self>, Error)> + Send + Sync>
+    {
         let shadow = wrk_try!(self, identity::Address::from_bytes(&msg.shadow));
         let mut shadow = self.shadow(shadow).clone();
 
-        let ft = shadow.publish(identity, peer, msg, rpc, ipaddr).and_then(|ptr| {
+        let (gcmark, _) = self.peers.insert(identity.clone(), (peer, ipaddr.clone()));
+
+        let ft = shadow.publish(identity, msg, rpc, ipaddr).and_then(|ptr| {
             let hook = ptrmap::DropHook::new(move || {
                 tokio::spawn(shadow.unpublish(ptr).map_err(|e| error!("{}", e)));
             });
-            Ok(hook)
+            Ok((gcmark, hook))
         });
 
         wrk_continue!(self, ft)
     }
 
-    fn get_publisher(
+    fn get_peer(
         mut self,
-        shadow: identity::Address,
         identity: identity::Identity,
     ) -> Box<
         Future<Item = (Option<Self>, Option<(peer::Handle, SocketAddr)>), Error = (Option<Self>, Error)> + Send + Sync,
     > {
-        let ft = if let Some(shadow) = self.shadows.get_mut(&shadow) {
-            let f = shadow.get_publisher(identity);
-            Box::new(f) as Box<Future<Item = Option<_>, Error = Error> + Send + Sync>
-        } else {
-            Box::new(futures::future::ok(None))
-        };
-
+        let ft = futures::future::ok(self.peers.get(&identity).cloned());
         wrk_continue!(self, ft)
     }
 }
@@ -370,6 +345,7 @@ impl broker::Worker for Broker {
 pub(crate) fn spawn() -> broker::Handle {
     let worker = Broker {
         shadows: HashMap::new(),
+        peers:   HashMap::new(),
     };
     let (worker, handle) = broker::spawn(100, worker);
     tokio::spawn(worker);
@@ -399,13 +375,22 @@ impl peer::Worker for Peer {
     ) -> Box<Future<Item = (Option<Self>, proto::PeerConnectResponse), Error = (Option<Self>, Error)> + Send + Sync>
     {
         let selfipaddr = self.ipaddr.clone();
-        let ft = proto::Peer::connect(&mut self.channel, req).and_then(move |mut resp| {
-            resp.paths.push(proto::Path {
-                category: (proto::path::Category::Internet as i32),
-                ipaddr:   format!("{}", selfipaddr),
+        let ft = self
+            .channel
+            .message("/carrier.broker.v1/peer/connect")
+            .unwrap()
+            .send(req)
+            .flatten_stream()
+            .into_future()
+            .map_err(|(e, _)| e)
+            .and_then(move |(resp, _)| {
+                let mut resp: proto::PeerConnectResponse = resp.expect("eof before header");
+                resp.paths.push(proto::Path {
+                    category: (proto::path::Category::Internet as i32),
+                    ipaddr:   format!("{}", selfipaddr),
+                });
+                Ok(resp)
             });
-            Ok(resp)
-        });
 
         wrk_continue!(self, ft)
     }
@@ -452,7 +437,7 @@ impl broker::Handle {
 impl proto::Broker::Service for Srv {
     fn subscribe(
         &mut self,
-        _headers: Vec<(Vec<u8>, Vec<u8>)>,
+        _headers: Headers,
         msg: proto::SubscribeRequest,
     ) -> Result<Box<Stream<Item = proto::SubscribeChange, Error = Error> + Sync + Send + 'static>, Error> {
         let (tx, rx) = mpsc::channel(100);
@@ -471,7 +456,7 @@ impl proto::Broker::Service for Srv {
 
     fn publish(
         &mut self,
-        _headers: Vec<(Vec<u8>, Vec<u8>)>,
+        _headers: Headers,
         msg: proto::PublishRequest,
     ) -> Result<Box<Stream<Item = proto::PublishChange, Error = Error> + Sync + Send + 'static>, Error> {
         let (tx, rx) = mpsc::channel(100);
@@ -490,7 +475,7 @@ impl proto::Broker::Service for Srv {
 
     fn connect(
         &mut self,
-        _headers: Vec<(Vec<u8>, Vec<u8>)>,
+        _headers: Headers,
         msg: proto::ConnectRequest,
     ) -> Result<Box<Stream<Item = proto::ConnectResponse, Error = Error> + Sync + Send + 'static>, Error> {
         if !xlog::advance(&self.identity, msg.timestamp as u64) {
@@ -506,7 +491,6 @@ impl proto::Broker::Service for Srv {
 
         let msgtimestamp = msg.timestamp;
         let msghandshake = msg.handshake;
-        let msgshadow = msg.shadow;
         let msgidentity = msg.identity;
         let mut paths = msg.paths;
         paths.push(proto::Path {
@@ -517,20 +501,17 @@ impl proto::Broker::Service for Srv {
         let selfipaddr = self.ipaddr.clone();
         let selfidentity = self.identity.as_bytes().to_vec();
         let mut endpoint = self.endpoint.clone();
-        let ft = identity::Address::from_bytes(&msgshadow)
-            .and_then(|shadow| identity::Identity::from_bytes(msgidentity).map(move |identity| (identity, shadow)));
 
         let mut broker = self.broker.clone();
-        let ft = futures::future::result(ft)
-            .and_then(move |(identity, shadow)| {
-                broker.get_publisher(shadow, identity).and_then(move |maybe| {
+        let ft = futures::future::result(identity::Identity::from_bytes(msgidentity))
+            .and_then(move |target| {
+                broker.get_peer(target).and_then(move |maybe| {
                     if let Some((mut peer, ipaddr)) = maybe {
                         let ft = endpoint
                             .proxy(selfipaddr, ipaddr)
                             .and_then(move |proxy| {
                                 peer.connect(proto::PeerConnectRequest {
                                     identity:  selfidentity,
-                                    shadow:    msgshadow,
                                     timestamp: msgtimestamp,
                                     handshake: msghandshake,
                                     route:     proxy.route(),
@@ -571,8 +552,7 @@ impl proto::Broker::Service for Srv {
                             as Box<Stream<Item = _, Error = _> + Sync + Send>)
                     }
                 })
-            }).into_stream()
-            .flatten();
+            }).flatten_stream();
 
         Ok(Box::new(ft))
     }

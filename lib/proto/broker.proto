@@ -59,10 +59,9 @@ message PublishChange{
 
 message ConnectRequest {
     bytes   identity        = 1;
-    bytes   shadow          = 2;
-    uint64  timestamp       = 3;
-    bytes   handshake       = 4;
-    repeated Path paths     = 5;
+    uint64  timestamp       = 2;
+    bytes   handshake       = 3;
+    repeated Path paths     = 4;
 }
 
 message ConnectResponse {
@@ -81,11 +80,10 @@ service Broker {
 
 message PeerConnectRequest {
     bytes   identity        = 1;
-    bytes   shadow          = 2;
-    uint64  timestamp       = 3;
-    bytes   handshake       = 4;
-    uint64  route           = 5;
-    repeated Path paths     = 6;
+    uint64  timestamp       = 2;
+    bytes   handshake       = 3;
+    uint64  route           = 4;
+    repeated Path paths     = 5;
 }
 
 message PeerConnectResponse {

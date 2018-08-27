@@ -1,0 +1,25 @@
+[package]
+name    = "carrier-broker"
+version = "0.2.0"
+authors = ["Arvid E. Picciani <arvid@devguard.io>"]
+license = "MIT"
+description = "carrier is a generic secure message system for IoT"
+homepage = "https://devguard.io"
+
+
+[dependencies]
+carrier             = {path = "../lib", version="0.2.0"}
+bytes               = "0.4.9"
+failure             = "0.1.2"
+futures             = "0.1"
+log                 = "0.4.3"
+rand                = "0.5"
+tokio               = "0.1.7"
+
+[dependencies.env_logger]
+version = "0.5.12"
+default-features = false
+
+[[bin]]
+name = "carrier-broker"
+path = "src/main.rs"

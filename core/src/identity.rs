@@ -19,7 +19,6 @@ pub enum IdentityError {
 
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct Identity([u8; 32]);
-//TODO Secret should not be cloned
 #[derive(Clone)]
 pub struct Secret(ClearOnDrop<Box<[u8; 32]>>);
 #[derive(Clone)]
@@ -59,8 +58,9 @@ impl Secret {
     }
 
     pub fn gen() -> Self {
+        use rand::rngs::OsRng;
         let mut a = [0u8; 32];
-        let mut rng = rand::OsRng::new().unwrap();
+        let mut rng = OsRng::new().unwrap();
         rng.try_fill_bytes(&mut a).unwrap();
         Secret(ClearOnDrop::new(Box::new(a)))
     }
@@ -123,6 +123,13 @@ impl FromStr for Secret {
         a.copy_from_slice(&s[2..s.len() - 1]);
 
         Ok(Secret(ClearOnDrop::new(Box::new(a))))
+    }
+}
+
+
+impl fmt::Debug for Secret {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "<secret>")
     }
 }
 
@@ -402,15 +409,10 @@ impl SignedAddress {
 }
 
 pub fn generate_x25519() -> (Secret, [u8; 32]) {
-    use rand::OsRng;
-    use x25519_dalek::generate_public;
-    use x25519_dalek::generate_secret;
 
-    let mut alice_csprng = OsRng::new().unwrap();
-    let alice_secret = generate_secret(&mut alice_csprng);
-    let alice_public = generate_public(&alice_secret);
-
-    (Secret::from_bytes(&alice_secret).unwrap(), alice_public.to_bytes())
+    let secret = Secret::gen();
+    let public = secret.address();
+    (secret, public.0)
 }
 
 #[test]

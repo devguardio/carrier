@@ -2,6 +2,7 @@ use failure::Error;
 use futures::Future;
 use identity::{Address, Secret};
 use rand::{thread_rng, Rng};
+use std::cmp::max;
 use std::net::SocketAddr;
 use tokio;
 use trust_dns_resolver::config::*;
@@ -12,7 +13,7 @@ pub struct DnsRecord {
     pub priority: u8,
     pub addr:     SocketAddr,
     pub x:        Address,
-    pub epoch:    u16,
+    pub epoch:    u32,
 }
 
 impl DnsRecord {
@@ -43,7 +44,7 @@ impl DnsRecord {
             return None;
         }
 
-        let epoch: u16 = s[0].parse().ok()?;
+        let epoch: u32 = s[0].parse().ok()?;
         let priority: u8 = s[1].parse().ok()?;
         let addr: SocketAddr = s[2].parse().ok()?;
         let x = s[3].parse().ok()?;
@@ -56,7 +57,7 @@ impl DnsRecord {
         })
     }
 }
-pub fn resolve(domain: &str) -> impl Future<Item = Vec<DnsRecord>, Error = Error> {
+pub fn resolve(domain: &str) -> impl Future<Item = (u32, Vec<DnsRecord>), Error = Error> {
     let (resolver, bg) = AsyncResolver::new(ResolverConfig::default(), ResolverOpts::default());
     tokio::spawn(bg);
 
@@ -69,7 +70,12 @@ pub fn resolve(domain: &str) -> impl Future<Item = Vec<DnsRecord>, Error = Error
                     .map(|txt| String::from_utf8_lossy(&txt).to_string())
             }).filter_map(|s| DnsRecord::from_signed_txt(s))
             .collect();
+
+        let highest_epoch = v.iter().fold(0, |h, record| max(h, record.epoch));
+
+        v.retain(|record| record.epoch == highest_epoch);
+
         thread_rng().shuffle(&mut v);
-        Ok(v)
+        Ok((highest_epoch, v))
     })
 }

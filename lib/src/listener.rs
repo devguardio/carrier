@@ -34,9 +34,12 @@ impl Listener {
 }
 
 pub fn listen(secret: identity::Secret) -> Result<(Listener, shadow::broker::Handle), Error> {
-    let stdsock = StdSocket::bind(&format!("0.0.0.0:{}", env::var("PORT").unwrap_or("8443".to_string())))?;
+    let port = env::var("PORT").unwrap_or("8443".to_string());
+    let stdsock = StdSocket::bind(&format!("0.0.0.0:{}", port))?;
     let miosock = UdpSocket::from_std(stdsock.try_clone()?, &tokio::reactor::Handle::current())?;
     let ep = endpoint::Endpoint::spawn(stdsock.try_clone()?, miosock)?;
+
+    info!("listening on 0.0.0.0:{}", port);
 
     let (tx, rx) = mpsc::channel(100);
     let mut work = ep.work.clone();
@@ -77,7 +80,7 @@ impl Stream for Listener {
                 Ok(Async::NotReady) => return Ok(Async::NotReady),
                 Err(_) => unreachable!(),
             };
-            let (r, identity, timestamp) = match noise::respond(&self.xsecret, None, pkt) {
+            let (r, identity, timestamp) = match noise::respond(Some(&self.xsecret), pkt) {
                 Ok(v) => v,
                 Err(e) => {
                     warn!("cannot accept handshake: {}", e);

@@ -3,12 +3,10 @@ extern crate carrier_core;
 extern crate failure;
 extern crate bs58;
 extern crate byteorder;
-extern crate clear_on_drop;
 extern crate crc8;
 extern crate ed25519_dalek;
 extern crate rand;
 extern crate sha2;
-extern crate snow;
 extern crate subtle;
 extern crate x25519_dalek;
 #[macro_use]
@@ -34,8 +32,8 @@ extern crate futurize_derive;
 extern crate gcmap;
 extern crate interfaces;
 
-pub mod certificate;
 pub mod channel;
+pub mod config;
 pub mod connect;
 pub mod dns;
 pub mod endpoint;
@@ -56,6 +54,5 @@ mod carrier {
     pub use super::*;
 }
 pub mod proto {
-    include!(concat!(env!("OUT_DIR"), "/carrier.certificate.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/carrier.broker.v1.rs"));
 }

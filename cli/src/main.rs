@@ -9,14 +9,14 @@ extern crate rand;
 extern crate tokio;
 #[macro_use]
 extern crate log;
-extern crate prost;
-#[macro_use]
-extern crate prost_derive;
 extern crate base64;
 extern crate bytes;
 extern crate hpack;
+extern crate serde_json;
 extern crate systemstat;
 extern crate tokio_process;
+#[macro_use]
+extern crate serde_derive;
 
 use carrier::*;
 use clap::{App, Arg, SubCommand};
@@ -25,18 +25,15 @@ use futures::{Async, Poll};
 use futures::{Future, Sink, Stream};
 use std::collections::HashSet;
 use std::env;
-use std::io::BufRead;
 use std::net::SocketAddr;
 use std::process::Command;
 use std::time::{Duration, Instant};
-use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::net::UdpSocket;
 use tokio::timer::Interval;
 use tokio_process::CommandExt;
 
-pub mod axiom {
-    include!(concat!(env!("OUT_DIR"), "/carrier.axiom.v1.rs"));
-}
+mod mosh;
+mod system_stats;
 
 pub fn main_() -> Result<(), Error> {
     if let Err(_) = env::var("RUST_LOG") {
@@ -85,13 +82,10 @@ pub fn main_() -> Result<(), Error> {
                 .arg(Arg::with_name("epoch").takes_value(true).required(true).index(1))
                 .arg(Arg::with_name("ip").takes_value(true).required(true).index(3)),
         ).subcommand(
-            SubCommand::with_name("stats").about("subscribe to stats").arg(
-                Arg::with_name("shadow")
-                    .help("shadow where services are")
-                    .takes_value(true)
-                    .required(true)
-                    .index(1),
-            ),
+            SubCommand::with_name("get")
+                .about("get something")
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("resource").takes_value(true).required(true).index(2)),
         ).subcommand(
             SubCommand::with_name("ephermal")
                 .about("generate a signed ephermal identity")
@@ -100,7 +94,7 @@ pub fn main_() -> Result<(), Error> {
                         .long("epoch")
                         .help("The current epoch in which to create certificate")
                         .takes_value(true)
-                        .validator(|v| v.parse::<u16>().map_err(|e| format!("{}", e)).map(|_| ()))
+                        .validator(|v| v.parse::<u32>().map_err(|e| format!("{}", e)).map(|_| ()))
                         .required(true),
                 ).arg(
                     Arg::with_name("allow-delegation")
@@ -123,23 +117,16 @@ pub fn main_() -> Result<(), Error> {
                         .value_names(&["shadow", "target", "resource"]),
                 ),
         ).subcommand(SubCommand::with_name("identity").about("print public identity"))
-        .subcommand(SubCommand::with_name("broker").about("run broker"))
         .subcommand(SubCommand::with_name("sshd"))
         .subcommand(
             SubCommand::with_name("mosh")
                 .about("get mosh shell on an axiom service")
                 .arg(
-                    Arg::with_name("shadow")
-                        .help("shadow where services are")
-                        .takes_value(true)
-                        .required(true)
-                        .index(1),
-                ).arg(
                     Arg::with_name("target")
                         .help("identity of mosh service")
                         .takes_value(true)
                         .required(true)
-                        .index(2),
+                        .index(1),
                 ),
         );
 
@@ -151,6 +138,7 @@ pub fn main_() -> Result<(), Error> {
             Ok(())
         }
         ("ephermal", Some(submatches)) => {
+            /*
             let epoch = submatches.value_of("epoch").unwrap().parse().unwrap();
 
             let secrets = keystore::Secrets::load()?;
@@ -189,6 +177,7 @@ pub fn main_() -> Result<(), Error> {
             if submatches.is_present("text") {
                 eprintln!("{}", cert);
             }
+            */
 
             Ok(())
         }
@@ -224,27 +213,28 @@ pub fn main_() -> Result<(), Error> {
             }));
             Ok(())
         }
-        ("broker", Some(_submatches)) => {
+        ("get", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
+
+            let config = config::Config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .unwrap();
+            let resource = submatches.value_of("resource").unwrap().to_string();
+
             tokio::run(futures::lazy(move || {
-                broker(secrets.identity).map_err(|e| error!("{}", e))
-            }));
-            Ok(())
-        }
-        ("stats", Some(submatches)) => {
-            let secrets = keystore::Secrets::load()?;
-            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
-            tokio::run(futures::lazy(move || {
-                stats(secrets.identity, shadow).map_err(|e| error!("{}", e))
+                get(secrets.identity, target, resource).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
         ("mosh", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
-            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
-            let target = submatches.value_of("target").unwrap().to_string().parse().unwrap();
+            let config = config::Config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .unwrap();
             tokio::run(futures::lazy(move || {
-                mosh(secrets.identity, shadow, target).map_err(|e| error!("{}", e))
+                mosh(secrets.identity, target).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
@@ -254,7 +244,7 @@ pub fn main_() -> Result<(), Error> {
             let priority: u8 = submatches.value_of("priority").unwrap().parse().unwrap();
             let addr: SocketAddr = submatches.value_of("ip").unwrap().parse().unwrap();
             let x = secrets.identity.address();
-            let epoch: u16 = submatches.value_of("epoch").unwrap().parse().unwrap();
+            let epoch: u32 = submatches.value_of("epoch").unwrap().parse().unwrap();
 
             let dns = dns::DnsRecord {
                 priority,
@@ -280,88 +270,24 @@ pub fn main() {
     }
 }
 
-struct MoshBridge {
-    udp:    UdpSocket,
-    addr:   Option<SocketAddr>,
-    stream: channel::ChannelStream,
-}
-
-impl Future for MoshBridge {
-    type Item = ();
-    type Error = Error;
-    fn poll(&mut self) -> Poll<(), Error> {
-        loop {
-            let mut buf = vec![0; 10240];
-            match self.udp.poll_recv_from(&mut buf) {
-                Err(e) => return Err(Error::from(e)),
-                Ok(Async::NotReady) => break,
-                Ok(Async::Ready((l, addr))) => {
-                    self.addr = Some(addr);
-                    buf.truncate(l);
-                    self.stream.start_send(buf).unwrap();
-                }
-            };
-        }
-        if let Some(addr) = self.addr {
-            loop {
-                match self.stream.poll() {
-                    Err(e) => return Err(Error::from(e)),
-                    Ok(Async::NotReady) => return Ok(Async::NotReady),
-                    Ok(Async::Ready(None)) => return Ok(Async::Ready(())),
-                    Ok(Async::Ready(Some(b))) => {
-                        self.udp.poll_send_to(&b, &addr).unwrap();
-                    }
-                }
-            }
-        }
-        Ok(Async::NotReady)
-    }
-}
-
-pub fn mosh(
-    secret: identity::Secret,
-    shadow: identity::Address,
-    target: identity::Identity,
-) -> impl Future<Item = (), Error = Error> {
-    connect::connect(
-        env::var("CARRIER_BROKER_DOMAIN").unwrap_or("dev.carrier.devguard.io".to_string()),
-        secret.clone(),
-    ).and_then(move |(ep, brk, sock, addr)| {
+pub fn mosh(secret: identity::Secret, target: identity::Identity) -> impl Future<Item = (), Error = Error> {
+    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
+    connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
         info!("established broker route {:#x} with {}", brk.route(), brk.identity());
+        subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
+            channel
+                .open(headers::Headers::with_path("/v0/mosh"))
+                .unwrap()
+                .into_future()
+                .map_err(|(e, _)| e)
+                .and_then(move |(headers, stream)| {
+                    let headers = headers.expect("eof before header");
+                    let headers = headers::Headers::decode(&headers).unwrap();
+                    println!("{:?}", headers);
 
-        subscriber::subscribe(
-            shadow,
-            ep,
-            brk,
-            sock,
-            addr,
-            secret,
-            vec![
-                proto::Filter {
-                    m: Some(proto::filter::M::Immediate(true)),
-                },
-                proto::Filter {
-                    m: Some(proto::filter::M::Identity(target.as_bytes().to_vec())),
-                },
-            ],
-        ).into_future()
-        .map_err(|(e, _)| e)
-        .and_then(move |(ch, subscribers)| {
-            let mut ch = ch.unwrap();
-            info!("<<< subscried to {}", ch.identity());
-
-            let headers: Vec<(&[u8], &[u8])> = Vec::new();
-            axiom::Axiom::raw_mosh(&mut ch, headers)
-                .and_then(|(headers, stream)| {
                     let mut mosh_key = None;
-
-                    for header in headers {
-                        eprintln!(
-                            "{} : {}",
-                            String::from_utf8_lossy(&header.0),
-                            String::from_utf8_lossy(&header.1)
-                        );
-                        if header.0.as_slice() == b"mosh_key" {
+                    for header in headers.iter() {
+                        if header.0 == b"mosh_key" {
                             mosh_key = Some(header.1.clone());
                         }
                     }
@@ -379,7 +305,7 @@ pub fn mosh(
                         .and_then(|_| Ok(()))
                         .map_err(Error::from);
 
-                    let bridge = MoshBridge {
+                    let bridge = mosh::MoshBridge {
                         udp,
                         addr: None,
                         stream,
@@ -387,128 +313,45 @@ pub fn mosh(
 
                     child.select2(bridge).map_err(|e| e.split().0)
                 }).and_then(|_| {
-                    drop(subscribers);
-                    drop(ch);
+                    drop(brk);
+                    drop(channel);
                     Ok(())
                 })
         })
     })
 }
 
-pub fn stats(secret: identity::Secret, shadow: identity::Address) -> impl Future<Item = (), Error = Error> {
-    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("dev.carrier.devguard.io".to_string());
-    connect::connect(domain, secret.clone()).and_then(move |(ep, brk, sock, addr)| {
+pub fn get(
+    secret: identity::Secret,
+    target: identity::Identity,
+    resource: String,
+) -> impl Future<Item = (), Error = Error> {
+    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
+    connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
         info!("established broker route {:#x} with {}", brk.route(), brk.identity());
-        subscriber::subscribe(shadow, ep, brk, sock, addr, secret, vec![]).for_each(|mut ch| {
-            info!("<<< subscribed to {}", ch.identity());
-            let ft = axiom::Axiom::system_stats(&mut ch, axiom::SubscribeConfig { interval: 1 })
-                .for_each(move |stats| {
-                    println!("{} => {:?}", ch.identity(), stats);
+        subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
+            channel
+                .open(headers::Headers::with_path(resource.as_bytes()))
+                .unwrap()
+                .into_future()
+                .map_err(|(e, _)| e)
+                .and_then(move |(headers, st)| {
+                    let headers = headers.expect("eof before header");
+                    let headers = headers::Headers::decode(&headers)?;
+                    println!("{:?}", headers);
+                    Ok(st) as Result<_, Error>
+                }).flatten_stream()
+                .map_err(Error::from)
+                .for_each(move |v: Vec<u8>| {
+                    println!("{}", String::from_utf8_lossy(v.as_slice()));
                     Ok(())
-                }).map_err(|e| error!("{}", e));
-            tokio::spawn(ft);
-            Ok(())
+                }).and_then(|_| {
+                    drop(brk);
+                    drop(channel);
+                    Ok(())
+                })
         })
     })
-}
-
-pub struct Axiom {}
-
-impl axiom::Axiom::Service for Axiom {
-    fn system_stats(
-        &mut self,
-        _headers: Vec<(Vec<u8>, Vec<u8>)>,
-        i: axiom::SubscribeConfig,
-    ) -> Result<Box<dyn Stream<Item = axiom::SystemStats, Error = Error> + Send + Sync>, Error> {
-        use systemstat::Platform;
-
-        let stats = systemstat::platform::linux::PlatformImpl::new();
-        let tick = Interval::new(Instant::now(), Duration::from_secs(i.interval as u64));
-        let st = tick.map_err(Error::from).and_then(move |_| {
-            let start = SystemTime::now();
-            let since_the_epoch = start.duration_since(UNIX_EPOCH).expect("Time went backwards");
-
-            let load = stats.load_average().ok().map(|load| axiom::SystemLoad {
-                load_1:  load.one,
-                load_5:  load.five,
-                load_15: load.fifteen,
-            });
-
-            let mem = stats.memory().ok().map(|v| axiom::Memory {
-                total: v.total.as_usize() as u64,
-                free:  v.free.as_usize() as u64,
-            });
-
-            let mut power = None;
-            if let Ok(v) = stats.on_ac_power() {
-                if let Ok(v2) = stats.battery_life() {
-                    power = Some(axiom::Power {
-                        on_ac_power:                v,
-                        remaining_battery_capacity: v2.remaining_capacity,
-                        remaining_battery_time:     v2.remaining_time.as_secs(),
-                    })
-                }
-            };
-
-            let temps = stats.cpu_temp().ok().map(|v| axiom::Temperatures { cpu: v });
-
-            Ok(axiom::SystemStats {
-                timestamp: since_the_epoch.as_secs(),
-                load,
-                mem,
-                power,
-                temps,
-                uptime: stats.uptime()?.as_secs(),
-            })
-        });
-
-        Ok(Box::new(st))
-    }
-
-    fn raw_mosh(&mut self, _headers: Vec<(Vec<u8>, Vec<u8>)>, stream: channel::ChannelStream) {
-        let output = Command::new("mosh-server").output().expect("failed to execute process");
-
-        let mut port: Option<u16> = None;
-        let mut key: Option<String> = None;
-
-        for line in output.stdout.lines() {
-            let line = line.unwrap();
-            if line.starts_with("MOSH CONNECT") {
-                let mut line = line.split(" ");
-                line.next().unwrap();
-                line.next().unwrap();
-                port = Some(line.next().unwrap().parse().unwrap());
-                key = Some(line.next().unwrap().to_string());
-            }
-        }
-
-        let port = port.expect("didnt get port from mosh-server output");
-        let key = key.expect("didnt get key from mosh-server output");
-
-        let mut headers = Vec::new();
-        headers.push((":status".as_bytes(), "200".as_bytes()));
-        headers.push(("mosh_key".as_bytes(), key.as_bytes()));
-
-        use hpack::Encoder;
-        let mut encoder = Encoder::new();
-        let headers = encoder.encode(headers);
-
-        let ft = stream
-            .send(headers)
-            .and_then(move |stream| {
-                let udp = UdpSocket::bind(&("127.0.0.1:0".parse().unwrap())).unwrap();
-                MoshBridge {
-                    stream,
-                    udp,
-                    addr: Some(format!("127.0.0.1:{}", port).parse().unwrap()),
-                }
-            }).and_then(|()| {
-                info!("ssh loop ends");
-                Ok(())
-            }).map_err(|e| error!("{}", e));
-
-        tokio::spawn(ft);
-    }
 }
 
 pub fn axiom(
@@ -516,7 +359,7 @@ pub fn axiom(
     shadow: identity::Address,
     acceptable: Vec<identity::Identity>,
 ) -> impl Future<Item = (), Error = Error> {
-    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("dev.carrier.devguard.io".to_string());
+    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
     let acceptable: HashSet<identity::Identity> = acceptable.into_iter().collect();
 
     connect::connect(domain, secret.clone()).and_then(move |(ep, brk, sock, addr)| {
@@ -524,36 +367,32 @@ pub fn axiom(
         publisher::dispatch(shadow, ep, brk, sock, addr, secret, move |id| acceptable.contains(&id)).for_each(
             |mut channel| {
                 info!("peer has subscribed {}", channel.identity());
-                let ch = axiom::Axiom::dispatch(channel.listener().unwrap(), Axiom {})
-                    .and_then(|_| {
+                let server = channel
+                    .listener()
+                    .unwrap()
+                    .for_each(|(stream, headers)| {
+                        info!("{:?}", headers);
+                        let stream = match headers.path() {
+                            Some(b"/v0/mosh") => {
+                                Box::new(mosh::handle(stream)) as Box<Future<Item = (), Error = Error> + Send + Sync>
+                            }
+                            Some(b"/v0/system_stats") => Box::new(system_stats::handle(stream))
+                                as Box<Future<Item = (), Error = Error> + Send + Sync>,
+                            _ => {
+                                let header: Vec<u8> = headers::Headers::with_error(404, b"not found".to_vec()).encode();
+                                let ft = stream.send(header).and_then(|_| Ok(()));
+                                Box::new(ft)
+                            }
+                        }.map_err(|e| error!("{}", e));
+                        tokio::spawn(stream);
+                        Ok(())
+                    }).and_then(move |_| {
                         drop(channel);
                         Ok(())
                     }).map_err(|e| error!("{}", e));
-                tokio::spawn(ch);
+                tokio::spawn(server);
                 Ok(())
             },
         )
     })
-}
-
-pub fn broker(secret: identity::Secret) -> impl Future<Item = (), Error = Error> {
-    let (lst, sb) = listener::listen(secret.clone()).unwrap();
-    let ep = lst.handle();
-    lst.for_each(move |ch| {
-        info!("incomming channel {} {}", ch.identity(), ch.addr());
-        let addr = ch.addr().clone();
-        let sb = sb.clone();
-        let ep = ep.clone();
-        let ft = ch
-            .accept(secret.clone())
-            .and_then(move |ch| {
-                info!("accepted channel {} for route {}", ch.identity(), ch.route());
-                sb.dispatch(ep, ch, addr)
-            }).and_then(|_| {
-                info!("dispatch ended");
-                Ok(())
-            }).map_err(|e| error!("{}", e));
-        tokio::spawn(ft);
-        Ok(())
-    }).and_then(move |_| Ok(()))
 }

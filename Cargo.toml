@@ -4,4 +4,8 @@ members = [
     "lib",
     "cli",
     "build",
-]
+    "build-core",
+    "web",
+    "wsx",
+    "broker",
+    ]

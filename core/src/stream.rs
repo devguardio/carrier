@@ -39,7 +39,6 @@ impl OrderedStream {
 
     pub fn push(&mut self, frame: Frame) -> Result<(), Error> {
         let order = frame.order();
-        trace!("stream pushed frame with order {} {:?}", order, frame);
         assert!(order > 0);
 
         if self.producer + MAX_REORDERING < order {
@@ -56,9 +55,11 @@ impl OrderedStream {
 
         match self.q.entry(order) {
             Entry::Occupied(v) => {
+                trace!("stream DUP frame with order {} {:?}", order, frame);
                 assert_eq!(v.get().order(), order);
             }
             Entry::Vacant(v) => {
+                trace!("stream pushed frame with order {} {:?}", order, frame);
                 v.insert(frame);
             }
         }

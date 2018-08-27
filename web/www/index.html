@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hello wasm-pack!</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="node_modules/auth0-js/build/auth0.js"></script>
+    <script src="./bootstrap.js"></script>
+
+    <div class="content">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Auth0 - JavaScript</a>
+            <button id="btn-home-view" class="btn btn-primary btn-margin">
+              Home
+            </button>
+
+            <button id="btn-login" class="btn btn-primary btn-margin">
+              Log In
+            </button>
+
+            <button id="btn-logout" class="btn btn-primary btn-margin">
+              Log Out
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <main class="container">
+        <h4></h4>
+        <h3> publishers: </h3>
+        <table id="publishers" border='1px' >
+          <tr>
+            <td>identity  </td>
+            <td>status    </td>
+            <td>refresh   </td>
+          </tr>
+        </table>
+      </main>
+
+    </div>
+
+
+  </body>
+</html>

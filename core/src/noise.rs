@@ -1,10 +1,10 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use failure::Error;
-use identity::{Address, Identity, Secret, Signature};
+use identity::{Identity, Signature, Secret, Address};
 use packet::{self, RoutingDirection, RoutingKey};
-use rand;
 use snow::{self, params::NoiseParams, Builder};
 use std::io::Write;
+use std::io::Read;
 
 #[derive(Debug, Fail)]
 enum NoiseError {
@@ -45,14 +45,14 @@ pub struct Transport {
 }
 
 pub struct HandshakeRequester {
-    noise:  snow::Session,
-    cookie: u32,
-    route:  Option<RoutingKey>,
+    noise:      snow::Session,
+    timestamp:  u64,
+    route:      Option<RoutingKey>,
 }
 
 pub struct HandshakeResponder {
-    noise:  snow::Session,
-    cookie: u32,
+    noise:      snow::Session,
+    timestamp:  u64,
 }
 
 enum SendMode<'a> {
@@ -60,22 +60,21 @@ enum SendMode<'a> {
         counter: u64,
         payload: &'a [u8],
     },
-    Peer2Broker {
-        cookie:    u32,
-        identity:  Identity,
-        timestamp: u64,
+    InsecureHandshake{
+        identity:   Identity,
+        timestamp:  u64,
     },
-    Broker2Peer {
-        cookie:   u32,
-        identity: Identity,
+    Handshake{
+        identity:   Identity,
+        timestamp:  u64,
     },
 }
 
 fn send(
-    noise: &mut snow::Session,
-    route: RoutingKey,
-    direction: RoutingDirection,
-    payload: SendMode,
+    noise:      &mut snow::Session,
+    route:      RoutingKey,
+    direction:  RoutingDirection,
+    payload:    SendMode,
 ) -> Result<packet::EncryptedPacket, Error> {
     let counter = if let &SendMode::Transport { counter, .. } = &payload {
         Some(counter)
@@ -91,26 +90,26 @@ fn send(
             inbuf.extend_from_slice(payload);
             16
         }
-        SendMode::Peer2Broker {
-            cookie,
+        SendMode::InsecureHandshake{
             identity,
             timestamp,
         } => {
-            inbuf.write_u32::<BigEndian>(cookie)?;
             assert_eq!(identity.as_bytes().len(), 32);
             inbuf.write_all(&identity.as_bytes())?;
             inbuf.write_u64::<BigEndian>(timestamp)?;
-            4    // header
-            + 12 // tag
-            + 32 // ephermal
+
+              32 // ephermal
             + 64 // signature
         }
-        SendMode::Broker2Peer { cookie, identity } => {
-            inbuf.write_u32::<BigEndian>(cookie)?;
+        SendMode::Handshake{
+            identity,
+            timestamp,
+        } => {
             assert_eq!(identity.as_bytes().len(), 32);
             inbuf.write_all(&identity.as_bytes())?;
-            4    // header
-            + 12 // tag
+            inbuf.write_u64::<BigEndian>(timestamp)?;
+
+              16 // tag
             + 32 // ephermal
             + 64 // signature
         }
@@ -199,20 +198,19 @@ impl Transport {
     }
 }
 
-//TODO remove back signature. we should be authanticated by ID->Address relationship already
 impl HandshakeResponder {
     pub fn send_response(
         mut self,
-        route: RoutingKey,
-        secret: &Secret,
+        route:      RoutingKey,
+        secret:     &Secret,
     ) -> Result<(Transport, packet::EncryptedPacket), Error> {
         let mut pkt = send(
             &mut self.noise,
             route,
             RoutingDirection::Responder2Initiator,
-            SendMode::Broker2Peer {
-                cookie:   self.cookie,
-                identity: secret.identity(),
+            SendMode::Handshake{
+                timestamp:      self.timestamp,
+                identity:       secret.identity(),
             },
         )?;
         let signature = secret.sign(b"carrier handshake hash 1", self.noise.get_handshake_hash()?);
@@ -233,35 +231,58 @@ impl HandshakeResponder {
     }
 }
 
+fn recv_handshake(noise: &mut snow::Session, pkt: packet::EncryptedPacket)
+    -> Result<(Identity, u64), Error>
+{
+    if pkt.payload.len() % 256 != 0 {
+        return Err(NoiseError::PktMisaligned { len: pkt.payload.len() }.into());
+    }
+
+    let mut signature = [0; 64];
+    signature.copy_from_slice(&pkt.payload[pkt.payload.len() - 64..pkt.payload.len()]);
+    let signature = Signature::from_array(signature);
+
+
+    let mut outbuf = vec![0; pkt.payload.len()];
+    let len = noise.read_message(&pkt.payload[..pkt.payload.len()- 64], &mut outbuf)?;
+    if len < 120 {
+        return Err(NoiseError::TooSmall { need: 120, got:  len }.into());
+    }
+
+    let identity = Identity::from_bytes(&outbuf[0..32])?;
+    let timestamp = (&outbuf[32..40]).read_u64::<BigEndian>()?;
+
+    let mut reader = &outbuf[40..];
+
+    let mut chain = Vec::new();
+    let numcerts = reader.read_u16::<BigEndian>()?;
+    for _ in 0..numcerts {
+        let len = reader.read_u16::<BigEndian>()?;
+        let mut crt = vec![0;len as usize];
+        reader.read_exact(&mut crt)?;
+        chain.push(crt);
+    }
+
+    identity.verify(
+        b"carrier handshake hash 1",
+        noise.get_handshake_hash()?,
+        &signature,
+    )?;
+
+    Ok((identity, timestamp))
+}
+
 impl HandshakeRequester {
-    pub fn recv_response(&mut self, pkt: packet::EncryptedPacket) -> Result<Identity, Error> {
-        if pkt.payload.len() != 256 {
-            return Err(NoiseError::PktMisaligned { len: pkt.payload.len() }.into());
-        }
-        let mut signature = [0; 64];
-        signature.copy_from_slice(&pkt.payload[256 - 64..256]);
+    pub fn recv_response(&mut self, pkt: packet::EncryptedPacket) -> Result<Identity,Error> {
 
-        let mut outbuf = vec![0; pkt.payload.len()];
-        let len = self.noise.read_message(&pkt.payload[..256 - 64], &mut outbuf)?;
-        if len < 104 {
-            return Err(NoiseError::TooSmall { need: 104, got:  len }.into());
-        }
+        let route = pkt.route;
+        let (identity, timestamp) = recv_handshake(&mut self.noise, pkt)?;
 
-        let cookie = (&outbuf[0..4]).read_u32::<BigEndian>()?;
-        let identity = Identity::from_bytes(&outbuf[4..36])?;
-        let signature = Signature::from_array(signature);
-
-        if cookie != self.cookie {
+        if timestamp != self.timestamp {
             return Err(NoiseError::InvalidCookie.into());
         }
 
-        identity.verify(
-            b"carrier handshake hash 1",
-            self.noise.get_handshake_hash()?,
-            &signature,
-        )?;
-
-        self.route = Some(pkt.route);
+        self.route = Some(route);
 
         Ok(identity)
     }
@@ -279,37 +300,51 @@ impl HandshakeRequester {
 }
 
 pub fn initiate(
-    remote_static: &Address,
-    secret: &Secret,
-    timestamp: u64,
+    remote_static:  Option<&Address>,
+    secret:         &Secret,
+    timestamp:      u64,
 ) -> Result<(HandshakeRequester, packet::EncryptedPacket), Error> {
-    let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
-    let mut noise = Builder::new(params)
-        .remote_public_key(remote_static.as_bytes())
-        .prologue("carrier has arrived".as_bytes())
-        .build_initiator()
-        .expect("building noise session");
+    let mut noise = if let Some(remote_static) = remote_static {
+        let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
+        Builder::new(params)
+            .remote_public_key(remote_static.as_bytes())
+            .prologue("carrier has arrived".as_bytes())
+            .build_initiator()
+            .expect("building noise session")
+    } else {
+        let params: NoiseParams = "Noise_NN_25519_AESGCM_SHA256".parse().unwrap();
+        Builder::new(params)
+            .prologue("carrier has arrived".as_bytes())
+            .build_initiator()
+            .expect("building noise session")
+    };
 
     let identity = secret.identity();
-    let cookie = rand::random();
 
     let mut pkt = send(
         &mut noise,
         0,
         RoutingDirection::Initiator2Responder,
-        SendMode::Peer2Broker {
-            cookie,
-            identity,
-            timestamp,
-        },
+        if remote_static.is_some() {
+            SendMode::Handshake{
+                identity,
+                timestamp,
+            }
+        } else {
+            SendMode::InsecureHandshake{
+                identity,
+                timestamp,
+            }
+        }
     )?;
+
     let signature = secret.sign(b"carrier handshake hash 1", noise.get_handshake_hash()?);
     pkt.payload.extend_from_slice(&signature.as_bytes());
     assert_eq!(pkt.payload.len() % 256, 0);
 
     let s = HandshakeRequester {
+        timestamp,
         noise:  noise,
-        cookie: cookie,
         route:  None,
     };
 
@@ -317,55 +352,31 @@ pub fn initiate(
 }
 
 pub fn respond(
-    secret: &Secret,
-    public: Option<&[u8]>,
-    pkt: packet::EncryptedPacket,
+    xsecret:    Option<&Secret>,
+    pkt:        packet::EncryptedPacket,
 ) -> Result<(HandshakeResponder, Identity, u64), Error> {
-    let mut noise = match public {
-        None => {
-            let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
-            Builder::new(params)
-                .local_private_key(secret.as_bytes())
-                .prologue("carrier has arrived".as_bytes())
-                .build_responder()
-                .expect("building noise session")
-        }
-        Some(public) => {
-            let params: NoiseParams = "Noise_KK_25519_AESGCM_SHA256".parse().unwrap();
-            Builder::new(params)
-                .local_private_key(secret.as_bytes())
-                .remote_public_key(public)
-                .prologue("carrier has arrived".as_bytes())
-                .build_responder()
-                .expect("building noise session")
-        }
+
+    let mut noise = if let Some(xsecret) = xsecret{
+        let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
+        Builder::new(params)
+            .local_private_key(xsecret.as_bytes())
+            .prologue("carrier has arrived".as_bytes())
+            .build_responder()
+            .expect("building noise session")
+    } else {
+        let params: NoiseParams = "Noise_NN_25519_AESGCM_SHA256".parse().unwrap();
+        Builder::new(params)
+            .prologue("carrier has arrived".as_bytes())
+            .build_responder()
+            .expect("building noise session")
     };
-    drop(secret);
 
-    if pkt.payload.len() != 256 {
-        return Err(NoiseError::PktMisaligned { len: pkt.payload.len() }.into());
-    }
-    let mut signature = [0; 64];
-    signature.copy_from_slice(&pkt.payload[256 - 64..256]);
-
-    let mut outbuf = vec![0; pkt.payload.len()];
-    let len = noise.read_message(&pkt.payload[..256 - 64], &mut outbuf)?;
-    if len < 108 {
-        return Err(NoiseError::TooSmall { need: 108, got:  len }.into());
-    }
-
-    let cookie = (&outbuf[0..4]).read_u32::<BigEndian>()?;
-    let identity = Identity::from_bytes(&outbuf[4..36])?;
-    let timestamp = (&outbuf[36..44]).read_u64::<BigEndian>()?;
-
-    let signature = Signature::from_array(signature);
-
-    identity.verify(b"carrier handshake hash 1", noise.get_handshake_hash()?, &signature)?;
+    let (identity, timestamp) = recv_handshake(&mut noise, pkt)?;
 
     Ok((
         HandshakeResponder {
-            noise:  noise,
-            cookie: cookie,
+            noise,
+            timestamp,
         },
         identity,
         timestamp,

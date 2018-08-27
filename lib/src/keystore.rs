@@ -1,3 +1,4 @@
+use certificate;
 use failure::Error;
 use identity::Secret;
 use rand::{self, RngCore};

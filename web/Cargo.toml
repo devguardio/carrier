@@ -1,0 +1,43 @@
+[package]
+name = "carrier-web"
+version = "0.1.0"
+authors = ["Arvid E. Picciani <aep@exys.org>"]
+
+[lib]
+crate-type = ["cdylib"]
+
+[features]
+default-features = ["console_error_panic_hook", "wee_alloc"]
+
+[dependencies]
+cfg-if = "0.1.2"
+log = "0.4.4"
+failure             = "0.1.2"
+prost               = "0.4.0"
+hpack               = "0.3.0"
+bytes               = "0.4.9"
+
+wasm-bindgen            = {git = "https://github.com/rustwasm/wasm-bindgen.git" , features= ["nightly"]}
+web-sys                 = {git = "https://github.com/rustwasm/wasm-bindgen.git" }
+js-sys                  = {git = "https://github.com/rustwasm/wasm-bindgen.git" }
+
+# The `console_error_panic_hook` crate provides better debugging of panics by
+# logging them with `console.error`. This is great for development, but requires
+# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
+# code size when deploying.
+console_error_panic_hook = { version = "0.1.1", optional = true }
+
+# `wee_alloc` is a tiny allocator for wasm that is only ~1K in code size
+# compared to the default allocator's ~10K. It is slower than the default
+# allocator, however.
+wee_alloc = { version = "0.4.1", optional = true }
+
+[dependencies.carrier-core]
+path = "../core/"
+default-features = false
+features = ["web"]
+
+[patch.crates-io]
+rand         = {path = "../../rand/"}
+wasm-bindgen = {git="https://github.com/rustwasm/wasm-bindgen", features= ["nightly"]}
+

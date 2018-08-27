@@ -6,10 +6,12 @@ use futures::sync::mpsc;
 use futures::Future;
 use futures::Sink;
 use futures::Stream;
+use headers::Headers;
 use identity;
 use local_addrs;
 use noise;
 use packet;
+use prost::Message;
 use proto;
 use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
@@ -41,16 +43,18 @@ where
     let (xsecret, xpublic) = identity::generate_x25519();
     let xaddr = identity::SignedAddress::sign(&secret, identity::Address::from_array(xpublic));
 
-    let publish_change = proto::Broker::publish(
-        &mut brk,
-        proto::PublishRequest {
+    let publish_change = brk
+        .message("/carrier.broker.v1/broker/publish")
+        .unwrap()
+        .send(proto::PublishRequest {
             shadow: shadow.as_bytes().to_vec(),
             xaddr:  xaddr.to_vec(),
-        },
-    ).for_each(|s| {
-        info!("publish change: {:?}", s);
-        Ok(())
-    });
+        }).and_then(|s| {
+            s.for_each(|s: proto::PublishChange| {
+                info!("publish change: {:?}", s);
+                Ok(())
+            })
+        });
 
     let (tx, rx) = mpsc::channel(10);
     let publisher = PublisherService {
@@ -78,7 +82,7 @@ where
 impl proto::Peer::Service for PublisherService {
     fn connect(
         &mut self,
-        _headers: Vec<(Vec<u8>, Vec<u8>)>,
+        _headers: Headers,
         msg: proto::PeerConnectRequest,
     ) -> Result<Box<Future<Item = proto::PeerConnectResponse, Error = Error> + Sync + Send + 'static>, Error> {
         let msgidentity = identity::Identity::from_bytes(msg.identity)?;
@@ -87,7 +91,7 @@ impl proto::Peer::Service for PublisherService {
         info!("connect request from {} :: {:?} ", msgidentity, msgpaths);
 
         let pkt = packet::EncryptedPacket::decode(&msg.handshake).unwrap();
-        let (noise, identity, timestamp) = noise::respond(&self.xsecret, None, pkt).unwrap();
+        let (noise, identity, timestamp) = noise::respond(None, pkt).unwrap();
 
         if identity != msgidentity || timestamp != msg.timestamp {
             warn!("rejected connect request from {} because of pkt mismatch", msgidentity);

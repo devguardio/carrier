@@ -4,10 +4,6 @@ package carrier.axiom.v1;
 message None {
 }
 
-message SubscribeConfig {
-    uint32 interval = 1;
-}
-
 message SystemLoad {
     float load_1    = 1;
     float load_5    = 2;
@@ -41,6 +37,6 @@ message SystemStats {
 }
 
 service Axiom {
-    rpc system_stats (SubscribeConfig)   returns (stream SystemStats) {};
-    rpc __raw__mosh (None)          returns (None) {};
+    rpc system_stats (None) returns (SystemStats) {};
+    rpc __raw__mosh (None)  returns (None) {};
 }

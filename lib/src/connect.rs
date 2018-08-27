@@ -30,7 +30,7 @@ pub fn connect<S: AsRef<str>>(
     domain: S,
     secret: identity::Secret,
 ) -> impl Future<Item = (Endpoint, Channel, StdSocket, SocketAddr), Error = Error> {
-    dns::resolve(domain.as_ref()).and_then(|records| EndpointFuture::new(secret, records))
+    dns::resolve(domain.as_ref()).and_then(|(epoch, records)| EndpointFuture::new(secret, records))
 }
 
 struct EndpointFuture {
@@ -82,7 +82,7 @@ impl Future for EndpointFuture {
                     .expect("Time went backwards");
                 let timestamp = (timestamp.as_secs() - 1532811611) as u64 * 100 + timestamp.subsec_millis() as u64 / 10;
 
-                let (noise, pkt) = noise::initiate(&record.x, &self.secret, timestamp)?;
+                let (noise, pkt) = noise::initiate(Some(&record.x), &self.secret, timestamp)?;
                 let pkt = pkt.encode();
 
                 let stdsock = StdSocket::bind("0.0.0.0:0")?;

@@ -1,0 +1,40 @@
+syntax = "proto3";
+package carrier.certificate.v1;
+
+message ClaimAct {
+    bytes       shadow                  = 1;
+    repeated    bytes       targets     = 2;
+    repeated    string      resources   = 3;
+}
+
+message Revoker {
+    bytes   identity  = 1;
+}
+
+enum ClaimOpt {
+    INVALID     = 0;
+    DELEGATION  = 1;
+}
+
+message Claim {
+    oneof claim {
+        ClaimOpt    opt     = 1;
+        ClaimAct    sub     = 2;
+        ClaimAct    pub     = 3;
+        Revoker     revoker = 4;
+    }
+}
+
+message Certificate {
+    uint32  last_valid_epoch    = 1;
+    bytes   identity            = 2;
+    bytes   authority           = 3;
+    uint64  serial              = 4;
+    repeated Claim  claims      = 5;
+}
+
+message CertificateRequest {
+    uint32  last_valid_epoch     = 1;
+    bytes   identity        = 2;
+    repeated Claim  claims  = 3;
+}

@@ -6,7 +6,23 @@ use recovery;
 use replay;
 use std::collections::HashMap;
 use std::collections::VecDeque;
-use std::time::{Duration, Instant};
+use std::time::Duration;
+
+
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::Instant;
+
+
+#[cfg(target_arch = "wasm32")]
+use wasm_bindgen::prelude::*;
+#[cfg(target_arch = "wasm32")]
+#[wasm_bindgen]
+extern "C" {
+    type Performance;
+    static performance: Performance;
+    #[wasm_bindgen(method)]
+    fn now(this: &Performance) -> f64;
+}
 
 use stream;
 
@@ -33,8 +49,12 @@ pub struct Channel {
     //outgoing
     counters: HashMap<u32, u64>,
     outqueue: VecDeque<Frame>,
+
+    deadline:   u64,
+    last_seen:  u64,
+
+    #[cfg(not(target_arch = "wasm32"))]
     basetime: Instant,
-    deadline: u64,
 }
 
 pub enum ChannelProgress {
@@ -59,8 +79,12 @@ impl Channel {
 
             counters: HashMap::new(),
             outqueue: VecDeque::new(),
+
+            deadline:   IDLE_TIMER,
+            last_seen:  0,
+
+            #[cfg(not(all(target_arch = "wasm32")))]
             basetime: Instant::now(),
-            deadline: IDLE_TIMER,
         }
     }
 
@@ -77,18 +101,30 @@ impl Channel {
     }
 
     fn now(&self) -> u64 {
-        let elapsed = self.basetime.elapsed();
-        elapsed.as_secs() * 1000 + elapsed.subsec_millis() as u64
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            let elapsed = self.basetime.elapsed();
+            elapsed.as_secs() * 1000 + elapsed.subsec_millis() as u64
+        }
+        #[cfg(target_arch = "wasm32")]
+        {
+            performance.now() as u64
+        }
+
     }
 
     /// receive a packet from the wire
     pub fn recv(&mut self, pkt: EncryptedPacket) -> Result<(), Error> {
+        let now = self.now();
         trace!(
-            "incomming pkt {} with {} bytes at {}",
+            "[{}] incomming pkt {} with {} bytes at {}",
+            self.debug_id,
             pkt.counter,
             pkt.payload.len(),
-            self.now()
+            now
         );
+        self.last_seen = now;
+
         let counter = pkt.counter;
 
         if !self.replay.within_window(counter) {
@@ -134,9 +170,11 @@ impl Channel {
                     self.gone = true;
                 }
                 Frame::Ack { delay, acked } => {
-                    trace!("[{}] received ack {:?}", self.debug_id, acked);
-                    let now = self.now();
-                    let loss = self.recovery.on_ack_received(delay, acked, now);
+                    let loss = self.recovery.on_ack_received(delay, acked.clone(), now);
+
+                    trace!("[{}] received ack {:?} RTT is now {}. Lost packets: {:?}",
+                           self.debug_id, acked, self.recovery.smoothed_rtt, loss);
+
                     self.handle_loss(loss);
                 }
                 Frame::Ping => {
@@ -156,7 +194,6 @@ impl Channel {
         }
 
         if !ackonly {
-            let now = self.now();
             self.outqueue.push_back(Frame::Ack {
                 delay: now,
                 acked: vec![counter],
@@ -186,7 +223,13 @@ impl Channel {
                 }
             }
             recovery::LossDetection::TailLossProbe(re) => {
-                trace!("[{}] tail loss probe at {}", self.debug_id, self.now());
+                trace!("[{}] tail loss probe at {}. Retransmit: {}", self.debug_id, self.now(), 
+                       re
+                       .iter()
+                       .map(|frame| frame.name())
+                       .collect::<Vec<&'static str>>()
+                       .join(",")
+                      );
                 for frame in re {
                     self.outqueue.push_back(frame);
                 }
@@ -214,21 +257,30 @@ impl Channel {
     /// this needs to be polled until it returns Later or Disconnectd
     pub fn progress(&mut self) -> Result<ChannelProgress, Error> {
         let now = self.now();
-        // loss detection
 
-        if now >= self.deadline {
-            if self.recovery.bytes_in_flight() == 0 {
-                //TODO too much traffic
-                self.outqueue.push_back(Frame::Ping);
-            } else {
-                let loss = self.recovery.on_loss_detection_alarm(now);
-                self.handle_loss(loss);
-            }
+        trace!(
+            "[{}] progress. now={}. deadline={}, in flight={},  last_seen={}",
+            self.debug_id,
+            now,
+            self.deadline,
+            self.recovery.bytes_in_flight(),
+            self.last_seen,
+        );
+
+        if now > self.last_seen + IDLE_TIMER{
+            self.outqueue.push_back(Frame::Ping);
+            self.last_seen = now;
         }
+
+        if now >= self.deadline && self.recovery.bytes_in_flight() > 0 {
+            let loss = self.recovery.on_loss_detection_alarm(now);
+            self.handle_loss(loss);
+        }
+
         self.deadline = if let Some(deadline) = self.recovery.loss_detection_alarm() {
             deadline
         } else {
-            now + IDLE_TIMER
+            self.last_seen + IDLE_TIMER
         };
         if self.deadline <= now {
             warn!(

@@ -165,6 +165,7 @@ impl QuicRecovery {
         if self.largest_acked_packet + 20 < self.largest_sent_packet {
             // TODO: not part of the spec.
             // But if we dont do this, loss_detection_alarm keeps getting reset even we get no ack
+            // https://github.com/quicwg/base-drafts/issues/1718
             trace!("no send window because we're loosing too many packets");
             return 0;
         }
@@ -745,4 +746,53 @@ fn low_latency_high_loss() {
     let loss = qr.on_ack_received(1, vec![5, 4, 3, 2], clock);
     assert_eq!(loss, LossDetection::None);
     assert_eq!(qr.congestion_window, 8822, "congestion windows should recover");
+}
+
+
+
+// when using the original quic pseudocode,
+// TLP is being reset on every sent packet, even if we're still waiting for acks
+// so there's never a timeout if the packets are sent faster than TLP.
+#[test]
+fn tlp_vs_ping() {
+    let mut qr = QuicRecovery::new();
+    let mut seq = 0;
+    let mut clock = 0;
+
+
+    // prime the RTT calculator to 100ms
+
+    clock += 100;
+    seq += 1;
+    let frame = Frame::Stream { order: seq, payload: vec![0; 1000], stream:  1};
+    qr.on_packet_sent(seq, vec![frame], clock);
+
+    assert_eq!(
+        qr.loss_detection_alarm,
+        Some(110),
+        "alarm should be 110 (last packet sent) + MIN_TLP_TIMEOUT);"
+    );
+
+    clock += 100;
+    let loss = qr.on_ack_received(1, vec![1], clock);
+    assert_eq!(loss, LossDetection::None);
+    assert_eq!(qr.latest_rtt, 100);
+
+
+
+    // send every 100ms
+    for _ in 0..1000 {
+        clock   += 100;
+        seq     += 1;
+        let frame = Frame::Stream {
+            order:   seq,
+            payload: vec![0; 1000],
+            stream:  1,
+        };
+        qr.on_packet_sent(seq, vec![frame], clock);
+
+        //FIXME this is the issue. TLP is now a moving goalpost
+        assert_eq!(qr.loss_detection_alarm, Some(clock + 100 + 50));
+    }
+
 }

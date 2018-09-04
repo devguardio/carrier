@@ -209,7 +209,7 @@ impl Future for ChannelWorker {
                         for (addr, _) in addrs.iter() {
                             match self.sock.send_to(&pkt, addr) {
                                 Ok(len) if len == pkt.len() => (),
-                                e => error!("send to {} didnt work {:?}", addr, e),
+                                e => trace!("send to {} didnt work {:?}", addr, e),
                             }
                         }
                     }

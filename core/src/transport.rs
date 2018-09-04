@@ -283,7 +283,7 @@ impl Channel {
             self.last_seen + IDLE_TIMER
         };
         if self.deadline <= now {
-            warn!(
+            trace!(
                 "[{}] upcoming deadline {} already expired at {}",
                 self.debug_id, self.deadline, now
             );

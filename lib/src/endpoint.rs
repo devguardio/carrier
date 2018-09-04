@@ -151,7 +151,7 @@ impl Future for EndpointWorker {
             };
 
             if let Err(e) = self.recv_one_pkt(&buf[..len], addr) {
-                warn!("EndpointWorker::recv_one_pkt {}", e);
+                trace!("EndpointWorker::recv_one_pkt {}", e);
             }
         }
 

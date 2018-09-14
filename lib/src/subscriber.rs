@@ -16,6 +16,17 @@ use std::net::UdpSocket as StdSocket;
 use std::time::{SystemTime, UNIX_EPOCH};
 use transport;
 
+
+#[derive(Debug, Fail)]
+enum SubscribeError {
+    #[fail(display = "broker not accepting channel. authentication failure or peer is not available")]
+    PeerUnavailable,
+
+    #[fail(display = "connect RPC ended before receiving any headers")]
+    EofBeforeHeader
+}
+
+
 pub fn connect(
     target: identity::Identity,
     ep: endpoint::Endpoint,
@@ -54,8 +65,15 @@ pub fn connect(
         .into_future()
         .map_err(|(e, _)| e)
         .and_then(move |(msg, connection_holder): (Option<proto::ConnectResponse>, _)| {
-            let msg = msg.expect("EOF before header");
-            assert_eq!(msg.ok, true, "connect is false");
+            let msg = match msg {
+                None => return Err(Error::from(SubscribeError::EofBeforeHeader)),
+                Some(v) => v,
+            };
+
+            if !msg.ok{
+                return Err(Error::from(SubscribeError::PeerUnavailable));
+            }
+
             let msgroute = msg.route;
             let pkt = packet::EncryptedPacket::decode(&msg.handshake).unwrap();
             let identity = hs.recv_response(pkt).unwrap();
@@ -82,12 +100,12 @@ pub fn connect(
             }
             paths.push((brokeraddr.clone(), proto::path::Category::BrokerOrigin));
 
-            ft.map_err(Error::from).and_then(move |_| {
+            Ok(ft.map_err(Error::from).and_then(move |_| {
                 let mut channel = channel::Channel::spawn(rx, identity, paths, msgroute, selfsock, transport, ep);
                 channel.bag.push(Box::new(connection_holder));
                 Ok(channel)
-            })
-        });
+            }))
+        }).flatten();
     ft
 }
 

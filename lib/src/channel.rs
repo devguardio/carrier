@@ -298,7 +298,7 @@ impl Future for ChannelWorker {
                 };
 
                 if let Some((addr, previous)) = settle {
-                    info!("settled connection with adress {}", addr);
+                    info!("settled peering with adress {}", addr);
                     self.addrs = AddressMode::Established(addr, previous);
                 }
 

@@ -18,7 +18,7 @@ sha2                = "0.7.1"
 subtle              = "0.7.0"
 x25519-dalek        = {version = "0.3.0", default-features = false, features = ["std", "u64_backend"] }
 env_logger          = {version = "0.5.12", default-features = false}
-rand                = {version = "0.5", "path" = "../../rand"}
+rand                = {git = "https://github.com/rust-random/rand.git"}
 prost               = "0.4.0"
 prost-derive        = "0.4.0"
 bytes               = "0.4.9"
@@ -38,4 +38,3 @@ web = ["rand/wasm-bindgen", "snow/wasm-resolver", "clear_on_drop/nightly", "wasm
 
 [build-dependencies]
 carrier-build-core = {path = "../build-core"}
-

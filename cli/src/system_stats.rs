@@ -2,7 +2,6 @@ use carrier::*;
 use failure::Error;
 use futures::{Future, Sink};
 use serde_json;
-use std::io::BufRead;
 use std::time::{SystemTime, UNIX_EPOCH};
 use systemstat;
 

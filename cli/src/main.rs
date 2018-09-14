@@ -2,7 +2,6 @@
 extern crate carrier;
 extern crate clap;
 extern crate env_logger;
-#[macro_use]
 extern crate failure;
 extern crate futures;
 extern crate rand;
@@ -14,25 +13,35 @@ extern crate bytes;
 extern crate hpack;
 extern crate serde_json;
 extern crate systemstat;
-extern crate tokio_process;
 #[macro_use]
 extern crate serde_derive;
+
+extern crate tokio_file_unix;
+extern crate tokio_pty_process;
+extern crate passwd;
+extern crate libc;
+
 
 use carrier::*;
 use clap::{App, Arg, SubCommand};
 use failure::Error;
-use futures::{Async, Poll};
 use futures::{Future, Sink, Stream};
 use std::collections::HashSet;
 use std::env;
 use std::net::SocketAddr;
-use std::process::Command;
-use std::time::{Duration, Instant};
-use tokio::net::UdpSocket;
-use tokio::timer::Interval;
-use tokio_process::CommandExt;
 
-mod mosh;
+#[cfg(any(
+    target_os = "linux",
+    target_os = "macos",
+    target_os = "android",
+))]
+mod shell;
+
+#[cfg(any(
+    target_os = "linux",
+    target_os = "macos",
+    target_os = "android",
+))]
 mod system_stats;
 
 pub fn main_() -> Result<(), Error> {
@@ -56,25 +65,8 @@ pub fn main_() -> Result<(), Error> {
         $ export CARRIER_SECRET_FILE=~/.devguard/secret
     ",
         ).subcommand(SubCommand::with_name("gen").about("generate new identity"))
-        .subcommand(
-            SubCommand::with_name("axiom")
-                .about("publish axiom service on carrier")
-                .arg(
-                    Arg::with_name("shadow")
-                        .help("address of shadow to publish on")
-                        .takes_value(true)
-                        .required(true)
-                        .index(1),
-                ).arg(
-                    Arg::with_name("accept")
-                        .long("accept")
-                        .help("Allow access to identity")
-                        .takes_value(true)
-                        .multiple(true)
-                        .required(true)
-                        .value_names(&["identity"]),
-                ),
-        ).subcommand(SubCommand::with_name("mkshadow").about("create a shadow address"))
+
+        .subcommand(SubCommand::with_name("mkshadow").about("create a shadow address"))
         .subcommand(
             SubCommand::with_name("dns")
                 .about("create dns record")
@@ -117,68 +109,51 @@ pub fn main_() -> Result<(), Error> {
                         .value_names(&["shadow", "target", "resource"]),
                 ),
         ).subcommand(SubCommand::with_name("identity").about("print public identity"))
-        .subcommand(SubCommand::with_name("sshd"))
-        .subcommand(
-            SubCommand::with_name("mosh")
-                .about("get mosh shell on an axiom service")
+
+        ;
+
+    #[cfg(any(
+        target_os = "linux",
+        target_os = "macos",
+        target_os = "android",
+    ))]
+    let clap = clap.subcommand(
+        SubCommand::with_name("axiom")
+        .about("publish axiom service on carrier")
+        .arg(
+            Arg::with_name("shadow")
+            .help("address of shadow to publish on")
+            .takes_value(true)
+            .required(true)
+            .index(1),
+        )
+        .arg(
+            Arg::with_name("accept")
+            .long("accept")
+            .help("Allow access to identity")
+            .takes_value(true)
+            .multiple(true)
+            .required(true)
+            .value_names(&["identity"]),
+            ),
+    ).subcommand(
+            SubCommand::with_name("shell")
+                .about("get a shell on an axiom service")
                 .arg(
                     Arg::with_name("target")
-                        .help("identity of mosh service")
+                        .help("identity of axiom service")
                         .takes_value(true)
                         .required(true)
                         .index(1),
                 ),
         );
 
+
     let matches = clap.get_matches();
 
     match matches.subcommand() {
         ("gen", Some(_submatches)) => {
             println!("{}", keystore::Secrets::gen()?.identity.identity());
-            Ok(())
-        }
-        ("ephermal", Some(submatches)) => {
-            /*
-            let epoch = submatches.value_of("epoch").unwrap().parse().unwrap();
-
-            let secrets = keystore::Secrets::load()?;
-
-            let nusecret = identity::Secret::gen();
-
-            let mut cert = certificate::Certificate::new(epoch, nusecret.identity(), secrets.identity.identity(), 1);
-
-            if let Some(mut access) = submatches.values_of("access") {
-                while let Some(shadow) = access.next() {
-                    let target = access.next().unwrap();
-                    let resource = access.next().unwrap();
-                    cert.grant_access(
-                        shadow.parse().unwrap(),
-                        target.parse().unwrap(),
-                        resource.split(',').map(|v| v.trim()),
-                    );
-                }
-            }
-
-            if submatches.is_present("allow-delegation") {
-                cert.allow_delegation();
-            }
-
-            if submatches.is_present("assume-identity") {
-                cert.assume_identity();
-            }
-
-            let signed = cert.signed(&secrets.identity);
-            let signed = base64::encode(&signed);
-
-            println!("certificate: {}", signed);
-
-            let signed = base64::decode(&signed).unwrap();
-            let cert = certificate::Certificate::from_signed(&signed).unwrap();
-            if submatches.is_present("text") {
-                eprintln!("{}", cert);
-            }
-            */
-
             Ok(())
         }
         ("mkshadow", Some(_submatches)) => {
@@ -200,6 +175,11 @@ pub fn main_() -> Result<(), Error> {
             println!("{}", secrets.identity.identity());
             Ok(())
         }
+        #[cfg(any(
+                target_os = "linux",
+                target_os = "macos",
+                target_os = "android",
+        ))]
         ("axiom", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
             let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
@@ -227,14 +207,14 @@ pub fn main_() -> Result<(), Error> {
             }));
             Ok(())
         }
-        ("mosh", Some(submatches)) => {
+        ("shell", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
             let config = config::Config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .unwrap();
             tokio::run(futures::lazy(move || {
-                mosh(secrets.identity, target).map_err(|e| error!("{}", e))
+                shell(secrets.identity, target).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
@@ -270,13 +250,13 @@ pub fn main() {
     }
 }
 
-pub fn mosh(secret: identity::Secret, target: identity::Identity) -> impl Future<Item = (), Error = Error> {
+pub fn shell(secret: identity::Secret, target: identity::Identity) -> impl Future<Item = (), Error = Error> {
     let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
     connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
         info!("established broker route {:#x} with {}", brk.route(), brk.identity());
         subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
             channel
-                .open(headers::Headers::with_path("/v0/mosh"))
+                .open(headers::Headers::with_path("/v0/shell"))
                 .unwrap()
                 .into_future()
                 .map_err(|(e, _)| e)
@@ -284,34 +264,7 @@ pub fn mosh(secret: identity::Secret, target: identity::Identity) -> impl Future
                     let headers = headers.expect("eof before header");
                     let headers = headers::Headers::decode(&headers).unwrap();
                     println!("{:?}", headers);
-
-                    let mut mosh_key = None;
-                    for header in headers.iter() {
-                        if header.0 == b"mosh_key" {
-                            mosh_key = Some(header.1.clone());
-                        }
-                    }
-
-                    let mosh_key = mosh_key.expect("response headers missing mosh_key");
-                    let mosh_key = String::from_utf8_lossy(&mosh_key).to_string();
-                    let udp = UdpSocket::bind(&("127.0.0.1:0".parse().unwrap())).unwrap();
-
-                    let child = Command::new("mosh-client")
-                        .env("MOSH_KEY", mosh_key)
-                        .arg("127.0.0.1")
-                        .arg(udp.local_addr().unwrap().port().to_string())
-                        .spawn_async()
-                        .unwrap()
-                        .and_then(|_| Ok(()))
-                        .map_err(Error::from);
-
-                    let bridge = mosh::MoshBridge {
-                        udp,
-                        addr: None,
-                        stream,
-                    };
-
-                    child.select2(bridge).map_err(|e| e.split().0)
+                    shell::ui(stream)
                 }).and_then(|_| {
                     drop(brk);
                     drop(channel);
@@ -354,6 +307,11 @@ pub fn get(
     })
 }
 
+#[cfg(any(
+        target_os = "linux",
+        target_os = "macos",
+        target_os = "android",
+))]
 pub fn axiom(
     secret: identity::Secret,
     shadow: identity::Address,
@@ -373,11 +331,11 @@ pub fn axiom(
                     .for_each(|(stream, headers)| {
                         info!("{:?}", headers);
                         let stream = match headers.path() {
-                            Some(b"/v0/mosh") => {
-                                Box::new(mosh::handle(stream)) as Box<Future<Item = (), Error = Error> + Send + Sync>
+                            Some(b"/v0/shell") => {
+                                Box::new(shell::handle(stream)) as Box<Future<Item = (), Error = Error> + Send>
                             }
                             Some(b"/v0/system_stats") => Box::new(system_stats::handle(stream))
-                                as Box<Future<Item = (), Error = Error> + Send + Sync>,
+                                as Box<Future<Item = (), Error = Error> + Send>,
                             _ => {
                                 let header: Vec<u8> = headers::Headers::with_error(404, b"not found".to_vec()).encode();
                                 let ft = stream.send(header).and_then(|_| Ok(()));

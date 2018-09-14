@@ -9,3 +9,7 @@ members = [
     "wsx",
     "broker",
     ]
+
+
+[profile.release]
+lto = true

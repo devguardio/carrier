@@ -30,7 +30,7 @@ extern crate trust_dns_resolver;
 #[macro_use]
 extern crate futurize_derive;
 extern crate gcmap;
-extern crate interfaces;
+extern crate interfaces2 as interfaces;
 
 pub mod channel;
 pub mod config;

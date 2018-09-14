@@ -40,4 +40,4 @@ features = ["web"]
 [patch.crates-io]
 rand         = {path = "../../rand/"}
 wasm-bindgen = {git="https://github.com/rustwasm/wasm-bindgen", features= ["nightly"]}
-
+failure      = {path = "../..failure"}

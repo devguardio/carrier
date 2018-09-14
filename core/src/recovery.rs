@@ -80,6 +80,11 @@ pub struct QuicRecovery {
     /// The packet number of the most recently sent packet.
     largest_sent_packet: u64,
 
+
+    /// The packet number of the most recently sent packet.
+    /// NOT PART OF SPEC
+    largest_sent_retransmittable_packet: u64,
+
     /// The largest packet number acknowledged in an ACK frame.
     largest_acked_packet: u64,
 
@@ -145,6 +150,7 @@ impl QuicRecovery {
             largest_sent_before_rto: 0,
             time_of_last_sent_retransmittable_packet: 0,
             largest_sent_packet: 0,
+            largest_sent_retransmittable_packet: 0,
             largest_acked_packet: 0,
             loss_time: 0,
             sent_packets: HashMap::default(),
@@ -162,7 +168,7 @@ impl QuicRecovery {
 
     /// current free space in sending window
     pub fn window(&self) -> usize {
-        if self.largest_acked_packet + 20 < self.largest_sent_packet {
+        if self.largest_acked_packet + 20 < self.largest_sent_retransmittable_packet {
             // TODO: not part of the spec.
             // But if we dont do this, loss_detection_alarm keeps getting reset even we get no ack
             // https://github.com/quicwg/base-drafts/issues/1718
@@ -206,6 +212,11 @@ impl QuicRecovery {
             "cannot send packet older than last one"
         );
         self.largest_sent_packet = seq;
+
+        if !ackonly {
+            self.largest_sent_retransmittable_packet = seq;
+        }
+
         let old = self.sent_packets.insert(seq, pkt);
         assert!(old.is_none(), "cannot send packets with packet id already in flight");
 

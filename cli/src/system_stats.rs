@@ -51,7 +51,11 @@ pub fn handle(stream: channel::ChannelStream) -> impl Future<Item = (), Error = 
 fn get_stats() -> Result<String, Error> {
     use systemstat::Platform;
 
+    #[cfg(not(target_os = "macos"))]
     let stats = systemstat::platform::linux::PlatformImpl::new();
+    #[cfg(target_os = "macos")]
+    let stats = systemstat::platform::macos::PlatformImpl::new();
+
     let start = SystemTime::now();
     let since_the_epoch = start.duration_since(UNIX_EPOCH).expect("Time went backwards");
 

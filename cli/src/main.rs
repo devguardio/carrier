@@ -160,9 +160,9 @@ pub fn main_() -> Result<(), Error> {
             use rand::RngCore;
 
             let mut secret = vec![0; 32];
-            let mut rng = rand::OsRng::new().unwrap();
-            rng.try_fill_bytes(&mut secret).unwrap();
-            let secret = Secret::from_bytes(&mut secret).unwrap();
+            let mut rng = rand::OsRng::new().expect("os rng");
+            rng.try_fill_bytes(&mut secret).expect("rng fill");
+            let secret = Secret::from_bytes(&mut secret).expect("secret from rng");
 
             let address = secret.address();
 
@@ -182,11 +182,11 @@ pub fn main_() -> Result<(), Error> {
         ))]
         ("axiom", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
-            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().unwrap();
+            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().expect("parsing shadow from cli");
             let acceptable = submatches
                 .values_of("accept")
                 .unwrap()
-                .map(|v| v.parse().unwrap())
+                .map(|v| v.parse().expect("parsing identity from cli"))
                 .collect();
             tokio::run(futures::lazy(move || {
                 axiom(secrets.identity, shadow, acceptable).map_err(|e| error!("{}", e))
@@ -198,8 +198,7 @@ pub fn main_() -> Result<(), Error> {
 
             let config = config::Config::load()?;
             let target = config
-                .resolve_identity(submatches.value_of("target").unwrap().to_string())
-                .unwrap();
+                .resolve_identity(submatches.value_of("target").unwrap().to_string()).expect("resolving identity from cli");
             let resource = submatches.value_of("resource").unwrap().to_string();
 
             tokio::run(futures::lazy(move || {
@@ -207,12 +206,16 @@ pub fn main_() -> Result<(), Error> {
             }));
             Ok(())
         }
+        #[cfg(any(
+                target_os = "linux",
+                target_os = "macos",
+        ))]
         ("shell", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
             let config = config::Config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
-                .unwrap();
+                .expect("resolving identity from cli");
             tokio::run(futures::lazy(move || {
                 shell(secrets.identity, target).map_err(|e| error!("{}", e))
             }));
@@ -221,10 +224,10 @@ pub fn main_() -> Result<(), Error> {
         ("dns", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
 
-            let priority: u8 = submatches.value_of("priority").unwrap().parse().unwrap();
-            let addr: SocketAddr = submatches.value_of("ip").unwrap().parse().unwrap();
+            let priority: u8 = submatches.value_of("priority").unwrap().parse().expect("parsing priority from cli");
+            let addr: SocketAddr = submatches.value_of("ip").unwrap().parse().expect("parsing ip from cli");
             let x = secrets.identity.address();
-            let epoch: u32 = submatches.value_of("epoch").unwrap().parse().unwrap();
+            let epoch: u32 = submatches.value_of("epoch").unwrap().parse().expect("parsing epoch from cli");
 
             let dns = dns::DnsRecord {
                 priority,
@@ -250,6 +253,10 @@ pub fn main() {
     }
 }
 
+#[cfg(any(
+    target_os = "linux",
+    target_os = "macos",
+))]
 pub fn shell(secret: identity::Secret, target: identity::Identity) -> impl Future<Item = (), Error = Error> {
     let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
     connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
@@ -257,12 +264,12 @@ pub fn shell(secret: identity::Secret, target: identity::Identity) -> impl Futur
         subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
             channel
                 .open(headers::Headers::with_path("/v0/shell"))
-                .unwrap()
+                .expect("open channel")
                 .into_future()
                 .map_err(|(e, _)| e)
                 .and_then(move |(headers, stream)| {
                     let headers = headers.expect("eof before header");
-                    let headers = headers::Headers::decode(&headers).unwrap();
+                    let headers = headers::Headers::decode(&headers).expect("decoding headers");
                     println!("{:?}", headers);
                     shell::ui(stream)
                 }).and_then(|_| {
@@ -285,7 +292,7 @@ pub fn get(
         subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
             channel
                 .open(headers::Headers::with_path(resource.as_bytes()))
-                .unwrap()
+                .expect("open channel")
                 .into_future()
                 .map_err(|(e, _)| e)
                 .and_then(move |(headers, st)| {
@@ -327,7 +334,7 @@ pub fn axiom(
                 info!("peer has subscribed {}", channel.identity());
                 let server = channel
                     .listener()
-                    .unwrap()
+                    .expect("creating listener")
                     .for_each(|(stream, headers)| {
                         info!("{:?}", headers);
                         let stream = match headers.path() {

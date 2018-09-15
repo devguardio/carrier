@@ -12,6 +12,9 @@ use carrier::*;
 use futures::{Async, Future, Sink, Stream};
 use libc;
 use std::io;
+use std::ptr;
+use std::ffi::CStr;
+use std::env;
 
 struct IoBridge<R,W>
 where W: Write,
@@ -101,9 +104,15 @@ pub fn handle(stream: channel::ChannelStream) -> impl Future<Item = (), Error = 
     cmd.arg("-l");
     cmd.env_clear();
 
-    if let Some(pwent) = Passwd::from_name("aep") {
-        cmd.env("HOME",     pwent.home_dir);
-        cmd.env("SHELL",    pwent.shell);
+
+    if let Some(username) = get_unix_username(unsafe{libc::getuid()}) {
+        if let Some(pwent) = Passwd::from_name(&username) {
+            cmd.env("HOME",     pwent.home_dir.clone());
+            cmd.env("PWD",      pwent.home_dir.clone());
+            cmd.env("SHELL",    pwent.shell);
+
+            env::set_current_dir(pwent.home_dir).ok();
+        }
     }
 
     let mut child = cmd
@@ -199,5 +208,32 @@ pub fn into_raw_mode() -> Result<(), Error>
         libc::tcsetattr(fd, libc::TCSADRAIN, &termios);
     }
     Ok(())
+}
+
+
+
+fn get_unix_username(uid: u32) -> Option<String> {
+
+    unsafe {
+        let mut result = ptr::null_mut();
+        let amt = match libc::sysconf(libc::_SC_GETPW_R_SIZE_MAX) {
+            n if n < 0 => 512 as usize,
+            n => n as usize,
+        };
+        let mut buf = Vec::with_capacity(amt);
+        let mut passwd: libc::passwd = mem::zeroed();
+
+        match libc::getpwuid_r(uid, &mut passwd, buf.as_mut_ptr(),
+                              buf.capacity() as libc::size_t,
+                              &mut result) {
+           0 if !result.is_null() => {
+               let ptr = passwd.pw_name as *const _;
+               let username = CStr::from_ptr(ptr).to_str().unwrap().to_owned();
+               Some(username)
+           },
+           _ => None
+        }
+    }
+
 }
 

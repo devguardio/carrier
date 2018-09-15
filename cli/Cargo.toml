@@ -15,7 +15,7 @@ futures             = "0.1"
 log                 = "0.4.3"
 rand                = "0.5"
 tokio               = "0.1.7"
-tokio-pty-process   = {git = "https://github.com/aep/stund.git"}
+tokio-pty-process   = {git = "https://github.com/aep/stund.git", branch="osx"}
 tokio-file-unix     = "0.5.1"
 passwd              = {git = "https://github.com/aep/passwd-rs.git"}
 

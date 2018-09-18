@@ -33,10 +33,10 @@ b(){
     /opt/toolchains/$gcctarget/bin/$gcctarget-strip target/binrelease/carrier-$VER-$name
 }
 
-#b  staticpie name                  rust-target                     gcc-target
-b   false     android-armv7hf       armv7-linux-androideabi         arm-linux-androideabi
-b   false     linux-armv7hf         armv7-unknown-linux-musleabihf  arm-linux-musleabihf
-b   true      linux-x86_64          x86_64-unknown-linux-musl       x86_64-linux-musl
+#b  staticpie name                      rust-target                     gcc-target
+b   false     arm-linux-gnueabihf       armv7-unknown-linux-gnueabihf   arm-linux-gnueabihf
+b   false     arm-linux-androideabi     armv7-linux-androideabi         arm-linux-androideabi
+b   true      x86_64-linux-musl         x86_64-unknown-linux-musl       x86_64-linux-musl
 
 
 

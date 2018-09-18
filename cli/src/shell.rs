@@ -11,6 +11,7 @@ use failure::Error;
 use carrier::*;
 use futures::{Async, Future, Sink, Stream};
 use libc;
+use std::io;
 
 struct IoBridge<R,W>
 where W: Write,
@@ -52,8 +53,26 @@ where W: Write,
                 Ok(Async::Ready(None))      => return Ok(Async::Ready(())),
                 Ok(Async::Ready(Some(b)))   => {
                     if b.len() > 0 && b[0] == 1 {
-                        self.w.write(&b[1..])?;
-                        self.w.flush()?;
+
+                        let mut i = 0;
+                        loop {
+                            i += 1;
+                            if i > 100 {
+                                warn!("your terminal is too slow, dropping some output");
+                                break;
+                            }
+                            if let Err(e) = self.w.write(&b[1..]) {
+                                if e.kind() == io::ErrorKind::WouldBlock {
+                                    thread::sleep(time::Duration::from_millis(1));
+                                    continue;
+                                } else {
+                                    return Err(Error::from(e));
+                                }
+                            }
+                            break;
+                        }
+
+                        self.w.flush().ok();
                     }
                 }
             }

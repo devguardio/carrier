@@ -3,6 +3,7 @@ use failure::Error;
 use identity::{Identity, Signature, Secret, Address};
 use packet::{self, RoutingDirection, RoutingKey};
 use snow::{self, params::NoiseParams, Builder};
+use snow::resolvers::{FallbackResolver, CryptoResolver};
 use std::io::Write;
 use std::io::Read;
 
@@ -305,15 +306,15 @@ pub fn initiate(
     timestamp:      u64,
 ) -> Result<(HandshakeRequester, packet::EncryptedPacket), Error> {
     let mut noise = if let Some(remote_static) = remote_static {
-        let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
-        Builder::new(params)
+        let params: NoiseParams = "Noise_NK_25519_ChaChaPoly_SHA256".parse().unwrap();
+        new_noise_builder(params)
             .remote_public_key(remote_static.as_bytes())
             .prologue("carrier has arrived".as_bytes())
             .build_initiator()
             .expect("building noise session")
     } else {
-        let params: NoiseParams = "Noise_NN_25519_AESGCM_SHA256".parse().unwrap();
-        Builder::new(params)
+        let params: NoiseParams = "Noise_NN_25519_ChaChaPoly_SHA256".parse().unwrap();
+        new_noise_builder(params)
             .prologue("carrier has arrived".as_bytes())
             .build_initiator()
             .expect("building noise session")
@@ -357,15 +358,15 @@ pub fn respond(
 ) -> Result<(HandshakeResponder, Identity, u64), Error> {
 
     let mut noise = if let Some(xsecret) = xsecret{
-        let params: NoiseParams = "Noise_NK_25519_AESGCM_SHA256".parse().unwrap();
-        Builder::new(params)
+        let params: NoiseParams = "Noise_NK_25519_ChaChaPoly_SHA256".parse().unwrap();
+        new_noise_builder(params)
             .local_private_key(xsecret.as_bytes())
             .prologue("carrier has arrived".as_bytes())
             .build_responder()
             .expect("building noise session")
     } else {
-        let params: NoiseParams = "Noise_NN_25519_AESGCM_SHA256".parse().unwrap();
-        Builder::new(params)
+        let params: NoiseParams = "Noise_NN_25519_ChaChaPoly_SHA256".parse().unwrap();
+        new_noise_builder(params)
             .prologue("carrier has arrived".as_bytes())
             .build_responder()
             .expect("building noise session")
@@ -381,6 +382,64 @@ pub fn respond(
         identity,
         timestamp,
     ))
+}
+
+
+
+
+#[derive(Default)]
+struct RandResolver {
+}
+
+use rand::{RngCore};
+use rand::rngs::{OsRng};
+
+struct RandomOs {
+    rng : OsRng
+}
+
+impl Default for RandomOs {
+    fn default() -> RandomOs {
+        RandomOs {rng: OsRng::new().unwrap()}
+    }
+}
+
+impl snow::types::Random for RandomOs {
+    fn fill_bytes(&mut self, out: &mut [u8]) {
+        self.rng.fill_bytes(out);
+    }
+}
+
+impl CryptoResolver for RandResolver {
+    fn resolve_rng(&self) -> Option<Box<snow::types::Random>> {
+        Some(Box::new(RandomOs::default()))
+    }
+
+    fn resolve_dh (&self, _ : &snow::params::DHChoice)
+        -> Option<Box<(dyn snow::types::Dh + 'static)>>
+    {
+        None
+    }
+
+    fn resolve_hash(&self, _ :  &snow::params::HashChoice)
+        -> Option<Box<(dyn snow::types::Hash + 'static)>>
+    {
+        None
+    }
+
+    fn resolve_cipher(&self, _:&snow::params::CipherChoice)
+        -> Option<Box<(dyn snow::types::Cipher + 'static)>>
+    {
+        None
+    }
+}
+
+fn new_noise_builder<'builder>(params: NoiseParams) -> Builder<'builder> {
+    Builder::with_resolver(params, Box::new(
+            FallbackResolver::new(
+                Box::new(snow::resolvers::HaclStarResolver::default()),
+                Box::new(RandResolver::default()),
+                )))
 }
 
 /*

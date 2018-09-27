@@ -3,7 +3,7 @@ THIS=$(dirname $(readlink -f $0))
 set -ex
 
 
-VER=0.4.0
+VER=0.4.1
 
 rm -rf target/binrelease
 mkdir -p target/binrelease
@@ -22,7 +22,7 @@ b(){
 
     if $staticpie
     then
-        export RUSTFLAGS="$RUSTFLAGS -C linker=/opt/toolchains/$gcctarget/bin/${gcctarget}-rustcc -C link-arg=-static -C link-arg=-pie"
+        export RUSTFLAGS="$RUSTFLAGS -C linker=rust-musl-cc -C link-arg=-static -C link-arg=-pie"
     else
         export RUSTFLAGS="$RUSTFLAGS -C linker=/opt/toolchains/$gcctarget/bin/${gcctarget}-gcc"
     fi
@@ -34,9 +34,11 @@ b(){
 }
 
 #b  staticpie name                      rust-target                     gcc-target
+b   false     mipsel-linux-musleabi     mipsel-unknown-linux-musl       mipsel-linux-musleabi
+b   false     mips-linux-musleabi       mips-unknown-linux-musl         mips-linux-musleabi
 b   false     arm-linux-gnueabihf       armv7-unknown-linux-gnueabihf   arm-linux-gnueabihf
 b   false     arm-linux-androideabi     armv7-linux-androideabi         arm-linux-androideabi
-b   true      x86_64-linux-musl         x86_64-unknown-linux-musl       x86_64-linux-musl
+b   true      x86_64-linux              x86_64-unknown-linux-musl       x86_64-linux-musl
 
 
 

@@ -5,7 +5,6 @@ members = [
     "cli",
     "build",
     "build-core",
-    "web",
     "wsx",
     "broker",
     ]
@@ -13,3 +12,9 @@ members = [
 
 [profile.release]
 lto = true
+
+
+[patch.crates-io]
+failure         = {git = "https://github.com/aep/failure.git"}
+hacl-star-sys   = {git= "https://github.com/quininer/rust-hacl-star.git", branch="fix32"}
+

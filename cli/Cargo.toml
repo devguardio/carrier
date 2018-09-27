@@ -41,8 +41,5 @@ default-features = false
 name = "carrier"
 path = "src/main.rs"
 
-[patch.crates-io]
-failure      = {git = "https://github.com/aep/failure.git"}
-
 [build-dependencies]
 cc = "1.0"

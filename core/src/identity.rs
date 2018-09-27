@@ -3,7 +3,7 @@ use clear_on_drop::ClearOnDrop;
 use crc8;
 use ed25519_dalek;
 use failure::Error;
-use rand::{self, RngCore};
+use rand::{RngCore};
 use sha2;
 use std::fmt;
 use std::str::FromStr;

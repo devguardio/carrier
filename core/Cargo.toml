@@ -26,15 +26,14 @@ wasm-bindgen        = {optional = true, git = "https://github.com/rustwasm/wasm-
 hpack               = "0.3.0"
 
 [dependencies.snow]
-version = "0.4.0-alpha2"
-#git     = "https://github.com/aep/snow.git"
-path    = "../../snow/"
-branch  = "wasm"
+version = "0.4.0"
 default-features = false
+features = ["hacl-star-resolver"]
 
 [features]
-default = ["snow/default-resolver"]
-web = ["rand/wasm-bindgen", "snow/wasm-resolver", "clear_on_drop/nightly", "wasm-bindgen"]
+web = ["rand/wasm-bindgen",  "clear_on_drop/nightly", "wasm-bindgen"]
 
 [build-dependencies]
 carrier-build-core = {path = "../build-core"}
+
+

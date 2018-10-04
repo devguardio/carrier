@@ -56,6 +56,11 @@ impl Headers {
         self.f.push((k,v));
     }
 
+    pub fn and(mut self, k: Vec<u8>, v: Vec<u8>) -> Self {
+        self.f.push((k,v));
+        self
+    }
+
     pub fn encode(&self) -> Vec<u8> {
         use hpack::Encoder;
         let m = self.f.iter().map(|v|(v.0.as_slice(),v.1.as_slice()));

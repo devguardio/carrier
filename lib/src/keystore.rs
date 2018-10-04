@@ -62,6 +62,7 @@ impl Secrets {
 
     pub fn load() -> Result<Secrets, Error> {
         let defaultfile = env::home_dir().unwrap_or("/root/".into()).join(".devguard/secret");
+        trace!("default secret location {:?}", defaultfile);
         let filename = if let Ok(filename) = env::var("CARRIER_SECRET_FILE") {
             filename
         } else if defaultfile.exists() {
@@ -69,6 +70,7 @@ impl Secrets {
         } else {
             return Err(KeystoreError::NoSecrets.into());
         };
+
 
         let mut buffer = String::new();
         File::open(filename)

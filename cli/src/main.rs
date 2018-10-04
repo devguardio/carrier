@@ -44,6 +44,8 @@ mod shell;
 ))]
 mod system_stats;
 
+mod setup;
+
 pub fn main_() -> Result<(), Error> {
     if let Err(_) = env::var("RUST_LOG") {
         env::set_var("RUST_LOG", "carrier=info");
@@ -51,7 +53,7 @@ pub fn main_() -> Result<(), Error> {
     env_logger::init();
 
     let clap = App::new("carrier cli")
-        .version("0.4.1")
+        .version("0.4.2")
         .author("(2018) Arvid E. Picciani <arvid@devguard.io>")
         .setting(clap::AppSettings::ArgRequiredElseHelp)
         .setting(clap::AppSettings::UnifiedHelpMessage)
@@ -73,6 +75,33 @@ pub fn main_() -> Result<(), Error> {
                 .arg(Arg::with_name("priority").takes_value(true).required(true).index(2))
                 .arg(Arg::with_name("epoch").takes_value(true).required(true).index(1))
                 .arg(Arg::with_name("ip").takes_value(true).required(true).index(3)),
+        ).subcommand(
+            SubCommand::with_name("subscribe")
+                .about("watch a shadow")
+                .arg(Arg::with_name("address").takes_value(true).required(true).index(1))
+        ).subcommand(
+            SubCommand::with_name("update")
+                .about("update a remote carrier")
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+        ).subcommand(
+            SubCommand::with_name("install")
+                .about("install axiom service on this system")
+                .arg(
+                    Arg::with_name("shadow")
+                    .help("address of shadow to publish on")
+                    .takes_value(true)
+                    .required(true)
+                    .index(1),
+                    )
+                .arg(
+                    Arg::with_name("allow")
+                    .long("allow")
+                    .help("Allow access to identity")
+                    .takes_value(true)
+                    .multiple(true)
+                    .required(true)
+                    .value_names(&["identity"]),
+                    ),
         ).subcommand(
             SubCommand::with_name("get")
                 .about("get something")
@@ -128,8 +157,8 @@ pub fn main_() -> Result<(), Error> {
             .index(1),
         )
         .arg(
-            Arg::with_name("accept")
-            .long("accept")
+            Arg::with_name("allow")
+            .long("allow")
             .help("Allow access to identity")
             .takes_value(true)
             .multiple(true)
@@ -170,6 +199,40 @@ pub fn main_() -> Result<(), Error> {
             println!("secret:  {}", secret.to_string());
             Ok(())
         }
+        ("update", Some(submatches)) => {
+            let secrets = keystore::Secrets::load()?;
+
+            let config = config::Config::load()?;
+            let target = config.resolve_identity(submatches.value_of("target").unwrap().to_string()).expect("resolving identity from cli");
+
+            tokio::run(futures::lazy(move || {
+                update(secrets.identity, target).map_err(|e| error!("{}", e))
+            }));
+            Ok(())
+
+        }
+        ("install", Some(submatches)) => {
+
+            keystore::Secrets::gen().ok();
+
+            let shadow : identity::Address = submatches.value_of("shadow").unwrap().to_string().parse().expect("parsing shadow from cli");
+            let allowable : Vec<identity::Identity> = submatches
+                .values_of("allow")
+                .unwrap()
+                .map(|v| v.parse().expect("parsing identity from cli"))
+                .collect();
+
+            let mut args = format!("{}", shadow);
+            for allow in allowable {
+                args.push_str(&format!(" --allow {}", allow));
+            }
+
+            setup::install(args)?;
+
+            let secrets = keystore::Secrets::load()?;
+            println!("service installed with identity {}", secrets.identity.identity());
+            Ok(())
+        }
         ("identity", Some(_submatches)) => {
             let secrets = keystore::Secrets::load()?;
             println!("{}", secrets.identity.identity());
@@ -183,13 +246,22 @@ pub fn main_() -> Result<(), Error> {
         ("axiom", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
             let shadow = submatches.value_of("shadow").unwrap().to_string().parse().expect("parsing shadow from cli");
-            let acceptable = submatches
-                .values_of("accept")
+            let allowable = submatches
+                .values_of("allow")
                 .unwrap()
                 .map(|v| v.parse().expect("parsing identity from cli"))
                 .collect();
             tokio::run(futures::lazy(move || {
-                axiom(secrets.identity, shadow, acceptable).map_err(|e| error!("{}", e))
+                axiom(secrets.identity, shadow, allowable).map_err(|e| error!("{}", e))
+            }));
+            Ok(())
+        }
+        ("subscribe", Some(submatches)) => {
+            let secrets = keystore::Secrets::load()?;
+            let shadow  = submatches.value_of("address").unwrap().to_string().parse().expect("parsing shadow");
+
+            tokio::run(futures::lazy(move || {
+                subscribe(secrets.identity, shadow).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
@@ -281,6 +353,42 @@ pub fn shell(secret: identity::Secret, target: identity::Identity) -> impl Futur
     })
 }
 
+pub fn subscribe(
+    secret: identity::Secret,
+    shadow: identity::Address,
+) -> impl Future<Item = (), Error = Error> {
+    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
+    connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
+        brk.message("/carrier.broker.v1/broker/subscribe")
+            .unwrap()
+            .send(proto::SubscribeRequest {
+                shadow: shadow.as_bytes().to_vec(),
+                filter: Vec::new(),
+            }).flatten_stream()
+        .for_each(move |m: proto::SubscribeChange| {
+            match m.m {
+                Some(proto::subscribe_change::M::Publish(m)) => {
+                    let identity = identity::Identity::from_bytes(&m.identity).expect("decoding identity");
+                    info!("publish: {}", identity);
+                },
+                Some(proto::subscribe_change::M::Unpublish(m)) => {
+                    let identity = identity::Identity::from_bytes(&m.identity).expect("decoding identity");
+                    info!("unpublish: {}", identity);
+                },
+                Some(proto::subscribe_change::M::Supersede(_)) => {
+                },
+                None => (),
+            }
+            Ok(())
+        })
+        .and_then(|_| {
+            drop(brk);
+            Ok(())
+        })
+    })
+}
+
+
 pub fn get(
     secret: identity::Secret,
     target: identity::Identity,
@@ -314,6 +422,39 @@ pub fn get(
     })
 }
 
+pub fn update(
+    secret: identity::Secret,
+    target: identity::Identity,
+) -> impl Future<Item = (), Error = Error> {
+    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
+    connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
+        info!("established broker route {:#x} with {}", brk.route(), brk.identity());
+        subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
+            channel
+                .open(headers::Headers::with_path("/v0/self-update").and(":method".into(), "POST".into()))
+                .expect("open channel")
+                .into_future()
+                .map_err(|(e, _)| e)
+                .and_then(move |(headers, st)| {
+                    let headers = headers.expect("eof before header");
+                    let headers = headers::Headers::decode(&headers)?;
+                    println!("{:?}", headers);
+                    Ok(st) as Result<_, Error>
+                }).flatten_stream()
+                .map_err(Error::from)
+                .for_each(move |v: Vec<u8>| {
+                    println!("{}", String::from_utf8_lossy(v.as_slice()));
+                    Ok(())
+                }).and_then(|_| {
+                    drop(brk);
+                    drop(channel);
+                    Ok(())
+                })
+        })
+    })
+}
+
+
 #[cfg(any(
         target_os = "linux",
         target_os = "macos",
@@ -322,14 +463,14 @@ pub fn get(
 pub fn axiom(
     secret: identity::Secret,
     shadow: identity::Address,
-    acceptable: Vec<identity::Identity>,
+    allowable: Vec<identity::Identity>,
 ) -> impl Future<Item = (), Error = Error> {
     let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
-    let acceptable: HashSet<identity::Identity> = acceptable.into_iter().collect();
+    let allowable: HashSet<identity::Identity> = allowable.into_iter().collect();
 
     connect::connect(domain, secret.clone()).and_then(move |(ep, brk, sock, addr)| {
         info!("established broker route {:#x} with {}", brk.route(), brk.identity());
-        publisher::dispatch(shadow, ep, brk, sock, addr, secret, move |id| acceptable.contains(&id)).for_each(
+        publisher::dispatch(shadow, ep, brk, sock, addr, secret, move |id| allowable.contains(&id)).for_each(
             |mut channel| {
                 info!("peer has subscribed {}", channel.identity());
                 let server = channel

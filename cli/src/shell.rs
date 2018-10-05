@@ -88,35 +88,38 @@ pub fn handle(stream: channel::ChannelStream) -> impl Future<Item = (), Error = 
 
     let headers = headers::Headers::ok();
 
+    trace!("getting pty");
     let pty = AsyncPtyMaster::open().expect("open pty master");
 
-    let shell = match Passwd::from_name("aep") {
+    #[cfg(not(target_os = "android"))]
+    let shell = "/bin/sh".to_string();
+    #[cfg(target_os = "android")]
+    let shell = "/system/bin/sh".to_string();
 
-        #[cfg(not(target_os = "android"))]
-        None        => "/bin/sh".to_string(),
-        #[cfg(target_os = "android")]
-        None        => "/system/bin/sh".to_string(),
-
-        Some(pwent) => pwent.shell,
-    };
-
-    let mut cmd = Command::new(shell);
+    let mut cmd = Command::new(&shell);
     cmd.arg("-l");
     cmd.env_clear();
 
-
     if let Some(username) = get_unix_username(unsafe{libc::getuid()}) {
-        if let Some(pwent) = Passwd::from_name(&username) {
-            cmd.env("HOME",     pwent.home_dir.clone());
-            cmd.env("PWD",      pwent.home_dir.clone());
-            cmd.env("SHELL",    pwent.shell);
+        trace!("got unix username: {}", &username);
 
-            env::set_current_dir(pwent.home_dir).ok();
+        #[cfg(not(target_os = "android"))]
+        {
+            if let Some(pwent) = Passwd::from_name(&username) {
+                cmd.env("HOME",     pwent.home_dir.clone());
+                cmd.env("PWD",      pwent.home_dir.clone());
+                cmd.env("SHELL",    pwent.shell);
+
+                trace!("set cwd {:?}", pwent.home_dir);
+                env::set_current_dir(pwent.home_dir).ok();
+            }
         }
     }
 
+
+    trace!("spawning shell {}", &shell);
     let mut child = cmd
-        .env("TERM", "rxvt-unicode-256color")
+        .env("TERM", "xterm")
         .spawn_pty_async_pristine(&pty)
         .expect("spawning shell");
 

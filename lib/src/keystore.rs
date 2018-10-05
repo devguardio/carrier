@@ -32,29 +32,29 @@ impl Secrets {
         if defaultfile.exists() {
             return Err(KeystoreError::SecretsfileAlreadyExists.into());
         }
-        let dir = env::home_dir().unwrap().join(".devguard/");
-        fs::create_dir_all(&dir).unwrap();
-        let mut perms = fs::metadata(&dir).unwrap().permissions();
+        let dir = env::home_dir().expect("canot get env HOME").join(".devguard/");
+        fs::create_dir_all(&dir).expect(&format!("cannot create {:?}", dir));
+        let mut perms = fs::metadata(&dir).expect("cannot get dir fs:metadata").permissions();
         perms.set_mode(0o700);
-        fs::set_permissions(&dir, perms).unwrap();
+        fs::set_permissions(&dir, perms).expect("cannot set dir fs:metadata");
 
         let fp = dir.join("secret");
-        let mut f = File::create(&fp).unwrap();
+        let mut f = File::create(&fp).expect(&format!("cannot create file {:?}", &fp));
 
         let mut identity = vec![0; 32];
-        let mut rng = rand::OsRng::new().unwrap();
-        rng.try_fill_bytes(&mut identity).unwrap();
-        let identity = Secret::from_bytes(&mut identity).unwrap();
+        let mut rng = rand::OsRng::new().expect("cannot aquire osrng");
+        rng.try_fill_bytes(&mut identity).expect("rng failure");
+        let identity = Secret::from_bytes(&mut identity).expect("identity");
 
         let fi = toml::to_vec(&SecretsToml {
             identity: identity.to_string(),
-        }).unwrap();
+        }).expect("toml");
 
-        f.write_all(&fi).unwrap();
+        f.write_all(&fi).expect(&format!("cannot write to {:?}",  &fp));
 
-        let mut perms = fs::metadata(&fp).unwrap().permissions();
+        let mut perms = fs::metadata(&fp).expect("cannot get fs:metadata").permissions();
         perms.set_mode(0o400);
-        fs::set_permissions(&fp, perms).unwrap();
+        fs::set_permissions(&fp, perms).expect("cannot set fs:metadata");
         drop(f);
 
         Ok(Secrets { identity: identity })

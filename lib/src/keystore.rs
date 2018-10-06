@@ -61,6 +61,18 @@ impl Secrets {
     }
 
     pub fn load() -> Result<Secrets, Error> {
+        if let Ok(filename) = env::var("CARRIER_SECRET_BYTES_FILE") {
+            let mut buffer = Vec::new();
+            File::open(&filename)
+                .expect(&format!("cannot open CARRIER_SECRET_BYTES_FILE={}", filename))
+                .read_to_end(&mut buffer)
+                .unwrap();
+
+            return Ok(Secrets {
+                identity: Secret::from_bytes(&buffer[0..32]).expect("Secret::from_bytes"),
+            })
+        }
+
         let defaultfile = env::home_dir().unwrap_or("/root/".into()).join(".devguard/secret");
         trace!("default secret location {:?}", defaultfile);
         let filename = if let Ok(filename) = env::var("CARRIER_SECRET_FILE") {
@@ -73,8 +85,8 @@ impl Secrets {
 
 
         let mut buffer = String::new();
-        File::open(filename)
-            .expect("cannot open file")
+        File::open(&filename)
+            .expect(&format!("cannot open {}", filename))
             .read_to_string(&mut buffer)
             .unwrap();
         let secrets: SecretsToml = toml::from_str(&buffer).expect("error while reading secrets toml");

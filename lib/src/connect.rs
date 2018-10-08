@@ -14,11 +14,12 @@ use proto;
 use std::mem;
 use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
-use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+use std::time::{Duration, Instant};
 use tokio;
 use tokio::net::UdpSocket;
 use tokio::timer::Delay;
 use transport;
+use clock;
 
 #[derive(Debug, Fail)]
 pub enum ConnectError {
@@ -77,11 +78,7 @@ impl Future for EndpointFuture {
                 };
                 trace!("attempting connection to {} {}", record.addr, record.x);
 
-                let timestamp = SystemTime::now()
-                    .duration_since(UNIX_EPOCH)
-                    .expect("Time went backwards");
-                let timestamp = (timestamp.as_secs() - 1532811611) as u64 * 100 + timestamp.subsec_millis() as u64 / 10;
-
+                let timestamp = clock::dns_time(&record);
                 let (noise, pkt) = noise::initiate(Some(&record.x), &self.secret, timestamp)?;
                 let pkt = pkt.encode();
 

@@ -13,8 +13,8 @@ use packet;
 use proto;
 use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
-use std::time::{SystemTime, UNIX_EPOCH};
 use transport;
+use clock;
 
 
 #[derive(Debug, Fail)]
@@ -35,10 +35,7 @@ pub fn connect(
     brokeraddr: SocketAddr,
     secret: identity::Secret,
 ) -> impl Future<Item = channel::Channel, Error = Error> {
-    let timestamp = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards");
-    let timestamp = (timestamp.as_secs() - 1532811611) as u64 * 100 + timestamp.subsec_millis() as u64 / 10;
+    let timestamp = clock::network_time(&ep);
 
     let (mut hs, pkt) = noise::initiate(None, &secret, timestamp).unwrap();
 

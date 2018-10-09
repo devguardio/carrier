@@ -3,7 +3,7 @@ THIS=$(dirname $(readlink -f $0))
 set -ex
 
 
-VER=0.4.2
+VER=0.5.0
 
 rm -rf target/binrelease
 mkdir -p target/binrelease

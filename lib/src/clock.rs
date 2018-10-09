@@ -1,6 +1,6 @@
 use dns;
 use endpoint;
-use std::fs::{rename, File};
+use std::fs::{rename, File, create_dir_all};
 use std::io::{Read, Write};
 use dirs;
 use std::path::PathBuf;
@@ -22,6 +22,9 @@ pub fn load() -> u64 {
 
 pub fn store(i: u64) {
     let path = dirs::home_dir().unwrap_or(PathBuf::from("/"));
+    let dir = path.join(".devguard/");
+    create_dir_all(&dir).expect(&format!("cannot create {:?}", dir));
+
     let r: u64 = rand::random();
     let path2 = path.join(format!(".devguard/clock{}", r));
     let path = path.join(".devguard/clock");

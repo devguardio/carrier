@@ -42,6 +42,16 @@ impl Headers {
         }
     }
 
+    pub fn get(&self, key: &[u8]) -> Option<&[u8]> {
+        let mut val = None;
+        for header in &self.f{
+            if header.0 == key {
+                val = Some(header.1.as_slice());
+            }
+        }
+        val
+    }
+
     pub fn path(&self) -> Option<&[u8]> {
         let mut path = None;
         for header in &self.f{

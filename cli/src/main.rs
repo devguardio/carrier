@@ -17,10 +17,14 @@ extern crate systemstat;
 extern crate serde_derive;
 
 extern crate tokio_file_unix;
+extern crate tokio_codec;
 extern crate tokio_pty_process;
 extern crate passwd;
 extern crate libc;
-
+extern crate axon;
+extern crate which;
+extern crate tokio_fs;
+extern crate sha2;
 
 use carrier::*;
 use clap::{App, Arg, SubCommand};
@@ -29,6 +33,8 @@ use futures::{Future, Sink, Stream};
 use std::collections::HashSet;
 use std::env;
 use std::net::SocketAddr;
+use bytes::Bytes;
+use std::io;
 
 #[cfg(any(
     target_os = "linux",
@@ -44,7 +50,10 @@ mod shell;
 ))]
 mod system_stats;
 
+mod sft;
 mod setup;
+
+mod framed;
 
 pub fn main_() -> Result<(), Error> {
     if let Err(_) = env::var("RUST_LOG") {
@@ -53,7 +62,7 @@ pub fn main_() -> Result<(), Error> {
     env_logger::init();
 
     let clap = App::new("carrier cli")
-        .version("0.4.2")
+        .version("0.5")
         .author("(2018) Arvid E. Picciani <arvid@devguard.io>")
         .setting(clap::AppSettings::ArgRequiredElseHelp)
         .setting(clap::AppSettings::UnifiedHelpMessage)
@@ -80,6 +89,10 @@ pub fn main_() -> Result<(), Error> {
                 .about("watch a shadow")
                 .arg(Arg::with_name("address").takes_value(true).required(true).index(1))
         ).subcommand(
+            SubCommand::with_name("archon")
+                .about("spawn archon executable")
+                .arg(Arg::with_name("index").takes_value(true).required(true).index(1))
+        ).subcommand(
             SubCommand::with_name("update")
                 .about("update a remote carrier")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
@@ -102,6 +115,12 @@ pub fn main_() -> Result<(), Error> {
                     .required(true)
                     .value_names(&["identity"]),
                     ),
+        ).subcommand(
+            SubCommand::with_name("push")
+                .about("stupid file transfer")
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2))
+                .arg(Arg::with_name("remote-file").takes_value(true).required(true).index(3)),
         ).subcommand(
             SubCommand::with_name("get")
                 .about("get something")
@@ -147,8 +166,9 @@ pub fn main_() -> Result<(), Error> {
         target_os = "android",
     ))]
     let clap = clap.subcommand(
-        SubCommand::with_name("axiom")
-        .about("publish axiom service on carrier")
+        SubCommand::with_name("axon")
+        .alias("axiom")
+        .about("publish axon service on carrier")
         .arg(
             Arg::with_name("shadow")
             .help("address of shadow to publish on")
@@ -209,7 +229,6 @@ pub fn main_() -> Result<(), Error> {
                 update(secrets.identity, target).map_err(|e| error!("{}", e))
             }));
             Ok(())
-
         }
         ("install", Some(submatches)) => {
 
@@ -243,7 +262,7 @@ pub fn main_() -> Result<(), Error> {
                 target_os = "macos",
                 target_os = "android",
         ))]
-        ("axiom", Some(submatches)) => {
+        ("axon", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
             let shadow = submatches.value_of("shadow").unwrap().to_string().parse().expect("parsing shadow from cli");
             let allowable = submatches
@@ -262,6 +281,21 @@ pub fn main_() -> Result<(), Error> {
 
             tokio::run(futures::lazy(move || {
                 subscribe(secrets.identity, shadow).map_err(|e| error!("{}", e))
+            }));
+            Ok(())
+        }
+        ("push", Some(submatches)) => {
+            let secrets = keystore::Secrets::load()?;
+
+            let config = config::Config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string()).expect("resolving identity from cli");
+
+            let local_file = submatches.value_of("local-file").unwrap().to_string();
+            let remote_file = submatches.value_of("remote-file").unwrap().to_string();
+
+            tokio::run(futures::lazy(move || {
+                push(secrets.identity, target, local_file, remote_file).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
@@ -309,6 +343,24 @@ pub fn main_() -> Result<(), Error> {
             };
 
             println!("\"{}\"", dns.to_signed_txt(&secrets.identity));
+            Ok(())
+        }
+        ("archon", Some(submatches)) => {
+            let index = submatches.value_of("index").unwrap().to_string();
+            match index.as_ref() {
+                "/v0/system_stats" => {
+                    system_stats::_main();
+                },
+                "/v0/sft" => {
+                    sft::_main();
+                },
+                "/v0/shell" => {
+                    shell::_main();
+                },
+                any => {
+                    panic!("cannot find index {}. archon is not actually implemented yet", any);
+                }
+            }
             Ok(())
         }
         _ => unreachable!(),
@@ -388,6 +440,79 @@ pub fn subscribe(
     })
 }
 
+pub fn push(
+    secret: identity::Secret,
+    target: identity::Identity,
+    local_file: String,
+    remote_file: String,
+) -> impl Future<Item = (), Error = Error> {
+    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
+
+    use tokio_codec::BytesCodec;
+    use tokio_codec::Decoder;
+
+    let sha = {
+        use std::fs::File;
+        use std::io::Read;
+        use sha2::{Sha256, Digest};
+        let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+        let mut hasher = Sha256::new();
+        loop {
+            let mut buf = vec![0;1024];
+            let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
+            if len == 0 {
+                break;
+            }
+            hasher.input(&buf[..len]);
+        }
+        hasher.result().to_vec()
+    };
+
+    tokio_fs::file::File::open(local_file)
+        .map_err(Error::from)
+        .and_then(|local_file|{
+        let local_file = BytesCodec::new().framed(local_file);
+        connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
+            info!("established broker route {:#x} with {}", brk.route(), brk.identity());
+            subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
+                let headers = headers::Headers::with_path("/v0/sft".as_bytes())
+                    .and(":method".into(), "PUT".into())
+                    .and("sha256".into(), sha)
+                    .and("file".into(),   remote_file.into());
+                channel
+                    .open(headers)
+                    .expect("open channel")
+                    .into_future()
+                    .map_err(|(e, _)| e)
+                    .and_then(move |(headers, st)| {
+                        let headers = headers.expect("eof before header");
+                        let headers = headers::Headers::decode(&headers)?;
+                        println!("{:?}", headers);
+                        if headers.get(b":status") != Some(b"100") {
+                            let errs = String::from_utf8_lossy(headers.get(b":error").unwrap_or(b"")).into_owned();
+                            return Err(Error::from(io::Error::new(io::ErrorKind::Other, format!("remote error: {}", errs))));
+                        }
+                        Ok(local_file.map_err(Error::from).map(|i|i.into()).forward(st))
+                    })
+                    .flatten()
+                    .and_then(|st|st.1.send(Bytes::new()))
+                    .and_then(|st|st.into_future().map_err(|(e, _)| e))
+                    .and_then(move |(headers, st)| {
+                        let headers = headers.expect("eof before header");
+                        let headers = headers::Headers::decode(&headers)?;
+                        println!("{:?}", headers);
+                        Ok(st)
+                    })
+                    .and_then(|_| {
+                        drop(brk);
+                        drop(channel);
+                        Ok(())
+                    })
+            })
+        })
+    })
+
+}
 
 pub fn get(
     secret: identity::Secret,
@@ -410,8 +535,8 @@ pub fn get(
                     Ok(st) as Result<_, Error>
                 }).flatten_stream()
                 .map_err(Error::from)
-                .for_each(move |v: Vec<u8>| {
-                    println!("{}", String::from_utf8_lossy(v.as_slice()));
+                .for_each(move |v: Bytes| {
+                    println!("{}", String::from_utf8_lossy(v.as_ref()));
                     Ok(())
                 }).and_then(|_| {
                     drop(brk);
@@ -437,13 +562,13 @@ pub fn update(
                 .map_err(|(e, _)| e)
                 .and_then(move |(headers, st)| {
                     let headers = headers.expect("eof before header");
-                    let headers = headers::Headers::decode(&headers)?;
+                    let headers = headers::Headers::decode(&headers.to_vec())?;
                     println!("{:?}", headers);
                     Ok(st) as Result<_, Error>
                 }).flatten_stream()
                 .map_err(Error::from)
-                .for_each(move |v: Vec<u8>| {
-                    println!("{}", String::from_utf8_lossy(v.as_slice()));
+                .for_each(move |v: Bytes| {
+                    println!("{}", String::from_utf8_lossy(v.as_ref()));
                     Ok(())
                 }).and_then(|_| {
                     drop(brk);
@@ -478,16 +603,48 @@ pub fn axiom(
                     .expect("creating listener")
                     .for_each(|(stream, headers)| {
                         info!("{:?}", headers);
-                        let stream = match headers.path() {
-                            Some(b"/v0/shell") => {
-                                Box::new(shell::handle(stream)) as Box<Future<Item = (), Error = Error> + Send>
+
+                        let path = match headers.path() {
+                            None    => None,
+                            Some(v) => Some(v.to_vec()),
+                        };
+                        let path_ = match &path {
+                            None    => None,
+                            Some(v) => Some(v.as_slice()),
+                        };
+
+                        let stream = match path_ {
+                            Some(b"/v0/sft") => {
+                                let selfexe = env::current_exe().expect("std::env::current_exe");
+                                Box::new(axon_exe(stream, headers, &selfexe.to_string_lossy(), vec!["archon", "/v0/sft"]))
                             }
-                            Some(b"/v0/system_stats") => Box::new(system_stats::handle(stream))
-                                as Box<Future<Item = (), Error = Error> + Send>,
-                            _ => {
-                                let header: Vec<u8> = headers::Headers::with_error(404, b"not found".to_vec()).encode();
-                                let ft = stream.send(header).and_then(|_| Ok(()));
-                                Box::new(ft)
+                            Some(b"/v0/shell") => {
+                                let selfexe = env::current_exe().expect("std::env::current_exe");
+                                Box::new(axon_exe(stream, headers, &selfexe.to_string_lossy(), vec!["archon", "/v0/shell"]))
+                            }
+                            Some(b"/v0/system_stats") => {
+                                let selfexe = env::current_exe().expect("std::env::current_exe");
+                                Box::new(axon_exe(stream, headers, selfexe.to_str().unwrap(), vec!["archon", "/v0/system_stats"]))
+                                as Box<Future<Item = (), Error = Error> + Send>
+                            }
+                            any => {
+                                (move||{
+                                    if let Some(any) = any {
+                                        let any = String::from_utf8_lossy(any).into_owned();
+                                        if let Some(exe) = any.split("/v0/").nth(1) {
+                                            if exe.chars().all(|c|c.is_ascii_alphanumeric()) {
+                                                let exe = format!("carrier-axon-v0-{}", exe);
+                                                if let Ok(path) = which::which(exe) {
+                                                    return Box::new(axon_exe(stream, headers, &path.to_string_lossy(), Vec::new()))
+                                                        as Box<Future<Item = (), Error = Error> + Send>;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    let header: Vec<u8> = headers::Headers::with_error(404, b"not found".to_vec()).encode();
+                                    let ft = stream.send(header.into()).and_then(|_| Ok(()));
+                                    Box::new(ft)
+                                })()
                             }
                         }.map_err(|e| error!("{}", e));
                         tokio::spawn(stream);
@@ -500,5 +657,46 @@ pub fn axiom(
                 Ok(())
             },
         )
+    })
+}
+
+pub fn axon_exe(stream: channel::ChannelStream, headers: headers::Headers,
+                exe: &str, args:Vec<&str>) -> impl Future<Item = (), Error = Error>
+{
+    use std::io::Write;
+
+    info!("executing axon executable {}", exe);
+
+    use std::process::Command;
+    use axon::CommandExt;
+
+    let (mut child, mut io) = Command::new(exe)
+        .args(args)
+        .spawn_with_axon()
+        .expect("Failed to start echo process");
+
+    io.write(&headers.encode()).ok();
+
+    let io = io.into_async(&tokio::reactor::Handle::current()).expect("into async");
+
+    let (w1,r1) = framed::Framed(io).split();
+    let (w2,r2) = stream.split();
+
+    let f1 = r1
+        .map_err(|e|e.into())
+        .map(|i|i.into())
+        .forward(w2);
+
+    let f2 = r2
+        .map_err(|e|e.into())
+        .forward(w1);
+
+    f1.select2(f2)
+        .map_err(|e|e.split().0)
+        .and_then(move |_| {
+        trace!("axon loop ends");
+        child.kill().expect("killing exe");
+        child.wait().expect("child wait");
+        Ok(())
     })
 }

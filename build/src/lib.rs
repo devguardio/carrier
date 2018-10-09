@@ -86,7 +86,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                     fold(tx,|tx, item| {
                         let mut v = Vec::new();
                         item.encode(&mut v).unwrap();
-                        tx.send(v)
+                        tx.send(v.into())
                     })
                 }
             } else {
@@ -94,7 +94,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                     and_then(|item|{
                         let mut v = Vec::new();
                         item.encode(&mut v).unwrap();
-                        tx.send(v)
+                        tx.send(v.into())
                     })
                 }
             };
@@ -108,7 +108,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                     (":error".as_bytes(), err.as_bytes()),
                 ];
                 let headers = encoder.encode(headers);
-                tx.send(headers)
+                tx.send(headers.into())
                     .and_then(|_|Ok(()))
             }};
 
@@ -120,7 +120,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                 ];
                 let headers = encoder.encode(headers);
 
-                tx.send(headers)
+                tx.send(headers.into())
                 .and_then(|tx|{
                     v.#outstream
                 })
@@ -237,7 +237,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                         let ft = match path {
                             None => {
                                 let headers = Headers::with(":status", "400");
-                                Box::new(stream.send(headers.encode())
+                                Box::new(stream.send(headers.encode().into())
                                          .map_err(|e|error!("error while streaming 400: {}", e))
                                          .and_then(|_|Ok(())))
                             }
@@ -246,7 +246,7 @@ impl prost_build::ServiceGenerator for ServiceGen {
                                     #(#dispatch_matchers)*
                                     _ => {
                                         let headers = Headers::with(":status", "404");
-                                        Box::new(stream.send(headers.encode())
+                                        Box::new(stream.send(headers.encode().into())
                                                  .map_err(|e|error!("error while streaming 404: {}", e))
                                                  .and_then(|_|Ok(())))
                                     }

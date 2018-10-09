@@ -16,6 +16,7 @@ use std::net::UdpSocket as StdSocket;
 use std::time::Instant;
 use tokio;
 use transport::{self, ChannelProgress};
+use bytes::{BytesMut, Bytes};
 
 #[derive(Debug, Fail)]
 pub enum ChannelError {
@@ -24,13 +25,13 @@ pub enum ChannelError {
 }
 
 pub struct ChannelStream {
-    tx: mpsc::Sender<Vec<u8>>,
-    rx: mpsc::Receiver<Vec<u8>>,
+    tx: mpsc::Sender<Bytes>,
+    rx: mpsc::Receiver<Bytes>,
 }
 
 pub struct MessageStream<In, Out> {
-    tx:      mpsc::Sender<Vec<u8>>,
-    rx:      mpsc::Receiver<Vec<u8>>,
+    tx:      mpsc::Sender<Bytes>,
+    rx:      mpsc::Receiver<Bytes>,
     int:     PhantomData<In>,
     out:     PhantomData<Out>,
     headers: Option<Headers>,
@@ -235,7 +236,7 @@ impl Future for ChannelWorker {
                         warn!("ChannelWorker, stream frame for unregistered stream {}", stream);
                     }
                     Some(cs) => {
-                        if let Err(e) = cs.tx.try_send(msg) {
+                        if let Err(e) = cs.tx.try_send(msg.into()) {
                             warn!("ChannelWorker::stream {} try_send: {}", stream, e);
                         }
                     }
@@ -336,7 +337,7 @@ impl Future for ChannelWorker {
                         futures::task::current().notify();
                     }
                     Ok(Async::Ready(Some(msg))) => {
-                        self.transport.stream(*id, msg);
+                        self.transport.stream(*id, msg.to_vec());
                         futures::task::current().notify();
                     }
                     Ok(Async::NotReady) => (),
@@ -418,7 +419,7 @@ impl ChannelStream {
 }
 
 impl Stream for ChannelStream {
-    type Item = Vec<u8>;
+    type Item = Bytes;
     type Error = Error;
 
     fn poll(&mut self) -> Result<Async<Option<Self::Item>>, Self::Error> {
@@ -427,7 +428,7 @@ impl Stream for ChannelStream {
 }
 
 impl Sink for ChannelStream {
-    type SinkItem = Vec<u8>;
+    type SinkItem  = Bytes;
     type SinkError = Error;
 
     fn poll_complete(&mut self) -> Result<Async<()>, Self::SinkError> {
@@ -511,9 +512,9 @@ where
     }
 
     fn start_send(&mut self, item: Self::SinkItem) -> Result<AsyncSink<Self::SinkItem>, Self::SinkError> {
-        let mut buf = Vec::new();
+        let mut buf = BytesMut::with_capacity(item.encoded_len());
         item.encode(&mut buf)?;
-        match self.tx.start_send(buf)? {
+        match self.tx.start_send(buf.into())? {
             AsyncSink::NotReady(_) => Ok(AsyncSink::NotReady(item)),
             AsyncSink::Ready => Ok(AsyncSink::Ready),
         }

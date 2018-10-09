@@ -4,6 +4,8 @@ use futures::{Future, Sink};
 use serde_json;
 use std::time::{SystemTime, UNIX_EPOCH};
 use systemstat;
+use axon;
+use std::io::Write;
 
 #[derive(Serialize, Deserialize)]
 struct SystemLoad {
@@ -43,8 +45,8 @@ struct SystemStats {
 pub fn handle(stream: channel::ChannelStream) -> impl Future<Item = (), Error = Error> {
     let header: Vec<u8> = headers::Headers::ok().encode();
     stream
-        .send(header)
-        .and_then(|s| s.send(get_stats().unwrap().as_bytes().to_vec()))
+        .send(header.into())
+        .and_then(|s| s.send(get_stats().unwrap().as_bytes().into()))
         .and_then(|_| Ok(()))
 }
 
@@ -94,3 +96,15 @@ fn get_stats() -> Result<String, Error> {
 
     Ok(serde_json::to_string(&s)?)
 }
+
+pub fn _main() {
+    let mut io = axon::child();
+
+    let headers = headers::Headers::ok();
+    io.write(&headers.encode()).expect("sending on AXIOM_FD_OUT failed");
+
+    let s  = get_stats().expect("get_stats");
+    io.write(s.as_bytes()).expect("sending on AXIOM_FD_OUT failed");
+}
+
+

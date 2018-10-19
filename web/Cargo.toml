@@ -10,12 +10,12 @@ crate-type = ["cdylib"]
 default-features = ["console_error_panic_hook", "wee_alloc"]
 
 [dependencies]
-cfg-if = "0.1.2"
-log = "0.4.4"
-failure             = "0.1.2"
-prost               = "0.4.0"
-hpack               = "0.3.0"
-bytes               = "0.4.9"
+cfg-if      = "0.1.2"
+log         = "0.4.4"
+failure     = "0.1.2"
+prost       = "0.4.0"
+hpack       = "0.3.0"
+bytes       = "0.4.9"
 
 wasm-bindgen            = {git = "https://github.com/rustwasm/wasm-bindgen.git" , features= ["nightly"]}
 web-sys                 = {git = "https://github.com/rustwasm/wasm-bindgen.git" }
@@ -38,6 +38,6 @@ default-features = false
 features = ["web"]
 
 [patch.crates-io]
-rand         = {path = "../../rand/"}
-wasm-bindgen = {git="https://github.com/rustwasm/wasm-bindgen", features= ["nightly"]}
-failure      = {path = "../..failure"}
+rand         = {git = "https://github.com/rust-random/rand.git" }
+wasm-bindgen = {git = "https://github.com/rustwasm/wasm-bindgen", features= ["nightly"]}
+failure      = {git = "https://github.com/aep/failure.git"}

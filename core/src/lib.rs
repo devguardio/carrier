@@ -39,5 +39,4 @@ pub use identity::Secret;
 
 pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/carrier.certificate.v1.rs"));
-    include!(concat!(env!("OUT_DIR"), "/carrier.broker.v1.rs"));
 }

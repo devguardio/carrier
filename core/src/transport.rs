@@ -28,7 +28,12 @@ use stream;
 
 //TODO: use mss?
 pub const MAX_PACKET_SIZE: usize = 1400;
-const IDLE_TIMER: u64 = 10000;
+const DEFAULT_IDLE_TIMER: u64 = 10000;
+
+pub struct Config {
+    pub timeout:  Option<u16>,
+    pub sleeping: bool,
+}
 
 #[derive(Debug, Fail)]
 pub enum ChannelError {
@@ -50,6 +55,8 @@ pub struct Channel {
     counters: HashMap<u32, u64>,
     outqueue: VecDeque<Frame>,
 
+    sleeping:   bool,
+    idle_time:  u64,
     deadline:   u64,
     last_seen:  u64,
 
@@ -80,7 +87,9 @@ impl Channel {
             counters: HashMap::new(),
             outqueue: VecDeque::new(),
 
-            deadline:   IDLE_TIMER,
+            sleeping:   false,
+            idle_time:  DEFAULT_IDLE_TIMER,
+            deadline:   DEFAULT_IDLE_TIMER,
             last_seen:  0,
 
             #[cfg(not(all(target_arch = "wasm32")))]
@@ -190,6 +199,16 @@ impl Channel {
                     let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
                     ordered.push(Frame::Close { stream, order })?;
                 }
+                Frame::Config{timeout, sleeping} => {
+                    if let Some(seconds) = timeout {
+                        debug!("peer set timeout to {} seconds", seconds);
+                        self.idle_time = seconds as u64 * 1000;
+                    }
+                    self.sleeping = sleeping;
+                    if sleeping {
+                        warn!("peer has indicated it is sleeping or unresponsive for {}ms", self.idle_time);
+                    }
+                }
             }
         }
 
@@ -267,27 +286,45 @@ impl Channel {
             self.last_seen,
         );
 
-        if now > self.last_seen + IDLE_TIMER{
-            self.outqueue.push_back(Frame::Ping);
-            self.last_seen = now;
+
+        if self.sleeping  {
+            if now > self.last_seen + self.idle_time {
+                self.sleeping = false;
+            } else {
+                self.deadline = self.last_seen + self.idle_time;
+                trace!(
+                    "[{}] peer is sleeping until {}. not counting any timers",
+                    self.debug_id,
+                    self.deadline,
+                    );
+            }
         }
 
-        if now >= self.deadline && self.recovery.bytes_in_flight() > 0 {
-            let loss = self.recovery.on_loss_detection_alarm(now);
-            self.handle_loss(loss);
-        }
+        if !self.sleeping {
 
-        self.deadline = if let Some(deadline) = self.recovery.loss_detection_alarm() {
-            deadline
-        } else {
-            self.last_seen + IDLE_TIMER
-        };
-        if self.deadline <= now {
-            trace!(
-                "[{}] upcoming deadline {} already expired at {}",
-                self.debug_id, self.deadline, now
-            );
-            self.deadline = now;
+            if now > self.last_seen + self.idle_time {
+                self.outqueue.push_back(Frame::Ping);
+                self.last_seen = now;
+            }
+
+            if now >= self.deadline && self.recovery.bytes_in_flight() > 0 {
+                let loss = self.recovery.on_loss_detection_alarm(now);
+                self.handle_loss(loss);
+            }
+
+            self.deadline = if let Some(deadline) = self.recovery.loss_detection_alarm() {
+                deadline
+            } else {
+                self.last_seen + self.idle_time
+            };
+            if self.deadline <= now {
+                trace!(
+                    "[{}] upcoming deadline {} already expired at {}",
+                    self.debug_id, self.deadline, now
+                    );
+                self.deadline = now;
+            }
+
         }
 
         // send out packets
@@ -432,6 +469,7 @@ impl Channel {
         self.counters.insert(stream, 1);
         self.outqueue.push_back(Frame::Header { stream, payload });
     }
+
     /// queue a close, stream may still be able to receive (this is half close)
     pub fn close(&mut self, stream: u32) {
         let order = match self.counters.get_mut(&stream) {
@@ -470,5 +508,19 @@ impl Channel {
     /// send probe packets
     pub fn probe(&mut self) {
         self.outqueue.push_back(Frame::Ping);
+    }
+
+    /// configure network
+    pub fn config(&mut self, config: Config) {
+        if let Some(seconds) = config.timeout {
+            self.idle_time = seconds as u64 * 1000;
+        }
+
+        let fr = Frame::Config{
+            timeout:  config.timeout,
+            sleeping: config.sleeping,
+        };
+        self.outqueue.push_back(fr);
+
     }
 }

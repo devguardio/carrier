@@ -114,6 +114,10 @@ pub enum Frame {
         stream: u32,
         order:  u64,
     },
+    Config {
+        timeout:  Option<u16>,
+        sleeping: bool,
+    }
 }
 
 impl Frame {
@@ -125,6 +129,7 @@ impl Frame {
             Frame::Ping => "Ping",
             Frame::Disconnect => "Disconnect",
             Frame::Close { .. } => "Close",
+            Frame::Config { .. } => "Config",
         }
     }
 
@@ -136,6 +141,9 @@ impl Frame {
             Frame::Ping => 1,
             Frame::Disconnect => 1,
             Frame::Close { .. } => 1 + 4 + 8,
+            Frame::Config { timeout, .. } =>  {
+                1 + 1 + 2 + if timeout.is_some() { 2 } else { 0 }
+            }
         }
     }
 
@@ -201,6 +209,27 @@ impl Frame {
                 w.write_u32::<BigEndian>(*stream)?;
                 w.write_u64::<BigEndian>(*order)?;
             }
+            Frame::Config { timeout, sleeping } => {
+                w.write_u8(0x07)?;
+                let mut flags:   u8 = 0x00;
+                let mut datalen: u16 = 0;
+
+                if let Some(_) = timeout {
+                    flags |= 0b10000000;
+                    datalen += 2;
+                }
+
+                if *sleeping {
+                    flags |= 0b01000000;
+                }
+
+                w.write_u8(flags)?;
+                w.write_u16::<BigEndian>(datalen)?;
+
+                if let Some(timeout) = timeout {
+                    w.write_u16::<BigEndian>(*timeout)?;
+                }
+            }
         }
         Ok(len)
     }
@@ -247,10 +276,66 @@ impl Frame {
                     let order = r.read_u64::<BigEndian>()?;
                     f.push(Frame::Close { stream, order });
                 }
+                Ok(0x07) => {
+                    let flags    = r.read_u8()?;
+                    let datalen  = r.read_u16::<BigEndian>()?;
+
+                    let mut data = vec![0;datalen as usize];
+                    r.read_exact(&mut data)?;
+                    let mut r = &data[..];
+
+                    let timeout = if flags & 0b10000000 > 0 {
+                        Some(r.read_u16::<BigEndian>()?)
+                    } else {
+                        None
+                    };
+
+                    let sleeping = flags & 0b01000000 > 0;
+
+                    f.push(Frame::Config {timeout, sleeping});
+                }
                 Ok(typ) => return Err(PacketError::InvalidFrameType { typ }.into()),
             };
         }
     }
+}
+
+#[test]
+fn config_frames() {
+    let frame = Frame::Config{
+        timeout: None,
+        sleeping: false,
+    };
+    let mut w = Vec::new();
+    let written = frame.encode(&mut w).unwrap();
+    assert_eq!(written, w.len());
+    assert_eq!(w,&[0x07, 0x00, 0x00, 0x00]);
+
+    let frames = Frame::decode(&w[..]).unwrap();
+    assert_eq!(frames.len(), 1);
+    if let Frame::Config { timeout: None ,  sleeping: false} = frames[0] {
+    } else {
+        assert!(false, "expected config frame");
+    }
+
+    let frame = Frame::Config{
+        timeout: Some(1292),
+        sleeping: true,
+    };
+    let mut w = Vec::new();
+    let written = frame.encode(&mut w).unwrap();
+    assert_eq!(written, w.len());
+    assert_eq!(w,&[0x07, 0b11000000, 0, 2, 5, 12]);
+
+    let frames = Frame::decode(&w[..]).unwrap();
+    assert_eq!(frames.len(), 1);
+    if let Frame::Config { timeout: Some(1292),  sleeping: true} = frames[0] {
+    } else {
+        assert!(false, "expected config frame");
+    }
+
+
+
 }
 
 #[test]

@@ -15,13 +15,19 @@ use std::net::SocketAddr;
 use std::net::UdpSocket as StdSocket;
 use std::time::Instant;
 use tokio;
-use transport::{self, ChannelProgress};
+use transport::{self, ChannelProgress, Config};
 use bytes::{BytesMut, Bytes};
 
 #[derive(Debug, Fail)]
 pub enum ChannelError {
     #[fail(display = "rpc returned status: {:?}", status)]
     RpcError { headers: Headers, status:  Option<String> },
+}
+
+enum ChannelCmd {
+    Open(ChannelStream, Vec<u8>),
+    OnIdle(mpsc::Sender<()>),
+    Config(Config),
 }
 
 pub struct ChannelStream {
@@ -38,7 +44,7 @@ pub struct MessageStream<In, Out> {
 }
 
 pub struct Channel {
-    open: mpsc::Sender<(ChannelStream, Vec<u8>)>,
+    cmd:  mpsc::Sender<ChannelCmd>,
     lst:  Option<ChannelListener>,
 
     identity: identity::Identity,
@@ -46,6 +52,10 @@ pub struct Channel {
 
     // we drop this when we drop. yo dawg.
     pub bag: Vec<Box<Send + Sync>>,
+}
+
+pub struct ChannelControl {
+    cmd:  mpsc::Sender<ChannelCmd>
 }
 
 pub struct ChannelListener(mpsc::Receiver<(ChannelStream, Vec<u8>)>);
@@ -56,7 +66,7 @@ enum AddressMode {
 }
 
 struct ChannelWorker {
-    open: mpsc::Receiver<(ChannelStream, Vec<u8>)>,
+    cmd:  mpsc::Receiver<ChannelCmd>,
     newc: mpsc::Sender<(ChannelStream, Vec<u8>)>,
 
     streams: HashMap<u32, ChannelStream>,
@@ -71,6 +81,8 @@ struct ChannelWorker {
     route: RoutingKey,
 
     stop: bool,
+
+    on_idle: Vec<mpsc::Sender<()>>,
 }
 
 impl Channel {
@@ -83,7 +95,7 @@ impl Channel {
         mut transport: transport::Channel,
         work: mpsc::Sender<endpoint::EndpointWorkerCmd>,
     ) -> Self {
-        let (open_tx, open_rx) = mpsc::channel(10);
+        let (cmd_tx,  cmd_rx) = mpsc::channel(10);
         let (newc_tx, newc_rx) = mpsc::channel(10);
 
         if addrs.len() > 1 {
@@ -91,7 +103,7 @@ impl Channel {
         }
 
         tokio::spawn(ChannelWorker {
-            open: open_rx,
+            cmd: cmd_rx,
             newc: newc_tx,
             streams: HashMap::new(),
             transport,
@@ -102,10 +114,11 @@ impl Channel {
             route,
             stop: false,
             deadline: tokio::timer::Delay::new(Instant::now()),
+            on_idle: Vec::new(),
         });
 
         Self {
-            open: open_tx,
+            cmd: cmd_tx,
             lst: Some(ChannelListener(newc_rx)),
             identity,
             route,
@@ -123,7 +136,7 @@ impl Channel {
 
     pub fn open(&mut self, headers: Headers) -> Result<ChannelStream, Error> {
         let (a, b) = ChannelStream::new();
-        self.open.try_send((a, headers.encode()))?;
+        self.cmd.try_send(ChannelCmd::Open(a, headers.encode()))?;
         Ok(b)
     }
 
@@ -132,12 +145,52 @@ impl Channel {
         p: P,
     ) -> Result<MessageStream<In, Out>, Error> {
         let (a, b) = MessageStream::new();
-        self.open.try_send((a, Headers::with_path(p).encode()))?;
+        self.cmd.try_send(ChannelCmd::Open(a, Headers::with_path(p).encode()))?;
         Ok(b)
     }
 
     pub fn listener(&mut self) -> Option<ChannelListener> {
         mem::replace(&mut self.lst, None)
+    }
+
+    pub fn ctrl(&self) -> ChannelControl{
+        ChannelControl{cmd: self.cmd.clone()}
+    }
+
+    pub fn config(&mut self, config: Config) -> Result<(), Error> {
+        self.cmd.try_send(ChannelCmd::Config(config))?;
+        Ok(())
+    }
+
+    pub fn on_idle(&self) -> impl Future<Item=(), Error=Error> {
+        let (tx, rx) = mpsc::channel(10);
+        self.cmd.clone().send(ChannelCmd::OnIdle(tx))
+            .map_err(Error::from)
+            .and_then(|_| {
+                rx.into_future().map_err(|_|unreachable!())
+            })
+            .and_then(|_| {
+                Ok(())
+            })
+    }
+}
+
+impl ChannelControl {
+    pub fn config(&mut self, config: Config) -> Result<(), Error> {
+        self.cmd.try_send(ChannelCmd::Config(config))?;
+        Ok(())
+    }
+
+    pub fn on_idle(&self) -> impl Future<Item=(), Error=Error> {
+        let (tx, rx) = mpsc::channel(10);
+        self.cmd.clone().send(ChannelCmd::OnIdle(tx))
+            .map_err(Error::from)
+            .and_then(|_| {
+                rx.into_future().map_err(|_|unreachable!())
+            })
+            .and_then(|_| {
+                Ok(())
+            })
     }
 }
 
@@ -350,7 +403,7 @@ impl Future for ChannelWorker {
                 self.streams.remove(&id);
             }
 
-            match self.open.poll()? {
+            match self.cmd.poll()? {
                 Async::Ready(None) => {
                     // close scenario 1
                     if !self.stop {
@@ -364,15 +417,30 @@ impl Future for ChannelWorker {
                         futures::task::current().notify();
                     }
                 }
-                Async::Ready(Some((ch, header))) => {
+                Async::Ready(Some(ChannelCmd::Open(ch, header))) => {
                     let is_initiator = self.transport.is_initiator();
                     let stream = self.transport.open(header, is_initiator);
                     trace!("opened new stream {}", stream);
                     self.streams.insert(stream, ch);
                     futures::task::current().notify();
                 }
+                Async::Ready(Some(ChannelCmd::OnIdle(cb))) => {
+                    self.on_idle.push(cb);
+                    futures::task::current().notify();
+                }
+                Async::Ready(Some(ChannelCmd::Config(config))) => {
+                    self.transport.config(config);
+                    futures::task::current().notify();
+                }
                 Async::NotReady => (),
             };
+        }
+
+        // idle callbacks
+        if self.transport.bytes_in_flight() == 0 {
+            for mut cb in self.on_idle.drain(..) {
+                cb.start_send(()).ok();
+            }
         }
 
         // --- stopping and no bytes left in flight. send disconnect and exit

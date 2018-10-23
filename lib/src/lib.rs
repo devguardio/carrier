@@ -1,6 +1,6 @@
 extern crate carrier_core;
 #[macro_use]
-extern crate failure;
+pub extern crate failure;
 extern crate bs58;
 extern crate byteorder;
 extern crate crc8;
@@ -11,7 +11,7 @@ extern crate subtle;
 extern crate x25519_dalek;
 #[macro_use]
 extern crate prost_derive;
-extern crate bytes;
+pub extern crate bytes;
 extern crate prost;
 #[macro_use]
 extern crate log;
@@ -51,6 +51,11 @@ pub mod xlog;
 pub use carrier_core::*;
 pub use identity::Identity;
 pub use identity::Secret;
+
+pub mod prelude {
+    pub use bytes;
+    pub use failure;
+}
 
 mod carrier {
     pub use super::*;

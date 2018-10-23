@@ -62,7 +62,7 @@ pub fn main_() -> Result<(), Error> {
     env_logger::init();
 
     let clap = App::new("carrier cli")
-        .version("0.5")
+        .version("0.6")
         .author("(2018) Arvid E. Picciani <arvid@devguard.io>")
         .setting(clap::AppSettings::ArgRequiredElseHelp)
         .setting(clap::AppSettings::UnifiedHelpMessage)

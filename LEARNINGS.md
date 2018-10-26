@@ -50,3 +50,18 @@ Anything that is powerful enough for TLS might as well run the full NOISE crypto
 and is not mixed in with authenication certs. This will be done later and probably be part of
 core/noise instead of being handed to the authenticator.
 
+
+
+fragmentation is a high level concept
+=================
+
+trying to implement fragmentation at the lower level makes the high level api very confusing
+because either low level needs to buffer up to a certain max, or needs to introduce yet
+another stream-in-stream to support segments of infinite size.
+
+instead higher level protos that exceed the MTU need to treat a carrier stream
+as a  continous stream without fragment boundaries
+essentially identical to how TCP works, so alot of protocols should fit right on top.
+
+
+

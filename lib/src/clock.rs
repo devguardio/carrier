@@ -5,6 +5,7 @@ use std::io::{Read, Write};
 use dirs;
 use std::path::PathBuf;
 use rand;
+use fs2::FileExt;
 
 
 pub fn load() -> u64 {
@@ -31,12 +32,13 @@ pub fn store(i: u64) {
 
     {
         let mut f = File::create(&path2).expect(&format!("cannot open time sync file {:?}", path2));
+        f.lock_exclusive();
         f.write(format!("{}", i).as_bytes()).expect("cannot write time sync file");
         rename(&path2, &path).expect(&format!("cannot move {:?} to {:?}", path2, path));
         f.sync_all().expect("sync time file");
     }
 
-    assert_eq!(load(), i);
+    assert!(load() >= i);
 }
 
 pub fn dns_time(_ : &dns::DnsRecord) -> u64 {

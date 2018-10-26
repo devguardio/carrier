@@ -35,7 +35,7 @@ interfaces2         = "0.0.5"
 env_logger          = {version = "0.5.12", default-features = false}
 carrier-core        = {path = "../core"}
 dirs                = "1.0.4"
-
+fs2                 = "0.4.3"
 
 [build-dependencies]
 carrier-build = {path = "../build", version = "0.2.0"}

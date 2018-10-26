@@ -32,6 +32,7 @@ extern crate futurize_derive;
 extern crate gcmap;
 extern crate interfaces2 as interfaces;
 extern crate dirs;
+extern crate fs2;
 
 mod ptrmap;
 pub mod channel;

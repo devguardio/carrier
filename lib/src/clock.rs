@@ -6,7 +6,23 @@ use dirs;
 use std::path::PathBuf;
 use rand;
 use fs2::FileExt;
+use std::sync::{Mutex};
+use std::time::{SystemTime, UNIX_EPOCH};
 
+
+pub enum ClockSource {
+    FileSystem,
+    SystemClock,
+}
+
+lazy_static!{
+    static ref CLOCKSOURCE : Mutex<ClockSource> = Mutex::new(ClockSource::FileSystem);
+}
+
+
+pub fn set_clocksource(cl: ClockSource) {
+    (*CLOCKSOURCE.lock().unwrap()) = cl;
+}
 
 pub fn load() -> u64 {
     let path = dirs::home_dir().unwrap_or(PathBuf::from("/"));
@@ -42,15 +58,31 @@ pub fn store(i: u64) {
 }
 
 pub fn dns_time(_ : &dns::DnsRecord) -> u64 {
-    let mut t = load();
-    t += 1;
-    store(t);
-    t
+    match *CLOCKSOURCE.lock().unwrap() {
+        ClockSource::FileSystem => {
+            let mut t = load();
+            t += 1;
+            store(t);
+            t
+        },
+        ClockSource::SystemClock => {
+            let dr = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time went backwards");
+            dr.as_secs() * 1000 + dr.subsec_nanos() as u64 / 1_000_000
+        }
+    }
 }
 
 pub fn network_time(_ : &endpoint::Endpoint) -> u64 {
-    let mut t = load();
-    t += 1;
-    store(t);
-    t
+    match *CLOCKSOURCE.lock().unwrap() {
+        ClockSource::FileSystem => {
+            let mut t = load();
+            t += 1;
+            store(t);
+            t
+        },
+        ClockSource::SystemClock => {
+            let dr = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time went backwards");
+            dr.as_secs() * 1000 + dr.subsec_nanos() as u64 / 1_000_000
+        }
+    }
 }

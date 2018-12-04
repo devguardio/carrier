@@ -1,0 +1,157 @@
+syntax = "proto3";
+package carrier.sysinfo.v1;
+
+message Uname {
+    string sysname  = 1;
+    string nodename = 2;
+    string release  = 3;
+    string version  = 4;
+    string machine  = 5;
+}
+
+message Load {
+    double  avg_1       = 1;
+    double  avg_5       = 2;
+    double  avg_15      = 3;
+    uint64  clock       = 4;
+    uint64  uptime      = 5;
+    uint64  idletime    = 6;
+    uint64  proc_active = 7;
+    uint64  proc_total  = 8;
+    uint32  cores       = 9;
+    uint32  threads     = 10;
+}
+
+message Mem {
+    uint64  total       = 1;
+    uint64  free        = 2;
+    uint64  available   = 3;
+}
+
+message FileSystem {
+    string  path    = 1;
+    uint64  blocksize   = 2;
+    uint64  total       = 3;
+    uint64  free        = 4;
+}
+
+message Firmware {
+    string board    = 1;
+    string distro   = 2;
+    string release  = 3;
+    string revision = 4;
+}
+
+message NetAddress {
+    string addr = 1;
+    string mask = 2;
+    string hop  = 3;
+}
+
+
+
+message Netdev {
+    string name     = 1;
+    uint64 rx_pkt   = 2;
+    uint64 rx_err   = 3;
+    uint64 tx_pkt   = 4;
+    uint64 tx_err   = 5;
+    bool   up       = 6;
+    string macaddr  = 7;
+    uint32 mtu      = 8;
+    repeated NetAddress addrs = 9;
+}
+
+message SwitchPort {
+    uint64 port     = 1;
+    bool   link     = 2;
+    string speed    = 3;
+}
+
+message Switch {
+    string name = 1;
+    repeated SwitchPort ports = 2;
+}
+
+message Sysinfo {
+    Uname       uname       = 1;
+    Mem         mem         = 2;
+    Load        load        = 3;
+    Firmware    firmware    = 4;
+    repeated FileSystem fs  = 5;
+    repeated Netdev net     = 6;
+    repeated Switch switch  = 7;
+}
+
+
+
+
+
+
+message WifiStation {
+    string  address      = 1;
+    uint64  inactive     = 2;
+    uint64  rx_bytes     = 3;
+    uint64  rx_packets   = 4;
+    uint64  tx_bytes     = 5;
+    uint64  tx_packets   = 6;
+    uint64  tx_retries   = 7;
+    uint64  tx_failed    = 8;
+    uint64  beacon_loss  = 9;
+    uint64  beacon_rx    = 10;
+    uint64  rx_drop_misc = 11;
+    repeated    int32 signal       = 12;
+    repeated    int32 signal_avg   = 13;
+    uint64  beacon_signal_avg       = 14;
+    double  tx_bitrate  = 15;
+    double  rx_bitrate  = 16;
+    uint64  rx_duration = 17;
+    double  expected    = 18;
+    bool    authorized  = 19;
+    bool    authenticated   = 20;
+    bool    associated      = 21;
+    string  preamble        = 22;
+    bool    wmm     = 23;
+    bool    MFP     = 24;
+    bool    TDLS    = 25;
+    uint32  DTIM    = 26;
+    uint64  beacon_interval = 27;
+    bool    short_preamble  = 28;
+    bool    short_slot_time = 29;
+    uint64  connected_time  = 30;
+}
+
+message WifiInterface {
+    string  name     = 1;
+    string  typ      = 2;
+    uint64  phy      = 3;
+    string  ssid     = 4;
+    string  channel  = 5;
+    double  txpower  = 6;
+    repeated WifiStation stations = 7;
+}
+
+message DhcpLease {
+    uint64  ts      = 1;
+    string  mac     = 2;
+    string  ip      = 3;
+    string  name    = 4;
+}
+
+
+message Arp {
+    enum HwType {
+        Unknown  = 0;
+        Ethernet = 1;
+    }
+    string  ip      = 1;
+    HwType  hw      = 2;
+    string  mac     = 3;
+    string  dev     = 4;
+}
+
+message NetSurvey {
+    repeated WifiInterface wifi = 1;
+    repeated DhcpLease  dhcp    = 2;
+    repeated Arp  arp           = 3;
+}

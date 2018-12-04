@@ -1,0 +1,101 @@
+syntax = "proto3";
+package carrier.broker.v1;
+
+
+message Path {
+    enum Category {
+        Invalid         = 0;
+        Local           = 1;
+        Internet        = 2;
+        BrokerOrigin    = 3;
+    }
+    string ipaddr       = 1;
+    Category category   = 2;
+}
+
+message Filter {
+    oneof m {
+        bool    immediate = 1;
+        bytes   identity  = 2;
+    }
+}
+
+message SubscribeRequest {
+    bytes    shadow         = 1;
+    repeated Filter filter  = 2;
+}
+
+
+message Publish {
+    bytes   identity = 1;
+    bytes   xaddr    = 2;
+}
+
+message Unpublish {
+    bytes   identity = 1;
+}
+
+message Supersede {
+}
+
+message SubscribeChange{
+    oneof m {
+        Publish     publish = 1;
+        Unpublish unpublish = 2;
+        Supersede supersede = 3;
+    }
+}
+
+message PublishRequest {
+    bytes   xaddr    = 1;
+    bytes   shadow   = 2;
+}
+
+message PublishChange{
+    oneof m {
+        Supersede supersede = 1;
+    }
+}
+
+message ConnectRequest {
+    bytes   identity        = 1;
+    uint64  timestamp       = 2;
+    bytes   handshake       = 3;
+    repeated Path paths     = 4;
+}
+
+message ConnectResponse {
+    bool    ok              = 1;
+    bytes   handshake       = 2;
+    uint64  route           = 3;
+    repeated Path paths     = 4;
+}
+
+service Broker {
+    rpc subscribe   (SubscribeRequest)  returns (stream SubscribeChange) {}
+    rpc publish     (PublishRequest)    returns (stream PublishChange)   {}
+
+    rpc connect     (ConnectRequest)    returns (stream ConnectResponse) {}
+}
+
+message PeerConnectRequest {
+    bytes   identity        = 1;
+    uint64  timestamp       = 2;
+    bytes   handshake       = 3;
+    uint64  route           = 4;
+    repeated Path paths     = 5;
+}
+
+message PeerConnectResponse {
+    bool    ok              = 1;
+    bytes   handshake       = 2;
+    repeated Path paths     = 3;
+}
+
+service Peer {
+    rpc connect     (PeerConnectRequest)    returns (PeerConnectResponse)        {}
+}
+
+message ProtoHeader {
+    uint64 len = 1;
+}

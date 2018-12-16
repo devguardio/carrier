@@ -471,7 +471,7 @@ pub fn push(
     tokio_fs::file::File::open(local_file)
         .map_err(Error::from)
         .and_then(|local_file|{
-        let local_file = BytesCodec::new().framed(local_file);
+        let local_file = framed::Framed(local_file);
         connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
             info!("established broker route {:#x} with {}", brk.route(), brk.identity());
             subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {

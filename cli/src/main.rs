@@ -125,7 +125,15 @@ pub fn main_() -> Result<(), Error> {
             SubCommand::with_name("get")
                 .about("get something")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("resource").takes_value(true).required(true).index(2)),
+                .arg(Arg::with_name("resource").takes_value(true).required(true).index(2))
+                .arg(Arg::with_name("headers")
+                     .long("header")
+                     .short("H")
+                     .takes_value(true)
+                     .multiple(true)
+                     .number_of_values(2)
+                     .value_names(&["key", "value"])
+                     .required(false))
         ).subcommand(
             SubCommand::with_name("ephermal")
                 .about("generate a signed ephermal identity")
@@ -307,8 +315,23 @@ pub fn main_() -> Result<(), Error> {
                 .resolve_identity(submatches.value_of("target").unwrap().to_string()).expect("resolving identity from cli");
             let resource = submatches.value_of("resource").unwrap().to_string();
 
+
+            let mut headers = headers::Headers::with_path(resource.as_bytes());
+            let mut k = None;
+
+            if let Some(h) = submatches.values_of("headers") {
+                for h in h {
+                    if k.is_none() {
+                        k = Some(h);
+                    } else {
+                        headers.add(k.unwrap().as_bytes().to_vec(), h.as_bytes().to_vec());
+                        k = None;
+                    }
+                }
+            }
+
             tokio::run(futures::lazy(move || {
-                get(secrets.identity, target, resource).map_err(|e| error!("{}", e))
+                get(secrets.identity, target, resource, headers).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
@@ -518,13 +541,14 @@ pub fn get(
     secret: identity::Secret,
     target: identity::Identity,
     resource: String,
+    headers: headers::Headers,
 ) -> impl Future<Item = (), Error = Error> {
     let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
     connect::connect(domain, secret.clone()).and_then(move |(ep, mut brk, sock, addr)| {
         info!("established broker route {:#x} with {}", brk.route(), brk.identity());
         subscriber::connect(target, ep, &mut brk, sock, addr, secret).and_then(move |mut channel| {
             channel
-                .open(headers::Headers::with_path(resource.as_bytes()))
+                .open(headers)
                 .expect("open channel")
                 .into_future()
                 .map_err(|(e, _)| e)

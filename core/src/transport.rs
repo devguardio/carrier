@@ -28,7 +28,7 @@ use stream;
 
 //TODO: use mss?
 pub const MAX_PACKET_SIZE: usize = 1400;
-const DEFAULT_IDLE_TIMER: u64 = 10000;
+const DEFAULT_IDLE_TIMER: u64 = 120000;
 
 pub struct Config {
     pub timeout:  Option<u16>,

@@ -5,6 +5,7 @@ use std::io::{Read, Write};
 use std::fs;
 use std::env;
 use std::process::Command;
+use axons;
 
 const TARGET: &str = include_str!(concat!(env!("OUT_DIR"), "/target.txt"));
 
@@ -20,12 +21,15 @@ fn install_systemd() -> bool {
 
     let unit = "[Unit]
 Description=Carrier Axiom Service
+StartLimitIntervalSec=0
 
 [Service]
 ExecStart=/opt/devguard/carrier.sh
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
+
 ";
 
     let mut f = File::create(sdp).expect("cannot create systemd unit file");
@@ -127,7 +131,7 @@ service_triggers()
 }
 
 
-fn install_linux(args: String) -> Result<(), Error>
+fn install_linux(conf: axons::Config) -> Result<(), Error>
 {
     use std::os::unix::fs::PermissionsExt;
     use std::os::unix::fs::symlink;
@@ -135,17 +139,24 @@ fn install_linux(args: String) -> Result<(), Error>
     let opath = Path::new("/opt/devguard/");
     fs::create_dir_all(opath).expect(&format!("unable to create install path {:?}", opath));
 
+
+    let mut cf = File::create(opath.join("axon.toml"))?;
+    cf.write_all(&toml::to_vec(&conf)?)?;
+    drop(cf);
+
+
+
     let current_exe     = env::current_exe().expect("cant find arg0");
     let target_exe      = opath.join("carrier.exe.current");
     let previous_exe    = opath.join("carrier.exe.previous");
 
     let wrapper = format!("#!/bin/sh
 sleep 1
-{target_exe}  axiom {args} ||
-{target_exe}  axiom {args} ||
-{target_exe}  axiom {args} ||
-{previous_exe} axiom {args}
-", target_exe = target_exe.to_string_lossy(), previous_exe = previous_exe.to_string_lossy(), args = args);
+{target_exe}  axiom ||
+{target_exe}  axiom ||
+{target_exe}  axiom ||
+{previous_exe} axiom
+", target_exe = target_exe.to_string_lossy(), previous_exe = previous_exe.to_string_lossy());
 
     let wpath = opath.join("carrier.sh");
     let mut f = File::create(wpath).expect("cannot create systemd unit file");
@@ -180,10 +191,10 @@ sleep 1
 }
 
 
-pub fn install(args: String) -> Result<(), Error>
+pub fn install(config: axons::Config) -> Result<(), Error>
 {
     #[cfg(target_os="linux")]
-    return install_linux(args);
+    return install_linux(config);
 
     #[allow(unreachable_code)]
     panic!("no install method for this target");

@@ -174,12 +174,12 @@ pub fn _main() {
 
 
 
-struct IoBridge2<S1,S2>
+pub struct IoBridge2<S1,S2>
 where S1: Write + AsyncRead,
       S2: Write + AsyncRead,
 {
-    s1: S1,
-    s2: S2,
+    pub s1: S1,
+    pub s2: S2,
 }
 
 
@@ -224,13 +224,13 @@ where S1: Write + AsyncRead,
     }
 }
 
-struct IoBridge3<R,W>
+pub struct IoBridge3<R,W>
 where W: Write,
       R: AsyncRead,
 {
-    r:      R,
-    w:      W,
-    stream: channel::ChannelStream,
+    pub r:      R,
+    pub w:      W,
+    pub stream: channel::ChannelStream,
 }
 
 

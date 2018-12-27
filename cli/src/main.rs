@@ -11,6 +11,7 @@ extern crate log;
 extern crate base64;
 extern crate bytes;
 extern crate hpack;
+extern crate serde;
 extern crate serde_json;
 extern crate systemstat;
 #[macro_use]
@@ -30,11 +31,11 @@ use carrier::*;
 use clap::{App, Arg, SubCommand};
 use failure::Error;
 use futures::{Future, Sink, Stream};
-use std::collections::HashSet;
 use std::env;
 use std::net::SocketAddr;
 use bytes::Bytes;
 use std::io;
+use std::collections::HashMap;
 
 #[cfg(any(
     target_os = "linux",
@@ -50,9 +51,22 @@ mod shell;
 ))]
 mod system_stats;
 
+#[cfg(any(
+    target_os = "linux",
+    target_os = "macos",
+    target_os = "android",
+))]
+mod forward;
+
+#[cfg(any(
+        target_os = "linux",
+        target_os = "macos",
+        target_os = "android",
+))]
+mod axons;
+
 mod sft;
 mod setup;
-
 mod framed;
 
 pub fn main_() -> Result<(), Error> {
@@ -62,7 +76,7 @@ pub fn main_() -> Result<(), Error> {
     env_logger::init();
 
     let clap = App::new("carrier cli")
-        .version("0.6")
+        .version("0.7")
         .author("(2018) Arvid E. Picciani <arvid@devguard.io>")
         .setting(clap::AppSettings::ArgRequiredElseHelp)
         .setting(clap::AppSettings::UnifiedHelpMessage)
@@ -98,7 +112,7 @@ pub fn main_() -> Result<(), Error> {
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
         ).subcommand(
             SubCommand::with_name("install")
-                .about("install axiom service on this system")
+                .about("install axon service on this system")
                 .arg(
                     Arg::with_name("shadow")
                     .help("address of shadow to publish on")
@@ -178,27 +192,42 @@ pub fn main_() -> Result<(), Error> {
         .alias("axiom")
         .about("publish axon service on carrier")
         .arg(
-            Arg::with_name("shadow")
-            .help("address of shadow to publish on")
+            Arg::with_name("config")
+            .help("read config from this location instead of /opt/devguard/axon.toml")
             .takes_value(true)
-            .required(true)
+            .required(false)
             .index(1),
-        )
-        .arg(
-            Arg::with_name("allow")
-            .long("allow")
-            .help("Allow access to identity")
-            .takes_value(true)
-            .multiple(true)
-            .required(true)
-            .value_names(&["identity"]),
-            ),
+            )
     ).subcommand(
-            SubCommand::with_name("shell")
-                .about("get a shell on an axiom service")
+            SubCommand::with_name("forward")
+                .about("connect a local tcp port to a remote port")
                 .arg(
                     Arg::with_name("target")
-                        .help("identity of axiom service")
+                        .help("identity of axon service")
+                        .takes_value(true)
+                        .required(true)
+                        .index(1),
+                )
+                .arg(
+                    Arg::with_name("local")
+                        .help("local port")
+                        .takes_value(true)
+                        .required(true)
+                        .index(2),
+                )
+                .arg(
+                    Arg::with_name("remote")
+                        .help("remote port")
+                        .takes_value(true)
+                        .required(true)
+                        .index(3),
+                ),
+    ).subcommand(
+            SubCommand::with_name("shell")
+                .about("get a shell on an axon service")
+                .arg(
+                    Arg::with_name("target")
+                        .help("identity of axon service")
                         .takes_value(true)
                         .required(true)
                         .index(1),
@@ -242,19 +271,31 @@ pub fn main_() -> Result<(), Error> {
 
             keystore::Secrets::gen().ok();
 
+
+
+
             let shadow : identity::Address = submatches.value_of("shadow").unwrap().to_string().parse().expect("parsing shadow from cli");
-            let allowable : Vec<identity::Identity> = submatches
+            let shadow = shadow.to_string();
+            let allowed: HashMap<String,String> = submatches
                 .values_of("allow")
                 .unwrap()
-                .map(|v| v.parse().expect("parsing identity from cli"))
+                .map(|v|{
+                    let v : identity::Identity = v.parse().expect("parsing identity from cli");
+                    (v.to_string(), "*".into())
+                })
                 .collect();
 
-            let mut args = format!("{}", shadow);
-            for allow in allowable {
-                args.push_str(&format!(" --allow {}", allow));
-            }
 
-            setup::install(args)?;
+
+            let aconf = axons::Config{
+                publish: axons::PublisherConfig {
+                    shadow,
+                },
+                allowed,
+                keepalive: None,
+            };
+
+            setup::install(aconf)?;
 
             let secrets = keystore::Secrets::load()?;
             println!("service installed with identity {}", secrets.identity.identity());
@@ -272,14 +313,13 @@ pub fn main_() -> Result<(), Error> {
         ))]
         ("axon", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
-            let shadow = submatches.value_of("shadow").unwrap().to_string().parse().expect("parsing shadow from cli");
-            let allowable = submatches
-                .values_of("allow")
-                .unwrap()
-                .map(|v| v.parse().expect("parsing identity from cli"))
-                .collect();
+            let config_file = submatches
+                .value_of("config")
+                .map(|v|v.to_string())
+                .unwrap_or("/opt/devguard/axon.toml".into());
+
             tokio::run(futures::lazy(move || {
-                axiom(secrets.identity, shadow, allowable).map_err(|e| error!("{}", e))
+                axons::axon(secrets.identity, config_file).map_err(|e| error!("{}", e))
             }));
             Ok(())
         }
@@ -339,6 +379,26 @@ pub fn main_() -> Result<(), Error> {
                 target_os = "linux",
                 target_os = "macos",
         ))]
+        ("forward", Some(submatches)) => {
+            let secrets = keystore::Secrets::load()?;
+            let config = config::Config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+
+            let local  :u16 = submatches.value_of("local").unwrap().to_string().parse().unwrap();
+            let remote :u16 = submatches.value_of("remote").unwrap().to_string().parse().unwrap();
+
+            tokio::run(futures::lazy(move || {
+                forward::forward(secrets.identity, target, local, remote).map_err(|e| error!("{}", e))
+            }));
+            Ok(())
+        }
+        #[cfg(any(
+                target_os = "linux",
+                target_os = "macos",
+        ))]
         ("shell", Some(submatches)) => {
             let secrets = keystore::Secrets::load()?;
             let config = config::Config::load()?;
@@ -379,6 +439,9 @@ pub fn main_() -> Result<(), Error> {
                 },
                 "/v0/shell" => {
                     shell::_main();
+                },
+                "/v0/connect" => {
+                    forward::_main();
                 },
                 any => {
                     panic!("cannot find index {}. archon is not actually implemented yet", any);
@@ -604,123 +667,4 @@ pub fn update(
 }
 
 
-#[cfg(any(
-        target_os = "linux",
-        target_os = "macos",
-        target_os = "android",
-))]
-pub fn axiom(
-    secret: identity::Secret,
-    shadow: identity::Address,
-    allowable: Vec<identity::Identity>,
-) -> impl Future<Item = (), Error = Error> {
-    let domain = env::var("CARRIER_BROKER_DOMAIN").unwrap_or("2.carrier.devguard.io".to_string());
-    let allowable: HashSet<identity::Identity> = allowable.into_iter().collect();
 
-    connect::connect(domain, secret.clone()).and_then(move |(ep, brk, sock, addr)| {
-        info!("established broker route {:#x} with {}", brk.route(), brk.identity());
-        publisher::dispatch(shadow, ep, brk, sock, addr, secret, move |id| allowable.contains(&id)).for_each(
-            |mut channel| {
-                info!("peer has subscribed {}", channel.identity());
-                let server = channel
-                    .listener()
-                    .expect("creating listener")
-                    .for_each(|(stream, headers)| {
-                        info!("{:?}", headers);
-
-                        let path = match headers.path() {
-                            None    => None,
-                            Some(v) => Some(v.to_vec()),
-                        };
-                        let path_ = match &path {
-                            None    => None,
-                            Some(v) => Some(v.as_slice()),
-                        };
-
-                        let stream = match path_ {
-                            Some(b"/v0/sft") => {
-                                let selfexe = env::current_exe().expect("std::env::current_exe");
-                                Box::new(axon_exe(stream, headers, &selfexe.to_string_lossy(), vec!["archon", "/v0/sft"]))
-                            }
-                            Some(b"/v0/shell") => {
-                                let selfexe = env::current_exe().expect("std::env::current_exe");
-                                Box::new(axon_exe(stream, headers, &selfexe.to_string_lossy(), vec!["archon", "/v0/shell"]))
-                            }
-                            Some(b"/v0/system_stats") => {
-                                let selfexe = env::current_exe().expect("std::env::current_exe");
-                                Box::new(axon_exe(stream, headers, selfexe.to_str().unwrap(), vec!["archon", "/v0/system_stats"]))
-                                as Box<Future<Item = (), Error = Error> + Send>
-                            }
-                            any => {
-                                (move||{
-                                    if let Some(any) = any {
-                                        let any = String::from_utf8_lossy(any).into_owned();
-                                        if let Some(exe) = any.split("/v0/").nth(1) {
-                                            if exe.chars().all(|c|c.is_ascii_alphanumeric()) {
-                                                let exe = format!("carrier-axon-v0-{}", exe);
-                                                if let Ok(path) = which::which(exe) {
-                                                    return Box::new(axon_exe(stream, headers, &path.to_string_lossy(), Vec::new()))
-                                                        as Box<Future<Item = (), Error = Error> + Send>;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    let header: Vec<u8> = headers::Headers::with_error(404, b"not found".to_vec()).encode();
-                                    let ft = stream.send(header.into()).and_then(|_| Ok(()));
-                                    Box::new(ft)
-                                })()
-                            }
-                        }.map_err(|e| error!("{}", e));
-                        tokio::spawn(stream);
-                        Ok(())
-                    }).and_then(move |_| {
-                        drop(channel);
-                        Ok(())
-                    }).map_err(|e| error!("{}", e));
-                tokio::spawn(server);
-                Ok(())
-            },
-        )
-    })
-}
-
-pub fn axon_exe(stream: channel::ChannelStream, headers: headers::Headers,
-                exe: &str, args:Vec<&str>) -> impl Future<Item = (), Error = Error>
-{
-    use std::io::Write;
-
-    info!("executing axon executable {}", exe);
-
-    use std::process::Command;
-    use axon::CommandExt;
-
-    let (mut child, mut io) = Command::new(exe)
-        .args(args)
-        .spawn_with_axon()
-        .expect("Failed to start echo process");
-
-    io.write(&headers.encode()).ok();
-
-    let io = io.into_async(&tokio::reactor::Handle::current()).expect("into async");
-
-    let (w1,r1) = framed::Framed(io).split();
-    let (w2,r2) = stream.split();
-
-    let f1 = r1
-        .map_err(|e|e.into())
-        .map(|i|i.into())
-        .forward(w2);
-
-    let f2 = r2
-        .map_err(|e|e.into())
-        .forward(w1);
-
-    f1.select2(f2)
-        .map_err(|e|e.split().0)
-        .and_then(move |_| {
-        trace!("axon loop ends");
-        child.kill().expect("killing exe");
-        child.wait().expect("child wait");
-        Ok(())
-    })
-}

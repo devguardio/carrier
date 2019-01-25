@@ -186,8 +186,8 @@ fn fs() -> Option<Vec<proto::FileSystem>> {
     r.push(proto::FileSystem {
         path:      "/".into(),
         blocksize: s.block_size().into(),
-        total:     s.blocks(),
-        free:      s.blocks_free(),
+        total:     s.blocks().into(),
+        free:      s.blocks_free().into(),
     });
 
     Some(r)

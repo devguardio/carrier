@@ -3,8 +3,8 @@ THIS=$(dirname $(readlink -f $0))
 set -ex
 
 
-VER=0.6.0
-APP=carrier2
+VER=0.8.0
+APP=carrier
 
 rm -rf target/binrelease
 mkdir -p target/binrelease
@@ -35,10 +35,10 @@ b(){
 
 #b  staticpie name                      rust-target                     gcc-target
 b   false     mips-linux-musleabi       mips-unknown-linux-musl         mips-linux-musleabi
-#b   false     arm-linux-gnueabihf       armv7-unknown-linux-gnueabihf   arm-linux-gnueabihf
+b   false     arm-linux-gnueabihf       armv7-unknown-linux-gnueabihf   arm-linux-gnueabihf
 #b   false     arm-linux-androideabi     armv7-linux-androideabi         arm-linux-androideabi
-#b   false     mipsel-linux-musleabi     mipsel-unknown-linux-musl       mipsel-linux-musleabi
-#b   true      x86_64-linux              x86_64-unknown-linux-musl       x86_64-linux-musl
+b   false     mipsel-linux-musleabi     mipsel-unknown-linux-musl       mipsel-linux-musleabi
+b   true      x86_64-linux              x86_64-unknown-linux-musl       x86_64-linux-musl
 
 
 

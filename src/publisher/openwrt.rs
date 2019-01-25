@@ -3,7 +3,6 @@ use endpoint;
 use headers;
 use headers::Headers;
 use identity;
-use interfaces::Interface;
 use nix::sys::statvfs::statvfs;
 use nix::sys::utsname::uname;
 use osaka::osaka;
@@ -186,8 +185,8 @@ fn fs() -> Option<Vec<proto::FileSystem>> {
     r.push(proto::FileSystem {
         path:      "/".into(),
         blocksize: s.block_size().into(),
-        total:     s.blocks(),
-        free:      s.blocks_free(),
+        total:     s.blocks().into(),
+        free:      s.blocks_free().into(),
     });
 
     Some(r)
@@ -216,23 +215,59 @@ fn net_line(line: String) -> Option<proto::Netdev> {
     let tx_pkt = trye!(53, tryo!(53, line.next()).parse());
     let tx_err = trye!(53, tryo!(53, line.next()).parse());
 
-    let iface = tryo!(54, trye!(54, Interface::get_by_name(&name)));
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/mtu", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let mtu = trye!(55, buf.parse());
+
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/address", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let macaddr = buf.trim().into();
+
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/operstate", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let up : usize = trye!(55, buf.parse());
+
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/carrier", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let operstate = buf.trim();
+
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/carrier_changes", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let link_changes : u64 = trye!(55, buf.parse());
+
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/speed", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let link_speed : u64 = trye!(55, buf.parse());
+
+    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/speed", name)));
+    let mut buf = String::new();
+    trye!(55,f.read_to_string(&mut buf));
+    let link_duplex = match buf.trim() {
+        "half" =>   proto::netdev::Duplex::Half,
+        "full" =>   proto::netdev::Duplex::Full,
+        _ =>        proto::netdev::Duplex::Invalid,
+    }.into();
 
     let mut addrs = Vec::new();
-    for addr in &iface.addresses {
-        match addr.kind {
-            interfaces::Kind::Ipv4 | interfaces::Kind::Ipv6 => addrs.push(proto::NetAddress {
-                addr: addr.addr.map(|v| format!("{}", v)).unwrap_or(String::new()),
-                mask: addr.mask.map(|v| format!("{}", v)).unwrap_or(String::new()),
-                hop:  addr.hop.map(|v| format!("{}", v)).unwrap_or(String::new()),
-            }),
-            _ => (),
+
+    for ifaddr in trye!(56, nix::ifaddrs::getifaddrs()) {
+        if let (Some(nix::sys::socket::SockAddr::Inet(addr)),
+        Some(nix::sys::socket::SockAddr::Inet(mask)),
+        Some(nix::sys::socket::SockAddr::Inet(broadcast)))
+        = (ifaddr.address, ifaddr.netmask, ifaddr.broadcast) {
+            addrs.push(proto::NetAddress {
+                addr: format!("{}", addr),
+                mask: format!("{}", mask),
+                broadcast: format!("{}", broadcast)
+            });
         }
     }
-
-    let mtu = iface.get_mtu().unwrap_or(0);
-    let macaddr = iface.hardware_addr().map(|v| v.as_string()).unwrap_or(String::new());
-    let up = iface.is_up();
 
     Some(proto::Netdev {
         name,
@@ -240,10 +275,14 @@ fn net_line(line: String) -> Option<proto::Netdev> {
         rx_err,
         tx_pkt,
         tx_err,
-        up,
+        up: up > 0,
         macaddr,
         mtu,
         addrs,
+        link: operstate == "up",
+        link_changes,
+        link_speed,
+        link_duplex,
     })
 }
 

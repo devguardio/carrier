@@ -45,7 +45,7 @@ message Firmware {
 message NetAddress {
     string addr = 1;
     string mask = 2;
-    string hop  = 3;
+    string broadcast = 3;
 }
 
 
@@ -60,6 +60,18 @@ message Netdev {
     string macaddr  = 7;
     uint32 mtu      = 8;
     repeated NetAddress addrs = 9;
+
+    bool    link = 10;
+    uint64  link_changes = 11;
+    uint64  link_speed = 12;
+
+    enum Duplex {
+        Invalid = 0;
+        Half    = 1;
+        Full    = 2;
+    }
+
+    Duplex link_duplex = 13;
 }
 
 message SwitchPort {

@@ -215,56 +215,59 @@ fn net_line(line: String) -> Option<proto::Netdev> {
     let tx_pkt = trye!(53, tryo!(53, line.next()).parse());
     let tx_err = trye!(53, tryo!(53, line.next()).parse());
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/mtu", name)));
+    let mut f = trye!(551, File::open(format!("/sys/class/net/{}/mtu", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
-    let mtu = trye!(55, buf.parse());
+    trye!(551, f.read_to_string(&mut buf));
+    let mtu = trye!(551, buf.trim().parse());
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/address", name)));
+    let mut f = trye!(552, File::open(format!("/sys/class/net/{}/address", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
+    trye!(552, f.read_to_string(&mut buf));
     let macaddr = buf.trim().into();
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/operstate", name)));
+    let mut f = trye!(553, File::open(format!("/sys/class/net/{}/operstate", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
-    let up : usize = trye!(55, buf.parse());
+    trye!(553, f.read_to_string(&mut buf));
+    let up: usize = trye!(553, buf.trim().parse());
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/carrier", name)));
+    let mut f = trye!(554, File::open(format!("/sys/class/net/{}/carrier", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
+    trye!(554, f.read_to_string(&mut buf));
     let operstate = buf.trim();
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/carrier_changes", name)));
+    let mut f = trye!(555, File::open(format!("/sys/class/net/{}/carrier_changes", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
-    let link_changes : u64 = trye!(55, buf.parse());
+    trye!(555, f.read_to_string(&mut buf));
+    let link_changes: u64 = trye!(555, buf.trim().parse());
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/speed", name)));
+    let mut f = trye!(556, File::open(format!("/sys/class/net/{}/speed", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
-    let link_speed : u64 = trye!(55, buf.parse());
+    trye!(556, f.read_to_string(&mut buf));
+    let link_speed: u64 = trye!(556, buf.trim().parse());
 
-    let mut f = trye!(55, File::open(format!("/sys/class/net/{}/speed", name)));
+    let mut f = trye!(557, File::open(format!("/sys/class/net/{}/speed", name)));
     let mut buf = String::new();
-    trye!(55,f.read_to_string(&mut buf));
+    trye!(557, f.read_to_string(&mut buf));
     let link_duplex = match buf.trim() {
-        "half" =>   proto::netdev::Duplex::Half,
-        "full" =>   proto::netdev::Duplex::Full,
-        _ =>        proto::netdev::Duplex::Invalid,
-    }.into();
+        "half" => proto::netdev::Duplex::Half,
+        "full" => proto::netdev::Duplex::Full,
+        _ => proto::netdev::Duplex::Invalid,
+    }
+    .into();
 
     let mut addrs = Vec::new();
 
     for ifaddr in trye!(56, nix::ifaddrs::getifaddrs()) {
-        if let (Some(nix::sys::socket::SockAddr::Inet(addr)),
-        Some(nix::sys::socket::SockAddr::Inet(mask)),
-        Some(nix::sys::socket::SockAddr::Inet(broadcast)))
-        = (ifaddr.address, ifaddr.netmask, ifaddr.broadcast) {
+        if let (
+            Some(nix::sys::socket::SockAddr::Inet(addr)),
+            Some(nix::sys::socket::SockAddr::Inet(mask)),
+            Some(nix::sys::socket::SockAddr::Inet(broadcast)),
+        ) = (ifaddr.address, ifaddr.netmask, ifaddr.broadcast)
+        {
             addrs.push(proto::NetAddress {
-                addr: format!("{}", addr),
-                mask: format!("{}", mask),
-                broadcast: format!("{}", broadcast)
+                addr:      format!("{}", addr),
+                mask:      format!("{}", mask),
+                broadcast: format!("{}", broadcast),
             });
         }
     }

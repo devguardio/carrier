@@ -95,6 +95,10 @@ struct UdpChannel {
     addrs:    AddressMode,
     streams:  HashMap<u32, StreamReceiver>,
     newhandl: Option<Box<StreamFactory>>,
+
+    //keeps resources at the broker by holding open this channel,
+    //like proxy
+    broker_stream: Option<u32>,
 }
 
 impl Drop for UdpChannel {
@@ -102,8 +106,12 @@ impl Drop for UdpChannel {
         debug!(
             "[{}] udp channel dropped with {} streams",
             self.identity,
-            self.streams.len()
+            self.streams.len(),
         );
+
+        if self.broker_stream.is_some() {
+            error!("BUG: [{}] udp channel dropped leaking a broker stream", self.identity);
+        }
     }
 }
 
@@ -138,9 +146,10 @@ enum ConnectResponseStage {
 }
 
 pub struct ConnectResponse {
-    pub identity:  identity::Identity,
-    pub cr:        Option<proto::ConnectResponse>,
-    pub requester: Option<noise::HandshakeRequester>,
+    pub identity:      identity::Identity,
+    pub cr:            Option<proto::ConnectResponse>,
+    pub requester:     Option<noise::HandshakeRequester>,
+    pub broker_stream: Option<u32>,
 }
 
 impl Endpoint {
@@ -164,6 +173,7 @@ impl Endpoint {
                 addrs: AddressMode::Established(addr, HashMap::new()),
                 streams: HashMap::new(),
                 newhandl: None,
+                broker_stream: None,
             },
         );
 
@@ -316,14 +326,17 @@ impl Endpoint {
         }
 
         let debug_id = format!("{}::{}", identity, cr.route);
+        let channel = Channel::new(noise, debug_id);
+
         self.channels.insert(
             cr.route,
             UdpChannel {
                 identity,
-                chan: Arc::new(RefCell::new(Channel::new(noise, debug_id))),
+                chan: Arc::new(RefCell::new(channel)),
                 addrs: AddressMode::Discovering(paths.clone()),
                 streams: HashMap::new(),
                 newhandl: Some(Box::new(sf)),
+                broker_stream: q.broker_stream,
             },
         );
 
@@ -356,11 +369,12 @@ impl Endpoint {
         self.channels.insert(
             q.cr.route,
             UdpChannel {
-                identity: q.identity,
-                chan:     Arc::new(RefCell::new(Channel::new(noise, debug_id))),
-                addrs:    AddressMode::Discovering(paths.clone()),
-                streams:  HashMap::new(),
-                newhandl: Some(Box::new(sf)),
+                identity:      q.identity,
+                chan:          Arc::new(RefCell::new(Channel::new(noise, debug_id))),
+                addrs:         AddressMode::Discovering(paths.clone()),
+                streams:       HashMap::new(),
+                newhandl:      Some(Box::new(sf)),
+                broker_stream: None,
             },
         );
 
@@ -655,15 +669,12 @@ impl Future<Result<Event, Error>> for Endpoint {
                                 ConnectResponseStage::WaitingForResponse { identity, noise } => {
                                     let cr = proto::ConnectResponse::decode(&frame).unwrap();
                                     trace!("conres: {:?}", cr);
-                                    chan.chan
-                                        .try_borrow_mut()
-                                        .expect("carrier is not thread safe")
-                                        .close(stream);
 
                                     return FutureResult::Done(Ok(Event::OutgoingConnect(ConnectResponse {
                                         identity,
                                         requester: Some(noise),
                                         cr: Some(cr),
+                                        broker_stream: Some(stream),
                                     })));
                                 }
                             }
@@ -689,12 +700,13 @@ impl Future<Result<Event, Error>> for Endpoint {
                         again = true;
                         if route == &self.broker_route && self.outstanding_connect_outgoing.contains_key(&stream) {
                             return FutureResult::Done(Ok(Event::OutgoingConnect(ConnectResponse {
-                                identity:  match self.outstanding_connect_outgoing.remove(&stream).unwrap() {
+                                identity:      match self.outstanding_connect_outgoing.remove(&stream).unwrap() {
                                     ConnectResponseStage::WaitingForHeaders { identity, .. } => identity,
                                     ConnectResponseStage::WaitingForResponse { identity, .. } => identity,
                                 },
-                                cr:        None,
-                                requester: None,
+                                cr:            None,
+                                requester:     None,
+                                broker_stream: None,
                             })));
                         }
                     }
@@ -735,7 +747,13 @@ impl Future<Result<Event, Error>> for Endpoint {
                     self.channels.len()
                 );
 
-                if let Some(rm) = rm {
+                if let Some(mut rm) = rm {
+                    if let Some(bs) = rm.broker_stream {
+                        let chan = self.channels.get_mut(&self.broker_route).unwrap();
+                        let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
+                        chanchan.close(bs);
+                        rm.broker_stream = None;
+                    }
                     return FutureResult::Done(Ok(Event::Disconnect {
                         route:    killme,
                         identity: rm.identity.clone(),

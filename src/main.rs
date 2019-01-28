@@ -123,7 +123,7 @@ pub fn main() -> Result<(), Error> {
 
     let matches = clap.get_matches();
     match matches.subcommand() {
-        ("setup", Some(submatches)) => carrier::config::setup(),
+        ("setup", Some(_submatches)) => carrier::config::setup(),
         ("mkshadow", Some(_submatches)) => {
             use rand::RngCore;
 
@@ -347,7 +347,11 @@ where
             carrier::endpoint::Event::OutgoingConnect(q) => {
                 break q;
             }
-            _ => (),
+            carrier::endpoint::Event::Disconnect { identity, .. } => {
+                warn!("{} disconnected", identity);
+                return Ok(());
+            }
+            carrier::endpoint::Event::IncommingConnect(_) => (),
         }
     };
 
@@ -407,7 +411,7 @@ fn push(
         }
     };
 
-    let mut headers = carrier::headers::Headers::with_path("/v0/sft")
+    let headers = carrier::headers::Headers::with_path("/v0/sft")
         .and(":method".into(), "PUT".into())
         .and("sha256".into(), sha)
         .and("file".into(), remote_file.into());

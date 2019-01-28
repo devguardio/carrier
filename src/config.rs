@@ -42,6 +42,7 @@ impl ConfigToml {
                 let mut fu_brwcheck: String;
                 let mut s: Vec<&str> = s.split(":").collect();
 
+                //FIXME: need to use mtdblock
                 if s.get(1) == Some(&"mtdname") {
                     if let Some(name) = s.get(2).map(|v| v.to_string()) {
                         let f = File::open("/proc/mtd").expect("open /proc/mtd");
@@ -56,6 +57,7 @@ impl ConfigToml {
 
                 if s.get(1) == Some(&"mtd") {
                     if let Some(mtd) = s.get(2) {
+                        info!("reading secret from mtd {}", mtd);
                         let offset = s.get(3).and_then(|v| v.parse().ok()).unwrap_or(40);
                         let mut f = OpenOptions::new()
                             .read(true)

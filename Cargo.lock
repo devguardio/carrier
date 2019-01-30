@@ -135,7 +135,7 @@ dependencies = [
 
 [[package]]
 name = "carrier"
-version = "0.8.0"
+version = "0.8.1"
 dependencies = [
  "axon 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "bs58 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -343,7 +343,7 @@ name = "hacl-star"
 version = "0.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "hacl-star-sys 0.0.6 (git+https://github.com/quininer/rust-hacl-star.git?branch=fix32)",
+ "hacl-star-sys 0.0.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.48 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand_core 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -351,7 +351,7 @@ dependencies = [
 [[package]]
 name = "hacl-star-sys"
 version = "0.0.6"
-source = "git+https://github.com/quininer/rust-hacl-star.git?branch=fix32#98e054c4b7578686ded40c1ebd08244c20fc8256"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cc 1.0.28 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.48 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1120,7 +1120,7 @@ dependencies = [
 "checksum gcmap 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "01a65abe5a633c7f83d70c5cb5591ef4e288eea78f34bbc842380855d47b2136"
 "checksum generic-array 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)" = "3c0f28c2f5bfb5960175af447a2da7c18900693738343dc896ffbcabd9839592"
 "checksum hacl-star 0.0.11 (registry+https://github.com/rust-lang/crates.io-index)" = "ff885596cd1b0d225a73ea59eb7c2928f300b990e18a0da91530675a825a3990"
-"checksum hacl-star-sys 0.0.6 (git+https://github.com/quininer/rust-hacl-star.git?branch=fix32)" = "<none>"
+"checksum hacl-star-sys 0.0.6 (registry+https://github.com/rust-lang/crates.io-index)" = "168dd962751032fe934b5a79e149fe14718ed24279388717325c04857e4f4f27"
 "checksum heck 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)" = "20564e78d53d2bb135c343b3f47714a56af2061f1c928fdb541dc7b9fdd94205"
 "checksum hpack 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "1c68f61350ad23817dd207b035b5258d91ac5eaef69e96f906628aaed8854dda"
 "checksum humantime 1.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "3ca7e5f2e110db35f93b837c81797f3714500b81d517bf20c431b16d3ca4f114"

@@ -6,6 +6,7 @@ use std::cell::RefCell;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
+use std::mem;
 
 
 use packet;
@@ -33,6 +34,10 @@ struct ScheduledStream {
     f:          Box<FnMut(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()>>,
 }
 
+
+/// A conduit is a combined subscribe+connect client that subscribes to all devices on a shadow and streams data from them.
+/// For convenience, most common functionality is implemented into this struct, and users only need to implement handling the data.
+
 pub struct Conduit {
     poll: osaka::Poll,
     ep: endpoint::Endpoint,
@@ -42,6 +47,9 @@ pub struct Conduit {
 }
 
 impl Conduit {
+
+    /// create a new conduit as a future.
+    /// it will subscribe to the shadow address and maintain a connection to all peers on it
     #[osaka]
     pub fn new(poll: osaka::Poll, shadow: identity::Address) -> Result<Self, Error> {
         let config = config::load()?;
@@ -74,7 +82,7 @@ impl Conduit {
 
     #[allow(unreachable_code)]
     #[osaka]
-    fn schedule_f<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream,
+    fn f_schedule<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream,
                         identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
     where
         F: 'static + FnMut(&identity::Identity, M),
@@ -98,6 +106,10 @@ impl Conduit {
         drop(mark);
     }
 
+    /// schedule opening a stream on all devices with the given headers
+    ///
+    /// `every` is the restart delay, that means if a stream is closed, it wont be restarted before
+    /// delay expired. You can use this to poll a get endpoint.
     pub fn schedule<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
         F: 'static + FnMut(&identity::Identity, M) + Clone,
@@ -108,10 +120,130 @@ impl Conduit {
             ScheduledStream {
                 every,
                 headers,
-                f: Box::new(move |poll, stream, identity, mark|Self::schedule_f(poll,stream, identity, f.clone(), mark)),
+                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark)),
             },
         );
     }
+
+    #[allow(unreachable_code)]
+    #[osaka]
+    fn f_schedule_small<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
+    where
+        F: 'static + FnMut(&identity::Identity, M),
+        M: prost::Message + Default,
+    {
+        let headers = headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+        println!("{:?}", headers);
+
+        loop {
+            let m = osaka::sync!(stream);
+            let m = M::decode(&m).unwrap();
+            f(&identity, m);
+        }
+        drop(mark);
+    }
+
+    /// schedule opening a small stream on all devices with the given headers
+    ///
+    /// decodes each datagram as message without size prefix, like old carrier clients did
+    pub fn schedule_small<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
+    where
+        F: 'static + FnMut(&identity::Identity, M) + Clone,
+        M: prost::Message + Default,
+    {
+        self.schedules.insert(
+            headers.path().expect("header must contain :path").into(),
+            ScheduledStream {
+                every,
+                headers,
+                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule_small(poll,stream, identity, f.clone(), mark)),
+            },
+        );
+    }
+
+    #[allow(unreachable_code)]
+    #[osaka]
+    fn f_schedule_raw<F>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
+    where
+        F: 'static + FnMut(&identity::Identity, Vec<u8>),
+    {
+        let headers = headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+        println!("{:?}", headers);
+
+        loop {
+            let m = osaka::sync!(stream);
+            f(&identity, m);
+        }
+        drop(mark);
+    }
+
+    /// schedule opening a raw stream on all devices with the given headers
+    ///
+    /// gives you all datagrams as bytes
+    pub fn schedule_raw<F>(&mut self, every: Duration, headers: headers::Headers, f: F)
+    where
+        F: 'static + FnMut(&identity::Identity, Vec<u8>) + Clone,
+    {
+        self.schedules.insert(
+            headers.path().expect("header must contain :path").into(),
+            ScheduledStream {
+                every,
+                headers,
+                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule_raw(poll,stream, identity, f.clone(), mark)),
+            },
+        );
+    }
+
+
+    #[allow(unreachable_code)]
+    #[osaka]
+    fn f_schedule_null_terminated<F>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
+    where
+        F: 'static + FnMut(&identity::Identity, Vec<u8>),
+    {
+        let headers = headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+        println!("{:?}", headers);
+
+        let mut v : Vec<u8> =  Vec::new();
+
+        loop {
+            let m = osaka::sync!(stream);
+            v.reserve(m.len());
+            for ch in m {
+                if ch == 0 {
+                    f(&identity, mem::replace(&mut v, Vec::new()));
+                } else {
+                    v.push(ch);
+                }
+            }
+        }
+        drop(mark);
+    }
+
+    /// schedule opening a stream where each message is terminated with \0
+    ///
+    /// it is memory unbounded, meaning an infinite stream will OOM your system
+    ///
+    /// this stream type was a bad idea and you should only use it if you have legacy devices out there
+    /// that need it
+    ///
+    ///
+    ///
+    pub fn schedule_null_terminated<F>(&mut self, every: Duration, headers: headers::Headers, f: F)
+    where
+        F: 'static + FnMut(&identity::Identity, Vec<u8>) + Clone,
+    {
+        self.schedules.insert(
+            headers.path().expect("header must contain :path").into(),
+            ScheduledStream {
+                every,
+                headers,
+                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule_null_terminated(poll,stream, identity, f.clone(), mark)),
+            },
+        );
+    }
+
+
 }
 
 impl osaka::Future<Result<(), Error>> for Conduit {

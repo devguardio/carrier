@@ -1,6 +1,6 @@
 [package]
 name        = "carrier"
-version     = "0.8.0"
+version     = "0.8.1"
 authors     = ["Arvid E. Picciani <arvid@devguard.io>"]
 license     = "MIT"
 description = "carrier is a generic secure message system for IoT"
@@ -35,6 +35,8 @@ dirs                = "1.0.4"
 toml                = "0.4.10"
 serde               = "1.0.85"
 serde_derive        = "1.0.85"
+
+gcmap               = "0.1.4"
 
 #main
 which               = "2.0.1"

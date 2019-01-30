@@ -57,6 +57,7 @@ pub mod replay;
 pub mod stream;
 pub mod subscriber;
 pub mod util;
+pub mod conduit;
 
 pub use error::Error;
 pub use identity::Identity;

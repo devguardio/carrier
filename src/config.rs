@@ -26,11 +26,17 @@ pub struct PublisherConfigToml {
     shadow: String,
 }
 
+#[derive(Deserialize, Serialize)]
+pub struct SubscriberConfigToml {
+    shadow: String,
+}
+
 #[derive(Deserialize, Default, Serialize)]
 pub struct ConfigToml {
     secret:    Option<String>,
     keepalive: Option<u16>,
     publish:   Option<PublisherConfigToml>,
+    subscribe: Option<SubscriberConfigToml>,
     authorize: Option<Vec<AuthorizationToml>>,
     names:     Option<HashMap<String, String>>,
 }
@@ -112,6 +118,17 @@ impl ConfigToml {
         Ok(Some(PublisherConfig { shadow, auth }))
     }
 
+    fn subscriber(&mut self) -> Result<Option<SubscriberConfig>, Error> {
+        let subscribe = match &self.subscribe {
+            None => return Ok(None),
+            Some(v) => v,
+        };
+
+        let shadow = subscribe.shadow.parse::<identity::Address>()?;
+
+        Ok(Some(SubscriberConfig { shadow }))
+    }
+
     fn names(&mut self) -> Result<HashMap<String, identity::Identity>, Error> {
         let mut r = HashMap::new();
         if let Some(names) = mem::replace(&mut self.names, None) {
@@ -135,11 +152,17 @@ pub struct PublisherConfig {
     pub auth:   certificate::Authenticator,
 }
 
+#[derive(Debug, Clone)]
+pub struct SubscriberConfig {
+    pub shadow: identity::Address,
+}
+
 #[derive(Clone)]
 pub struct Config {
     pub secret:    identity::Secret,
     pub keepalive: Option<u16>,
     pub publish:   Option<PublisherConfig>,
+    pub subscribe: Option<SubscriberConfig>,
     pub names:     HashMap<String, identity::Identity>,
 }
 
@@ -167,6 +190,7 @@ pub fn load() -> Result<Config, Error> {
         publish: config.publisher(secret.identity())?,
         secret,
         keepalive: config.keepalive,
+        subscribe: config.subscriber()?,
         names: config.names()?,
     })
 }

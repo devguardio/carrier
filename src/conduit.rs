@@ -51,8 +51,7 @@ impl Conduit {
     /// create a new conduit as a future.
     /// it will subscribe to the shadow address and maintain a connection to all peers on it
     #[osaka]
-    pub fn new(poll: osaka::Poll, shadow: identity::Address) -> Result<Self, Error> {
-        let config = config::load()?;
+    pub fn new(poll: osaka::Poll, shadow: identity::Address, config: config::Config) -> Result<Self, Error> {
         let state = Arc::new(RefCell::new(ConduitState::default()));
 
         let mut ep = endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
@@ -385,4 +384,3 @@ fn handler(
         }
     }
 }
-

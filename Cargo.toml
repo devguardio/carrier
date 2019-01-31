@@ -22,7 +22,7 @@ prost-derive        = "0.4.0"
 bytes               = "0.4.11"
 hpack               = "0.3.0"
 
-osaka               = "0.2.5"
+osaka               = "0.2.8"
 osaka-dns           = "0.2.5"
 
 #osaka       = {path = "../../osaka/osaka"}
@@ -78,4 +78,3 @@ lto = true
 opt-level = "z"
 panic = 'abort'
 incremental = false
-

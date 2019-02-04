@@ -303,24 +303,35 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                     }
                 }
                 FutureResult::Done(Ok(endpoint::Event::OutgoingConnect(q))) => {
-                    let identity = q.identity.clone();
-                    let identity_ = q.identity.clone();
-                    let route = self
-                        .ep
-                        .accept_outgoing(q, move |h, _s| {
-                            warn!("rejecting incomming stream from {}: {:?}", identity, h);
-                            None
-                        })
-                        .unwrap();
-                    info!("accepting outgoing connect {} ::> {}", identity_, route);
 
-                    let mut state = self
-                        .state
-                        .try_borrow_mut()
-                        .expect("carrier is not thread safe");
-                    if let Some(sc) = state.subscribed.get_mut(&identity_) {
-                        sc.route = Some(route);
+                    if q.ok() {
+                        let identity = q.identity.clone();
+                        let identity_ = q.identity.clone();
+                        let route = self
+                            .ep
+                            .accept_outgoing(q, move |h, _s| {
+                                warn!("rejecting incomming stream from {}: {:?}", identity, h);
+                                None
+                            })
+                        .unwrap();
+                        info!("accepting outgoing connect {} ::> {}", identity_, route);
+                        let mut state = self
+                            .state
+                            .try_borrow_mut()
+                            .expect("carrier is not thread safe");
+                        if let Some(sc) = state.subscribed.get_mut(&identity_) {
+                            sc.route = Some(route);
+                        }
+                    } else {
+                        let mut state = self
+                            .state
+                            .try_borrow_mut()
+                            .expect("carrier is not thread safe");
+                        if let Some(_) = state.subscribed.remove(&q.identity) {
+                            warn!("failed outgoing connect {}", q.identity);
+                        }
                     }
+
                 }
                 FutureResult::Done(Ok(endpoint::Event::IncommingConnect(q))) => {
                     warn!("ignoring incomming connect {}", q.identity);

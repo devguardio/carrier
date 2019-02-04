@@ -152,6 +152,16 @@ pub struct ConnectResponse {
     pub broker_stream: Option<u32>,
 }
 
+impl ConnectResponse {
+    pub fn ok(&self) -> bool {
+        if let Some(ref cr) = self.cr {
+            cr.ok
+        } else {
+            false
+        }
+    }
+}
+
 impl Endpoint {
     pub fn new(
         poll: osaka::Poll,

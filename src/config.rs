@@ -37,7 +37,7 @@ pub struct SubscriberConfigToml {
 #[derive(Deserialize, Default, Serialize)]
 pub struct ConfigToml {
     secret:    Option<String>,
-    agent:     Option<String>,
+    principal: Option<String>,
     keepalive: Option<u16>,
     publish:   Option<PublisherConfigToml>,
     subscribe: Option<SubscriberConfigToml>,
@@ -52,14 +52,19 @@ impl ConfigToml {
                 let mut fu_brwcheck: String;
                 let mut s: Vec<&str> = s.split(":").collect();
 
-                //FIXME: need to use mtdblock
-                if s.get(1) == Some(&"mtdname") {
+
+                if s.get(1) == Some(&"mtdname") || s.get(1) == Some(&"mtdblock") {
                     if let Some(name) = s.get(2).map(|v| v.to_string()) {
                         let f = File::open("/proc/mtd").expect("open /proc/mtd");
                         let names = parse_mtd(f).expect("parsing /proc/mtd");
                         let dev = names.get(&name).expect(&format!("mtd partition {} not found", name));
                         fu_brwcheck = format!("/dev/{}", dev);
 
+                        if s.get(1) == Some(&"mtdblock") {
+                            if !fu_brwcheck.contains("mtdblock") {
+                                fu_brwcheck = fu_brwcheck.replace("mtd", "mtdblock");
+                            }
+                        }
                         s[1] = "mtd";
                         s[2] = &fu_brwcheck;
                     }
@@ -164,7 +169,7 @@ pub struct SubscriberConfig {
 #[derive(Clone)]
 pub struct Config {
     pub secret:    identity::Secret,
-    pub agent:     Option<identity::Secret>,
+    pub principal: Option<identity::Secret>,
     pub keepalive: Option<u16>,
     pub publish:   Option<PublisherConfig>,
     pub subscribe: Option<SubscriberConfig>,
@@ -194,7 +199,7 @@ pub fn load() -> Result<Config, Error> {
     Ok(Config {
         publish: config.publisher(secret.identity())?,
         secret,
-        agent: ConfigToml::secret(config.agent.as_ref()).ok(),
+        principal: ConfigToml::secret(config.principal.as_ref()).ok(),
         keepalive: config.keepalive,
         subscribe: config.subscriber()?,
         names: config.names()?,

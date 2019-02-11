@@ -228,12 +228,12 @@ fn net_line(line: String) -> Option<proto::Netdev> {
     let mut f = trye!(553, File::open(format!("/sys/class/net/{}/operstate", name)));
     let mut buf = String::new();
     trye!(553, f.read_to_string(&mut buf));
-    let up: usize = trye!(553, buf.trim().parse());
+    let operstate = buf.trim();
 
     let mut f = trye!(554, File::open(format!("/sys/class/net/{}/carrier", name)));
     let mut buf = String::new();
     trye!(554, f.read_to_string(&mut buf));
-    let operstate = buf.trim();
+    let up: usize = buf.trim().parse().unwrap_or(0);
 
     let mut f = trye!(555, File::open(format!("/sys/class/net/{}/carrier_changes", name)));
     let mut buf = String::new();

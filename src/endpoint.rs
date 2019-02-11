@@ -783,20 +783,20 @@ impl Future<Result<Event, Error>> for Endpoint {
 // -- builder
 
 pub struct EndpointBuilder {
-    secret: identity::Secret,
-    agent:  Option<identity::Secret>,
+    secret:     identity::Secret,
+    principal:  Option<identity::Secret>,
 }
 
 impl EndpointBuilder {
     pub fn new(config: &config::Config) -> Result<Self, Error> {
         info!("my identity: {}", config.secret.identity());
-        if let Some(ref agent) = config.agent {
-            info!("principal agent: {}", agent.identity());
+        if let Some(ref principal) = config.principal {
+            info!("principal identity: {}", principal.identity());
         }
 
         Ok(Self {
             secret: config.secret.clone(),
-            agent: config.agent.clone(),
+            principal: config.principal.clone(),
         })
     }
 
@@ -865,7 +865,7 @@ impl EndpointBuilder {
                 identity,
                 sock,
                 record.addr,
-                self.agent.unwrap_or(self.secret),
+                self.principal.unwrap_or(self.secret),
             ));
         }
     }

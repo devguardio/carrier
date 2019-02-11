@@ -40,6 +40,12 @@ pub fn main() -> Result<(), Error> {
             SubCommand::with_name("identity").about("print out identity")
         )
         .subcommand(
+            SubCommand::with_name("sync")
+                .about("coordinate a broker epoch")
+                .arg(Arg::with_name("broker").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("epoch").takes_value(true).required(true).index(2))
+        )
+        .subcommand(
             SubCommand::with_name("subscribe")
                 .about("watch a shadow")
                 .arg(Arg::with_name("address").takes_value(true).required(true).index(1)),

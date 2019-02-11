@@ -35,15 +35,23 @@ struct ScheduledStream {
 }
 
 
+struct Oneshot {
+    target:     identity::Identity,
+    path:       Vec<u8>,
+    headers:    headers::Headers,
+    f:          Box<FnMut(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()>>,
+}
+
 /// A conduit is a combined subscribe+connect client that subscribes to all devices on a shadow and streams data from them.
 /// For convenience, most common functionality is implemented into this struct, and users only need to implement handling the data.
 
 pub struct Conduit {
-    poll: osaka::Poll,
-    ep: endpoint::Endpoint,
-    state: Arc<RefCell<ConduitState>>,
-    last_sync: Instant,
-    schedules: HashMap<Vec<u8>, ScheduledStream>,
+    poll:       osaka::Poll,
+    ep:         endpoint::Endpoint,
+    state:      Arc<RefCell<ConduitState>>,
+    last_sync:  Instant,
+    schedules:  HashMap<Vec<u8>, ScheduledStream>,
+    oneshots:   Vec<Oneshot>,
 }
 
 impl Conduit {
@@ -75,8 +83,9 @@ impl Conduit {
             ep,
             poll,
             state,
-            last_sync: Instant::now(),
-            schedules: HashMap::new(),
+            last_sync:  Instant::now(),
+            schedules:  HashMap::new(),
+            oneshots:   Vec::new(),
         })
     }
 
@@ -243,6 +252,20 @@ impl Conduit {
         );
     }
 
+    /// open a stream on a specific peer, once
+    ///
+    pub fn call<F, M>(&mut self, target: identity::Identity, headers: headers::Headers, f: F)
+    where
+        F: 'static + FnMut(&identity::Identity, M) + Clone,
+        M: prost::Message + Default,
+    {
+        self.oneshots.push(Oneshot{
+            path: headers.path().expect("header must contain :path").into(),
+            headers,
+            target,
+            f: Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark)),
+        });
+    }
 
 }
 
@@ -263,6 +286,31 @@ impl osaka::Future<Result<(), Error>> for Conduit {
 
             for (id, sc) in &mut state.subscribed {
                 if let Some(route) = sc.route {
+
+                    let mut oneshots_remaining = Vec::new();
+                    oneshots_remaining.reserve(self.oneshots.len());
+                    for mut oneshot in self.oneshots.drain(..) {
+                        if &oneshot.target == id {
+                            if sc.streams.get(&oneshot.path).is_none() {
+                                info!(
+                                    "[{}] opening oneshot stream {}",
+                                    id,
+                                    String::from_utf8_lossy(&oneshot.path)
+                                    );
+                                let (mark, _) = sc.streams.insert(oneshot.path.clone(), ());
+                                self.ep
+                                    .open(route, oneshot.headers.clone(), move |poll, stream| {
+                                        (oneshot.f)(poll, stream, id.clone(), mark)
+                                    });
+
+                            }
+                        } else {
+                            oneshots_remaining.push(oneshot);
+                        }
+                    }
+                    self.oneshots = oneshots_remaining;
+
+
                     for (path, schedule) in &mut self.schedules {
                         if sc.streams.get(path).is_none() {
                             if let Some(wait) = sc.waitreopen.get(path) {

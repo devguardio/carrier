@@ -100,3 +100,6 @@ service Peer {
 message ProtoHeader {
     uint64 len = 1;
 }
+
+
+message Empty {}

@@ -24,16 +24,20 @@ pub struct AuthorizationToml {
 #[derive(Deserialize, Serialize)]
 pub struct PublisherConfigToml {
     shadow: String,
+    secret: Option<String>,
 }
 
 #[derive(Deserialize, Serialize)]
 pub struct SubscriberConfigToml {
     shadow: String,
+    secret: Option<String>,
+    shard:  Option<String>,
 }
 
 #[derive(Deserialize, Default, Serialize)]
 pub struct ConfigToml {
     secret:    Option<String>,
+    agent:     Option<String>,
     keepalive: Option<u16>,
     publish:   Option<PublisherConfigToml>,
     subscribe: Option<SubscriberConfigToml>,
@@ -42,8 +46,8 @@ pub struct ConfigToml {
 }
 
 impl ConfigToml {
-    fn secret(&self) -> Result<identity::Secret, Error> {
-        if let Some(ref s) = self.secret {
+    fn secret(o: Option<&String>) -> Result<identity::Secret, Error> {
+        if let Some(ref s) = o{
             if s.starts_with(":") {
                 let mut fu_brwcheck: String;
                 let mut s: Vec<&str> = s.split(":").collect();
@@ -160,6 +164,7 @@ pub struct SubscriberConfig {
 #[derive(Clone)]
 pub struct Config {
     pub secret:    identity::Secret,
+    pub agent:     Option<identity::Secret>,
     pub keepalive: Option<u16>,
     pub publish:   Option<PublisherConfig>,
     pub subscribe: Option<SubscriberConfig>,
@@ -185,10 +190,11 @@ pub fn load() -> Result<Config, Error> {
         filename
     ));
 
-    let secret = config.secret()?;
+    let secret = ConfigToml::secret(config.secret.as_ref())?;
     Ok(Config {
         publish: config.publisher(secret.identity())?,
         secret,
+        agent: ConfigToml::secret(config.agent.as_ref()).ok(),
         keepalive: config.keepalive,
         subscribe: config.subscriber()?,
         names: config.names()?,

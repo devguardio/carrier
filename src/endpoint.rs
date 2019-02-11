@@ -257,10 +257,11 @@ impl Endpoint {
 
             let mut m = Vec::new();
             proto::ConnectRequest {
-                identity: target.as_bytes().to_vec(),
+                target: target.as_bytes().to_vec(),
                 timestamp,
                 handshake,
                 paths: mypaths,
+                identity: self.secret.identity().as_bytes().to_vec(),
             }
             .encode(&mut m)
             .unwrap();
@@ -783,14 +784,19 @@ impl Future<Result<Event, Error>> for Endpoint {
 
 pub struct EndpointBuilder {
     secret: identity::Secret,
+    agent:  Option<identity::Secret>,
 }
 
 impl EndpointBuilder {
     pub fn new(config: &config::Config) -> Result<Self, Error> {
         info!("my identity: {}", config.secret.identity());
+        if let Some(ref agent) = config.agent {
+            info!("principal agent: {}", agent.identity());
+        }
 
         Ok(Self {
             secret: config.secret.clone(),
+            agent: config.agent.clone(),
         })
     }
 
@@ -859,7 +865,7 @@ impl EndpointBuilder {
                 identity,
                 sock,
                 record.addr,
-                self.secret,
+                self.agent.unwrap_or(self.secret),
             ));
         }
     }

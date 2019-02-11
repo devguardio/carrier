@@ -37,17 +37,7 @@ pub fn main() -> Result<(), Error> {
         .subcommand(SubCommand::with_name("identity").about("print public identity"))
         .subcommand(SubCommand::with_name("setup").about("initial setup"))
         .subcommand(
-            SubCommand::with_name("identity")
-                .about("publish services on carrier")
-                .arg(
-                    Arg::with_name("config")
-                        .help("read config from this location instead of ~/.devguard/carrier.toml")
-                        .short("c")
-                        .long("config")
-                        .takes_value(true)
-                        .value_name("FILE")
-                        .required(false),
-                ),
+            SubCommand::with_name("identity").about("print out identity")
         )
         .subcommand(
             SubCommand::with_name("subscribe")

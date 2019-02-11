@@ -58,10 +58,11 @@ message PublishChange{
 }
 
 message ConnectRequest {
-    bytes   identity        = 1;
+    bytes   target          = 1;
     uint64  timestamp       = 2;
     bytes   handshake       = 3;
     repeated Path paths     = 4;
+    bytes   identity        = 5;
 }
 
 message ConnectResponse {

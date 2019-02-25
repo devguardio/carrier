@@ -19,7 +19,8 @@ use config;
 struct SubscriberState {
     route:      Option<packet::RoutingKey>,
     streams:    gcmap::HashMap<Vec<u8>, ()>,
-    waitreopen: HashMap<Vec<u8>, Instant>
+    waitreopen: HashMap<Vec<u8>, Instant>,
+    kill:       bool,
 }
 
 #[derive(Default)]
@@ -80,6 +81,7 @@ impl Conduit {
                 handler(poll, stream, state.clone())
             },
         );
+
 
         Ok(Self {
             ep,
@@ -301,7 +303,17 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                 }
             }
 
+            let mut killed = Vec::new();
             for (id, sc) in &mut state.subscribed {
+                if sc.kill {
+                    killed.push(id.clone());
+                    if let Some(route) = sc.route {
+                        osaka::try!(self.ep.disconnect(route));
+                    }
+                    continue
+                }
+
+
                 if let Some(route) = sc.route {
 
                     let mut oneshots_remaining = Vec::new();
@@ -351,6 +363,10 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                         }
                     }
                 }
+            }
+
+            for id in killed {
+                state.subscribed.remove(&id);
             }
         }
 
@@ -444,6 +460,10 @@ fn handler(
                     f(&identity);
                 }
 
+                if let Some(sub) = state.subscribed.get_mut(&identity) {
+                    sub.kill = true;
+                }
+
                 state
                     .publishers
                     .insert(identity, ());
@@ -460,6 +480,10 @@ fn handler(
 
                 if let Some(ref mut f) = state.on_unpub {
                     f(&identity);
+                }
+
+                if let Some(sub) = state.subscribed.get_mut(&identity) {
+                    sub.kill = true;
                 }
 
                 state

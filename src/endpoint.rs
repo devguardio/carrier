@@ -281,6 +281,35 @@ impl Endpoint {
         Ok(())
     }
 
+    pub fn disconnect(&mut self, route: RoutingKey) -> Result<(), Error> {
+        if let Some(chan) = self.channels.remove(&route) {
+            let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
+            let pkt = chanchan.disconnect()?;
+            match &chan.addrs {
+                AddressMode::Discovering(addrs) => {
+                    for (addr, _) in addrs.iter() {
+                        match self.socket.send_to(&pkt, addr) {
+                            Ok(len) if len == pkt.len() => (),
+                            e => trace!("send to {} didnt work {:?}", addr, e),
+                        }
+                    }
+                }
+                AddressMode::Established(addr, _) => match self.socket.send_to(&pkt, &addr) {
+                    Ok(len) if len == pkt.len() => (),
+                    e => error!("send didnt work {:?}", e),
+                },
+            }
+
+            if let Some(bs) = chan.broker_stream {
+                let chan = self.channels.get_mut(&self.broker_route).unwrap();
+                let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
+                chanchan.close(bs);
+                chan.broker_stream = None;
+            }
+        }
+        Ok(())
+    }
+
     pub fn reject(&mut self, q: ConnectRequest) {
         let mut m = Vec::new();
         proto::PeerConnectResponse {

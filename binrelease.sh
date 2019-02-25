@@ -3,7 +3,7 @@ THIS=$(dirname $(readlink -f $0))
 set -ex
 
 
-VER=0.8.0
+VER=0.8.5
 APP=carrier
 
 rm -rf target/binrelease

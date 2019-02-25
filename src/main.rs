@@ -10,11 +10,13 @@ extern crate prost;
 extern crate rand;
 extern crate sha2;
 extern crate tinylogger;
+extern crate pbr;
 
 use carrier::error::Error;
 use log::{info, warn};
 use osaka::osaka;
 use std::env;
+use pbr::ProgressBar;
 
 #[cfg(any(target_os = "linux", target_os = "macos",))]
 mod shell;
@@ -433,15 +435,23 @@ fn push(
                     use std::fs::File;
                     use std::io::Read;
                     let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+                    let total_size = file.metadata().expect("file metadata").len();
+                    let mut pb = ProgressBar::new(total_size);
+
                     loop {
                         let mut buf = vec![0; 600];
                         let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
                         if len == 0 {
+                            pb.finish();
                             break;
                         }
+                        pb.add(len as u64);
+                        pb.set_units(pbr::Units::Bytes);
                         buf.truncate(len);
                         stream.send(buf);
-                        yield poll.later(std::time::Duration::from_millis(1));
+
+                        //FIXME we need a wakeup token here, not a timer
+                        yield poll.later(std::time::Duration::from_millis(5));
                     }
                     stream.send(Vec::new());
 

@@ -26,6 +26,8 @@ struct SubscriberState {
 struct ConduitState {
     publishers: HashMap<identity::Identity, ()>,
     subscribed: HashMap<identity::Identity, SubscriberState>,
+    on_pub:     Option<Box<FnMut(&identity::Identity)>>,
+    on_unpub:   Option<Box<FnMut(&identity::Identity)>>,
 }
 
 struct ScheduledStream {
@@ -88,6 +90,21 @@ impl Conduit {
             oneshots:   Vec::new(),
         })
     }
+
+    pub fn on_publish<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
+        let mut state =  self.state
+            .try_borrow_mut()
+            .expect("carrier is not thread safe");
+        state.on_pub = Some(Box::new(f))
+    }
+
+    pub fn on_unpublish<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
+        let mut state =  self.state
+            .try_borrow_mut()
+            .expect("carrier is not thread safe");
+        state.on_unpub = Some(Box::new(f))
+    }
+
 
     #[allow(unreachable_code)]
     #[osaka]
@@ -419,9 +436,15 @@ fn handler(
                 let identity = identity::Identity::from_bytes(identity).unwrap();
                 info!("+ {}", identity);
 
-                state
+                let mut state =  state
                     .try_borrow_mut()
-                    .expect("carrier is not thread safe")
+                    .expect("carrier is not thread safe");
+
+                if let Some(ref mut f) = state.on_pub {
+                    f(&identity);
+                }
+
+                state
                     .publishers
                     .insert(identity, ());
             }
@@ -431,9 +454,15 @@ fn handler(
                 let identity = identity::Identity::from_bytes(identity).unwrap();
                 info!("- {}", identity);
 
-                state
+                let mut state =  state
                     .try_borrow_mut()
-                    .expect("carrier is not thread safe")
+                    .expect("carrier is not thread safe");
+
+                if let Some(ref mut f) = state.on_unpub {
+                    f(&identity);
+                }
+
+                state
                     .publishers
                     .remove(&identity);
             }

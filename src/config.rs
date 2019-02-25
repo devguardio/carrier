@@ -222,6 +222,12 @@ pub fn setup() -> Result<(), Error> {
         .join(".devguard/carrier.toml");
     let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
 
+
+    if let Some(p) = std::path::Path::new(&filename).parent() {
+        std::fs::create_dir_all(p).expect(&format!("create dir {:?}", p));
+    }
+
+
     let mut config: ConfigToml = if let Ok(mut f) = File::open(&filename) {
         let mut buffer = String::default();
         f.read_to_string(&mut buffer)

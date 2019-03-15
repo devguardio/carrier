@@ -29,6 +29,8 @@ struct ConduitState {
     subscribed: HashMap<identity::Identity, SubscriberState>,
     on_pub:     Option<Box<FnMut(&identity::Identity)>>,
     on_unpub:   Option<Box<FnMut(&identity::Identity)>>,
+    on_sub:     Option<Box<FnMut(&identity::Identity)>>,
+    on_unsub:   Option<Box<FnMut(&identity::Identity)>>,
 }
 
 struct ScheduledStream {
@@ -91,6 +93,20 @@ impl Conduit {
             schedules:  HashMap::new(),
             oneshots:   Vec::new(),
         })
+    }
+
+    pub fn on_subscribe<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
+        let mut state =  self.state
+            .try_borrow_mut()
+            .expect("carrier is not thread safe");
+        state.on_sub = Some(Box::new(f))
+    }
+
+    pub fn on_unsubscribe<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
+        let mut state =  self.state
+            .try_borrow_mut()
+            .expect("carrier is not thread safe");
+        state.on_unsub = Some(Box::new(f))
     }
 
     pub fn on_publish<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
@@ -367,6 +383,9 @@ impl osaka::Future<Result<(), Error>> for Conduit {
 
             for id in killed {
                 state.subscribed.remove(&id);
+                if let Some(ref mut f) = state.on_unsub{
+                    f(&id);
+                }
             }
         }
 
@@ -381,6 +400,9 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                         .expect("carrier is not thread safe");
                     if let Some(_old) = state.subscribed.remove(&identity) {
                         info!("disconnect {}", identity);
+                        if let Some(ref mut f) = state.on_unsub{
+                            f(&identity);
+                        }
                     }
                 }
                 FutureResult::Done(Ok(endpoint::Event::OutgoingConnect(q))) => {
@@ -402,6 +424,9 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                             .expect("carrier is not thread safe");
                         if let Some(sc) = state.subscribed.get_mut(&identity_) {
                             sc.route = Some(route);
+                        }
+                        if let Some(ref mut f) = state.on_sub {
+                            f(&identity_);
                         }
                     } else {
                         let mut state = self

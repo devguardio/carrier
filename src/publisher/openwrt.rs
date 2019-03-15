@@ -16,6 +16,7 @@ use std::process::Command;
 use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 use wait_timeout::ChildExt;
+use std::collections::HashMap;
 
 macro_rules! tryo {
     ($i:expr, $x:expr) => {
@@ -40,6 +41,46 @@ macro_rules! trye {
         }
     };
 }
+
+
+
+#[derive(Deserialize)]
+struct BoardJsonModel {
+    id: String,
+    name: String,
+}
+
+#[derive(Deserialize)]
+struct BoardJsonSwitchPort {
+    num:        u64,
+    device:     Option<String>,
+    need_tag:   Option<bool>,
+    want_untag: Option<bool>,
+    role:       Option<String>,
+    index:      Option<u64>,
+}
+
+#[derive(Deserialize)]
+struct BoardJsonSwitch {
+    enable: bool,
+    reset: bool,
+    ports: Vec<BoardJsonSwitchPort>,
+}
+
+#[derive(Deserialize)]
+struct BoardJson {
+    model: BoardJsonModel,
+    switch: HashMap<String, BoardJsonSwitch>,
+}
+
+
+fn load_board_json() -> Option<BoardJson> {
+    let mut f = trye!(0, File::open("/etc/board.json"));
+    let mut s = String::new();
+    trye!(0, f.read_to_string(&mut s));
+    Some(trye!(0, serde_json::from_str(&s)))
+}
+
 
 fn system<S: Into<String>>(cmd: S) -> String {
     let mut child = Command::new("/bin/sh")
@@ -245,7 +286,7 @@ fn net_line(line: String) -> Option<proto::Netdev> {
     trye!(556, f.read_to_string(&mut buf));
     let link_speed: u64 = trye!(556, buf.trim().parse());
 
-    let mut f = trye!(557, File::open(format!("/sys/class/net/{}/speed", name)));
+    let mut f = trye!(557, File::open(format!("/sys/class/net/{}/duplex", name)));
     let mut buf = String::new();
     trye!(557, f.read_to_string(&mut buf));
     let link_duplex = match buf.trim() {
@@ -304,7 +345,42 @@ fn net() -> Option<Vec<proto::Netdev>> {
     Some(r)
 }
 
-fn switch() -> Option<Vec<proto::Switch>> {
+pub fn switch_mac_seen() -> HashMap<String,u64> {
+    let mut r = HashMap::new();
+
+    let cmd = match Command::new("swconfig").arg("dev").arg("switch0").arg("show").output() {
+        Ok(v) => v,
+        Err(e) => {
+            println!("{}", e);
+            return r;
+        }
+    };
+
+    for line in cmd.stdout.lines() {
+        let line = trye!(72, line).trim().to_string();
+        if line.starts_with("Port") && line.contains("MAC") {
+            let line : Vec<&str> = line.split(" ").collect();
+            if line.len() < 4 {
+                continue;
+            }
+            let portnum = match line[1].split(":").next() {
+                None => continue,
+                Some(v) => v,
+            };
+            let portnum : u64 = match portnum.trim().parse() {
+                Err(e) => {
+                    println!("parsing portnum: {}" ,e);
+                    continue;
+                },
+                Ok(v)  => v,
+            };
+            r.insert(line[3].to_string(), portnum);
+        }
+    }
+    r
+}
+
+fn switch(board: &Option<BoardJson>) -> Option<Vec<proto::Switch>> {
     let mut switch0 = proto::Switch {
         name:  "switch0".into(),
         ports: Vec::new(),
@@ -319,9 +395,10 @@ fn switch() -> Option<Vec<proto::Switch>> {
         let line = trye!(72, line).trim().to_string();
         if line.starts_with("link: ") {
             let mut port = proto::SwitchPort {
-                port:  0,
-                link:  false,
-                speed: String::new(),
+                port:       0,
+                link:       false,
+                speed:      String::new(),
+                role:       Some(proto::switch_port::Role::None(true)),
             };
 
             let (_, line) = line.split_at(5);
@@ -359,6 +436,21 @@ fn switch() -> Option<Vec<proto::Switch>> {
                 port.link = true;
                 port.speed = line.to_string();
             }
+
+            if let Some(board) = board {
+                if let Some(switch) = board.switch.get("switch0") {
+                    for p in &switch.ports {
+                        if p.num == port.port {
+                            if let Some(ref v) = p.device {
+                                port.role = Some(proto::switch_port::Role::Device(v.to_string()));
+                            } else if let Some(ref v) = p.role {
+                                port.role = Some(proto::switch_port::Role::Network(v.to_string()));
+                            }
+                        }
+                    }
+                }
+            }
+
             switch0.ports.push(port);
         }
     }
@@ -374,6 +466,9 @@ pub fn sysinfo(
 ) -> Option<osaka::Task<()>> {
     stream.send(Headers::ok().encode());
 
+
+    let board = load_board_json();
+
     let uts = uname();
     stream.message(proto::Sysinfo {
         uname:    Some(proto::Uname {
@@ -388,7 +483,8 @@ pub fn sysinfo(
         mem:      mem(),
         fs:       fs().unwrap_or(Vec::new()),
         net:      net().unwrap_or(Vec::new()),
-        switch:   switch().unwrap_or(Vec::new()),
+        switch:   switch(&board).unwrap_or(Vec::new()),
+        board_id: board.map(|board|board.model.id.clone()).unwrap_or(String::new()),
     });
     None
 }
@@ -558,7 +654,7 @@ fn get_leases() -> Vec<proto::DhcpLease> {
     r
 }
 
-fn get_arp() -> Vec<proto::Arp> {
+pub fn get_arp(switch: &HashMap<String,u64>) -> Vec<proto::Arp> {
     let mut r = Vec::new();
     let f = trye!(9, File::open("/proc/net/arp"));
     let f = BufReader::new(f);
@@ -580,7 +676,89 @@ fn get_arp() -> Vec<proto::Arp> {
             },
             mac: line[3].into(),
             dev: line[5].into(),
+            switchport: Some(match switch.get(line[3]) {
+                Some(i) => proto::arp::Switchport::Value(*i),
+                None    => proto::arp::Switchport::Null(true),
+            }),
         });
+    }
+    r
+}
+
+pub fn get_arp_lookup(switch: &HashMap<String,u64>) -> HashMap<String, proto::Arp> {
+    let mut r = HashMap::new();
+    let f = trye!(9, File::open("/proc/net/arp"));
+    let f = BufReader::new(f);
+    for line in f.lines() {
+        let line = trye!(9, line);
+        let line: Vec<&str> = line.split_whitespace().collect();
+        if line.len() < 6 {
+            continue;
+        }
+        if line[2] != "0x2" {
+            continue;
+        }
+        r.insert(line[0].into(), proto::Arp {
+            ip:  line[0].into(),
+            hw:  if line[1] == "0x1" {
+                proto::arp::HwType::Ethernet as i32
+            } else {
+                0
+            },
+            mac: line[3].into(),
+            dev: line[5].into(),
+            switchport: Some(match switch.get(line[3]) {
+                Some(i) => proto::arp::Switchport::Value(*i),
+                None    => proto::arp::Switchport::Null(true),
+            }),
+        });
+    }
+    r
+}
+
+pub fn get_routes() -> Vec<proto::NetRoute> {
+    let mut r = Vec::new();
+
+    let mut child= Command::new("ip")
+        .args(&["route","list"])
+        .stdout(std::process::Stdio::piped())
+        .spawn()
+        .expect("Failed to execute command");
+
+    child.wait_timeout(Duration::from_secs(1)).unwrap();
+    for line in BufReader::new(child.stdout.unwrap()).lines() {
+        let line = match line {
+            Ok(v) => v,
+            Err(_)=> break,
+        };
+        println!(">> {}", line);
+        let mut line = line.split_whitespace();
+
+        let mut gateway = String::new();
+        let mut source  = String::new();
+
+        if line.next() == Some("default") {
+            loop {
+                let k = match line.next() {
+                    None => break,
+                    Some(v) => v,
+                };
+                if k == "via" {
+                    if let Some(v) = line.next() {
+                        gateway = v.to_string();
+                    }
+                } else if k == "src" {
+                    if let Some(v) = line.next() {
+                        source = v.to_string();
+                    }
+                }
+            }
+            r.push(proto::NetRoute {
+                destination: "default".to_string(),
+                gateway,
+                source,
+            });
+        }
     }
     r
 }
@@ -588,8 +766,11 @@ fn get_arp() -> Vec<proto::Arp> {
 #[osaka]
 fn netsurvey_(poll: osaka::Poll, _headers: headers::Headers, _: &identity::Identity, mut stream: endpoint::Stream) {
     loop {
+        let switch_mac_seen = switch_mac_seen();
+
         let dhcp = get_leases();
-        let arp = get_arp();
+        let arp = get_arp(&switch_mac_seen);
+        let routes = get_routes();
         let mut wifi = Vec::new();
 
         let f = system("iw dev | grep Interface | cut -d ' ' -f 2");
@@ -598,8 +779,8 @@ fn netsurvey_(poll: osaka::Poll, _headers: headers::Headers, _: &identity::Ident
                 wifi.push(i);
             }
         }
-        stream.message(proto::NetSurvey { wifi, dhcp, arp });
-        yield poll.later(Duration::from_secs(10));
+        stream.message(proto::NetSurvey { wifi, dhcp, arp, routes });
+        yield poll.later(Duration::from_secs(30));
     }
 }
 

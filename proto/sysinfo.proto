@@ -75,15 +75,22 @@ message Netdev {
 }
 
 message SwitchPort {
-    uint64 port     = 1;
-    bool   link     = 2;
-    string speed    = 3;
+    uint64  port     = 1;
+    bool    link     = 2;
+    string  speed    = 3;
+    oneof role {
+        string  network = 4;
+        string  device  = 5;
+        bool    none    = 6;
+    }
 }
 
 message Switch {
     string name = 1;
     repeated SwitchPort ports = 2;
 }
+
+
 
 message Sysinfo {
     Uname       uname       = 1;
@@ -93,6 +100,7 @@ message Sysinfo {
     repeated FileSystem fs  = 5;
     repeated Netdev net     = 6;
     repeated Switch switch  = 7;
+    string      board_id    = 8;
 }
 
 
@@ -160,10 +168,22 @@ message Arp {
     HwType  hw      = 2;
     string  mac     = 3;
     string  dev     = 4;
+    oneof switchport {
+        uint64  value   = 5;
+        bool    null    = 6;
+    }
+}
+
+
+message NetRoute {
+    string  destination = 1;
+    string  gateway     = 2;
+    string  source      = 3;
 }
 
 message NetSurvey {
     repeated WifiInterface wifi = 1;
     repeated DhcpLease  dhcp    = 2;
-    repeated Arp  arp           = 3;
+    repeated Arp        arp     = 3;
+    repeated NetRoute   routes  = 4;
 }

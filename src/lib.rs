@@ -57,6 +57,7 @@ pub mod replay;
 pub mod stream;
 pub mod subscriber;
 pub mod util;
+#[cfg(feature = "conduit")]
 pub mod conduit;
 
 pub use error::Error;

@@ -12,6 +12,7 @@ use std::io::{Read, Write};
 use std::path::PathBuf;
 use std::process::Command;
 
+#[cfg(feature = "openwrt")]
 pub mod openwrt;
 pub mod sft;
 pub mod shell;

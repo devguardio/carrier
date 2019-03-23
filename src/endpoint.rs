@@ -24,6 +24,7 @@ use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 use util::defer;
+use std::env;
 
 #[derive(Clone)]
 pub struct Stream {
@@ -831,9 +832,14 @@ impl EndpointBuilder {
 
     #[osaka]
     pub fn connect(self, poll: osaka::Poll) -> Result<Endpoint, Error> {
+        let d = if let Ok(d) = env::var("CARRIER_BROKER_DOMAINS") {
+            d.split(":").map(String::from).collect::<Vec<String>>()
+        } else {
+            vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()]
+        };
+
         let mut a = osaka_dns::resolve(
-            poll.clone(),
-            vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()],
+            poll.clone(), d,
         );
         let mut records: Vec<dns::DnsRecord> = osaka::sync!(a)?
             .into_iter()

@@ -11,7 +11,7 @@ extern crate snow;
 extern crate x25519_dalek;
 #[macro_use]
 extern crate log;
-extern crate prost;
+pub extern crate prost;
 #[macro_use]
 extern crate prost_derive;
 extern crate bytes;

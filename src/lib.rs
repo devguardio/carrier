@@ -59,6 +59,7 @@ pub mod subscriber;
 pub mod util;
 #[cfg(feature = "conduit")]
 pub mod conduit;
+pub mod mock;
 
 pub use error::Error;
 pub use identity::Identity;

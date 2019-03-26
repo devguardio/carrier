@@ -342,6 +342,7 @@ where
 
     let q = loop {
         match osaka::sync!(ep)? {
+            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
             carrier::endpoint::Event::OutgoingConnect(q) => {
                 break q;
             }
@@ -358,6 +359,7 @@ where
 
     loop {
         match osaka::sync!(ep)? {
+            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
             carrier::endpoint::Event::OutgoingConnect(_) => (),
             carrier::endpoint::Event::Disconnect { identity, .. } => {
                 warn!("{} disconnected", identity);
@@ -468,6 +470,7 @@ fn push(
 
     loop {
         match osaka::sync!(ep)? {
+            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
             carrier::endpoint::Event::OutgoingConnect(_) => (),
             carrier::endpoint::Event::Disconnect { identity, .. } => {
                 warn!("{} disconnected", identity);

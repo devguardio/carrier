@@ -58,4 +58,26 @@ proptest!{
     fn proptest_decode_junk(r: Vec<u8>) {
         Frame::decode(&r[..]).ok();
     }
+
+    #[test]
+    fn proptest_re_packets(mut route: u64, dir: bool, counter: u64, payload: Vec<u8>) {
+        if route >= 0b1000000000000000000000000000000000000000000000000000000000000000 {
+            route /= 2;
+        }
+        let pkt = EncryptedPacket {
+            version: 0x08,
+            route,
+            direction: if dir { RoutingDirection::Initiator2Responder } else { RoutingDirection::Responder2Initiator},
+            counter,
+            payload,
+        };
+
+        println!("{:?}", pkt);
+
+        let pkt2 = EncryptedPacket::decode(&pkt.clone().encode()).unwrap();
+
+        assert_eq!(pkt, pkt2);
+
+    }
+
 }

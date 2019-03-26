@@ -391,6 +391,7 @@ impl osaka::Future<Result<(), Error>> for Conduit {
 
         loop {
             match self.ep.poll() {
+                FutureResult::Done(Ok(endpoint::Event::BrokerGone)) => panic!("broker gone"),
                 FutureResult::Done(Ok(endpoint::Event::Disconnect {
                     identity, ..
                 })) => {

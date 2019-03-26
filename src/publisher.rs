@@ -101,6 +101,7 @@ impl PublisherBuilder {
 
         loop {
             match osaka::sync!(ep)? {
+                endpoint::Event::BrokerGone => panic!("broker gone"),
                 endpoint::Event::Disconnect { .. } => (),
                 endpoint::Event::OutgoingConnect(_) => (),
                 endpoint::Event::IncommingConnect(q) => {

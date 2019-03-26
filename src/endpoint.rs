@@ -25,6 +25,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use util::defer;
 use std::env;
+use mio_extras::channel;
 
 #[derive(Clone)]
 pub struct Stream {
@@ -116,16 +117,29 @@ impl Drop for UdpChannel {
     }
 }
 
+enum EndpointCmd {
+    Disconnect(RoutingKey),
+}
+
 pub struct Endpoint {
-    poll: osaka::Poll,
-    token: osaka::Token,
-    channels: HashMap<RoutingKey, UdpChannel>,
-    socket: UdpSocket,
-    broker_route: RoutingKey,
-    secret: identity::Secret,
+    poll:           osaka::Poll,
+    token:          osaka::Token,
+    channels:       HashMap<RoutingKey, UdpChannel>,
+    socket:         UdpSocket,
+    broker_route:   RoutingKey,
+    secret:         identity::Secret,
     outstanding_connect_incomming: HashSet<u32>,
     outstanding_connect_outgoing: HashMap<u32, ConnectResponseStage>,
     publish_secret: Option<identity::Secret>,
+    cmd:            (channel::Sender<EndpointCmd>, channel::Receiver<EndpointCmd>, osaka::Token),
+}
+
+/// handle is a thread safe api to ep
+#[derive(Clone)]
+pub struct Handle {
+    broker_route:   RoutingKey,
+    cmd:            channel::Sender<EndpointCmd>,
+    stop_on_drop:   bool,
 }
 
 pub struct ConnectRequest {
@@ -188,6 +202,12 @@ impl Endpoint {
             },
         );
 
+
+        let cmd = channel::channel();
+        let cmd_token = poll
+            .register(&cmd.1, mio::Ready::readable(), mio::PollOpt::level())
+            .unwrap();
+
         Self {
             poll,
             token,
@@ -198,6 +218,15 @@ impl Endpoint {
             outstanding_connect_incomming: HashSet::new(),
             outstanding_connect_outgoing: HashMap::new(),
             publish_secret: None,
+            cmd: (cmd.0, cmd.1, cmd_token),
+        }
+    }
+
+    pub fn handle(&self) -> Handle {
+        Handle {
+            broker_route:   self.broker_route.clone(),
+            cmd:            self.cmd.0.clone(),
+            stop_on_drop:   false,
         }
     }
 
@@ -218,7 +247,7 @@ impl Endpoint {
         yield poll.never();
     }
 
-    pub fn publish(&mut self, shadow: identity::Address) {
+    pub fn publish(&mut self, shadow: identity::Address) -> u32 {
         if self.publish_secret.is_none() {
             self.publish_secret = Some(identity::Secret::gen());
         }
@@ -235,7 +264,7 @@ impl Endpoint {
                 });
                 Self::publish_stream(poll, stream)
             },
-        );
+        )
     }
 
     pub fn connect(&mut self, target: identity::Identity) -> Result<(), Error> {
@@ -440,7 +469,7 @@ impl Endpoint {
         self.stream(broker_route, q.qstream, m);
     }
 
-    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, f: F)
+    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, f: F) -> u32
     where
         F: FnOnce(osaka::Poll, Stream) -> osaka::Task<()>,
     {
@@ -467,6 +496,7 @@ impl Endpoint {
                 a: ii,
             },
         );
+        stream_id
     }
 
     pub fn stream<M: Into<Vec<u8>>>(&mut self, route: RoutingKey, stream: u32, m: M) {
@@ -501,11 +531,24 @@ impl Endpoint {
 pub enum Event {
     IncommingConnect(ConnectRequest),
     OutgoingConnect(ConnectResponse),
-    Disconnect { route: RoutingKey, identity: Identity },
+    Disconnect {route: RoutingKey, identity: Identity},
+    BrokerGone,
 }
 
 impl Future<Result<Event, Error>> for Endpoint {
     fn poll(&mut self) -> FutureResult<Result<Event, Error>> {
+
+        // cmds from chan
+        match self.cmd.1.try_recv() {
+            Err(std::sync::mpsc::TryRecvError::Empty) => (),
+            Err(std::sync::mpsc::TryRecvError::Disconnected) => unreachable!(),
+            Ok(EndpointCmd::Disconnect(r)) => {
+                if let Err(e) = self.disconnect(r){
+                    return FutureResult::Done(Err(e));
+                }
+            }
+        };
+
         // receive one packet
         let mut buf = vec![0; MAX_PACKET_SIZE];
         match self.socket.recv_from(&mut buf) {
@@ -585,8 +628,12 @@ impl Future<Result<Event, Error>> for Endpoint {
         };
 
         // work on all channels
-        let mut later = self.poll.again(self.token.clone(), Some(Duration::from_secs(600)));
+        let mut later = self.poll.any(vec![self.token.clone(), self.cmd.2.clone()], Some(Duration::from_secs(600)));
         loop {
+            if !self.channels.contains_key(&self.broker_route) {
+                return FutureResult::Done(Ok(Event::BrokerGone));
+            }
+
             let mut again = false;
             let mut killme = Vec::new();
             for (route, chan) in &mut self.channels {
@@ -801,6 +848,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                     }));
                 }
             }
+
             if !again {
                 break;
             }
@@ -809,6 +857,30 @@ impl Future<Result<Event, Error>> for Endpoint {
         FutureResult::Again(later)
     }
 }
+
+
+impl Handle {
+    pub fn disconnect(&self, route: RoutingKey) {
+        self.cmd.send(EndpointCmd::Disconnect(route)).unwrap();
+    }
+
+    pub fn broker(&self) -> RoutingKey {
+        self.broker_route
+    }
+
+    pub fn set_stop_on_drop(&mut self, v: bool) {
+        self.stop_on_drop = v;
+    }
+}
+
+impl Drop for Handle {
+    fn drop(&mut self) {
+        if self.stop_on_drop {
+            self.cmd.send(EndpointCmd::Disconnect(self.broker_route)).unwrap();
+        }
+    }
+}
+
 
 // -- builder
 
@@ -832,19 +904,24 @@ impl EndpointBuilder {
 
     #[osaka]
     pub fn connect(self, poll: osaka::Poll) -> Result<Endpoint, Error> {
-        let d = if let Ok(d) = env::var("CARRIER_BROKER_DOMAINS") {
-            d.split(":").map(String::from).collect::<Vec<String>>()
-        } else {
-            vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()]
-        };
 
-        let mut a = osaka_dns::resolve(
-            poll.clone(), d,
-        );
-        let mut records: Vec<dns::DnsRecord> = osaka::sync!(a)?
-            .into_iter()
-            .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
-            .collect();
+        let mut records : Vec<dns::DnsRecord>  = if let Ok(v) = env::var("CARRIER_BROKERS") {
+            v.split(";").filter_map(|v|dns::DnsRecord::from_signed_txt(v)).collect()
+        } else {
+            let d = if let Ok(d) = env::var("CARRIER_BROKER_DOMAINS") {
+                d.split(":").map(String::from).collect::<Vec<String>>()
+            } else {
+                vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()]
+            };
+
+            let mut a = osaka_dns::resolve(
+                poll.clone(), d,
+                );
+            osaka::sync!(a)?
+                .into_iter()
+                .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
+                .collect()
+        };
         records.shuffle(&mut thread_rng());
 
         loop {

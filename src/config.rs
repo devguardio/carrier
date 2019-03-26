@@ -214,6 +214,17 @@ impl Config {
         }
         s.parse()
     }
+
+    pub fn new(secret: identity::Secret) -> Self {
+        Self {
+            secret,
+            principal: Default::default(),
+            keepalive: Default::default(),
+            publish:   Default::default(),
+            subscribe: Default::default(),
+            names:     Default::default(),
+        }
+    }
 }
 
 pub fn setup() -> Result<(), Error> {

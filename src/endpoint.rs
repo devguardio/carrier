@@ -801,8 +801,8 @@ impl Future<Result<Event, Error>> for Endpoint {
                             })));
                         }
                     }
-                    ChannelProgress::Disconnect => {
-                        debug!("disconnect {}", route);
+                    ChannelProgress::Disconnect(reason) => {
+                        debug!("disconnect {} {:?}", route, reason);
                         killme.push(route.clone());
                     }
                 };

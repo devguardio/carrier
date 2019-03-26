@@ -23,15 +23,52 @@ pub struct Endpoint{
 }
 
 impl Endpoint {
+    #[osaka]
+    fn publish_handler(ep: endpoint::Handle, log: Arc<Mutex<Vec<Event>>>, expect_num_events: usize, _poll: Poll, mut stream: endpoint::Stream) {
+        let m = osaka::sync!(stream);
+        let headers = headers::Headers::decode(&m).unwrap();
+        info!("publish headers: {:?}", headers);
+        loop {
+            if log.lock().unwrap().len() >= expect_num_events {
+                ep.disconnect(ep.broker());
+                return;
+            }
+            let v = proto::PublishChange::decode(osaka::sync!(stream)).unwrap();
+            match v.m {
+                Some(proto::publish_change::M::Supersede(_)) => {
+                    warn!("subscriber superseded");
+                    return;
+                }
+                None => (),
+            }
+        }
+    }
+
     pub fn publish(expect_num_events: usize) -> Self {
-        let log = Arc::new(Mutex::new(Vec::new()));
-        let poll   = osaka::Poll::new();
+        let log     = Arc::new(Mutex::new(Vec::new()));
+        let poll    = osaka::Poll::new();
         let shadow : identity::Address = MOCK_SHADOW_ADDRESS.parse().unwrap();
-        let mut config = config::Config::new(identity::Secret::gen());
-        config.clock = config::ClockSource::System;
-        let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
-        let mut ep = ep.run().unwrap();
-        let ps = ep.publish(shadow);
+        let secret  = identity::Secret::gen();
+        let mut config  = config::Config::new(secret.clone());
+        config.clock    = config::ClockSource::System;
+        let mut ep      = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
+        let mut ep      = ep.run().unwrap();
+
+        let xaddr = identity::SignedAddress::sign(&secret, secret.address());
+
+        let broker = ep.broker();
+        let handle = ep.handle();
+        ep.open(
+            broker,
+            headers::Headers::with_path("/carrier.broker.v1/broker/publish"),
+            |poll, mut stream| {
+                stream.small_message(proto::PublishRequest {
+                    shadow: shadow.as_bytes().to_vec(),
+                    xaddr: xaddr.to_vec(),
+                });
+                Self::publish_handler(handle, log.clone(), expect_num_events, poll, stream)
+            },
+        );
 
         Endpoint {
             ep,

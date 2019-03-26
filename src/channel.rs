@@ -43,7 +43,7 @@ pub struct Channel {
     replay:   replay::AntiReplay,
     recovery: recovery::QuicRecovery,
     streams:  HashMap<u32, stream::OrderedStream>,
-    gone:     bool,
+    gone:     DisconnectReason,
 
     //outgoing
     counters: HashMap<u32, u64>,
@@ -59,13 +59,22 @@ pub struct Channel {
     basetime: Instant,
 }
 
+#[derive(Clone, Debug)]
+pub enum DisconnectReason {
+    None,
+    Peer,
+    Unrecoverable,
+    Dead,
+}
+
+#[derive(Debug)]
 pub enum ChannelProgress {
     Later(Duration),
     SendPacket(Vec<u8>),
     ReceiveHeader(u32, Vec<u8>),
     ReceiveStream(u32, Vec<u8>),
     Close(u32),
-    Disconnect,
+    Disconnect(DisconnectReason),
 }
 
 impl Channel {
@@ -77,7 +86,7 @@ impl Channel {
             replay:   replay::AntiReplay::new(),
             recovery: recovery::QuicRecovery::new(),
             streams:  HashMap::new(),
-            gone:     false,
+            gone:     DisconnectReason::None,
 
             counters: HashMap::new(),
             outqueue: VecDeque::new(),
@@ -177,7 +186,7 @@ impl Channel {
                 }
                 Frame::Disconnect => {
                     trace!("[{}] disconnected", self.debug_id);
-                    self.gone = true;
+                    self.gone = DisconnectReason::Peer;
                 }
                 Frame::Ack { delay, acked } => {
                     let loss = self.recovery.on_ack_received(delay, acked.clone(), now);
@@ -279,7 +288,7 @@ impl Channel {
             }
             recovery::LossDetection::Unrecoverable => {
                 warn!("[{}] connection is unrecoverable", self.debug_id);
-                self.gone = true;
+                self.gone = DisconnectReason::Unrecoverable;
             }
         }
     }
@@ -323,7 +332,7 @@ impl Channel {
                         "[{}] peer has exceeded idle timer * 3 and is marked dead",
                         self.debug_id
                     );
-                    self.gone = true;
+                    self.gone = DisconnectReason::Dead;
                 }
             }
 
@@ -432,11 +441,14 @@ impl Channel {
             }
         }
 
-        if self.gone {
-            return Ok(ChannelProgress::Disconnect);
+        match self.gone {
+            DisconnectReason::None => {
+                Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now)))
+            }
+            ref any => {
+                Ok(ChannelProgress::Disconnect(any.clone()))
+            }
         }
-
-        Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now)))
     }
 
     /// queue a message

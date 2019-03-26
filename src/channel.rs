@@ -223,6 +223,7 @@ impl Channel {
 
         if !ackonly {
             self.outqueue.push_back(Frame::Ack {
+                //FIXME this assumes delay is u64, which it is, but that's actually a bug
                 delay: now,
                 acked: vec![counter],
             });

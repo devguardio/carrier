@@ -81,6 +81,7 @@ fn decode_with_payload() {
 #[test]
 fn decode_invalid_packets() {
     assert!(EncryptedPacket::decode(&[]).is_err());
+    assert!(EncryptedPacket::decode(&[4]).is_err());
     assert!(EncryptedPacket::decode(&[0; 128]).is_err());
     assert!(EncryptedPacket::decode(&[0x08; 128]).is_err());
 }
@@ -97,6 +98,7 @@ pub enum Frame {
         payload: Vec<u8>,
     },
     Ack {
+        //TODO delay is actually transfered as u16, but ugly code in channel abuses this field
         delay: u64,
         acked: Vec<u64>,
     },
@@ -120,6 +122,7 @@ impl std::fmt::Debug for Frame {
                 write!(f, "Stream[s:{},o:{},p:{}]", stream, order, payload.len())
             }
             Frame::Ack { delay, acked } => write!(f, "Ack[d:{},a:{}]", delay, acked.len()),
+
             Frame::Ping => write!(f, "Ping"),
             Frame::Disconnect => write!(f, "Disconnect"),
             Frame::Close { stream, order } => write!(f, "Close[s:{},o:{}]", stream, order),
@@ -399,3 +402,4 @@ fn decode_frame() {
         assert!(false, "expected ack frame");
     }
 }
+

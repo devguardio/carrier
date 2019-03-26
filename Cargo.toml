@@ -72,6 +72,10 @@ default-features    = false
 features            = ["hacl-star-resolver"]
 
 
+[dev-dependencies]
+proptest = "0.9.2"
+
+
 [lib]
 name = "carrier"
 path = "src/lib.rs"

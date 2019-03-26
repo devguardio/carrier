@@ -27,7 +27,8 @@ impl Endpoint {
         let log = Arc::new(Mutex::new(Vec::new()));
         let poll   = osaka::Poll::new();
         let shadow : identity::Address = MOCK_SHADOW_ADDRESS.parse().unwrap();
-        let config = config::Config::new(identity::Secret::gen());
+        let mut config = config::Config::new(identity::Secret::gen());
+        config.clock = config::ClockSource::System;
         let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
         let mut ep = ep.run().unwrap();
         let ps = ep.publish(shadow);
@@ -48,7 +49,8 @@ impl Endpoint {
         let log = Arc::new(Mutex::new(Vec::new()));
         let poll   = osaka::Poll::new();
         let shadow : identity::Address = MOCK_SHADOW_ADDRESS.parse().unwrap();
-        let config = config::Config::new(identity::Secret::gen());
+        let mut config = config::Config::new(identity::Secret::gen());
+        config.clock = config::ClockSource::System;
         let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
         let mut ep = ep.run().unwrap();
 

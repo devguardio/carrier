@@ -43,6 +43,7 @@ pub struct ConfigToml {
     subscribe: Option<SubscriberConfigToml>,
     authorize: Option<Vec<AuthorizationToml>>,
     names:     Option<HashMap<String, String>>,
+    clock:     Option<String>,
 }
 
 impl ConfigToml {
@@ -147,6 +148,41 @@ impl ConfigToml {
         }
         Ok(r)
     }
+
+    fn clock(&mut self) -> Result<ClockSource, Error> {
+        let c = match &self.clock {
+            None => return Ok(Default::default()),
+            Some(v) => v,
+        };
+
+        if c.starts_with(":") {
+            match c.as_str() {
+                ":system" => {
+                    return Ok(ClockSource::System);
+                },
+                _ => {
+                    return Err(Error::InvalidClock(c.clone()));
+                }
+            }
+        }
+
+        return Ok(ClockSource::File(std::path::PathBuf::from(&c)));
+    }
+}
+
+#[derive(Clone)]
+pub enum ClockSource{
+    File(std::path::PathBuf),
+    System,
+}
+
+impl Default for ClockSource {
+    fn default() -> Self {
+        ClockSource::File(
+            dirs::home_dir()
+            .unwrap_or("/root/".into())
+            .join(".devguard/clock"))
+    }
 }
 
 #[derive(Clone)]
@@ -174,6 +210,7 @@ pub struct Config {
     pub publish:   Option<PublisherConfig>,
     pub subscribe: Option<SubscriberConfig>,
     pub names:     HashMap<String, identity::Identity>,
+    pub clock:     ClockSource,
 }
 
 pub fn load() -> Result<Config, Error> {
@@ -203,6 +240,7 @@ pub fn load() -> Result<Config, Error> {
         keepalive: config.keepalive,
         subscribe: config.subscriber()?,
         names: config.names()?,
+        clock: config.clock()?,
     })
 }
 
@@ -223,6 +261,7 @@ impl Config {
             publish:   Default::default(),
             subscribe: Default::default(),
             names:     Default::default(),
+            clock:     Default::default(),
         }
     }
 }

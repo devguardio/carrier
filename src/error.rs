@@ -66,6 +66,7 @@ pub enum Error {
         identity: identity::Identity,
         cr:       Option<proto::ConnectResponse>,
     },
+    InvalidClock(String),
 }
 
 impl fmt::Display for Error {
@@ -124,6 +125,7 @@ impl fmt::Display for Error {
             Error::OutgoingConnectFailed { identity, cr } => {
                 write!(f, "outgoing connection  to {} failed: {:?}", identity, cr)
             }
+            Error::InvalidClock(s) =>  write!(f, "invalid clock configuration: '{}'", s),
         }
     }
 }

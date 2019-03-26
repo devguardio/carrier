@@ -132,6 +132,7 @@ pub struct Endpoint {
     outstanding_connect_outgoing: HashMap<u32, ConnectResponseStage>,
     publish_secret: Option<identity::Secret>,
     cmd:            (channel::Sender<EndpointCmd>, channel::Receiver<EndpointCmd>, osaka::Token),
+    clock:          config::ClockSource,
 }
 
 /// handle is a thread safe api to ep
@@ -186,6 +187,7 @@ impl Endpoint {
         socket: UdpSocket,
         addr: SocketAddr,
         secret: identity::Secret,
+        clock: config::ClockSource,
     ) -> Self {
         let broker_route = noise.route();
         let mut channels = HashMap::new();
@@ -219,6 +221,7 @@ impl Endpoint {
             outstanding_connect_outgoing: HashMap::new(),
             publish_secret: None,
             cmd: (cmd.0, cmd.1, cmd_token),
+            clock,
         }
     }
 
@@ -268,7 +271,7 @@ impl Endpoint {
     }
 
     pub fn connect(&mut self, target: identity::Identity) -> Result<(), Error> {
-        let timestamp = clock::network_time();
+        let timestamp = clock::network_time(&self.clock);
         let (noise, pkt) = noise::initiate(None, &self.secret, timestamp)?;
         let handshake = pkt.encode();
 
@@ -887,6 +890,7 @@ impl Drop for Handle {
 pub struct EndpointBuilder {
     secret:     identity::Secret,
     principal:  Option<identity::Secret>,
+    clock:      config::ClockSource,
 }
 
 impl EndpointBuilder {
@@ -899,6 +903,7 @@ impl EndpointBuilder {
         Ok(Self {
             secret: config.secret.clone(),
             principal: config.principal.clone(),
+            clock:  config.clock.clone(),
         })
     }
 
@@ -932,7 +937,7 @@ impl EndpointBuilder {
 
             info!("attempting connection with {}", &record.addr);
 
-            let timestamp = clock::dns_time(&record);
+            let timestamp = clock::dns_time(&self.clock, &record);
             let (mut noise, pkt) = noise::initiate(Some(&record.x), &self.secret, timestamp)?;
             let pkt = pkt.encode();
 
@@ -978,6 +983,7 @@ impl EndpointBuilder {
                 sock,
                 record.addr,
                 self.principal.unwrap_or(self.secret),
+                self.clock,
             ));
         }
     }

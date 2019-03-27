@@ -62,7 +62,7 @@ message ConnectRequest {
     uint64  timestamp       = 2;
     bytes   handshake       = 3;
     repeated Path paths     = 4;
-    bytes   identity        = 5;
+    bytes   principal       = 5;
 }
 
 message ConnectResponse {
@@ -70,6 +70,7 @@ message ConnectResponse {
     bytes   handshake       = 2;
     uint64  route           = 3;
     repeated Path paths     = 4;
+    string  error           = 5;
 }
 
 service Broker {

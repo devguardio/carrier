@@ -70,3 +70,4 @@ pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/carrier.certificate.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/carrier.sysinfo.v1.rs"));
 }
+

@@ -237,6 +237,13 @@ impl Endpoint {
         self.broker_route
     }
 
+    pub fn xsecret(&mut self) -> identity::Secret {
+        if self.publish_secret.is_none() {
+            self.publish_secret = Some(identity::Secret::gen());
+        }
+        self.publish_secret.clone().unwrap()
+    }
+
     #[osaka]
     fn publish_stream(poll: osaka::Poll, mut stream: Stream) {
         let _omg = defer(|| {
@@ -251,10 +258,8 @@ impl Endpoint {
     }
 
     pub fn publish(&mut self, shadow: identity::Address) -> u32 {
-        if self.publish_secret.is_none() {
-            self.publish_secret = Some(identity::Secret::gen());
-        }
-        let xaddr = identity::SignedAddress::sign(&self.secret, self.publish_secret.as_ref().unwrap().address());
+        let xaddr = self.xsecret().address();
+        let xaddr = identity::SignedAddress::sign(&self.secret, xaddr);
 
         let broker = self.broker_route;
         self.open(
@@ -294,7 +299,7 @@ impl Endpoint {
                 timestamp,
                 handshake,
                 paths: mypaths,
-                identity: self.secret.identity().as_bytes().to_vec(),
+                principal: self.secret.identity().as_bytes().to_vec(),
             }
             .encode(&mut m)
             .unwrap();
@@ -447,7 +452,7 @@ impl Endpoint {
                 addrs:         AddressMode::Discovering(paths.clone()),
                 streams:       HashMap::new(),
                 newhandl:      Some(Box::new(sf)),
-                broker_stream: None,
+                broker_stream: Some(q.qstream),
             },
         );
 
@@ -691,18 +696,31 @@ impl Future<Result<Event, Error>> for Endpoint {
                     }
                     ChannelProgress::ReceiveHeader(stream, frame) => {
                         let headers = osaka::try!(Headers::decode(&frame));
-                        debug!("incomming request {:?}", headers);
-
+                        debug!("incomming stream {} {:?}", stream, headers);
+                        let mut close = false;
                         if route == &self.broker_route {
                             let m = match headers.path().as_ref() {
                                 Some(&b"/carrier.broker.v1/peer/connect") => {
-                                    self.outstanding_connect_incomming.insert(stream);
-                                    Headers::ok()
+                                    if self.publish_secret.is_none() {
+                                        warn!("incomming peer connect stream {}, but we never published",
+                                              stream);
+                                        close = true;
+                                        Headers::with_error(400, "not a publisher")
+                                    } else {
+                                        self.outstanding_connect_incomming.insert(stream);
+                                        Headers::ok()
+                                    }
                                 }
-                                _ => Headers::with_error(404, "not found"),
+                                _ => {
+                                    close = true;
+                                    Headers::with_error(404, "not found")
+                                }
                             };
                             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                             chanchan.stream(stream, m.encode());
+                            if close {
+                                chanchan.close(stream);
+                            }
                         } else {
                             if let Some(ref mut new) = chan.newhandl {
                                 let again = self.poll.never();

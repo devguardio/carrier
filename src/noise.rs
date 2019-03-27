@@ -173,7 +173,7 @@ impl HandshakeResponder {
         pkt.payload.extend_from_slice(&signature.as_bytes());
         assert_eq!(pkt.payload.len() % 256, 0);
         assert_eq!(pkt.payload.len() % 256, 0);
-        assert_ne!(route, 0);
+        assert_ne!(route, 0, "BUG: attempting to send handshake response to route 0");
 
         Ok((
             Transport {

@@ -14,12 +14,15 @@ const MOCK_SHADOW_ADDRESS: &'static str = "oSvQtmxfgpcDZDqdhYyMy2e25tP4qnfNMRVrn
 pub enum Event {
     Publish(identity::Identity),
     Unpublish(identity::Identity),
+    OutgoingConnect(identity::Identity),
+    IncommingConnect(identity::Identity),
 }
 
 pub struct Endpoint{
-    ep:  endpoint::Endpoint,
-    log: Arc<Mutex<Vec<Event>>>,
-    expect_num_events: usize,
+    pub ep:  endpoint::Endpoint,
+    pub log: Arc<Mutex<Vec<Event>>>,
+    pub expect_num_events: usize,
+    pub identity: identity::Identity,
 }
 
 impl Endpoint {
@@ -27,7 +30,7 @@ impl Endpoint {
     fn publish_handler(ep: endpoint::Handle, log: Arc<Mutex<Vec<Event>>>, expect_num_events: usize, _poll: Poll, mut stream: endpoint::Stream) {
         let m = osaka::sync!(stream);
         let headers = headers::Headers::decode(&m).unwrap();
-        info!("publish headers: {:?}", headers);
+        debug!("publish headers: {:?}", headers);
         loop {
             if log.lock().unwrap().len() >= expect_num_events {
                 ep.disconnect(ep.broker());
@@ -54,7 +57,8 @@ impl Endpoint {
         let mut ep      = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
         let mut ep      = ep.run().unwrap();
 
-        let xaddr = identity::SignedAddress::sign(&secret, secret.address());
+        let xsecret = ep.xsecret();
+        let xaddr = identity::SignedAddress::sign(&secret, xsecret.address());
 
         let broker = ep.broker();
         let handle = ep.handle();
@@ -74,6 +78,7 @@ impl Endpoint {
             ep,
             log,
             expect_num_events,
+            identity: secret.identity(),
         }
     }
 
@@ -86,7 +91,8 @@ impl Endpoint {
         let log = Arc::new(Mutex::new(Vec::new()));
         let poll   = osaka::Poll::new();
         let shadow : identity::Address = MOCK_SHADOW_ADDRESS.parse().unwrap();
-        let mut config = config::Config::new(identity::Secret::gen());
+        let secret  = identity::Secret::gen();
+        let mut config  = config::Config::new(secret.clone());
         config.clock = config::ClockSource::System;
         let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
         let mut ep = ep.run().unwrap();
@@ -109,6 +115,7 @@ impl Endpoint {
             ep,
             log,
             expect_num_events,
+            identity: secret.identity(),
         }
     }
 
@@ -116,7 +123,7 @@ impl Endpoint {
     fn subscribe_handler(ep: endpoint::Handle, log: Arc<Mutex<Vec<Event>>>, expect_num_events: usize, _poll: Poll, mut stream: endpoint::Stream) {
         let m = osaka::sync!(stream);
         let headers = headers::Headers::decode(&m).unwrap();
-        info!("subscribe headers: {:?}", headers);
+        debug!("subscribe headers: {:?}", headers);
         loop {
             let v = proto::SubscribeChange::decode(osaka::sync!(stream)).unwrap();
             match v.m {
@@ -141,15 +148,51 @@ impl Endpoint {
         }
     }
 
+    pub fn connect(expect_num_events: usize, target: identity::Identity) -> Self {
+        let log = Arc::new(Mutex::new(Vec::new()));
+        let poll   = osaka::Poll::new();
+        let shadow : identity::Address = MOCK_SHADOW_ADDRESS.parse().unwrap();
+        let secret  = identity::Secret::gen();
+        let mut config  = config::Config::new(secret.clone());
+        config.clock = config::ClockSource::System;
+        let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
+        let mut ep = ep.run().unwrap();
+
+        let broker = ep.broker();
+        let handle = ep.handle();
+        ep.connect(target).unwrap();
+
+        Endpoint {
+            ep,
+            log,
+            expect_num_events,
+            identity: secret.identity(),
+        }
+    }
+
     #[osaka]
     pub fn wait(mut self) -> Result<Vec<Event>, Error> {
         loop {
             match osaka::sync!(self.ep)? {
                 endpoint::Event::BrokerGone => break,
                 endpoint::Event::Disconnect { .. } => (),
-                endpoint::Event::OutgoingConnect(_) => (),
+                endpoint::Event::OutgoingConnect(q) => {
+                    if let Some(ref cr) = q.cr {
+                        if cr.ok {
+                            debug!("outgoing connect to {} via route {}", q.identity, cr.route);
+                        } else {
+                            panic!("outgoing connect to {} failed {}", q.identity, cr.error);
+                        }
+                    } else {
+                        panic!("outgoing connect to {} has no cr", q.identity);
+                    }
+                    self.log.lock().unwrap().push(Event::OutgoingConnect(q.identity.clone()));
+                    self.ep.accept_outgoing(q, move |_h, _s| None).unwrap();
+                },
                 endpoint::Event::IncommingConnect(q) => {
-                    info!("ignoring incomming connect {}", q.identity);
+                    debug!("incomming connect to {} via route {}", q.identity, q.cr.route);
+                    self.log.lock().unwrap().push(Event::IncommingConnect(q.identity.clone()));
+                    self.ep.accept_incomming(q, move |_h, _s| None);
                 }
             };
             if self.log.lock().unwrap().len() >= self.expect_num_events {

@@ -152,6 +152,7 @@ pub fn main() -> Result<(), Error> {
                 .with_axons()
                 .publish(poll);
             publisher.run()
+
         }
         ("subscribe", Some(submatches)) => {
             let poll = osaka::Poll::new();

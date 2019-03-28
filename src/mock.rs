@@ -16,6 +16,7 @@ pub enum Event {
     Publish(identity::Identity),
     Unpublish(identity::Identity),
     OutgoingConnect(identity::Identity),
+    OutgoingConnectFailed(identity::Identity),
     IncommingConnect(identity::Identity),
 }
 
@@ -161,7 +162,7 @@ impl Endpoint {
 
         let broker = ep.broker();
         let handle = ep.handle();
-        ep.connect(target).unwrap();
+        ep.connect(target, 1).unwrap();
 
         Endpoint {
             ep,
@@ -185,13 +186,18 @@ impl Endpoint {
                     if let Some(ref cr) = q.cr {
                         if cr.ok {
                             debug!("outgoing connect to {} via route {}", q.identity, cr.route);
+                            self.log.lock().unwrap().push(Event::OutgoingConnect(q.identity.clone()));
                         } else {
-                            panic!("outgoing connect to {} failed {}", q.identity, cr.error);
+                            warn!("outgoing connect to {} failed {}", q.identity, cr.error);
+                            self.log.lock().unwrap().push(Event::OutgoingConnectFailed(q.identity.clone()));
+                            if self.log.lock().unwrap().len() >= self.expect_num_events {
+                                break;
+                            };
+                            continue;
                         }
                     } else {
                         panic!("outgoing connect to {} has no cr", q.identity);
                     }
-                    self.log.lock().unwrap().push(Event::OutgoingConnect(q.identity.clone()));
                     self.ep.accept_outgoing(q, move |_h, _s| None).unwrap();
                 },
                 endpoint::Event::IncommingConnect(q) => {
@@ -206,7 +212,6 @@ impl Endpoint {
         }
 
         drop(self.ep);
-
         if let Ok(v) = Arc::try_unwrap(self.log) {
             Ok(v.into_inner().unwrap())
         } else {

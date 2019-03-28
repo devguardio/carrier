@@ -314,7 +314,7 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                 .expect("carrier is not thread safe");
             for (p, _) in state.publishers.clone() {
                 if !state.subscribed.contains_key(&p) {
-                    osaka::try!(self.ep.connect(p.clone()));
+                    osaka::try!(self.ep.connect(p.clone(), 5));
                     state.subscribed.insert(p, SubscriberState::default());
                 }
             }

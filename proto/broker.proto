@@ -63,6 +63,7 @@ message ConnectRequest {
     bytes   handshake       = 3;
     repeated Path paths     = 4;
     bytes   principal       = 5;
+    uint32  timeout         = 6;
 }
 
 message ConnectResponse {

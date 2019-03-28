@@ -110,7 +110,7 @@ pub fn ui(
 ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
-    ep.connect(target)?;
+    ep.connect(target, 5)?;
 
     let q = loop {
         match osaka::sync!(ep)? {

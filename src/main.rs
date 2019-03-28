@@ -339,7 +339,7 @@ where
 {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
-    ep.connect(target)?;
+    ep.connect(target, 5)?;
 
     let q = loop {
         match osaka::sync!(ep)? {
@@ -379,7 +379,7 @@ fn half_get(
 ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
-    ep.connect(target)?;
+    ep.connect(target, 5)?;
 
     match osaka::sync!(ep)? {
         carrier::endpoint::Event::OutgoingConnect(q) => {
@@ -401,7 +401,7 @@ fn push(
 ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
-    ep.connect(target)?;
+    ep.connect(target, 5)?;
 
     let q = loop {
         match osaka::sync!(ep)? {

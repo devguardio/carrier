@@ -275,7 +275,7 @@ impl Endpoint {
         )
     }
 
-    pub fn connect(&mut self, target: identity::Identity) -> Result<(), Error> {
+    pub fn connect(&mut self, target: identity::Identity, timeout: u16)-> Result<(), Error> {
         let timestamp = clock::network_time(&self.clock);
         let (noise, pkt) = noise::initiate(None, &self.secret, timestamp)?;
         let handshake = pkt.encode();
@@ -295,11 +295,12 @@ impl Endpoint {
 
             let mut m = Vec::new();
             proto::ConnectRequest {
-                target: target.as_bytes().to_vec(),
+                target:     target.as_bytes().to_vec(),
                 timestamp,
                 handshake,
-                paths: mypaths,
-                principal: self.secret.identity().as_bytes().to_vec(),
+                paths:      mypaths,
+                principal:  self.secret.identity().as_bytes().to_vec(),
+                timeout: timeout as u32,
             }
             .encode(&mut m)
             .unwrap();

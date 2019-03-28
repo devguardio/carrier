@@ -162,7 +162,7 @@ impl Endpoint {
 
         let broker = ep.broker();
         let handle = ep.handle();
-        ep.connect(target, 1).unwrap();
+        ep.connect(target, 5).unwrap();
 
         Endpoint {
             ep,

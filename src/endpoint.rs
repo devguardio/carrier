@@ -388,7 +388,8 @@ impl Endpoint {
             panic!("SECURITY ALERT: handshake for outgoing connect has unexpected identity");
         }
         if cr.route != noise.route() {
-            panic!("BUG (in broker maybe): handshake for outgoing connect has unexpected route");
+            panic!("BUG (in broker maybe): handshake for outgoing connect has unexpected route {} vs cr {}",
+            noise.route(), cr.route);
         }
 
         let mut paths = HashMap::new();

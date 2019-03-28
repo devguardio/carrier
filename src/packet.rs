@@ -32,7 +32,8 @@ impl EncryptedPacket {
             1 => RoutingDirection::Responder2Initiator,
             _ => unreachable!(),
         };
-        let route = route.as_ref().read_u64::<BigEndian>()? >> 1;
+        route[7] &= 0b11111110;
+        let route   = route.as_ref().read_u64::<BigEndian>()?;
         let counter = inbuf.read_u64::<BigEndian>()?;
 
         if version != 0x08 || reserved != [0xff, 0xff, 0xff] {
@@ -54,9 +55,8 @@ impl EncryptedPacket {
         let mut w = [self.version].to_vec();
         w.extend_from_slice(&[0xff; 3]);
 
-        assert!(self.route < 0b1000000000000000000000000000000000000000000000000000000000000000);
         let mut route = [0; 8];
-        route.as_mut().write_u64::<BigEndian>(self.route << 1).unwrap();
+        route.as_mut().write_u64::<BigEndian>(self.route).unwrap();
         match self.direction {
             RoutingDirection::Initiator2Responder => route[7] &= 0b11111110,
             RoutingDirection::Responder2Initiator => route[7] |= 0b00000001,

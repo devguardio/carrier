@@ -12,6 +12,7 @@ const MOCK_SHADOW_ADDRESS: &'static str = "oSvQtmxfgpcDZDqdhYyMy2e25tP4qnfNMRVrn
 
 #[derive(Clone, Debug)]
 pub enum Event {
+    Disconnect(identity::Identity),
     Publish(identity::Identity),
     Unpublish(identity::Identity),
     OutgoingConnect(identity::Identity),
@@ -175,7 +176,11 @@ impl Endpoint {
         loop {
             match osaka::sync!(self.ep)? {
                 endpoint::Event::BrokerGone => break,
-                endpoint::Event::Disconnect { .. } => (),
+                endpoint::Event::Disconnect { identity,  route } => {
+                    debug!("{} disconnected", identity);
+                    self.log.lock().unwrap().push(Event::Disconnect(identity.clone()));
+
+                },
                 endpoint::Event::OutgoingConnect(q) => {
                     if let Some(ref cr) = q.cr {
                         if cr.ok {
@@ -200,10 +205,12 @@ impl Endpoint {
             };
         }
 
+        drop(self.ep);
+
         if let Ok(v) = Arc::try_unwrap(self.log) {
             Ok(v.into_inner().unwrap())
         } else {
-            unreachable!()
+            panic!("huh, something is still holding a ref to test log")
         }
     }
 }

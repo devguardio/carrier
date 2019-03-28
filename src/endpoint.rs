@@ -111,8 +111,8 @@ impl Drop for UdpChannel {
             self.streams.len(),
         );
 
-        if self.broker_stream.is_some() {
-            error!("BUG: [{}] udp channel dropped leaking a broker stream", self.identity);
+        if let Some(bs) = self.broker_stream {
+            error!("BUG: [{}] udp channel dropped leaking a broker stream {}", self.identity, bs);
         }
     }
 }
@@ -320,7 +320,7 @@ impl Endpoint {
     }
 
     pub fn disconnect(&mut self, route: RoutingKey) -> Result<(), Error> {
-        if let Some(chan) = self.channels.remove(&route) {
+        if let Some(ref mut chan) = self.channels.remove(&route) {
             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
             let pkt = chanchan.disconnect()?;
             match &chan.addrs {
@@ -339,11 +339,14 @@ impl Endpoint {
             }
 
             if let Some(bs) = chan.broker_stream {
-                let chan = self.channels.get_mut(&self.broker_route).unwrap();
-                let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-                chanchan.close(bs);
+                if let Some(brkchan) = self.channels.get_mut(&self.broker_route) {
+                    let mut chanchan = brkchan.chan.try_borrow_mut().expect("carrier is not thread safe");
+                    chanchan.close(bs);
+                }
                 chan.broker_stream = None;
             }
+
+            assert!(chan.broker_stream.is_none());
         }
         Ok(())
     }
@@ -533,6 +536,19 @@ impl Endpoint {
             cr,
             qstream,
         })
+    }
+}
+
+impl Drop for Endpoint {
+    fn drop(&mut self) {
+        debug!(
+            "endpoing dropped with {} channels",
+            self.channels.len(),
+            );
+
+        for route in self.channels.keys().cloned().collect::<Vec<RoutingKey>>().into_iter() {
+            self.disconnect(route).ok();
+        }
     }
 }
 

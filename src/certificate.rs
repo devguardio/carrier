@@ -144,7 +144,7 @@ impl Certificate {
     }
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Authenticator {
     shadow: Address,
     grants: HashMap<Identity, HashSet<String>>,

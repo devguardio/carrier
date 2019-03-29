@@ -23,14 +23,30 @@ mod shell;
 
 use clap::{crate_authors, crate_description, crate_name, crate_version, App, Arg, SubCommand};
 
-pub fn main() -> Result<(), Error> {
+pub fn main() {
+    match _main() {
+        Ok(()) => (),
+        Err(Error::OutgoingConnectFailed{identity, cr,..}) => {
+            if let Some(cr) = cr {
+                log::error!("failed to connect to {}: {}", identity, cr.error);
+            } else {
+                log::error!("failed to connect to {}: no connect response from broker", identity);
+            }
+            ::std::process::exit(1);
+        }
+        Err(e) => {
+            ::std::process::exit(1);
+        }
+    }
+}
+pub fn _main() -> Result<(), Error> {
     if let Err(_) = env::var("RUST_LOG") {
         env::set_var("RUST_LOG", "info");
     }
     tinylogger::init().ok();
 
     let clap = App::new(crate_name!())
-        .version(crate_version!())
+        .version(carrier::BUILD_ID)
         .about(crate_description!())
         .author(crate_authors!())
         .setting(clap::AppSettings::ArgRequiredElseHelp)
@@ -101,6 +117,18 @@ pub fn main() -> Result<(), Error> {
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
                 .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2))
                 .arg(Arg::with_name("remote-file").takes_value(true).required(true).index(3)),
+        )
+        .subcommand(
+            SubCommand::with_name("ota")
+                .about("update target system image")
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2)),
+        )
+        .subcommand(
+            SubCommand::with_name("discovery")
+                .aliases(&["disco"])
+                .about("discover peer services")
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
         );
 
     #[cfg(any(target_os = "linux", target_os = "macos", target_os = "android",))]
@@ -239,7 +267,35 @@ pub fn main() -> Result<(), Error> {
                 hasher.result().to_vec()
             };
 
-            push(poll, config, target, local_file, remote_file, sha).run()
+            push(poll, config, target, local_file, remote_file, sha, false).run()
+        }
+        ("ota", Some(submatches)) => {
+            let poll = osaka::Poll::new();
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+            let local_file = submatches.value_of("local-file").unwrap().to_string();
+
+            let sha = {
+                use sha2::{Digest, Sha256};
+                use std::fs::File;
+                use std::io::Read;
+                let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+                let mut hasher = Sha256::new();
+                loop {
+                    let mut buf = vec![0; 1024];
+                    let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
+                    if len == 0 {
+                        break;
+                    }
+                    hasher.input(&buf[..len]);
+                }
+                hasher.result().to_vec()
+            };
+
+            push(poll, config, target, local_file, String::new(), sha, true).run()
         }
         ("netsurvey", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -255,6 +311,23 @@ pub fn main() -> Result<(), Error> {
                 target,
                 headers,
                 message_handler::<carrier::proto::NetSurvey>,
+            )
+            .run()
+        }
+        ("discovery", Some(submatches)) => {
+            let poll = osaka::Poll::new();
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+            let mut headers = carrier::headers::Headers::with_path("/v2/carrier.discovery.v1/discover");
+            get(
+                poll,
+                config,
+                target,
+                headers,
+                message_handler::<carrier::proto::DiscoveryResponse>,
             )
             .run()
         }
@@ -355,7 +428,7 @@ where
         }
     };
 
-    let route = ep.accept_outgoing(q, move |_h, _s| None).unwrap();
+    let route = ep.accept_outgoing(q, move |_h, _s| None)?;
     ep.open(route, headers.clone(), f);
 
     loop {
@@ -398,6 +471,7 @@ fn push(
     local_file: String,
     remote_file: String,
     sha: Vec<u8>,
+    ota: bool,
 ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
@@ -412,10 +486,16 @@ fn push(
         }
     };
 
-    let headers = carrier::headers::Headers::with_path("/v0/sft")
+    let headers = if ota {
+        carrier::headers::Headers::with_path("/v0/ota")
+            .and(":method".into(), "PUT".into())
+            .and("sha256".into(), sha)
+    } else {
+        carrier::headers::Headers::with_path("/v0/sft")
         .and(":method".into(), "PUT".into())
         .and("sha256".into(), sha)
-        .and("file".into(), remote_file.into());
+        .and("file".into(), remote_file.into())
+    };
 
     let route = ep.accept_outgoing(q, move |_h, _s| None).unwrap();
     ep.open(

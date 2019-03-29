@@ -101,6 +101,7 @@ message Sysinfo {
     repeated Netdev net     = 6;
     repeated Switch switch  = 7;
     string      board_id    = 8;
+    string carrier_build_id = 9;
 }
 
 

@@ -175,7 +175,7 @@ impl ConfigToml {
     }
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub enum ClockSource{
     File(std::path::PathBuf),
     System,
@@ -190,13 +190,13 @@ impl Default for ClockSource {
     }
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct Authorization {
     pub identity: identity::Identity,
     pub path:     String,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct PublisherConfig {
     pub shadow: identity::Address,
     pub auth:   certificate::Authenticator,
@@ -207,7 +207,7 @@ pub struct SubscriberConfig {
     pub shadow: identity::Address,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Config {
     pub secret:    identity::Secret,
     pub principal: Option<identity::Secret>,

@@ -93,6 +93,7 @@ message PeerConnectResponse {
     bool    ok              = 1;
     bytes   handshake       = 2;
     repeated Path paths     = 3;
+    string error            = 4;
 }
 
 service Peer {
@@ -105,3 +106,4 @@ message ProtoHeader {
 
 
 message Empty {}
+

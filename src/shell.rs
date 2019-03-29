@@ -122,7 +122,7 @@ pub fn ui(
     };
 
     let headers = carrier::headers::Headers::with_path("/v0/shell");
-    let route = ep.accept_outgoing(q, move |_h, _s| None).unwrap();
+    let route = ep.accept_outgoing(q, move |_h, _s| None)?;
     ep.open(route, headers, message_handler);
 
     loop {

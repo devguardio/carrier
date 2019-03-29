@@ -165,9 +165,8 @@ impl Channel {
                     );
 
                     if !self.streams.contains_key(&stream) && self.streams.len() > 1024 {
-                        //TODO streams are currently not removed
-                        error!("[{}] excessive number of streams", self.debug_id);
-                        return Ok(());
+                        //FIXME streams are currently not removed
+                        return Err(Error::OpenStreamsLimit.into());
                     }
 
                     let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());

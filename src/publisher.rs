@@ -24,6 +24,7 @@ pub struct PublisherBuilder {
     config:     Config,
     routes:     HashMap<String, RouteHandler>,
     with_axons: bool,
+    with_disco: bool,
 }
 
 pub fn new(config: Config) -> PublisherBuilder {
@@ -31,6 +32,7 @@ pub fn new(config: Config) -> PublisherBuilder {
         config,
         routes: HashMap::new(),
         with_axons: false,
+        with_disco: true,
     }
 }
 
@@ -42,6 +44,7 @@ fn newstreamhandler(
     auth: &certificate::Authenticator,
     routes: &HashMap<String, RouteHandler>,
     with_axons: bool,
+    with_disco: bool,
 ) -> Option<osaka::Task<()>> {
     let resource = headers
         .path()
@@ -69,6 +72,24 @@ fn newstreamhandler(
         }
     }
 
+    if with_disco {
+        if resource == "/v2/carrier.discovery.v1/discover" {
+            stream.send(headers::Headers::ok().encode());
+            stream.message(super::proto::DiscoveryResponse {
+                paths: routes.keys().cloned().collect()
+            });
+            return None;
+        }
+        if let Some(exe) = resource.split("/v0/").nth(1) {
+            if exe.chars().all(|c| c.is_ascii_alphanumeric()) {
+                let exe = format!("carrier-axon-v0-{}", exe);
+                if let Ok(path) = which::which(exe) {
+                    return Some(axon_exe(poll, headers, stream, path));
+                }
+            }
+        }
+    }
+
     stream.send(headers::Headers::with_error(404, "not found").encode());
     None
 }
@@ -83,6 +104,11 @@ impl PublisherBuilder {
         self
     }
 
+    pub fn without_disco(mut self) -> Self {
+        self.with_disco = false;
+        self
+    }
+
     pub fn with_axons(mut self) -> Self {
         self.with_axons = true;
         self
@@ -94,6 +120,7 @@ impl PublisherBuilder {
         let mut ep = osaka::sync!(ep)?;
 
         let with_axons = self.with_axons;
+        let with_disco = self.with_disco;
         let routes: &'static HashMap<String, RouteHandler> = Box::leak(Box::new(self.routes));
         let publish_config = self.config.publish.expect("missing publish section in config");
         ep.publish(publish_config.shadow.clone());
@@ -110,11 +137,14 @@ impl PublisherBuilder {
                     let identity = q.identity.clone();
                     match publish_config.auth.reject_early(&q.identity, &Vec::new()) {
                         Ok(()) => ep.accept_incomming(q, move |h, s| {
-                            newstreamhandler(poll.clone(), h, s, &identity, &publish_config.auth, &routes, with_axons)
+                            newstreamhandler(
+                                poll.clone(), h, s,
+                                &identity, &publish_config.auth,
+                                &routes, with_axons, with_disco)
                         }),
                         Err(e) => {
                             warn!("rejecting incomming {}: {}", q.identity, e);
-                            ep.reject(q);
+                            ep.reject(q, format!("{}", e));
                         }
                     }
                 }

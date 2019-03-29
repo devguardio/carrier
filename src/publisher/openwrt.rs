@@ -17,6 +17,7 @@ use std::time::Duration;
 use std::time::{SystemTime, UNIX_EPOCH};
 use wait_timeout::ChildExt;
 use std::collections::HashMap;
+use mio_extras::channel;
 
 macro_rules! tryo {
     ($i:expr, $x:expr) => {
@@ -485,6 +486,7 @@ pub fn sysinfo(
         net:      net().unwrap_or(Vec::new()),
         switch:   switch(&board).unwrap_or(Vec::new()),
         board_id: board.map(|board|board.model.id.clone()).unwrap_or(String::new()),
+        carrier_build_id: super::super::BUILD_ID.into(),
     });
     None
 }
@@ -800,30 +802,58 @@ pub fn ota(
     _: &identity::Identity,
     mut stream: endpoint::Stream,
 ) -> Option<osaka::Task<()>> {
-    match headers.get(b":board") {
-        Some(board) => match headers.get(b"sha256") {
-            None => {
-                let headers = Headers::with_error(400, "missing sha256 header");
-                stream.send(headers.encode());
-                None
-            }
-            Some(sha) => {
-                let board = String::from_utf8_lossy(board).into_owned();
-                Some(m(poll, stream, board, sha.to_vec()))
-            }
-        },
+    match headers.get(b"sha256") {
         None => {
-            let headers = Headers::with_error(400, "missing board header");
+            let headers = Headers::with_error(400, "missing sha256 header");
             stream.send(headers.encode());
             None
+        }
+        Some(sha) => {
+            Some(m(poll, stream, sha.to_vec()))
         }
     }
 }
 
 #[osaka]
-fn m(poll: osaka::Poll, mut stream: endpoint::Stream, _board: String, sha: Vec<u8>) {
-    let headers = Headers::with_error(400, "board mismatch");
-    stream.send(headers.encode());
-    let mut s = sft::sft_(poll, stream, "/tmp/sysupdate.img".to_string(), sha);
+fn m(poll: osaka::Poll, mut stream: endpoint::Stream, sha: Vec<u8>) {
+    use std::process::Stdio;
+    use std::thread;
+
+    let mut s = sft::sft_(poll.clone(), stream.clone(), "/tmp/carrier.ota.sysupdate.img".to_string(), sha);
     osaka::sync!(s);
+
+    let child = match  Command::new("/sbin/sysupgrade")
+        .args(&["/tmp/carrier.ota.sysupdate.img"])
+        .stderr(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        {
+            Ok(v) => v,
+            Err(e) => {
+                stream.send(format!("{}", e).as_bytes());
+                return;
+            }
+        };
+
+    let (sender, receiver) = channel::channel();
+    thread::spawn(move ||{
+        let mut stdout = child.stdout.expect("stdout");
+        let mut buf = [0; 1000];
+        loop {
+            let len = stdout.read(&mut buf).unwrap();
+            sender.send(buf[0..len].to_vec());
+        }
+    });
+
+    let token = poll
+        .register(&receiver, mio::Ready::readable(), mio::PollOpt::level())
+        .unwrap();
+
+    loop {
+        match receiver.try_recv() {
+            Err(std::sync::mpsc::TryRecvError::Empty) => yield poll.again(token.clone(), None),
+            Err(std::sync::mpsc::TryRecvError::Disconnected) => return,
+            Ok(v) => stream.send(v),
+        }
+    }
 }

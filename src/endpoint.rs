@@ -352,12 +352,13 @@ impl Endpoint {
         Ok(())
     }
 
-    pub fn reject(&mut self, q: ConnectRequest) {
+    pub fn reject(&mut self, q: ConnectRequest, error: String) {
         let mut m = Vec::new();
         proto::PeerConnectResponse {
             ok:        false,
             handshake: Vec::new(),
             paths:     Vec::new(),
+            error,
         }
         .encode(&mut m)
         .unwrap();
@@ -471,9 +472,10 @@ impl Endpoint {
 
         let mut m = Vec::new();
         proto::PeerConnectResponse {
-            ok:        true,
-            handshake: pkt.encode(),
-            paths:     mypaths,
+            ok:         true,
+            handshake:  pkt.encode(),
+            paths:      mypaths,
+            error:      String::new(),
         }
         .encode(&mut m)
         .unwrap();
@@ -575,6 +577,14 @@ impl Future<Result<Event, Error>> for Endpoint {
             }
         };
 
+
+        if !self.channels.contains_key(&self.broker_route) {
+            return FutureResult::Done(Err(Error::BrokerLost));
+        }
+
+
+        let mut disconnect = Vec::new();
+
         // receive one packet
         let mut buf = vec![0; MAX_PACKET_SIZE];
         match self.socket.recv_from(&mut buf) {
@@ -586,7 +596,8 @@ impl Future<Result<Event, Error>> for Endpoint {
             Ok((len, addr)) => match EncryptedPacket::decode(&buf[..len]) {
                 Err(e) => warn!("{}: {}", addr, e),
                 Ok(pkt) => {
-                    if let Some(chan) = self.channels.get_mut(&pkt.route) {
+                    let route = pkt.route;
+                    if let Some(chan) = self.channels.get_mut(&route) {
                         let settle = if let AddressMode::Discovering(ref mut addrs) = chan.addrs {
                             trace!("in discovery: received from {}", addr);
                             let count = {
@@ -626,6 +637,10 @@ impl Future<Result<Event, Error>> for Endpoint {
                         let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                         match chanchan.recv(pkt) {
                             Err(Error::AntiReplay) => debug!("{}: {}", addr, Error::AntiReplay),
+                            Err(Error::OpenStreamsLimit) => {
+                                error!("{}: {}", addr, Error::OpenStreamsLimit);
+                                disconnect.push(route);
+                            }
                             Err(e) => warn!("{}: {}", addr, e),
                             Ok(()) => {
                                 if let AddressMode::Established(ref mut addr_, ref previous) = chan.addrs {
@@ -652,6 +667,12 @@ impl Future<Result<Event, Error>> for Endpoint {
                 }
             },
         };
+
+        for route in disconnect {
+            if let Err(e) = self.disconnect(route) {
+                return FutureResult::Done(Err(e));
+            }
+        }
 
         // work on all channels
         let mut later = self.poll.any(vec![self.token.clone(), self.cmd.2.clone()], Some(Duration::from_secs(600)));
@@ -772,9 +793,10 @@ impl Future<Result<Event, Error>> for Endpoint {
                                     warn!("{}", e);
                                     let mut m = Vec::new();
                                     proto::PeerConnectResponse {
-                                        ok:        false,
-                                        handshake: Vec::new(),
-                                        paths:     Vec::new(),
+                                        ok:         false,
+                                        handshake:  Vec::new(),
+                                        paths:      Vec::new(),
+                                        error:      format!("{}", e),
                                     }
                                     .encode(&mut m)
                                     .unwrap();

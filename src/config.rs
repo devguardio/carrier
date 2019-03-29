@@ -36,6 +36,7 @@ pub struct SubscriberConfigToml {
 
 #[derive(Deserialize, Default, Serialize)]
 pub struct ConfigToml {
+    broker:    Option<Vec<String>>,
     secret:    Option<String>,
     principal: Option<String>,
     keepalive: Option<u16>,
@@ -168,6 +169,10 @@ impl ConfigToml {
 
         return Ok(ClockSource::File(std::path::PathBuf::from(&c)));
     }
+
+    fn broker(&mut self) -> Result<Vec<String>, Error> {
+        Ok(self.broker.clone().unwrap_or(Config::default_brokers()))
+    }
 }
 
 #[derive(Clone)]
@@ -211,6 +216,7 @@ pub struct Config {
     pub subscribe: Option<SubscriberConfig>,
     pub names:     HashMap<String, identity::Identity>,
     pub clock:     ClockSource,
+    pub broker:    Vec<String>,
 }
 
 pub fn load() -> Result<Config, Error> {
@@ -241,8 +247,10 @@ pub fn load() -> Result<Config, Error> {
         subscribe: config.subscriber()?,
         names: config.names()?,
         clock: config.clock()?,
+        broker: config.broker()?,
     })
 }
+
 
 impl Config {
     pub fn resolve_identity<S: Into<String>>(&self, s: S) -> Result<identity::Identity, Error> {
@@ -251,6 +259,10 @@ impl Config {
             return Ok(v.clone());
         }
         s.parse()
+    }
+
+    fn default_brokers() -> Vec<String> {
+        vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()]
     }
 
     pub fn new(secret: identity::Secret) -> Self {
@@ -262,6 +274,7 @@ impl Config {
             subscribe: Default::default(),
             names:     Default::default(),
             clock:     Default::default(),
+            broker:    Self::default_brokers(),
         }
     }
 }

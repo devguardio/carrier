@@ -927,6 +927,7 @@ pub struct EndpointBuilder {
     secret:     identity::Secret,
     principal:  Option<identity::Secret>,
     clock:      config::ClockSource,
+    broker:    Vec<String>,
 }
 
 impl EndpointBuilder {
@@ -940,6 +941,7 @@ impl EndpointBuilder {
             secret: config.secret.clone(),
             principal: config.principal.clone(),
             clock:  config.clock.clone(),
+            broker: config.broker.clone(),
         })
     }
 
@@ -952,7 +954,7 @@ impl EndpointBuilder {
             let d = if let Ok(d) = env::var("CARRIER_BROKER_DOMAINS") {
                 d.split(":").map(String::from).collect::<Vec<String>>()
             } else {
-                vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()]
+                self.broker
             };
 
             let mut a = osaka_dns::resolve(

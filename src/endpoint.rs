@@ -578,10 +578,6 @@ impl Future<Result<Event, Error>> for Endpoint {
         };
 
 
-        if !self.channels.contains_key(&self.broker_route) {
-            return FutureResult::Done(Err(Error::BrokerLost));
-        }
-
 
         let mut disconnect = Vec::new();
 

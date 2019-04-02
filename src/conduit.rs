@@ -307,11 +307,15 @@ impl Conduit {
 impl osaka::Future<Result<(), Error>> for Conduit {
     fn poll(&mut self) -> osaka::FutureResult<Result<(), Error>> {
         if self.last_sync.elapsed().as_secs() > 1 {
+
             self.last_sync = Instant::now();
             let mut state = self
                 .state
                 .try_borrow_mut()
                 .expect("carrier is not thread safe");
+
+            info!("--- sync  connected: {}/{}", state.publishers.len(), state.subscribed.len());
+
             for (p, _) in state.publishers.clone() {
                 if !state.subscribed.contains_key(&p) {
                     osaka::try!(self.ep.connect(p.clone(), 5));

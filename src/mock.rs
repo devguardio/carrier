@@ -12,6 +12,7 @@ const MOCK_SHADOW_ADDRESS: &'static str = "oSvQtmxfgpcDZDqdhYyMy2e25tP4qnfNMRVrn
 
 #[derive(Clone, Debug)]
 pub enum Event {
+    Supersede,
     Disconnect(identity::Identity),
     Publish(identity::Identity),
     Unpublish(identity::Identity),
@@ -41,7 +42,7 @@ impl Endpoint {
             let v = proto::PublishChange::decode(osaka::sync!(stream)).unwrap();
             match v.m {
                 Some(proto::publish_change::M::Supersede(_)) => {
-                    warn!("subscriber superseded");
+                    log.lock().unwrap().push(Event::Supersede);
                     return;
                 }
                 None => (),
@@ -138,6 +139,7 @@ impl Endpoint {
                             identity::Identity::from_bytes(identity).expect("unpub identity")));
                 }
                 Some(proto::subscribe_change::M::Supersede(_)) => {
+                    log.lock().unwrap().push(Event::Supersede);
                     warn!("subscriber superseded");
                     return;
                 }

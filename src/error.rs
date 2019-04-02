@@ -68,7 +68,6 @@ pub enum Error {
     },
     OpenStreamsLimit,
     InvalidClock(String),
-    BrokerLost,
 }
 
 impl fmt::Display for Error {
@@ -129,7 +128,6 @@ impl fmt::Display for Error {
             }
             Error::InvalidClock(s) =>  write!(f, "invalid clock configuration: '{}'", s),
             Error::OpenStreamsLimit => write!(f, "excessive number of open streams"),
-            Error::BrokerLost => write!(f, "broker connection is gone"),
         }
     }
 }

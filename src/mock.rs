@@ -57,7 +57,9 @@ impl Endpoint {
         let secret  = identity::Secret::gen();
         let mut config  = config::Config::new(secret.clone());
         config.clock    = config::ClockSource::System;
-        let mut ep      = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
+        let mut ep      = endpoint::EndpointBuilder::new(&config).unwrap();
+        ep.do_not_move();
+        let mut ep = ep.connect(poll);
         let mut ep      = ep.run().unwrap();
 
         let xsecret = ep.xsecret();
@@ -97,8 +99,9 @@ impl Endpoint {
         let secret  = identity::Secret::gen();
         let mut config  = config::Config::new(secret.clone());
         config.clock = config::ClockSource::System;
-        let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
-        let mut ep = ep.run().unwrap();
+        let mut ep = endpoint::EndpointBuilder::new(&config).unwrap();
+        ep.do_not_move();
+        let mut ep = ep.connect(poll).run().unwrap();
 
         let broker = ep.broker();
         let handle = ep.handle();
@@ -108,7 +111,8 @@ impl Endpoint {
             |poll, mut stream| {
                 stream.small_message(proto::SubscribeRequest {
                     shadow: shadow.as_bytes().to_vec(),
-                    filter: Vec::new(),
+                    group_identity: Vec::new(),
+                    group_signature: Vec::new(),
                 });
                 Self::subscribe_handler(handle, log.clone(), expect_num_events, poll, stream)
             },
@@ -159,8 +163,9 @@ impl Endpoint {
         let secret  = identity::Secret::gen();
         let mut config  = config::Config::new(secret.clone());
         config.clock = config::ClockSource::System;
-        let mut ep = endpoint::EndpointBuilder::new(&config).unwrap().connect(poll);
-        let mut ep = ep.run().unwrap();
+        let mut ep = endpoint::EndpointBuilder::new(&config).unwrap();
+        ep.do_not_move();
+        let mut ep = ep.connect(poll).run().unwrap();
 
         let broker = ep.broker();
         let handle = ep.handle();

@@ -70,7 +70,9 @@ impl Conduit {
         let mut ep = endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
         let mut ep = osaka::sync!(ep)?;
 
-        let shadow = config.subscribe.expect("[subscribe] must be set").shadow;
+        let subconf= config.subscribe.expect("[subscribe] must be set");
+        let shadow = subconf.shadow;
+        let group  = subconf.group;
         let broker = ep.broker();
         ep.open(
             broker,
@@ -78,7 +80,8 @@ impl Conduit {
             |poll, mut stream| {
                 stream.small_message(proto::SubscribeRequest {
                     shadow: shadow.as_bytes().to_vec(),
-                    filter: Vec::new(),
+                    group_identity:     group.as_ref().map(|v|v.identity().as_bytes().to_vec()).unwrap_or(Vec::new()),
+                    group_signature:    group.as_ref().map(|v|v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec()).unwrap_or(Vec::new()),
                 });
                 handler(poll, stream, state.clone())
             },
@@ -307,7 +310,6 @@ impl Conduit {
 impl osaka::Future<Result<(), Error>> for Conduit {
     fn poll(&mut self) -> osaka::FutureResult<Result<(), Error>> {
         if self.last_sync.elapsed().as_secs() > 1 {
-
             self.last_sync = Instant::now();
             let mut state = self
                 .state

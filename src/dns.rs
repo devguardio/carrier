@@ -25,8 +25,8 @@ impl DnsRecord {
     pub fn from_signed_txt<S: AsRef<str>>(s: S) -> Option<Self> {
         let mut epoch = None;
         let mut priority = None;
-        let mut net = None;
-        let mut xaddr = None;
+        let mut net     = None;
+        let mut xaddr   = None;
 
         let s = s.as_ref();
         let mut s: Vec<&str> = s.split(" ").collect();

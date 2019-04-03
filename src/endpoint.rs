@@ -10,7 +10,7 @@ use noise;
 use osaka::mio::net::UdpSocket;
 use osaka::Future;
 use osaka::{osaka, FutureResult};
-use packet::{EncryptedPacket, RoutingKey};
+use packet::{self, EncryptedPacket, RoutingKey};
 use prost::Message;
 use proto;
 use rand::seq::SliceRandom;
@@ -277,7 +277,9 @@ impl Endpoint {
 
     pub fn connect(&mut self, target: identity::Identity, timeout: u16)-> Result<(), Error> {
         let timestamp = clock::network_time(&self.clock);
-        let (noise, pkt) = noise::initiate(None, &self.secret, timestamp)?;
+        //TODO in another life, we should connect with 0x09 and the broker should respond with a
+        //downgrade message is the other side is 0x08
+        let (noise, pkt) = noise::initiate(0x08, None, &self.secret, timestamp, false)?;
         let handshake = pkt.encode();
 
         let mut mypaths = Vec::new();
@@ -430,7 +432,7 @@ impl Endpoint {
     pub fn accept_incomming<F: 'static + StreamFactory>(&mut self, q: ConnectRequest, sf: F) {
         let (noise, pkt) = q
             .responder
-            .send_response(q.cr.route, &self.secret)
+            .send_response(q.cr.route, &self.secret, None)
             .expect("send_response");
 
         let mut paths = HashMap::new();
@@ -592,7 +594,7 @@ impl Future<Result<Event, Error>> for Endpoint {
             Ok((len, addr)) => match EncryptedPacket::decode(&buf[..len]) {
                 Err(e) => warn!("{}: {}", addr, e),
                 Ok(pkt) => {
-                    let route = pkt.route;
+                    let route = pkt.0.route;
                     if let Some(chan) = self.channels.get_mut(&route) {
                         let settle = if let AddressMode::Discovering(ref mut addrs) = chan.addrs {
                             trace!("in discovery: received from {}", addr);
@@ -658,7 +660,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             }
                         }
                     } else {
-                        warn!("received pkt for unknown route {} from {}", pkt.route, addr);
+                        warn!("received pkt for unknown route {} from {}", pkt.0.route, addr);
                     }
                 }
             },
@@ -941,11 +943,13 @@ impl Drop for Handle {
 
 // -- builder
 
+#[derive(Clone)]
 pub struct EndpointBuilder {
     secret:     identity::Secret,
     principal:  Option<identity::Secret>,
     clock:      config::ClockSource,
-    broker:    Vec<String>,
+    broker:     Vec<String>,
+    do_not_move: bool,
 }
 
 impl EndpointBuilder {
@@ -960,19 +964,23 @@ impl EndpointBuilder {
             principal: config.principal.clone(),
             clock:  config.clock.clone(),
             broker: config.broker.clone(),
+            do_not_move : false,
         })
+    }
+
+    pub fn do_not_move(&mut self) {
+        self.do_not_move = true;
     }
 
     #[osaka]
     pub fn connect(self, poll: osaka::Poll) -> Result<Endpoint, Error> {
-
         let mut records : Vec<dns::DnsRecord>  = if let Ok(v) = env::var("CARRIER_BROKERS") {
             v.split(";").filter_map(|v|dns::DnsRecord::from_signed_txt(v)).collect()
         } else {
             let d = if let Ok(d) = env::var("CARRIER_BROKER_DOMAINS") {
                 d.split(":").map(String::from).collect::<Vec<String>>()
             } else {
-                self.broker
+                self.broker.clone()
             };
 
             let mut a = osaka_dns::resolve(
@@ -991,56 +999,88 @@ impl EndpointBuilder {
                 None => return Err(Error::OutOfOptions),
             };
 
-            info!("attempting connection with {}", &record.addr);
-
-            let timestamp = clock::dns_time(&self.clock, &record);
-            let (mut noise, pkt) = noise::initiate(Some(&record.x), &self.secret, timestamp)?;
-            let pkt = pkt.encode();
-
-            let sock = UdpSocket::bind(&"0.0.0.0:0".parse().unwrap()).map_err(|e| Error::Io(e))?;
-            let token = poll
-                .register(&sock, mio::Ready::readable(), mio::PollOpt::level())
-                .unwrap();
-
-            let mut attempts = 0;
-            let r = loop {
-                attempts += 1;
-                if attempts > 4 {
-                    break None;
+            let mut v = self.clone().connect_to(poll.clone(), record);
+            match osaka::sync!(v) {
+                Err(e)              => return Err(e),
+                Ok((Some(ep),_))    => return Ok(ep),
+                Ok((None,None))     => continue,
+                Ok((None,Some(mov)))      => {
+                    records.push(mov);
+                    continue
                 }
-                let mut buf = vec![0; MAX_PACKET_SIZE];
-                if let Ok((len, _from)) = sock.recv_from(&mut buf) {
-                    match EncryptedPacket::decode(&buf[..len]).and_then(|pkt| noise.recv_response(pkt)) {
-                        Ok(identity) => {
-                            let noise = noise.into_transport()?;
-                            break Some((identity, noise));
-                        }
-                        Err(e) => {
-                            warn!("EndpointFuture::WaitingForResponse: {}", e);
-                            continue;
-                        }
-                    }
-                };
-                sock.send_to(&pkt, &record.addr)?;
-                yield poll.again(token.clone(), Some(Duration::from_millis(2u64.pow(attempts) * 200)));
-            };
-            let (identity, noise) = match r {
-                Some(v) => v,
-                None => continue,
-            };
+            }
 
-            info!("established connection with {} :: {}", identity, noise.route());
-
-            return Ok(Endpoint::new(
-                poll,
-                token,
-                noise,
-                identity,
-                sock,
-                record.addr,
-                self.principal.unwrap_or(self.secret),
-                self.clock,
-            ));
         }
+
+    }
+
+    #[osaka]
+    pub fn connect_to(self, poll: osaka::Poll, to: dns::DnsRecord)
+        -> Result<(Option<Endpoint>, Option<dns::DnsRecord>), Error>
+    {
+        info!("attempting connection with {}", &to.addr);
+
+        let timestamp = clock::dns_time(&self.clock, &to);
+        let (mut noise, pkt) = noise::initiate(packet::LATEST_VERSION, Some(&to.x), &self.secret, timestamp, self.do_not_move)?;
+        let pkt = pkt.encode();
+
+        let sock = UdpSocket::bind(&"0.0.0.0:0".parse().unwrap()).map_err(|e| Error::Io(e))?;
+        let token = poll
+            .register(&sock, mio::Ready::readable(), mio::PollOpt::level())
+            .unwrap();
+
+        let mut attempts = 0;
+        let r = loop {
+            attempts += 1;
+            if attempts > 4 {
+                break None;
+            }
+            let mut buf = vec![0; MAX_PACKET_SIZE];
+            if let Ok((len, _from)) = sock.recv_from(&mut buf) {
+                match EncryptedPacket::decode(&buf[..len]).and_then(|pkt| noise.recv_response(pkt)) {
+                    Ok(identity) => {
+                        if noise.route == Some(0) {
+                            if let Some(mov) = noise.move_instruction {
+                                let mov = String::from_utf8_lossy(&mov);
+                                info!("received move instructions to {}", mov);
+                                return Ok((None, dns::DnsRecord::from_signed_txt(&mov)));
+                            }
+                            warn!("broker rejected");
+                            return Ok((None,None));
+                        }
+
+                        let noise = noise.into_transport()?;
+                        break Some((identity, noise));
+                    }
+                    Err(e) => {
+                        warn!("EndpointFuture::WaitingForResponse: {}", e);
+                        continue;
+                    }
+                }
+            };
+            sock.send_to(&pkt, &to.addr)?;
+            yield poll.again(token.clone(), Some(Duration::from_millis(2u64.pow(attempts) * 200)));
+        };
+
+        let (identity, noise) = match r {
+            Some(v) => v,
+            None => return Ok((None, None)),
+        };
+
+        info!("established connection with {} :: {}", identity, noise.route());
+
+        return Ok((
+                Some(Endpoint::new(
+                        poll,
+                        token,
+                        noise,
+                        identity,
+                        sock,
+                        to.addr,
+                        self.principal.unwrap_or(self.secret),
+                        self.clock,
+                        )),
+                None
+                ));
     }
 }

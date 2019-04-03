@@ -127,19 +127,19 @@ impl Channel {
     }
 
     /// receive a packet from the wire
-    pub fn recv(&mut self, pkt: EncryptedPacket) -> Result<(), Error> {
+    pub fn recv(&mut self, pkt: (EncryptedPacket, u8)) -> Result<(), Error> {
         let now = self.now();
         trace!(
             "[{}] incomming pkt {} with {} bytes at {}",
             self.debug_id,
-            pkt.counter,
-            pkt.payload.len(),
+            pkt.0.counter,
+            pkt.0.payload.len(),
             now
         );
         self.last_seen = now;
         self.idle_count = 0;
 
-        let counter = pkt.counter;
+        let counter = pkt.0.counter;
 
         if !self.replay.within_window(counter) {
             return Err(Error::AntiReplay.into());

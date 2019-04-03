@@ -68,6 +68,7 @@ pub enum Error {
     },
     OpenStreamsLimit,
     InvalidClock(String),
+    CorruptHeader,
 }
 
 impl fmt::Display for Error {
@@ -128,6 +129,7 @@ impl fmt::Display for Error {
             }
             Error::InvalidClock(s) =>  write!(f, "invalid clock configuration: '{}'", s),
             Error::OpenStreamsLimit => write!(f, "excessive number of open streams"),
+            Error::CorruptHeader    => write!(f, "header was corrupted in flight"),
         }
     }
 }

@@ -2,6 +2,8 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
+pub const LATEST_VERSION : u8 = 0x9;
+
 pub type RoutingKey = u64;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -11,17 +13,52 @@ pub enum RoutingDirection {
 }
 
 #[derive(Debug, PartialEq, Clone)]
+pub struct Flags {
+    pub mov: bool,
+}
+
+impl Flags {
+    pub fn empty() -> Self {
+        Self {
+            mov: false,
+        }
+    }
+
+    pub fn from_u8(b: u8) -> Self {
+        Self {
+            mov: b & 0b01000000 != 0
+        }
+    }
+
+    pub fn to_u8(&self) -> u8 {
+        let mut flags = 0x00;
+        if self.mov {
+            flags |= 0b01000000
+        };
+        flags
+    }
+}
+
+#[derive(Debug, PartialEq, Clone)]
 pub struct EncryptedPacket {
-    pub version:   u8,
-    pub route:     RoutingKey,
-    pub direction: RoutingDirection,
-    pub counter:   u64,
-    pub payload:   Vec<u8>,
+    pub version:        u8,
+    pub route:          RoutingKey,
+    pub direction:      RoutingDirection,
+    pub counter:        u64,
+    pub payload:        Vec<u8>,
 }
 
 impl EncryptedPacket {
-    pub fn decode(mut inbuf: &[u8]) -> Result<EncryptedPacket, Error> {
+    pub fn decode(inbuf_: &[u8]) -> Result<(EncryptedPacket, u8), Error> {
+        let mut inbuf = inbuf_;
         let version = inbuf.read_u8()?;
+        match version {
+            0x08 => {}
+            0x09 => {}
+            _ => {
+                return Err(Error::InvalidVersion { version }.into());
+            },
+        };
         let mut reserved = [0; 3];
         inbuf.read_exact(&mut reserved)?;
 
@@ -36,24 +73,27 @@ impl EncryptedPacket {
         let route   = route.as_ref().read_u64::<BigEndian>()?;
         let counter = inbuf.read_u64::<BigEndian>()?;
 
-        if version != 0x08 || reserved != [0xff, 0xff, 0xff] {
-            return Err(Error::InvalidVersion { version }.into());
-        }
-
         let payload = inbuf.to_vec();
 
-        Ok(EncryptedPacket {
+        let mut crc8 = crc8::Crc8::create_lsb(130);
+        let header_crc8 = crc8.calc(&inbuf_.as_ref(), 4+8+8, 0);
+
+        Ok((EncryptedPacket {
             version,
             route,
             direction,
             counter,
             payload,
-        })
+        }, header_crc8))
     }
 
-    pub fn encode(mut self) -> Vec<u8> {
+    pub fn header(&self) -> Vec<u8> {
         let mut w = [self.version].to_vec();
-        w.extend_from_slice(&[0xff; 3]);
+        if self.version == 0x08 {
+            w.extend_from_slice(&[0xff; 3]);
+        } else {
+            w.extend_from_slice(&[0x00; 3]);
+        }
 
         let mut route = [0; 8];
         route.as_mut().write_u64::<BigEndian>(self.route).unwrap();
@@ -63,6 +103,17 @@ impl EncryptedPacket {
         };
         w.write(&route).unwrap();
         w.write_u64::<BigEndian>(self.counter).unwrap();
+        w
+    }
+
+    pub fn crc8(&self) -> u8 {
+        let w = self.header();
+        let mut crc8 = crc8::Crc8::create_lsb(130);
+        crc8.calc(&w, w.len() as i32, 0)
+    }
+
+    pub fn encode(mut self) -> Vec<u8> {
+        let mut w = self.header();
         w.append(&mut self.payload);
         w
     }
@@ -76,7 +127,7 @@ fn decode_with_payload() {
         0xf0, 0x0d, // payload
     ])
     .unwrap();
-    assert_eq!(pl.payload.as_slice(), &[0xf0, 0x0d]);
+    assert_eq!(pl.0.payload.as_slice(), &[0xf0, 0x0d]);
 }
 
 #[test]
@@ -84,7 +135,6 @@ fn decode_invalid_packets() {
     assert!(EncryptedPacket::decode(&[]).is_err());
     assert!(EncryptedPacket::decode(&[4]).is_err());
     assert!(EncryptedPacket::decode(&[0; 128]).is_err());
-    assert!(EncryptedPacket::decode(&[0x08; 128]).is_err());
 }
 
 #[derive(PartialEq)]

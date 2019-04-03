@@ -35,6 +35,7 @@ pub fn main() {
             ::std::process::exit(1);
         }
         Err(e) => {
+            log::error!("{}", e);
             ::std::process::exit(1);
         }
     }
@@ -58,10 +59,14 @@ pub fn _main() -> Result<(), Error> {
             SubCommand::with_name("identity").about("print out identity")
         )
         .subcommand(
-            SubCommand::with_name("sync")
-                .about("coordinate a broker epoch")
+            SubCommand::with_name("broker-health")
+                .about("test broker health")
                 .arg(Arg::with_name("broker").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("epoch").takes_value(true).required(true).index(2))
+        )
+        .subcommand(
+            SubCommand::with_name("cluster")
+                .about("coordinate a broker cluster")
+                .arg(Arg::with_name("broker").takes_value(true).required(true).index(1))
         )
         .subcommand(
             SubCommand::with_name("subscribe")
@@ -150,6 +155,9 @@ pub fn _main() -> Result<(), Error> {
     let matches = clap.get_matches();
     match matches.subcommand() {
         ("setup", Some(_submatches)) => carrier::config::setup(),
+        ("broker-health", Some(submatches)) => {
+            let broker = submatches.value_of("broker").unwrap().to_string();
+        }
         ("mkshadow", Some(_submatches)) => {
             use rand::RngCore;
 
@@ -195,7 +203,7 @@ pub fn _main() -> Result<(), Error> {
             let mut subscriber = carrier::subscriber::new(config)
                 .on_publish(|identity| println!("+ {}", identity))
                 .on_unpublish(|identity| println!("- {}", identity))
-                .subscribe(poll, shadow);
+                .subscribe(poll, shadow, None);
             subscriber.run()
         }
         ("get", Some(submatches)) => {

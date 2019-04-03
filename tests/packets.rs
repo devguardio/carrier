@@ -61,9 +61,8 @@ proptest!{
 
     #[test]
     fn proptest_re_packets(mut route: u64, dir: bool, counter: u64, payload: Vec<u8>) {
-        if route >= 0b1000000000000000000000000000000000000000000000000000000000000000 {
-            route /= 2;
-        }
+        route -= route % 2;
+
         let pkt = EncryptedPacket {
             version: 0x08,
             route,
@@ -72,11 +71,10 @@ proptest!{
             payload,
         };
 
-        println!("{:?}", pkt);
-
         let pkt2 = EncryptedPacket::decode(&pkt.clone().encode()).unwrap();
+        println!("{:?} <> {:?}", pkt, pkt2.0);
 
-        assert_eq!(pkt, pkt2);
+        assert_eq!(pkt, pkt2.0);
 
     }
 

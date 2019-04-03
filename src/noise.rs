@@ -1,13 +1,14 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use identity::{Address, Identity, Secret, Signature};
-use packet::{self, RoutingDirection, RoutingKey};
+use packet::{self, Flags, RoutingDirection, RoutingKey};
 use snow::resolvers::{CryptoResolver, FallbackResolver};
 use snow::{self, params::NoiseParams, Builder};
 use std::io::Read;
 use std::io::Write;
 
 pub struct Transport {
+    version:   u8,
     counter:   u64,
     noise:     snow::Session,
     route:     RoutingKey,
@@ -15,12 +16,18 @@ pub struct Transport {
 }
 
 pub struct HandshakeRequester {
-    noise:     snow::Session,
-    timestamp: u64,
-    route:     Option<RoutingKey>,
+    noise:      snow::Session,
+    timestamp:  u64,
+
+    //received
+    pub version:    u8,
+    pub route:      Option<RoutingKey>,
+    pub move_instruction:   Option<Vec<u8>>,
 }
 
 pub struct HandshakeResponder {
+    pub version:    u8,
+    pub flags:      Flags,
     noise:     snow::Session,
     timestamp: u64,
 }
@@ -28,22 +35,53 @@ pub struct HandshakeResponder {
 enum SendMode<'a> {
     Transport { counter: u64, payload: &'a [u8] },
     InsecureHandshake { identity: Identity, timestamp: u64 },
-    Handshake { identity: Identity, timestamp: u64 },
+    HandshakeRequest  { identity: Identity, timestamp: u64, do_not_move: bool},
+    HandshakeResponse { identity: Identity, timestamp: u64, mov: Option<Vec<u8>> },
 }
 
 fn send(
+    version: u8,
     noise: &mut snow::Session,
     route: RoutingKey,
     direction: RoutingDirection,
     payload: SendMode,
 ) -> Result<packet::EncryptedPacket, Error> {
+
+    let mut flags = Flags::empty();
+    match &payload {
+        SendMode::HandshakeRequest {do_not_move, ..} => {
+            flags.mov = *do_not_move;
+        },
+        SendMode::HandshakeResponse { mov, .. } => {
+            // we set mov
+            flags.mov = mov.is_some();
+        },
+        _ => {},
+    };
+
     let counter = if let &SendMode::Transport { counter, .. } = &payload {
         Some(counter)
     } else {
         None
     };
 
-    let mut inbuf = Vec::new();
+    let mut pkt = packet::EncryptedPacket {
+        version,
+        route,
+        direction: direction.clone(),
+        counter: match counter { Some(v) => v +1 , None => 0},
+        payload: Vec::new(),
+    };
+
+    let mut inbuf = if version >= 0x09 {
+        vec![
+            pkt.crc8(),
+            flags.to_u8()
+        ]
+    } else {
+        Vec::new()
+    };
+
     let overhead = match payload {
         SendMode::Transport { payload, .. } => {
             assert!(payload.len() + 100 < u16::max_value() as usize);
@@ -59,10 +97,39 @@ fn send(
             32 // ephermal
             + 64 // signature
         }
-        SendMode::Handshake { identity, timestamp } => {
+        SendMode::HandshakeRequest { identity, timestamp, do_not_move:_ } => {
+            assert_eq!(direction, RoutingDirection::Initiator2Responder);
             assert_eq!(identity.as_bytes().len(), 32);
             inbuf.write_all(&identity.as_bytes())?;
             inbuf.write_u64::<BigEndian>(timestamp)?;
+
+            if version == 0x08 {
+                // number of certs
+                inbuf.write_u16::<BigEndian>(0)?;
+            }
+
+            16 // tag
+            + 32 // ephermal
+            + 64 // signature
+        }
+        SendMode::HandshakeResponse { identity, timestamp, mov } => {
+            assert_eq!(direction, RoutingDirection::Responder2Initiator);
+            assert_eq!(identity.as_bytes().len(), 32);
+            inbuf.write_all(&identity.as_bytes())?;
+            inbuf.write_u64::<BigEndian>(timestamp)?;
+
+            if version == 0x08 {
+                // number of certs
+                inbuf.write_u16::<BigEndian>(0)?;
+            }
+
+            if version >= 0x9 {
+                if let Some(mov) = mov {
+                    assert!(mov.len() <= std::u16::MAX as usize);
+                    inbuf.write_u16::<BigEndian>(mov.len() as u16)?;
+                    inbuf.write_all(&mov)?;
+                };
+            };
 
             16 // tag
             + 32 // ephermal
@@ -70,15 +137,20 @@ fn send(
         }
     };
 
-    let padding = 256 - ((inbuf.len() + overhead) % 256);
+    let pad_to = if version >= 0x09 {
+        64
+    } else {
+        256
+    };
+    let padding = pad_to - ((inbuf.len() + overhead) % pad_to);
     inbuf.extend_from_slice(vec![0u8; padding].as_ref());
 
     let mut buf = vec![0; inbuf.len() + overhead];
 
-    let (len, counter) = if let Some(counter) = counter {
-        (noise.write_message_with_nonce(counter, &inbuf, &mut buf)?, counter + 1)
+    let len = if let Some(counter) = counter {
+        noise.write_message_with_nonce(counter, &inbuf, &mut buf)?
     } else {
-        (noise.write_message(&inbuf, &mut buf)?, 0)
+        noise.write_message(&inbuf, &mut buf)?
     };
 
     buf.truncate(len);
@@ -87,13 +159,7 @@ fn send(
         return Err(Error::PayloadUnencrypted.into());
     }
 
-    let pkt = packet::EncryptedPacket {
-        version: 0x08,
-        route,
-        direction,
-        counter,
-        payload: buf,
-    };
+    pkt.payload = buf;
 
     Ok(pkt)
 }
@@ -102,6 +168,7 @@ impl Transport {
     pub fn send(&mut self, payload: &[u8]) -> Result<packet::EncryptedPacket, Error> {
         self.counter += 1;
         let pkt = send(
+            self.version,
             &mut self.noise,
             self.route,
             self.direction.clone(),
@@ -110,11 +177,13 @@ impl Transport {
                 payload,
             },
         )?;
-        assert_eq!(pkt.payload.len() % 256, 0);
+        assert_eq!(pkt.payload.len() % 64, 0);
         Ok(pkt)
     }
 
-    pub fn recv(&mut self, pkt: packet::EncryptedPacket) -> Result<Vec<u8>, Error> {
+    pub fn recv(&mut self, pkt: (packet::EncryptedPacket, u8) ) -> Result<Vec<u8>, Error> {
+        let (pkt, header_crc8) = pkt;
+
         if pkt.route != self.route {
             return Err(Error::WrongRoute {
                 dest: pkt.route,
@@ -133,11 +202,25 @@ impl Transport {
             .read_message_with_nonce(pkt.counter - 1, &pkt.payload, &mut outbuf)?;
         outbuf.truncate(len);
 
-        if len < 2 {
-            return Err(Error::TooSmall { need: 2, got: len }.into());
-        }
-        let len = (&outbuf[..]).read_u16::<BigEndian>()? as usize;
-        let mut payload = outbuf.split_off(2);
+        let (mut payload, len) = if pkt.version >= 0x09 {
+            if len < 4 {
+                return Err(Error::TooSmall { need: 4, got: len }.into());
+            }
+            let crc  = (&outbuf[..]).read_u8()?;
+            if crc != header_crc8 {
+                return Err(Error::CorruptHeader);
+            }
+            let flags = (&outbuf[1..]).read_u8()?;
+            let len = (&outbuf[2..]).read_u16::<BigEndian>()? as usize;
+            (outbuf.split_off(4) , len)
+        } else {
+            if len < 2 {
+                return Err(Error::TooSmall { need: 2, got: len }.into());
+            }
+            let len = (&outbuf[..]).read_u16::<BigEndian>()? as usize;
+            (outbuf.split_off(2) , len)
+        };
+
         if len > payload.len() {
             return Err(Error::DecryptedInvalidPayloadLen.into());
         }
@@ -159,24 +242,30 @@ impl HandshakeResponder {
         mut self,
         route: RoutingKey,
         secret: &Secret,
+        mov: Option<Vec<u8>>,
     ) -> Result<(Transport, packet::EncryptedPacket), Error> {
+        let mut flags = Flags::empty();
+        if mov.is_some() {
+            flags.mov = true;
+        }
         let mut pkt = send(
+            self.version,
             &mut self.noise,
             route,
             RoutingDirection::Responder2Initiator,
-            SendMode::Handshake {
+            SendMode::HandshakeResponse {
                 timestamp: self.timestamp,
                 identity:  secret.identity(),
+                mov,
             },
         )?;
         let signature = secret.sign(b"carrier handshake hash 1", self.noise.get_handshake_hash()?);
         pkt.payload.extend_from_slice(&signature.as_bytes());
-        assert_eq!(pkt.payload.len() % 256, 0);
-        assert_eq!(pkt.payload.len() % 256, 0);
-        assert_ne!(route, 0, "BUG: attempting to send handshake response to route 0");
+        assert_eq!(pkt.payload.len() % 64 , 0);
 
         Ok((
             Transport {
+                version:   self.version,
                 counter:   0,
                 noise:     self.noise.into_stateless_transport_mode()?,
                 route:     route,
@@ -187,56 +276,95 @@ impl HandshakeResponder {
     }
 }
 
-fn recv_handshake(noise: &mut snow::Session, pkt: packet::EncryptedPacket) -> Result<(Identity, u64), Error> {
-    if pkt.payload.len() % 256 != 0 {
-        return Err(Error::PktMisaligned { len: pkt.payload.len() }.into());
-    }
 
+struct RecvHandshake{
+    identity:           Identity,
+    timestamp:          u64,
+    move_instruction:   Option<Vec<u8>>,
+    flags: Flags,
+}
+
+fn recv_handshake(
+    noise: &mut snow::Session,
+    pkt: packet::EncryptedPacket,
+    header_crc8: u8,
+    direction:  RoutingDirection,
+    ) -> Result<RecvHandshake, Error>
+{
     let mut signature = [0; 64];
     signature.copy_from_slice(&pkt.payload[pkt.payload.len() - 64..pkt.payload.len()]);
     let signature = Signature::from_array(signature);
 
     let mut outbuf = vec![0; pkt.payload.len()];
     let len = noise.read_message(&pkt.payload[..pkt.payload.len() - 64], &mut outbuf)?;
-    if len < 120 {
-        return Err(Error::TooSmall { need: 120, got: len }.into());
-    }
 
-    let identity = Identity::from_bytes(&outbuf[0..32])?;
-    let timestamp = (&outbuf[32..40]).read_u64::<BigEndian>()?;
+    let (identity, timestamp, flags, move_instruction) = match pkt.version {
+        0x08 => {
+            if len < 120 {
+                return Err(Error::TooSmall { need: 120, got: len }.into());
+            }
+            let identity = Identity::from_bytes(&outbuf[0..32])?;
+            let timestamp = (&outbuf[32..40]).read_u64::<BigEndian>()?;
+            (identity, timestamp, Flags::empty(), None)
+        },
+        _ => {
+            let mut reader = &outbuf[..len];
+            let crc  = reader.read_u8()?;
+            if crc != header_crc8 {
+                return Err(Error::CorruptHeader);
+            }
 
-    let mut reader = &outbuf[40..];
+            let flags = Flags::from_u8(reader.read_u8()?);
 
-    let mut chain = Vec::new();
-    let numcerts = reader.read_u16::<BigEndian>()?;
-    for _ in 0..numcerts {
-        let len = reader.read_u16::<BigEndian>()?;
-        let mut crt = vec![0; len as usize];
-        reader.read_exact(&mut crt)?;
-        chain.push(crt);
-    }
+            let mut identity = vec![0;32];
+            reader.read_exact(&mut identity)?;
+            let identity = Identity::from_bytes(&identity)?;
+            let timestamp = reader.read_u64::<BigEndian>()?;
+
+            let move_instruction = if direction == RoutingDirection::Initiator2Responder && flags.mov {
+                let len = reader.read_u16::<BigEndian>()?;
+                let mut b = vec![0; len as usize];
+                reader.read_exact(&mut b)?;
+                Some(b)
+            } else {
+                None
+            };
+            (identity, timestamp, flags, move_instruction)
+        }
+    };
 
     identity.verify(b"carrier handshake hash 1", noise.get_handshake_hash()?, &signature)?;
 
-    Ok((identity, timestamp))
+    Ok(RecvHandshake{
+        flags,
+        identity,
+        timestamp,
+        move_instruction,
+    })
 }
 
 impl HandshakeRequester {
-    pub fn recv_response(&mut self, pkt: packet::EncryptedPacket) -> Result<Identity, Error> {
-        let route = pkt.route;
-        let (identity, timestamp) = recv_handshake(&mut self.noise, pkt)?;
+    pub fn recv_response(&mut self, pkt: (packet::EncryptedPacket, u8)) -> Result<Identity, Error> {
+        let (pkt, header_crc8) = pkt;
+        let route   = pkt.route;
+        let version = pkt.version;
+        let rec = recv_handshake(&mut self.noise, pkt, header_crc8, RoutingDirection::Responder2Initiator)?;
 
-        if timestamp != self.timestamp {
+        if rec.timestamp != self.timestamp {
             return Err(Error::InvalidCookie.into());
         }
 
+        self.version = version;
         self.route = Some(route);
+        self.move_instruction   = rec.move_instruction;
 
-        Ok(identity)
+        Ok(rec.identity)
     }
 
     pub fn into_transport(self) -> Result<Transport, Error> {
+        assert!(self.route != Some(0), "attempting to put rejected handshake into transport mode");
         Ok(Transport {
+            version:   self.version,
             counter:   0,
             noise:     self.noise.into_stateless_transport_mode()?,
             route:     self
@@ -248,9 +376,11 @@ impl HandshakeRequester {
 }
 
 pub fn initiate(
+    version: u8,
     remote_static: Option<&Address>,
     secret: &Secret,
     timestamp: u64,
+    do_not_move: bool,
 ) -> Result<(HandshakeRequester, packet::EncryptedPacket), Error> {
     let mut noise = if let Some(remote_static) = remote_static {
         let params: NoiseParams = "Noise_NK_25519_ChaChaPoly_SHA256".parse().unwrap();
@@ -270,11 +400,12 @@ pub fn initiate(
     let identity = secret.identity();
 
     let mut pkt = send(
+        version,
         &mut noise,
         0,
         RoutingDirection::Initiator2Responder,
         if remote_static.is_some() {
-            SendMode::Handshake { identity, timestamp }
+            SendMode::HandshakeRequest { identity, timestamp, do_not_move }
         } else {
             SendMode::InsecureHandshake { identity, timestamp }
         },
@@ -282,12 +413,14 @@ pub fn initiate(
 
     let signature = secret.sign(b"carrier handshake hash 1", noise.get_handshake_hash()?);
     pkt.payload.extend_from_slice(&signature.as_bytes());
-    assert_eq!(pkt.payload.len() % 256, 0);
+    assert_eq!(pkt.payload.len() % 64, 0);
 
     let s = HandshakeRequester {
+        version,
         timestamp,
         noise: noise,
         route: None,
+        move_instruction: None,
     };
 
     Ok((s, pkt))
@@ -295,8 +428,9 @@ pub fn initiate(
 
 pub fn respond(
     xsecret: Option<&Secret>,
-    pkt: packet::EncryptedPacket,
+    pkt: (packet::EncryptedPacket, u8)
 ) -> Result<(HandshakeResponder, Identity, u64), Error> {
+    let (pkt, header_crc8) = pkt;
     let mut noise = if let Some(xsecret) = xsecret {
         let params: NoiseParams = "Noise_NK_25519_ChaChaPoly_SHA256".parse().unwrap();
         new_noise_builder(params)
@@ -312,9 +446,15 @@ pub fn respond(
             .expect("building noise session")
     };
 
-    let (identity, timestamp) = recv_handshake(&mut noise, pkt)?;
+    let version = pkt.version;
+    let rcv = recv_handshake(&mut noise, pkt, header_crc8,  RoutingDirection::Initiator2Responder)?;
 
-    Ok((HandshakeResponder { noise, timestamp }, identity, timestamp))
+    Ok((HandshakeResponder {
+        version,
+        noise,
+        timestamp: rcv.timestamp,
+        flags:  rcv.flags,
+    }, rcv.identity, rcv.timestamp))
 }
 
 #[derive(Default)]

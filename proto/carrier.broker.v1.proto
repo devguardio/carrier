@@ -13,16 +13,12 @@ message Path {
     Category category   = 2;
 }
 
-message Filter {
-    oneof m {
-        bool    immediate = 1;
-        bytes   identity  = 2;
-    }
-}
 
 message SubscribeRequest {
-    bytes    shadow         = 1;
-    repeated Filter filter  = 2;
+    bytes   shadow      = 1;
+    // filter = 2;
+    bytes   group_identity  = 3;
+    bytes   group_signature = 4;
 }
 
 
@@ -74,11 +70,23 @@ message ConnectResponse {
     string  error           = 5;
 }
 
+
+message ClusterNode {
+}
+
+message ClusterConfig {
+    map<uint32, ClusterNode> nodes = 1;
+    uint32 this = 2;
+}
+
+message ClusterChange {
+}
+
 service Broker {
     rpc subscribe   (SubscribeRequest)  returns (stream SubscribeChange) {}
     rpc publish     (PublishRequest)    returns (stream PublishChange)   {}
-
     rpc connect     (ConnectRequest)    returns (stream ConnectResponse) {}
+    rpc cluster     (ClusterConfig)     returns (stream ClusterChange)   {}
 }
 
 message PeerConnectRequest {
@@ -104,6 +112,11 @@ message ProtoHeader {
     uint64 len = 1;
 }
 
-
 message Empty {}
+
+
+message MoveInstruction {
+    string ipaddr = 1;
+    bytes  xaddr  = 2;
+}
 

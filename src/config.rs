@@ -31,7 +31,7 @@ pub struct PublisherConfigToml {
 pub struct SubscriberConfigToml {
     shadow: String,
     secret: Option<String>,
-    shard:  Option<String>,
+    group:  Option<String>,
 }
 
 #[derive(Deserialize, Default, Serialize)]
@@ -136,8 +136,9 @@ impl ConfigToml {
         };
 
         let shadow = subscribe.shadow.parse::<identity::Address>()?;
+        let group  = subscribe.group.as_ref().map(|v|v.parse::<identity::Secret>().expect("parsing subscribe.group"));
 
-        Ok(Some(SubscriberConfig { shadow }))
+        Ok(Some(SubscriberConfig { shadow, group }))
     }
 
     fn names(&mut self) -> Result<HashMap<String, identity::Identity>, Error> {
@@ -205,6 +206,7 @@ pub struct PublisherConfig {
 #[derive(Debug, Clone)]
 pub struct SubscriberConfig {
     pub shadow: identity::Address,
+    pub group:  Option<identity::Secret>,
 }
 
 #[derive(Clone, Debug)]

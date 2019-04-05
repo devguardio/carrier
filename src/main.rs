@@ -21,7 +21,7 @@ use pbr::ProgressBar;
 #[cfg(any(target_os = "linux", target_os = "macos",))]
 mod shell;
 
-use clap::{crate_authors, crate_description, crate_name, crate_version, App, Arg, SubCommand};
+use clap::{crate_authors, crate_description, crate_name, App, Arg, SubCommand};
 
 pub fn main() {
     match _main() {
@@ -437,7 +437,7 @@ where
     };
 
     let route = ep.accept_outgoing(q, move |_h, _s| None)?;
-    ep.open(route, headers.clone(), f);
+    ep.open(route, headers.clone(), f)?;
 
     loop {
         match osaka::sync!(ep)? {
@@ -555,7 +555,7 @@ fn push(
                 never,
             )
         },
-    );
+    )?;
 
     loop {
         match osaka::sync!(ep)? {

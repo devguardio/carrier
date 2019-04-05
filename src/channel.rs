@@ -1,6 +1,6 @@
 use error::Error;
 use noise;
-use packet::{EncryptedPacket, Frame};
+use packet::{self, EncryptedPacket, Frame, CloseReason};
 use rand;
 use recovery;
 use replay;
@@ -38,6 +38,7 @@ pub struct Config {
 pub struct Channel {
     pub debug_id: String,
     noise:        noise::Transport,
+    version:      u8,
 
     //incomming
     replay:   replay::AntiReplay,
@@ -62,7 +63,7 @@ pub struct Channel {
 #[derive(Clone, Debug)]
 pub enum DisconnectReason {
     None,
-    Peer,
+    Peer(packet::DisconnectReason),
     Unrecoverable,
     Dead,
 }
@@ -78,9 +79,10 @@ pub enum ChannelProgress {
 }
 
 impl Channel {
-    pub fn new<S: Into<String>>(noise: noise::Transport, debug_id: S) -> Self {
+    pub fn new<S: Into<String>>(noise: noise::Transport, version: u8, debug_id: S) -> Self {
         Channel {
             debug_id: debug_id.into(),
+            version,
             noise:    noise,
 
             replay:   replay::AntiReplay::new(),
@@ -146,7 +148,9 @@ impl Channel {
         }
 
         let pkt = self.noise.recv(pkt)?;
-        let frames = Frame::decode(pkt.as_slice())?;
+        // note this intentionally ignores the packet version header
+        // a peer cannot downgrade a connection after connect
+        let frames = Frame::decode(self.version, pkt.as_slice())?;
 
         // packet authenticated from here
 
@@ -164,8 +168,7 @@ impl Channel {
                         self.streams.len()
                     );
 
-                    if !self.streams.contains_key(&stream) && self.streams.len() > 1024 {
-                        //FIXME streams are currently not removed
+                    if !self.streams.contains_key(&stream) && self.streams.len() > 0x7fffffff {
                         return Err(Error::OpenStreamsLimit.into());
                     }
 
@@ -175,17 +178,23 @@ impl Channel {
                 Frame::Stream { stream, order, payload } => {
                     trace!("[{}] received message {}", self.debug_id, order);
 
-                    if !self.streams.contains_key(&stream) && self.streams.len() > 1024 {
-                        error!("[{}] excessive number of streams", self.debug_id);
+                    if !self.streams.contains_key(&stream) && self.streams.len() > 0x7fffffff {
+                        self.outqueue.push_back(Frame::Close {
+                            stream,
+                            order: 1,
+                            reason: CloseReason::ResourceLimit,
+                        });
+                        log::warn!("{:?}", Error::OpenStreamsLimit);
                         return Ok(());
                     }
 
                     let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
                     ordered.push(Frame::Stream { stream, order, payload })?;
                 }
-                Frame::Disconnect => {
-                    trace!("[{}] disconnected", self.debug_id);
-                    self.gone = DisconnectReason::Peer;
+                Frame::Disconnect{reason} => {
+                    trace!("[{}] disconnected {:?}", self.debug_id, reason);
+                    self.gone = DisconnectReason::Peer(reason)
+
                 }
                 Frame::Ack { delay, acked } => {
                     let loss = self.recovery.on_ack_received(delay, acked.clone(), now);
@@ -203,15 +212,12 @@ impl Channel {
                 Frame::Ping => {
                     trace!("[{}] received ping", self.debug_id);
                 }
-                Frame::Close { stream, order } => {
-                    trace!("[{}] received close ", self.debug_id);
+                Frame::Close { stream, order, reason } => {
+                    trace!("[{}] received close {:?}", self.debug_id, reason);
 
-                    if !self.streams.contains_key(&stream) && self.streams.len() > 1024 {
-                        error!("[{}] excessive number of streams", self.debug_id);
-                        return Ok(());
+                    if let Some(ordered) = self.streams.get_mut(&stream) {
+                        ordered.push(Frame::Close { stream, order, reason })?;
                     }
-                    let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
-                    ordered.push(Frame::Close { stream, order })?;
                 }
                 Frame::Config { timeout, sleeping } => {
                     if let Some(seconds) = timeout {
@@ -368,7 +374,7 @@ impl Channel {
             loop {
                 let more = match self.outqueue.front() {
                     None => break,
-                    Some(v) => v.len(),
+                    Some(v) => v.len(self.version),
                 };
 
                 let overhead = 36;
@@ -385,7 +391,7 @@ impl Channel {
                         delay: now - delay,
                     };
                 }
-                frame.encode(&mut pkt)?;
+                frame.encode(self.version, &mut pkt)?;
                 frames.push(frame);
             }
             assert_ne!(
@@ -410,7 +416,7 @@ impl Channel {
                     .join(",")
             );
 
-            self.recovery.on_packet_sent(pkt.counter, frames, now);
+            self.recovery.on_packet_sent(pkt.counter, frames, self.version, now);
 
             let pkt = pkt.encode();
             assert!(pkt.len() < MAX_PACKET_SIZE);
@@ -466,11 +472,12 @@ impl Channel {
     }
 
     /// open a new stream, given a header
-    pub fn open<M: Into<Vec<u8>>>(&mut self, payload: M, are_we_initiator: bool) -> u32 {
+    pub fn open<M: Into<Vec<u8>>>(&mut self, payload: M, are_we_initiator: bool) -> Result<u32, Error> {
         let payload = payload.into();
         assert!(payload.len() < 1200, "message too big {}", payload.len());
-
-        assert!(self.counters.len() < <u32>::max_value() as usize);
+        if self.counters.len() > 0x7fffffff {
+            return Err(Error::OpenStreamsLimit.into());
+        }
 
         let stream = loop {
             let stream = rand::random::<u32>();
@@ -484,6 +491,13 @@ impl Channel {
             }
         };
 
+
+        // previous versions just got stuck when stream count exceeded 1024
+        if self.version < 0x09 && self.counters.len() >= 1024 {
+            return Err(Error::OpenStreamsLimit.into());
+        }
+
+
         self.counters.insert(stream, 1);
 
         self.outqueue.push_back(Frame::Header {
@@ -491,7 +505,7 @@ impl Channel {
             payload: payload,
         });
 
-        stream
+        Ok(stream)
     }
 
     /// send headers (as a response)
@@ -511,7 +525,7 @@ impl Channel {
     }
 
     /// queue a close, stream may still be able to receive (this is half close)
-    pub fn close(&mut self, stream: u32) {
+    pub fn close(&mut self, stream: u32, reason: CloseReason) {
         let order = match self.counters.get_mut(&stream) {
             None => {
                 warn!(
@@ -521,6 +535,7 @@ impl Channel {
                 1
             }
             Some(order) => {
+                //TODO
                 //we're not removing the counrer yet because reuse of the stream id
                 //may lead to corner cases where a header arrives before a close
                 *order += 1;
@@ -528,7 +543,7 @@ impl Channel {
             }
         };
 
-        self.outqueue.push_back(Frame::Close { order, stream });
+        self.outqueue.push_back(Frame::Close { order, stream, reason });
     }
 
     /// remove a stream (full close)
@@ -538,9 +553,9 @@ impl Channel {
     }
 
     /// create a disconnect packet
-    pub fn disconnect(&mut self) -> Result<Vec<u8>, Error> {
+    pub fn disconnect(&mut self, reason: packet::DisconnectReason) -> Result<Vec<u8>, Error> {
         let mut pkt = Vec::new();
-        Frame::Disconnect.encode(&mut pkt)?;
+        Frame::Disconnect{reason}.encode(self.version, &mut pkt)?;
         let pkt = self.noise.send(&pkt)?;
         Ok(pkt.encode())
     }

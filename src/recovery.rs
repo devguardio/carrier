@@ -194,10 +194,10 @@ impl QuicRecovery {
     }
 
     /// 3.5.4.  Loss Detection
-    pub fn on_packet_sent(&mut self, seq: u64, frames: Vec<Frame>, now: u64) {
+    pub fn on_packet_sent(&mut self, seq: u64, frames: Vec<Frame>, version:u8, now: u64) {
         let (bytes, ackonly) = frames.iter().fold((0, true), |(bytes, ackonly), frame| {
             let ackonly = ackonly && frame.is_ack();
-            (bytes + if frame.is_ack() { 0 } else { frame.len() }, ackonly)
+            (bytes + if frame.is_ack() { 0 } else { frame.len(version) }, ackonly)
         });
 
         let pkt = Pkt {
@@ -536,7 +536,7 @@ fn lossless() {
             payload: vec![],
             stream:  1,
         };
-        qr.on_packet_sent(seq, vec![frame], clock);
+        qr.on_packet_sent(seq, vec![frame], super::packet::LATEST_VERSION, clock);
     }
     assert_eq!(clock, 10);
     assert_eq!(qr.largest_sent_packet, 10);
@@ -566,7 +566,7 @@ fn high_latency() {
             payload: vec![],
             stream:  1,
         };
-        qr.on_packet_sent(seq, vec![frame], clock);
+        qr.on_packet_sent(seq, vec![frame], super::packet::LATEST_VERSION, clock);
     }
     assert_eq!(clock, 10);
     assert_eq!(qr.largest_sent_packet, 10);
@@ -592,7 +592,7 @@ fn high_latency() {
     assert_eq!(qr.latest_rtt, 0, "RTT cannot be calculated yet");
     assert_eq!(qr.smoothed_rtt, 0, "RTT cannot be calculated yet");
     seq += 1;
-    qr.on_packet_sent(seq, vec![Frame::Ping], clock);
+    qr.on_packet_sent(seq, vec![Frame::Ping], super::packet::LATEST_VERSION, clock);
 
     assert_eq!(
         qr.loss_detection_alarm,
@@ -616,7 +616,7 @@ fn high_latency() {
     assert_eq!(qr.max_ack_delay, 0, "ack delay cannot be calculated yet");
 
     seq += 1;
-    qr.on_packet_sent(seq, vec![Frame::Ping], clock);
+    qr.on_packet_sent(seq, vec![Frame::Ping], super::packet::LATEST_VERSION, clock);
 
     assert_eq!(
         qr.loss_detection_alarm,
@@ -637,7 +637,7 @@ fn high_latency() {
     assert_eq!(qr.tlp_count, 2);
 
     seq += 1;
-    qr.on_packet_sent(seq, vec![Frame::Ping], clock);
+    qr.on_packet_sent(seq, vec![Frame::Ping], super::packet::LATEST_VERSION, clock);
 
     assert_eq!(
         qr.loss_detection_alarm,
@@ -686,7 +686,7 @@ fn low_latency_high_loss() {
             payload: vec![0; 1000],
             stream:  1,
         };
-        qr.on_packet_sent(seq, vec![frame], clock);
+        qr.on_packet_sent(seq, vec![frame], super::packet::LATEST_VERSION, clock);
     }
     assert_eq!(clock, 10);
     assert_eq!(qr.largest_sent_packet, 10);
@@ -751,7 +751,7 @@ fn low_latency_high_loss() {
     );
     //retransmit packet 1
     seq += 1;
-    qr.on_packet_sent(seq, frames, clock);
+    qr.on_packet_sent(seq, frames, super::packet::LATEST_VERSION, clock);
 
     // --------
     // ack finally arriving
@@ -779,7 +779,7 @@ fn tlp_vs_ping() {
         payload: vec![0; 1000],
         stream:  1,
     };
-    qr.on_packet_sent(seq, vec![frame], clock);
+    qr.on_packet_sent(seq, vec![frame], super::packet::LATEST_VERSION, clock);
 
     assert_eq!(
         qr.loss_detection_alarm,
@@ -801,7 +801,7 @@ fn tlp_vs_ping() {
             payload: vec![0; 1000],
             stream:  1,
         };
-        qr.on_packet_sent(seq, vec![frame], clock);
+        qr.on_packet_sent(seq, vec![frame], super::packet::LATEST_VERSION, clock);
 
         //FIXME this is the issue. TLP is now a moving goalpost
         assert_eq!(qr.loss_detection_alarm, Some(clock + 100 + 50));

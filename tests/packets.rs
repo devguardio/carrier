@@ -27,11 +27,12 @@ fn arb_frame() -> impl Strategy<Value = Frame> {
           }
       }),
       any::<bool>().prop_map(|_|Frame::Ping),
-      any::<bool>().prop_map(|_|Frame::Disconnect),
+      any::<bool>().prop_map(|_|Frame::Disconnect{reason: DisconnectReason::None}),
       (any::<u32>(), any::<u64>()).prop_map(|(a,b)|{
           Frame::Close{
               stream:  a,
               order:   b,
+              reason:  CloseReason::None,
           }
       }),
       (any::<Option<u16>>(), any::<bool>()).prop_map(|(a,b)|{
@@ -48,15 +49,15 @@ proptest!{
     fn proptest_decode_frames(frames in prop::collection::vec(arb_frame(), 0..100)) {
         let mut w = Vec::new();
         for f in &frames {
-            f.encode(&mut w).unwrap();
+            f.encode(LATEST_VERSION, &mut w).unwrap();
         }
-        let frames2 = Frame::decode(&w[..]).unwrap();
+        let frames2 = Frame::decode(LATEST_VERSION, &w[..]).unwrap();
         assert_eq!(frames, frames2);
     }
 
     #[test]
     fn proptest_decode_junk(r: Vec<u8>) {
-        Frame::decode(&r[..]).ok();
+        Frame::decode(LATEST_VERSION, &r[..]).ok();
     }
 
     #[test]

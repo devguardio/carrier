@@ -108,7 +108,7 @@ impl SubscriberBuilder {
                 });
                 Self::handler(this.clone(), poll, stream)
             },
-        );
+        )?;
 
         loop {
             match osaka::sync!(ep)? {

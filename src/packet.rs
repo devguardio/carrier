@@ -2,7 +2,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
-pub const LATEST_VERSION : u8 = 0x9;
+pub const LATEST_VERSION : u8 = 0x8;
 
 pub type RoutingKey = u64;
 
@@ -137,6 +137,23 @@ fn decode_invalid_packets() {
     assert!(EncryptedPacket::decode(&[0; 128]).is_err());
 }
 
+#[derive(PartialEq, Debug, Clone)]
+pub enum CloseReason {
+    None,
+    Application,
+    ResourceLimit,
+    Unknown(u8),
+}
+
+#[derive(PartialEq, Debug, Clone)]
+pub enum DisconnectReason {
+    None,
+    Application,
+    ResourceLimit,
+    Move(String),
+    Unknown(u8),
+}
+
 #[derive(PartialEq)]
 pub enum Frame {
     Header {
@@ -154,10 +171,13 @@ pub enum Frame {
         acked: Vec<u64>,
     },
     Ping,
-    Disconnect,
+    Disconnect {
+        reason: DisconnectReason,
+    },
     Close {
         stream: u32,
         order:  u64,
+        reason: CloseReason,
     },
     Config {
         timeout:  Option<u16>,
@@ -175,22 +195,34 @@ impl std::fmt::Debug for Frame {
             Frame::Ack { delay, acked } => write!(f, "Ack[d:{},a:{}]", delay, acked.len()),
 
             Frame::Ping => write!(f, "Ping"),
-            Frame::Disconnect => write!(f, "Disconnect"),
-            Frame::Close { stream, order } => write!(f, "Close[s:{},o:{}]", stream, order),
+            Frame::Disconnect{reason} => write!(f, "Disconnect[r:{:?}]", reason),
+            Frame::Close { stream, order, reason } => write!(f, "Close[s:{},o:{},r:{:?}]", stream, order, reason),
             Frame::Config { timeout, sleeping } => write!(f, "Close[t:{:?},s:{}]", timeout, sleeping),
         }
     }
 }
 
 impl Frame {
-    pub fn len(&self) -> usize {
+    pub fn len(&self, version: u8) -> usize {
         match self {
             Frame::Header { payload, .. } => 1 + 4 + 2 + payload.len(),
             Frame::Stream { payload, .. } => 1 + 4 + 8 + 2 + payload.len(),
             Frame::Ack { acked, .. } => 1 + 2 + 2 + 8 * acked.len(),
             Frame::Ping => 1,
-            Frame::Disconnect => 1,
-            Frame::Close { .. } => 1 + 4 + 8,
+            Frame::Disconnect{reason} => {
+                1 + if version >= 0x09 {
+                    1 + 4 + if let DisconnectReason::Move(m) = reason {m.len()} else {0}
+                } else {
+                    0
+                }
+            }
+            Frame::Close { .. } => {
+                1 + 4 + 8 + if version >= 0x09 {
+                    1
+                } else {
+                    0
+                }
+            },
             Frame::Config { timeout, .. } => 1 + 1 + 2 + if timeout.is_some() { 2 } else { 0 },
         }
     }
@@ -217,8 +249,8 @@ impl Frame {
         }
     }
 
-    pub fn encode<W: Write>(&self, mut w: W) -> Result<usize, Error> {
-        let len = self.len();
+    pub fn encode<W: Write>(&self, version: u8, mut w: W) -> Result<usize, Error> {
+        let len = self.len(version);
         match self {
             Frame::Header { stream, payload } => {
                 assert!(payload.len() + 12 < u16::max_value() as usize);
@@ -249,13 +281,36 @@ impl Frame {
             Frame::Ping => {
                 w.write_u8(0x02)?;
             }
-            Frame::Disconnect => {
+            Frame::Disconnect{reason} => {
                 w.write_u8(0x03)?;
+                if version >= 0x09 {
+                    w.write_u8(match reason {
+                        DisconnectReason::None           => 0,
+                        DisconnectReason::Application    => 1,
+                        DisconnectReason::ResourceLimit  => 6,
+                        DisconnectReason::Move(_)        => 7,
+                        DisconnectReason::Unknown(v)     => *v,
+                    })?;
+                    if let DisconnectReason::Move(m) = reason{
+                        w.write_u16::<BigEndian>(m.len() as u16)?;
+                        w.write_all(&m.as_bytes())?;
+                    } else {
+                        w.write_u16::<BigEndian>(0)?;
+                    }
+                }
             }
-            Frame::Close { stream, order } => {
+            Frame::Close { stream, order, reason } => {
                 w.write_u8(0x06)?;
                 w.write_u32::<BigEndian>(*stream)?;
                 w.write_u64::<BigEndian>(*order)?;
+                if version >= 0x09 {
+                    w.write_u8(match reason {
+                        CloseReason::None           => 0,
+                        CloseReason::Application    => 1,
+                        CloseReason::ResourceLimit  => 6,
+                        CloseReason::Unknown(v)     => *v,
+                    })?;
+                }
             }
             Frame::Config { timeout, sleeping } => {
                 w.write_u8(0x07)?;
@@ -282,7 +337,7 @@ impl Frame {
         Ok(len)
     }
 
-    pub fn decode<R: Read>(mut r: R) -> Result<Vec<Frame>, Error> {
+    pub fn decode<R: Read>(version: u8, mut r: R) -> Result<Vec<Frame>, Error> {
         let mut f = Vec::new();
 
         loop {
@@ -302,7 +357,25 @@ impl Frame {
                     f.push(Frame::Ping);
                 }
                 Ok(0x03) => {
-                    f.push(Frame::Disconnect);
+                    let reason = if version >= 0x09 {
+                        let reason = r.read_u8()?;
+                        let mov = {
+                            let len = r.read_u16::<BigEndian>()?;
+                            let mut v2 = vec![0; len as usize];
+                            r.read_exact(&mut v2)?;
+                            String::from_utf8_lossy(&v2).into()
+                        };
+                        match reason {
+                            0 => DisconnectReason::None,
+                            1 => DisconnectReason::Application,
+                            6 => DisconnectReason::ResourceLimit,
+                            7 => DisconnectReason::Move(mov),
+                            a => DisconnectReason::Unknown(a),
+                        }
+                    } else {
+                        DisconnectReason::None
+                    };
+                    f.push(Frame::Disconnect{reason});
                 }
                 Ok(0x04) => {
                     let stream = r.read_u32::<BigEndian>()?;
@@ -322,7 +395,17 @@ impl Frame {
                 Ok(0x06) => {
                     let stream = r.read_u32::<BigEndian>()?;
                     let order = r.read_u64::<BigEndian>()?;
-                    f.push(Frame::Close { stream, order });
+                    let reason = if version >= 0x09 {
+                        match r.read_u8()? {
+                            0 => CloseReason::None,
+                            1 => CloseReason::Application,
+                            6 => CloseReason::ResourceLimit,
+                            a => CloseReason::Unknown(a),
+                        }
+                    } else {
+                        CloseReason::None
+                    };
+                    f.push(Frame::Close { stream, order, reason });
                 }
                 Ok(0x07) => {
                     let flags = r.read_u8()?;
@@ -355,11 +438,11 @@ fn config_frames() {
         sleeping: false,
     };
     let mut w = Vec::new();
-    let written = frame.encode(&mut w).unwrap();
+    let written = frame.encode(LATEST_VERSION, &mut w).unwrap();
     assert_eq!(written, w.len());
     assert_eq!(w, &[0x07, 0x00, 0x00, 0x00]);
 
-    let frames = Frame::decode(&w[..]).unwrap();
+    let frames = Frame::decode(LATEST_VERSION, &w[..]).unwrap();
     assert_eq!(frames.len(), 1);
     if let Frame::Config {
         timeout: None,
@@ -375,11 +458,11 @@ fn config_frames() {
         sleeping: true,
     };
     let mut w = Vec::new();
-    let written = frame.encode(&mut w).unwrap();
+    let written = frame.encode(LATEST_VERSION, &mut w).unwrap();
     assert_eq!(written, w.len());
     assert_eq!(w, &[0x07, 0b11000000, 0, 2, 5, 12]);
 
-    let frames = Frame::decode(&w[..]).unwrap();
+    let frames = Frame::decode(LATEST_VERSION, &w[..]).unwrap();
     assert_eq!(frames.len(), 1);
     if let Frame::Config {
         timeout: Some(1292),
@@ -400,7 +483,7 @@ fn encode_frame() {
     };
 
     let mut w = Vec::new();
-    let written = frame.encode(&mut w).unwrap();
+    let written = frame.encode(LATEST_VERSION, &mut w).unwrap();
     assert_eq!(written, w.len());
     assert_eq!(
         w,
@@ -415,7 +498,7 @@ fn encode_frame() {
         acked: vec![0x872],
     };
     let mut w = Vec::new();
-    let written = frame.encode(&mut w).unwrap();
+    let written = frame.encode(LATEST_VERSION, &mut w).unwrap();
     assert_eq!(written, w.len());
     assert_eq!(written, 1 + 2 + 2 + 8);
     assert_eq!(
@@ -432,7 +515,7 @@ fn decode_frame() {
         0x24, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x23, 0x00, 0x00, 0x00,
     ];
 
-    let frames = Frame::decode(&r[..]).unwrap();
+    let frames = Frame::decode(LATEST_VERSION, &r[..]).unwrap();
     assert_eq!(frames.len(), 2);
     if let Frame::Stream {
         order,

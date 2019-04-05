@@ -85,7 +85,7 @@ impl Conduit {
                 });
                 handler(poll, stream, state.clone())
             },
-        );
+        )?;
 
 
         Ok(Self {
@@ -330,7 +330,7 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                 if sc.kill {
                     killed.push(id.clone());
                     if let Some(route) = sc.route {
-                        osaka::try!(self.ep.disconnect(route));
+                        osaka::try!(self.ep.disconnect(route, packet::DisconnectReason::Application));
                     }
                     continue
                 }
@@ -349,10 +349,10 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                                     String::from_utf8_lossy(&oneshot.path)
                                     );
                                 let (mark, _) = sc.streams.insert(oneshot.path.clone(), ());
-                                self.ep
+                                osaka::try!(self.ep
                                     .open(route, oneshot.headers.clone(), move |poll, stream| {
                                         (oneshot.f)(poll, stream, id.clone(), mark)
-                                    });
+                                    }));
 
                             }
                         } else {
@@ -378,10 +378,10 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                             );
                             let (mark, _) = sc.streams.insert(path.clone(), ());
                             sc.waitreopen.insert(path.clone(), Instant::now());
-                            self.ep
+                            osaka::try!(self.ep
                                 .open(route, schedule.headers.clone(), |poll, stream| {
                                     (schedule.f)(poll, stream, id.clone(), mark)
-                                });
+                                }));
                         }
                     }
                 }

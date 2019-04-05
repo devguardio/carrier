@@ -118,7 +118,7 @@ impl Drop for UdpChannel {
 }
 
 enum EndpointCmd {
-    Disconnect(RoutingKey),
+    Disconnect(RoutingKey, packet::DisconnectReason),
 }
 
 pub struct Endpoint {
@@ -183,6 +183,7 @@ impl Endpoint {
         poll: osaka::Poll,
         token: osaka::Token,
         noise: noise::Transport,
+        version: u8,
         identity: identity::Identity,
         socket: UdpSocket,
         addr: SocketAddr,
@@ -196,7 +197,7 @@ impl Endpoint {
             noise.route(),
             UdpChannel {
                 identity,
-                chan: Arc::new(RefCell::new(Channel::new(noise, debug_id))),
+                chan: Arc::new(RefCell::new(Channel::new(noise, version, debug_id))),
                 addrs: AddressMode::Established(addr, HashMap::new()),
                 streams: HashMap::new(),
                 newhandl: None,
@@ -257,7 +258,7 @@ impl Endpoint {
         yield poll.never();
     }
 
-    pub fn publish(&mut self, shadow: identity::Address) -> u32 {
+    pub fn publish(&mut self, shadow: identity::Address) -> Result<u32, Error> {
         let xaddr = self.xsecret().address();
         let xaddr = identity::SignedAddress::sign(&self.secret, xaddr);
 
@@ -293,7 +294,7 @@ impl Endpoint {
         let chan = self.channels.get_mut(&self.broker_route).unwrap();
         let stream_id = {
             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-            let stream_id = chanchan.open(Headers::with_path("/carrier.broker.v1/broker/connect").encode(), true);
+            let stream_id = chanchan.open(Headers::with_path("/carrier.broker.v1/broker/connect").encode(), true)?;
 
             let mut m = Vec::new();
             proto::ConnectRequest {
@@ -322,10 +323,10 @@ impl Endpoint {
         Ok(())
     }
 
-    pub fn disconnect(&mut self, route: RoutingKey) -> Result<(), Error> {
+    pub fn disconnect(&mut self, route: RoutingKey, reason: packet::DisconnectReason) -> Result<(), Error> {
         if let Some(ref mut chan) = self.channels.remove(&route) {
             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-            let pkt = chanchan.disconnect()?;
+            let pkt = chanchan.disconnect(reason)?;
             match &chan.addrs {
                 AddressMode::Discovering(addrs) => {
                     for (addr, _) in addrs.iter() {
@@ -344,7 +345,7 @@ impl Endpoint {
             if let Some(bs) = chan.broker_stream {
                 if let Some(brkchan) = self.channels.get_mut(&self.broker_route) {
                     let mut chanchan = brkchan.chan.try_borrow_mut().expect("carrier is not thread safe");
-                    chanchan.close(bs);
+                    chanchan.close(bs, packet::CloseReason::Application);
                 }
                 chan.broker_stream = None;
             }
@@ -412,7 +413,7 @@ impl Endpoint {
         }
 
         let debug_id = format!("{}::{}", identity, cr.route);
-        let channel = Channel::new(noise, debug_id);
+        let channel = Channel::new(noise, 0x08, debug_id);
 
         self.channels.insert(
             cr.route,
@@ -456,7 +457,7 @@ impl Endpoint {
             q.cr.route,
             UdpChannel {
                 identity:      q.identity,
-                chan:          Arc::new(RefCell::new(Channel::new(noise, debug_id))),
+                chan:          Arc::new(RefCell::new(Channel::new(noise, 0x08,debug_id))),
                 addrs:         AddressMode::Discovering(paths.clone()),
                 streams:       HashMap::new(),
                 newhandl:      Some(Box::new(sf)),
@@ -486,7 +487,7 @@ impl Endpoint {
         self.stream(broker_route, q.qstream, m);
     }
 
-    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, f: F) -> u32
+    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, f: F) -> Result<u32, Error>
     where
         F: FnOnce(osaka::Poll, Stream) -> osaka::Task<()>,
     {
@@ -494,7 +495,7 @@ impl Endpoint {
 
         let stream_id = {
             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-            let stream_id = chanchan.open(headers.encode(), true);
+            let stream_id = chanchan.open(headers.encode(), true)?;
             stream_id
         };
 
@@ -513,7 +514,7 @@ impl Endpoint {
                 a: ii,
             },
         );
-        stream_id
+        Ok(stream_id)
     }
 
     pub fn stream<M: Into<Vec<u8>>>(&mut self, route: RoutingKey, stream: u32, m: M) {
@@ -553,7 +554,7 @@ impl Drop for Endpoint {
             );
 
         for route in self.channels.keys().cloned().collect::<Vec<RoutingKey>>().into_iter() {
-            self.disconnect(route).ok();
+            self.disconnect(route, packet::DisconnectReason::Application).ok();
         }
     }
 }
@@ -572,8 +573,8 @@ impl Future<Result<Event, Error>> for Endpoint {
         match self.cmd.1.try_recv() {
             Err(std::sync::mpsc::TryRecvError::Empty) => (),
             Err(std::sync::mpsc::TryRecvError::Disconnected) => unreachable!(),
-            Ok(EndpointCmd::Disconnect(r)) => {
-                if let Err(e) = self.disconnect(r){
+            Ok(EndpointCmd::Disconnect(r, reason)) => {
+                if let Err(e) = self.disconnect(r, reason){
                     return FutureResult::Done(Err(e));
                 }
             }
@@ -637,7 +638,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             Err(Error::AntiReplay) => debug!("{}: {}", addr, Error::AntiReplay),
                             Err(Error::OpenStreamsLimit) => {
                                 error!("{}: {}", addr, Error::OpenStreamsLimit);
-                                disconnect.push(route);
+                                disconnect.push((route, packet::DisconnectReason::ResourceLimit));
                             }
                             Err(e) => warn!("{}: {}", addr, e),
                             Ok(()) => {
@@ -666,8 +667,8 @@ impl Future<Result<Event, Error>> for Endpoint {
             },
         };
 
-        for route in disconnect {
-            if let Err(e) = self.disconnect(route) {
+        for (route, reason) in disconnect {
+            if let Err(e) = self.disconnect(route, reason) {
                 return FutureResult::Done(Err(e));
             }
         }
@@ -701,7 +702,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                         debug!("stream {} was closed by this end", stream);
                         chan.streams.remove(&stream);
                         let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-                        chanchan.close(stream);
+                        chanchan.close(stream, packet::CloseReason::Application);
                     }
                 }
 
@@ -756,7 +757,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                             chanchan.stream(stream, m.encode());
                             if close {
-                                chanchan.close(stream);
+                                chanchan.close(stream, packet::CloseReason::Application);
                             }
                         } else {
                             if let Some(ref mut new) = chan.newhandl {
@@ -773,7 +774,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                                     chan.streams.insert(stream.stream, StreamReceiver { f, a: ii.clone() });
                                 } else {
                                     let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-                                    chanchan.close(stream.stream);
+                                    chanchan.close(stream.stream, packet::CloseReason::Application);
                                 }
                             }
                         }
@@ -800,7 +801,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                                     .unwrap();
                                     let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                                     chanchan.stream(stream, m);
-                                    chanchan.close(stream);
+                                    chanchan.close(stream, packet::CloseReason::Application);
                                 }
                             }
                         } else if route == &self.broker_route && self.outstanding_connect_outgoing.contains_key(&stream)
@@ -881,7 +882,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                         debug!("stream {} was closed by this end", stream);
                         chan.streams.remove(&stream);
                         let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-                        chanchan.close(stream);
+                        chanchan.close(stream, packet::CloseReason::Application);
                     }
                 }
             }
@@ -898,7 +899,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                     if let Some(bs) = rm.broker_stream {
                         let chan = self.channels.get_mut(&self.broker_route).unwrap();
                         let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
-                        chanchan.close(bs);
+                        chanchan.close(bs, packet::CloseReason::Application);
                         rm.broker_stream = None;
                     }
                     return FutureResult::Done(Ok(Event::Disconnect {
@@ -919,8 +920,8 @@ impl Future<Result<Event, Error>> for Endpoint {
 
 
 impl Handle {
-    pub fn disconnect(&self, route: RoutingKey) {
-        self.cmd.send(EndpointCmd::Disconnect(route)).unwrap();
+    pub fn disconnect(&self, route: RoutingKey, reason: packet::DisconnectReason) {
+        self.cmd.send(EndpointCmd::Disconnect(route, reason)).unwrap();
     }
 
     pub fn broker(&self) -> RoutingKey {
@@ -935,7 +936,7 @@ impl Handle {
 impl Drop for Handle {
     fn drop(&mut self) {
         if self.stop_on_drop {
-            self.cmd.send(EndpointCmd::Disconnect(self.broker_route)).unwrap();
+            self.cmd.send(EndpointCmd::Disconnect(self.broker_route, packet::DisconnectReason::Application)).unwrap();
         }
     }
 }
@@ -1074,6 +1075,7 @@ impl EndpointBuilder {
                         poll,
                         token,
                         noise,
+                        packet::LATEST_VERSION,
                         identity,
                         sock,
                         to.addr,

@@ -4,6 +4,7 @@ use identity;
 use endpoint;
 use headers;
 use proto;
+use packet;
 use error::Error;
 use std::sync::{Arc, Mutex};
 use prost::Message;
@@ -36,7 +37,7 @@ impl Endpoint {
         debug!("publish headers: {:?}", headers);
         loop {
             if log.lock().unwrap().len() >= expect_num_events {
-                ep.disconnect(ep.broker());
+                ep.disconnect(ep.broker(), packet::DisconnectReason::Application);
                 return;
             }
             let v = proto::PublishChange::decode(osaka::sync!(stream)).unwrap();
@@ -77,7 +78,7 @@ impl Endpoint {
                 });
                 Self::publish_handler(handle, log.clone(), expect_num_events, poll, stream)
             },
-        );
+        ).unwrap();
 
         Endpoint {
             ep,
@@ -116,7 +117,7 @@ impl Endpoint {
                 });
                 Self::subscribe_handler(handle, log.clone(), expect_num_events, poll, stream)
             },
-        );
+        ).unwrap();
 
         Endpoint {
             ep,
@@ -134,7 +135,7 @@ impl Endpoint {
         loop {
             let v = proto::SubscribeChange::decode(osaka::sync!(stream)).unwrap();
             match v.m {
-                Some(proto::subscribe_change::M::Publish(proto::Publish { identity, xaddr })) => {
+                Some(proto::subscribe_change::M::Publish(proto::Publish { identity, ..})) => {
                     log.lock().unwrap().push(Event::Publish(
                             identity::Identity::from_bytes(identity).expect("pub identity")));
                 }
@@ -150,7 +151,7 @@ impl Endpoint {
                 None => (),
             }
             if log.lock().unwrap().len() >= expect_num_events {
-                ep.disconnect(ep.broker());
+                ep.disconnect(ep.broker(), packet::DisconnectReason::Application);
                 return;
             }
         }
@@ -159,7 +160,6 @@ impl Endpoint {
     pub fn connect(expect_num_events: usize, target: identity::Identity) -> Self {
         let log = Arc::new(Mutex::new(Vec::new()));
         let poll   = osaka::Poll::new();
-        let shadow : identity::Address = MOCK_SHADOW_ADDRESS.parse().unwrap();
         let secret  = identity::Secret::gen();
         let mut config  = config::Config::new(secret.clone());
         config.clock = config::ClockSource::System;
@@ -167,8 +167,6 @@ impl Endpoint {
         ep.do_not_move();
         let mut ep = ep.connect(poll).run().unwrap();
 
-        let broker = ep.broker();
-        let handle = ep.handle();
         ep.connect(target, 5).unwrap();
 
         Endpoint {
@@ -184,7 +182,7 @@ impl Endpoint {
         loop {
             match osaka::sync!(self.ep)? {
                 endpoint::Event::BrokerGone => break,
-                endpoint::Event::Disconnect { identity,  route } => {
+                endpoint::Event::Disconnect { identity,  ..} => {
                     debug!("{} disconnected", identity);
                     self.log.lock().unwrap().push(Event::Disconnect(identity.clone()));
 

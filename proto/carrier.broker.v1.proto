@@ -71,23 +71,40 @@ message ConnectResponse {
 }
 
 
-message ClusterNode {
+message ClusterShard {
+    oneof m {
+        bool    this = 1;
+        string other = 2;
+    }
+}
+
+message ExceptionalRoute {
+    bytes identity = 1;
+    oneof m {
+        bool    this    = 2;
+        string other    = 3;
+        bool   blocked  = 4;
+    }
 }
 
 message ClusterConfig {
-    map<uint32, ClusterNode> nodes = 1;
-    uint32 this = 2;
+    repeated ClusterShard       shards = 1;
+    repeated ExceptionalRoute   exceptional_routes = 2;
 }
 
-message ClusterChange {
+message ClusterState {
+    ClusterConfig config = 1;
 }
 
 service Broker {
-    rpc subscribe   (SubscribeRequest)  returns (stream SubscribeChange) {}
-    rpc publish     (PublishRequest)    returns (stream PublishChange)   {}
-    rpc connect     (ConnectRequest)    returns (stream ConnectResponse) {}
-    rpc cluster     (ClusterConfig)     returns (stream ClusterChange)   {}
+    rpc subscribe    (SubscribeRequest)  returns (stream SubscribeChange) {}
+    rpc publish      (PublishRequest)    returns (stream PublishChange)   {}
+    rpc connect      (ConnectRequest)    returns (stream ConnectResponse) {}
+
+    rpc get_cluster     (Empty)             returns (ClusterConfig)          {}
+    rpc patch_cluster   (ClusterConfig)     returns (Confirmation)           {}
 }
+
 
 message PeerConnectRequest {
     bytes   identity        = 1;
@@ -113,6 +130,11 @@ message ProtoHeader {
 }
 
 message Empty {}
+
+message Confirmation {
+    bool ok = 1;
+    string error = 2;
+}
 
 
 message MoveInstruction {

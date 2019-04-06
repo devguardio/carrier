@@ -321,7 +321,7 @@ fn recv_handshake(
             let identity = Identity::from_bytes(&identity)?;
             let timestamp = reader.read_u64::<BigEndian>()?;
 
-            let move_instruction = if direction == RoutingDirection::Initiator2Responder && flags.mov {
+            let move_instruction = if direction == RoutingDirection::Responder2Initiator && flags.mov {
                 let len = reader.read_u16::<BigEndian>()?;
                 let mut b = vec![0; len as usize];
                 reader.read_exact(&mut b)?;

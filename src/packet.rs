@@ -2,7 +2,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
-pub const LATEST_VERSION : u8 = 0x8;
+pub const LATEST_VERSION : u8 = 0x9;
 
 pub type RoutingKey = u64;
 
@@ -141,6 +141,7 @@ fn decode_invalid_packets() {
 pub enum CloseReason {
     None,
     Application,
+    EncodingError,
     ResourceLimit,
     Unknown(u8),
 }
@@ -307,6 +308,7 @@ impl Frame {
                     w.write_u8(match reason {
                         CloseReason::None           => 0,
                         CloseReason::Application    => 1,
+                        CloseReason::EncodingError  => 3,
                         CloseReason::ResourceLimit  => 6,
                         CloseReason::Unknown(v)     => *v,
                     })?;
@@ -399,6 +401,7 @@ impl Frame {
                         match r.read_u8()? {
                             0 => CloseReason::None,
                             1 => CloseReason::Application,
+                            3 => CloseReason::EncodingError,
                             6 => CloseReason::ResourceLimit,
                             a => CloseReason::Unknown(a),
                         }

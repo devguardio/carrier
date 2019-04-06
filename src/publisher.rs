@@ -123,7 +123,7 @@ impl PublisherBuilder {
         let with_disco = self.with_disco;
         let routes: &'static HashMap<String, RouteHandler> = Box::leak(Box::new(self.routes));
         let publish_config = self.config.publish.expect("missing publish section in config");
-        ep.publish(publish_config.shadow.clone())?;
+        ep.publish(publish_config.shadow.clone(),||panic!("publish closed"))?;
         let publish_config: &'static config::PublisherConfig = Box::leak(Box::new(publish_config));
 
         loop {

@@ -7,6 +7,8 @@ use replay;
 use std::collections::HashMap;
 use std::collections::VecDeque;
 use std::time::Duration;
+use proto;
+use prost::Message;
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;
@@ -453,6 +455,26 @@ impl Channel {
             ref any => {
                 Ok(ChannelProgress::Disconnect(any.clone()))
             }
+        }
+    }
+
+
+    /// queue a proto message with no size prefix
+    pub fn small_message<M: Message>(&mut self, stream: u32, m: M) {
+        let mut b = Vec::new();
+        m.encode(&mut b).unwrap();
+        self.stream(stream, b)
+    }
+
+    /// queue a proto message
+    pub fn message<M: Message>(&mut self, stream: u32, m: M) {
+        let mut b = Vec::new();
+        m.encode(&mut b).unwrap();
+        let mut bh = Vec::new();
+        proto::ProtoHeader { len: b.len() as u64 }.encode(&mut bh).unwrap();
+        self.stream(stream, bh);
+        for g in b.chunks(600) {
+            self.stream(stream, g)
         }
     }
 

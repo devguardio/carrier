@@ -44,21 +44,17 @@ impl Stream {
     }
 
     pub fn small_message<M: Message>(&mut self, m: M) {
-        let mut b = Vec::new();
-        m.encode(&mut b).unwrap();
-        self.send(b)
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .small_message(self.stream, m)
     }
 
     pub fn message<M: Message>(&mut self, m: M) {
-        let mut b = Vec::new();
-        m.encode(&mut b).unwrap();
-
-        let mut bh = Vec::new();
-        proto::ProtoHeader { len: b.len() as u64 }.encode(&mut bh).unwrap();
-        self.send(bh);
-        for g in b.chunks(600) {
-            self.send(g)
-        }
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .message(self.stream, m)
     }
 }
 
@@ -246,9 +242,12 @@ impl Endpoint {
     }
 
     #[osaka]
-    fn publish_stream(poll: osaka::Poll, mut stream: Stream) {
+    fn publish_stream<F>(poll: osaka::Poll, mut stream: Stream, f: F)
+    where
+        F: 'static + FnOnce()
+    {
         let _omg = defer(|| {
-            panic!("publish closed");
+            f()
         });
 
         let m = osaka::sync!(stream);
@@ -258,7 +257,10 @@ impl Endpoint {
         yield poll.never();
     }
 
-    pub fn publish(&mut self, shadow: identity::Address) -> Result<u32, Error> {
+    pub fn publish<F>(&mut self, shadow: identity::Address, on_close: F) -> Result<u32, Error>
+    where
+        F: 'static + FnOnce(),
+    {
         let xaddr = self.xsecret().address();
         let xaddr = identity::SignedAddress::sign(&self.secret, xaddr);
 
@@ -271,7 +273,7 @@ impl Endpoint {
                     xaddr:  xaddr.to_vec(),
                     shadow: shadow.as_bytes().to_vec(),
                 });
-                Self::publish_stream(poll, stream)
+                Self::publish_stream(poll, stream, on_close)
             },
         )
     }

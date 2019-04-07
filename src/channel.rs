@@ -106,6 +106,10 @@ impl Channel {
         }
     }
 
+    pub fn rtt(&self) -> u64 {
+        self.recovery.smoothed_rtt
+    }
+
     pub fn bytes_in_flight(&self) -> usize {
         self.recovery.bytes_in_flight()
     }

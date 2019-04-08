@@ -184,17 +184,17 @@ impl Channel {
                 Frame::Stream { stream, order, payload } => {
                     trace!("[{}] received message {}", self.debug_id, order);
 
-                    if !self.streams.contains_key(&stream) && self.streams.len() > 0x7fffffff {
-                        self.outqueue.push_back(Frame::Close {
-                            stream,
-                            order: 1,
-                            reason: CloseReason::ResourceLimit,
-                        });
-                        log::warn!("{:?}", Error::OpenStreamsLimit);
-                        return Ok(());
-                    }
-
-                    let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
+                    let ordered = match self.streams.entry(stream) {
+                        std::collections::hash_map::Entry::Occupied(v) => v.into_mut(),
+                        std::collections::hash_map::Entry::Vacant(v) => {
+                            // ignore stream that's not preceeded by header
+                            // this happens when we get dup for a closed stream
+                            if !self.counters.contains_key(&stream) {
+                                return Ok(());
+                            }
+                            v.insert(stream::OrderedStream::new())
+                        }
+                    };
                     ordered.push(Frame::Stream { stream, order, payload })?;
                 }
                 Frame::Disconnect{reason} => {
@@ -339,7 +339,7 @@ impl Channel {
                 self.last_seen = now;
                 self.idle_count += 1;
                 if self.idle_count > 2 {
-                    warn!(
+                    debug!(
                         "[{}] peer has exceeded idle timer * 3 and is marked dead",
                         self.debug_id
                     );
@@ -365,7 +365,7 @@ impl Channel {
             };
 
             if self.deadline <= now {
-                error!(
+                debug!(
                     "[{}] upcoming deadline {} already expired at {}",
                     self.debug_id, self.deadline, now
                 );
@@ -445,6 +445,7 @@ impl Channel {
                     Frame::Close { stream, .. } => {
                         trace!("LD1: stream {} closed", stream);
                         self.streams.remove(&stream);
+                        self.counters.remove(&stream);
                         return Ok(ChannelProgress::Close(stream));
                     }
                     _ => unreachable!(),
@@ -562,7 +563,7 @@ impl Channel {
             }
             Some(order) => {
                 //TODO
-                //we're not removing the counrer yet because reuse of the stream id
+                //we're not removing the counter yet because reuse of the stream id
                 //may lead to corner cases where a header arrives before a close
                 *order += 1;
                 *order

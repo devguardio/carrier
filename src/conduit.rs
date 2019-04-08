@@ -1,9 +1,10 @@
-use {error::Error, identity, util::defer};
+use {error::Error, identity, util::defer, channel};
 use log::{info, warn};
 use osaka::{osaka, FutureResult};
 use prost::Message;
 use std::cell::RefCell;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use std::mem;
@@ -25,12 +26,13 @@ struct SubscriberState {
 
 #[derive(Default)]
 struct ConduitState {
-    publishers: HashMap<identity::Identity, ()>,
+    publishers: HashSet<identity::Identity>,
     subscribed: HashMap<identity::Identity, SubscriberState>,
     on_pub:     Option<Box<FnMut(&identity::Identity)>>,
     on_unpub:   Option<Box<FnMut(&identity::Identity)>>,
     on_sub:     Option<Box<FnMut(&identity::Identity)>>,
-    on_unsub:   Option<Box<FnMut(&identity::Identity)>>,
+    on_unsub:   Option<Box<FnMut(&identity::Identity, channel::DisconnectReason)>>,
+    on_connerr: Option<Box<FnMut(&identity::Identity, String)>>,
 }
 
 struct ScheduledStream {
@@ -105,7 +107,7 @@ impl Conduit {
         state.on_sub = Some(Box::new(f))
     }
 
-    pub fn on_unsubscribe<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
+    pub fn on_unsubscribe<F: 'static + FnMut(&identity::Identity, channel::DisconnectReason)> (&mut self, f: F) {
         let mut state =  self.state
             .try_borrow_mut()
             .expect("carrier is not thread safe");
@@ -126,6 +128,13 @@ impl Conduit {
         state.on_unpub = Some(Box::new(f))
     }
 
+    pub fn on_connect_error<F: 'static + FnMut(&identity::Identity, String)> (&mut self, f: F) {
+        let mut state =  self.state
+            .try_borrow_mut()
+            .expect("carrier is not thread safe");
+        state.on_connerr = Some(Box::new(f))
+    }
+
 
     #[allow(unreachable_code)]
     #[osaka]
@@ -136,7 +145,7 @@ impl Conduit {
         M: prost::Message + Default,
     {
         let headers = headers::Headers::decode(&osaka::sync!(stream)).unwrap();
-        println!("{:?}", headers);
+        log::trace!("{:?}", headers);
 
         loop {
             let ph = osaka::sync!(stream);
@@ -309,24 +318,44 @@ impl Conduit {
 
 impl osaka::Future<Result<(), Error>> for Conduit {
     fn poll(&mut self) -> osaka::FutureResult<Result<(), Error>> {
-        if self.last_sync.elapsed().as_secs() > 1 {
+        if self.last_sync.elapsed().as_millis() > 200 {
             self.last_sync = Instant::now();
             let mut state = self
                 .state
                 .try_borrow_mut()
                 .expect("carrier is not thread safe");
 
-            info!("--- sync  connected: {}/{}", state.publishers.len(), state.subscribed.len());
+            info!("--- sync  connected: {}/{}", state.subscribed.len(), state.publishers.len());
 
-            for (p, _) in state.publishers.clone() {
+
+            let mut max_per_second = 0;
+            for p in state.publishers.clone() {
                 if !state.subscribed.contains_key(&p) {
+
+                    ////FIXME TEST
+                    //if p != "oWdjQ1hW6m1x2xDMWoY26P175FMED5aMCtqcveC3yVnyoX1".parse().unwrap() {
+                    //    continue;
+                    //}
+
                     osaka::try!(self.ep.connect(p.clone(), 5));
                     state.subscribed.insert(p, SubscriberState::default());
+
+                    // don't connect all at once
+                    max_per_second += 1;
+                    if max_per_second > 100 {
+                        break;
+                    }
                 }
             }
 
+            let mut max_open_per_second = 0;
             let mut killed = Vec::new();
             for (id, sc) in &mut state.subscribed {
+                // don't starve
+                if self.last_sync.elapsed().as_millis() > 1000 {
+                    error!("main loop starved");
+                    break;
+                }
                 if sc.kill {
                     killed.push(id.clone());
                     if let Some(route) = sc.route {
@@ -337,7 +366,6 @@ impl osaka::Future<Result<(), Error>> for Conduit {
 
 
                 if let Some(route) = sc.route {
-
                     let mut oneshots_remaining = Vec::new();
                     oneshots_remaining.reserve(self.oneshots.len());
                     for mut oneshot in self.oneshots.drain(..) {
@@ -369,19 +397,27 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                                     continue;
                                 }
                             }
+
+                            // don't connect all at once
+                            max_open_per_second += 1;
+                            if max_open_per_second > 100 {
+                                break;
+                            }
+
                             sc.waitreopen.remove(path);
 
-                            info!(
-                                "[{}] opening scheduled stream {}",
-                                id,
-                                String::from_utf8_lossy(path)
-                            );
                             let (mark, _) = sc.streams.insert(path.clone(), ());
                             sc.waitreopen.insert(path.clone(), Instant::now());
-                            osaka::try!(self.ep
+                            let stream = osaka::try!(self.ep
                                 .open(route, schedule.headers.clone(), |poll, stream| {
                                     (schedule.f)(poll, stream, id.clone(), mark)
                                 }));
+                            info!(
+                                "[{}] opened scheduled stream {} -> {}",
+                                id,
+                                stream,
+                                String::from_utf8_lossy(path)
+                            );
                         }
                     }
                 }
@@ -390,7 +426,7 @@ impl osaka::Future<Result<(), Error>> for Conduit {
             for id in killed {
                 state.subscribed.remove(&id);
                 if let Some(ref mut f) = state.on_unsub{
-                    f(&id);
+                    f(&id, channel::DisconnectReason::None);
                 }
             }
         }
@@ -399,16 +435,16 @@ impl osaka::Future<Result<(), Error>> for Conduit {
             match self.ep.poll() {
                 FutureResult::Done(Ok(endpoint::Event::BrokerGone)) => panic!("broker gone"),
                 FutureResult::Done(Ok(endpoint::Event::Disconnect {
-                    identity, ..
+                    identity, reason, ..
                 })) => {
                     let mut state = self
                         .state
                         .try_borrow_mut()
                         .expect("carrier is not thread safe");
                     if let Some(_old) = state.subscribed.remove(&identity) {
-                        info!("disconnect {}", identity);
+                        info!("disconnect {} {:?}", identity,reason);
                         if let Some(ref mut f) = state.on_unsub{
-                            f(&identity);
+                            f(&identity, reason);
                         }
                     }
                 }
@@ -441,7 +477,14 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                             .try_borrow_mut()
                             .expect("carrier is not thread safe");
                         if let Some(_) = state.subscribed.remove(&q.identity) {
-                            warn!("failed outgoing connect {}", q.identity);
+                            if let Some(cr) = q.cr {
+                                warn!("failed outgoing connect {} : {}", q.identity, cr.error);
+                                if let Some(ref mut f) = state.on_connerr {
+                                    f(&q.identity, cr.error);
+                                }
+                            } else {
+                                warn!("failed outgoing connect {}", q.identity, );
+                            }
                         }
                     }
 
@@ -496,9 +539,11 @@ fn handler(
                     sub.kill = true;
                 }
 
-                state
-                    .publishers
-                    .insert(identity, ());
+                if !state.publishers.insert(identity.clone()) {
+                    if let Some(ref mut f) = state.on_unpub {
+                        f(&identity);
+                    }
+                }
             }
             Some(proto::subscribe_change::M::Unpublish(proto::Unpublish {
                 identity,
@@ -510,17 +555,16 @@ fn handler(
                     .try_borrow_mut()
                     .expect("carrier is not thread safe");
 
-                if let Some(ref mut f) = state.on_unpub {
-                    f(&identity);
-                }
 
                 if let Some(sub) = state.subscribed.get_mut(&identity) {
                     sub.kill = true;
                 }
 
-                state
-                    .publishers
-                    .remove(&identity);
+                if state.publishers.remove(&identity) {
+                    if let Some(ref mut f) = state.on_unpub {
+                        f(&identity);
+                    }
+                }
             }
             Some(proto::subscribe_change::M::Supersede(_)) => {
                 panic!("subscriber superseded");

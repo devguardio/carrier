@@ -45,6 +45,7 @@ pub struct ConfigToml {
     authorize: Option<Vec<AuthorizationToml>>,
     names:     Option<HashMap<String, String>>,
     clock:     Option<String>,
+    port:      Option<u16>,
 }
 
 impl ConfigToml {
@@ -138,7 +139,7 @@ impl ConfigToml {
         let shadow = subscribe.shadow.parse::<identity::Address>()?;
         let group  = subscribe.group.as_ref().map(|v|v.parse::<identity::Secret>().expect("parsing subscribe.group"));
 
-        Ok(Some(SubscriberConfig { shadow, group }))
+        Ok(Some(SubscriberConfig { shadow, group}))
     }
 
     fn names(&mut self) -> Result<HashMap<String, identity::Identity>, Error> {
@@ -219,6 +220,7 @@ pub struct Config {
     pub names:     HashMap<String, identity::Identity>,
     pub clock:     ClockSource,
     pub broker:    Vec<String>,
+    pub port:      Option<u16>,
 }
 
 pub fn load() -> Result<Config, Error> {
@@ -250,6 +252,7 @@ pub fn load() -> Result<Config, Error> {
         names: config.names()?,
         clock: config.clock()?,
         broker: config.broker()?,
+        port:   config.port,
     })
 }
 
@@ -277,6 +280,7 @@ impl Config {
             names:     Default::default(),
             clock:     Default::default(),
             broker:    Self::default_brokers(),
+            port:      Default::default(),
         }
     }
 }

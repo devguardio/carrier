@@ -57,7 +57,9 @@ impl OrderedStream {
 
     pub fn pop(&mut self) -> Option<Frame> {
         if let Some(v) = self.q.remove(&self.consumer) {
+            assert_eq!(self.consumer, v.order());
             self.consumer += 1;
+            trace!("pop frame with order {} {:?} (consumer={})", v.order(), v, self.consumer);
             Some(v)
         } else {
             None

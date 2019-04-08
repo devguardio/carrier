@@ -1,4 +1,4 @@
-use channel::{Channel, ChannelProgress, MAX_PACKET_SIZE};
+use channel::{self, Channel, ChannelProgress, MAX_PACKET_SIZE};
 use clock;
 use config;
 use dns;
@@ -25,7 +25,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use util::defer;
 use std::env;
-use mio_extras::channel;
+use mio_extras::channel as mio_channel;
 
 #[derive(Clone)]
 pub struct Stream {
@@ -127,7 +127,7 @@ pub struct Endpoint {
     outstanding_connect_incomming: HashSet<u32>,
     outstanding_connect_outgoing: HashMap<u32, ConnectResponseStage>,
     publish_secret: Option<identity::Secret>,
-    cmd:            (channel::Sender<EndpointCmd>, channel::Receiver<EndpointCmd>, osaka::Token),
+    cmd:            (mio_channel::Sender<EndpointCmd>, mio_channel::Receiver<EndpointCmd>, osaka::Token),
     clock:          config::ClockSource,
 }
 
@@ -135,7 +135,7 @@ pub struct Endpoint {
 #[derive(Clone)]
 pub struct Handle {
     broker_route:   RoutingKey,
-    cmd:            channel::Sender<EndpointCmd>,
+    cmd:            mio_channel::Sender<EndpointCmd>,
     stop_on_drop:   bool,
 }
 
@@ -202,7 +202,7 @@ impl Endpoint {
         );
 
 
-        let cmd = channel::channel();
+        let cmd = mio_channel::channel();
         let cmd_token = poll
             .register(&cmd.1, mio::Ready::readable(), mio::PollOpt::level())
             .unwrap();
@@ -564,7 +564,7 @@ impl Drop for Endpoint {
 pub enum Event {
     IncommingConnect(ConnectRequest),
     OutgoingConnect(ConnectResponse),
-    Disconnect {route: RoutingKey, identity: Identity},
+    Disconnect {route: RoutingKey, identity: Identity, reason: channel::DisconnectReason},
     BrokerGone,
 }
 
@@ -622,7 +622,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                                         }
                                     }
                                 }
-                                Some((m.unwrap(), mem::replace(addrs, HashMap::new())))
+                                Some((m.unwrap(), bestest.unwrap(), mem::replace(addrs, HashMap::new())))
                             } else {
                                 None
                             }
@@ -630,8 +630,14 @@ impl Future<Result<Event, Error>> for Endpoint {
                             None
                         };
 
-                        if let Some((addr, previous)) = settle {
-                            info!("settled peering with adress {}", addr);
+                        if let Some((addr, cat, previous)) = settle {
+                            info!("settled peering with {} adress {}", match cat {
+                                0 => "invalid",
+                                1 => "internet",
+                                2 => "local",
+                                3 => "proxy",
+                                _ => "?",
+                            }, addr);
                             chan.addrs = AddressMode::Established(addr, previous);
                         }
 
@@ -663,7 +669,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             }
                         }
                     } else {
-                        warn!("received pkt for unknown route {} from {}", pkt.0.route, addr);
+                        debug!("received pkt for unknown route {} from {}", pkt.0.route, addr);
                     }
                 }
             },
@@ -862,7 +868,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                     }
                     ChannelProgress::Disconnect(reason) => {
                         debug!("disconnect {} {:?}", route, reason);
-                        killme.push(route.clone());
+                        killme.push((route.clone(), reason));
                     }
                 };
 
@@ -889,7 +895,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                 }
             }
 
-            for killme in killme {
+            for (killme, reason) in killme {
                 let rm = self.channels.remove(&killme);
                 debug!(
                     "removed channel {}. now managing {} channels",
@@ -907,6 +913,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                     return FutureResult::Done(Ok(Event::Disconnect {
                         route:    killme,
                         identity: rm.identity.clone(),
+                        reason,
                     }));
                 }
             }
@@ -953,6 +960,7 @@ pub struct EndpointBuilder {
     clock:      config::ClockSource,
     broker:     Vec<String>,
     do_not_move: bool,
+    port:       u16,
 }
 
 impl EndpointBuilder {
@@ -968,6 +976,7 @@ impl EndpointBuilder {
             clock:  config.clock.clone(),
             broker: config.broker.clone(),
             do_not_move : false,
+            port: config.port.unwrap_or(0),
         })
     }
 
@@ -1021,13 +1030,13 @@ impl EndpointBuilder {
     pub fn connect_to(self, poll: osaka::Poll, to: dns::DnsRecord)
         -> Result<(Option<Endpoint>, Option<dns::DnsRecord>), Error>
     {
-        info!("attempting connection with {}", &to.addr);
+        info!("attempting connection with (<p: {}) {}", self.port, &to.addr);
 
         let timestamp = clock::dns_time(&self.clock, &to);
         let (mut noise, pkt) = noise::initiate(packet::LATEST_VERSION, Some(&to.x), &self.secret, timestamp, self.do_not_move)?;
         let pkt = pkt.encode();
 
-        let sock = UdpSocket::bind(&"0.0.0.0:0".parse().unwrap()).map_err(|e| Error::Io(e))?;
+        let sock = UdpSocket::bind(&format!("0.0.0.0:{}", self.port).parse().unwrap()).map_err(|e| Error::Io(e))?;
         let token = poll
             .register(&sock, mio::Ready::readable(), mio::PollOpt::level())
             .unwrap();
@@ -1056,7 +1065,8 @@ impl EndpointBuilder {
                         break Some((identity, noise));
                     }
                     Err(e) => {
-                        warn!("EndpointFuture::WaitingForResponse: {}", e);
+                        attempts -= 1;
+                        warn!("EndpointFuture::WaitingForResponse |{}|: {}", attempts, e);
                         continue;
                     }
                 }

@@ -92,7 +92,12 @@ pub fn _main() -> Result<(), Error> {
         .subcommand(
             SubCommand::with_name("sysinfo")
                 .about("get sysinfo")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+                .arg(
+                    Arg::with_name("v0")
+                        .short("0")
+                        .required(false),
+                ),
         )
         .subcommand(
             SubCommand::with_name("netsurvey")
@@ -221,15 +226,24 @@ pub fn _main() -> Result<(), Error> {
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-            let mut headers = carrier::headers::Headers::with_path("/v1/sysinfo");
-            get(
-                poll,
-                config,
-                target,
-                headers,
-                message_handler::<carrier::proto::Sysinfo>,
-            )
-            .run()
+
+            if submatches.is_present("v0") {
+                    get(
+                        poll,
+                        config,
+                        target,
+                        carrier::headers::Headers::with_path("/v0/sysinfo"),
+                        message_handler_v0::<carrier::proto::Sysinfo>,
+                        )
+            } else {
+                get(
+                    poll,
+                    config,
+                    target,
+                    carrier::headers::Headers::with_path("/v1/sysinfo"),
+                    message_handler::<carrier::proto::Sysinfo>,
+                    )
+            }.run()
         }
         ("shell", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -382,6 +396,21 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: 
         let m = T::decode(&b).unwrap();
         println!("{:#?}", m);
     }
+}
+
+#[osaka]
+fn message_handler_v0<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+    use prost::Message;
+
+    let _d = carrier::util::defer(|| {
+        std::process::exit(0);
+    });
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    println!("{:?}", headers);
+
+    let m = osaka::sync!(stream);
+    let m = T::decode(&m).unwrap();
+    println!("{:#?}", m);
 }
 
 #[osaka]

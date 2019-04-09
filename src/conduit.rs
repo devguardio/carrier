@@ -1,13 +1,14 @@
-use {error::Error, identity, util::defer, channel};
 use log::{info, warn};
 use osaka::{osaka, FutureResult};
 use prost::Message;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::collections::HashSet;
-use std::sync::Arc;
 use std::time::{Duration, Instant};
 use std::mem;
+use std::net::SocketAddr;
+use std::sync::{Arc, Mutex};
+use std::thread;
 
 
 use packet;
@@ -15,6 +16,7 @@ use headers;
 use endpoint;
 use proto;
 use config;
+use {error::Error, identity, util::defer, channel, dns};
 
 #[derive(Default)]
 struct SubscriberState {
@@ -24,116 +26,214 @@ struct SubscriberState {
     kill:       bool,
 }
 
-#[derive(Default)]
+#[derive(Default, Clone)]
+struct Setup {
+    on_pub:     Option<Arc<Box<Fn(&identity::Identity) + Send + Sync>>>,
+    on_unpub:   Option<Arc<Box<Fn(&identity::Identity) + Send + Sync>>>,
+    on_sub:     Option<Arc<Box<Fn(&identity::Identity) + Send + Sync>>>,
+    on_unsub:   Option<Arc<Box<Fn(&identity::Identity, channel::DisconnectReason) + Send + Sync>>>,
+    on_connerr: Option<Arc<Box<Fn(&identity::Identity, String) + Send + Sync>>>,
+    schedules:  HashMap<Vec<u8>, ScheduledStream>,
+}
+
 struct ConduitState {
     publishers: HashSet<identity::Identity>,
     subscribed: HashMap<identity::Identity, SubscriberState>,
-    on_pub:     Option<Box<FnMut(&identity::Identity)>>,
-    on_unpub:   Option<Box<FnMut(&identity::Identity)>>,
-    on_sub:     Option<Box<FnMut(&identity::Identity)>>,
-    on_unsub:   Option<Box<FnMut(&identity::Identity, channel::DisconnectReason)>>,
-    on_connerr: Option<Box<FnMut(&identity::Identity, String)>>,
+    setup:      Setup,
 }
 
+struct ConduitEp {
+    last_sync:  Instant,
+    ep:         endpoint::Endpoint,
+    poll:       osaka::Poll,
+    state:      Arc<RefCell<ConduitState>>,
+    setup:      Setup,
+}
+
+#[derive(Clone)]
 struct ScheduledStream {
     every:      Duration,
     headers:    headers::Headers,
-    f:          Box<FnMut(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()>>,
+    f:          Arc<Box<Fn(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()> + Send + Sync>>,
 }
 
 
-struct Oneshot {
-    target:     identity::Identity,
-    path:       Vec<u8>,
-    headers:    headers::Headers,
-    f:          Box<FnMut(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()>>,
+
+struct Thread {
+    running: Arc<Mutex<()>>,
 }
 
 /// A conduit is a combined subscribe+connect client that subscribes to all devices on a shadow and streams data from them.
 /// For convenience, most common functionality is implemented into this struct, and users only need to implement handling the data.
-
 pub struct Conduit {
-    poll:       osaka::Poll,
-    ep:         endpoint::Endpoint,
-    state:      Arc<RefCell<ConduitState>>,
-    last_sync:  Instant,
-    schedules:  HashMap<Vec<u8>, ScheduledStream>,
-    oneshots:   Vec<Oneshot>,
+    threads:    HashMap<SocketAddr, (dns::DnsRecord, HashMap<usize, Thread>)>,
+    setup:      Setup,
+    config:     config::Config,
 }
 
 impl Conduit {
 
-    /// create a new conduit as a future.
+    /// create a new conduit
     /// it will subscribe to the shadow address and maintain a connection to all peers on it
-    #[osaka]
-    pub fn new(poll: osaka::Poll, config: config::Config) -> Result<Self, Error> {
-        let state = Arc::new(RefCell::new(ConduitState::default()));
-
-        let mut ep = endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
-        let mut ep = osaka::sync!(ep)?;
-
-        let subconf= config.subscribe.expect("[subscribe] must be set");
-        let shadow = subconf.shadow;
-        let group  = subconf.group;
-        let broker = ep.broker();
-        ep.open(
-            broker,
-            headers::Headers::with_path("/carrier.broker.v1/broker/subscribe"),
-            |poll, mut stream| {
-                stream.small_message(proto::SubscribeRequest {
-                    shadow: shadow.as_bytes().to_vec(),
-                    group_identity:     group.as_ref().map(|v|v.identity().as_bytes().to_vec()).unwrap_or(Vec::new()),
-                    group_signature:    group.as_ref().map(|v|v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec()).unwrap_or(Vec::new()),
-                });
-                handler(poll, stream, state.clone())
-            },
-        )?;
-
+    pub fn new(config: config::Config) -> Result<Self, Error> {
 
         Ok(Self {
-            ep,
-            poll,
-            state,
-            last_sync:  Instant::now(),
-            schedules:  HashMap::new(),
-            oneshots:   Vec::new(),
+            threads:    HashMap::new(),
+            setup:     Setup::default(),
+            config,
         })
     }
 
-    pub fn on_subscribe<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
-        let mut state =  self.state
-            .try_borrow_mut()
-            .expect("carrier is not thread safe");
-        state.on_sub = Some(Box::new(f))
+    pub fn on_subscribe<F: 'static + Fn(&identity::Identity) + Send + Sync> (&mut self, f: F) {
+        self.setup.on_sub = Some(Arc::new(Box::new(f)))
     }
 
-    pub fn on_unsubscribe<F: 'static + FnMut(&identity::Identity, channel::DisconnectReason)> (&mut self, f: F) {
-        let mut state =  self.state
-            .try_borrow_mut()
-            .expect("carrier is not thread safe");
-        state.on_unsub = Some(Box::new(f))
+    pub fn on_unsubscribe<F: 'static + Fn(&identity::Identity, channel::DisconnectReason) + Send + Sync> (&mut self, f: F) {
+        self.setup.on_unsub = Some(Arc::new(Box::new(f)))
     }
 
-    pub fn on_publish<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
-        let mut state =  self.state
-            .try_borrow_mut()
-            .expect("carrier is not thread safe");
-        state.on_pub = Some(Box::new(f))
+    pub fn on_publish<F: 'static + Fn(&identity::Identity) + Send + Sync> (&mut self, f: F) {
+        self.setup.on_pub = Some(Arc::new(Box::new(f)))
     }
 
-    pub fn on_unpublish<F: 'static + FnMut(&identity::Identity)> (&mut self, f: F) {
-        let mut state =  self.state
-            .try_borrow_mut()
-            .expect("carrier is not thread safe");
-        state.on_unpub = Some(Box::new(f))
+    pub fn on_unpublish<F: 'static + Fn(&identity::Identity) + Send + Sync> (&mut self, f: F) {
+        self.setup.on_unpub = Some(Arc::new(Box::new(f)))
     }
 
-    pub fn on_connect_error<F: 'static + FnMut(&identity::Identity, String)> (&mut self, f: F) {
-        let mut state =  self.state
-            .try_borrow_mut()
-            .expect("carrier is not thread safe");
-        state.on_connerr = Some(Box::new(f))
+    pub fn on_connect_error<F: 'static + Fn(&identity::Identity, String) + Send + Sync> (&mut self, f: F) {
+        self.setup.on_connerr = Some(Arc::new(Box::new(f)))
     }
+
+
+    fn resolve(brk: &Vec<String>) -> Vec<dns::DnsRecord> {
+        if let Ok(v) = std::env::var("CARRIER_BROKERS") {
+            v.split(";").filter_map(|v|dns::DnsRecord::from_signed_txt(v)).collect()
+        } else {
+            let d = if let Ok(d) = std::env::var("CARRIER_BROKER_DOMAINS") {
+                d.split(":").map(String::from).collect::<Vec<String>>()
+            } else {
+                brk.clone()
+            };
+
+            let v : Vec<String> = match osaka_dns::resolve(osaka::Poll::new(), d).run() {
+                Err(e) => { error!("{:?}",e); return Vec::new()},
+                Ok(v) => v,
+            };
+            v
+                .into_iter()
+                .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
+                .collect()
+        }
+    }
+
+    pub fn run(&mut self) -> Result<(), Error>  {
+        let mt = num_cpus::get();
+
+        let mut records = Self::resolve(&self.config.broker);
+        let mut refresh = Instant::now();
+
+        loop {
+            if refresh.elapsed() >= Duration::from_secs(15) {
+                records = Self::resolve(&self.config.broker);
+                refresh = Instant::now();
+            }
+
+            for record in &records {
+                if !self.threads.contains_key(&record.addr) {
+                    self.threads.insert(record.addr, (record.clone(), HashMap::new()));
+                }
+            }
+
+            let setup  = self.setup.clone();
+            let config = self.config.clone();
+            self.threads.retain(|_, (record,threads)|{
+                threads.retain(|_, th|{
+                    match th.running.try_lock() {
+                        Err(std::sync::TryLockError::WouldBlock) => true,
+                        _ => false,
+                    }
+                });
+
+                for i in 0..mt {
+                    if !threads.contains_key(&i) {
+                        info!("spawning new thread for addr {} shard {}", record.addr, i);
+                        let lock = Arc::new(Mutex::new(()));
+                        let lock_ = lock.clone();
+
+                        let setup  = setup.clone();
+                        let mut config = config.clone();
+                        thread::spawn(move ||{
+                            //TODO some day when p2p actually works
+                            config.port = None;
+
+                            let a = lock_.lock().unwrap();
+
+                            let poll = osaka::Poll::new();
+                            let mut ep = endpoint::EndpointBuilder::new(&config).unwrap();
+                            ep.do_not_move();
+                            let mut ep = ep.connect(poll.clone()).run().unwrap();
+
+
+                            let subconf = config.subscribe.expect("[subscribe] must be set");
+                            let shadow  = subconf.shadow;
+                            let group   = subconf.group;
+                            let broker  = ep.broker();
+
+                            let state = Arc::new(RefCell::new(ConduitState{
+                                publishers:  HashSet::new(),
+                                subscribed:  HashMap::new(),
+                                setup:       setup.clone(),
+                            }));
+
+                            ep.open(
+                                broker,
+                                headers::Headers::with_path("/carrier.broker.v1/broker/subscribe"),
+                                |poll, mut stream| {
+                                    stream.small_message(proto::SubscribeRequest {
+                                        shadow: shadow.as_bytes().to_vec(),
+                                        group_identity:     group.as_ref().map(|v|v.identity().as_bytes().to_vec()).unwrap_or(Vec::new()),
+                                        group_signature:    group.as_ref().map(|v|v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec()).unwrap_or(Vec::new()),
+                                    });
+                                    handler(poll, stream, state.clone(), i, mt)
+                                },
+                                ).unwrap();
+
+                            let mut xep = ConduitEp {
+                                last_sync:   Instant::now(),
+                                ep,
+                                state,
+                                poll: poll.clone(),
+                                setup: setup.clone(),
+                            };
+
+
+                            use osaka::Future;
+                            let again = match xep.poll() {
+                                osaka::FutureResult::Done(v) => { v.unwrap(); return },
+                                osaka::FutureResult::Again(again) => again,
+                            };
+                            osaka::Task::new(Box::new(xep), again).run().unwrap();
+                            drop(a);
+                        });
+                        threads.insert(i, Thread{
+                            running: lock
+                        });
+                    }
+                }
+
+
+                threads.len() > 0
+            });
+
+            thread::sleep(Duration::from_secs(1));
+        }
+    }
+
+
+
+
+
+
 
 
     #[allow(unreachable_code)]
@@ -168,15 +268,15 @@ impl Conduit {
     /// delay expired. You can use this to poll a get endpoint.
     pub fn schedule<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
-        F: 'static + FnMut(&identity::Identity, M) + Clone,
+        F: 'static + FnMut(&identity::Identity, M) + Clone + Send + Sync,
         M: prost::Message + Default,
     {
-        self.schedules.insert(
+        self.setup.schedules.insert(
             headers.path().expect("header must contain :path").into(),
             ScheduledStream {
                 every,
                 headers,
-                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark)),
+                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark))),
             },
         );
     }
@@ -204,15 +304,15 @@ impl Conduit {
     /// decodes each datagram as message without size prefix, like old carrier clients did
     pub fn schedule_small<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
-        F: 'static + FnMut(&identity::Identity, M) + Clone,
+        F: 'static + FnMut(&identity::Identity, M) + Clone + Send + Sync,
         M: prost::Message + Default,
     {
-        self.schedules.insert(
+        self.setup.schedules.insert(
             headers.path().expect("header must contain :path").into(),
             ScheduledStream {
                 every,
                 headers,
-                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule_small(poll,stream, identity, f.clone(), mark)),
+                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule_small(poll,stream, identity, f.clone(), mark)))
             },
         );
     }
@@ -238,14 +338,14 @@ impl Conduit {
     /// gives you all datagrams as bytes
     pub fn schedule_raw<F>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
-        F: 'static + FnMut(&identity::Identity, Vec<u8>) + Clone,
+        F: 'static + FnMut(&identity::Identity, Vec<u8>) + Clone + Send + Sync,
     {
-        self.schedules.insert(
+        self.setup.schedules.insert(
             headers.path().expect("header must contain :path").into(),
             ScheduledStream {
                 every,
                 headers,
-                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule_raw(poll,stream, identity, f.clone(), mark)),
+                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule_raw(poll,stream, identity, f.clone(), mark)))
             },
         );
     }
@@ -255,7 +355,7 @@ impl Conduit {
     #[osaka]
     fn f_schedule_null_terminated<F>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
     where
-        F: 'static + FnMut(&identity::Identity, Vec<u8>),
+        F: 'static + Fn(&identity::Identity, Vec<u8>),
     {
         let headers = headers::Headers::decode(&osaka::sync!(stream)).unwrap();
         println!("{:?}", headers);
@@ -287,36 +387,24 @@ impl Conduit {
     ///
     pub fn schedule_null_terminated<F>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
-        F: 'static + FnMut(&identity::Identity, Vec<u8>) + Clone,
+        F: 'static + Fn(&identity::Identity, Vec<u8>) + Clone + Send + Sync,
     {
-        self.schedules.insert(
+        self.setup.schedules.insert(
             headers.path().expect("header must contain :path").into(),
             ScheduledStream {
                 every,
                 headers,
-                f: Box::new(move |poll, stream, identity, mark|Self::f_schedule_null_terminated(poll,stream, identity, f.clone(), mark)),
+                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule_null_terminated(poll,stream, identity, f.clone(), mark)))
             },
         );
     }
 
-    /// open a stream on a specific peer, once
-    ///
-    pub fn call<F, M>(&mut self, target: identity::Identity, headers: headers::Headers, f: F)
-    where
-        F: 'static + FnMut(&identity::Identity, M) + Clone,
-        M: prost::Message + Default,
-    {
-        self.oneshots.push(Oneshot{
-            path: headers.path().expect("header must contain :path").into(),
-            headers,
-            target,
-            f: Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark)),
-        });
-    }
-
 }
 
-impl osaka::Future<Result<(), Error>> for Conduit {
+
+
+
+impl osaka::Future<Result<(), Error>> for ConduitEp {
     fn poll(&mut self) -> osaka::FutureResult<Result<(), Error>> {
         if self.last_sync.elapsed().as_millis() > 200 {
             self.last_sync = Instant::now();
@@ -325,17 +413,9 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                 .try_borrow_mut()
                 .expect("carrier is not thread safe");
 
-            info!("--- sync  connected: {}/{}", state.subscribed.len(), state.publishers.len());
-
-
             let mut max_per_second = 0;
             for p in state.publishers.clone() {
                 if !state.subscribed.contains_key(&p) {
-
-                    ////FIXME TEST
-                    //if p != "oWdjQ1hW6m1x2xDMWoY26P175FMED5aMCtqcveC3yVnyoX1".parse().unwrap() {
-                    //    continue;
-                    //}
 
                     osaka::try!(self.ep.connect(p.clone(), 5));
                     state.subscribed.insert(p, SubscriberState::default());
@@ -366,31 +446,7 @@ impl osaka::Future<Result<(), Error>> for Conduit {
 
 
                 if let Some(route) = sc.route {
-                    let mut oneshots_remaining = Vec::new();
-                    oneshots_remaining.reserve(self.oneshots.len());
-                    for mut oneshot in self.oneshots.drain(..) {
-                        if &oneshot.target == id {
-                            if sc.streams.get(&oneshot.path).is_none() {
-                                info!(
-                                    "[{}] opening oneshot stream {}",
-                                    id,
-                                    String::from_utf8_lossy(&oneshot.path)
-                                    );
-                                let (mark, _) = sc.streams.insert(oneshot.path.clone(), ());
-                                osaka::try!(self.ep
-                                    .open(route, oneshot.headers.clone(), move |poll, stream| {
-                                        (oneshot.f)(poll, stream, id.clone(), mark)
-                                    }));
-
-                            }
-                        } else {
-                            oneshots_remaining.push(oneshot);
-                        }
-                    }
-                    self.oneshots = oneshots_remaining;
-
-
-                    for (path, schedule) in &mut self.schedules {
+                    for (path, schedule) in &self.setup.schedules {
                         if sc.streams.get(path).is_none() {
                             if let Some(wait) = sc.waitreopen.get(path) {
                                 if wait.elapsed() < schedule.every {
@@ -425,25 +481,26 @@ impl osaka::Future<Result<(), Error>> for Conduit {
 
             for id in killed {
                 state.subscribed.remove(&id);
-                if let Some(ref mut f) = state.on_unsub{
+                if let Some(ref mut f) = state.setup.on_unsub{
                     f(&id, channel::DisconnectReason::None);
                 }
             }
         }
 
         loop {
-            match self.ep.poll() {
+            let r = self.ep.poll();
+            let mut state = self
+                .state
+                .try_borrow_mut()
+                .expect("carrier is not thread safe");
+            match r {
                 FutureResult::Done(Ok(endpoint::Event::BrokerGone)) => panic!("broker gone"),
                 FutureResult::Done(Ok(endpoint::Event::Disconnect {
                     identity, reason, ..
                 })) => {
-                    let mut state = self
-                        .state
-                        .try_borrow_mut()
-                        .expect("carrier is not thread safe");
                     if let Some(_old) = state.subscribed.remove(&identity) {
                         info!("disconnect {} {:?}", identity,reason);
-                        if let Some(ref mut f) = state.on_unsub{
+                        if let Some(ref mut f) = state.setup.on_unsub{
                             f(&identity, reason);
                         }
                     }
@@ -461,25 +518,17 @@ impl osaka::Future<Result<(), Error>> for Conduit {
                             })
                         .unwrap();
                         info!("accepting outgoing connect {} ::> {}", identity_, route);
-                        let mut state = self
-                            .state
-                            .try_borrow_mut()
-                            .expect("carrier is not thread safe");
                         if let Some(sc) = state.subscribed.get_mut(&identity_) {
                             sc.route = Some(route);
                         }
-                        if let Some(ref mut f) = state.on_sub {
+                        if let Some(ref mut f) = state.setup.on_sub {
                             f(&identity_);
                         }
                     } else {
-                        let mut state = self
-                            .state
-                            .try_borrow_mut()
-                            .expect("carrier is not thread safe");
                         if let Some(_) = state.subscribed.remove(&q.identity) {
                             if let Some(cr) = q.cr {
                                 warn!("failed outgoing connect {} : {}", q.identity, cr.error);
-                                if let Some(ref mut f) = state.on_connerr {
+                                if let Some(ref mut f) = state.setup.on_connerr {
                                     f(&q.identity, cr.error);
                                 }
                             } else {
@@ -507,6 +556,8 @@ fn handler(
     _poll: osaka::Poll,
     mut stream: endpoint::Stream,
     state: Arc<RefCell<ConduitState>>,
+    shard: usize,
+    shard_count: usize,
 ) {
     let _d = defer(|| {
         panic!("subscribe stream closed");
@@ -525,23 +576,31 @@ fn handler(
                 xaddr: _,
             })) => {
                 let identity = identity::Identity::from_bytes(identity).unwrap();
-                info!("+ {}", identity);
 
-                let mut state =  state
-                    .try_borrow_mut()
-                    .expect("carrier is not thread safe");
+                use std::hash::{Hash, Hasher};
+                use std::collections::hash_map::DefaultHasher;
+                let mut hasher = DefaultHasher::new();
+                identity.hash(&mut hasher);
+                let r = hasher.finish();
+                if r % shard_count  as u64 == shard  as u64 {
+                    info!("+ {}", identity);
 
-                if let Some(ref mut f) = state.on_pub {
-                    f(&identity);
-                }
+                    let mut state =  state
+                        .try_borrow_mut()
+                        .expect("carrier is not thread safe");
 
-                if let Some(sub) = state.subscribed.get_mut(&identity) {
-                    sub.kill = true;
-                }
-
-                if !state.publishers.insert(identity.clone()) {
-                    if let Some(ref mut f) = state.on_unpub {
+                    if let Some(ref mut f) = state.setup.on_pub {
                         f(&identity);
+                    }
+
+                    if let Some(sub) = state.subscribed.get_mut(&identity) {
+                        sub.kill = true;
+                    }
+
+                    if !state.publishers.insert(identity.clone()) {
+                        if let Some(ref mut f) = state.setup.on_unpub {
+                            f(&identity);
+                        }
                     }
                 }
             }
@@ -561,7 +620,7 @@ fn handler(
                 }
 
                 if state.publishers.remove(&identity) {
-                    if let Some(ref mut f) = state.on_unpub {
+                    if let Some(ref mut f) = state.setup.on_unpub {
                         f(&identity);
                     }
                 }

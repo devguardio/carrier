@@ -14,19 +14,25 @@ pub enum RoutingDirection {
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Flags {
-    pub mov: bool,
+    pub mov:    bool,
 }
 
 impl Flags {
     pub fn empty() -> Self {
         Self {
-            mov: false,
+            mov:    false,
+        }
+    }
+
+    pub fn default() -> Self {
+        Self {
+            mov:    false,
         }
     }
 
     pub fn from_u8(b: u8) -> Self {
         Self {
-            mov: b & 0b01000000 != 0
+            mov:  b & 0b01000000 != 0,
         }
     }
 
@@ -143,6 +149,7 @@ pub enum CloseReason {
     Application,
     EncodingError,
     ResourceLimit,
+    FragmentLimit,
     Unknown(u8),
 }
 
@@ -184,6 +191,11 @@ pub enum Frame {
         timeout:  Option<u16>,
         sleeping: bool,
     },
+    Fragmented {
+        stream:     u32,
+        order:      u64,
+        fragments:  u32,
+    },
 }
 
 impl std::fmt::Debug for Frame {
@@ -199,6 +211,9 @@ impl std::fmt::Debug for Frame {
             Frame::Disconnect{reason} => write!(f, "Disconnect[r:{:?}]", reason),
             Frame::Close { stream, order, reason } => write!(f, "Close[s:{},o:{},r:{:?}]", stream, order, reason),
             Frame::Config { timeout, sleeping } => write!(f, "Close[t:{:?},s:{}]", timeout, sleeping),
+            Frame::Fragmented { stream, order, fragments} => {
+                write!(f, "Fragmented[s:{},o:{},f:{}]", stream, order, fragments)
+            }
         }
     }
 }
@@ -225,6 +240,7 @@ impl Frame {
                 }
             },
             Frame::Config { timeout, .. } => 1 + 1 + 2 + if timeout.is_some() { 2 } else { 0 },
+            Frame::Fragmented { .. } => 1 + 4 + 4,
         }
     }
 
@@ -243,8 +259,9 @@ impl Frame {
 
     pub fn order(&self) -> u64 {
         match self {
-            Frame::Header { .. } => 1,
-            Frame::Stream { order, .. } => *order,
+            Frame::Header       { .. } => 1,
+            Frame::Stream       { order, .. } => *order,
+            Frame::Fragmented   { order, .. } => *order,
             Frame::Close { order, .. } => *order,
             _ => panic!("trying to order unordered frame"),
         }
@@ -309,6 +326,7 @@ impl Frame {
                         CloseReason::None           => 0,
                         CloseReason::Application    => 1,
                         CloseReason::EncodingError  => 3,
+                        CloseReason::FragmentLimit  => 4,
                         CloseReason::ResourceLimit  => 6,
                         CloseReason::Unknown(v)     => *v,
                     })?;
@@ -334,6 +352,12 @@ impl Frame {
                 if let Some(timeout) = timeout {
                     w.write_u16::<BigEndian>(*timeout)?;
                 }
+            }
+            Frame::Fragmented { stream, order, fragments} => {
+                w.write_u8(0x08)?;
+                w.write_u32::<BigEndian>(*stream)?;
+                w.write_u64::<BigEndian>(*order)?;
+                w.write_u32::<BigEndian>(*fragments)?;
             }
         }
         Ok(len)
@@ -402,6 +426,7 @@ impl Frame {
                             0 => CloseReason::None,
                             1 => CloseReason::Application,
                             3 => CloseReason::EncodingError,
+                            4 => CloseReason::FragmentLimit,
                             6 => CloseReason::ResourceLimit,
                             a => CloseReason::Unknown(a),
                         }
@@ -427,6 +452,12 @@ impl Frame {
                     let sleeping = flags & 0b01000000 > 0;
 
                     f.push(Frame::Config { timeout, sleeping });
+                }
+                Ok(0x08) => {
+                    let stream = r.read_u32::<BigEndian>()?;
+                    let order  = r.read_u64::<BigEndian>()?;
+                    let fragments  = r.read_u32::<BigEndian>()?;
+                    f.push(Frame::Fragmented { stream, order, fragments });
                 }
                 Ok(typ) => return Err(Error::InvalidFrameType { typ }.into()),
             };

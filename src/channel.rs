@@ -76,6 +76,7 @@ pub enum ChannelProgress {
     SendPacket(Vec<u8>),
     ReceiveHeader(u32, Vec<u8>),
     ReceiveStream(u32, Vec<u8>),
+    ReceiveFragmented(u32, u32),
     Close(u32),
     Disconnect(DisconnectReason),
 }
@@ -237,6 +238,22 @@ impl Channel {
                             self.idle_time
                         );
                     }
+                }
+                Frame::Fragmented { stream, order, fragments } => {
+                    trace!("[{}] received fragmented {} > {}", self.debug_id, order, fragments);
+
+                    let ordered = match self.streams.entry(stream) {
+                        std::collections::hash_map::Entry::Occupied(v) => v.into_mut(),
+                        std::collections::hash_map::Entry::Vacant(v) => {
+                            // ignore stream that's not preceeded by header
+                            // this happens when we get dup for a closed stream
+                            if !self.counters.contains_key(&stream) {
+                                return Ok(());
+                            }
+                            v.insert(stream::OrderedStream::new())
+                        }
+                    };
+                    ordered.push(Frame::Fragmented { stream, order, fragments })?;
                 }
             }
         }
@@ -442,6 +459,9 @@ impl Channel {
                     Frame::Stream { stream, payload, .. } => {
                         return Ok(ChannelProgress::ReceiveStream(stream, payload));
                     }
+                    Frame::Fragmented { stream, fragments, ..} => {
+                        return Ok(ChannelProgress::ReceiveFragmented(stream, fragments));
+                    }
                     Frame::Close { stream, .. } => {
                         trace!("LD1: stream {} closed", stream);
                         self.streams.remove(&stream);
@@ -463,16 +483,9 @@ impl Channel {
         }
     }
 
-
-    /// queue a proto message with no size prefix
-    pub fn small_message<M: Message>(&mut self, stream: u32, m: M) {
-        let mut b = Vec::new();
-        m.encode(&mut b).unwrap();
-        self.stream(stream, b)
-    }
-
-    /// queue a proto message
-    pub fn message<M: Message>(&mut self, stream: u32, m: M) {
+    /// queue a proto message with a legacy ProtoHeader instead of fragmented
+    #[deprecated(since="0.9.0", note="carrier supports automatic fragmentation now")]
+    pub fn ph_message<M: Message>(&mut self, stream: u32, m: M) {
         let mut b = Vec::new();
         m.encode(&mut b).unwrap();
         let mut bh = Vec::new();
@@ -481,6 +494,13 @@ impl Channel {
         for g in b.chunks(600) {
             self.stream(stream, g)
         }
+    }
+
+    /// queue a fragmented proto message
+    pub fn message<M: Message>(&mut self, stream: u32, m: M) {
+        let mut b = Vec::new();
+        m.encode(&mut b).unwrap();
+        self.fragmented_stream(stream, b);
     }
 
     /// queue a message
@@ -496,6 +516,29 @@ impl Channel {
             order:   order,
             payload: msg.into(),
         });
+    }
+
+    /// queue a fragmented message
+    pub fn fragmented_stream<M: Into<Vec<u8>>>(&mut self, stream: u32, msg: M) {
+        let b = msg.into();
+        if b.len() <= 500 {
+            self.stream(stream, b);
+        } else {
+            let order = {
+                let order = self.counters.entry(stream).or_insert(0);
+                *order += 1;
+                *order
+            };
+            self.outqueue.push_back(Frame::Fragmented {
+                stream:  stream,
+                order:   order,
+                fragments: (b.len() as f64 / 600.0).ceil() as u32,
+            });
+            for g in b.chunks(600) {
+                self.stream(stream, g)
+            }
+        }
+
     }
 
     /// open a new stream, given a header

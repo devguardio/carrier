@@ -43,11 +43,18 @@ impl Stream {
             .stream(self.stream, m)
     }
 
-    pub fn small_message<M: Message>(&mut self, m: M) {
+    pub fn fragmented_send<M: Into<Vec<u8>>>(&mut self, m: M) {
         self.inner
             .try_borrow_mut()
             .expect("carrier is not thread safe")
-            .small_message(self.stream, m)
+            .fragmented_stream(self.stream, m)
+    }
+
+    pub fn ph_message<M: Message>(&mut self, m: M) {
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .ph_message(self.stream, m)
     }
 
     pub fn message<M: Message>(&mut self, m: M) {
@@ -65,19 +72,23 @@ impl osaka::Future<Vec<u8>> for Stream {
 }
 
 pub trait StreamFactory {
-    fn f(&mut self, Headers, Stream) -> Option<osaka::Task<()>>;
+    fn f(&mut self, Headers, Stream) -> Option<(osaka::Task<()>, u32)>;
 }
 
 impl<F> StreamFactory for F
 where
-    F: FnMut(Headers, Stream) -> Option<osaka::Task<()>>,
+    F: FnMut(Headers, Stream) -> Option<(osaka::Task<()>, u32)>,
 {
-    fn f(&mut self, h: Headers, s: Stream) -> Option<osaka::Task<()>> {
+    fn f(&mut self, h: Headers, s: Stream) -> Option<(osaka::Task<()>, u32)> {
         (*self)(h, s)
     }
 }
 
 struct StreamReceiver {
+    frag_max:       u32,
+    frag_waiting:   u32,
+    frag_buf:       Vec<u8>,
+
     f: osaka::Task<()>,
     a: Arc<Cell<FutureResult<Vec<u8>>>>,
 }
@@ -268,8 +279,9 @@ impl Endpoint {
         self.open(
             broker,
             Headers::with_path("/carrier.broker.v1/broker/publish"),
+            None,
             |poll, mut stream| {
-                stream.small_message(proto::PublishRequest {
+                stream.message(proto::PublishRequest {
                     xaddr:  xaddr.to_vec(),
                     shadow: shadow.as_bytes().to_vec(),
                 });
@@ -489,7 +501,7 @@ impl Endpoint {
         self.stream(broker_route, q.qstream, m);
     }
 
-    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, f: F) -> Result<u32, Error>
+    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, max_fragments: Option<u32>, f: F) -> Result<u32, Error>
     where
         F: FnOnce(osaka::Poll, Stream) -> osaka::Task<()>,
     {
@@ -512,6 +524,9 @@ impl Endpoint {
         chan.streams.insert(
             stream_id,
             StreamReceiver {
+                frag_max: max_fragments.unwrap_or(0),
+                frag_waiting: 0,
+                frag_buf: Vec::new(),
                 f: f(self.poll.clone(), stream),
                 a: ii,
             },
@@ -778,8 +793,14 @@ impl Future<Result<Event, Error>> for Endpoint {
                                     again,
                                 };
 
-                                if let Some(f) = new.f(headers, stream.clone()) {
-                                    chan.streams.insert(stream.stream, StreamReceiver { f, a: ii.clone() });
+                                if let Some((f, frag_max)) = new.f(headers, stream.clone()) {
+                                    chan.streams.insert(stream.stream, StreamReceiver {
+                                        frag_max,
+                                        frag_waiting: 0,
+                                        frag_buf: Vec::new(),
+                                        f,
+                                        a: ii.clone(),
+                                    });
                                 } else {
                                     let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                                     chanchan.close(stream.stream, packet::CloseReason::Application);
@@ -789,6 +810,26 @@ impl Future<Result<Event, Error>> for Endpoint {
 
                         again = true;
                     }
+                    ChannelProgress::ReceiveFragmented(stream, fragments) => {
+                        if let Some(driver) = chan.streams.get_mut(&stream) {
+                            if fragments > driver.frag_max {
+                                let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
+                                chanchan.close(stream, packet::CloseReason::FragmentLimit);
+                            }
+                            driver.frag_waiting = fragments;
+                            driver.frag_buf = Vec::new();
+                        } else {
+                            warn!(
+                                "[{}] received fragmented for unregistered stream {}",
+                                chan.chan
+                                .try_borrow()
+                                .map(|v| v.debug_id.clone())
+                                .unwrap_or(String::from("?")),
+                                stream
+                                );
+                        }
+                        again = true;
+                    },
                     ChannelProgress::ReceiveStream(stream, frame) => {
                         if route == &self.broker_route
                             && self.outstanding_connect_incomming.remove(&stream)
@@ -835,8 +876,17 @@ impl Future<Result<Event, Error>> for Endpoint {
                                 }
                             }
                         } else if let Some(driver) = chan.streams.get_mut(&stream) {
-                            driver.a.set(osaka::FutureResult::Done(frame));
-                            driver.f.wakeup_now();
+                            if driver.frag_waiting > 0 {
+                                driver.frag_waiting -= 1;
+                                driver.frag_buf.extend_from_slice(&frame);
+                                if driver.frag_waiting == 0 {
+                                    driver.a.set(osaka::FutureResult::Done(mem::replace(&mut driver.frag_buf, Vec::new())));
+                                    driver.f.wakeup_now();
+                                }
+                            } else {
+                                driver.a.set(osaka::FutureResult::Done(frame));
+                                driver.f.wakeup_now();
+                            }
                         } else {
                             warn!(
                                 "[{}] received frame {:?} for unregistered stream {}",

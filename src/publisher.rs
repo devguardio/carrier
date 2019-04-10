@@ -17,8 +17,10 @@ pub mod openwrt;
 pub mod sft;
 pub mod shell;
 
-pub type RouteHandler =
-    Box<Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>>;
+pub struct RouteHandler {
+    f: Box<Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>>,
+    max_fragmentation: u32,
+}
 
 pub struct PublisherBuilder {
     config:     Config,
@@ -45,7 +47,7 @@ fn newstreamhandler(
     routes: &HashMap<String, RouteHandler>,
     with_axons: bool,
     with_disco: bool,
-) -> Option<osaka::Task<()>> {
+) -> Option<(osaka::Task<()>, u32)> {
     let resource = headers
         .path()
         .as_ref()
@@ -58,7 +60,7 @@ fn newstreamhandler(
     }
 
     if let Some(ref v) = routes.get(&resource) {
-        return (*v)(poll, headers, &identity, stream);
+        return (*v.f)(poll, headers, &identity, stream).map(|f|(f,v.max_fragmentation))
     }
 
     if with_axons {
@@ -66,7 +68,7 @@ fn newstreamhandler(
             if exe.chars().all(|c| c.is_ascii_alphanumeric()) {
                 let exe = format!("carrier-axon-v0-{}", exe);
                 if let Ok(path) = which::which(exe) {
-                    return Some(axon_exe(poll, headers, stream, path));
+                    return Some((axon_exe(poll, headers, stream, path), 0));
                 }
             }
         }
@@ -84,7 +86,7 @@ fn newstreamhandler(
             if exe.chars().all(|c| c.is_ascii_alphanumeric()) {
                 let exe = format!("carrier-axon-v0-{}", exe);
                 if let Ok(path) = which::which(exe) {
-                    return Some(axon_exe(poll, headers, stream, path));
+                    return Some((axon_exe(poll, headers, stream, path), 0));
                 }
             }
         }
@@ -95,12 +97,15 @@ fn newstreamhandler(
 }
 
 impl PublisherBuilder {
-    pub fn route<S: Into<String>, F>(mut self, path: S, f: F) -> Self
+    pub fn route<S: Into<String>, F>(mut self, path: S, max_fragmentation: Option<u32>, f: F) -> Self
     where
         S: Into<String>,
         F: 'static + Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>,
     {
-        self.routes.insert(path.into(), Box::new(f));
+        self.routes.insert(path.into(), RouteHandler{
+            f: Box::new(f),
+            max_fragmentation: max_fragmentation.unwrap_or(0),
+        });
         self
     }
 

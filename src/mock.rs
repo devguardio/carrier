@@ -71,8 +71,9 @@ impl Endpoint {
         ep.open(
             broker,
             headers::Headers::with_path("/carrier.broker.v1/broker/publish"),
+            None,
             |poll, mut stream| {
-                stream.small_message(proto::PublishRequest {
+                stream.message(proto::PublishRequest {
                     shadow: shadow.as_bytes().to_vec(),
                     xaddr: xaddr.to_vec(),
                 });
@@ -109,8 +110,9 @@ impl Endpoint {
         ep.open(
             broker,
             headers::Headers::with_path("/carrier.broker.v1/broker/subscribe"),
+            None,
             |poll, mut stream| {
-                stream.small_message(proto::SubscribeRequest {
+                stream.message(proto::SubscribeRequest {
                     shadow: shadow.as_bytes().to_vec(),
                     group_identity: Vec::new(),
                     group_signature: Vec::new(),

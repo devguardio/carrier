@@ -47,7 +47,7 @@ fn send(
     payload: SendMode,
 ) -> Result<packet::EncryptedPacket, Error> {
 
-    let mut flags = Flags::empty();
+    let mut flags = Flags::default();
     match &payload {
         SendMode::HandshakeRequest {do_not_move, ..} => {
             flags.mov = *do_not_move;
@@ -244,7 +244,7 @@ impl HandshakeResponder {
         secret: &Secret,
         mov: Option<Vec<u8>>,
     ) -> Result<(Transport, packet::EncryptedPacket), Error> {
-        let mut flags = Flags::empty();
+        let mut flags = Flags::default();
         if mov.is_some() {
             flags.mov = true;
         }

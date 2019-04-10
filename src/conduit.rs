@@ -190,8 +190,9 @@ impl Conduit {
                             ep.open(
                                 broker,
                                 headers::Headers::with_path("/carrier.broker.v1/broker/subscribe"),
+                                None,
                                 |poll, mut stream| {
-                                    stream.small_message(proto::SubscribeRequest {
+                                    stream.message(proto::SubscribeRequest {
                                         shadow: shadow.as_bytes().to_vec(),
                                         group_identity:     group.as_ref().map(|v|v.identity().as_bytes().to_vec()).unwrap_or(Vec::new()),
                                         group_signature:    group.as_ref().map(|v|v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec()).unwrap_or(Vec::new()),
@@ -467,7 +468,7 @@ impl osaka::Future<Result<(), Error>> for ConduitEp {
                             let (mark, _) = sc.streams.insert(path.clone(), ());
                             sc.waitreopen.insert(path.clone(), Instant::now());
                             let stream = osaka::try!(self.ep
-                                .open(route, schedule.headers.clone(), |poll, stream| {
+                                .open(route, schedule.headers.clone(), Some(0xfffffff), |poll, stream| {
                                     (schedule.f)(poll, stream, id.clone(), mark)
                                 }));
                             info!(

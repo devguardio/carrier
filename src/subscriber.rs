@@ -100,8 +100,9 @@ impl SubscriberBuilder {
         ep.open(
             broker,
             headers::Headers::with_path("/carrier.broker.v1/broker/subscribe"),
+            None,
             |poll, mut stream| {
-                stream.small_message(proto::SubscribeRequest {
+                stream.message(proto::SubscribeRequest {
                     shadow:             shadow.as_bytes().to_vec(),
                     group_identity:     group.as_ref().map(|v|v.identity().as_bytes().to_vec()).unwrap_or(Vec::new()),
                     group_signature:    group.as_ref().map(|v|v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec()).unwrap_or(Vec::new()),

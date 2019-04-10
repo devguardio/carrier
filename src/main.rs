@@ -94,26 +94,21 @@ pub fn _main() -> Result<(), Error> {
                 .about("get sysinfo")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
                 .arg(
-                    Arg::with_name("v0")
-                        .short("0")
+                    Arg::with_name("v")
+                        .short("v")
+                        .takes_value(true)
                         .required(false),
                 ),
         )
         .subcommand(
             SubCommand::with_name("netsurvey")
                 .about("get netsurvey")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
-        )
-        .subcommand(
-            SubCommand::with_name("rtest")
-                .about("remote tests against a target")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
                 .arg(
-                    Arg::with_name("test")
+                    Arg::with_name("v")
+                        .short("v")
                         .takes_value(true)
-                        .required(true)
-                        .index(2)
-                        .possible_values(&["spam-half-open", "spam-full-open"]),
+                        .required(false),
                 ),
         )
         .subcommand(
@@ -180,8 +175,8 @@ pub fn _main() -> Result<(), Error> {
             let poll = osaka::Poll::new();
             let config = carrier::config::load()?;
             let mut publisher = carrier::publisher::new(config)
-                .route("/v0/shell", carrier::publisher::shell::main)
-                .route("/v0/sft", carrier::publisher::sft::main)
+                .route("/v0/shell", None, carrier::publisher::shell::main)
+                .route("/v0/sft",   None, carrier::publisher::sft::main)
                 .with_axons()
                 .publish(poll);
             publisher.run()
@@ -227,22 +222,28 @@ pub fn _main() -> Result<(), Error> {
                 .expect("resolving identity from cli");
 
 
-            if submatches.is_present("v0") {
-                    get(
-                        poll,
-                        config,
-                        target,
-                        carrier::headers::Headers::with_path("/v0/sysinfo"),
-                        message_handler_v0::<carrier::proto::Sysinfo>,
-                        )
-            } else {
-                get(
+            match submatches.value_of("v")  {
+                Some("0") => get(
+                    poll,
+                    config,
+                    target,
+                    carrier::headers::Headers::with_path("/v0/sysinfo"),
+                    message_handler::<carrier::proto::Sysinfo>,
+                ),
+                Some("1") => get(
                     poll,
                     config,
                     target,
                     carrier::headers::Headers::with_path("/v1/sysinfo"),
+                    message_handler_ph::<carrier::proto::Sysinfo>,
+                ),
+                Some("2") | _ => get(
+                    poll,
+                    config,
+                    target,
+                    carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
                     message_handler::<carrier::proto::Sysinfo>,
-                    )
+                ),
             }.run()
         }
         ("shell", Some(submatches)) => {
@@ -317,16 +318,29 @@ pub fn _main() -> Result<(), Error> {
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
-
-            let mut headers = carrier::headers::Headers::with_path("/v1/netsurvey");
-            get(
-                poll,
-                config,
-                target,
-                headers,
-                message_handler::<carrier::proto::NetSurvey>,
-            )
-            .run()
+            match submatches.value_of("v")  {
+                Some("0") => get(
+                    poll,
+                    config,
+                    target,
+                    carrier::headers::Headers::with_path("/v0/netsurvey"),
+                    message_handler::<carrier::proto::NetSurvey>,
+                ),
+                Some("1") => get(
+                    poll,
+                    config,
+                    target,
+                    carrier::headers::Headers::with_path("/v1/netsurvey"),
+                    message_handler_ph::<carrier::proto::NetSurvey>,
+                ),
+                Some("2") | _ => get(
+                    poll,
+                    config,
+                    target,
+                    carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
+                    message_handler::<carrier::proto::NetSurvey>,
+                ),
+            }.run()
         }
         ("discovery", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -345,37 +359,12 @@ pub fn _main() -> Result<(), Error> {
             )
             .run()
         }
-        ("rtest", Some(submatches)) => {
-            let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
-            let target = config
-                .resolve_identity(submatches.value_of("target").unwrap().to_string())
-                .expect("resolving identity from cli");
-
-            match submatches.value_of("test").unwrap().to_string().as_ref() {
-                "spam-full-open" => loop {
-                    let mut headers = carrier::headers::Headers::with_path("/v0/sysinfo");
-                    get(
-                        poll.clone(),
-                        config.clone(),
-                        target.clone(),
-                        headers,
-                        message_handler::<carrier::proto::NetSurvey>,
-                    )
-                    .run()?;
-                },
-                "spam-half-open" => loop {
-                    half_get(poll.clone(), config.clone(), target.clone()).run()?;
-                },
-                _ => unreachable!(),
-            };
-        }
         _ => unreachable!(),
     }
 }
 
 #[osaka]
-fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
     use prost::Message;
 
     let _d = carrier::util::defer(|| {
@@ -399,7 +388,7 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: 
 }
 
 #[osaka]
-fn message_handler_v0<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
     use prost::Message;
 
     let _d = carrier::util::defer(|| {
@@ -458,7 +447,7 @@ where
     };
 
     let route = ep.accept_outgoing(q, move |_h, _s| None)?;
-    ep.open(route, headers.clone(), f)?;
+    ep.open(route, headers.clone(), Some(0xfffffff), f)?;
 
     loop {
         match osaka::sync!(ep)? {
@@ -530,6 +519,7 @@ fn push(
     ep.open(
         route,
         headers.clone(),
+        Some(0xfffffff),
         |poll: osaka::Poll, mut stream: carrier::endpoint::Stream| {
             let never = poll.never();
             osaka::Task::new(

@@ -3,18 +3,26 @@ use std::net::SocketAddr;
 
 #[derive(Clone, Debug)]
 pub struct DnsRecord {
-    pub priority: u8,
+    pub priority: Option<u8>,
     pub addr:     SocketAddr,
     pub x:        Address,
-    pub epoch:    u32,
+    pub epoch:    Option<u32>,
 }
 
 impl DnsRecord {
     pub fn to_signed_txt(&self, sign: &Secret) -> String {
         let txt = format!(
-            "carrier=3 c={} p={} n={} x={}",
-            self.epoch,
-            self.priority,
+            "carrier=3{}{} n={} x={}",
+            if let Some(e) = self.epoch {
+                format!(" c={}", e)
+            } else {
+                String::new()
+            },
+            if let Some(v) = self.priority{
+                format!(" p={}", v)
+            } else {
+                String::new()
+            },
             self.addr,
             self.x.to_string()
         );
@@ -31,14 +39,15 @@ impl DnsRecord {
         let s = s.as_ref();
         let mut s: Vec<&str> = s.split(" ").collect();
 
-        let sig: Signature = if let Some(s) = s.pop() {
-            if let Ok(v) = s.parse() {
-                v
+        let sig: Option<Signature> = if let Some(ss) = s.pop() {
+            if let Ok(v) = ss.parse() {
+                Some(v)
             } else {
-                return None;
+                s.push(ss);
+                None
             }
         } else {
-            return None;
+            None
         };
 
         for s in &s {
@@ -75,7 +84,7 @@ impl DnsRecord {
         //TODO verify against some sort of root?
         //sig.verify(b"carrier dns record", s.join(" "));
 
-        if let (Some(epoch), Some(priority), Some(addr), Some(x)) = (epoch, priority, net, xaddr) {
+        if let (Some(addr), Some(x)) = (net, xaddr) {
             //FIXME check sig
             Some(DnsRecord {
                 priority,

@@ -267,7 +267,7 @@ impl Config {
     }
 
     fn default_brokers() -> Vec<String> {
-        vec!["x.carrier.devguard.io".into(), "3.carrier.devguard.io".into()]
+        vec!["4.carrier.devguard.io".into(), "x.carrier.devguard.io".into()]
     }
 
     pub fn new(secret: identity::Secret) -> Self {

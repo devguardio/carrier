@@ -130,11 +130,13 @@ impl Conduit {
         let mt = num_cpus::get();
 
         let mut records = Self::resolve(&self.config.broker);
+        info!("records: {:?}", records);
         let mut refresh = Instant::now();
 
         loop {
             if refresh.elapsed() >= Duration::from_secs(15) {
                 records = Self::resolve(&self.config.broker);
+                info!("records: {:?}", records);
                 refresh = Instant::now();
             }
 
@@ -566,7 +568,7 @@ fn handler(
 
     let m = osaka::sync!(stream);
     let headers = headers::Headers::decode(&m).unwrap();
-    info!("pubres: {:?}", headers);
+    info!("sub response: {:?}", headers);
 
     loop {
         let sc = proto::SubscribeChange::decode(osaka::sync!(stream)).unwrap();

@@ -965,6 +965,7 @@ pub struct EndpointBuilder {
 
 impl EndpointBuilder {
     pub fn new(config: &config::Config) -> Result<Self, Error> {
+        info!("carrier [{}]", super::BUILD_ID);
         info!("my identity: {}", config.secret.identity());
         if let Some(ref principal) = config.principal {
             info!("principal identity: {}", principal.identity());

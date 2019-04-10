@@ -32,8 +32,6 @@ pub fn main() {
         .collect();
 
     f.write_all(b"pub const BUILD_ID : &'static str = \"").unwrap();
-    f.write_all(env!("CARGO_PKG_VERSION").as_bytes()).unwrap();
-    f.write_all(b"-").unwrap();
     f.write_all(gitver.as_bytes()).unwrap();
     f.write_all(b"-").unwrap();
     f.write_all(chars.as_bytes()).unwrap();

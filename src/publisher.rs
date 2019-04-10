@@ -26,7 +26,7 @@ pub struct PublisherBuilder {
     config:     Config,
     routes:     HashMap<String, RouteHandler>,
     with_axons: bool,
-    with_disco: bool,
+    with_disco: Option<(String, String)>,
 }
 
 pub fn new(config: Config) -> PublisherBuilder {
@@ -34,7 +34,7 @@ pub fn new(config: Config) -> PublisherBuilder {
         config,
         routes: HashMap::new(),
         with_axons: false,
-        with_disco: true,
+        with_disco: None,
     }
 }
 
@@ -46,7 +46,7 @@ fn newstreamhandler(
     auth: &certificate::Authenticator,
     routes: &HashMap<String, RouteHandler>,
     with_axons: bool,
-    with_disco: bool,
+    with_disco: Option<(String, String)>,
 ) -> Option<(osaka::Task<()>, u32)> {
     let resource = headers
         .path()
@@ -74,10 +74,14 @@ fn newstreamhandler(
         }
     }
 
-    if with_disco {
+    if let Some((application, application_version)) = with_disco {
         if resource == "/v2/carrier.discovery.v1/discover" {
             stream.send(headers::Headers::ok().encode());
             stream.message(super::proto::DiscoveryResponse {
+                carrier_revision: super::REVISION,
+                carrier_build_id: super::BUILD_ID.into(),
+                application,
+                application_version,
                 paths: routes.keys().cloned().collect()
             });
             return None;
@@ -109,8 +113,8 @@ impl PublisherBuilder {
         self
     }
 
-    pub fn without_disco(mut self) -> Self {
-        self.with_disco = false;
+    pub fn with_disco(mut self, app: String, version: String) -> Self {
+        self.with_disco = Some((app, version));
         self
     }
 
@@ -141,12 +145,15 @@ impl PublisherBuilder {
                     let poll = poll.clone();
                     let identity = q.identity.clone();
                     match publish_config.auth.reject_early(&q.identity, &Vec::new()) {
-                        Ok(()) => ep.accept_incomming(q, move |h, s| {
-                            newstreamhandler(
-                                poll.clone(), h, s,
-                                &identity, &publish_config.auth,
-                                &routes, with_axons, with_disco)
-                        }),
+                        Ok(()) => {
+                            let with_disco = with_disco.clone();
+                            ep.accept_incomming(q, move |h, s| {
+                                newstreamhandler(
+                                    poll.clone(), h, s,
+                                    &identity, &publish_config.auth,
+                                    &routes, with_axons, with_disco.clone())
+                            })
+                        },
                         Err(e) => {
                             warn!("rejecting incomming {}: {}", q.identity, e);
                             ep.reject(q, format!("{}", e));

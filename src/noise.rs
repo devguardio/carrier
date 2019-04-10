@@ -108,6 +108,10 @@ fn send(
                 inbuf.write_u16::<BigEndian>(0)?;
             }
 
+            if version >= 0x09 {
+                inbuf.write_u32::<BigEndian>(super::REVISION)?;
+            };
+
             16 // tag
             + 32 // ephermal
             + 64 // signature
@@ -129,6 +133,7 @@ fn send(
                     inbuf.write_u16::<BigEndian>(mov.len() as u16)?;
                     inbuf.write_all(&mov)?;
                 };
+                inbuf.write_u32::<BigEndian>(super::REVISION)?;
             };
 
             16 // tag

@@ -9,7 +9,7 @@ use std::mem;
 use std::net::SocketAddr;
 use std::sync::{Arc, Mutex};
 use std::thread;
-
+use rand::{self, Rng};
 
 use packet;
 use headers;
@@ -46,7 +46,9 @@ struct ConduitEp {
     last_sync:  Instant,
     ep:         endpoint::Endpoint,
     poll:       osaka::Poll,
+    shard:      usize,
     state:      Arc<RefCell<ConduitState>>,
+    cooldown:   HashMap<identity::Identity, Instant>,
     setup:      Setup,
 }
 
@@ -149,6 +151,9 @@ impl Conduit {
             let setup  = self.setup.clone();
             let config = self.config.clone();
             self.threads.retain(|_, (record,threads)|{
+
+                info!("{} has {} live threads", record.addr, threads.len());
+
                 threads.retain(|_, th|{
                     match th.running.try_lock() {
                         Err(std::sync::TryLockError::WouldBlock) => true,
@@ -164,7 +169,11 @@ impl Conduit {
 
                         let setup  = setup.clone();
                         let mut config = config.clone();
-                        thread::spawn(move ||{
+                        let record = record.clone();
+                        thread::Builder::new().name(format!("cond-{}-{}", i, record.addr)).spawn(move ||{
+
+                            thread::sleep(Duration::from_millis(rand::thread_rng().gen_range(100,2000)));
+
                             //TODO some day when p2p actually works
                             config.port = None;
 
@@ -173,7 +182,7 @@ impl Conduit {
                             let poll = osaka::Poll::new();
                             let mut ep = endpoint::EndpointBuilder::new(&config).unwrap();
                             ep.do_not_move();
-                            let mut ep = ep.connect(poll.clone()).run().unwrap();
+                            let mut ep = ep.connect_to(poll.clone(), record).run().unwrap().0.expect("broker con");
 
 
                             let subconf = config.subscribe.expect("[subscribe] must be set");
@@ -205,8 +214,10 @@ impl Conduit {
                                 last_sync:   Instant::now(),
                                 ep,
                                 state,
+                                shard: i,
                                 poll: poll.clone(),
                                 setup: setup.clone(),
+                                cooldown: HashMap::new(),
                             };
 
 
@@ -217,7 +228,7 @@ impl Conduit {
                             };
                             osaka::Task::new(Box::new(xep), again).run().unwrap();
                             drop(a);
-                        });
+                        }).unwrap();
                         threads.insert(i, Thread{
                             running: lock
                         });
@@ -356,7 +367,7 @@ impl Conduit {
 
     #[allow(unreachable_code)]
     #[osaka]
-    fn f_schedule_null_terminated<F>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
+    fn f_schedule_null_terminated<F>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, f: F, mark: gcmap::MarkOnDrop)
     where
         F: 'static + Fn(&identity::Identity, Vec<u8>),
     {
@@ -409,7 +420,7 @@ impl Conduit {
 
 impl osaka::Future<Result<(), Error>> for ConduitEp {
     fn poll(&mut self) -> osaka::FutureResult<Result<(), Error>> {
-        if self.last_sync.elapsed().as_millis() > 200 {
+        if self.last_sync.elapsed().as_millis() > 200 + rand::thread_rng().gen_range(0,100) {
             self.last_sync = Instant::now();
             let mut state = self
                 .state
@@ -420,7 +431,14 @@ impl osaka::Future<Result<(), Error>> for ConduitEp {
             for p in state.publishers.clone() {
                 if !state.subscribed.contains_key(&p) {
 
-                    osaka::try!(self.ep.connect(p.clone(), 5));
+                    if let Some(is) = self.cooldown.remove(&p) {
+                        if is.elapsed().as_secs() < 10 {
+                            self.cooldown.insert(p, is);
+                            continue;
+                        }
+                    }
+
+                    osaka::try!(self.ep.connect(p.clone(), 20));
                     state.subscribed.insert(p, SubscriberState::default());
 
                     // don't connect all at once
@@ -483,6 +501,7 @@ impl osaka::Future<Result<(), Error>> for ConduitEp {
             }
 
             for id in killed {
+                self.cooldown.insert(id.clone(), Instant::now());
                 state.subscribed.remove(&id);
                 if let Some(ref mut f) = state.setup.on_unsub{
                     f(&id, channel::DisconnectReason::None);
@@ -502,7 +521,8 @@ impl osaka::Future<Result<(), Error>> for ConduitEp {
                     identity, reason, ..
                 })) => {
                     if let Some(_old) = state.subscribed.remove(&identity) {
-                        info!("disconnect {} {:?}", identity,reason);
+                        self.cooldown.insert(identity.clone(), Instant::now());
+                        info!("[{}] disconnect {} {:?}", self.shard, identity,reason);
                         if let Some(ref mut f) = state.setup.on_unsub{
                             f(&identity, reason);
                         }
@@ -530,12 +550,13 @@ impl osaka::Future<Result<(), Error>> for ConduitEp {
                     } else {
                         if let Some(_) = state.subscribed.remove(&q.identity) {
                             if let Some(cr) = q.cr {
-                                warn!("failed outgoing connect {} : {}", q.identity, cr.error);
+                                warn!("[{}] failed outgoing connect {} : {}",  self.shard, q.identity, cr.error);
+                                self.cooldown.insert(q.identity.clone(), Instant::now());
                                 if let Some(ref mut f) = state.setup.on_connerr {
                                     f(&q.identity, cr.error);
                                 }
                             } else {
-                                warn!("failed outgoing connect {}", q.identity, );
+                                warn!("[{}] failed outgoing connect {}", self.shard, q.identity, );
                             }
                         }
                     }
@@ -586,7 +607,7 @@ fn handler(
                 identity.hash(&mut hasher);
                 let r = hasher.finish();
                 if r % shard_count  as u64 == shard  as u64 {
-                    info!("+ {}", identity);
+                    info!("[{}] + {}", shard, identity);
 
                     let mut state =  state
                         .try_borrow_mut()

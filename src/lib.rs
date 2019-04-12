@@ -18,7 +18,7 @@ extern crate bytes;
 extern crate dirs;
 extern crate hpack;
 extern crate mio;
-extern crate osaka;
+pub extern crate osaka;
 extern crate osaka_dns;
 extern crate serde;
 extern crate toml;
@@ -60,6 +60,7 @@ pub mod util;
 #[cfg(feature = "conduit")]
 pub mod conduit;
 pub mod mock;
+pub mod easy;
 
 pub use error::Error;
 pub use identity::Identity;

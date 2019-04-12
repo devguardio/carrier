@@ -50,6 +50,7 @@ impl Stream {
             .fragmented_stream(self.stream, m)
     }
 
+    #[deprecated(since="0.9.0", note="carrier supports automatic fragmentation now")]
     pub fn ph_message<M: Message>(&mut self, m: M) {
         self.inner
             .try_borrow_mut()
@@ -391,11 +392,16 @@ impl Endpoint {
         let identity = q.identity;
         let (cr, mut requester) = match (q.cr, q.requester) {
             (Some(a), Some(b)) => (a, b),
-            (cr, _) => return Err(Error::OutgoingConnectFailed { identity: identity, cr }),
+            (Some(a), _) => {
+                return Err(Error::OutgoingConnectFailed { identity: identity, reason: Some(a.error)});
+            }
+            (None, _) => {
+                return Err(Error::OutgoingConnectFailed { identity: identity, reason: None});
+            }
         };
 
         if cr.ok != true {
-            return Err(Error::OutgoingConnectFailed { identity, cr: Some(cr) });
+            return Err(Error::OutgoingConnectFailed { identity, reason: Some(cr.error) });
         }
 
         let pkt = EncryptedPacket::decode(&cr.handshake)?;

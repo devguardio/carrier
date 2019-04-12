@@ -4,7 +4,6 @@ use identity;
 use osaka_dns;
 use packet::{RoutingDirection, RoutingKey};
 use prost;
-use proto;
 use snow::SnowError;
 use std::fmt;
 use std::io;
@@ -64,7 +63,7 @@ pub enum Error {
     NoMatchingGrant,
     OutgoingConnectFailed {
         identity: identity::Identity,
-        cr:       Option<proto::ConnectResponse>,
+        reason:   Option<String>,
     },
     OpenStreamsLimit,
     InvalidClock(String),
@@ -124,8 +123,12 @@ impl fmt::Display for Error {
             Error::DelegationDenied => write!(f, "cert does not allow delegating to more certs"),
             Error::AccessDenied => write!(f, "access denied: no certs left"),
             Error::NoMatchingGrant => write!(f, "access denied: no matching grant in cert"),
-            Error::OutgoingConnectFailed { identity, cr } => {
-                write!(f, "outgoing connection  to {} failed: {:?}", identity, cr)
+            Error::OutgoingConnectFailed { identity, reason} => {
+                write!(f, "outgoing connection  to {} failed", identity)?;
+                if let Some(r) = reason {
+                    write!(f, "{}", r)?;
+                }
+                Ok(())
             }
             Error::InvalidClock(s) =>  write!(f, "invalid clock configuration: '{}'", s),
             Error::OpenStreamsLimit => write!(f, "excessive number of open streams"),

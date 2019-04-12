@@ -26,9 +26,9 @@ use clap::{crate_authors, crate_description, crate_name, App, Arg, SubCommand};
 pub fn main() {
     match _main() {
         Ok(()) => (),
-        Err(Error::OutgoingConnectFailed{identity, cr,..}) => {
-            if let Some(cr) = cr {
-                log::error!("failed to connect to {}: {}", identity, cr.error);
+        Err(Error::OutgoingConnectFailed{identity, reason,..}) => {
+            if let Some(reason) = reason {
+                log::error!("failed to connect to {}: {}", identity, reason);
             } else {
                 log::error!("failed to connect to {}: no connect response from broker", identity);
             }

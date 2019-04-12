@@ -241,7 +241,7 @@ impl Conduit {
 
     #[allow(unreachable_code)]
     #[osaka]
-    fn f_schedule<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream,
+    fn f_schedule_ph<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream,
                         identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
     where
         F: 'static + FnMut(&identity::Identity, M),
@@ -269,7 +269,7 @@ impl Conduit {
     ///
     /// `every` is the restart delay, that means if a stream is closed, it wont be restarted before
     /// delay expired. You can use this to poll a get endpoint.
-    pub fn schedule<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
+    pub fn schedule_ph<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
         F: 'static + FnMut(&identity::Identity, M) + Clone + Send + Sync,
         M: prost::Message + Default,
@@ -279,14 +279,14 @@ impl Conduit {
             ScheduledStream {
                 every,
                 headers,
-                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark))),
+                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule_ph(poll,stream, identity, f.clone(), mark))),
             },
         );
     }
 
     #[allow(unreachable_code)]
     #[osaka]
-    fn f_schedule_small<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
+    fn f_schedule<F, M>(_poll: osaka::Poll, mut stream: endpoint::Stream, identity: identity::Identity, mut f: F, mark: gcmap::MarkOnDrop)
     where
         F: 'static + FnMut(&identity::Identity, M),
         M: prost::Message + Default,
@@ -305,7 +305,7 @@ impl Conduit {
     /// schedule opening a small stream on all devices with the given headers
     ///
     /// decodes each datagram as message without size prefix, like old carrier clients did
-    pub fn schedule_small<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
+    pub fn schedule<F, M>(&mut self, every: Duration, headers: headers::Headers, f: F)
     where
         F: 'static + FnMut(&identity::Identity, M) + Clone + Send + Sync,
         M: prost::Message + Default,
@@ -315,7 +315,7 @@ impl Conduit {
             ScheduledStream {
                 every,
                 headers,
-                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule_small(poll,stream, identity, f.clone(), mark)))
+                f: Arc::new(Box::new(move |poll, stream, identity, mark|Self::f_schedule(poll,stream, identity, f.clone(), mark)))
             },
         );
     }

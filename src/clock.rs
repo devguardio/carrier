@@ -1,6 +1,6 @@
+use config;
 use dns;
 use rand;
-use config;
 use std::fs::{create_dir_all, rename, File};
 use std::io::{Read, Write};
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -8,9 +8,11 @@ use std::time::{SystemTime, UNIX_EPOCH};
 pub fn load(src: &config::ClockSource) -> u64 {
     match src {
         config::ClockSource::System => {
-            let dr = SystemTime::now().duration_since(UNIX_EPOCH).expect("system time went backwards");
+            let dr = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .expect("system time went backwards");
             dr.as_secs() * 1000 + dr.subsec_nanos() as u64 / 1_000_000
-        },
+        }
         config::ClockSource::File(path) => {
             if !path.exists() {
                 let f2 = if let Ok(dr) = SystemTime::now().duration_since(UNIX_EPOCH) {
@@ -36,7 +38,7 @@ pub fn load(src: &config::ClockSource) -> u64 {
                     error!(
                         "cannot open time sync file {:?} : {}. falling back to system time",
                         &path, e
-                        );
+                    );
                     0
                 }
             };
@@ -54,8 +56,7 @@ pub fn load(src: &config::ClockSource) -> u64 {
 
 pub fn store(src: &config::ClockSource, i: u64) -> Result<(), String> {
     match src {
-        config::ClockSource::System => {
-        },
+        config::ClockSource::System => {}
         config::ClockSource::File(path) => {
             let dir = path.as_path().parent().expect("clock source must be a file");
             create_dir_all(&dir).map_err(|e| e.to_string())?;

@@ -90,7 +90,12 @@ impl SubscriberBuilder {
     }
 
     #[osaka]
-    pub fn subscribe(self, poll: Poll, shadow: identity::Address, group: Option<identity::Secret>) -> Result<(), Error> {
+    pub fn subscribe(
+        self,
+        poll: Poll,
+        shadow: identity::Address,
+        group: Option<identity::Secret>,
+    ) -> Result<(), Error> {
         let mut ep = endpoint::EndpointBuilder::new(&self.config)?.connect(poll.clone());
         let mut ep = osaka::sync!(ep)?;
 
@@ -103,9 +108,15 @@ impl SubscriberBuilder {
             None,
             |poll, mut stream| {
                 stream.message(proto::SubscribeRequest {
-                    shadow:             shadow.as_bytes().to_vec(),
-                    group_identity:     group.as_ref().map(|v|v.identity().as_bytes().to_vec()).unwrap_or(Vec::new()),
-                    group_signature:    group.as_ref().map(|v|v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec()).unwrap_or(Vec::new()),
+                    shadow:          shadow.as_bytes().to_vec(),
+                    group_identity:  group
+                        .as_ref()
+                        .map(|v| v.identity().as_bytes().to_vec())
+                        .unwrap_or(Vec::new()),
+                    group_signature: group
+                        .as_ref()
+                        .map(|v| v.sign(b"subscribegroup", shadow.as_bytes()).as_bytes().to_vec())
+                        .unwrap_or(Vec::new()),
                 });
                 Self::handler(this.clone(), poll, stream)
             },

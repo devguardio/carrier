@@ -1,10 +1,9 @@
-use error::Error;
-use identity;
-use headers;
 use config;
 use endpoint;
+use error::Error;
+use headers;
+use identity;
 use osaka::osaka;
-
 
 #[osaka]
 pub fn open<F>(
@@ -14,9 +13,9 @@ pub fn open<F>(
     headers: headers::Headers,
     timeout: u16,
     f: F,
-    )-> Result<(), Error>
+) -> Result<(), Error>
 where
-F: 'static + FnOnce(osaka::Poll, endpoint::Stream) -> osaka::Task<()>,
+    F: 'static + FnOnce(osaka::Poll, endpoint::Stream) -> osaka::Task<()>,
 {
     let mut ep = endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
@@ -25,18 +24,18 @@ F: 'static + FnOnce(osaka::Poll, endpoint::Stream) -> osaka::Task<()>,
     let q = loop {
         match osaka::sync!(ep)? {
             endpoint::Event::BrokerGone => {
-                return Err(Error::OutgoingConnectFailed{
+                return Err(Error::OutgoingConnectFailed {
                     identity: target,
-                    reason:   Some("broker lost".to_string())
+                    reason:   Some("broker lost".to_string()),
                 });
-            },
+            }
             endpoint::Event::OutgoingConnect(q) => {
                 break q;
             }
             endpoint::Event::Disconnect { identity, .. } => {
-                return Err(Error::OutgoingConnectFailed{
+                return Err(Error::OutgoingConnectFailed {
                     identity,
-                    reason:   Some("disconnected".to_string())
+                    reason: Some("disconnected".to_string()),
                 });
             }
             endpoint::Event::IncommingConnect(_) => (),
@@ -48,14 +47,12 @@ F: 'static + FnOnce(osaka::Poll, endpoint::Stream) -> osaka::Task<()>,
 
     loop {
         match osaka::sync!(ep)? {
-            endpoint::Event::BrokerGone => {
-                return Ok(())
-            },
+            endpoint::Event::BrokerGone => return Ok(()),
             endpoint::Event::OutgoingConnect(_) => (),
-            endpoint::Event::Disconnect { identity, reason,.. } => {
-                return Err(Error::OutgoingConnectFailed{
+            endpoint::Event::Disconnect { identity, reason, .. } => {
+                return Err(Error::OutgoingConnectFailed {
                     identity,
-                    reason:   Some(format!("{:?}", reason))
+                    reason: Some(format!("{:?}", reason)),
                 });
             }
             endpoint::Event::IncommingConnect(_) => (),

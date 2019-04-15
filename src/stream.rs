@@ -59,7 +59,12 @@ impl OrderedStream {
         if let Some(v) = self.q.remove(&self.consumer) {
             assert_eq!(self.consumer, v.order());
             self.consumer += 1;
-            trace!("pop frame with order {} {:?} (consumer={})", v.order(), v, self.consumer);
+            trace!(
+                "pop frame with order {} {:?} (consumer={})",
+                v.order(),
+                v,
+                self.consumer
+            );
             Some(v)
         } else {
             None

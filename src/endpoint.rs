@@ -6,6 +6,7 @@ use error::Error;
 use headers::Headers;
 use identity::{self, Identity};
 use local_addrs;
+use mio_extras::channel as mio_channel;
 use noise;
 use osaka::mio::net::UdpSocket;
 use osaka::Future;
@@ -19,13 +20,12 @@ use std::cell::Cell;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::collections::HashSet;
+use std::env;
 use std::mem;
 use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 use util::defer;
-use std::env;
-use mio_extras::channel as mio_channel;
 
 #[derive(Clone)]
 pub struct Stream {
@@ -50,7 +50,7 @@ impl Stream {
             .fragmented_stream(self.stream, m)
     }
 
-    #[deprecated(since="0.9.0", note="carrier supports automatic fragmentation now")]
+    #[deprecated(since = "0.9.0", note = "carrier supports automatic fragmentation now")]
     pub fn ph_message<M: Message>(&mut self, m: M) {
         self.inner
             .try_borrow_mut()
@@ -86,9 +86,9 @@ where
 }
 
 struct StreamReceiver {
-    frag_max:       u32,
-    frag_waiting:   u32,
-    frag_buf:       Vec<u8>,
+    frag_max:     u32,
+    frag_waiting: u32,
+    frag_buf:     Vec<u8>,
 
     f: osaka::Task<()>,
     a: Arc<Cell<FutureResult<Vec<u8>>>>,
@@ -120,7 +120,10 @@ impl Drop for UdpChannel {
         );
 
         if let Some(bs) = self.broker_stream {
-            error!("BUG: [{}] udp channel dropped leaking a broker stream {}", self.identity, bs);
+            error!(
+                "BUG: [{}] udp channel dropped leaking a broker stream {}",
+                self.identity, bs
+            );
         }
     }
 }
@@ -130,25 +133,29 @@ enum EndpointCmd {
 }
 
 pub struct Endpoint {
-    poll:           osaka::Poll,
-    token:          osaka::Token,
-    channels:       HashMap<RoutingKey, UdpChannel>,
-    socket:         UdpSocket,
-    broker_route:   RoutingKey,
-    secret:         identity::Secret,
+    poll: osaka::Poll,
+    token: osaka::Token,
+    channels: HashMap<RoutingKey, UdpChannel>,
+    socket: UdpSocket,
+    broker_route: RoutingKey,
+    secret: identity::Secret,
     outstanding_connect_incomming: HashSet<u32>,
     outstanding_connect_outgoing: HashMap<u32, ConnectResponseStage>,
     publish_secret: Option<identity::Secret>,
-    cmd:            (mio_channel::Sender<EndpointCmd>, mio_channel::Receiver<EndpointCmd>, osaka::Token),
-    clock:          config::ClockSource,
+    cmd: (
+        mio_channel::Sender<EndpointCmd>,
+        mio_channel::Receiver<EndpointCmd>,
+        osaka::Token,
+    ),
+    clock: config::ClockSource,
 }
 
 /// handle is a thread safe api to ep
 #[derive(Clone)]
 pub struct Handle {
-    broker_route:   RoutingKey,
-    cmd:            mio_channel::Sender<EndpointCmd>,
-    stop_on_drop:   bool,
+    broker_route: RoutingKey,
+    cmd:          mio_channel::Sender<EndpointCmd>,
+    stop_on_drop: bool,
 }
 
 pub struct ConnectRequest {
@@ -213,7 +220,6 @@ impl Endpoint {
             },
         );
 
-
         let cmd = mio_channel::channel();
         let cmd_token = poll
             .register(&cmd.1, mio::Ready::readable(), mio::PollOpt::level())
@@ -236,9 +242,9 @@ impl Endpoint {
 
     pub fn handle(&self) -> Handle {
         Handle {
-            broker_route:   self.broker_route.clone(),
-            cmd:            self.cmd.0.clone(),
-            stop_on_drop:   false,
+            broker_route: self.broker_route.clone(),
+            cmd:          self.cmd.0.clone(),
+            stop_on_drop: false,
         }
     }
 
@@ -256,11 +262,9 @@ impl Endpoint {
     #[osaka]
     fn publish_stream<F>(poll: osaka::Poll, mut stream: Stream, f: F)
     where
-        F: 'static + FnOnce()
+        F: 'static + FnOnce(),
     {
-        let _omg = defer(|| {
-            f()
-        });
+        let _omg = defer(|| f());
 
         let m = osaka::sync!(stream);
         let headers = Headers::decode(&m).unwrap();
@@ -291,7 +295,7 @@ impl Endpoint {
         )
     }
 
-    pub fn connect(&mut self, target: identity::Identity, timeout: u16)-> Result<(), Error> {
+    pub fn connect(&mut self, target: identity::Identity, timeout: u16) -> Result<(), Error> {
         let timestamp = clock::network_time(&self.clock);
         //TODO in another life, we should connect with 0x09 and the broker should respond with a
         //downgrade message is the other side is 0x08
@@ -313,11 +317,11 @@ impl Endpoint {
 
             let mut m = Vec::new();
             proto::ConnectRequest {
-                target:     target.as_bytes().to_vec(),
+                target: target.as_bytes().to_vec(),
                 timestamp,
                 handshake,
-                paths:      mypaths,
-                principal:  self.secret.identity().as_bytes().to_vec(),
+                paths: mypaths,
+                principal: self.secret.identity().as_bytes().to_vec(),
                 timeout: timeout as u32,
             }
             .encode(&mut m)
@@ -373,9 +377,9 @@ impl Endpoint {
     pub fn reject(&mut self, q: ConnectRequest, error: String) {
         let mut m = Vec::new();
         proto::PeerConnectResponse {
-            ok:        false,
+            ok: false,
             handshake: Vec::new(),
-            paths:     Vec::new(),
+            paths: Vec::new(),
             error,
         }
         .encode(&mut m)
@@ -393,15 +397,24 @@ impl Endpoint {
         let (cr, mut requester) = match (q.cr, q.requester) {
             (Some(a), Some(b)) => (a, b),
             (Some(a), _) => {
-                return Err(Error::OutgoingConnectFailed { identity: identity, reason: Some(a.error)});
+                return Err(Error::OutgoingConnectFailed {
+                    identity: identity,
+                    reason:   Some(a.error),
+                });
             }
             (None, _) => {
-                return Err(Error::OutgoingConnectFailed { identity: identity, reason: None});
+                return Err(Error::OutgoingConnectFailed {
+                    identity: identity,
+                    reason:   None,
+                });
             }
         };
 
         if cr.ok != true {
-            return Err(Error::OutgoingConnectFailed { identity, reason: Some(cr.error) });
+            return Err(Error::OutgoingConnectFailed {
+                identity,
+                reason: Some(cr.error),
+            });
         }
 
         let pkt = EncryptedPacket::decode(&cr.handshake)?;
@@ -412,8 +425,11 @@ impl Endpoint {
             panic!("SECURITY ALERT: handshake for outgoing connect has unexpected identity");
         }
         if cr.route != noise.route() {
-            panic!("BUG (in broker maybe): handshake for outgoing connect has unexpected route {} vs cr {}",
-            noise.route(), cr.route);
+            panic!(
+                "BUG (in broker maybe): handshake for outgoing connect has unexpected route {} vs cr {}",
+                noise.route(),
+                cr.route
+            );
         }
 
         let mut paths = HashMap::new();
@@ -477,7 +493,7 @@ impl Endpoint {
             q.cr.route,
             UdpChannel {
                 identity:      q.identity,
-                chan:          Arc::new(RefCell::new(Channel::new(noise, 0x08,debug_id))),
+                chan:          Arc::new(RefCell::new(Channel::new(noise, 0x08, debug_id))),
                 addrs:         AddressMode::Discovering(paths.clone()),
                 streams:       HashMap::new(),
                 newhandl:      Some(Box::new(sf)),
@@ -495,10 +511,10 @@ impl Endpoint {
 
         let mut m = Vec::new();
         proto::PeerConnectResponse {
-            ok:         true,
-            handshake:  pkt.encode(),
-            paths:      mypaths,
-            error:      String::new(),
+            ok:        true,
+            handshake: pkt.encode(),
+            paths:     mypaths,
+            error:     String::new(),
         }
         .encode(&mut m)
         .unwrap();
@@ -507,7 +523,13 @@ impl Endpoint {
         self.stream(broker_route, q.qstream, m);
     }
 
-    pub fn open<F>(&mut self, route: RoutingKey, headers: Headers, max_fragments: Option<u32>, f: F) -> Result<u32, Error>
+    pub fn open<F>(
+        &mut self,
+        route: RoutingKey,
+        headers: Headers,
+        max_fragments: Option<u32>,
+        f: F,
+    ) -> Result<u32, Error>
     where
         F: FnOnce(osaka::Poll, Stream) -> osaka::Task<()>,
     {
@@ -530,11 +552,11 @@ impl Endpoint {
         chan.streams.insert(
             stream_id,
             StreamReceiver {
-                frag_max: max_fragments.unwrap_or(0),
+                frag_max:     max_fragments.unwrap_or(0),
                 frag_waiting: 0,
-                frag_buf: Vec::new(),
-                f: f(self.poll.clone(), stream),
-                a: ii,
+                frag_buf:     Vec::new(),
+                f:            f(self.poll.clone(), stream),
+                a:            ii,
             },
         );
         Ok(stream_id)
@@ -571,10 +593,7 @@ impl Endpoint {
 
 impl Drop for Endpoint {
     fn drop(&mut self) {
-        debug!(
-            "endpoing dropped with {} channels",
-            self.channels.len(),
-            );
+        debug!("endpoing dropped with {} channels", self.channels.len(),);
 
         for route in self.channels.keys().cloned().collect::<Vec<RoutingKey>>().into_iter() {
             self.disconnect(route, packet::DisconnectReason::Application).ok();
@@ -585,25 +604,26 @@ impl Drop for Endpoint {
 pub enum Event {
     IncommingConnect(ConnectRequest),
     OutgoingConnect(ConnectResponse),
-    Disconnect {route: RoutingKey, identity: Identity, reason: channel::DisconnectReason},
+    Disconnect {
+        route:    RoutingKey,
+        identity: Identity,
+        reason:   channel::DisconnectReason,
+    },
     BrokerGone,
 }
 
 impl Future<Result<Event, Error>> for Endpoint {
     fn poll(&mut self) -> FutureResult<Result<Event, Error>> {
-
         // cmds from chan
         match self.cmd.1.try_recv() {
             Err(std::sync::mpsc::TryRecvError::Empty) => (),
             Err(std::sync::mpsc::TryRecvError::Disconnected) => unreachable!(),
             Ok(EndpointCmd::Disconnect(r, reason)) => {
-                if let Err(e) = self.disconnect(r, reason){
+                if let Err(e) = self.disconnect(r, reason) {
                     return FutureResult::Done(Err(e));
                 }
             }
         };
-
-
 
         let mut disconnect = Vec::new();
 
@@ -652,13 +672,17 @@ impl Future<Result<Event, Error>> for Endpoint {
                         };
 
                         if let Some((addr, cat, previous)) = settle {
-                            info!("settled peering with {} adress {}", match cat {
-                                0 => "invalid",
-                                1 => "internet",
-                                2 => "local",
-                                3 => "proxy",
-                                _ => "?",
-                            }, addr);
+                            info!(
+                                "settled peering with {} adress {}",
+                                match cat {
+                                    0 => "invalid",
+                                    1 => "internet",
+                                    2 => "local",
+                                    3 => "proxy",
+                                    _ => "?",
+                                },
+                                addr
+                            );
                             chan.addrs = AddressMode::Established(addr, previous);
                         }
 
@@ -703,7 +727,10 @@ impl Future<Result<Event, Error>> for Endpoint {
         }
 
         // work on all channels
-        let mut later = self.poll.any(vec![self.token.clone(), self.cmd.2.clone()], Some(Duration::from_secs(600)));
+        let mut later = self.poll.any(
+            vec![self.token.clone(), self.cmd.2.clone()],
+            Some(Duration::from_secs(600)),
+        );
         loop {
             if !self.channels.contains_key(&self.broker_route) {
                 return FutureResult::Done(Ok(Event::BrokerGone));
@@ -769,8 +796,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             let m = match headers.path().as_ref() {
                                 Some(&b"/carrier.broker.v1/peer/connect") => {
                                     if self.publish_secret.is_none() {
-                                        warn!("incomming peer connect stream {}, but we never published",
-                                              stream);
+                                        warn!("incomming peer connect stream {}, but we never published", stream);
                                         close = true;
                                         Headers::with_error(400, "not a publisher")
                                     } else {
@@ -800,13 +826,16 @@ impl Future<Result<Event, Error>> for Endpoint {
                                 };
 
                                 if let Some((f, frag_max)) = new.f(headers, stream.clone()) {
-                                    chan.streams.insert(stream.stream, StreamReceiver {
-                                        frag_max,
-                                        frag_waiting: 0,
-                                        frag_buf: Vec::new(),
-                                        f,
-                                        a: ii.clone(),
-                                    });
+                                    chan.streams.insert(
+                                        stream.stream,
+                                        StreamReceiver {
+                                            frag_max,
+                                            frag_waiting: 0,
+                                            frag_buf: Vec::new(),
+                                            f,
+                                            a: ii.clone(),
+                                        },
+                                    );
                                 } else {
                                     let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                                     chanchan.close(stream.stream, packet::CloseReason::Application);
@@ -828,14 +857,14 @@ impl Future<Result<Event, Error>> for Endpoint {
                             warn!(
                                 "[{}] received fragmented for unregistered stream {}",
                                 chan.chan
-                                .try_borrow()
-                                .map(|v| v.debug_id.clone())
-                                .unwrap_or(String::from("?")),
+                                    .try_borrow()
+                                    .map(|v| v.debug_id.clone())
+                                    .unwrap_or(String::from("?")),
                                 stream
-                                );
+                            );
                         }
                         again = true;
-                    },
+                    }
                     ChannelProgress::ReceiveStream(stream, frame) => {
                         if route == &self.broker_route
                             && self.outstanding_connect_incomming.remove(&stream)
@@ -847,10 +876,10 @@ impl Future<Result<Event, Error>> for Endpoint {
                                     warn!("{}", e);
                                     let mut m = Vec::new();
                                     proto::PeerConnectResponse {
-                                        ok:         false,
-                                        handshake:  Vec::new(),
-                                        paths:      Vec::new(),
-                                        error:      format!("{}", e),
+                                        ok:        false,
+                                        handshake: Vec::new(),
+                                        paths:     Vec::new(),
+                                        error:     format!("{}", e),
                                     }
                                     .encode(&mut m)
                                     .unwrap();
@@ -886,7 +915,10 @@ impl Future<Result<Event, Error>> for Endpoint {
                                 driver.frag_waiting -= 1;
                                 driver.frag_buf.extend_from_slice(&frame);
                                 if driver.frag_waiting == 0 {
-                                    driver.a.set(osaka::FutureResult::Done(mem::replace(&mut driver.frag_buf, Vec::new())));
+                                    driver.a.set(osaka::FutureResult::Done(mem::replace(
+                                        &mut driver.frag_buf,
+                                        Vec::new(),
+                                    )));
                                     driver.f.wakeup_now();
                                 }
                             } else {
@@ -967,7 +999,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                         rm.broker_stream = None;
                     }
                     return FutureResult::Done(Ok(Event::Disconnect {
-                        route:    killme,
+                        route: killme,
                         identity: rm.identity.clone(),
                         reason,
                     }));
@@ -982,7 +1014,6 @@ impl Future<Result<Event, Error>> for Endpoint {
         FutureResult::Again(later)
     }
 }
-
 
 impl Handle {
     pub fn disconnect(&self, route: RoutingKey, reason: packet::DisconnectReason) {
@@ -1001,22 +1032,26 @@ impl Handle {
 impl Drop for Handle {
     fn drop(&mut self) {
         if self.stop_on_drop {
-            self.cmd.send(EndpointCmd::Disconnect(self.broker_route, packet::DisconnectReason::Application)).unwrap();
+            self.cmd
+                .send(EndpointCmd::Disconnect(
+                    self.broker_route,
+                    packet::DisconnectReason::Application,
+                ))
+                .unwrap();
         }
     }
 }
-
 
 // -- builder
 
 #[derive(Clone)]
 pub struct EndpointBuilder {
-    secret:     identity::Secret,
-    principal:  Option<identity::Secret>,
-    clock:      config::ClockSource,
-    broker:     Vec<String>,
+    secret:      identity::Secret,
+    principal:   Option<identity::Secret>,
+    clock:       config::ClockSource,
+    broker:      Vec<String>,
     do_not_move: bool,
-    port:       u16,
+    port:        u16,
 }
 
 impl EndpointBuilder {
@@ -1028,12 +1063,12 @@ impl EndpointBuilder {
         }
 
         Ok(Self {
-            secret: config.secret.clone(),
-            principal: config.principal.clone(),
-            clock:  config.clock.clone(),
-            broker: config.broker.clone(),
-            do_not_move : false,
-            port: config.port.unwrap_or(0),
+            secret:      config.secret.clone(),
+            principal:   config.principal.clone(),
+            clock:       config.clock.clone(),
+            broker:      config.broker.clone(),
+            do_not_move: false,
+            port:        config.port.unwrap_or(0),
         })
     }
 
@@ -1043,8 +1078,10 @@ impl EndpointBuilder {
 
     #[osaka]
     pub fn connect(self, poll: osaka::Poll) -> Result<Endpoint, Error> {
-        let mut records : Vec<dns::DnsRecord>  = if let Ok(v) = env::var("CARRIER_BROKERS") {
-            v.split(";").filter_map(|v|dns::DnsRecord::from_signed_txt(v)).collect()
+        let mut records: Vec<dns::DnsRecord> = if let Ok(v) = env::var("CARRIER_BROKERS") {
+            v.split(";")
+                .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
+                .collect()
         } else {
             let d = if let Ok(d) = env::var("CARRIER_BROKER_DOMAINS") {
                 d.split(":").map(String::from).collect::<Vec<String>>()
@@ -1052,9 +1089,7 @@ impl EndpointBuilder {
                 self.broker.clone()
             };
 
-            let mut a = osaka_dns::resolve(
-                poll.clone(), d,
-                );
+            let mut a = osaka_dns::resolve(poll.clone(), d);
             osaka::sync!(a)?
                 .into_iter()
                 .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
@@ -1070,27 +1105,33 @@ impl EndpointBuilder {
 
             let mut v = self.clone().connect_to(poll.clone(), record);
             match osaka::sync!(v) {
-                Err(e)              => return Err(e),
-                Ok((Some(ep),_))    => return Ok(ep),
-                Ok((None,None))     => continue,
-                Ok((None,Some(mov)))      => {
+                Err(e) => return Err(e),
+                Ok((Some(ep), _)) => return Ok(ep),
+                Ok((None, None)) => continue,
+                Ok((None, Some(mov))) => {
                     records.push(mov);
-                    continue
+                    continue;
                 }
             }
-
         }
-
     }
 
     #[osaka]
-    pub fn connect_to(self, poll: osaka::Poll, to: dns::DnsRecord)
-        -> Result<(Option<Endpoint>, Option<dns::DnsRecord>), Error>
-    {
+    pub fn connect_to(
+        self,
+        poll: osaka::Poll,
+        to: dns::DnsRecord,
+    ) -> Result<(Option<Endpoint>, Option<dns::DnsRecord>), Error> {
         info!("attempting connection with (<p: {}) {}", self.port, &to.addr);
 
         let timestamp = clock::dns_time(&self.clock, &to);
-        let (mut noise, pkt) = noise::initiate(packet::LATEST_VERSION, Some(&to.x), &self.secret, timestamp, self.do_not_move)?;
+        let (mut noise, pkt) = noise::initiate(
+            packet::LATEST_VERSION,
+            Some(&to.x),
+            &self.secret,
+            timestamp,
+            self.do_not_move,
+        )?;
         let pkt = pkt.encode();
 
         let sock = UdpSocket::bind(&format!("0.0.0.0:{}", self.port).parse().unwrap()).map_err(|e| Error::Io(e))?;
@@ -1115,7 +1156,7 @@ impl EndpointBuilder {
                                 return Ok((None, dns::DnsRecord::from_signed_txt(&mov)));
                             }
                             warn!("broker rejected");
-                            return Ok((None,None));
+                            return Ok((None, None));
                         }
 
                         let noise = noise.into_transport()?;
@@ -1140,18 +1181,18 @@ impl EndpointBuilder {
         info!("established connection with {} :: {}", identity, noise.route());
 
         return Ok((
-                Some(Endpoint::new(
-                        poll,
-                        token,
-                        noise,
-                        packet::LATEST_VERSION,
-                        identity,
-                        sock,
-                        to.addr,
-                        self.principal.unwrap_or(self.secret),
-                        self.clock,
-                        )),
-                None
-                ));
+            Some(Endpoint::new(
+                poll,
+                token,
+                noise,
+                packet::LATEST_VERSION,
+                identity,
+                sock,
+                to.addr,
+                self.principal.unwrap_or(self.secret),
+                self.clock,
+            )),
+            None,
+        ));
     }
 }

@@ -1,14 +1,14 @@
 use error::Error;
 use noise;
-use packet::{self, EncryptedPacket, Frame, CloseReason};
+use packet::{self, CloseReason, EncryptedPacket, Frame};
+use prost::Message;
+use proto;
 use rand;
 use recovery;
 use replay;
 use std::collections::HashMap;
 use std::collections::VecDeque;
 use std::time::Duration;
-use proto;
-use prost::Message;
 
 #[cfg(not(target_arch = "wasm32"))]
 use std::time::Instant;
@@ -86,24 +86,24 @@ impl Channel {
         Channel {
             debug_id: debug_id.into(),
             version,
-            noise:    noise,
+            noise: noise,
 
-            replay:   replay::AntiReplay::new(),
+            replay: replay::AntiReplay::new(),
             recovery: recovery::QuicRecovery::new(),
-            streams:  HashMap::new(),
-            gone:     DisconnectReason::None,
+            streams: HashMap::new(),
+            gone: DisconnectReason::None,
 
             counters: HashMap::new(),
             outqueue: VecDeque::new(),
 
-            sleeping:   false,
-            idle_time:  DEFAULT_IDLE_TIMER,
-            deadline:   DEFAULT_IDLE_TIMER,
-            last_seen:  0,
+            sleeping: false,
+            idle_time: DEFAULT_IDLE_TIMER,
+            deadline: DEFAULT_IDLE_TIMER,
+            last_seen: 0,
             idle_count: 0,
 
             #[cfg(not(all(target_arch = "wasm32")))]
-            basetime:                                          Instant::now(),
+            basetime: Instant::now(),
         }
     }
 
@@ -198,10 +198,9 @@ impl Channel {
                     };
                     ordered.push(Frame::Stream { stream, order, payload })?;
                 }
-                Frame::Disconnect{reason} => {
+                Frame::Disconnect { reason } => {
                     trace!("[{}] disconnected {:?}", self.debug_id, reason);
                     self.gone = DisconnectReason::Peer(reason)
-
                 }
                 Frame::Ack { delay, acked } => {
                     let loss = self.recovery.on_ack_received(delay, acked.clone(), now);
@@ -239,7 +238,11 @@ impl Channel {
                         );
                     }
                 }
-                Frame::Fragmented { stream, order, fragments } => {
+                Frame::Fragmented {
+                    stream,
+                    order,
+                    fragments,
+                } => {
                     trace!("[{}] received fragmented {} > {}", self.debug_id, order, fragments);
 
                     let ordered = match self.streams.entry(stream) {
@@ -253,7 +256,11 @@ impl Channel {
                             v.insert(stream::OrderedStream::new())
                         }
                     };
-                    ordered.push(Frame::Fragmented { stream, order, fragments })?;
+                    ordered.push(Frame::Fragmented {
+                        stream,
+                        order,
+                        fragments,
+                    })?;
                 }
             }
         }
@@ -459,7 +466,7 @@ impl Channel {
                     Frame::Stream { stream, payload, .. } => {
                         return Ok(ChannelProgress::ReceiveStream(stream, payload));
                     }
-                    Frame::Fragmented { stream, fragments, ..} => {
+                    Frame::Fragmented { stream, fragments, .. } => {
                         return Ok(ChannelProgress::ReceiveFragmented(stream, fragments));
                     }
                     Frame::Close { stream, .. } => {
@@ -474,17 +481,13 @@ impl Channel {
         }
 
         match self.gone {
-            DisconnectReason::None => {
-                Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now)))
-            }
-            ref any => {
-                Ok(ChannelProgress::Disconnect(any.clone()))
-            }
+            DisconnectReason::None => Ok(ChannelProgress::Later(Duration::from_millis(self.deadline - now))),
+            ref any => Ok(ChannelProgress::Disconnect(any.clone())),
         }
     }
 
     /// queue a proto message with a legacy ProtoHeader instead of fragmented
-    #[deprecated(since="0.9.0", note="carrier supports automatic fragmentation now")]
+    #[deprecated(since = "0.9.0", note = "carrier supports automatic fragmentation now")]
     pub fn ph_message<M: Message>(&mut self, stream: u32, m: M) {
         let mut b = Vec::new();
         m.encode(&mut b).unwrap();
@@ -530,15 +533,14 @@ impl Channel {
                 *order
             };
             self.outqueue.push_back(Frame::Fragmented {
-                stream:  stream,
-                order:   order,
+                stream:    stream,
+                order:     order,
                 fragments: (b.len() as f64 / 600.0).ceil() as u32,
             });
             for g in b.chunks(600) {
                 self.stream(stream, g)
             }
         }
-
     }
 
     /// open a new stream, given a header
@@ -561,12 +563,10 @@ impl Channel {
             }
         };
 
-
         // previous versions just got stuck when stream count exceeded 1024
         if self.version < 0x09 && self.counters.len() >= 1024 {
             return Err(Error::OpenStreamsLimit.into());
         }
-
 
         self.counters.insert(stream, 1);
 
@@ -625,7 +625,7 @@ impl Channel {
     /// create a disconnect packet
     pub fn disconnect(&mut self, reason: packet::DisconnectReason) -> Result<Vec<u8>, Error> {
         let mut pkt = Vec::new();
-        Frame::Disconnect{reason}.encode(self.version, &mut pkt)?;
+        Frame::Disconnect { reason }.encode(self.version, &mut pkt)?;
         let pkt = self.noise.send(&pkt)?;
         Ok(pkt.encode())
     }

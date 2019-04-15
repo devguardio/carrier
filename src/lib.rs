@@ -11,13 +11,13 @@ extern crate snow;
 extern crate x25519_dalek;
 #[macro_use]
 extern crate log;
-pub extern crate prost;
 extern crate bytes;
 extern crate dirs;
 extern crate hpack;
 extern crate mio;
 pub extern crate osaka;
 extern crate osaka_dns;
+pub extern crate prost;
 extern crate serde;
 extern crate toml;
 #[macro_use]
@@ -39,13 +39,17 @@ extern crate wasm_bindgen;
 pub mod certificate;
 pub mod channel;
 pub mod clock;
+#[cfg(feature = "conduit")]
+pub mod conduit;
 pub mod config;
 pub mod dns;
+pub mod easy;
 pub mod endpoint;
 pub mod error;
 pub mod headers;
 pub mod identity;
 pub mod local_addrs;
+pub mod mock;
 pub mod noise;
 pub mod packet;
 #[cfg(any(target_os = "linux", target_os = "macos", target_os = "android",))]
@@ -55,10 +59,6 @@ pub mod replay;
 pub mod stream;
 pub mod subscriber;
 pub mod util;
-#[cfg(feature = "conduit")]
-pub mod conduit;
-pub mod mock;
-pub mod easy;
 
 pub use error::Error;
 pub use identity::Identity;
@@ -72,4 +72,3 @@ pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/carrier.sysinfo.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/carrier.discovery.v1.rs"));
 }
-

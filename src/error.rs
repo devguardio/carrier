@@ -123,16 +123,16 @@ impl fmt::Display for Error {
             Error::DelegationDenied => write!(f, "cert does not allow delegating to more certs"),
             Error::AccessDenied => write!(f, "access denied: no certs left"),
             Error::NoMatchingGrant => write!(f, "access denied: no matching grant in cert"),
-            Error::OutgoingConnectFailed { identity, reason} => {
+            Error::OutgoingConnectFailed { identity, reason } => {
                 write!(f, "outgoing connection  to {} failed", identity)?;
                 if let Some(r) = reason {
                     write!(f, "{}", r)?;
                 }
                 Ok(())
             }
-            Error::InvalidClock(s) =>  write!(f, "invalid clock configuration: '{}'", s),
+            Error::InvalidClock(s) => write!(f, "invalid clock configuration: '{}'", s),
             Error::OpenStreamsLimit => write!(f, "excessive number of open streams"),
-            Error::CorruptHeader    => write!(f, "header was corrupted in flight"),
+            Error::CorruptHeader => write!(f, "header was corrupted in flight"),
         }
     }
 }

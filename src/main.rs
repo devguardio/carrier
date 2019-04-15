@@ -6,17 +6,17 @@ extern crate libc;
 extern crate log;
 extern crate nix;
 extern crate osaka;
+extern crate pbr;
 extern crate prost;
 extern crate rand;
 extern crate sha2;
 extern crate tinylogger;
-extern crate pbr;
 
 use carrier::error::Error;
 use log::{info, warn};
 use osaka::osaka;
-use std::env;
 use pbr::ProgressBar;
+use std::env;
 
 #[cfg(any(target_os = "linux", target_os = "macos",))]
 mod shell;
@@ -26,7 +26,7 @@ use clap::{crate_authors, crate_description, crate_name, App, Arg, SubCommand};
 pub fn main() {
     match _main() {
         Ok(()) => (),
-        Err(Error::OutgoingConnectFailed{identity, reason,..}) => {
+        Err(Error::OutgoingConnectFailed { identity, reason, .. }) => {
             if let Some(reason) = reason {
                 log::error!("failed to connect to {}: {}", identity, reason);
             } else {
@@ -55,13 +55,11 @@ pub fn _main() -> Result<(), Error> {
         .subcommand(SubCommand::with_name("mkshadow").about("create a shadow address"))
         .subcommand(SubCommand::with_name("identity").about("print public identity"))
         .subcommand(SubCommand::with_name("setup").about("initial setup"))
-        .subcommand(
-            SubCommand::with_name("identity").about("print out identity")
-        )
+        .subcommand(SubCommand::with_name("identity").about("print out identity"))
         .subcommand(
             SubCommand::with_name("cluster")
                 .about("coordinate a broker cluster")
-                .arg(Arg::with_name("broker").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("broker").takes_value(true).required(true).index(1)),
         )
         .subcommand(
             SubCommand::with_name("subscribe")
@@ -93,23 +91,13 @@ pub fn _main() -> Result<(), Error> {
             SubCommand::with_name("sysinfo")
                 .about("get sysinfo")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(
-                    Arg::with_name("v")
-                        .short("v")
-                        .takes_value(true)
-                        .required(false),
-                ),
+                .arg(Arg::with_name("v").short("v").takes_value(true).required(false)),
         )
         .subcommand(
             SubCommand::with_name("netsurvey")
                 .about("get netsurvey")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(
-                    Arg::with_name("v")
-                        .short("v")
-                        .takes_value(true)
-                        .required(false),
-                ),
+                .arg(Arg::with_name("v").short("v").takes_value(true).required(false)),
         )
         .subcommand(
             SubCommand::with_name("push")
@@ -176,11 +164,10 @@ pub fn _main() -> Result<(), Error> {
             let config = carrier::config::load()?;
             let mut publisher = carrier::publisher::new(config)
                 .route("/v0/shell", None, carrier::publisher::shell::main)
-                .route("/v0/sft",   None, carrier::publisher::sft::main)
+                .route("/v0/sft", None, carrier::publisher::sft::main)
                 .with_axons()
                 .publish(poll);
             publisher.run()
-
         }
         ("subscribe", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -221,8 +208,7 @@ pub fn _main() -> Result<(), Error> {
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-
-            match submatches.value_of("v")  {
+            match submatches.value_of("v") {
                 Some("0") => get(
                     poll,
                     config,
@@ -244,7 +230,8 @@ pub fn _main() -> Result<(), Error> {
                     carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
                     message_handler::<carrier::proto::Sysinfo>,
                 ),
-            }.run()
+            }
+            .run()
         }
         ("shell", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -318,7 +305,7 @@ pub fn _main() -> Result<(), Error> {
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
-            match submatches.value_of("v")  {
+            match submatches.value_of("v") {
                 Some("0") => get(
                     poll,
                     config,
@@ -340,7 +327,8 @@ pub fn _main() -> Result<(), Error> {
                     carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
                     message_handler::<carrier::proto::NetSurvey>,
                 ),
-            }.run()
+            }
+            .run()
         }
         ("discovery", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -508,9 +496,9 @@ fn push(
             .and("sha256".into(), sha)
     } else {
         carrier::headers::Headers::with_path("/v0/sft")
-        .and(":method".into(), "PUT".into())
-        .and("sha256".into(), sha)
-        .and("file".into(), remote_file.into())
+            .and(":method".into(), "PUT".into())
+            .and("sha256".into(), sha)
+            .and("file".into(), remote_file.into())
     };
 
     let route = ep.accept_outgoing(q, move |_h, _s| None).unwrap();
@@ -578,6 +566,3 @@ fn push(
         };
     }
 }
-
-
-

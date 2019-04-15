@@ -2,7 +2,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
-pub const LATEST_VERSION : u8 = 0x9;
+pub const LATEST_VERSION: u8 = 0x9;
 
 pub type RoutingKey = u64;
 
@@ -14,25 +14,21 @@ pub enum RoutingDirection {
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct Flags {
-    pub mov:    bool,
+    pub mov: bool,
 }
 
 impl Flags {
     pub fn empty() -> Self {
-        Self {
-            mov:    false,
-        }
+        Self { mov: false }
     }
 
     pub fn default() -> Self {
-        Self {
-            mov:    false,
-        }
+        Self { mov: false }
     }
 
     pub fn from_u8(b: u8) -> Self {
         Self {
-            mov:  b & 0b01000000 != 0,
+            mov: b & 0b01000000 != 0,
         }
     }
 
@@ -47,11 +43,11 @@ impl Flags {
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct EncryptedPacket {
-    pub version:        u8,
-    pub route:          RoutingKey,
-    pub direction:      RoutingDirection,
-    pub counter:        u64,
-    pub payload:        Vec<u8>,
+    pub version:   u8,
+    pub route:     RoutingKey,
+    pub direction: RoutingDirection,
+    pub counter:   u64,
+    pub payload:   Vec<u8>,
 }
 
 impl EncryptedPacket {
@@ -63,7 +59,7 @@ impl EncryptedPacket {
             0x09 => {}
             _ => {
                 return Err(Error::InvalidVersion { version }.into());
-            },
+            }
         };
         let mut reserved = [0; 3];
         inbuf.read_exact(&mut reserved)?;
@@ -76,21 +72,24 @@ impl EncryptedPacket {
             _ => unreachable!(),
         };
         route[7] &= 0b11111110;
-        let route   = route.as_ref().read_u64::<BigEndian>()?;
+        let route = route.as_ref().read_u64::<BigEndian>()?;
         let counter = inbuf.read_u64::<BigEndian>()?;
 
         let payload = inbuf.to_vec();
 
         let mut crc8 = crc8::Crc8::create_lsb(130);
-        let header_crc8 = crc8.calc(&inbuf_.as_ref(), 4+8+8, 0);
+        let header_crc8 = crc8.calc(&inbuf_.as_ref(), 4 + 8 + 8, 0);
 
-        Ok((EncryptedPacket {
-            version,
-            route,
-            direction,
-            counter,
-            payload,
-        }, header_crc8))
+        Ok((
+            EncryptedPacket {
+                version,
+                route,
+                direction,
+                counter,
+                payload,
+            },
+            header_crc8,
+        ))
     }
 
     pub fn header(&self) -> Vec<u8> {
@@ -192,9 +191,9 @@ pub enum Frame {
         sleeping: bool,
     },
     Fragmented {
-        stream:     u32,
-        order:      u64,
-        fragments:  u32,
+        stream:    u32,
+        order:     u64,
+        fragments: u32,
     },
 }
 
@@ -208,12 +207,14 @@ impl std::fmt::Debug for Frame {
             Frame::Ack { delay, acked } => write!(f, "Ack[d:{},a:{}]", delay, acked.len()),
 
             Frame::Ping => write!(f, "Ping"),
-            Frame::Disconnect{reason} => write!(f, "Disconnect[r:{:?}]", reason),
+            Frame::Disconnect { reason } => write!(f, "Disconnect[r:{:?}]", reason),
             Frame::Close { stream, order, reason } => write!(f, "Close[s:{},o:{},r:{:?}]", stream, order, reason),
             Frame::Config { timeout, sleeping } => write!(f, "Close[t:{:?},s:{}]", timeout, sleeping),
-            Frame::Fragmented { stream, order, fragments} => {
-                write!(f, "Fragmented[s:{},o:{},f:{}]", stream, order, fragments)
-            }
+            Frame::Fragmented {
+                stream,
+                order,
+                fragments,
+            } => write!(f, "Fragmented[s:{},o:{},f:{}]", stream, order, fragments),
         }
     }
 }
@@ -225,20 +226,19 @@ impl Frame {
             Frame::Stream { payload, .. } => 1 + 4 + 8 + 2 + payload.len(),
             Frame::Ack { acked, .. } => 1 + 2 + 2 + 8 * acked.len(),
             Frame::Ping => 1,
-            Frame::Disconnect{reason} => {
+            Frame::Disconnect { reason } => {
                 1 + if version >= 0x09 {
-                    1 + 4 + if let DisconnectReason::Move(m) = reason {m.len()} else {0}
+                    1 + 4
+                        + if let DisconnectReason::Move(m) = reason {
+                            m.len()
+                        } else {
+                            0
+                        }
                 } else {
                     0
                 }
             }
-            Frame::Close { .. } => {
-                1 + 4 + 8 + if version >= 0x09 {
-                    1
-                } else {
-                    0
-                }
-            },
+            Frame::Close { .. } => 1 + 4 + 8 + if version >= 0x09 { 1 } else { 0 },
             Frame::Config { timeout, .. } => 1 + 1 + 2 + if timeout.is_some() { 2 } else { 0 },
             Frame::Fragmented { .. } => 1 + 4 + 4,
         }
@@ -259,9 +259,9 @@ impl Frame {
 
     pub fn order(&self) -> u64 {
         match self {
-            Frame::Header       { .. } => 1,
-            Frame::Stream       { order, .. } => *order,
-            Frame::Fragmented   { order, .. } => *order,
+            Frame::Header { .. } => 1,
+            Frame::Stream { order, .. } => *order,
+            Frame::Fragmented { order, .. } => *order,
             Frame::Close { order, .. } => *order,
             _ => panic!("trying to order unordered frame"),
         }
@@ -299,17 +299,17 @@ impl Frame {
             Frame::Ping => {
                 w.write_u8(0x02)?;
             }
-            Frame::Disconnect{reason} => {
+            Frame::Disconnect { reason } => {
                 w.write_u8(0x03)?;
                 if version >= 0x09 {
                     w.write_u8(match reason {
-                        DisconnectReason::None           => 0,
-                        DisconnectReason::Application    => 1,
-                        DisconnectReason::ResourceLimit  => 6,
-                        DisconnectReason::Move(_)        => 7,
-                        DisconnectReason::Unknown(v)     => *v,
+                        DisconnectReason::None => 0,
+                        DisconnectReason::Application => 1,
+                        DisconnectReason::ResourceLimit => 6,
+                        DisconnectReason::Move(_) => 7,
+                        DisconnectReason::Unknown(v) => *v,
                     })?;
-                    if let DisconnectReason::Move(m) = reason{
+                    if let DisconnectReason::Move(m) = reason {
                         w.write_u16::<BigEndian>(m.len() as u16)?;
                         w.write_all(&m.as_bytes())?;
                     } else {
@@ -323,12 +323,12 @@ impl Frame {
                 w.write_u64::<BigEndian>(*order)?;
                 if version >= 0x09 {
                     w.write_u8(match reason {
-                        CloseReason::None           => 0,
-                        CloseReason::Application    => 1,
-                        CloseReason::EncodingError  => 3,
-                        CloseReason::FragmentLimit  => 4,
-                        CloseReason::ResourceLimit  => 6,
-                        CloseReason::Unknown(v)     => *v,
+                        CloseReason::None => 0,
+                        CloseReason::Application => 1,
+                        CloseReason::EncodingError => 3,
+                        CloseReason::FragmentLimit => 4,
+                        CloseReason::ResourceLimit => 6,
+                        CloseReason::Unknown(v) => *v,
                     })?;
                 }
             }
@@ -353,7 +353,11 @@ impl Frame {
                     w.write_u16::<BigEndian>(*timeout)?;
                 }
             }
-            Frame::Fragmented { stream, order, fragments} => {
+            Frame::Fragmented {
+                stream,
+                order,
+                fragments,
+            } => {
                 w.write_u8(0x08)?;
                 w.write_u32::<BigEndian>(*stream)?;
                 w.write_u64::<BigEndian>(*order)?;
@@ -401,7 +405,7 @@ impl Frame {
                     } else {
                         DisconnectReason::None
                     };
-                    f.push(Frame::Disconnect{reason});
+                    f.push(Frame::Disconnect { reason });
                 }
                 Ok(0x04) => {
                     let stream = r.read_u32::<BigEndian>()?;
@@ -455,9 +459,13 @@ impl Frame {
                 }
                 Ok(0x08) => {
                     let stream = r.read_u32::<BigEndian>()?;
-                    let order  = r.read_u64::<BigEndian>()?;
-                    let fragments  = r.read_u32::<BigEndian>()?;
-                    f.push(Frame::Fragmented { stream, order, fragments });
+                    let order = r.read_u64::<BigEndian>()?;
+                    let fragments = r.read_u32::<BigEndian>()?;
+                    f.push(Frame::Fragmented {
+                        stream,
+                        order,
+                        fragments,
+                    });
                 }
                 Ok(typ) => return Err(Error::InvalidFrameType { typ }.into()),
             };
@@ -570,4 +578,3 @@ fn decode_frame() {
         assert!(false, "expected ack frame");
     }
 }
-

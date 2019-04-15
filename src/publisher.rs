@@ -60,7 +60,7 @@ fn newstreamhandler(
     }
 
     if let Some(ref v) = routes.get(&resource) {
-        return (*v.f)(poll, headers, &identity, stream).map(|f|(f,v.max_fragmentation))
+        return (*v.f)(poll, headers, &identity, stream).map(|f| (f, v.max_fragmentation));
     }
 
     if with_axons {
@@ -82,7 +82,7 @@ fn newstreamhandler(
                 carrier_build_id: super::BUILD_ID.into(),
                 application,
                 application_version,
-                paths: routes.keys().cloned().collect()
+                paths: routes.keys().cloned().collect(),
             });
             return None;
         }
@@ -106,10 +106,13 @@ impl PublisherBuilder {
         S: Into<String>,
         F: 'static + Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>,
     {
-        self.routes.insert(path.into(), RouteHandler{
-            f: Box::new(f),
-            max_fragmentation: max_fragmentation.unwrap_or(0),
-        });
+        self.routes.insert(
+            path.into(),
+            RouteHandler {
+                f:                 Box::new(f),
+                max_fragmentation: max_fragmentation.unwrap_or(0),
+            },
+        );
         self
     }
 
@@ -132,7 +135,7 @@ impl PublisherBuilder {
         let with_disco = self.with_disco;
         let routes: &'static HashMap<String, RouteHandler> = Box::leak(Box::new(self.routes));
         let publish_config = self.config.publish.expect("missing publish section in config");
-        ep.publish(publish_config.shadow.clone(),||panic!("publish closed"))?;
+        ep.publish(publish_config.shadow.clone(), || panic!("publish closed"))?;
         let publish_config: &'static config::PublisherConfig = Box::leak(Box::new(publish_config));
 
         loop {
@@ -149,11 +152,17 @@ impl PublisherBuilder {
                             let with_disco = with_disco.clone();
                             ep.accept_incomming(q, move |h, s| {
                                 newstreamhandler(
-                                    poll.clone(), h, s,
-                                    &identity, &publish_config.auth,
-                                    &routes, with_axons, with_disco.clone())
+                                    poll.clone(),
+                                    h,
+                                    s,
+                                    &identity,
+                                    &publish_config.auth,
+                                    &routes,
+                                    with_axons,
+                                    with_disco.clone(),
+                                )
                             })
-                        },
+                        }
                         Err(e) => {
                             warn!("rejecting incomming {}: {}", q.identity, e);
                             ep.reject(q, format!("{}", e));

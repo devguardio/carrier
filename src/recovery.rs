@@ -194,7 +194,7 @@ impl QuicRecovery {
     }
 
     /// 3.5.4.  Loss Detection
-    pub fn on_packet_sent(&mut self, seq: u64, frames: Vec<Frame>, version:u8, now: u64) {
+    pub fn on_packet_sent(&mut self, seq: u64, frames: Vec<Frame>, version: u8, now: u64) {
         let (bytes, ackonly) = frames.iter().fold((0, true), |(bytes, ackonly), frame| {
             let ackonly = ackonly && frame.is_ack();
             (bytes + if frame.is_ack() { 0 } else { frame.len(version) }, ackonly)

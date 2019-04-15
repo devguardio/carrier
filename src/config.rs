@@ -50,11 +50,10 @@ pub struct ConfigToml {
 
 impl ConfigToml {
     fn secret(o: Option<&String>) -> Result<identity::Secret, Error> {
-        if let Some(ref s) = o{
+        if let Some(ref s) = o {
             if s.starts_with(":") {
                 let mut fu_brwcheck: String;
                 let mut s: Vec<&str> = s.split(":").collect();
-
 
                 if s.get(1) == Some(&"mtdname") || s.get(1) == Some(&"mtdblock") {
                     if let Some(name) = s.get(2).map(|v| v.to_string()) {
@@ -137,9 +136,12 @@ impl ConfigToml {
         };
 
         let shadow = subscribe.shadow.parse::<identity::Address>()?;
-        let group  = subscribe.group.as_ref().map(|v|v.parse::<identity::Secret>().expect("parsing subscribe.group"));
+        let group = subscribe
+            .group
+            .as_ref()
+            .map(|v| v.parse::<identity::Secret>().expect("parsing subscribe.group"));
 
-        Ok(Some(SubscriberConfig { shadow, group}))
+        Ok(Some(SubscriberConfig { shadow, group }))
     }
 
     fn names(&mut self) -> Result<HashMap<String, identity::Identity>, Error> {
@@ -162,7 +164,7 @@ impl ConfigToml {
             match c.as_str() {
                 ":system" => {
                     return Ok(ClockSource::System);
-                },
+                }
                 _ => {
                     return Err(Error::InvalidClock(c.clone()));
                 }
@@ -178,17 +180,14 @@ impl ConfigToml {
 }
 
 #[derive(Debug, Clone)]
-pub enum ClockSource{
+pub enum ClockSource {
     File(std::path::PathBuf),
     System,
 }
 
 impl Default for ClockSource {
     fn default() -> Self {
-        ClockSource::File(
-            dirs::home_dir()
-            .unwrap_or("/root/".into())
-            .join(".devguard/clock"))
+        ClockSource::File(dirs::home_dir().unwrap_or("/root/".into()).join(".devguard/clock"))
     }
 }
 
@@ -252,10 +251,9 @@ pub fn load() -> Result<Config, Error> {
         names: config.names()?,
         clock: config.clock()?,
         broker: config.broker()?,
-        port:   config.port,
+        port: config.port,
     })
 }
-
 
 impl Config {
     pub fn resolve_identity<S: Into<String>>(&self, s: S) -> Result<identity::Identity, Error> {
@@ -275,12 +273,12 @@ impl Config {
             secret,
             principal: Default::default(),
             keepalive: Default::default(),
-            publish:   Default::default(),
+            publish: Default::default(),
             subscribe: Default::default(),
-            names:     Default::default(),
-            clock:     Default::default(),
-            broker:    Self::default_brokers(),
-            port:      Default::default(),
+            names: Default::default(),
+            clock: Default::default(),
+            broker: Self::default_brokers(),
+            port: Default::default(),
         }
     }
 }
@@ -291,11 +289,9 @@ pub fn setup() -> Result<(), Error> {
         .join(".devguard/carrier.toml");
     let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
 
-
     if let Some(p) = std::path::Path::new(&filename).parent() {
         std::fs::create_dir_all(p).expect(&format!("create dir {:?}", p));
     }
-
 
     let mut config: ConfigToml = if let Ok(mut f) = File::open(&filename) {
         let mut buffer = String::default();

@@ -15,20 +15,25 @@ pub enum RoutingDirection {
 #[derive(Debug, PartialEq, Clone)]
 pub struct Flags {
     pub mov: bool,
+    pub target: bool,
 }
 
 impl Flags {
     pub fn empty() -> Self {
-        Self { mov: false }
+        Self {
+            mov: false,
+            target: false,
+        }
     }
 
     pub fn default() -> Self {
-        Self { mov: false }
+        Self::empty()
     }
 
     pub fn from_u8(b: u8) -> Self {
         Self {
             mov: b & 0b01000000 != 0,
+            target: b & 0b00100000 != 0,
         }
     }
 
@@ -36,6 +41,9 @@ impl Flags {
         let mut flags = 0x00;
         if self.mov {
             flags |= 0b01000000
+        };
+        if self.target {
+            flags |= 0b00100000
         };
         flags
     }

@@ -60,6 +60,7 @@ pub mod stream;
 pub mod subscriber;
 pub mod util;
 
+pub use easy::connect;
 pub use error::Error;
 pub use identity::Identity;
 pub use identity::Secret;

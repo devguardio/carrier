@@ -186,7 +186,6 @@ pub fn _main() -> Result<(), Error> {
             subscriber.run()
         }
         ("get", Some(submatches)) => {
-            let poll = osaka::Poll::new();
             let config = carrier::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
@@ -199,33 +198,26 @@ pub fn _main() -> Result<(), Error> {
                     headers.add(h[0].as_bytes().to_vec(), h[1].as_bytes().to_vec());
                 }
             }
-            get(poll, config, target, headers, print_handler).run()
+            carrier::connect(config).open(target, headers, print_handler).run()
         }
         ("sysinfo", Some(submatches)) => {
-            let poll = osaka::Poll::new();
             let config = carrier::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
             match submatches.value_of("v") {
-                Some("0") => get(
-                    poll,
-                    config,
+                Some("0") => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v0/sysinfo"),
-                    message_handler::<carrier::proto::Sysinfo>,
+                    message_handler::<carrier::proto::Sysinfo>
                 ),
-                Some("1") => get(
-                    poll,
-                    config,
+                Some("1") => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v1/sysinfo"),
-                    message_handler_ph::<carrier::proto::Sysinfo>,
+                    message_handler_ph::<carrier::proto::Sysinfo>
                 ),
-                Some("2") | _ => get(
-                    poll,
-                    config,
+                Some("2") | _ => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
                     message_handler::<carrier::proto::Sysinfo>,
@@ -306,23 +298,17 @@ pub fn _main() -> Result<(), Error> {
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
             match submatches.value_of("v") {
-                Some("0") => get(
-                    poll,
-                    config,
+                Some("0") => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v0/netsurvey"),
                     message_handler::<carrier::proto::NetSurvey>,
                 ),
-                Some("1") => get(
-                    poll,
-                    config,
+                Some("1") => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v1/netsurvey"),
                     message_handler_ph::<carrier::proto::NetSurvey>,
                 ),
-                Some("2") | _ => get(
-                    poll,
-                    config,
+                Some("2") | _ => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
                     message_handler::<carrier::proto::NetSurvey>,
@@ -331,16 +317,13 @@ pub fn _main() -> Result<(), Error> {
             .run()
         }
         ("discovery", Some(submatches)) => {
-            let poll = osaka::Poll::new();
             let config = carrier::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
             let mut headers = carrier::headers::Headers::with_path("/v2/carrier.discovery.v1/discover");
-            get(
-                poll,
-                config,
+            carrier::connect(config).open(
                 target,
                 headers,
                 message_handler::<carrier::proto::DiscoveryResponse>,
@@ -404,70 +387,6 @@ fn print_handler(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
 }
 
 #[osaka]
-fn get<F>(
-    poll: osaka::Poll,
-    config: carrier::config::Config,
-    target: carrier::identity::Identity,
-    headers: carrier::headers::Headers,
-    f: F,
-) -> Result<(), Error>
-where
-    F: 'static + FnOnce(osaka::Poll, carrier::endpoint::Stream) -> osaka::Task<()>,
-{
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
-    let mut ep = osaka::sync!(ep)?;
-    ep.connect(target, 5)?;
-
-    let q = loop {
-        match osaka::sync!(ep)? {
-            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
-            carrier::endpoint::Event::OutgoingConnect(q) => {
-                break q;
-            }
-            carrier::endpoint::Event::Disconnect { identity, .. } => {
-                warn!("{} disconnected", identity);
-                return Ok(());
-            }
-            carrier::endpoint::Event::IncommingConnect(_) => (),
-        }
-    };
-
-    let route = ep.accept_outgoing(q, move |_h, _s| None)?;
-    ep.open(route, headers.clone(), Some(0xfffffff), f)?;
-
-    loop {
-        match osaka::sync!(ep)? {
-            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
-            carrier::endpoint::Event::OutgoingConnect(_) => (),
-            carrier::endpoint::Event::Disconnect { identity, .. } => {
-                warn!("{} disconnected", identity);
-                return Ok(());
-            }
-            carrier::endpoint::Event::IncommingConnect(_) => (),
-        };
-    }
-}
-
-#[osaka]
-fn half_get(
-    poll: osaka::Poll,
-    config: carrier::config::Config,
-    target: carrier::identity::Identity,
-) -> Result<(), Error> {
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
-    let mut ep = osaka::sync!(ep)?;
-    ep.connect(target, 5)?;
-
-    match osaka::sync!(ep)? {
-        carrier::endpoint::Event::OutgoingConnect(q) => {
-            assert!(q.cr.unwrap().ok);
-        }
-        _ => (),
-    }
-    Ok(())
-}
-
-#[osaka]
 fn push(
     poll: osaka::Poll,
     config: carrier::config::Config,
@@ -477,7 +396,9 @@ fn push(
     sha: Vec<u8>,
     ota: bool,
 ) -> Result<(), Error> {
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
+    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
+    ep.move_target(target.clone());
+    let mut ep = ep.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
     ep.connect(target, 5)?;
 

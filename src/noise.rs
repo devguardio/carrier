@@ -7,6 +7,13 @@ use snow::{self, params::NoiseParams, Builder};
 use std::io::Read;
 use std::io::Write;
 
+#[derive(Debug,Clone)]
+pub enum MoveRequest {
+    MoveToSelf,
+    MoveToTarget(Identity),
+    DoNotMove,
+}
+
 pub struct Transport {
     version:   u8,
     counter:   u64,
@@ -44,7 +51,7 @@ enum SendMode<'a> {
     HandshakeRequest {
         identity:    Identity,
         timestamp:   u64,
-        do_not_move: bool,
+        move_req:    MoveRequest,
     },
     HandshakeResponse {
         identity:  Identity,
@@ -62,8 +69,17 @@ fn send(
 ) -> Result<packet::EncryptedPacket, Error> {
     let mut flags = Flags::default();
     match &payload {
-        SendMode::HandshakeRequest { do_not_move, .. } => {
-            flags.mov = *do_not_move;
+        SendMode::HandshakeRequest { move_req, .. } => {
+            match move_req {
+                MoveRequest::DoNotMove => {
+                    flags.mov = true;
+                }
+                MoveRequest::MoveToSelf => {
+                }
+                MoveRequest::MoveToTarget(id) => {
+                    flags.target = true;
+                }
+            }
         }
         SendMode::HandshakeResponse { mov, .. } => {
             // we set mov
@@ -113,7 +129,7 @@ fn send(
         SendMode::HandshakeRequest {
             identity,
             timestamp,
-            do_not_move: _,
+            move_req,
         } => {
             assert_eq!(direction, RoutingDirection::Initiator2Responder);
             assert_eq!(identity.as_bytes().len(), 32);
@@ -128,6 +144,10 @@ fn send(
             if version >= 0x09 {
                 inbuf.write_u32::<BigEndian>(super::REVISION)?;
             };
+
+            if let MoveRequest::MoveToTarget(target) = move_req {
+                inbuf.write_all(&target.as_bytes())?;
+            }
 
             16 // tag
             + 32 // ephermal
@@ -403,7 +423,7 @@ pub fn initiate(
     remote_static: Option<&Address>,
     secret: &Secret,
     timestamp: u64,
-    do_not_move: bool,
+    move_req: MoveRequest,
 ) -> Result<(HandshakeRequester, packet::EncryptedPacket), Error> {
     let mut noise = if let Some(remote_static) = remote_static {
         let params: NoiseParams = "Noise_NK_25519_ChaChaPoly_SHA256".parse().unwrap();
@@ -431,7 +451,7 @@ pub fn initiate(
             SendMode::HandshakeRequest {
                 identity,
                 timestamp,
-                do_not_move,
+                move_req,
             }
         } else {
             SendMode::InsecureHandshake { identity, timestamp }

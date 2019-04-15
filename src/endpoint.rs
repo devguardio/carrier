@@ -299,7 +299,7 @@ impl Endpoint {
         let timestamp = clock::network_time(&self.clock);
         //TODO in another life, we should connect with 0x09 and the broker should respond with a
         //downgrade message is the other side is 0x08
-        let (noise, pkt) = noise::initiate(0x08, None, &self.secret, timestamp, false)?;
+        let (noise, pkt) = noise::initiate(0x08, None, &self.secret, timestamp, noise::MoveRequest::MoveToSelf)?;
         let handshake = pkt.encode();
 
         let mut mypaths = Vec::new();
@@ -1050,8 +1050,8 @@ pub struct EndpointBuilder {
     principal:   Option<identity::Secret>,
     clock:       config::ClockSource,
     broker:      Vec<String>,
-    do_not_move: bool,
     port:        u16,
+    mov:         noise::MoveRequest,
 }
 
 impl EndpointBuilder {
@@ -1067,13 +1067,17 @@ impl EndpointBuilder {
             principal:   config.principal.clone(),
             clock:       config.clock.clone(),
             broker:      config.broker.clone(),
-            do_not_move: false,
             port:        config.port.unwrap_or(0),
+            mov:         noise::MoveRequest::MoveToSelf,
         })
     }
 
     pub fn do_not_move(&mut self) {
-        self.do_not_move = true;
+        self.mov = noise::MoveRequest::DoNotMove;
+    }
+
+    pub fn move_target(&mut self, id: identity::Identity) {
+        self.mov = noise::MoveRequest::MoveToTarget(id);
     }
 
     #[osaka]
@@ -1130,7 +1134,7 @@ impl EndpointBuilder {
             Some(&to.x),
             &self.secret,
             timestamp,
-            self.do_not_move,
+            self.mov,
         )?;
         let pkt = pkt.encode();
 

@@ -23,26 +23,23 @@ log                 = { version = "0.4.6", features = ["release_max_level_debug"
 #log                 = { version = "0.4.6"}
 sha2                = "0.8.0"
 subtle              = "2.0.0"
-x25519-dalek        = { version = "0.4.4", default-features = false, features = ["std", "u64_backend"] }
-rand                = "0.6.4"
-prost               = "0.4.0"
-prost-derive        = "0.4.0"
-bytes               = "0.4.11"
+x25519-dalek        = { version = "0.5.2", default-features = false, features = ["std", "u64_backend"] }
+rand                = "0.6.5"
+prost               = "0.5.0"
+prost-derive        = "0.5.0"
+bytes               = "0.4.12"
 hpack               = "0.3.0"
 
-osaka               = "0.2.8"
-osaka-dns           = "0.2.5"
-
-#osaka       = {path = "../../osaka/osaka"}
-#osaka-dns   = {path = "../../osaka/osaka-dns"}
+osaka               = "0.2.10"
+osaka-dns           = "0.2.10"
 
 mtdparts            = "0.2.0"
 mio                 = "0.6.16"
 mio-extras          = "2.0.5"
-dirs                = "1.0.4"
-toml                = "0.4.10"
-serde               = "1.0.85"
-serde_derive        = "1.0.85"
+dirs                = "1.0.5"
+toml                = "0.5.0"
+serde               = "1.0.90"
+serde_derive        = "1.0.90"
 
 #conduit
 gcmap               = {version = "0.1.4", optional = true}
@@ -50,17 +47,18 @@ gcmap               = {version = "0.1.4", optional = true}
 #main
 # TODO remove from lib dependencies somehow
 # https://github.com/rust-lang/cargo/issues/1982
+
 which               = "2.0.1"
 tinylogger          = "0.1.0"
 axon                = "0.2.0"
-clap                = "2.32.0"
-num_cpus            = "1.9.0"
+clap                = "2.33.0"
+num_cpus            = "1.10.0"
 wait-timeout        = "0.2.0"
 pbr                 = "1.0.1"
 
 #pty
 nix                 = "0.13.0"
-libc                = "0.2.48"
+libc                = "0.2.51"
 
 #openwrt
 serde_json          = {version = "1.0", optional = true}
@@ -68,7 +66,7 @@ serde_json          = {version = "1.0", optional = true}
 
 
 [dependencies.snow]
-version             = "0.4.2"
+version             = "0.5.2"
 default-features    = false
 features            = ["hacl-star-resolver"]
 
@@ -85,12 +83,9 @@ path = "src/lib.rs"
 name = "carrier"
 path = "src/main.rs"
 
-[patch.crates-io]
-hacl-star-sys   = {git = "https://github.com/quininer/rust-hacl-star.git", branch="fix32"}
-
 [build-dependencies]
-prost-build = "0.4.0"
-rand        = "0.6.4"
+prost-build = "0.5.0"
+rand        = "0.6.5"
 
 [profile.release]
 lto = true

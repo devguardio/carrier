@@ -467,28 +467,22 @@ struct RandResolver {}
 
 use rand::rngs::OsRng;
 use rand::RngCore;
-
-struct RandomOs {
-    rng: OsRng,
-}
-
-impl Default for RandomOs {
-    fn default() -> RandomOs {
-        RandomOs {
-            rng: OsRng::new().unwrap(),
-        }
-    }
-}
-
-impl snow::types::Random for RandomOs {
-    fn fill_bytes(&mut self, out: &mut [u8]) {
-        self.rng.fill_bytes(out);
-    }
+struct O (OsRng);
+impl snow::types::Random for O {}
+impl rand::CryptoRng for O {}
+impl RngCore for O {
+    fn next_u32(&mut self) -> u32 {self.0.next_u32()}
+    fn next_u64(&mut self) -> u64 {self.0.next_u64()}
+    fn fill_bytes(&mut self, dest: &mut [u8]) { self.0.fill_bytes(dest)}
+    fn try_fill_bytes(&mut self, dest: &mut [u8]) -> Result<(), rand::Error> { self.0.try_fill_bytes(dest) }
 }
 
 impl CryptoResolver for RandResolver {
     fn resolve_rng(&self) -> Option<Box<snow::types::Random>> {
-        Some(Box::new(RandomOs::default()))
+        match OsRng::new() {
+            Ok(v) => Some(Box::new(O(v))),
+            _ => None,
+        }
     }
 
     fn resolve_dh(&self, _: &snow::params::DHChoice) -> Option<Box<(dyn snow::types::Dh + 'static)>> {

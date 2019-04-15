@@ -389,8 +389,6 @@ fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, mut strea
 
 #[osaka]
 fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
-    use prost::Message;
-
     let _d = carrier::util::defer(|| {
         std::process::exit(0);
     });

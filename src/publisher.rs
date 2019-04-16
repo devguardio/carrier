@@ -16,6 +16,8 @@ use std::process::Command;
 pub mod openwrt;
 pub mod sft;
 pub mod shell;
+pub mod sysinfo;
+pub mod tcp;
 
 pub struct RouteHandler {
     f: Box<Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>>,

@@ -17,6 +17,7 @@ use log::{info, warn};
 use osaka::osaka;
 use pbr::ProgressBar;
 use std::env;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 #[cfg(any(target_os = "linux", target_os = "macos",))]
 mod shell;
@@ -86,6 +87,13 @@ pub fn _main() -> Result<(), Error> {
             SubCommand::with_name("shell")
                 .about("open a remote shell")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
+        )
+        .subcommand(
+            SubCommand::with_name("tcp")
+                .about("forward a remote tcp port")
+                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+                .arg(Arg::with_name("remote-port").takes_value(true).required(true).index(2))
+                .arg(Arg::with_name("local-port").takes_value(true).required(true).index(3)),
         )
         .subcommand(
             SubCommand::with_name("sysinfo")
@@ -165,8 +173,12 @@ pub fn _main() -> Result<(), Error> {
             let mut publisher = carrier::publisher::new(config)
                 .route("/v0/shell", None, carrier::publisher::shell::main)
                 .route("/v0/sft", None, carrier::publisher::sft::main)
+                .route("/v0/tcp",   None, carrier::publisher::tcp::main)
+                .route("/v2/carrier.sysinfo.v1/sysinfo",    None, carrier::publisher::sysinfo::sysinfo)
+                .with_disco("carrier-cli".into(), carrier::BUILD_ID.into())
                 .with_axons()
                 .publish(poll);
+
             publisher.run()
         }
         ("subscribe", Some(submatches)) => {
@@ -225,6 +237,42 @@ pub fn _main() -> Result<(), Error> {
             }
             .run()
         }
+        #[cfg(not(target_os = "android",))]
+        ("tcp", Some(submatches)) => {
+            use std::net::{TcpListener};
+            use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+            let local_port  = submatches.value_of("local-port").unwrap().to_string().parse().expect("parsing local-port");
+            let remote_port = submatches.value_of("remote-port").unwrap().to_string();
+
+            let mut headers = carrier::headers::Headers::with_path("/v0/tcp");
+            headers.add("port".into(), remote_port.into_bytes());
+
+            let srv = TcpListener::bind(SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), local_port)).unwrap();
+
+            info!("accepting local tcp on port {}", local_port);
+
+            for tcp in srv.incoming() {
+                let tcp = tcp.unwrap();
+                let headers = headers.clone();
+                let target  = target.clone();
+                let config  = config.clone();
+                std::thread::spawn(move ||{
+                    carrier::connect(config).open(
+                        target,
+                        headers,
+                        move |poll, ep, stream| tcp_handler(poll, ep, stream, tcp)
+                        ).run().unwrap();
+                });
+            }
+            Ok(())
+        }
+        #[cfg(not(target_os = "android",))]
         ("shell", Some(submatches)) => {
             let poll = osaka::Poll::new();
             let config = carrier::config::load()?;
@@ -335,7 +383,7 @@ pub fn _main() -> Result<(), Error> {
 }
 
 #[osaka]
-fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
     use prost::Message;
 
     let _d = carrier::util::defer(|| {
@@ -359,7 +407,7 @@ fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, mut strea
 }
 
 #[osaka]
-fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
     let _d = carrier::util::defer(|| {
         std::process::exit(0);
     });
@@ -372,7 +420,7 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, mut stream: 
 }
 
 #[osaka]
-fn print_handler(_poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+fn print_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
     let _d = carrier::util::defer(|| {
         info!("stream ended");
         std::process::exit(0);
@@ -485,5 +533,66 @@ fn push(
             }
             carrier::endpoint::Event::IncommingConnect(_) => (),
         };
+    }
+}
+
+
+
+#[osaka]
+fn tcp_handler(poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream, tcp: std::net::TcpStream) {
+    use osaka::mio::net::TcpStream;
+    use std::io::{Read, Write};
+    use osaka::Future;
+
+    let _d = carrier::util::defer(move || {
+        warn!("tcp stream ends");
+        ep.disconnect(ep.broker(), carrier::packet::DisconnectReason::Application);
+    });
+
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    println!("{:?}", headers);
+
+    let mut tcp = TcpStream::from_stream(tcp).unwrap();
+
+    let token = poll
+        .register(
+            &tcp,
+            mio::Ready::readable(),
+            mio::PollOpt::level(),
+        )
+        .unwrap();
+
+    loop {
+        yield poll.any(vec![token.clone()], None);
+        let mut buf = vec![0; 700];
+
+        if let osaka::FutureResult::Done(v) = stream.poll() {
+            match v[0] {
+                1 => {
+                    tcp.write(&v[1..]).unwrap();
+                },
+                2 => {
+                    std::io::stderr().write(&v[1..]).unwrap();
+                },
+                _ => (),
+            }
+        }
+
+        match tcp.read(&mut buf[1..]) {
+            Ok(l) => {
+                buf[0] = 1;
+                stream.send(&buf[..l + 1]);
+            },
+            Err(e) => {
+                if e.kind() == std::io::ErrorKind::WouldBlock {
+                    continue;
+                }
+                let mut s = vec![2];
+                s.append(&mut format!("{}", e).into_bytes());
+                stream.send(s);
+                return;
+            }
+        }
+
     }
 }

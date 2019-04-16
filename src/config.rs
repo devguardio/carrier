@@ -186,8 +186,13 @@ pub enum ClockSource {
 }
 
 impl Default for ClockSource {
+    #[cfg(not(target_os = "android",))]
     fn default() -> Self {
         ClockSource::File(dirs::home_dir().unwrap_or("/root/".into()).join(".devguard/clock"))
+    }
+    #[cfg(target_os = "android",)]
+    fn default() -> Self {
+        ClockSource::File(dirs::home_dir().unwrap_or("/data/".into()).join(".devguard/clock"))
     }
 }
 
@@ -223,9 +228,16 @@ pub struct Config {
 }
 
 pub fn load() -> Result<Config, Error> {
-    let defaultfile = dirs::home_dir()
+
+    #[cfg(not(target_os = "android",))]
+    let defaultfile =
+        dirs::home_dir()
         .unwrap_or("/root/".into())
         .join(".devguard/carrier.toml");
+
+    #[cfg(target_os = "android",)]
+    let defaultfile : std::path::PathBuf = "/data/.devguard/carrier.toml".into();
+
     let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
 
     let mut buffer = String::default();
@@ -284,9 +296,15 @@ impl Config {
 }
 
 pub fn setup() -> Result<(), Error> {
-    let defaultfile = dirs::home_dir()
+    #[cfg(not(target_os = "android",))]
+    let defaultfile =
+        dirs::home_dir()
         .unwrap_or("/root/".into())
         .join(".devguard/carrier.toml");
+
+    #[cfg(target_os = "android",)]
+    let defaultfile : std::path::PathBuf = "/data/.devguard/carrier.toml".into();
+
     let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
 
     if let Some(p) = std::path::Path::new(&filename).parent() {

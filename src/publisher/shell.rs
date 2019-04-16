@@ -128,10 +128,18 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream) {
 
     let pty = Pty::new().unwrap();
 
+    #[cfg(not(target_os = "android"))]
     let child = std::process::Command::new("/bin/sh")
         .arg("-l")
         .spawn_async_pty(&pty)
         .expect("failed to execute child");
+
+    #[cfg(target_os = "android")]
+    let child = std::process::Command::new("/system/bin/sh")
+        .arg("-l")
+        .spawn_async_pty(&pty)
+        .expect("failed to execute child");
+
 
     let stdio = pty.master_fd.as_raw_fd();
 

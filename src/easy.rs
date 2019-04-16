@@ -49,7 +49,7 @@ impl Endpoint {
         f: F,
         ) -> Result<(), Error>
         where
-        F: 'static + FnOnce(osaka::Poll, endpoint::Stream) -> osaka::Task<()>,
+        F: 'static + FnOnce(osaka::Poll, endpoint::Handle, endpoint::Stream) -> osaka::Task<()>,
         {
             let mut ep = endpoint::EndpointBuilder::new(&self.config)?;
             ep.move_target(target.clone());
@@ -79,7 +79,8 @@ impl Endpoint {
             };
 
             let route = ep.accept_outgoing(q, move |_h, _s| None)?;
-            ep.open(route, headers.clone(), self.max_fragments, f)?;
+            let handle = ep.handle();
+            ep.open(route, headers.clone(), self.max_fragments, |poll, stream| f(poll, handle, stream) )?;
 
             loop {
                 match osaka::sync!(ep)? {

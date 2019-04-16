@@ -1,6 +1,15 @@
+#[cfg(not(target_os = "android",))]
 use nix::ifaddrs;
 use std::net::SocketAddr;
 
+#[cfg(target_os = "android",)]
+pub fn get(port: u16) -> Vec<SocketAddr> {
+    //TODO
+    Vec::new()
+}
+
+
+#[cfg(not(target_os = "android",))]
 pub fn get(port: u16) -> Vec<SocketAddr> {
     let mut r = Vec::new();
     let addrs = ifaddrs::getifaddrs().unwrap();

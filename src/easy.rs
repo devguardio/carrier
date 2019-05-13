@@ -31,9 +31,17 @@ impl Endpoint {
         }
     }
 
+    pub fn set_timeout(&mut self, t: u16) {
+        self.timeout = t;
+    }
+
     pub fn timeout(mut self, t: u16) -> Self {
         self.timeout = t;
         self
+    }
+
+    pub fn set_max_fragments(&mut self, max_fragments: Option<u32>) {
+        self.max_fragments = max_fragments;
     }
 
     pub fn max_fragments(mut self, max_fragments: Option<u32>) -> Self {

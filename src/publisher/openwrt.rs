@@ -389,6 +389,7 @@ pub fn ota(
 
 #[osaka]
 fn m(poll: osaka::Poll, mut stream: endpoint::Stream, sha: Vec<u8>) {
+    use osaka::Future;
     use std::process::Stdio;
     use std::thread;
 
@@ -398,7 +399,15 @@ fn m(poll: osaka::Poll, mut stream: endpoint::Stream, sha: Vec<u8>) {
         "/tmp/carrier.ota.sysupdate.img".to_string(),
         sha,
     );
-    osaka::sync!(s);
+    loop {
+        s.wakeup_now();
+        match s.poll() {
+            osaka::FutureResult::Done(_) => break,
+            osaka::FutureResult::Again(a) => {
+                yield a;
+            }
+        }
+    }
 
     let child = match Command::new("/sbin/sysupgrade")
         .args(&["/tmp/carrier.ota.sysupdate.img"])

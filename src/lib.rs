@@ -65,6 +65,8 @@ pub use error::Error;
 pub use identity::Identity;
 pub use identity::Secret;
 
+mod revision;
+pub use revision::REVISION;
 include!(concat!(env!("OUT_DIR"), "/build_id.rs"));
 
 pub mod proto {

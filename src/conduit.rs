@@ -146,9 +146,10 @@ impl Builder {
                         thread::Builder::new()
                             .name(format!("cond-{}-{}", i, record.addr))
                             .spawn(move ||{
-                                thread::sleep(Duration::from_millis(rand::thread_rng().gen_range(100, 2000)));
                                 let a = lock_.lock().unwrap();
-                                Self::broker_thread(config.clone(), i, mt, record, f.clone());
+                                thread::sleep(Duration::from_millis(rand::thread_rng().gen_range(100, 2000)));
+                                Self::broker_thread(config.clone(), i, mt, record.clone(), f.clone());
+                                error!("end of thread for addr {} shard {}", record.addr, i);
                                 drop(a);
                             })
                             .unwrap();
@@ -274,6 +275,7 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                     break;
                 }
                 if sc.kill {
+                    info!("killed {} by applicaton choice", id);
                     killed.push(id.clone());
                     if let Some(route) = sc.route {
                         osaka::try!(self.ep.disconnect(route, packet::DisconnectReason::Application));
@@ -295,6 +297,7 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                                     },
                                     None => {
                                         remove_schedule.push(path.clone());
+                                        continue;
                                     }
                                 }
                             }
@@ -316,7 +319,8 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                                 |poll, stream| { (schedule.f)(poll, stream, id.clone(), mark) }
                             ));
                             info!(
-                                "[{}] opened scheduled stream {} -> {}",
+                                "[{}] [{}] opened scheduled stream {} -> {}",
+                                self.shard,
                                 id,
                                 stream,
                                 String::from_utf8_lossy(path)
@@ -355,14 +359,15 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                     if q.ok() {
                         let identity = q.identity.clone();
                         let identity_ = q.identity.clone();
+                        let selfshard = self.shard;
                         let route = self
                             .ep
                             .accept_outgoing(q, move |h, _s| {
-                                warn!("rejecting incomming stream from {}: {:?}", identity, h);
+                                warn!("[{}] rejecting incomming stream from {}: {:?}", selfshard, identity, h);
                                 None
                             })
                             .unwrap();
-                        info!("accepting outgoing connect {} ::> {}", identity_, route);
+                        info!("[{}] accepting outgoing connect {} ::> {}", self.shard, identity_, route);
                         if let Some(sc) = state.subscribed.get_mut(&identity_) {
                             sc.route = Some(route);
                         }
@@ -424,10 +429,11 @@ fn subscribe_handler<F: OnPublish>(
                 identity.hash(&mut hasher);
                 let r = hasher.finish();
                 if r % shard_count as u64 == shard as u64 {
-                    info!("[{}] + {}", shard, identity);
+                    info!("[{:?} {}] + {}", thread::current().id(), shard, identity);
 
                     let mut state = state.try_borrow_mut().expect("carrier is not thread safe");
                     if let Some(sub) = state.subscribed.get_mut(&identity) {
+                        info!("we have a previous subscription");
                         sub.kill = true;
                     }
 
@@ -679,6 +685,11 @@ impl PeerSetup {
     {
         let headers = headers::Headers::decode(&osaka::sync!(stream)).unwrap();
         println!("{:?}", headers);
+
+        if headers.get(b":status") != Some(b"200") {
+            f(proto::DiscoveryResponse::default());
+            return;
+        }
 
         loop {
             let m = osaka::sync!(stream);

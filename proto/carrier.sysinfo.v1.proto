@@ -40,6 +40,9 @@ message Firmware {
     string distro   = 2;
     string release  = 3;
     string revision = 4;
+    string builder  = 5;
+    string finger   = 6;
+    uint32 android_api_level = 7;
 }
 
 message NetAddress {

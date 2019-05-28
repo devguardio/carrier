@@ -108,8 +108,28 @@ fn fs() -> Option<Vec<proto::FileSystem>> {
         total:     s.blocks().into(),
         free:      s.blocks_free().into(),
     });
+    #[cfg(target_os = "android")]
+    for fname in ["/system", "/cache", "/data"].into_iter() {
+        if let Ok(s) = statvfs(*fname) {
+            r.push(proto::FileSystem {
+                path:      (*fname).into(),
+                blocksize: s.block_size().into(),
+                total:     s.blocks().into(),
+                free:      s.blocks_free().into(),
+            });
+        }
+    }
 
     Some(r)
+}
+
+
+
+fn fromsysfile<E: std::fmt::Display, T : std::str::FromStr<Err=E>>(f: String) -> Result<T, String> {
+    let mut f = File::open(f).map_err(|e|format!("{}", e))?;
+    let mut buf = String::new();
+    f.read_to_string(&mut buf).map_err(|e|format!("{}", e))?;
+    buf.trim().parse().map_err(|e|format!("{}", e))
 }
 
 fn net_line(line: String) -> Option<proto::Netdev> {
@@ -135,40 +155,16 @@ fn net_line(line: String) -> Option<proto::Netdev> {
     let tx_pkt = trye!(53, tryo!(53, line.next()).parse());
     let tx_err = trye!(53, tryo!(53, line.next()).parse());
 
-    let mut f = trye!(551, File::open(format!("/sys/class/net/{}/mtu", name)));
-    let mut buf = String::new();
-    trye!(551, f.read_to_string(&mut buf));
-    let mtu = trye!(551, buf.trim().parse());
+    let mtu: u32            = trye!(551,fromsysfile(format!("/sys/class/net/{}/mtu", name)));
+    let macaddr: String     = trye!(552,fromsysfile(format!("/sys/class/net/{}/address", name)));
+    let operstate: String   = trye!(553,fromsysfile(format!("/sys/class/net/{}/operstate", name)));
+    let up: usize           = trye!(554,fromsysfile(format!("/sys/class/net/{}/carrier", name)));
 
-    let mut f = trye!(552, File::open(format!("/sys/class/net/{}/address", name)));
-    let mut buf = String::new();
-    trye!(552, f.read_to_string(&mut buf));
-    let macaddr = buf.trim().into();
+    let link_changes: u64   = fromsysfile(format!("/sys/class/net/{}/carrier_changes", name)).unwrap_or(0);
+    let link_speed: u64     = fromsysfile(format!("/sys/class/net/{}/speed", name)).unwrap_or(0);
 
-    let mut f = trye!(553, File::open(format!("/sys/class/net/{}/operstate", name)));
-    let mut buf = String::new();
-    trye!(553, f.read_to_string(&mut buf));
-    let operstate = buf.trim();
-
-    let mut f = trye!(554, File::open(format!("/sys/class/net/{}/carrier", name)));
-    let mut buf = String::new();
-    trye!(554, f.read_to_string(&mut buf));
-    let up: usize = buf.trim().parse().unwrap_or(0);
-
-    let mut f = trye!(555, File::open(format!("/sys/class/net/{}/carrier_changes", name)));
-    let mut buf = String::new();
-    trye!(555, f.read_to_string(&mut buf));
-    let link_changes: u64 = trye!(555, buf.trim().parse());
-
-    let mut f = trye!(556, File::open(format!("/sys/class/net/{}/speed", name)));
-    let mut buf = String::new();
-    trye!(556, f.read_to_string(&mut buf));
-    let link_speed: u64 = trye!(556, buf.trim().parse());
-
-    let mut f = trye!(557, File::open(format!("/sys/class/net/{}/duplex", name)));
-    let mut buf = String::new();
-    trye!(557, f.read_to_string(&mut buf));
-    let link_duplex = match buf.trim() {
+    let link_duplex: String = fromsysfile(format!("/sys/class/net/{}/duplex", name)).unwrap_or(String::new());
+    let link_duplex = match link_duplex.trim() {
         "half" => proto::netdev::Duplex::Half,
         "full" => proto::netdev::Duplex::Full,
         _ => proto::netdev::Duplex::Invalid,
@@ -176,7 +172,6 @@ fn net_line(line: String) -> Option<proto::Netdev> {
     .into();
 
     let mut addrs = Vec::new();
-
 
     #[cfg(not(target_os = "android"))]
     for ifaddr in trye!(56, nix::ifaddrs::getifaddrs()) {
@@ -260,6 +255,13 @@ pub fn sysinfo(
         sysinfo.firmware    = super::openwrt::firmware();
         sysinfo.switch      = super::openwrt::switch(&board).unwrap_or(Vec::new());
         sysinfo.board_id    = board.map(|board| board.model.id.clone()).unwrap_or(String::new());
+    }
+    #[cfg(target_os = "android")]
+    {
+        sysinfo.firmware    = super::android::firmware();
+        if let Some(fw) = &sysinfo.firmware {
+            sysinfo.board_id    = fw.board.clone();
+        }
     }
 
     stream.message(sysinfo);

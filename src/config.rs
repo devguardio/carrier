@@ -296,6 +296,8 @@ impl Config {
 }
 
 pub fn setup() -> Result<(), Error> {
+    use std::os::unix::fs::OpenOptionsExt;
+
     #[cfg(not(target_os = "android",))]
     let defaultfile =
         dirs::home_dir()
@@ -316,7 +318,7 @@ pub fn setup() -> Result<(), Error> {
         f.read_to_string(&mut buffer)
             .expect(&format!("cannot read config file {:?}", filename));
         toml::from_str(&buffer).expect(&format!(
-            "cannot open config file {:?}. maybe run carrier setup",
+            "cannot parse config file {:?}",
             filename
         ))
     } else {
@@ -331,7 +333,12 @@ pub fn setup() -> Result<(), Error> {
     println!("identity: {}", secret.identity());
 
     let s = toml::to_vec(&config).unwrap();
-    let mut f = File::create(&filename).expect(&format!("cannot create config file {:?}", filename));
+    let mut f = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .mode(0o600)
+        .open(&filename)
+        .expect(&format!("cannot create config file {:?}", filename));
     f.write_all(&s)
         .expect(&format!("cannot write config file {:?}", filename));
 

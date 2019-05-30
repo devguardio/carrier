@@ -31,7 +31,7 @@ pub fn firmware() -> Option<proto::Firmware> {
     rr.revision = getprop("ro.build.version.incremental").unwrap_or(String::default());
 
     rr.board    = (getprop("ro.product.manufacturer").unwrap_or(String::from("unknown")) +
-                  "-" + &getprop("ro.product.model").unwrap_or(String::from("unknown")) +
+                  "-" + &getprop("ro.board.platform").unwrap_or(String::from("unknown")) +
                   "-" + &getprop("ro.product.board").unwrap_or(String::from("unknown"))).replace(" ", "_");
 
 

@@ -44,7 +44,6 @@ b(){
 
 
 
-
 export PATH=$PATH:~/NDK/arm/bin
 export RUSTFLAGS="$RUSTFLAGS -C linker=arm-linux-androideabi-clang"
 cargo +nightly build --target armv7-linux-androideabi --release 

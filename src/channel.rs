@@ -51,6 +51,7 @@ pub struct Channel {
     //outgoing
     counters: HashMap<u32, u64>,
     outqueue: VecDeque<Frame>,
+    outqueue_bytes: usize,
 
     sleeping:   bool,
     idle_time:  u64,
@@ -95,6 +96,7 @@ impl Channel {
 
             counters: HashMap::new(),
             outqueue: VecDeque::new(),
+            outqueue_bytes: 0,
 
             sleeping: false,
             idle_time: DEFAULT_IDLE_TIMER,
@@ -116,7 +118,11 @@ impl Channel {
     }
 
     pub fn window(&self) -> usize {
-        self.recovery.window()
+        if self.outqueue_bytes > self.recovery.window() {
+            0
+        } else {
+            self.recovery.window() - self.outqueue_bytes
+        }
     }
 
     pub fn is_initiator(&self) -> bool {
@@ -266,11 +272,13 @@ impl Channel {
         }
 
         if !ackonly {
-            self.outqueue.push_back(Frame::Ack {
+            let frame = Frame::Ack {
                 //FIXME this assumes delay is u64, which it is, but that's actually a bug
                 delay: now,
                 acked: vec![counter],
-            });
+            };
+            self.outqueue_bytes += frame.len(self.version);
+            self.outqueue.push_back(frame);
         }
 
         Ok(())
@@ -291,6 +299,7 @@ impl Channel {
 
                 for frame in lost {
                     if !frame.is_ack() && !frame.is_ping() {
+                        self.outqueue_bytes += frame.len(self.version);
                         self.outqueue.push_back(frame);
                     }
                 }
@@ -306,6 +315,7 @@ impl Channel {
                         .join(",")
                 );
                 for frame in re {
+                    self.outqueue_bytes += frame.len(self.version);
                     self.outqueue.push_back(frame);
                 }
             }
@@ -318,6 +328,7 @@ impl Channel {
                     self.now(),
                 );
                 for frame in re {
+                    self.outqueue_bytes += frame.len(self.version);
                     self.outqueue.push_front(frame);
                 }
             }
@@ -359,7 +370,11 @@ impl Channel {
         // not an else branch. upper branch could set sleeping = false
         if !self.sleeping {
             if now >= self.last_seen + self.idle_time {
-                self.outqueue.push_back(Frame::Ping);
+
+                let frame = Frame::Ping;
+                self.outqueue_bytes += frame.len(self.version);
+                self.outqueue.push_back(frame);
+
                 self.last_seen = now;
                 self.idle_count += 1;
                 if self.idle_count > 2 {
@@ -415,6 +430,8 @@ impl Channel {
                     break;
                 }
                 let mut frame = self.outqueue.pop_front().unwrap();
+                self.outqueue_bytes -= frame.len(self.version);
+
                 if let Frame::Ack { acked, delay } = frame {
                     frame = Frame::Ack {
                         acked,
@@ -514,11 +531,15 @@ impl Channel {
 
         let msg = msg.into();
         assert!(msg.len() < 1200, "message too big {}", msg.len());
-        self.outqueue.push_back(Frame::Stream {
+
+        let frame =  Frame::Stream {
             stream:  stream,
             order:   order,
             payload: msg.into(),
-        });
+        };
+
+        self.outqueue_bytes += frame.len(self.version);
+        self.outqueue.push_back(frame);
     }
 
     /// queue a fragmented message
@@ -532,11 +553,14 @@ impl Channel {
                 *order += 1;
                 *order
             };
-            self.outqueue.push_back(Frame::Fragmented {
+            let frame = Frame::Fragmented {
                 stream:    stream,
                 order:     order,
                 fragments: (b.len() as f64 / 600.0).ceil() as u32,
-            });
+            };
+            self.outqueue_bytes += frame.len(self.version);
+            self.outqueue.push_back(frame);
+
             for g in b.chunks(600) {
                 self.stream(stream, g)
             }
@@ -570,10 +594,12 @@ impl Channel {
 
         self.counters.insert(stream, 1);
 
-        self.outqueue.push_back(Frame::Header {
+        let frame = Frame::Header {
             stream:  stream,
             payload: payload,
-        });
+        };
+        self.outqueue_bytes += frame.len(self.version);
+        self.outqueue.push_back(frame);
 
         Ok(stream)
     }

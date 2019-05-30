@@ -5,6 +5,7 @@ use identity;
 use osaka::Future;
 use osaka::{mio, osaka};
 use std::io::{Read};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 pub fn main(
     poll: osaka::Poll,
@@ -26,19 +27,33 @@ pub fn main(
                     stream.send(headers.encode());
                     None
                 }
-                Ok(port) => Some(main_(poll, stream, port)),
+                Ok(port) => {
+                    let ip = match headers.get(b"host") {
+                        None    => IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
+                        Some(h) => {
+                            match String::from_utf8_lossy(&h).parse::<IpAddr>() {
+                                Err(e) => {
+                                    let headers = Headers::with_error(400, format!("{}", e));
+                                    stream.send(headers.encode());
+                                    return None;
+                                }
+                                Ok(ip) => ip,
+                            }
+                        }
+                    };
+                    Some(main_(poll, stream, SocketAddr::new(ip, port)))
+                }
             }
         }
     }
 }
 
 #[osaka]
-pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, port: u16) {
-    use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, addr: SocketAddr) {
     use mio::tcp::TcpStream;
     use std::io::{Read,Write};
 
-    let tcp = TcpStream::connect(&SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), port));
+    let tcp = TcpStream::connect(&addr);
     let mut tcp = match tcp {
         Err(e) => {
             let headers = Headers::with_error(400, format!("{}", e));

@@ -82,7 +82,6 @@ impl ConfigToml {
                             .open(mtd)
                             .expect(&format!("cannot open {}", mtd));
                         f.seek(SeekFrom::Start(offset))?;
-
                         let mut b = [0u8; 32];
                         f.read_exact(&mut b)?;
 
@@ -93,10 +92,47 @@ impl ConfigToml {
                         }
                         return Ok(identity::Secret::from_array(b));
                     }
+                } else if s.get(1) == Some(&"efi") {
+                #[cfg(feature = "uefi")]
+                {
+                    info!("reading secret from UEFI");
+                    let path = "/sys/firmware/efi/efivars/DevguardIdentity-287d44ea-82f4-11e9-bd4d-d0509993593e";
+
+                    if std::fs::metadata(path).is_err() {
+                        let mut b = [0u8; 68];
+                        b[0] = 0x7;
+                        thread_rng().try_fill_bytes(&mut b[4..]).unwrap();
+                        let mut f = OpenOptions::new()
+                            .write(true)
+                            .create(true)
+                            .open(path)
+                            .expect(&format!("cannot open {}", path));
+                        f.write(&b)?;
+                    }
+
+                    let mut f = OpenOptions::new()
+                        .read(true)
+                        .open(path)
+                        .expect(&format!("cannot open {}", path));
+
+                    let mut bb = [0u8; 68];
+                    f.read_exact(&mut bb)?;
+                    let mut b = [0u8; 32];
+                    b.copy_from_slice(&bb[4..36]);
+
+                    if let Some(xor) = s.get(2) {
+                        let s2: identity::Secret = xor.parse()?;
+                        let b2 = s2.as_bytes();
+                        for i in 0..32 {
+                            b[i] ^= b2[i];
+                        }
+                    }
+
+                    return Ok(identity::Secret::from_array(b));
                 }
 
                 return Err(Error::NoSecrets);
-            }
+            }}
 
             let s: identity::Secret = s.parse()?;
             return Ok(s);

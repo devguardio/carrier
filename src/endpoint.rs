@@ -64,6 +64,13 @@ impl Stream {
             .expect("carrier is not thread safe")
             .message(self.stream, m)
     }
+
+    pub fn window(&self) -> usize {
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .window()
+    }
 }
 
 impl osaka::Future<Vec<u8>> for Stream {

@@ -93,7 +93,8 @@ pub fn _main() -> Result<(), Error> {
                 .about("forward a remote tcp port")
                 .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
                 .arg(Arg::with_name("remote-port").takes_value(true).required(true).index(2))
-                .arg(Arg::with_name("local-port").takes_value(true).required(true).index(3)),
+                .arg(Arg::with_name("remote-host").takes_value(true).required(true).index(3))
+                .arg(Arg::with_name("local-port").takes_value(true).required(true).index(4)),
         )
         .subcommand(
             SubCommand::with_name("sysinfo")
@@ -249,9 +250,11 @@ pub fn _main() -> Result<(), Error> {
 
             let local_port  = submatches.value_of("local-port").unwrap().to_string().parse().expect("parsing local-port");
             let remote_port = submatches.value_of("remote-port").unwrap().to_string();
+            let remote_host = submatches.value_of("remote-host").unwrap().to_string();
 
             let mut headers = carrier::headers::Headers::with_path("/v0/tcp");
             headers.add("port".into(), remote_port.into_bytes());
+            headers.add("host".into(), remote_host.into_bytes());
 
             let srv = TcpListener::bind(SocketAddr::new(IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)), local_port)).unwrap();
 
@@ -299,7 +302,7 @@ pub fn _main() -> Result<(), Error> {
                 let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
                 let mut hasher = Sha256::new();
                 loop {
-                    let mut buf = vec![0; 1024];
+                    let mut buf = vec![0; 10000];
                     let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
                     if len == 0 {
                         break;
@@ -496,6 +499,10 @@ fn push(
                     let mut pb = ProgressBar::new(total_size);
 
                     loop {
+                        while stream.window() < 100 {
+                            yield poll.later(std::time::Duration::from_millis(1));
+                        }
+
                         let mut buf = vec![0; 600];
                         let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
                         if len == 0 {
@@ -507,15 +514,18 @@ fn push(
                         buf.truncate(len);
                         stream.send(buf);
 
-                        //FIXME we need a wakeup token here, not a timer
-                        yield poll.later(std::time::Duration::from_millis(5));
                     }
                     stream.send(Vec::new());
 
                     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
                     println!("{:?}", headers);
-                    if headers.get(b":status") != Some(b"100") {
+                    if headers.get(b":status") != Some(b"200") {
                         return;
+                    }
+
+                    loop {
+                        let v = osaka::sync!(stream);
+                        println!("{}", String::from_utf8_lossy(&v));
                     }
                 }),
                 never,

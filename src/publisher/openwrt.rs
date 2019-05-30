@@ -578,6 +578,7 @@ pub fn firmware() -> Option<proto::Firmware> {
         distro,
         release,
         revision,
+        .. proto::Firmware::default()
     })
 }
 

@@ -14,7 +14,7 @@ extern crate log;
 extern crate bytes;
 extern crate dirs;
 extern crate hpack;
-extern crate mio;
+pub extern crate mio;
 pub extern crate osaka;
 extern crate osaka_dns;
 pub extern crate prost;
@@ -31,6 +31,8 @@ extern crate nix;
 extern crate num_cpus;
 extern crate wait_timeout;
 extern crate which;
+#[cfg(feature = "uefi")]
+extern crate smbios;
 
 #[macro_use]
 #[cfg(target_arch = "wasm32")]

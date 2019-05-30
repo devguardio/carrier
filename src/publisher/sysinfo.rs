@@ -99,25 +99,31 @@ fn mem() -> Option<proto::Mem> {
     Some(proto::Mem { total, free, available })
 }
 
+
+
+fn fs_(r: &mut Vec<proto::FileSystem>, fname: &str) {
+    if let Ok(s) = statvfs(fname) {
+        r.push(proto::FileSystem {
+            path:      fname.into(),
+            blocksize: s.block_size().into(),
+            total:     s.blocks().into(),
+            free:      s.blocks_free().into(),
+        });
+    }
+}
+
 fn fs() -> Option<Vec<proto::FileSystem>> {
     let mut r = Vec::new();
-    let s = trye!(4, statvfs("/"));
-    r.push(proto::FileSystem {
-        path:      "/".into(),
-        blocksize: s.block_size().into(),
-        total:     s.blocks().into(),
-        free:      s.blocks_free().into(),
-    });
+    fs_(&mut r, "/");
+
+    #[cfg(feature = "uefi")]
+    for fname in ["/home/user"].into_iter() {
+        fs_(&mut r, *fname);
+    }
+
     #[cfg(target_os = "android")]
     for fname in ["/system", "/cache", "/data"].into_iter() {
-        if let Ok(s) = statvfs(*fname) {
-            r.push(proto::FileSystem {
-                path:      (*fname).into(),
-                blocksize: s.block_size().into(),
-                total:     s.blocks().into(),
-                free:      s.blocks_free().into(),
-            });
-        }
+        fs_(&mut r, *fname);
     }
 
     Some(r)
@@ -249,6 +255,43 @@ pub fn sysinfo(
         carrier_build_id: super::super::BUILD_ID.into(),
     };
 
+    #[cfg(feature = "uefi")]
+    {
+        use super::super::smbios;
+        if let Ok((et, sts)) = smbios::stream() {
+            let mut board = String::new();
+            for st in sts {
+                if st.header.handle == 0x01 {
+                    if !st.strings[0].contains("To Be Filled") || st.strings[0].trim().is_empty(){
+                        board = st.strings[0].clone();
+                        if !st.strings[1].trim().is_empty() {
+                            board += "-";
+                            board += &st.strings[1].trim();
+                        }
+                        if !st.strings[2].trim().is_empty() {
+                            board += "-";
+                            board += &st.strings[2].trim();
+                        }
+                    }
+                }
+                if st.header.handle == 0x02 {
+                    if board.is_empty() {
+                        board = st.strings[0].clone();
+                        if !st.strings[1].trim().is_empty() {
+                            board += "-";
+                            board += &st.strings[1].trim();
+                        }
+                        if !st.strings[2].trim().is_empty() {
+                            board += "-";
+                            board += &st.strings[2].trim();
+                        }
+                    }
+                }
+            }
+            sysinfo.board_id = String::from("pc-") + &board.replace(" ", "_");
+        }
+
+    }
     #[cfg(feature = "openwrt")]
     {
         let board           = super::openwrt::load_board_json();
@@ -264,6 +307,35 @@ pub fn sysinfo(
         }
     }
 
+    if sysinfo.firmware.is_none() {
+        let filename = "/etc/fusion-release";
+
+        let mut buffer = String::default();
+        if let Ok(mut f) = File::open(&filename) {
+            f.read_to_string(&mut buffer).expect(&format!("cannot read {:?}", filename));
+            if let Ok(dr) = toml::from_str::<DistroRelease>(&buffer) {
+                sysinfo.firmware = Some(proto::Firmware{
+                    board:      dr.BOARD_ID.unwrap_or(sysinfo.board_id.clone()),
+                    distro:     dr.DISTRIB_ID.unwrap_or(String::new()),
+                    release:    dr.DISTRIB_RELEASE.unwrap_or(String::new()),
+                    revision:   dr.DISTRIB_REVISION.unwrap_or(String::new()),
+                    .. proto::Firmware::default()
+                });
+            }
+        }
+
+    }
+
     stream.message(sysinfo);
     None
+}
+
+
+
+#[derive(Deserialize)]
+pub struct DistroRelease{
+    DISTRIB_ID:         Option<String>,
+    DISTRIB_RELEASE:    Option<String>,
+    DISTRIB_REVISION:   Option<String>,
+    BOARD_ID:           Option<String>,
 }

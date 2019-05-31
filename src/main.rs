@@ -59,90 +59,97 @@ pub fn _main() -> Result<(), Error> {
         .subcommand(SubCommand::with_name("identity").about("print out identity"))
         .subcommand(
             SubCommand::with_name("cluster")
-                .about("coordinate a broker cluster")
-                .arg(Arg::with_name("broker").takes_value(true).required(true).index(1)),
-        )
+            .about("coordinate a broker cluster")
+            .arg(Arg::with_name("broker").takes_value(true).required(true).index(1)),
+            )
         .subcommand(
             SubCommand::with_name("subscribe")
-                .about("watch a shadow")
-                .arg(Arg::with_name("address").takes_value(true).required(true).index(1)),
-        )
+            .about("watch a shadow")
+            .arg(Arg::with_name("address").takes_value(true).required(true).index(1)),
+            )
         .subcommand(
             SubCommand::with_name("get")
-                .about("get something")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("resource").takes_value(true).required(true).index(2))
-                .arg(
-                    Arg::with_name("headers")
-                        .long("header")
-                        .short("H")
-                        .takes_value(true)
-                        .multiple(true)
-                        .number_of_values(2)
-                        .value_names(&["key", "value"])
-                        .required(false),
+            .about("get something")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("resource").takes_value(true).required(true).index(2))
+            .arg(
+                Arg::with_name("headers")
+                .long("header")
+                .short("H")
+                .takes_value(true)
+                .multiple(true)
+                .number_of_values(2)
+                .value_names(&["key", "value"])
+                .required(false),
                 ),
-        )
+                )
         .subcommand(
             SubCommand::with_name("shell")
-                .about("open a remote shell")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
-        )
+            .about("open a remote shell")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
+            )
         .subcommand(
             SubCommand::with_name("tcp")
-                .about("forward a remote tcp port")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("remote-port").takes_value(true).required(true).index(2))
-                .arg(Arg::with_name("remote-host").takes_value(true).required(true).index(3))
-                .arg(Arg::with_name("local-port").takes_value(true).required(true).index(4)),
-        )
+            .about("forward a remote tcp port")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("remote-port").takes_value(true).required(true).index(2))
+            .arg(Arg::with_name("remote-host").takes_value(true).required(true).index(3))
+            .arg(Arg::with_name("local-port").takes_value(true).required(true).index(4)),
+            )
         .subcommand(
             SubCommand::with_name("sysinfo")
-                .about("get sysinfo")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("v").short("v").takes_value(true).required(false)),
-        )
+            .about("get sysinfo")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("v").short("v").takes_value(true).required(false)),
+            )
         .subcommand(
             SubCommand::with_name("netsurvey")
-                .about("get netsurvey")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("v").short("v").takes_value(true).required(false)),
-        )
+            .about("get netsurvey")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("v").short("v").takes_value(true).required(false)),
+            )
         .subcommand(
             SubCommand::with_name("push")
-                .about("stupid file transfer")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2))
-                .arg(Arg::with_name("remote-file").takes_value(true).required(true).index(3)),
-        )
+            .about("stupid file transfer")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2))
+            .arg(Arg::with_name("remote-file").takes_value(true).required(true).index(3)),
+            )
+        .subcommand(
+            SubCommand::with_name("exec")
+            .about("execute local belltower tarball on target")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("file").takes_value(true).required(true).index(2))
+            .arg(Arg::with_name("detach").short("d").takes_value(false).required(false)),
+            )
         .subcommand(
             SubCommand::with_name("ota")
-                .about("update target system image")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
-                .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2)),
-        )
+            .about("update target system image")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("local-file").takes_value(true).required(true).index(2)),
+            )
         .subcommand(
             SubCommand::with_name("discovery")
-                .aliases(&["disco"])
-                .about("discover peer services")
-                .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
-        );
+            .aliases(&["disco"])
+            .about("discover peer services")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
+            );
 
     #[cfg(any(target_os = "linux", target_os = "macos", target_os = "android",))]
     let clap = clap.subcommand(
         SubCommand::with_name("publish")
-            .aliases(&["axon", "axiom"])
-            .about("publish services on carrier")
-            .arg(
-                Arg::with_name("config")
-                    .help("read config from this location instead of ~/.devguard/carrier.toml")
-                    .short("c")
-                    .long("config")
-                    .takes_value(true)
-                    .value_name("FILE")
-                    .required(false),
+        .aliases(&["axon", "axiom"])
+        .about("publish services on carrier")
+        .arg(
+            Arg::with_name("config")
+            .help("read config from this location instead of ~/.devguard/carrier.toml")
+            .short("c")
+            .long("config")
+            .takes_value(true)
+            .value_name("FILE")
+            .required(false),
             ),
-    );
+            );
 
     let matches = clap.get_matches();
     match matches.subcommand() {
@@ -224,17 +231,17 @@ pub fn _main() -> Result<(), Error> {
                     target,
                     carrier::headers::Headers::with_path("/v0/sysinfo"),
                     message_handler::<carrier::proto::Sysinfo>
-                ),
+                    ),
                 Some("1") => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v1/sysinfo"),
                     message_handler_ph::<carrier::proto::Sysinfo>
-                ),
-                Some("2") | _ => carrier::connect(config).open(
-                    target,
-                    carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
-                    message_handler::<carrier::proto::Sysinfo>,
-                ),
+                    ),
+                    Some("2") | _ => carrier::connect(config).open(
+                        target,
+                        carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
+                        message_handler::<carrier::proto::Sysinfo>,
+                        ),
             }
             .run()
         }
@@ -312,7 +319,12 @@ pub fn _main() -> Result<(), Error> {
                 hasher.result().to_vec()
             };
 
-            push(poll, config, target, local_file, remote_file, sha, false).run()
+            let headers = carrier::headers::Headers::with_path("/v0/sft")
+                .and(":method".into(), "PUT".into())
+                .and("sha256".into(), sha)
+                .and("file".into(), remote_file.into());
+
+            push(poll, config, target, local_file, headers).run()
         }
         ("ota", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -339,8 +351,47 @@ pub fn _main() -> Result<(), Error> {
                 }
                 hasher.result().to_vec()
             };
+            let headers = carrier::headers::Headers::with_path("/v0/ota")
+                .and(":method".into(), "PUT".into())
+                .and("sha256".into(), sha);
 
-            push(poll, config, target, local_file, String::new(), sha, true).run()
+            push(poll, config, target, local_file, headers).run()
+        }
+        ("exec", Some(submatches)) => {
+            let poll = osaka::Poll::new();
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+            let local_file = submatches.value_of("file").expect("need file or url").to_string();
+
+            let sha = {
+                use sha2::{Digest, Sha256};
+                use std::fs::File;
+                use std::io::Read;
+                let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+                let mut hasher = Sha256::new();
+                loop {
+                    let mut buf = vec![0; 1024];
+                    let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
+                    if len == 0 {
+                        break;
+                    }
+                    hasher.input(&buf[..len]);
+                }
+                hasher.result().to_vec()
+            };
+
+            let mut headers = carrier::headers::Headers::with_path("/v0/belltower.exec.v0")
+                .and(":method".into(), "PUT".into())
+                .and("sha256".into(), sha);
+
+            if submatches.is_present("detach") {
+                headers = headers.and("detach".into(), "true".into());
+            }
+
+            push(poll, config, target, local_file, headers).run()
         }
         ("netsurvey", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -353,17 +404,17 @@ pub fn _main() -> Result<(), Error> {
                     target,
                     carrier::headers::Headers::with_path("/v0/netsurvey"),
                     message_handler::<carrier::proto::NetSurvey>,
-                ),
+                    ),
                 Some("1") => carrier::connect(config).open(
                     target,
                     carrier::headers::Headers::with_path("/v1/netsurvey"),
                     message_handler_ph::<carrier::proto::NetSurvey>,
-                ),
-                Some("2") | _ => carrier::connect(config).open(
-                    target,
-                    carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
-                    message_handler::<carrier::proto::NetSurvey>,
-                ),
+                    ),
+                    Some("2") | _ => carrier::connect(config).open(
+                        target,
+                        carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
+                        message_handler::<carrier::proto::NetSurvey>,
+                        ),
             }
             .run()
         }
@@ -378,8 +429,8 @@ pub fn _main() -> Result<(), Error> {
                 target,
                 headers,
                 message_handler::<carrier::proto::DiscoveryResponse>,
-            )
-            .run()
+                )
+                .run()
         }
         _ => unreachable!(),
     }
@@ -443,10 +494,8 @@ fn push(
     config: carrier::config::Config,
     target: carrier::identity::Identity,
     local_file: String,
-    remote_file: String,
-    sha: Vec<u8>,
-    ota: bool,
-) -> Result<(), Error> {
+    headers: carrier::headers::Headers,
+    ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
     ep.move_target(target.clone());
     let mut ep = ep.connect(poll.clone());
@@ -460,17 +509,6 @@ fn push(
             }
             _ => (),
         }
-    };
-
-    let headers = if ota {
-        carrier::headers::Headers::with_path("/v0/ota")
-            .and(":method".into(), "PUT".into())
-            .and("sha256".into(), sha)
-    } else {
-        carrier::headers::Headers::with_path("/v0/sft")
-            .and(":method".into(), "PUT".into())
-            .and("sha256".into(), sha)
-            .and("file".into(), remote_file.into())
     };
 
     let route = ep.accept_outgoing(q, move |_h, _s| None).unwrap();
@@ -529,9 +567,9 @@ fn push(
                     }
                 }),
                 never,
-            )
+                )
         },
-    )?;
+        )?;
 
     loop {
         match osaka::sync!(ep)? {
@@ -569,7 +607,7 @@ fn tcp_handler(poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: car
             &tcp,
             mio::Ready::readable(),
             mio::PollOpt::level(),
-        )
+            )
         .unwrap();
 
     loop {

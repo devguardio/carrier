@@ -7,7 +7,7 @@ use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
 use std::env;
 use std::fs::File;
-use std::io::Write;
+use std::io::{Write, Read};
 use std::iter;
 use std::path::Path;
 use std::process::{Command, Stdio};
@@ -28,10 +28,21 @@ pub fn from_git() -> Result<String, Error>
     let gitcount: u64 = gitcount.parse().unwrap();
 
     let dest_path = "src/revision.rs";
-    let mut f = File::create(&dest_path).unwrap();
-    f.write_all(b"pub const REVISION: u32 = ").unwrap();
-    f.write_all(format!("{}", gitcount).as_bytes()).unwrap();
-    f.write_all(b";\n").unwrap();
+    let mut ft : Vec<u8> = Vec::new();
+    ft.write_all(b"pub const REVISION: u32 = ").unwrap();
+    ft.write_all(format!("{}", gitcount).as_bytes()).unwrap();
+    ft.write_all(b";\n").unwrap();
+
+    let mut diff = true;
+    if let Ok(mut f) = File::open(&dest_path) {
+        let mut ft_exists = Vec::new();
+        f.read_to_end(&mut ft_exists).ok();
+        diff = ft_exists != ft;
+    }
+    if diff {
+        let mut f = File::create(&dest_path).unwrap();
+        f.write_all(&ft);
+    }
 
 
     let cmd = Command::new("git")

@@ -15,6 +15,12 @@ use std::io::{Read, Write};
 use std::mem;
 use toml;
 
+
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct Protocol {
+    pub window_delay: Option<u64>,
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct AuthorizationToml {
     identity: String,
@@ -46,6 +52,7 @@ pub struct ConfigToml {
     names:     Option<HashMap<String, String>>,
     clock:     Option<String>,
     port:      Option<u16>,
+    protocol:  Option<Protocol>,
 }
 
 impl ConfigToml {
@@ -261,6 +268,7 @@ pub struct Config {
     pub clock:     ClockSource,
     pub broker:    Vec<String>,
     pub port:      Option<u16>,
+    pub protocol:  Protocol,
 }
 
 pub fn load() -> Result<Config, Error> {
@@ -300,6 +308,7 @@ pub fn load() -> Result<Config, Error> {
         clock: config.clock()?,
         broker: config.broker()?,
         port: config.port,
+        protocol: config.protocol.unwrap_or(Default::default()),
     })
 }
 
@@ -327,6 +336,7 @@ impl Config {
             clock: Default::default(),
             broker: Self::default_brokers(),
             port: Default::default(),
+            protocol: Default::default(),
         }
     }
 }

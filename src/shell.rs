@@ -50,9 +50,9 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
     let mut stdout = std::io::stdout();
     let mut stdin = std::io::stdin();
     let mut flags =
-        fcntl::OFlag::from_bits_truncate(fcntl::fcntl(stdin.as_raw_fd(), fcntl::FcntlArg::F_GETFL).unwrap());
+        fcntl::OFlag::from_bits_truncate(fcntl::fcntl(stdin.as_raw_fd(), fcntl::FcntlArg::F_GETFL).expect("fcntl get"));
     flags.set(fcntl::OFlag::O_NONBLOCK, true);
-    fcntl::fcntl(stdin.as_raw_fd(), fcntl::FcntlArg::F_SETFL(flags)).unwrap();
+    fcntl::fcntl(stdin.as_raw_fd(), fcntl::FcntlArg::F_SETFL(flags)).expect("fcntl set");
 
     let token2 = poll
         .register(
@@ -60,14 +60,14 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
             mio::Ready::readable(),
             mio::PollOpt::edge(),
         )
-        .unwrap();
+        .expect("poll register");
     let yy = poll.again(token2.clone(), None);
 
     let _d = carrier::util::defer(|| {
         std::process::exit(0);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).expect("headers");
     println!("{:?}", headers);
 
     into_raw_mode().expect("into raw mode");
@@ -90,8 +90,28 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
         };
         match stream.poll() {
             osaka::FutureResult::Done(b) => {
-                stdout.write_all(&b[1..]).unwrap();
-                stdout.flush().unwrap();
+                if b[0] == 1 {
+                    loop {
+                        if let Err(e) = stdout.write_all(&b[1..]) {
+                            if e.kind() == std::io::ErrorKind::WouldBlock {
+                                continue;
+                            } else {
+                                panic!("local stdout write {:?}", e);
+                            }
+                        }
+                        break;
+                    }
+                    loop {
+                        if let Err(e) = stdout.flush() {
+                            if e.kind() == std::io::ErrorKind::WouldBlock {
+                                continue;
+                            } else {
+                                panic!("local stdout flush {:?}", e);
+                            }
+                        }
+                        break;
+                    }
+                }
             }
             osaka::FutureResult::Again(mut y) => {
                 y.merge(yy.clone());

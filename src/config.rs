@@ -18,7 +18,16 @@ use toml;
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Protocol {
-    pub window_delay: Option<u64>,
+    pub window_delay:           Option<u64>,
+    pub min_latency:            Option<u64>,
+    pub max_tlps:               Option<u16>,
+    pub max_rtos:               Option<u16>,
+    pub reordering_threshold:   Option<u64>,
+    pub time_loss_detection:    Option<bool>,
+    pub min_tlp_timeout:        Option<u64>,
+    pub min_rto_timeout:        Option<u64>,
+    pub stream_rx_queue:        Option<u64>,
+    pub stream_tx_queue:        Option<usize>,
 }
 
 #[derive(Deserialize, Serialize)]

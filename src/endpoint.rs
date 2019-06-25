@@ -65,6 +65,13 @@ impl Stream {
             .message(self.stream, m)
     }
 
+    pub fn rtt(&self) -> u64 {
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .rtt()
+    }
+
     pub fn window(&self) -> usize {
         self.inner
             .try_borrow_mut()
@@ -140,10 +147,10 @@ enum EndpointCmd {
 }
 
 pub struct Endpoint {
-    poll: osaka::Poll,
-    token: osaka::Token,
-    channels: HashMap<RoutingKey, UdpChannel>,
-    socket: UdpSocket,
+    poll:       osaka::Poll,
+    token:      osaka::Token,
+    channels:   HashMap<RoutingKey, UdpChannel>,
+    socket:     UdpSocket,
     broker_route: RoutingKey,
     secret: identity::Secret,
     outstanding_connect_incomming: HashSet<u32>,
@@ -155,6 +162,7 @@ pub struct Endpoint {
         osaka::Token,
     ),
     clock: config::ClockSource,
+    protocol: config::Protocol,
 }
 
 /// handle is a thread safe api to ep
@@ -211,6 +219,7 @@ impl Endpoint {
         addr: SocketAddr,
         secret: identity::Secret,
         clock: config::ClockSource,
+        protocol: config::Protocol,
     ) -> Self {
         let broker_route = noise.route();
         let mut channels = HashMap::new();
@@ -219,7 +228,7 @@ impl Endpoint {
             noise.route(),
             UdpChannel {
                 identity,
-                chan: Arc::new(RefCell::new(Channel::new(noise, version, debug_id))),
+                chan: Arc::new(RefCell::new(Channel::new(protocol.clone(), noise, version, debug_id))),
                 addrs: AddressMode::Established(addr, HashMap::new()),
                 streams: HashMap::new(),
                 newhandl: None,
@@ -244,6 +253,7 @@ impl Endpoint {
             publish_secret: None,
             cmd: (cmd.0, cmd.1, cmd_token),
             clock,
+            protocol,
         }
     }
 
@@ -456,7 +466,7 @@ impl Endpoint {
         }
 
         let debug_id = format!("{}::{}", identity, cr.route);
-        let channel = Channel::new(noise, 0x08, debug_id);
+        let channel = Channel::new(self.protocol.clone(), noise, 0x08, debug_id);
 
         self.channels.insert(
             cr.route,
@@ -500,7 +510,7 @@ impl Endpoint {
             q.cr.route,
             UdpChannel {
                 identity:      q.identity,
-                chan:          Arc::new(RefCell::new(Channel::new(noise, 0x08, debug_id))),
+                chan:          Arc::new(RefCell::new(Channel::new(self.protocol.clone(), noise, 0x08, debug_id))),
                 addrs:         AddressMode::Discovering(paths.clone()),
                 streams:       HashMap::new(),
                 newhandl:      Some(Box::new(sf)),
@@ -1056,6 +1066,7 @@ pub struct EndpointBuilder {
     secret:      identity::Secret,
     principal:   Option<identity::Secret>,
     clock:       config::ClockSource,
+    protocol:    config::Protocol,
     broker:      Vec<String>,
     port:        u16,
     mov:         noise::MoveRequest,
@@ -1073,6 +1084,7 @@ impl EndpointBuilder {
             secret:      config.secret.clone(),
             principal:   config.principal.clone(),
             clock:       config.clock.clone(),
+            protocol:    config.protocol.clone(),
             broker:      config.broker.clone(),
             port:        config.port.unwrap_or(0),
             mov:         noise::MoveRequest::MoveToSelf,
@@ -1202,6 +1214,7 @@ impl EndpointBuilder {
                 to.addr,
                 self.principal.unwrap_or(self.secret),
                 self.clock,
+                self.protocol,
             )),
             None,
         ));

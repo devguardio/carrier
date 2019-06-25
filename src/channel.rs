@@ -6,6 +6,7 @@ use proto;
 use rand;
 use recovery;
 use replay;
+use config;
 use std::collections::HashMap;
 use std::collections::VecDeque;
 use std::time::Duration;
@@ -61,6 +62,8 @@ pub struct Channel {
 
     #[cfg(not(target_arch = "wasm32"))]
     basetime: Instant,
+
+    config: config::Protocol,
 }
 
 #[derive(Clone, Debug)]
@@ -83,14 +86,14 @@ pub enum ChannelProgress {
 }
 
 impl Channel {
-    pub fn new<S: Into<String>>(noise: noise::Transport, version: u8, debug_id: S) -> Self {
+    pub fn new<S: Into<String>>(config: config::Protocol, noise: noise::Transport, version: u8, debug_id: S) -> Self {
         Channel {
             debug_id: debug_id.into(),
             version,
             noise: noise,
 
             replay: replay::AntiReplay::new(),
-            recovery: recovery::QuicRecovery::new(),
+            recovery: recovery::QuicRecovery::new(config.clone()),
             streams: HashMap::new(),
             gone: DisconnectReason::None,
 
@@ -106,6 +109,8 @@ impl Channel {
 
             #[cfg(not(all(target_arch = "wasm32")))]
             basetime: Instant::now(),
+
+            config,
         }
     }
 
@@ -185,7 +190,7 @@ impl Channel {
                         return Err(Error::OpenStreamsLimit.into());
                     }
 
-                    let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new());
+                    let ordered = self.streams.entry(stream).or_insert(stream::OrderedStream::new(self.config.clone()));
                     ordered.push(Frame::Header { stream, payload })?;
                 }
                 Frame::Stream { stream, order, payload } => {
@@ -199,7 +204,7 @@ impl Channel {
                             if !self.counters.contains_key(&stream) {
                                 return Ok(());
                             }
-                            v.insert(stream::OrderedStream::new())
+                            v.insert(stream::OrderedStream::new(self.config.clone()))
                         }
                     };
                     ordered.push(Frame::Stream { stream, order, payload })?;
@@ -259,7 +264,7 @@ impl Channel {
                             if !self.counters.contains_key(&stream) {
                                 return Ok(());
                             }
-                            v.insert(stream::OrderedStream::new())
+                            v.insert(stream::OrderedStream::new(self.config.clone()))
                         }
                     };
                     ordered.push(Frame::Fragmented {

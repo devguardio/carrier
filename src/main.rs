@@ -549,6 +549,9 @@ fn push(
                             pb.finish();
                             break;
                         }
+
+                        pb.message(&format!("rtt {}ms | window {} | ", stream.rtt(), stream.window()));
+
                         pb.add(len as u64);
                         pb.set_units(pbr::Units::Bytes);
                         buf.truncate(len);

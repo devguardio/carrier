@@ -3,6 +3,7 @@
 use packet::Frame;
 use std::cmp::{max, min};
 use std::collections::HashMap;
+use config;
 
 // 3.5.1.  Loss Detection Settings
 
@@ -61,6 +62,9 @@ pub enum LossDetection {
 }
 
 pub struct QuicRecovery {
+
+    config: config::Protocol,
+
     // Loss Detection
     /// a future in time space when on_loss_detection_alarm must be called
     loss_detection_alarm: Option<u64>,
@@ -141,8 +145,9 @@ pub struct QuicRecovery {
 }
 
 impl QuicRecovery {
-    pub fn new() -> Self {
+    pub fn new(config: config::Protocol) -> Self {
         Self {
+            config,
             loss_detection_alarm: None,
             tlp_count: 0,
             rto_count: 0,
@@ -238,6 +243,11 @@ impl QuicRecovery {
 
             if self.sent_packets.contains_key(largest) {
                 self.latest_rtt = now - self.sent_packets[largest].time_sent;
+                if let Some(min) = self.config.min_latency {
+                    if self.latest_rtt < min {
+                        self.latest_rtt = min;
+                    }
+                }
                 self.update_rtt(delay.into());
             }
         }
@@ -329,7 +339,7 @@ impl QuicRecovery {
     fn detect_lost_packets(&mut self, now: u64) -> LossDetection {
         self.loss_time = 0;
         let mut lost_packets = Vec::new();
-        let delay_until_lost = if USING_TIME_LOSS_DETECTION {
+        let delay_until_lost = if self.config.time_loss_detection.unwrap_or(USING_TIME_LOSS_DETECTION) {
             (1.0 + TIME_REORDERING_FRACTION) * max(self.latest_rtt, self.smoothed_rtt) as f64
         } else if self.largest_acked_packet == self.largest_sent_packet {
             // Early retransmit alarm.
@@ -346,7 +356,7 @@ impl QuicRecovery {
             let time_since_sent = now - unacked.time_sent;
             let delta = self.largest_acked_packet - unacked.seq;
             if (delay_until_lost != 0 && time_since_sent > delay_until_lost)
-                || (!USING_TIME_LOSS_DETECTION && delta > REORDERING_THRESHOLD)
+                || (!self.config.time_loss_detection.unwrap_or(USING_TIME_LOSS_DETECTION) && delta > self.config.reordering_threshold.unwrap_or(REORDERING_THRESHOLD))
             {
                 if !unacked.ackonly {
                     lost_packets.push(unacked.seq);
@@ -396,13 +406,13 @@ impl QuicRecovery {
             // RTO or TLP alarm
             // Calculate RTO duration
             let mut alarm_duration = self.smoothed_rtt + (4.0 * self.rttvar) as u64 + self.max_ack_delay;
-            alarm_duration = max(alarm_duration, MIN_RTO_TIMEOUT);
+            alarm_duration = max(alarm_duration, self.config.min_rto_timeout.unwrap_or(MIN_RTO_TIMEOUT));
             alarm_duration = alarm_duration * 2_u64.pow(self.rto_count as u32);
 
-            if self.tlp_count < MAX_TLPS {
+            if self.tlp_count < self.config.max_tlps.unwrap_or(MAX_TLPS) {
                 // Tail Loss Probe
                 let tlp_alarm_duration = 1.5 * (self.smoothed_rtt + self.max_ack_delay) as f64;
-                let tlp_alarm_duration = max(tlp_alarm_duration.floor() as u64, MIN_TLP_TIMEOUT);
+                let tlp_alarm_duration = max(tlp_alarm_duration.floor() as u64, self.config.min_tlp_timeout.unwrap_or(MIN_TLP_TIMEOUT));
                 alarm_duration = min(tlp_alarm_duration, alarm_duration);
             }
             alarm_duration
@@ -449,13 +459,13 @@ impl QuicRecovery {
         let loss = if self.loss_time != 0 {
             // Early retransmit or Time Loss Detection
             self.detect_lost_packets(now)
-        } else if self.tlp_count < MAX_TLPS {
+        } else if self.tlp_count < self.config.max_tlps.unwrap_or(MAX_TLPS) {
             //send one packet
             self.tlp_count += 1;
 
             let retransmit = self.retransmit_n_packets(1);
             LossDetection::TailLossProbe(retransmit)
-        } else if self.rto_count > MAX_RTOS {
+        } else if self.rto_count > self.config.max_rtos.unwrap_or(MAX_RTOS) {
             LossDetection::Unrecoverable
         } else {
             // RTO.

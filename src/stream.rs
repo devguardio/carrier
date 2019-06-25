@@ -3,6 +3,7 @@ use packet::Frame;
 use std::cmp::max;
 use std::collections::hash_map::Entry;
 use std::collections::HashMap;
+use config;
 
 const MAX_REORDERING: u64 = 100;
 
@@ -10,14 +11,18 @@ const MAX_REORDERING: u64 = 100;
 const MAX_QUEUE: usize = 1000;
 
 pub struct OrderedStream {
+    max_reordering: u64,
+    max_q:          usize,
     q:        HashMap<u64, Frame>,
     producer: u64,
     consumer: u64,
 }
 
 impl OrderedStream {
-    pub fn new() -> Self {
+    pub fn new(config: config::Protocol) -> Self {
         Self {
+            max_reordering: config.stream_rx_queue.unwrap_or(MAX_REORDERING),
+            max_q:          config.stream_tx_queue.unwrap_or(MAX_QUEUE),
             q:        HashMap::new(),
             producer: 1,
             consumer: 1,
@@ -28,7 +33,7 @@ impl OrderedStream {
         let order = frame.order();
         assert!(order > 0);
 
-        if self.producer + MAX_REORDERING < order {
+        if self.producer + self.max_reordering < order {
             return Err(Error::Underflow {
                 prev: self.producer,
                 this: order,
@@ -37,7 +42,7 @@ impl OrderedStream {
         }
         self.producer = max(self.producer, order);
 
-        if self.q.len() > MAX_QUEUE {
+        if self.q.len() > self.max_q {
             return Err(Error::Overflow.into());
         }
 

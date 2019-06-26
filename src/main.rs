@@ -11,6 +11,7 @@ extern crate prost;
 extern crate rand;
 extern crate sha2;
 extern crate tinylogger;
+extern crate byteorder;
 
 use carrier::error::Error;
 use log::{info, warn};
@@ -82,11 +83,28 @@ pub fn _main() -> Result<(), Error> {
                 .value_names(&["key", "value"])
                 .required(false),
                 ),
-                )
+             )
         .subcommand(
             SubCommand::with_name("shell")
             .about("open a remote shell")
-            .arg(Arg::with_name("target").takes_value(true).required(true).index(1)),
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            .arg(
+                Arg::with_name("env")
+                .long("env")
+                .short("e")
+                .takes_value(true)
+                .multiple(true)
+                .number_of_values(2)
+                .value_names(&["key", "value"])
+                .required(false),
+                )
+            .arg(
+                Arg::with_name("command")
+                .long("command")
+                .short("c")
+                .takes_value(true)
+                .required(false),
+                )
             )
         .subcommand(
             SubCommand::with_name("tcp")
@@ -290,7 +308,19 @@ pub fn _main() -> Result<(), Error> {
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-            shell::ui(poll, config, target).run()
+            let mut headers = carrier::headers::Headers::with_path("/v0/shell");
+            if let Some(c) = submatches.value_of("command") {
+                headers.add("command".into(), c.as_bytes().to_vec());
+            }
+            if let Some(h) = submatches.values_of("env") {
+                for h in h.collect::<Vec<&str>>().chunks(2) {
+                    headers.add(format!("env:{}", h[0]).as_bytes().to_vec(), h[1].as_bytes().to_vec());
+                }
+            }
+            if let Ok(v) = std::env::var("TERM") {
+                headers.add("env:TERM".into(), v.as_bytes().to_vec());
+            }
+            shell::ui(poll, config, target, headers).run()
         }
         ("push", Some(submatches)) => {
             let poll = osaka::Poll::new();
@@ -529,7 +559,7 @@ fn push(
                     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
                     println!("{:?}", headers);
                     if headers.get(b":status") != Some(b"100") {
-                        return;
+                        std::process::exit(1);
                     }
 
                     use std::fs::File;
@@ -563,7 +593,7 @@ fn push(
                     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
                     println!("{:?}", headers);
                     if headers.get(b":status") != Some(b"200") {
-                        return;
+                        std::process::exit(1);
                     }
 
                     loop {

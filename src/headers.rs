@@ -48,6 +48,10 @@ impl Headers {
         }
     }
 
+    pub fn into_inner(self) -> Vec<(Vec<u8>, Vec<u8>)> {
+        self.f
+    }
+
     pub fn get(&self, key: &[u8]) -> Option<&[u8]> {
         let mut val = None;
         for header in &self.f {

@@ -20,6 +20,8 @@ use std::process;
 use std::thread;
 use std::time::Duration;
 use util::defer;
+use std::ffi::OsString;
+use byteorder::{BigEndian, WriteBytesExt};
 
 pub struct Pty {
     master_fd: nix::pty::PtyMaster,
@@ -39,7 +41,7 @@ impl Pty {
 
 pub struct AsyncChild {
     c:    Option<std::process::Child>,
-    wait: channel::Receiver<()>,
+    wait: channel::Receiver<i32>,
 }
 
 impl Drop for AsyncChild {
@@ -93,11 +95,21 @@ impl AsyncCommandExt for process::Command {
 
         let pid = nix::unistd::Pid::from_raw(child.id() as i32);
         thread::spawn(move || {
-            if let Err(e) = nix::sys::wait::waitpid(Some(pid), None) {
-                error!("in pty waitpid: {}", e);
-            }
+            let code = match nix::sys::wait::waitpid(Some(pid), None) {
+                Err(e) => {
+                    error!("in pty waitpid: {}", e);
+                    222
+                }
+                Ok(nix::sys::wait::WaitStatus::Exited(_,c)) => c,
+                Ok(nix::sys::wait::WaitStatus::Signaled(_,c,_)) => {
+                    error!("shell crashed {:?}", c);
+                    c as i32
+                },
+                Ok(nix::sys::wait::WaitStatus::Stopped(_,c)) => c as i32,
+                _ => 666,
+            };
 
-            if let Err(e) = sender.send(()) {
+            if let Err(e) = sender.send(code) {
                 error!("in pty after waitpid, trying to send exit signal: {}", e);
             }
         });
@@ -111,15 +123,34 @@ impl AsyncCommandExt for process::Command {
 
 pub fn main(
     poll: osaka::Poll,
-    _: headers::Headers,
+    headers: headers::Headers,
     _: &identity::Identity,
     stream: endpoint::Stream,
 ) -> Option<osaka::Task<()>> {
-    Some(main_(poll, stream))
+
+
+    let mut args = Vec::new();
+    args.push(OsString::from("-l"));
+    if let Some(c) = headers.get(b"command") {
+        args.push(OsString::from("-c"));
+        args.push(OsString::from(String::from_utf8_lossy(c).to_string()));
+    }
+
+    let mut env  = Vec::new();
+    for (k,v) in headers.into_inner().into_iter() {
+        let k = String::from_utf8_lossy(&k).to_string();
+        let k : Vec<&str> = k.split(":").collect();
+        if k.len() == 2 && k[0] == "env" {
+            let v = String::from_utf8_lossy(&v).to_string();
+            env.push((OsString::from(k[1]), OsString::from(v)));
+        }
+    }
+
+    Some(main_(poll, stream, env, args))
 }
 
 #[osaka]
-pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream) {
+pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, env: Vec<(OsString, OsString)>, args: Vec<OsString>) {
     info!("shell stream constructed");
     stream.send(Headers::ok().encode());
     let _dropmemaybe = defer(|| {
@@ -130,13 +161,15 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream) {
 
     #[cfg(not(target_os = "android"))]
     let child = std::process::Command::new("/bin/sh")
-        .arg("-l")
+        .args(&args)
+        .envs(env)
         .spawn_async_pty(&pty)
         .expect("failed to execute child");
 
     #[cfg(target_os = "android")]
     let child = std::process::Command::new("/system/bin/sh")
-        .arg("-l")
+        .args(&args)
+        .envs(env)
         .spawn_async_pty(&pty)
         .expect("failed to execute child");
 
@@ -159,12 +192,13 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream) {
     //fcntl(stdout.as_raw_fd(), FcntlArg::F_SETFL(fl | OFlag::O_NONBLOCK)).expect("fcntl stdin");
 
     let mut buffer = vec![0; 700];
+    let mut code = 665;
     loop {
         yield poll.any(vec![token.clone(), token2.clone()], None);
 
-        if let Ok(()) = child.wait.try_recv() {
-            info!("shell exited");
-            return;
+        if let Ok(c) = child.wait.try_recv() {
+            code = c;
+            info!("shell exited {}", code);
         }
 
         buffer[0] = 1;
@@ -172,12 +206,20 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream) {
             Ok(l) => {
                 stream.send(&buffer[..l + 1]);
                 if l == 0 {
+
+                    buffer[0] = 9;
+                    (&mut buffer[1..]).write_i32::<BigEndian>(code).unwrap();
+                    stream.send(&buffer[..5]);
                     return;
                 }
             }
             Err(nix::Error::Sys(nix::errno::Errno::EAGAIN)) => {}
             Err(e) => {
                 error!("{}", e);
+
+                buffer[0] = 9;
+                (&mut buffer[1..]).write_i32::<BigEndian>(code).unwrap();
+                stream.send(&buffer[..5]);
                 return;
             }
         };
@@ -189,6 +231,9 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream) {
                 }
                 if let Err(e) = write(stdio, &msg[1..]) {
                     error!("{}", e);
+                    buffer[0] = 9;
+                    (&mut buffer[1..]).write_i32::<BigEndian>(code).unwrap();
+                    stream.send(&buffer[..5]);
                     return;
                 }
             }

@@ -9,6 +9,9 @@ use std::fs;
 use std::io::{Read, Write};
 use std::mem;
 use std::os::unix::io::AsRawFd;
+use byteorder::{BigEndian, ReadBytesExt};
+use std::sync::Arc;
+
 
 static mut ORIGINAL_TERMINAL_MODE: Option<libc::termios> = None;
 
@@ -63,8 +66,10 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
         .expect("poll register");
     let yy = poll.again(token2.clone(), None);
 
-    let _d = carrier::util::defer(|| {
-        std::process::exit(0);
+    let exitcode = Arc::new(std::sync::atomic::AtomicI32::new(0));
+    let exitcode_ = exitcode.clone();
+    let _d = carrier::util::defer(move || {
+        std::process::exit(exitcode_.load(std::sync::atomic::Ordering::Relaxed));
     });
 
     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).expect("headers");
@@ -93,27 +98,36 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
         };
         match stream.poll() {
             osaka::FutureResult::Done(b) => {
-                if b[0] == 1 {
-                    loop {
-                        if let Err(e) = stdout.write_all(&b[1..]) {
-                            if e.kind() == std::io::ErrorKind::WouldBlock {
-                                continue;
-                            } else {
-                                panic!("local stdout write {:?}", e);
-                            }
+                match b[0] {
+                    9 => {
+                        if b.len() >= 5 {
+                            let code = (&b[1..]).read_i32::<BigEndian>().unwrap();
+                            exitcode.store(code, std::sync::atomic::Ordering::Relaxed);
                         }
-                        break;
                     }
-                    loop {
-                        if let Err(e) = stdout.flush() {
-                            if e.kind() == std::io::ErrorKind::WouldBlock {
-                                continue;
-                            } else {
-                                panic!("local stdout flush {:?}", e);
+                    1 => {
+                        loop {
+                            if let Err(e) = stdout.write_all(&b[1..]) {
+                                if e.kind() == std::io::ErrorKind::WouldBlock {
+                                    continue;
+                                } else {
+                                    panic!("local stdout write {:?}", e);
+                                }
                             }
+                            break;
                         }
-                        break;
+                        loop {
+                            if let Err(e) = stdout.flush() {
+                                if e.kind() == std::io::ErrorKind::WouldBlock {
+                                    continue;
+                                } else {
+                                    panic!("local stdout flush {:?}", e);
+                                }
+                            }
+                            break;
+                        }
                     }
+                    _ => {},
                 }
             }
             osaka::FutureResult::Again(mut y) => {
@@ -130,6 +144,7 @@ pub fn ui(
     poll: osaka::Poll,
     config: carrier::config::Config,
     target: carrier::identity::Identity,
+    headers: carrier::headers::Headers,
 ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
@@ -144,7 +159,6 @@ pub fn ui(
         }
     };
 
-    let headers = carrier::headers::Headers::with_path("/v0/shell");
     let route = ep.accept_outgoing(q, move |_h, _s| None)?;
     ep.open(route, headers, Some(0xffffff), message_handler)?;
 

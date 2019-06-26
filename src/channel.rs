@@ -435,7 +435,13 @@ impl Channel {
                     break;
                 }
                 let mut frame = self.outqueue.pop_front().unwrap();
-                self.outqueue_bytes -= frame.len(self.version);
+                let remove_bytes = frame.len(self.version);
+                if remove_bytes > self.outqueue_bytes {
+                    warn!("BUG outqueue_bytes is less than the frame we just dequeued");
+                    self.outqueue_bytes = 0;
+                } else {
+                    self.outqueue_bytes -= remove_bytes;
+                }
 
                 if let Frame::Ack { acked, delay } = frame {
                     frame = Frame::Ack {

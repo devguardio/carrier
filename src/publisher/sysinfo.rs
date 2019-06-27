@@ -253,6 +253,8 @@ pub fn sysinfo(
         switch:           Vec::new(),
         board_id:         String::new(),
         carrier_build_id: super::super::BUILD_ID.into(),
+        belltower:        None,
+        dualboot:         None,
     };
 
     #[cfg(feature = "uefi")]
@@ -321,9 +323,43 @@ pub fn sysinfo(
                     revision:   dr.DISTRIB_REVISION.unwrap_or(String::new()),
                     .. proto::Firmware::default()
                 });
+
+                #[cfg(feature = "uefi")]
+                {
+                    if let Some(dualboot) = dr.dualboot {
+                        use super::super::cluproccmdline;
+                        use cluproccmdline::Cmdline;
+
+                        let mut active_side = String::new();
+                        let mut cmdline = cluproccmdline::this_machine().unwrap();
+                        for (name, value) in cmdline.iter() {
+                            if let Some(b"root") = name {
+                                if value == dualboot.a.disk.as_bytes() {
+                                    active_side = "a".to_string();
+                                } else if value == dualboot.b.disk.as_bytes() {
+                                    active_side = "b".to_string();
+                                }
+                            }
+                        }
+                        sysinfo.dualboot = Some(proto::Dualboot{
+                            active_side,
+                        });
+                    }
+                }
+
+                if let Ok(mut f) = File::open("/home/user/.belltower.hash.current") {
+                    let mut bt = proto::Belltower{
+                        current: String::new(),
+                        previous: String::new(),
+                    };
+                    f.read_to_string(&mut bt.current).ok();
+                    if let Ok(mut f) = File::open("/home/user/.belltower.hash.previous") {
+                        f.read_to_string(&mut bt.previous).ok();
+                    }
+                    sysinfo.belltower = Some(bt);
+                }
             }
         }
-
     }
 
     stream.message(sysinfo);
@@ -333,9 +369,22 @@ pub fn sysinfo(
 
 
 #[derive(Deserialize)]
+pub struct DualbootSide{
+    disk: String,
+}
+#[derive(Deserialize)]
+pub struct Dualboot{
+    a: DualbootSide,
+    b: DualbootSide,
+    boot: String,
+}
+
+#[derive(Deserialize)]
 pub struct DistroRelease{
     DISTRIB_ID:         Option<String>,
     DISTRIB_RELEASE:    Option<String>,
     DISTRIB_REVISION:   Option<String>,
     BOARD_ID:           Option<String>,
+
+    dualboot:           Option<Dualboot>,
 }

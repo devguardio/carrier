@@ -95,6 +95,15 @@ message Switch {
 
 
 
+message Dualboot {
+    string active_side = 1;
+}
+
+message Belltower {
+    string current  = 1;
+    string previous = 2;
+}
+
 message Sysinfo {
     Uname       uname       = 1;
     Mem         mem         = 2;
@@ -105,6 +114,8 @@ message Sysinfo {
     repeated Switch switch  = 7;
     string      board_id    = 8;
     string carrier_build_id = 9;
+    Belltower   belltower   = 10;
+    Dualboot    dualboot    = 11;
 }
 
 

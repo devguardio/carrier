@@ -11,7 +11,7 @@ homepage    = "https://devguard.io"
 default = ["conduit"]
 openwrt = ["serde_json"]
 conduit = ["gcmap"]
-uefi    = ["smbios"]
+uefi    = ["smbios", "cluproccmdline"]
 
 
 [dependencies]
@@ -64,7 +64,9 @@ libc                = "0.2.51"
 #openwrt
 serde_json          = {version = "1.0", optional = true}
 
+# x86
 smbios              = {version = "0.1.7", optional = true}
+cluproccmdline      = {version = "0.1.5", optional = true}
 
 [dependencies.snow]
 version             = "0.5.2"

@@ -33,6 +33,8 @@ extern crate wait_timeout;
 extern crate which;
 #[cfg(feature = "uefi")]
 extern crate smbios;
+#[cfg(feature = "uefi")]
+extern crate cluproccmdline;
 
 #[macro_use]
 #[cfg(target_arch = "wasm32")]

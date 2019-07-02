@@ -144,7 +144,7 @@ pub fn ui(
     poll: osaka::Poll,
     config: carrier::config::Config,
     target: carrier::identity::Identity,
-    headers: carrier::headers::Headers,
+    mut headers: carrier::headers::Headers,
 ) -> Result<(), Error> {
     let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
@@ -158,6 +158,21 @@ pub fn ui(
             _ => (),
         }
     };
+
+    {
+        let tty_f = fs::File::open("/dev/tty")?;
+        let fd = tty_f.as_raw_fd();
+        let mut wz : nix::pty::Winsize = unsafe{std::mem::uninitialized()};
+        if unsafe { libc::ioctl(fd, libc::TIOCGWINSZ.into(), &mut wz) } != 0 {
+            log::error!("TIOCGWINSZ {}", std::io::Error::last_os_error());
+        } else {
+            headers.add("ws_row".into(), format!("{}", wz.ws_row).into());
+            headers.add("ws_col".into(), format!("{}", wz.ws_col).into());
+            headers.add("ws_xpixel".into(), format!("{}", wz.ws_xpixel).into());
+            headers.add("ws_ypixel".into(), format!("{}", wz.ws_ypixel).into());
+        }
+    }
+
 
     let route = ep.accept_outgoing(q, move |_h, _s| None)?;
     ep.open(route, headers, Some(0xffffff), message_handler)?;

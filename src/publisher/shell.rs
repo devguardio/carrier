@@ -22,6 +22,7 @@ use std::time::Duration;
 use util::defer;
 use std::ffi::OsString;
 use byteorder::{BigEndian, WriteBytesExt};
+use nix::pty::Winsize;
 
 pub struct Pty {
     master_fd: nix::pty::PtyMaster,
@@ -136,6 +137,21 @@ pub fn main(
         args.push(OsString::from(String::from_utf8_lossy(c).to_string()));
     }
 
+    let mut window = None;
+    if let Some(c) = headers.get(b"ws_row") {
+        let ws_row      = String::from_utf8_lossy(c).parse().unwrap_or(0);
+        let ws_col      = String::from_utf8_lossy(headers.get(b"ws_col").unwrap_or(b"")).parse().unwrap_or(0);
+        let ws_xpixel   = String::from_utf8_lossy(headers.get(b"ws_xpixel").unwrap_or(b"")).parse().unwrap_or(0);
+        let ws_ypixel   = String::from_utf8_lossy(headers.get(b"ws_ypixel").unwrap_or(b"")).parse().unwrap_or(0);
+
+        window = Some(nix::pty::Winsize{
+            ws_row,
+            ws_col,
+            ws_xpixel,
+            ws_ypixel,
+        });
+    }
+
     let mut env  = Vec::new();
     for (k,v) in headers.into_inner().into_iter() {
         let k = String::from_utf8_lossy(&k).to_string();
@@ -146,11 +162,17 @@ pub fn main(
         }
     }
 
-    Some(main_(poll, stream, env, args))
+
+    Some(main_(poll, stream, env, args, window))
 }
 
 #[osaka]
-pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, env: Vec<(OsString, OsString)>, args: Vec<OsString>) {
+pub fn main_(poll: osaka::Poll,
+             mut stream: endpoint::Stream,
+             env: Vec<(OsString, OsString)>,
+             args: Vec<OsString>,
+             window: Option<nix::pty::Winsize>,
+             ) {
     info!("shell stream constructed");
     stream.send(Headers::ok().encode());
     let _dropmemaybe = defer(|| {
@@ -158,6 +180,11 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, env: Vec<(OsString
     });
 
     let pty = Pty::new().unwrap();
+    if let Some(window) = window {
+        if unsafe { libc::ioctl(pty.master_fd.as_raw_fd(), libc::TIOCSWINSZ.into(), &window) } != 0 {
+            log::error!("TIOCSWINSZ {}", std::io::Error::last_os_error());
+        }
+    }
 
     #[cfg(not(target_os = "android"))]
     let child = std::process::Command::new("/bin/sh")
@@ -206,7 +233,6 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, env: Vec<(OsString
             Ok(l) => {
                 stream.send(&buffer[..l + 1]);
                 if l == 0 {
-
                     buffer[0] = 9;
                     (&mut buffer[1..]).write_i32::<BigEndian>(code).unwrap();
                     stream.send(&buffer[..5]);
@@ -225,16 +251,24 @@ pub fn main_(poll: osaka::Poll, mut stream: endpoint::Stream, env: Vec<(OsString
         };
 
         if let osaka::FutureResult::Done(msg) = stream.poll() {
-            if msg.len() > 0 && msg[0] == 1 {
-                if msg.len() == 1 {
-                    return;
-                }
-                if let Err(e) = write(stdio, &msg[1..]) {
-                    error!("{}", e);
-                    buffer[0] = 9;
-                    (&mut buffer[1..]).write_i32::<BigEndian>(code).unwrap();
-                    stream.send(&buffer[..5]);
-                    return;
+            if msg.len() > 0 {
+                match &msg[0] {
+                    1 => {
+                        if msg.len() == 1 {
+                            return;
+                        }
+                        if let Err(e) = write(stdio, &msg[1..]) {
+                            error!("{}", e);
+                            buffer[0] = 9;
+                            (&mut buffer[1..]).write_i32::<BigEndian>(code).unwrap();
+                            stream.send(&buffer[..5]);
+                            return;
+                        }
+                    },
+                    10 => {
+                        //  rc = ioctl(fd, TIOCSWINSZ, &ws);
+                  }
+                    _ => (),
                 }
             }
         }

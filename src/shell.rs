@@ -91,7 +91,7 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
             }
             Ok(l) => {
                 while stream.window() < 100 {
-                    yield poll.later(std::time::Duration::from_millis(1));
+                    yield poll.later(std::time::Duration::from_millis(stream.rtt()));
                 }
                 stream.send(&buf[..l + 1]);
             }

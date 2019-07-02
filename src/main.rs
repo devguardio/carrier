@@ -532,8 +532,6 @@ fn push(
     let mut ep = osaka::sync!(ep)?;
     ep.connect(target, 5)?;
 
-    let config_push_window_delay = config.protocol.window_delay.unwrap_or(1);
-
     let q = loop {
         match osaka::sync!(ep)? {
             carrier::endpoint::Event::OutgoingConnect(q) => {
@@ -570,7 +568,7 @@ fn push(
 
                     loop {
                         while stream.window() < 100 {
-                            yield poll.later(std::time::Duration::from_millis(config_push_window_delay));
+                            yield poll.later(std::time::Duration::from_millis(stream.rtt()));
                         }
 
                         let mut buf = vec![0; 600];

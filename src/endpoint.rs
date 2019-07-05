@@ -1145,58 +1145,65 @@ impl EndpointBuilder {
         poll: osaka::Poll,
         to: dns::DnsRecord,
     ) -> Result<(Option<Endpoint>, Option<dns::DnsRecord>), Error> {
-        info!("attempting connection with (<p: {}) {}", self.port, &to.addr);
 
-        let timestamp = clock::dns_time(&self.clock, &to);
-        let (mut noise, pkt) = noise::initiate(
-            packet::LATEST_VERSION,
-            Some(&to.x),
-            &self.secret,
-            timestamp,
-            self.mov,
-        )?;
-        let pkt = pkt.encode();
+        let mut r = None;
+        for _ in 0..3u8 {
+            info!("attempting connection with (<p: {}) {}", self.port, &to.addr);
+            let timestamp = clock::dns_time(&self.clock, &to);
+            let (mut noise, pkt) = noise::initiate(
+                packet::LATEST_VERSION,
+                Some(&to.x),
+                &self.secret,
+                timestamp,
+                self.mov.clone(),
+                )?;
+            let pkt = pkt.encode();
 
-        let sock = UdpSocket::bind(&format!("0.0.0.0:{}", self.port).parse().unwrap()).map_err(|e| Error::Io(e))?;
-        let token = poll
-            .register(&sock, mio::Ready::readable(), mio::PollOpt::level())
-            .unwrap();
+            let sock = UdpSocket::bind(&format!("0.0.0.0:{}", self.port).parse().unwrap()).map_err(|e| Error::Io(e))?;
+            let token = poll
+                .register(&sock, mio::Ready::readable(), mio::PollOpt::level())
+                .unwrap();
 
-        let mut attempts = 0;
-        let r = loop {
-            attempts += 1;
-            if attempts > 4 {
-                break None;
-            }
-            let mut buf = vec![0; MAX_PACKET_SIZE];
-            if let Ok((len, _from)) = sock.recv_from(&mut buf) {
-                match EncryptedPacket::decode(&buf[..len]).and_then(|pkt| noise.recv_response(pkt)) {
-                    Ok(identity) => {
-                        if noise.route == Some(0) {
-                            if let Some(mov) = noise.move_instruction {
-                                let mov = String::from_utf8_lossy(&mov);
-                                info!("received move instructions to {}", mov);
-                                return Ok((None, dns::DnsRecord::from_signed_txt(&mov)));
-                            }
-                            warn!("broker rejected");
-                            return Ok((None, None));
-                        }
-
-                        let noise = noise.into_transport()?;
-                        break Some((identity, noise));
-                    }
-                    Err(e) => {
-                        attempts -= 1;
-                        warn!("EndpointFuture::WaitingForResponse |{}|: {}", attempts, e);
-                        continue;
-                    }
+            let mut attempts = 0;
+            let r2 = loop {
+                attempts += 1;
+                if attempts > 2 {
+                    break None;
                 }
-            };
-            sock.send_to(&pkt, &to.addr)?;
-            yield poll.again(token.clone(), Some(Duration::from_millis(2u64.pow(attempts) * 200)));
-        };
+                let mut buf = vec![0; MAX_PACKET_SIZE];
+                if let Ok((len, _from)) = sock.recv_from(&mut buf) {
+                    match EncryptedPacket::decode(&buf[..len]).and_then(|pkt| noise.recv_response(pkt)) {
+                        Ok(identity) => {
+                            if noise.route == Some(0) {
+                                if let Some(mov) = noise.move_instruction {
+                                    let mov = String::from_utf8_lossy(&mov);
+                                    info!("received move instructions to {}", mov);
+                                    return Ok((None, dns::DnsRecord::from_signed_txt(&mov)));
+                                }
+                                warn!("broker rejected");
+                                return Ok((None, None));
+                            }
 
-        let (identity, noise) = match r {
+                            let noise = noise.into_transport()?;
+                            break Some((identity, noise));
+                        }
+                        Err(e) => {
+                            attempts -= 1;
+                            warn!("EndpointFuture::WaitingForResponse |{}|: {}", attempts, e);
+                            continue;
+                        }
+                    }
+                };
+                sock.send_to(&pkt, &to.addr)?;
+                yield poll.again(token.clone(), Some(Duration::from_millis(2u64.pow(attempts) * 200)));
+            };
+            if let Some((identity, noise)) = r2 {
+                r = Some((identity, noise, token, sock));
+                break;
+            }
+        }
+
+        let (identity, noise, token, sock) = match r {
             Some(v) => v,
             None => return Ok((None, None)),
         };

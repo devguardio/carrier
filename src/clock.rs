@@ -91,5 +91,6 @@ pub fn network_time(src: &config::ClockSource) -> u64 {
     if let Err(e) = store(src, t) {
         error!("cannot write time sync: {}", e);
     }
+
     t
 }

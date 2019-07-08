@@ -146,7 +146,9 @@ pub fn ui(
     target: carrier::identity::Identity,
     mut headers: carrier::headers::Headers,
 ) -> Result<(), Error> {
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?.connect(poll.clone());
+    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
+    ep.move_target(target.clone());
+    let mut ep = ep.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
     ep.connect(target, 5)?;
 

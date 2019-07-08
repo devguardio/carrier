@@ -96,7 +96,9 @@ impl SubscriberBuilder {
         shadow: identity::Address,
         group: Option<identity::Secret>,
     ) -> Result<(), Error> {
-        let mut ep = endpoint::EndpointBuilder::new(&self.config)?.connect(poll.clone());
+        let mut ep = endpoint::EndpointBuilder::new(&self.config)?;
+        ep.do_not_move();
+        let mut ep = ep.connect(poll.clone());
         let mut ep = osaka::sync!(ep)?;
 
         let this = Rc::new(RefCell::new(self));

@@ -33,10 +33,11 @@ pub struct HandshakeRequester {
 }
 
 pub struct HandshakeResponder {
-    pub version: u8,
-    pub flags:   Flags,
-    noise:       snow::Session,
-    timestamp:   u64,
+    pub version:    u8,
+    pub flags:      Flags,
+    pub move_req:   MoveRequest,
+    noise:          snow::Session,
+    timestamp:      u64,
 }
 
 enum SendMode<'a> {
@@ -366,6 +367,11 @@ fn recv_handshake(
                 let mut b = vec![0; len as usize];
                 reader.read_exact(&mut b)?;
                 Some(b)
+            } else if direction == RoutingDirection::Initiator2Responder && flags.target {
+                let _lbrary_version = reader.read_u32::<BigEndian>()?;
+                let mut b = vec![0; 32];
+                reader.read_exact(&mut b)?;
+                Some(b)
             } else {
                 None
             };
@@ -501,6 +507,17 @@ pub fn respond(
             version,
             noise,
             timestamp: rcv.timestamp,
+            move_req: if rcv.flags.target {
+                if let Ok(v) = Identity::from_bytes(rcv.move_instruction.unwrap_or(Vec::new())) {
+                    MoveRequest::MoveToTarget(v)
+                } else {
+                    MoveRequest::DoNotMove
+                }
+            } else if rcv.flags.mov {
+                MoveRequest::DoNotMove
+            } else {
+                MoveRequest::MoveToSelf
+            },
             flags: rcv.flags,
         },
         rcv.identity,

@@ -4,7 +4,6 @@ use prost::Message;
 use rand::{self, Rng};
 use std::cell::RefCell;
 use std::collections::HashMap;
-use std::collections::HashSet;
 use std::mem;
 use std::net::SocketAddr;
 use std::sync::{Arc, Mutex};
@@ -29,7 +28,8 @@ struct SubscriberState {
 
 #[derive(Default, Clone)]
 pub struct PeerSetup {
-    schedules:  Arc<Mutex<HashMap<Vec<u8>, ScheduledStream>>>,
+    schedules:      Arc<Mutex<HashMap<Vec<u8>, ScheduledStream>>>,
+    disconnected:   Arc<Mutex<Option<Box<Fn(identity::Identity, channel::DisconnectReason)>>>>,
 }
 
 
@@ -239,9 +239,11 @@ impl Builder {
 impl osaka::Future<Result<(), Error>> for BrokerWorker {
     fn poll(&mut self) -> osaka::FutureResult<Result<(), Error>> {
         if self.last_sync.elapsed().as_millis() > 200 + rand::thread_rng().gen_range(0, 100) {
+
             self.last_sync = Instant::now();
             let mut state = self.state.try_borrow_mut().expect("carrier is not thread safe");
 
+            // subscribe to any client that we don't have
             let mut max_per_second = 0;
             for p in state.publishers.keys().cloned().collect::<Vec<identity::Identity>>().into_iter() {
                 if !state.subscribed.contains_key(&p) {
@@ -263,11 +265,10 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                 }
             }
 
+            // for each subscribed client
             let mut max_open_per_second = 0;
             let mut killed = Vec::new();
-
             let mut subscribed = mem::replace(&mut state.subscribed, HashMap::new());
-
             for (id, sc) in &mut subscribed {
                 // don't starve
                 if self.last_sync.elapsed().as_millis() > 1000 {
@@ -283,10 +284,12 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                     continue;
                 }
 
+                // check all the routes
                 if let (Some(route), Some(setup)) = (sc.route, state.publishers.get(id)) {
                     let mut schedules = setup.schedules.try_lock().expect("carrier is not thread safe");
                     let mut remove_schedule = Vec::new();
                     for (path, schedule) in schedules.iter() {
+                        // we don't have this route, open it
                         if sc.streams.get(path).is_none() {
                             if let Some(wait) = sc.waitreopen.get(path) {
                                 match schedule.every {
@@ -328,17 +331,23 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                         }
                     }
 
+                    // remove completed onceshots
                     for rm in remove_schedule {
                         schedules.remove(&rm);
                     }
                 }
             }
 
-
+            // remove all disconnected peers
             for id in killed {
                 self.cooldown.insert(id.clone(), Instant::now());
                 subscribed.remove(&id);
-                //disconnect
+
+                if let Some(setup) = state.publishers.get(&id) {
+                    if let Some(ref mut f) = *setup.disconnected.try_lock().expect("carrier is not thread safe") {
+                        f(id.clone(), channel::DisconnectReason::None);
+                    }
+                }
             }
             state.subscribed = subscribed;
         }
@@ -352,7 +361,11 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                     if let Some(_old) = state.subscribed.remove(&identity) {
                         self.cooldown.insert(identity.clone(), Instant::now());
                         info!("[{}] disconnect {} {:?}", self.shard, identity, reason);
-                        //disconnect
+                        if let Some(setup) = state.publishers.get(&identity) {
+                            if let Some(ref mut f) = *setup.disconnected.try_lock().expect("carrier is not thread safe") {
+                                f(identity.clone(), reason);
+                            }
+                        }
                     }
                 }
                 FutureResult::Done(Ok(endpoint::Event::OutgoingConnect(q))) => {
@@ -678,7 +691,7 @@ impl PeerSetup {
     fn f_discovery<F>(
         _poll: osaka::Poll,
         mut stream: endpoint::Stream,
-        identity: identity::Identity,
+        _identity: identity::Identity,
         mut f: F,
         mark: gcmap::MarkOnDrop,
     ) where F: 'static + FnMut(proto::DiscoveryResponse) + Send + Sync
@@ -717,6 +730,17 @@ impl PeerSetup {
                 })),
             },
         );
+    }
+
+
+    /// callback on disconnect
+    pub fn on_disconnect<F> (&mut self, f: F)
+    where
+        F: 'static + Fn(identity::Identity, channel::DisconnectReason) + Clone + Send + Sync,
+    {
+        *self.disconnected
+            .try_lock()
+            .expect("carrier is not thread safe") = Some(Box::new(f));
     }
 }
 

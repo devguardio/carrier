@@ -29,7 +29,7 @@ struct SubscriberState {
 #[derive(Default, Clone)]
 pub struct PeerSetup {
     schedules:      Arc<Mutex<HashMap<Vec<u8>, ScheduledStream>>>,
-    disconnected:   Arc<Mutex<Option<Box<Fn(identity::Identity, channel::DisconnectReason)>>>>,
+    disconnected:   Arc<Mutex<Option<Box<dyn Fn(identity::Identity, channel::DisconnectReason) + Send + Sync>>>>,
 }
 
 
@@ -52,7 +52,7 @@ struct ScheduledStream {
     every:   Option<Duration>,
     headers: headers::Headers,
     f: Arc<
-        Box<Fn(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()> + Send + Sync>,
+        Box<dyn Fn(osaka::Poll, endpoint::Stream, identity::Identity, gcmap::MarkOnDrop) -> osaka::Task<()> + Send + Sync>,
     >,
 }
 
@@ -140,7 +140,7 @@ impl Builder {
                         let lock = Arc::new(Mutex::new(()));
                         let lock_ = lock.clone();
 
-                        let mut config = config.clone();
+                        let config = config.clone();
                         let record = record.clone();
                         let f = f.clone();
                         thread::Builder::new()

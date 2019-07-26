@@ -1,6 +1,6 @@
 [package]
 name        = "carrier"
-version     = "0.9.9"
+version     = "0.9.10"
 authors     = ["Arvid E. Picciani <arvid@devguard.io>"]
 license     = "MIT"
 description = "carrier is a generic secure message system for IoT"

@@ -112,7 +112,7 @@ impl Builder {
         info!("records: {:?}", records);
         let mut refresh = Instant::now();
 
-        thread::spawn(move || loop {
+        thread::spawn(move || { let dropexit = DropExit{}; loop {
             if refresh.elapsed() >= Duration::from_secs(15) {
                 records = Self::resolve(&self.config.broker);
                 info!("records: {:?}", records);
@@ -161,7 +161,7 @@ impl Builder {
             });
 
             thread::sleep(Duration::from_secs(1));
-        });
+        } drop(dropexit); });
     }
 
 
@@ -744,3 +744,10 @@ impl PeerSetup {
     }
 }
 
+struct DropExit {}
+impl Drop for DropExit {
+    fn drop(&mut self) {
+        eprintln!("exit because conduit main thread dropped");
+        std::process::exit(1);
+    }
+}

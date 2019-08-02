@@ -70,6 +70,19 @@ pub enum Error {
     CorruptHeader,
 }
 
+
+impl std::error::Error for Error {
+    fn cause(&self) -> Option<&dyn std::error::Error> {
+        match self {
+            Error::Io(e)        => Some(e),
+            Error::Bs58(e)      => Some(e),
+            Error::Proto(e)     => Some(e),
+            Error::Fmt(e)       => Some(e),
+            _ => None,
+        }
+    }
+}
+
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {

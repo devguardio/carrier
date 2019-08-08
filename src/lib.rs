@@ -63,6 +63,7 @@ pub mod replay;
 pub mod stream;
 pub mod subscriber;
 pub mod util;
+pub mod tcp;
 
 pub use easy::connect;
 pub use error::Error;

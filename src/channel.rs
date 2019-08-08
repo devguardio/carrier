@@ -325,7 +325,7 @@ impl Channel {
                 }
             }
             recovery::LossDetection::RetransmissionTimeout(re) => {
-                trace!(
+                warn!(
                     "[{}] retransmission timeout (retransmit {} frames, in flight: {}) at {}",
                     self.debug_id,
                     re.len(),

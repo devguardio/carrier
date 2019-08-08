@@ -9,6 +9,7 @@ use local_addrs;
 use mio_extras::channel as mio_channel;
 use noise;
 use osaka::mio::net::UdpSocket;
+use osaka::mio::net::TcpStream;
 use osaka::Future;
 use osaka::{osaka, FutureResult};
 use packet::{self, EncryptedPacket, RoutingKey};
@@ -163,6 +164,7 @@ pub struct Endpoint {
     ),
     clock: config::ClockSource,
     protocol: config::Protocol,
+    tcp_bridge: Option<super::tcp::Handle>,
 }
 
 /// handle is a thread safe api to ep
@@ -254,6 +256,7 @@ impl Endpoint {
             cmd: (cmd.0, cmd.1, cmd_token),
             clock,
             protocol,
+            tcp_bridge: None,
         }
     }
 
@@ -1113,30 +1116,98 @@ impl EndpointBuilder {
             };
 
             let mut a = osaka_dns::resolve(poll.clone(), d);
-            osaka::sync!(a)?
-                .into_iter()
-                .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
-                .collect()
+
+            match osaka::sync!(a) {
+                Ok(v) =>  {
+                    v.into_iter()
+                        .filter_map(|v| dns::DnsRecord::from_signed_txt(v))
+                        .collect()
+                }
+                Err(e) => {
+                    warn!("dns resolution didn't work. {:?}\n trying built in broker list", e);
+                    vec![
+                        "carrier=3 n=5.9.122.66:8443    x=oSD2kh5E3HRNLusGSQHmV3ReRVBBHSZY7QK8hYv7uog6hSK",
+                        "carrier=3 n=5.9.156.3:8443     x=oT75muVdnwqpCwhiPijsUkZi7MyTA2tAwNpZzvvVi9HLPy1",
+                        "carrier=3 n=88.198.32.218:8443 x=oSxDr3UN6V467jKiqhF1qkcvE6N6GVV3487qX5mMon9gMm1"
+                    ].into_iter().filter_map(|v| dns::DnsRecord::from_signed_txt(v)).collect()
+                }
+            }
         };
+
+        for mut record in std::mem::replace(&mut records, Vec::new()) {
+            // try all sorts of ports
+            records.push(record.clone());
+            record.addr.set_port(443);
+            records.push(record.clone());
+            record.addr.set_port(53);
+            records.push(record.clone());
+            record.addr.set_port(123);
+            records.push(record.clone());
+        }
+
         records.shuffle(&mut thread_rng());
 
+
+        let mut records1 = records.clone();
         loop {
-            let record = match records.pop() {
+
+            let record = match records1.pop() {
                 Some(v) => v,
-                None => return Err(Error::OutOfOptions),
+                None => break,
             };
 
+            info!("attempting udp connection with {}", &record.addr);
             let mut v = self.clone().connect_to(poll.clone(), record);
             match osaka::sync!(v) {
                 Err(e) => return Err(e),
                 Ok((Some(ep), _)) => return Ok(ep),
                 Ok((None, None)) => continue,
-                Ok((None, Some(mov))) => {
-                    records.push(mov);
+                Ok((None, Some(mut record))) => {
+                    records.push(record.clone());
+                    record.addr.set_port(443);
+                    records.push(record.clone());
+                    record.addr.set_port(53);
+                    records.push(record.clone());
+                    record.addr.set_port(123);
+                    records.push(record.clone());
                     continue;
                 }
             }
         }
+
+        // try tcp
+        loop {
+
+            let mut record = match records.pop() {
+                Some(v) => v,
+                None => return Err(Error::OutOfOptions),
+            };
+
+            info!("attempting tcp connection with {}", &record.addr);
+            let guard = super::tcp::spawn(record.addr);
+            record.addr = guard.addr;
+
+            let mut v = self.clone().connect_to(poll.clone(), record);
+            match osaka::sync!(v) {
+                Err(e) => return Err(e),
+                Ok((Some(mut ep), _)) => {
+                    ep.tcp_bridge = Some(guard);
+                    return Ok(ep);
+                }
+                Ok((None, None)) => continue,
+                Ok((None, Some(mut record))) => {
+                    records.push(record.clone());
+                    record.addr.set_port(443);
+                    records.push(record.clone());
+                    record.addr.set_port(53);
+                    records.push(record.clone());
+                    record.addr.set_port(123);
+                    records.push(record.clone());
+                    continue;
+                }
+            }
+        }
+
     }
 
     #[osaka]
@@ -1148,7 +1219,6 @@ impl EndpointBuilder {
 
         let mut r = None;
         for _ in 0..3u8 {
-            info!("attempting connection with (<p: {}) {}", self.port, &to.addr);
             let timestamp = clock::dns_time(&self.clock, &to);
             let (mut noise, pkt) = noise::initiate(
                 packet::LATEST_VERSION,

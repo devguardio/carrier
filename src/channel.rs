@@ -302,6 +302,7 @@ impl Channel {
                     self.now()
                 );
 
+
                 for frame in lost {
                     if !frame.is_ack() && !frame.is_ping() {
                         self.outqueue_bytes += frame.len(self.version);

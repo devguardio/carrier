@@ -199,8 +199,8 @@ impl Endpoint {
         loop {
             match osaka::sync!(self.ep)? {
                 endpoint::Event::BrokerGone => break,
-                endpoint::Event::Disconnect { identity, .. } => {
-                    debug!("{} disconnected", identity);
+                endpoint::Event::Disconnect { identity, reason, .. } => {
+                    debug!("{} disconnected {:?}", identity, reason);
                     self.log.lock().unwrap().push(Event::Disconnect(identity.clone()));
                 }
                 endpoint::Event::OutgoingConnect(q) => {

@@ -109,7 +109,7 @@ struct StreamReceiver {
     a: Arc<Cell<FutureResult<Vec<u8>>>>,
 }
 
-enum AddressMode {
+pub enum AddressMode {
     Discovering(HashMap<SocketAddr, (proto::path::Category, usize)>),
     Established(SocketAddr, HashMap<SocketAddr, (proto::path::Category, usize)>),
 }
@@ -218,7 +218,7 @@ impl Endpoint {
         version: u8,
         identity: identity::Identity,
         socket: UdpSocket,
-        addr: SocketAddr,
+        addrs: AddressMode,
         secret: identity::Secret,
         clock: config::ClockSource,
         protocol: config::Protocol,
@@ -231,7 +231,7 @@ impl Endpoint {
             UdpChannel {
                 identity,
                 chan: Arc::new(RefCell::new(Channel::new(protocol.clone(), noise, version, debug_id))),
-                addrs: AddressMode::Established(addr, HashMap::new()),
+                addrs,
                 streams: HashMap::new(),
                 newhandl: None,
                 broker_stream: None,
@@ -323,11 +323,14 @@ impl Endpoint {
         let handshake = pkt.encode();
 
         let mut mypaths = Vec::new();
-        for addr in local_addrs::get(self.socket.local_addr().unwrap().port()) {
-            mypaths.push(proto::Path {
-                category: (proto::path::Category::Local as i32),
-                ipaddr:   format!("{}", addr),
-            });
+        if let Some(false) = self.protocol.p2p {
+        } else {
+            for addr in local_addrs::get(self.socket.local_addr().unwrap().port()) {
+                mypaths.push(proto::Path {
+                    category: (proto::path::Category::Local as i32),
+                    ipaddr:   format!("{}", addr),
+                });
+            }
         }
 
         let chan = self.channels.get_mut(&self.broker_route).unwrap();
@@ -453,18 +456,28 @@ impl Endpoint {
         }
 
         let mut paths = HashMap::new();
-        for path in cr.paths {
-            let cat = match path.category {
-                o if proto::path::Category::Local as i32 == o => proto::path::Category::Local,
-                o if proto::path::Category::Internet as i32 == o => proto::path::Category::Internet,
-                o if proto::path::Category::BrokerOrigin as i32 == o => proto::path::Category::BrokerOrigin,
-                _ => unreachable!(),
-            };
-            paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
+        if let Some(false) = self.protocol.p2p {
+        } else {
+            for path in cr.paths {
+                let cat = match path.category {
+                    o if proto::path::Category::Local as i32 == o => proto::path::Category::Local,
+                    o if proto::path::Category::Internet as i32 == o => proto::path::Category::Internet,
+                    o if proto::path::Category::BrokerOrigin as i32 == o => proto::path::Category::BrokerOrigin,
+                    _ => unreachable!(),
+                };
+                paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
+            }
         }
         if let Some(chan) = self.channels.get(&self.broker_route) {
-            if let AddressMode::Established(addr, _) = chan.addrs {
-                paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
+            match &chan.addrs {
+                AddressMode::Established(addr, _) => {
+                    paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
+                },
+                AddressMode::Discovering(addrs) => {
+                    for (addr,_) in addrs {
+                        paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
+                    }
+                }
             }
         }
 
@@ -503,8 +516,15 @@ impl Endpoint {
             paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
         }
         if let Some(chan) = self.channels.get(&self.broker_route) {
-            if let AddressMode::Established(addr, _) = chan.addrs {
-                paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
+            match &chan.addrs {
+                AddressMode::Established(addr, _) => {
+                    paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
+                },
+                AddressMode::Discovering(addrs) => {
+                    for (addr,_) in addrs {
+                        paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
+                    }
+                }
             }
         }
 
@@ -692,7 +712,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                         };
 
                         if let Some((addr, cat, previous)) = settle {
-                            info!(
+                            debug!(
                                 "settled peering with {} adress {}",
                                 match cat {
                                     0 => "invalid",
@@ -1077,8 +1097,7 @@ pub struct EndpointBuilder {
 
 impl EndpointBuilder {
     pub fn new(config: &config::Config) -> Result<Self, Error> {
-        info!("carrier [{}]", super::BUILD_ID);
-        info!("my identity: {}", config.secret.identity());
+        info!("carrier identity: {} version: {} ", config.secret.identity(),  super::BUILD_ID);
         if let Some(ref principal) = config.principal {
             info!("principal identity: {}", principal.identity());
         }
@@ -1133,18 +1152,6 @@ impl EndpointBuilder {
                 }
             }
         };
-
-        for mut record in std::mem::replace(&mut records, Vec::new()) {
-            // try all sorts of ports
-            records.push(record.clone());
-            record.addr.set_port(443);
-            records.push(record.clone());
-            record.addr.set_port(53);
-            records.push(record.clone());
-            record.addr.set_port(123);
-            records.push(record.clone());
-        }
-
         records.shuffle(&mut thread_rng());
 
 
@@ -1163,16 +1170,21 @@ impl EndpointBuilder {
                 Ok((Some(ep), _)) => return Ok(ep),
                 Ok((None, None)) => continue,
                 Ok((None, Some(mut record))) => {
-                    records.push(record.clone());
-                    record.addr.set_port(443);
-                    records.push(record.clone());
-                    record.addr.set_port(53);
-                    records.push(record.clone());
-                    record.addr.set_port(123);
-                    records.push(record.clone());
+                    records.push(record);
                     continue;
                 }
             }
+        }
+
+        for mut record in std::mem::replace(&mut records, Vec::new()) {
+            // try all sorts of ports
+            records.push(record.clone());
+            record.addr.set_port(443);
+            records.push(record.clone());
+            record.addr.set_port(53);
+            records.push(record.clone());
+            record.addr.set_port(123);
+            records.push(record.clone());
         }
 
         // try tcp
@@ -1214,8 +1226,23 @@ impl EndpointBuilder {
     pub fn connect_to(
         self,
         poll: osaka::Poll,
-        to: dns::DnsRecord,
+        mut to: dns::DnsRecord,
     ) -> Result<(Option<Endpoint>, Option<dns::DnsRecord>), Error> {
+
+        let mut addrs = HashMap::new();
+        addrs.insert(to.addr.clone(), (proto::path::Category::Internet, 0));
+
+        to.addr.set_port(443);
+        addrs.insert(to.addr.clone(), (proto::path::Category::Internet, 0));
+
+        to.addr.set_port(53);
+        addrs.insert(to.addr.clone(), (proto::path::Category::Internet, 0));
+
+        to.addr.set_port(123);
+        addrs.insert(to.addr.clone(), (proto::path::Category::Internet, 0));
+
+        to.addr.set_port(8443);
+        addrs.insert(to.addr.clone(), (proto::path::Category::Internet, 0));
 
         let mut r = None;
         for _ in 0..3u8 {
@@ -1241,13 +1268,13 @@ impl EndpointBuilder {
                     break None;
                 }
                 let mut buf = vec![0; MAX_PACKET_SIZE];
-                if let Ok((len, _from)) = sock.recv_from(&mut buf) {
+                if let Ok((len, from)) = sock.recv_from(&mut buf) {
                     match EncryptedPacket::decode(&buf[..len]).and_then(|pkt| noise.recv_response(pkt)) {
                         Ok(identity) => {
                             if noise.route == Some(0) {
                                 if let Some(mov) = noise.move_instruction {
                                     let mov = String::from_utf8_lossy(&mov);
-                                    info!("received move instructions to {}", mov);
+                                    debug!("received move instructions to {}", mov);
                                     return Ok((None, dns::DnsRecord::from_signed_txt(&mov)));
                                 }
                                 warn!("broker rejected");
@@ -1255,6 +1282,8 @@ impl EndpointBuilder {
                             }
 
                             let noise = noise.into_transport()?;
+                            let (_, count) = addrs.entry(from).or_insert((proto::path::Category::Internet, 0));
+                            *count +=1;
                             break Some((identity, noise));
                         }
                         Err(e) => {
@@ -1264,7 +1293,13 @@ impl EndpointBuilder {
                         }
                     }
                 };
-                sock.send_to(&pkt, &to.addr)?;
+                for (addr, _) in addrs.iter() {
+                    match sock.send_to(&pkt, addr) {
+                        Ok(len) if len == pkt.len() => (),
+                        e => trace!("send to {} didnt work {:?}", addr, e),
+                    }
+                }
+
                 yield poll.again(token.clone(), Some(Duration::from_millis(2u64.pow(attempts) * 200)));
             };
             if let Some((identity, noise)) = r2 {
@@ -1278,7 +1313,7 @@ impl EndpointBuilder {
             None => return Ok((None, None)),
         };
 
-        info!("established connection with {} :: {}", identity, noise.route());
+        info!("established connection with broker {}", identity);
 
         return Ok((
             Some(Endpoint::new(
@@ -1288,7 +1323,7 @@ impl EndpointBuilder {
                 packet::LATEST_VERSION,
                 identity,
                 sock,
-                to.addr,
+                AddressMode::Discovering(addrs),
                 self.principal.unwrap_or(self.secret),
                 self.clock,
                 self.protocol,

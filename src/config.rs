@@ -14,6 +14,7 @@ use std::io::SeekFrom;
 use std::io::{Read, Write};
 use std::mem;
 use toml;
+use std::os::unix::fs::OpenOptionsExt;
 
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -27,6 +28,7 @@ pub struct Protocol {
     pub min_rto_timeout:        Option<u64>,
     pub stream_rx_queue:        Option<u64>,
     pub stream_tx_queue:        Option<usize>,
+    pub p2p:                    Option<bool>,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -350,7 +352,6 @@ impl Config {
 }
 
 pub fn setup() -> Result<(), Error> {
-    use std::os::unix::fs::OpenOptionsExt;
 
     #[cfg(not(target_os = "android",))]
     let defaultfile =
@@ -383,8 +384,23 @@ pub fn setup() -> Result<(), Error> {
         config.secret = Some(identity::Secret::gen().to_string());
     }
 
+    if config.publish.is_none() {
+        let xsecret = identity::Secret::gen();
+        config.publish = Some(PublisherConfigToml{
+            shadow: xsecret.address().to_string(),
+            secret: Some(xsecret.to_string()),
+        });
+    }
+
     let secret: identity::Secret = config.secret.as_ref().unwrap().parse().unwrap();
     println!("identity: {}", secret.identity());
+
+    let shadow : identity::Address = config.publish.as_ref().unwrap().shadow.parse().unwrap();
+    println!("shadow: {}", shadow);
+    if let Some(secret) = &config.publish.as_ref().unwrap().secret {
+        let secret : identity::Secret = secret.parse().unwrap();
+        println!("shadow-secret: {}", secret.identity());
+    }
 
     let s = toml::to_vec(&config).unwrap();
     let mut f = OpenOptions::new()
@@ -395,6 +411,62 @@ pub fn setup() -> Result<(), Error> {
         .expect(&format!("cannot create config file {:?}", filename));
     f.write_all(&s)
         .expect(&format!("cannot write config file {:?}", filename));
+
+    Ok(())
+}
+
+
+pub fn authorize(identity: identity::Identity) -> Result<(), Error> {
+    #[cfg(not(target_os = "android",))]
+    let defaultfile =
+        dirs::home_dir()
+        .unwrap_or("/root/".into())
+        .join(".devguard/carrier.toml");
+
+    #[cfg(target_os = "android",)]
+    let defaultfile : std::path::PathBuf = "/data/.devguard/carrier.toml".into();
+
+    let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
+
+    let mut buffer = String::default();
+    File::open(&filename)
+        .expect(&format!(
+            "cannot open config file {:?}. maybe run carrier setup",
+            filename
+        ))
+        .read_to_string(&mut buffer)
+        .expect(&format!("cannot read config file {:?}", filename));
+    let mut config: ConfigToml = toml::from_str(&buffer).expect(&format!(
+        "cannot open config file {:?}. maybe run carrier setup",
+        filename
+    ));
+
+    if  config.authorize.is_none() {
+        config.authorize =Some(Vec::new());
+    }
+
+    for auth in config.authorize.as_ref().unwrap() {
+        if auth.identity == identity.to_string() {
+            println!("{} already authorized", identity);
+            return Ok(())
+        }
+    }
+
+    config.authorize.as_mut().unwrap().push(AuthorizationToml{
+        identity: identity.to_string(),
+        resource: "*".to_string(),
+    });
+
+    let s = toml::to_vec(&config).unwrap();
+    let mut f = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .mode(0o600)
+        .open(&filename)
+        .expect(&format!("cannot create config file {:?}", filename));
+    f.write_all(&s)
+        .expect(&format!("cannot write config file {:?}", filename));
+
 
     Ok(())
 }

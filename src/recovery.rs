@@ -214,7 +214,7 @@ impl QuicRecovery {
         };
 
         assert!(
-            self.largest_sent_packet < seq
+            self.largest_sent_packet < seq,
             "cannot send packet older than last one"
         );
         self.largest_sent_packet = seq;
@@ -372,6 +372,7 @@ impl QuicRecovery {
         lost_packets.sort_unstable();
         let mut largest_lost_packet = 0;
         let mut lost_frames = Vec::new();
+
         for seq in lost_packets {
             let mut pkt = self.sent_packets.remove(&seq).unwrap();
 

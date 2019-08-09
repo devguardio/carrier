@@ -46,7 +46,13 @@ pub fn _main() -> Result<(), Error> {
     if let Err(_) = env::var("RUST_LOG") {
         env::set_var("RUST_LOG", "info");
     }
+
+    #[cfg(target_arch = "x86_64")]
+    env_logger::Builder::from_default_env().default_format_timestamp(false).init();
+
+    #[cfg(not(target_arch = "x86_64"))]
     tinylogger::init().ok();
+
 
     let clap = App::new(crate_name!())
         .version(carrier::BUILD_ID)
@@ -62,6 +68,11 @@ pub fn _main() -> Result<(), Error> {
             SubCommand::with_name("cluster")
             .about("coordinate a broker cluster")
             .arg(Arg::with_name("broker").takes_value(true).required(true).index(1)),
+            )
+        .subcommand(
+            SubCommand::with_name("authorize")
+            .about("add authorized identity to publisher config")
+            .arg(Arg::with_name("identity").takes_value(true).required(true).index(1)),
             )
         .subcommand(
             SubCommand::with_name("subscribe")
@@ -190,6 +201,15 @@ pub fn _main() -> Result<(), Error> {
             let config = carrier::config::load()?;
             println!("{}", config.secret.identity());
             Ok(())
+        }
+        ("authorize", Some(submatches)) => {
+            let identity = submatches
+                .value_of("identity")
+                .unwrap()
+                .to_string()
+                .parse()
+                .expect("parsing shadow");
+            carrier::config::authorize(identity)
         }
 
         #[cfg(any(target_os = "linux", target_os = "macos", target_os = "android",))]
@@ -337,14 +357,21 @@ pub fn _main() -> Result<(), Error> {
                 use std::fs::File;
                 use std::io::Read;
                 let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+
+                let total_size = file.metadata().expect("file metadata").len();
+                let mut pb = ProgressBar::new(total_size);
+                pb.set_units(pbr::Units::Bytes);
+                pb.message("calculating sha of local file ");
+
                 let mut hasher = Sha256::new();
+                let mut buf = vec![0; 10 * 1024];
                 loop {
-                    let mut buf = vec![0; 10000];
                     let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
                     if len == 0 {
                         break;
                     }
                     hasher.input(&buf[..len]);
+                    pb.add(len as u64);
                 }
                 hasher.result().to_vec()
             };
@@ -370,14 +397,21 @@ pub fn _main() -> Result<(), Error> {
                 use std::fs::File;
                 use std::io::Read;
                 let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+
+                let total_size = file.metadata().expect("file metadata").len();
+                let mut pb = ProgressBar::new(total_size);
+                pb.set_units(pbr::Units::Bytes);
+                pb.message("calculating sha of local file ");
+
                 let mut hasher = Sha256::new();
+                let mut buf = vec![0; 10 * 1024];
                 loop {
-                    let mut buf = vec![0; 1024];
                     let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
                     if len == 0 {
                         break;
                     }
                     hasher.input(&buf[..len]);
+                    pb.add(len as u64);
                 }
                 hasher.result().to_vec()
             };
@@ -578,7 +612,9 @@ fn push(
                             break;
                         }
 
-                        pb.message(&format!("rtt {}ms | window {} | ", stream.rtt(), stream.window()));
+                        pb.message(&format!("rtt {}ms | window {} | ",
+                                            stream.rtt(),
+                                            stream.window()));
 
                         pb.add(len as u64);
                         pb.set_units(pbr::Units::Bytes);
@@ -608,8 +644,8 @@ fn push(
         match osaka::sync!(ep)? {
             carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
             carrier::endpoint::Event::OutgoingConnect(_) => (),
-            carrier::endpoint::Event::Disconnect { identity, .. } => {
-                warn!("{} disconnected", identity);
+            carrier::endpoint::Event::Disconnect { identity, reason, .. } => {
+                warn!("{} disconnected {:?}", identity, reason);
                 return Ok(());
             }
             carrier::endpoint::Event::IncommingConnect(_) => (),

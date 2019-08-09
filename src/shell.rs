@@ -183,8 +183,8 @@ pub fn ui(
         match osaka::sync!(ep)? {
             carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
             carrier::endpoint::Event::OutgoingConnect(_) => (),
-            carrier::endpoint::Event::Disconnect { identity, .. } => {
-                warn!("{} disconnected", identity);
+            carrier::endpoint::Event::Disconnect { identity, reason, .. } => {
+                warn!("{} disconnected {:?}", identity, reason);
                 return Ok(());
             }
             carrier::endpoint::Event::IncommingConnect(_) => (),

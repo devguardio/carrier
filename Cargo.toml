@@ -1,6 +1,6 @@
 [package]
 name        = "carrier"
-version     = "0.9.10"
+version     = "0.9.11"
 authors     = ["Arvid E. Picciani <arvid@devguard.io>"]
 license     = "MIT"
 description = "carrier is a generic secure message system for IoT"
@@ -32,7 +32,7 @@ bytes               = "0.4.12"
 hpack               = "0.3.0"
 
 osaka               = "0.2.10"
-osaka-dns           = "0.2.10"
+osaka-dns           = "0.2.11"
 
 mtdparts            = "0.2.0"
 mio                 = "0.6.16"
@@ -50,7 +50,11 @@ gcmap               = {version = "0.1.4", optional = true}
 # https://github.com/rust-lang/cargo/issues/1982
 
 which               = "2.0.1"
+
+
 tinylogger          = "0.1.0"
+
+
 axon                = "0.2.0"
 clap                = "2.33.0"
 num_cpus            = "1.10.0"
@@ -67,6 +71,9 @@ serde_json          = {version = "1.0", optional = true}
 # x86
 smbios              = {version = "0.1.7", optional = true}
 cluproccmdline      = {version = "0.1.5", optional = true}
+
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+env_logger          = {version = "0.6.2", default-features = false, features = ["termcolor", "atty", "humantime"]}
 
 [dependencies.snow]
 version             = "0.5.2"

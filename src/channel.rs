@@ -122,6 +122,10 @@ impl Channel {
         self.recovery.bytes_in_flight()
     }
 
+    pub fn indicator(&self) -> &'static str {
+        self.recovery.indicator()
+    }
+
     pub fn window(&self) -> (usize, usize, u64) {
         let (window, total) = self.recovery.window();
 
@@ -134,7 +138,6 @@ impl Channel {
             window,
             total
         )
-
     }
 
     pub fn is_initiator(&self) -> bool {
@@ -154,7 +157,7 @@ impl Channel {
     }
 
     /// receive a packet from the wire
-    pub fn recv(&mut self, pkt: (EncryptedPacket, u8)) -> Result<(), Error> {
+    pub fn recv(&mut self, pkt: (EncryptedPacket, u8)) -> Result<Option<Vec<u8>>, Error> {
         let now = self.now();
         trace!(
             "[{}] incomming pkt {} with {} bytes at {}",
@@ -209,7 +212,7 @@ impl Channel {
                             // ignore stream that's not preceeded by header
                             // this happens when we get dup for a closed stream
                             if !self.counters.contains_key(&stream) {
-                                return Ok(());
+                                continue;
                             }
                             v.insert(stream::OrderedStream::new(self.config.clone()))
                         }
@@ -269,7 +272,7 @@ impl Channel {
                             // ignore stream that's not preceeded by header
                             // this happens when we get dup for a closed stream
                             if !self.counters.contains_key(&stream) {
-                                return Ok(());
+                                continue;
                             }
                             v.insert(stream::OrderedStream::new(self.config.clone()))
                         }
@@ -293,7 +296,7 @@ impl Channel {
             self.outqueue.push_back(frame);
         }
 
-        Ok(())
+        self.send_packet()
     }
 
     pub fn handle_loss(&mut self, loss: recovery::LossDetection) {
@@ -425,67 +428,8 @@ impl Channel {
             }
         }
 
-        // send out packets
-        if !self.outqueue.is_empty() {
-            let mut frames = Vec::new();
-            let mut pkt = Vec::new();
-            loop {
-                let more = match self.outqueue.front() {
-                    None => break,
-                    Some(v) => v.len(self.version),
-                };
 
-                let overhead = 36;
-                let morelen = pkt.len() + overhead + more;
-                let morelen = morelen + (256 - (morelen % 256));
-
-                if morelen >= MAX_PACKET_SIZE {
-                    break;
-                }
-                let mut frame = self.outqueue.pop_front().unwrap();
-                let remove_bytes = frame.len(self.version);
-                if remove_bytes > self.outqueue_bytes {
-                    warn!("BUG outqueue_bytes is less than the frame we just dequeued");
-                    self.outqueue_bytes = 0;
-                } else {
-                    self.outqueue_bytes -= remove_bytes;
-                }
-
-                if let Frame::Ack { acked, delay } = frame {
-                    frame = Frame::Ack {
-                        acked,
-                        delay: now - delay,
-                    };
-                }
-                frame.encode(self.version, &mut pkt)?;
-                frames.push(frame);
-            }
-            assert_ne!(
-                frames.len(),
-                0,
-                "bug: trying to send empty packet. outqueue is {}",
-                self.outqueue.len()
-            );
-
-            let pkt = self.noise.send(&pkt)?;
-
-            trace!(
-                "[{}] sending pkt {} with {} frames, {} bytes [{}]",
-                self.debug_id,
-                pkt.counter,
-                frames.len(),
-                pkt.payload.len(),
-                frames
-                    .iter()
-                    .map(|frame| format!("{:?}", frame))
-                    .collect::<Vec<String>>()
-                    .join(",")
-            );
-
-            self.recovery.on_packet_sent(pkt.counter, frames, self.version, now);
-
-            let pkt = pkt.encode();
-            assert!(pkt.len() < MAX_PACKET_SIZE);
+        if let Some(pkt) =  self.send_packet()? {
             return Ok(ChannelProgress::SendPacket(pkt));
         }
 
@@ -522,6 +466,74 @@ impl Channel {
         }
     }
 
+    pub fn send_packet(&mut self) -> Result<Option<Vec<u8>>, Error> {
+        if self.outqueue.is_empty() {
+            return Ok(None);
+        }
+
+        let now = self.now();
+        let mut frames = Vec::new();
+        let mut pkt = Vec::new();
+        loop {
+            let more = match self.outqueue.front() {
+                None => break,
+                Some(v) => v.len(self.version),
+            };
+
+            let overhead = 36;
+            let morelen = pkt.len() + overhead + more;
+            let morelen = morelen + (256 - (morelen % 256));
+
+            if morelen >= MAX_PACKET_SIZE {
+                break;
+            }
+            let mut frame = self.outqueue.pop_front().unwrap();
+            let remove_bytes = frame.len(self.version);
+            if remove_bytes > self.outqueue_bytes {
+                warn!("BUG outqueue_bytes is less than the frame we just dequeued");
+                self.outqueue_bytes = 0;
+            } else {
+                self.outqueue_bytes -= remove_bytes;
+            }
+
+            if let Frame::Ack { acked, delay } = frame {
+                frame = Frame::Ack {
+                    acked,
+                    delay: now - delay,
+                };
+            }
+            frame.encode(self.version, &mut pkt)?;
+            frames.push(frame);
+        }
+        assert_ne!(
+            frames.len(),
+            0,
+            "bug: trying to send empty packet. outqueue is {}",
+            self.outqueue.len()
+            );
+
+        let pkt = self.noise.send(&pkt)?;
+
+        trace!(
+            "[{}] sending pkt {} with {} frames, {} bytes [{}]",
+            self.debug_id,
+            pkt.counter,
+            frames.len(),
+            pkt.payload.len(),
+            frames
+            .iter()
+            .map(|frame| format!("{:?}", frame))
+            .collect::<Vec<String>>()
+            .join(",")
+            );
+
+        self.recovery.on_packet_sent(pkt.counter, frames, self.version, now);
+
+        let pkt = pkt.encode();
+        assert!(pkt.len() < MAX_PACKET_SIZE);
+        return Ok(Some(pkt));
+    }
+
     /// queue a proto message with a legacy ProtoHeader instead of fragmented
     #[deprecated(since = "0.9.0", note = "carrier supports automatic fragmentation now")]
     pub fn ph_message<M: Message>(&mut self, stream: u32, m: M) {
@@ -549,7 +561,7 @@ impl Channel {
         let order = *order;
 
         let msg = msg.into();
-        assert!(msg.len() < 1200, "message too big {}", msg.len());
+        assert!(msg.len() <= 1400, "message too big {}", msg.len());
 
         let frame =  Frame::Stream {
             stream:  stream,

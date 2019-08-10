@@ -192,6 +192,17 @@ impl QuicRecovery {
         )
     }
 
+    pub fn indicator(&self) -> &'static str {
+        if self.largest_acked_packet <= self.end_of_recovery {
+            return "R"
+        }
+        if self.congestion_window < self.ssthresh {
+            "S"
+        } else {
+            "F"
+        }
+    }
+
     /// current free space in sending window
     pub fn bytes_in_flight(&self) -> usize {
         self.bytes_in_flight

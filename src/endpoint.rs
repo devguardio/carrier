@@ -65,6 +65,13 @@ impl Stream {
             .message(self.stream, m)
     }
 
+    pub fn indicator(&self) -> &'static str {
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .indicator()
+    }
+
     pub fn rtt(&self) -> u64 {
         self.inner
             .try_borrow_mut()
@@ -711,7 +718,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                         };
 
                         if let Some((addr, cat, previous)) = settle {
-                            debug!(
+                            info!(
                                 "settled peering with {} adress {}",
                                 match cat {
                                     0 => "invalid",
@@ -733,7 +740,23 @@ impl Future<Result<Event, Error>> for Endpoint {
                                 disconnect.push((route, packet::DisconnectReason::ResourceLimit));
                             }
                             Err(e) => warn!("{}: {}", addr, e),
-                            Ok(()) => {
+                            Ok(pkt) => {
+                                if let Some(pkt) = pkt {
+                                    match &chan.addrs {
+                                        AddressMode::Discovering(addrs) => {
+                                            for (addr, _) in addrs.iter() {
+                                                match self.socket.send_to(&pkt, addr) {
+                                                    Ok(len) if len == pkt.len() => (),
+                                                    e => trace!("send to {} didnt work {:?}", addr, e),
+                                                }
+                                            }
+                                        }
+                                        AddressMode::Established(addr, _) => match self.socket.send_to(&pkt, &addr) {
+                                            Ok(len) if len == pkt.len() => (),
+                                            e => error!("send didnt work {:?}", e),
+                                        },
+                                    }
+                                }
                                 if let AddressMode::Established(ref mut addr_, ref previous) = chan.addrs {
                                     if addr != *addr_ {
                                         let current_cat =

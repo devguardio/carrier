@@ -8,7 +8,7 @@ use config;
 const MAX_REORDERING: u64 = 100;
 
 //FIXME: it really should be max bytes, not messages
-const MAX_QUEUE: usize = 100;
+const MAX_QUEUE: usize = 1000;
 
 pub struct OrderedStream {
     max_reordering: u64,
@@ -51,6 +51,9 @@ impl OrderedStream {
         self.producer = max(self.producer, order);
 
         if self.q.len() > self.max_q {
+            warn!("overflowing ordered stream. q.len(): {}, producer: {}, consumer: {}, rejected order: {}",
+                self.q.len(), self.producer, self.consumer, order);
+
             return Err(Error::Overflow.into());
         }
 

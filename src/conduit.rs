@@ -161,6 +161,7 @@ impl Builder {
             });
 
             thread::sleep(Duration::from_secs(1));
+
         } drop(dropexit); });
     }
 

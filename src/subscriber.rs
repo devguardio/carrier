@@ -11,8 +11,8 @@ use std::rc::Rc;
 
 pub struct SubscriberBuilder {
     config:       Config,
-    on_publish:   Option<Box<FnMut(identity::Identity)>>,
-    on_unpublish: Option<Box<FnMut(identity::Identity)>>,
+    on_publish:   Option<Box<dyn FnMut(identity::Identity)>>,
+    on_unpublish: Option<Box<dyn FnMut(identity::Identity)>>,
 }
 
 pub fn new(config: Config) -> SubscriberBuilder {

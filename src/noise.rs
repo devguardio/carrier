@@ -77,7 +77,7 @@ fn send(
                 }
                 MoveRequest::MoveToSelf => {
                 }
-                MoveRequest::MoveToTarget(id) => {
+                MoveRequest::MoveToTarget(_) => {
                     flags.target = true;
                 }
             }
@@ -549,7 +549,7 @@ impl RngCore for O {
 }
 
 impl CryptoResolver for RandResolver {
-    fn resolve_rng(&self) -> Option<Box<snow::types::Random>> {
+    fn resolve_rng(&self) -> Option<Box<dyn snow::types::Random>> {
         match OsRng::new() {
             Ok(v) => Some(Box::new(O(v))),
             _ => None,

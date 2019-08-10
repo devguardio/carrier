@@ -1,19 +1,14 @@
-use super::sft;
 use endpoint;
 use headers;
 use headers::Headers;
 use identity;
-use mio_extras::channel;
 use nix::sys::statvfs::statvfs;
 use nix::sys::utsname::uname;
-use osaka::osaka;
 use proto;
-use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::io::Read;
-use std::mem;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 macro_rules! tryo {
@@ -370,21 +365,22 @@ pub fn sysinfo(
 
 #[derive(Deserialize)]
 pub struct DualbootSide{
-    disk: String,
+    pub disk: String,
 }
 #[derive(Deserialize)]
 pub struct Dualboot{
-    a: DualbootSide,
-    b: DualbootSide,
-    boot: String,
+    pub a: DualbootSide,
+    pub b: DualbootSide,
+    pub boot: String,
 }
 
 #[derive(Deserialize)]
+#[allow(non_snake_case)]
 pub struct DistroRelease{
-    DISTRIB_ID:         Option<String>,
-    DISTRIB_RELEASE:    Option<String>,
-    DISTRIB_REVISION:   Option<String>,
-    BOARD_ID:           Option<String>,
+    pub DISTRIB_ID:         Option<String>,
+    pub DISTRIB_RELEASE:    Option<String>,
+    pub DISTRIB_REVISION:   Option<String>,
+    pub BOARD_ID:           Option<String>,
 
-    dualboot:           Option<Dualboot>,
+    pub dualboot:           Option<Dualboot>,
 }

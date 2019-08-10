@@ -9,7 +9,6 @@ use local_addrs;
 use mio_extras::channel as mio_channel;
 use noise;
 use osaka::mio::net::UdpSocket;
-use osaka::mio::net::TcpStream;
 use osaka::Future;
 use osaka::{osaka, FutureResult};
 use packet::{self, EncryptedPacket, RoutingKey};
@@ -119,7 +118,7 @@ struct UdpChannel {
     chan:     Arc<RefCell<Channel>>,
     addrs:    AddressMode,
     streams:  HashMap<u32, StreamReceiver>,
-    newhandl: Option<Box<StreamFactory>>,
+    newhandl: Option<Box<dyn StreamFactory>>,
 
     //keeps resources at the broker by holding open this channel,
     //like proxy
@@ -858,7 +857,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             if let Some(ref mut new) = chan.newhandl {
                                 let again = self.poll.never();
                                 let ii = Arc::new(Cell::new(FutureResult::Again(again.clone())));
-                                let mut stream = Stream {
+                                let stream = Stream {
                                     inner: chan.chan.clone(),
                                     stream,
                                     ii: ii.clone(),
@@ -930,7 +929,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                             }
                         } else if route == &self.broker_route && self.outstanding_connect_outgoing.contains_key(&stream)
                         {
-                            let mut cr = self.outstanding_connect_outgoing.remove(&stream).unwrap();
+                            let cr = self.outstanding_connect_outgoing.remove(&stream).unwrap();
                             match cr {
                                 ConnectResponseStage::WaitingForHeaders { identity, noise } => {
                                     let headers = Headers::decode(&frame).unwrap();
@@ -1169,7 +1168,7 @@ impl EndpointBuilder {
                 Err(e) => return Err(e),
                 Ok((Some(ep), _)) => return Ok(ep),
                 Ok((None, None)) => continue,
-                Ok((None, Some(mut record))) => {
+                Ok((None, Some(record))) => {
                     records.push(record);
                     continue;
                 }

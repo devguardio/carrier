@@ -4,7 +4,6 @@ use headers::Headers;
 use identity;
 use osaka::Future;
 use osaka::{mio, osaka};
-use std::io::{Read};
 use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
 pub fn main(

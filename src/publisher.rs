@@ -22,7 +22,7 @@ pub mod tcp;
 pub mod android;
 
 pub struct RouteHandler {
-    f: Box<Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>>,
+    f: Box<dyn Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>>,
     max_fragmentation: u32,
 }
 

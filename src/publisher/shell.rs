@@ -22,7 +22,6 @@ use std::time::Duration;
 use util::defer;
 use std::ffi::OsString;
 use byteorder::{BigEndian, WriteBytesExt};
-use nix::pty::Winsize;
 
 pub struct Pty {
     master_fd: nix::pty::PtyMaster,

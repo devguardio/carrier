@@ -18,7 +18,6 @@ use log::{info, warn};
 use osaka::osaka;
 use pbr::ProgressBar;
 use std::env;
-use std::sync::atomic::{AtomicUsize, Ordering};
 
 #[cfg(any(target_os = "linux", target_os = "macos",))]
 mod shell;
@@ -458,7 +457,6 @@ pub fn _main() -> Result<(), Error> {
             push(poll, config, target, local_file, headers).run()
         }
         ("netsurvey", Some(submatches)) => {
-            let poll = osaka::Poll::new();
             let config = carrier::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
@@ -488,7 +486,7 @@ pub fn _main() -> Result<(), Error> {
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-            let mut headers = carrier::headers::Headers::with_path("/v2/carrier.discovery.v1/discover");
+            let headers = carrier::headers::Headers::with_path("/v2/carrier.discovery.v1/discover");
             carrier::connect(config).open(
                 target,
                 headers,

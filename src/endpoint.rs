@@ -73,7 +73,7 @@ impl Stream {
             .rtt()
     }
 
-    pub fn window(&self) -> usize {
+    pub fn window(&self) -> (usize, usize, u64) {
         self.inner
             .try_borrow_mut()
             .expect("carrier is not thread safe")

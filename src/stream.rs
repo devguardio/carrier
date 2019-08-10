@@ -8,7 +8,7 @@ use config;
 const MAX_REORDERING: u64 = 100;
 
 //FIXME: it really should be max bytes, not messages
-const MAX_QUEUE: usize = 1000;
+const MAX_QUEUE: usize = 100;
 
 pub struct OrderedStream {
     max_reordering: u64,
@@ -32,6 +32,14 @@ impl OrderedStream {
     pub fn push(&mut self, frame: Frame) -> Result<(), Error> {
         let order = frame.order();
         assert!(order > 0);
+
+        // missing this was a nasty bug. duplicated frames can come in way late, way after consuming the original
+        // after consumption, they're no longer in q, so the dup check bellow wont work.
+        // instead it will blow up q indefinately
+        if order < self.consumer {
+            debug!("stream DUP frame with order {} {:?}", order, frame);
+            return Ok(());
+        }
 
         if self.producer + self.max_reordering < order {
             return Err(Error::Underflow {

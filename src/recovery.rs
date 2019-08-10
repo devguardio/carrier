@@ -171,7 +171,7 @@ impl QuicRecovery {
     }
 
     /// current free space in sending window
-    pub fn window(&self) -> usize {
+    pub fn window(&self) -> (usize, u64) {
         if self.largest_acked_packet + 20 < self.largest_sent_retransmittable_packet {
             // TODO: not part of the spec.
             // But if we dont do this, loss_detection_alarm keeps getting reset on send even we get no ack
@@ -179,14 +179,17 @@ impl QuicRecovery {
             // this should be removed when we have a test suite that captures this case
             // because the new idle timer should actually fix this properly
             trace!("no send window because we're loosing too many packets");
-            return 0;
+            return (0, self.congestion_window);
         }
 
-        if self.bytes_in_flight > self.congestion_window as usize {
-            0
-        } else {
-            self.congestion_window as usize - self.bytes_in_flight
-        }
+        (
+            if self.bytes_in_flight > self.congestion_window as usize {
+                0
+            } else {
+                self.congestion_window as usize - self.bytes_in_flight
+            },
+            self.congestion_window
+        )
     }
 
     /// current free space in sending window

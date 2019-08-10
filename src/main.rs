@@ -601,7 +601,13 @@ fn push(
                     let mut pb = ProgressBar::new(total_size);
 
                     loop {
-                        while stream.window() < 100 {
+                        while stream.window().0 < 100 {
+                            let window = stream.window();
+                            pb.message(&format!("rtt {:3}ms | win -{:5}/{:5} | ",
+                                                stream.rtt(),
+                                                window.1, window.2
+                                               ));
+                            pb.tick();
                             yield poll.later(std::time::Duration::from_millis(stream.rtt()));
                         }
 
@@ -612,9 +618,11 @@ fn push(
                             break;
                         }
 
-                        pb.message(&format!("rtt {}ms | window {} | ",
+                        let window = stream.window();
+                        pb.message(&format!("rtt {:3}ms | win +{:5}/{:5} | ",
                                             stream.rtt(),
-                                            stream.window()));
+                                            window.1, window.2
+                                           ));
 
                         pb.add(len as u64);
                         pb.set_units(pbr::Units::Bytes);

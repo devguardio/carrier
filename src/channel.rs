@@ -122,12 +122,19 @@ impl Channel {
         self.recovery.bytes_in_flight()
     }
 
-    pub fn window(&self) -> usize {
-        if self.outqueue_bytes > self.recovery.window() {
-            0
-        } else {
-            self.recovery.window() - self.outqueue_bytes
-        }
+    pub fn window(&self) -> (usize, usize, u64) {
+        let (window, total) = self.recovery.window();
+
+        (
+            if self.outqueue_bytes > window {
+                0
+            } else {
+                window - self.outqueue_bytes
+            },
+            window,
+            total
+        )
+
     }
 
     pub fn is_initiator(&self) -> bool {
@@ -294,7 +301,7 @@ impl Channel {
             recovery::LossDetection::None => (),
             recovery::LossDetection::Lost(lost) => {
                 trace!(
-                    "[{}] lost {} packets, window is {}, {:?}. at {}",
+                    "[{}] lost {} packets, window is {:?}, {:?}. at {}",
                     self.debug_id,
                     lost.len(),
                     self.recovery.window(),

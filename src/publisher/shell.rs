@@ -231,7 +231,7 @@ pub fn main_(poll: osaka::Poll,
         buffer[0] = 1;
         match read(stdio, &mut buffer[1..]) {
             Ok(l) => {
-                while stream.window() < 100 {
+                while stream.window().0 < 100 {
                     yield poll.later(std::time::Duration::from_millis(stream.rtt()));
                 }
                 stream.send(&buffer[..l + 1]);

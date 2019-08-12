@@ -601,8 +601,7 @@ fn push(
                     loop {
                         while stream.window().0 < 100 {
                             let window = stream.window();
-                            pb.message(&format!("{} | rtt {:3}ms | win -{:5}/{:5} | ",
-                                                stream.indicator(),
+                            pb.message(&format!("rtt {:3}ms | win -{:5}/{:5} | ",
                                                 stream.rtt(),
                                                 window.1, window.2
                                                ));
@@ -610,7 +609,7 @@ fn push(
                             yield poll.later(std::time::Duration::from_millis(stream.rtt()));
                         }
 
-                        let mut buf = vec![0; config.protocol.fixed_mtu.unwrap_or(1200) as usize];
+                        let mut buf = vec![0; 600];
                         let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
                         if len == 0 {
                             pb.finish();
@@ -618,8 +617,7 @@ fn push(
                         }
 
                         let window = stream.window();
-                        pb.message(&format!("{} | rtt {:3}ms | win +{:5}/{:5} | ",
-                                            stream.indicator(),
+                        pb.message(&format!("rtt {:3}ms | win +{:5}/{:5} | ",
                                             stream.rtt(),
                                             window.1, window.2
                                            ));

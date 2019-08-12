@@ -5,10 +5,10 @@ use std::collections::hash_map::Entry;
 use std::collections::HashMap;
 use config;
 
-const MAX_REORDERING: u64 = 100;
+const MAX_REORDERING: u64 = 1000;
 
 //FIXME: it really should be max bytes, not messages
-const MAX_QUEUE: usize = 1000;
+const MAX_QUEUE: usize = 100;
 
 pub struct OrderedStream {
     max_reordering: u64,

@@ -29,7 +29,6 @@ pub struct Protocol {
     pub stream_rx_queue:        Option<u64>,
     pub stream_tx_queue:        Option<usize>,
     pub p2p:                    Option<bool>,
-    pub fixed_mtu:              Option<u16>,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -400,7 +399,7 @@ pub fn setup() -> Result<(), Error> {
     println!("shadow: {}", shadow);
     if let Some(secret) = &config.publish.as_ref().unwrap().secret {
         let secret : identity::Secret = secret.parse().unwrap();
-        println!("shadow-secret: {}", secret.identity());
+        println!("shadow-secret: {}", secret.to_string());
     }
 
     let s = toml::to_vec(&config).unwrap();

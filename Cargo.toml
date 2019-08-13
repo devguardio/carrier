@@ -96,6 +96,7 @@ path = "src/main.rs"
 [build-dependencies]
 prost-build = "0.5.0"
 rand        = "0.6.5"
+clap       = "2.33.0"
 
 [profile.release]
 lto = true

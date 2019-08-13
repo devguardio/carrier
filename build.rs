@@ -2,6 +2,7 @@
 
 extern crate prost_build;
 extern crate rand;
+extern crate clap;
 
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
@@ -12,6 +13,9 @@ use std::iter;
 use std::path::Path;
 use std::process::{Command, Stdio};
 use std::io::Error;
+use clap::Shell;
+
+include!("src/cli.rs");
 
 pub fn from_git() -> Result<String, Error>
 {
@@ -77,6 +81,13 @@ pub fn main() {
     f.write_all(b"-").unwrap();
     f.write_all(chars.as_bytes()).unwrap();
     f.write_all(b"\";\n").unwrap();
+
+
+    let mut app = build_cli();
+    app.gen_completions("carrier",  // We need to specify the bin name manually
+        Shell::Bash,                // Then say which shell to build completions for
+        out_dir);// Then say where write the completions to
+
 
     let mut config = prost_build::Config::new();
     config

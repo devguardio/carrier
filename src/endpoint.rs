@@ -22,10 +22,12 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::env;
 use std::mem;
-use std::net::SocketAddr;
 use std::sync::Arc;
 use std::time::Duration;
 use util::defer;
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use nix::sys::socket::{self, sockopt::ReusePort};
+use std::os::unix::io::AsRawFd;
 
 #[derive(Clone)]
 pub struct Stream {
@@ -438,6 +440,7 @@ impl Endpoint {
                 reason: Some(cr.error),
             });
         }
+        debug!("ConnectResponse {:#?}", cr.paths);
 
         let pkt = EncryptedPacket::decode(&cr.handshake)?;
         let hs_identity = requester.recv_response(pkt).unwrap();
@@ -455,17 +458,14 @@ impl Endpoint {
         }
 
         let mut paths = HashMap::new();
-        if let Some(false) = self.protocol.p2p {
-        } else {
-            for path in cr.paths {
-                let cat = match path.category {
-                    o if proto::path::Category::Local as i32 == o => proto::path::Category::Local,
-                    o if proto::path::Category::Internet as i32 == o => proto::path::Category::Internet,
-                    o if proto::path::Category::BrokerOrigin as i32 == o => proto::path::Category::BrokerOrigin,
-                    _ => unreachable!(),
-                };
-                paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
-            }
+        for path in cr.paths {
+            let cat = match path.category {
+                o if proto::path::Category::Local as i32 == o => proto::path::Category::Local,
+                o if proto::path::Category::Internet as i32 == o => proto::path::Category::Internet,
+                o if proto::path::Category::BrokerOrigin as i32 == o => proto::path::Category::BrokerOrigin,
+                _ => unreachable!(),
+            };
+            paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
         }
         if let Some(chan) = self.channels.get(&self.broker_route) {
             match &chan.addrs {
@@ -504,6 +504,8 @@ impl Endpoint {
             .send_response(q.cr.route, &self.secret, None)
             .expect("send_response");
 
+        debug!("ConnectRequest {:#?}", q.cr.paths);
+
         let mut paths = HashMap::new();
         for path in q.cr.paths {
             let cat = match path.category {
@@ -541,11 +543,14 @@ impl Endpoint {
         );
 
         let mut mypaths = Vec::new();
-        for addr in local_addrs::get(self.socket.local_addr().unwrap().port()) {
-            mypaths.push(proto::Path {
-                category: (proto::path::Category::Local as i32),
-                ipaddr:   format!("{}", addr),
-            });
+        if let Some(false) = self.protocol.p2p {
+        } else {
+            for addr in local_addrs::get(self.socket.local_addr().unwrap().port()) {
+                mypaths.push(proto::Path {
+                    category: (proto::path::Category::Local as i32),
+                    ipaddr:   format!("{}", addr),
+                });
+            }
         }
 
         let mut m = Vec::new();
@@ -715,8 +720,8 @@ impl Future<Result<Event, Error>> for Endpoint {
                                 "settled peering with {} adress {}",
                                 match cat {
                                     0 => "invalid",
-                                    1 => "internet",
-                                    2 => "local",
+                                    1 => "local",
+                                    2 => "internet",
                                     3 => "proxy",
                                     _ => "?",
                                 },
@@ -1255,7 +1260,32 @@ impl EndpointBuilder {
                 )?;
             let pkt = pkt.encode();
 
-            let sock = UdpSocket::bind(&format!("0.0.0.0:{}", self.port).parse().unwrap()).map_err(|e| Error::Io(e))?;
+            let sock = match self.protocol.local_port {
+                Some(port ) => {
+                    let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);
+
+
+                    match UdpSocket::bind(&addr) {
+                        Ok(s) => {
+                            socket::setsockopt(s.as_raw_fd(), ReusePort, &true).ok();
+                            Some(s)
+                        },
+                        Err(e) => {
+                            warn!("binding preferred p2p port failed: {}", e);
+                            None
+                        }
+                    }
+                }
+                None => None,
+            };
+            let sock = match sock {
+                Some(s) => s,
+                None => {
+                    let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), 0);
+                    UdpSocket::bind(&addr)?
+                }
+            };
+
             let token = poll
                 .register(&sock, mio::Ready::readable(), mio::PollOpt::level())
                 .unwrap();

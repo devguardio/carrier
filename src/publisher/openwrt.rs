@@ -507,7 +507,7 @@ pub struct BoardJsonSwitch {
 #[derive(Deserialize)]
 pub struct BoardJson {
     pub model:  BoardJsonModel,
-    pub switch: HashMap<String, BoardJsonSwitch>,
+    pub switch: Option<HashMap<String, BoardJsonSwitch>>,
 }
 
 pub fn load_board_json() -> Option<BoardJson> {
@@ -641,13 +641,15 @@ pub fn switch(board: &Option<BoardJson>) -> Option<Vec<proto::Switch>> {
             }
 
             if let Some(board) = board {
-                if let Some(switch) = board.switch.get("switch0") {
-                    for p in &switch.ports {
-                        if p.num == port.port {
-                            if let Some(ref v) = p.device {
-                                port.role = Some(proto::switch_port::Role::Device(v.to_string()));
-                            } else if let Some(ref v) = p.role {
-                                port.role = Some(proto::switch_port::Role::Network(v.to_string()));
+                if let Some(switch) = &board.switch {
+                    if let Some(switch) = switch.get("switch0") {
+                        for p in &switch.ports {
+                            if p.num == port.port {
+                                if let Some(ref v) = p.device {
+                                    port.role = Some(proto::switch_port::Role::Device(v.to_string()));
+                                } else if let Some(ref v) = p.role {
+                                    port.role = Some(proto::switch_port::Role::Network(v.to_string()));
+                                }
                             }
                         }
                     }

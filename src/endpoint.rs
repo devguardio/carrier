@@ -684,51 +684,6 @@ impl Future<Result<Event, Error>> for Endpoint {
                 Ok(pkt) => {
                     let route = pkt.0.route;
                     if let Some(chan) = self.channels.get_mut(&route) {
-                        let settle = if let AddressMode::Discovering(ref mut addrs) = chan.addrs {
-                            trace!("in discovery: received from {}", addr);
-                            let count = {
-                                let (_, count) = addrs.entry(addr).or_insert((proto::path::Category::Internet, 0));
-                                *count += 1;
-                                *count
-                            };
-                            if count >= 5 {
-                                let mut m = None;
-                                let mut bestest = None;
-                                for (addr, (cat, count)) in &*addrs {
-                                    if *count >= 1 {
-                                        if let Some(ref mut bestest) = bestest {
-                                            if *bestest > *cat as i32 {
-                                                m = Some(addr.clone());
-                                                *bestest = *cat as i32;
-                                            }
-                                        } else {
-                                            m = Some(addr.clone());
-                                            bestest = Some(*cat as i32);
-                                        }
-                                    }
-                                }
-                                Some((m.unwrap(), bestest.unwrap(), mem::replace(addrs, HashMap::new())))
-                            } else {
-                                None
-                            }
-                        } else {
-                            None
-                        };
-
-                        if let Some((addr, cat, previous)) = settle {
-                            debug!(
-                                "settled peering with {} adress {}",
-                                match cat {
-                                    0 => "invalid",
-                                    1 => "local",
-                                    2 => "internet",
-                                    3 => "proxy",
-                                    _ => "?",
-                                },
-                                addr
-                            );
-                            chan.addrs = AddressMode::Established(addr, previous);
-                        }
 
                         let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
                         match chanchan.recv(pkt) {
@@ -739,7 +694,53 @@ impl Future<Result<Event, Error>> for Endpoint {
                             }
                             Err(e) => warn!("{}: {}", addr, e),
                             Ok(()) => {
-                                if let AddressMode::Established(ref mut addr_, ref previous) = chan.addrs {
+
+
+                                let settle = if let AddressMode::Discovering(ref mut addrs) = chan.addrs {
+                                    trace!("in discovery: received from {}", addr);
+                                    let count = {
+                                        let (_, count) = addrs.entry(addr).or_insert((proto::path::Category::Internet, 0));
+                                        *count += 1;
+                                        *count
+                                    };
+                                    if count >= 5 {
+                                        let mut m = None;
+                                        let mut bestest = None;
+                                        for (addr, (cat, count)) in &*addrs {
+                                            if *count >= 1 {
+                                                if let Some(ref mut bestest) = bestest {
+                                                    if *bestest > *cat as i32 {
+                                                        m = Some(addr.clone());
+                                                        *bestest = *cat as i32;
+                                                    }
+                                                } else {
+                                                    m = Some(addr.clone());
+                                                    bestest = Some(*cat as i32);
+                                                }
+                                            }
+                                        }
+                                        Some((m.unwrap(), bestest.unwrap(), mem::replace(addrs, HashMap::new())))
+                                    } else {
+                                        None
+                                    }
+                                } else {
+                                    None
+                                };
+
+                                if let Some((addr, cat, previous)) = settle {
+                                    debug!(
+                                        "settled peering with {} adress {}",
+                                        match cat {
+                                            0 => "invalid",
+                                            1 => "local",
+                                            2 => "internet",
+                                            3 => "proxy",
+                                            _ => "?",
+                                        },
+                                        addr
+                                        );
+                                    chan.addrs = AddressMode::Established(addr, previous);
+                                } else if let AddressMode::Established(ref mut addr_, ref previous) = chan.addrs {
                                     if addr != *addr_ {
                                         let current_cat =
                                             previous.get(addr_).unwrap_or(&(proto::path::Category::Internet, 0)).0;

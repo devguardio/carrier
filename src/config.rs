@@ -66,6 +66,7 @@ pub struct ConfigToml {
     protocol:  Option<Protocol>,
 }
 
+
 impl ConfigToml {
     fn secret(o: Option<&String>) -> Result<identity::Secret, Error> {
         if let Some(ref s) = o {
@@ -105,7 +106,7 @@ impl ConfigToml {
 
                         if b == [0xff; 32] || b == [0x0; 32] {
                             f.seek(SeekFrom::Start(offset))?;
-                            thread_rng().try_fill_bytes(&mut b).unwrap();
+                            firstgen_identity(&mut b);
                             f.write(&b)?;
                         }
                         return Ok(identity::Secret::from_array(b));
@@ -119,7 +120,7 @@ impl ConfigToml {
                     if std::fs::metadata(path).is_err() {
                         let mut b = [0u8; 68];
                         b[0] = 0x7;
-                        thread_rng().try_fill_bytes(&mut b[4..]).unwrap();
+                        firstgen_identity(&mut b[4..]);
                         let mut f = OpenOptions::new()
                             .write(true)
                             .create(true)
@@ -470,4 +471,16 @@ pub fn authorize(identity: identity::Identity) -> Result<(), Error> {
 
 
     Ok(())
+}
+
+
+const PREASSIGNED_FROM_FILE : &'static str = "/.devguard-pre-assigned-secret";
+fn firstgen_identity(mut b: &mut [u8]) {
+    if let Ok(f) = std::fs::read_to_string(PREASSIGNED_FROM_FILE) {
+        let secret = f.trim().parse::<identity::Secret>().expect("/.devguard-pre-assigned-secret is not a valid secret");
+        b.write_all(secret.as_bytes()).unwrap();
+        std::fs::remove_file(PREASSIGNED_FROM_FILE).ok();
+        return;
+    }
+    thread_rng().try_fill_bytes(b).unwrap();
 }

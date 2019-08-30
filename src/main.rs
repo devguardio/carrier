@@ -162,6 +162,19 @@ pub fn _main() -> Result<(), Error> {
             }
             .run()
         }
+        ("locate", Some(submatches)) => {
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+            carrier::connect(config).open(
+                target,
+                carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/locate"),
+                message_handler::<carrier::proto::Location>,
+            )
+            .run()
+        }
         #[cfg(not(target_os = "android",))]
         ("tcp", Some(submatches)) => {
             use std::net::{TcpListener};
@@ -416,6 +429,9 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier
     });
     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     println!("{:?}", headers);
+    if headers.get(b":status") != Some(b"200") {
+        std::process::exit(1);
+    }
 
     let m = osaka::sync!(stream);
     let m = T::decode(&m).unwrap();

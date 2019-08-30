@@ -45,7 +45,7 @@ pub fn from_git() -> Result<String, Error>
     }
     if diff {
         let mut f = File::create(&dest_path).unwrap();
-        f.write_all(&ft);
+        f.write_all(&ft).unwrap();
     }
 
 

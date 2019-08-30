@@ -202,3 +202,59 @@ message NetSurvey {
     repeated Arp        arp     = 3;
     repeated NetRoute   routes  = 4;
 }
+
+
+
+
+
+
+message LocationAccuracity {
+    float   hdop = 1;
+    float   vdop = 2;
+    float   pdop = 3;
+}
+
+
+message Satellite {
+    enum Constellation {
+        Unknown = 0;
+        Galileo = 1;
+        Gps     = 2;
+        Glonass = 3;
+    };
+    Constellation constellation = 1;
+    uint32 prn      = 2;
+    float elevation = 3;
+    float azimuth   = 4;
+    float snr       = 5;
+    bool  fix       = 6;
+}
+
+message LocationVelocity {
+    float course    = 1;
+    float speed     = 2;
+}
+
+message Location {
+    double latitude         = 1;
+    double longitude        = 2;
+    float  altitude         = 3;
+
+    enum Fix {
+        None        = 0;
+        Gps         = 1;
+        DGps        = 2;
+        Pps         = 3;
+        Rtk         = 4;
+        FloatRtk    = 5;
+        Estimated   = 6;
+        Manual      = 7;
+        Simulation  = 8;
+    };
+    Fix fix         = 4;
+
+    LocationAccuracity  accuracity = 5;
+    repeated Satellite  satellites = 6;
+    LocationVelocity   velocity = 7;
+
+}

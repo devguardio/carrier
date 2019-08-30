@@ -2,7 +2,6 @@ use log::{info, warn};
 use osaka::{osaka, FutureResult};
 use prost::Message;
 use rand::{self, Rng};
-use std::cell::RefCell;
 use std::collections::HashMap;
 use std::mem;
 use std::net::SocketAddr;
@@ -43,7 +42,7 @@ struct BrokerWorker {
     ep:        endpoint::Endpoint,
     poll:      osaka::Poll,
     shard:     usize,
-    state:     Arc<RefCell<ConduitState>>,
+    state:     Arc<Mutex<ConduitState>>,
     cooldown:  HashMap<identity::Identity, Instant>,
 }
 
@@ -67,8 +66,8 @@ pub struct Builder {
 }
 
 
-pub trait OnPublish: 'static + Fn(identity::Identity, &mut ConduitState) + Send + Sync {}
-impl<F>  OnPublish for F where F: 'static + Fn(identity::Identity, &mut ConduitState) + Send + Sync {}
+pub trait OnPublish: 'static + Fn(identity::Identity, Arc<Mutex<ConduitState>>) + Send + Sync {}
+impl<F>  OnPublish for F where F: 'static + Fn(identity::Identity, Arc<Mutex<ConduitState>>) + Send + Sync {}
 
 impl Builder {
     /// create a new conduit
@@ -127,7 +126,7 @@ impl Builder {
 
             let config = self.config.clone();
             threads.retain(|_, (record, threads)| {
-                info!("{} has {} live threads", record.addr, threads.len());
+                debug!("{} has {} live threads", record.addr, threads.len());
 
                 threads.retain(|_, th| match th.running.try_lock() {
                     Err(std::sync::TryLockError::WouldBlock) => true,
@@ -185,7 +184,7 @@ impl Builder {
         let group = subconf.group;
         let broker = ep.broker();
 
-        let state = Arc::new(RefCell::new(ConduitState {
+        let state = Arc::new(Mutex::new(ConduitState {
             publishers: HashMap::new(),
             subscribed: HashMap::new(),
         }));
@@ -242,7 +241,7 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
         if self.last_sync.elapsed().as_millis() > 200 + rand::thread_rng().gen_range(0, 100) {
 
             self.last_sync = Instant::now();
-            let mut state = self.state.try_borrow_mut().expect("carrier is not thread safe");
+            let mut state = self.state.lock().unwrap();
 
             // subscribe to any client that we don't have
             let mut max_per_second = 0;
@@ -322,7 +321,7 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
                                 Some(0xfffffff),
                                 |poll, stream| { (schedule.f)(poll, stream, id.clone(), mark) }
                             ));
-                            info!(
+                            debug!(
                                 "[{}] [{}] opened scheduled stream {} -> {}",
                                 self.shard,
                                 id,
@@ -355,7 +354,7 @@ impl osaka::Future<Result<(), Error>> for BrokerWorker {
 
         loop {
             let r = self.ep.poll();
-            let mut state = self.state.try_borrow_mut().expect("carrier is not thread safe");
+            let mut state = self.state.lock().unwrap();
             match r {
                 FutureResult::Done(Ok(endpoint::Event::BrokerGone)) => panic!("broker gone"),
                 FutureResult::Done(Ok(endpoint::Event::Disconnect { identity, reason, .. })) => {
@@ -416,7 +415,7 @@ fn subscribe_handler<F: OnPublish>(
     _poll: osaka::Poll,
     mut stream: endpoint::Stream,
     ep: endpoint::Handle,
-    state: Arc<RefCell<ConduitState>>,
+    state: Arc<Mutex<ConduitState>>,
     shard: usize,
     shard_count: usize,
     f: F,
@@ -445,20 +444,22 @@ fn subscribe_handler<F: OnPublish>(
                 if r % shard_count as u64 == shard as u64 {
                     info!("[{:?} {}] + {}", thread::current().id(), shard, identity);
 
-                    let mut state = state.try_borrow_mut().expect("carrier is not thread safe");
-                    if let Some(sub) = state.subscribed.get_mut(&identity) {
-                        info!("we have a previous subscription");
-                        sub.kill = true;
+                    {
+                        let mut state = state.lock().unwrap();
+                        if let Some(sub) = state.subscribed.get_mut(&identity) {
+                            info!("we have a previous subscription");
+                            sub.kill = true;
+                        }
                     }
 
-                    f(identity, &mut state);
+                    f(identity, state.clone());
                 }
             }
             Some(proto::subscribe_change::M::Unpublish(proto::Unpublish { identity })) => {
                 let identity = identity::Identity::from_bytes(identity).unwrap();
                 info!("- {}", identity);
 
-                let mut state = state.try_borrow_mut().expect("carrier is not thread safe");
+                let mut state = state.lock().unwrap();
 
                 if let Some(sub) = state.subscribed.get_mut(&identity) {
                     sub.kill = true;

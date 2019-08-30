@@ -150,7 +150,7 @@ dependencies = [
 
 [[package]]
 name = "carrier"
-version = "0.10.1"
+version = "0.11.0"
 dependencies = [
  "axon 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "bs58 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",

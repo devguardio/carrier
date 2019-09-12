@@ -31,6 +31,12 @@ pub fn build_cli() -> App<'static, 'static> {
             .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
             .arg(Arg::with_name("resource").takes_value(true).required(true).index(2))
             .arg(
+                Arg::with_name("hex")
+                .help("dump output as hex")
+                .short("x")
+                .required(false),
+            )
+            .arg(
                 Arg::with_name("headers")
                 .long("header")
                 .short("H")

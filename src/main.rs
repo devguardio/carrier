@@ -135,7 +135,11 @@ pub fn _main() -> Result<(), Error> {
                     headers.add(h[0].as_bytes().to_vec(), h[1].as_bytes().to_vec());
                 }
             }
-            carrier::connect(config).open(target, headers, print_handler).run()
+            if submatches.is_present("hex") {
+                carrier::connect(config).open(target, headers, hexprint_handler).run()
+            } else {
+                carrier::connect(config).open(target, headers, print_handler).run()
+            }
         }
         ("sysinfo", Some(submatches)) => {
             let config = carrier::config::load()?;
@@ -439,17 +443,44 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier
 }
 
 #[osaka]
-fn print_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
+fn hexprint_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
     let _d = carrier::util::defer(|| {
         info!("stream ended");
         std::process::exit(0);
     });
 
     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
-    println!("{:?}", headers);
+    eprintln!("{:?}", headers);
 
     loop {
-        println!("{}", String::from_utf8_lossy(&osaka::sync!(stream)));
+        let b = osaka::sync!(stream);
+        let mut i = 0;
+        for b in b {
+            print!("{:02x} ", &b);
+            i += 1;
+            if i == 8 {
+                println!();
+                i = 0;
+            }
+        }
+        println!();
+    }
+}
+#[osaka]
+fn print_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
+    use std::io::{self, Write};
+
+    let _d = carrier::util::defer(|| {
+        info!("stream ended");
+        std::process::exit(0);
+    });
+
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    eprintln!("{:?}", headers);
+
+    loop {
+        let b = osaka::sync!(stream);
+        io::stdout().write_all(&b).unwrap();
     }
 }
 

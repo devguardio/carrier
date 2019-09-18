@@ -51,6 +51,12 @@ pub struct SubscriberConfigToml {
     group:  Option<String>,
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Axon {
+    pub path:   String,
+    pub exec:   Vec<String>,
+}
+
 #[derive(Deserialize, Default, Serialize)]
 pub struct ConfigToml {
     broker:    Option<Vec<String>>,
@@ -58,6 +64,7 @@ pub struct ConfigToml {
     principal: Option<String>,
     keepalive: Option<u16>,
     publish:   Option<PublisherConfigToml>,
+    axons:     Option<Vec<Axon>>,
     subscribe: Option<SubscriberConfigToml>,
     authorize: Option<Vec<AuthorizationToml>>,
     names:     Option<HashMap<String, String>>,
@@ -275,6 +282,7 @@ pub struct Config {
     pub principal: Option<identity::Secret>,
     pub keepalive: Option<u16>,
     pub publish:   Option<PublisherConfig>,
+    pub axons:     Vec<Axon>,
     pub subscribe: Option<SubscriberConfig>,
     pub names:     HashMap<String, identity::Identity>,
     pub clock:     ClockSource,
@@ -311,16 +319,17 @@ pub fn load() -> Result<Config, Error> {
 
     let secret = ConfigToml::secret(config.secret.as_ref())?;
     Ok(Config {
-        publish: config.publisher(secret.identity())?,
+        principal:  ConfigToml::secret(config.principal.as_ref()).ok(),
+        publish:    config.publisher(secret.identity())?,
         secret,
-        principal: ConfigToml::secret(config.principal.as_ref()).ok(),
-        keepalive: config.keepalive,
-        subscribe: config.subscriber()?,
-        names: config.names()?,
-        clock: config.clock()?,
-        broker: config.broker()?,
-        port: config.port,
-        protocol: config.protocol.unwrap_or(Default::default()),
+        keepalive:  config.keepalive,
+        subscribe:  config.subscriber()?,
+        names:      config.names()?,
+        clock:      config.clock()?,
+        broker:     config.broker()?,
+        port:       config.port,
+        protocol:   config.protocol.unwrap_or_default(),
+        axons:      config.axons.unwrap_or_default(),
     })
 }
 
@@ -340,15 +349,16 @@ impl Config {
     pub fn new(secret: identity::Secret) -> Self {
         Self {
             secret,
-            principal: Default::default(),
-            keepalive: Default::default(),
-            publish: Default::default(),
-            subscribe: Default::default(),
-            names: Default::default(),
-            clock: Default::default(),
-            broker: Self::default_brokers(),
-            port: Default::default(),
-            protocol: Default::default(),
+            broker:     Self::default_brokers(),
+            principal:  Default::default(),
+            keepalive:  Default::default(),
+            publish:    Default::default(),
+            subscribe:  Default::default(),
+            names:      Default::default(),
+            clock:      Default::default(),
+            port:       Default::default(),
+            protocol:   Default::default(),
+            axons:      Default::default(),
         }
     }
 }

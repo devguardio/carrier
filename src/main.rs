@@ -101,7 +101,6 @@ pub fn _main() -> Result<(), Error> {
                 .route("/v0/tcp",   None, carrier::publisher::tcp::main)
                 .route("/v2/carrier.sysinfo.v1/sysinfo",    None, carrier::publisher::sysinfo::sysinfo)
                 .with_disco("carrier-cli".into(), carrier::BUILD_ID.into())
-                .with_axons()
                 .publish(poll);
 
             publisher.run()

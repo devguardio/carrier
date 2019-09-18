@@ -9,7 +9,6 @@ use osaka::Future;
 use osaka::{osaka, Poll};
 use std::collections::HashMap;
 use std::io::{Read, Write};
-use std::path::PathBuf;
 use std::process::Command;
 
 #[cfg(feature = "openwrt")]
@@ -29,7 +28,6 @@ pub struct RouteHandler {
 pub struct PublisherBuilder {
     config:     Config,
     routes:     HashMap<String, RouteHandler>,
-    with_axons: bool,
     with_disco: Option<(String, String)>,
 }
 
@@ -37,20 +35,19 @@ pub fn new(config: Config) -> PublisherBuilder {
     PublisherBuilder {
         config,
         routes: HashMap::new(),
-        with_axons: false,
         with_disco: None,
     }
 }
 
 fn newstreamhandler(
-    poll: Poll,
-    headers: headers::Headers,
+    poll:       Poll,
+    headers:    headers::Headers,
     mut stream: endpoint::Stream,
-    identity: &identity::Identity,
-    auth: &certificate::Authenticator,
-    routes: &HashMap<String, RouteHandler>,
-    with_axons: bool,
+    identity:   &identity::Identity,
+    auth:       &certificate::Authenticator,
+    routes:     &HashMap<String, RouteHandler>,
     with_disco: Option<(String, String)>,
+    axons:      HashMap<String, config::Axon>,
 ) -> Option<(osaka::Task<()>, u32)> {
     let resource = headers
         .path()
@@ -67,18 +64,15 @@ fn newstreamhandler(
         return (*v.f)(poll, headers, &identity, stream).map(|f| (f, v.max_fragmentation));
     }
 
-    if with_axons {
-        if let Some(exe) = resource.split("/v0/").nth(1) {
-            if exe.chars().all(|c| c.is_ascii_alphanumeric()) {
-                let exe = format!("carrier-axon-v0-{}", exe);
-                if let Ok(path) = which::which(exe) {
-                    return Some((axon_exe(poll, headers, stream, path), 0));
-                }
-            }
-        }
+    if let Some(axon) = axons.get(&resource) {
+        return Some((axon_exe(poll, headers, stream, axon.exec.clone()), 0));
     }
 
     if let Some((application, application_version)) = with_disco {
+        let mut paths : Vec<String> = routes.keys().cloned().collect();
+        for (k,_) in axons {
+            paths.push(k.clone());
+        }
         if resource == "/v2/carrier.discovery.v1/discover" {
             stream.send(headers::Headers::ok().encode());
             stream.message(super::proto::DiscoveryResponse {
@@ -86,17 +80,9 @@ fn newstreamhandler(
                 carrier_build_id: super::BUILD_ID.into(),
                 application,
                 application_version,
-                paths: routes.keys().cloned().collect(),
+                paths,
             });
             return None;
-        }
-        if let Some(exe) = resource.split("/v0/").nth(1) {
-            if exe.chars().all(|c| c.is_ascii_alphanumeric()) {
-                let exe = format!("carrier-axon-v0-{}", exe);
-                if let Ok(path) = which::which(exe) {
-                    return Some((axon_exe(poll, headers, stream, path), 0));
-                }
-            }
         }
     }
 
@@ -125,22 +111,17 @@ impl PublisherBuilder {
         self
     }
 
-    pub fn with_axons(mut self) -> Self {
-        self.with_axons = true;
-        self
-    }
-
     #[osaka]
     pub fn publish(self, poll: Poll) -> Result<(), Error> {
         let mut ep = endpoint::EndpointBuilder::new(&self.config)?.connect(poll.clone());
         let mut ep = osaka::sync!(ep)?;
 
-        let with_axons = self.with_axons;
         let with_disco = self.with_disco;
         let routes: &'static HashMap<String, RouteHandler> = Box::leak(Box::new(self.routes));
         let publish_config = self.config.publish.expect("missing publish section in config");
         ep.publish(publish_config.shadow.clone(), || panic!("publish closed"))?;
         let publish_config: &'static config::PublisherConfig = Box::leak(Box::new(publish_config));
+
 
         loop {
             match osaka::sync!(ep)? {
@@ -153,6 +134,10 @@ impl PublisherBuilder {
                     let identity = q.identity.clone();
                     match publish_config.auth.reject_early(&q.identity, &Vec::new()) {
                         Ok(()) => {
+                            let mut axons = HashMap::new();
+                            for axon in &self.config.axons {
+                                axons.insert(axon.path.clone(), axon.clone());
+                            }
                             let with_disco = with_disco.clone();
                             ep.accept_incomming(q, move |h, s| {
                                 newstreamhandler(
@@ -162,8 +147,8 @@ impl PublisherBuilder {
                                     &identity,
                                     &publish_config.auth,
                                     &routes,
-                                    with_axons,
                                     with_disco.clone(),
+                                    axons.clone(),
                                 )
                             })
                         }
@@ -179,12 +164,26 @@ impl PublisherBuilder {
 }
 
 #[osaka]
-pub fn axon_exe(poll: osaka::Poll, headers: headers::Headers, mut stream: endpoint::Stream, exe: PathBuf) {
-    info!("executing axon executable {:?}", exe);
+pub fn axon_exe(poll: osaka::Poll, headers: headers::Headers, mut stream: endpoint::Stream, mut args: Vec<String>) {
+    if args.len() < 1 {
+        stream.send(headers::Headers::with_error(500, "exec configuration is empty").encode());
+        return;
+    };
+    let exe = args.remove(0);
+    info!("executing axon executable {:?} {:?}", exe, args);
 
-    let mut child = Command::new(exe)
-        .spawn_with_axon()
-        .expect("Failed to start axon process");
+    let child = Command::new(exe)
+        .args(args)
+        .spawn_with_axon();
+
+
+    let mut child = match child {
+        Ok(v) => v,
+        Err(e) => {
+            stream.send(headers::Headers::with_error(500, format!("{}", e)).encode());
+            return;
+        }
+    };
 
     child.io.write(&headers.encode()).ok();
     child.io.make_async().expect("axon io");

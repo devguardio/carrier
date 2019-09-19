@@ -72,6 +72,16 @@ impl Headers {
         path
     }
 
+    pub fn status(&self) -> Option<u32> {
+        let mut status = None;
+        for header in &self.f {
+            if header.0 == b":status" {
+                status = String::from_utf8_lossy(&header.1.as_slice()).parse().ok();
+            }
+        }
+        status
+    }
+
     pub fn add(&mut self, k: Vec<u8>, v: Vec<u8>) {
         self.f.push((k, v));
     }

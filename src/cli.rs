@@ -109,6 +109,11 @@ pub fn build_cli() -> App<'static, 'static> {
             .arg(Arg::with_name("detach").short("d").takes_value(false).required(false)),
             )
         .subcommand(
+            SubCommand::with_name("genesis")
+            .about("individual device configuration")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
+            )
+        .subcommand(
             SubCommand::with_name("ota")
             .about("update target system image")
             .arg(Arg::with_name("target").takes_value(true).required(true).index(1))

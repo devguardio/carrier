@@ -29,6 +29,8 @@ pub struct PublisherBuilder {
     config:     Config,
     routes:     HashMap<String, RouteHandler>,
     with_disco: Option<(String, String)>,
+    on_pub:     Option<Box<dyn 'static + FnOnce()>>,
+    on_unpub:   Option<Box<dyn 'static + FnOnce()>>,
 }
 
 pub fn new(config: Config) -> PublisherBuilder {
@@ -36,6 +38,8 @@ pub fn new(config: Config) -> PublisherBuilder {
         config,
         routes: HashMap::new(),
         with_disco: None,
+        on_pub: None,
+        on_unpub: None,
     }
 }
 
@@ -111,6 +115,16 @@ impl PublisherBuilder {
         self
     }
 
+    pub fn on_pub<F: 'static + FnOnce()> (mut self, f: F) -> Self {
+        self.on_pub = Some(Box::new(f));
+        self
+    }
+
+    pub fn on_unpub<F: 'static + FnOnce()> (mut self, f: F) -> Self {
+        self.on_unpub = Some(Box::new(f));
+        self
+    }
+
     #[osaka]
     pub fn publish(self, poll: Poll) -> Result<(), Error> {
         let mut ep = endpoint::EndpointBuilder::new(&self.config)?.connect(poll.clone());
@@ -119,7 +133,10 @@ impl PublisherBuilder {
         let with_disco = self.with_disco;
         let routes: &'static HashMap<String, RouteHandler> = Box::leak(Box::new(self.routes));
         let publish_config = self.config.publish.expect("missing publish section in config");
-        ep.publish(publish_config.shadow.clone(), || panic!("publish closed"))?;
+        ep.publish(publish_config.shadow.clone(),
+            self.on_pub.unwrap_or(Box::new(||())),
+            self.on_unpub.unwrap_or(Box::new(||panic!("publish closed"))),
+        )?;
         let publish_config: &'static config::PublisherConfig = Box::leak(Box::new(publish_config));
 
 

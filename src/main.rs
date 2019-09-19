@@ -165,6 +165,89 @@ pub fn _main() -> Result<(), Error> {
             }
             .run()
         }
+        ("genesis", Some(submatches)) => {
+            use std::process::Command;
+            use std::io::Read;
+            use std::io::BufRead;
+
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+
+            let dir     = tempfile::tempdir().unwrap();
+            let filep   = dir.path().join("genesis.toml");
+            let filep_  = filep.clone();
+
+            carrier::connect(config.clone()).open(
+                target.clone(),
+                carrier::headers::Headers::with_path("/v2/genesis.v1"),
+                move |a,b,c|genesis_get_handler(a,b,c, filep_),
+            ).run()?;
+
+            let filep2  = dir.path().join("original.toml");
+            std::fs::copy(&filep, &filep2).unwrap();
+
+
+            let editor = std::env::var("EDITOR").unwrap_or("vi".to_string());
+
+
+            let status = Command::new(editor)
+                .arg(&filep)
+                .status()
+                .expect("failed to execute process");
+
+            if !status.success() {
+                warn!("editor exit not 0, aborting");
+                std::process::exit(status.code().unwrap_or(1));
+            }
+
+            let shaa = carrier::util::sha256file(&filep2).unwrap();
+            let shab = carrier::util::sha256file(&filep).unwrap();
+
+            if shaa == shab {
+                info!("no changes");
+                std::process::exit(0);
+            }
+
+            Command::new("diff")
+                .arg("--color")
+                .arg("-u")
+                .arg(&filep2)
+                .arg(&filep)
+                .status()
+                .ok();
+
+            println!("enter commit message or empty message to abort");
+            let stdin = std::io::stdin();
+            let mut iterator = stdin.lock().lines();
+            let commit = iterator.next().unwrap().unwrap();
+            if commit.is_empty() {
+                std::process::exit(1);
+            }
+
+            let mut f = std::fs::File::open(filep).unwrap();
+            let mut data = Vec::new();
+            f.read_to_end(&mut data).unwrap();
+
+            let msg = carrier::proto::GenesisUpdate {
+                sha256:             shab,
+                previous_sha256:    shaa,
+                commit,
+                data,
+            };
+
+            let mut headers = carrier::headers::Headers::with_path("/v2/genesis.v1");
+            headers.add(":method".into(), "POST".into());
+            carrier::connect(config).open(
+                target,
+                headers,
+                move |a,b,c|genesis_post_handler(a,b,c, msg),
+            ).run()?;
+
+
+            Ok(())
+        }
         ("locate", Some(submatches)) => {
             let config = carrier::config::load()?;
             let target = config
@@ -431,14 +514,67 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier
         std::process::exit(0);
     });
     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
-    println!("{:?}", headers);
-    if headers.get(b":status") != Some(b"200") {
+    eprintln!("{:?}", headers);
+    if headers.status().unwrap_or(999) > 299 {
         std::process::exit(1);
     }
 
     let m = osaka::sync!(stream);
     let m = T::decode(&m).unwrap();
     println!("{:#?}", m);
+}
+
+#[osaka]
+fn genesis_get_handler(_poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream, filep: std::path::PathBuf) {
+    use prost::Message;
+    use std::io::Write;
+
+    let _d = carrier::util::defer(move || {
+        ep.disconnect(ep.broker(), carrier::packet::DisconnectReason::Application);
+    });
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    eprintln!("{:?}", headers);
+    if headers.status().unwrap_or(999) > 299 {
+        std::process::exit(1);
+    }
+
+    let m = osaka::sync!(stream);
+    let m = carrier::proto::GenesisCurrent::decode(&m).unwrap();
+
+    {
+        let mut file = std::fs::File::create(&filep).unwrap();
+        file.write_all(&m.data).unwrap();
+        file.flush().unwrap();
+    }
+
+    let sha = carrier::util::sha256file(&filep).unwrap();
+    if sha != m.sha256 {
+        panic!("sha mismatch expected {:x?} but local file is {:x?}", sha, m.sha256);
+    }
+}
+
+#[osaka]
+fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
+    mut stream: carrier::endpoint::Stream, msg: carrier::proto::GenesisUpdate
+) {
+    let _d = carrier::util::defer(|| {
+        info!("stream ended");
+        std::process::exit(0);
+    });
+
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    eprintln!("{:?}", headers);
+    if headers.status().unwrap_or(999) > 299 {
+        std::process::exit(1);
+    }
+
+    stream.message(msg);
+
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    eprintln!("{:?}", headers);
+    if headers.status().unwrap_or(999) > 299 {
+        std::process::exit(1);
+    }
 }
 
 #[osaka]
@@ -565,7 +701,7 @@ fn push(
 
                     let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
                     println!("{:?}", headers);
-                    if headers.get(b":status") != Some(b"200") {
+                    if headers.status().unwrap_or(999) > 299 {
                         std::process::exit(1);
                     }
 

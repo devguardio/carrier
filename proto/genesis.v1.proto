@@ -1,0 +1,15 @@
+syntax = "proto3";
+package genesis.v1;
+
+message GenesisCurrent {
+    bytes   sha256  = 1;
+    string  commit  = 2;
+    bytes   data    = 3;
+}
+
+message GenesisUpdate {
+    bytes   sha256  = 1;
+    bytes   previous_sha256 = 2;
+    string  commit  = 3;
+    bytes   data    = 4;
+}

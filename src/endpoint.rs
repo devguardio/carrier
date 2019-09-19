@@ -281,22 +281,27 @@ impl Endpoint {
     }
 
     #[osaka]
-    fn publish_stream<F>(poll: osaka::Poll, mut stream: Stream, f: F)
+    fn publish_stream<F1, F2>(poll: osaka::Poll, mut stream: Stream, f1: F1, f2: F2)
     where
-        F: 'static + FnOnce(),
+        F1: 'static + FnOnce(),
+        F2: 'static + FnOnce(),
     {
-        let _omg = defer(|| f());
+        let _omg = defer(|| f2());
 
         let m = osaka::sync!(stream);
         let headers = Headers::decode(&m).unwrap();
         info!("pubres: {:?}", headers);
-
+        if headers.status().unwrap_or(999) > 299 {
+            return;
+        }
+        f1();
         yield poll.never();
     }
 
-    pub fn publish<F>(&mut self, shadow: identity::Address, on_close: F) -> Result<u32, Error>
+    pub fn publish<F1, F2>(&mut self, shadow: identity::Address, on_pub: F1, on_unpub: F2) -> Result<u32, Error>
     where
-        F: 'static + FnOnce(),
+        F1: 'static + FnOnce(),
+        F2: 'static + FnOnce(),
     {
         let xaddr = self.xsecret().address();
         let xaddr = identity::SignedAddress::sign(&self.secret, xaddr);
@@ -311,7 +316,7 @@ impl Endpoint {
                     xaddr:  xaddr.to_vec(),
                     shadow: shadow.as_bytes().to_vec(),
                 });
-                Self::publish_stream(poll, stream, on_close)
+                Self::publish_stream(poll, stream, on_pub, on_unpub)
             },
         )
     }

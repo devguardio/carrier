@@ -77,6 +77,8 @@ fn newstreamhandler(
         for (k,_) in axons {
             paths.push(k.clone());
         }
+        paths.sort();
+
         if resource == "/v2/carrier.discovery.v1/discover" {
             stream.send(headers::Headers::ok().encode());
             stream.message(super::proto::DiscoveryResponse {

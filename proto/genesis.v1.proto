@@ -5,6 +5,7 @@ message GenesisCurrent {
     bytes   sha256  = 1;
     string  commit  = 2;
     bytes   data    = 3;
+    bool    stable  = 4;
 }
 
 message GenesisUpdate {

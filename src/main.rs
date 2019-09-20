@@ -575,6 +575,11 @@ fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
     if headers.status().unwrap_or(999) > 299 {
         std::process::exit(1);
     }
+
+    loop {
+        let b = osaka::sync!(stream);
+        io::stdout().write_all(&b).unwrap();
+    }
 }
 
 #[osaka]

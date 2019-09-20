@@ -74,6 +74,48 @@ pub struct ConfigToml {
 }
 
 
+pub fn persistence_dir() -> std::path::PathBuf {
+    #[cfg(feature = "openwrt")]
+    {
+        let gdir : std::path::PathBuf = "/etc/config/devguard/".into();
+        std::fs::create_dir_all(&gdir).expect(&format!("cannot create {:?}", gdir));
+
+        let cf = gdir.join("carrier.toml");
+        let of =
+            dirs::home_dir()
+            .unwrap_or("/root/".into())
+            .join(".devguard/carrier.toml");
+
+        if !cf.exists() && of.exists() {
+            match std::fs::copy(&of, &cf) {
+                Ok(_) => {
+                    log::warn!("config file {:?} was copied to new location {:?}", of, cf);
+                },
+                Err(_) => {
+                    return of.parent().unwrap().into();
+                }
+            }
+        }
+
+        return gdir;
+    }
+    #[cfg(target_os = "android",)]
+    let gdir =  {
+        "/data/.devguard/".into()
+    };
+    #[cfg(not(target_os = "android",))]
+    let gdir = {
+
+        let gdir =
+            dirs::home_dir()
+            .unwrap_or("/root/".into())
+            .join(".devguard/");
+        gdir
+    };
+    std::fs::create_dir_all(&gdir).expect(&format!("cannot create {:?}", gdir));
+    gdir
+}
+
 impl ConfigToml {
     fn secret(o: Option<&String>) -> Result<identity::Secret, Error> {
         if let Some(ref s) = o {
@@ -293,16 +335,9 @@ pub struct Config {
 
 pub fn load() -> Result<Config, Error> {
 
-    #[cfg(not(target_os = "android",))]
-    let defaultfile =
-        dirs::home_dir()
-        .unwrap_or("/root/".into())
-        .join(".devguard/carrier.toml");
-
-    #[cfg(target_os = "android",)]
-    let defaultfile : std::path::PathBuf = "/data/.devguard/carrier.toml".into();
-
-    let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
+    let filename =
+        persistence_dir()
+        .join("carrier.toml");
 
     let mut buffer = String::default();
     File::open(&filename)
@@ -365,20 +400,9 @@ impl Config {
 
 pub fn setup() -> Result<(), Error> {
 
-    #[cfg(not(target_os = "android",))]
-    let defaultfile =
-        dirs::home_dir()
-        .unwrap_or("/root/".into())
-        .join(".devguard/carrier.toml");
-
-    #[cfg(target_os = "android",)]
-    let defaultfile : std::path::PathBuf = "/data/.devguard/carrier.toml".into();
-
-    let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
-
-    if let Some(p) = std::path::Path::new(&filename).parent() {
-        std::fs::create_dir_all(p).expect(&format!("create dir {:?}", p));
-    }
+    let persistence_dir = persistence_dir();
+    std::fs::create_dir_all(&persistence_dir).expect(&format!("create dir {:?}", persistence_dir));
+    let filename = persistence_dir.join("carrier.toml");
 
     let mut config: ConfigToml = if let Ok(mut f) = File::open(&filename) {
         let mut buffer = String::default();

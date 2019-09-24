@@ -41,6 +41,7 @@ impl OrderedStream {
             return Ok(());
         }
 
+
         if self.producer + self.max_reordering < order {
             return Err(Error::Underflow {
                 prev: self.producer,
@@ -50,11 +51,18 @@ impl OrderedStream {
         }
         self.producer = max(self.producer, order);
 
-        if self.q.len() > self.max_q {
-            warn!("overflowing ordered stream. q.len(): {}, producer: {}, consumer: {}, rejected order: {}",
-                self.q.len(), self.producer, self.consumer, order);
 
-            return Err(Error::Overflow.into());
+        // if the queue is under memory stress
+        if self.q.len() > self.max_q {
+            // accept the packet if its within max_reordering anyway
+            if order < self.consumer + self.max_reordering {
+                warn!("reordering stream. q.len(): {}, producer: {}, consumer: {}, out of order: {}",
+                    self.q.len(), self.producer, self.consumer, order);
+            } else {
+                warn!("overflowing ordered stream. q.len(): {}, producer: {}, consumer: {}, rejected order: {}",
+                    self.q.len(), self.producer, self.consumer, order);
+                return Err(Error::Overflow.into());
+            }
         }
 
         match self.q.entry(order) {

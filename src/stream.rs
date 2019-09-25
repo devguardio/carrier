@@ -54,7 +54,7 @@ impl OrderedStream {
 
         // if the queue is under memory stress
         if self.q.len() > self.max_q {
-            // accept the packet if its within max_reordering anyway
+            // accept the packet anyway, if its within max_reordering
             if order < self.consumer + self.max_reordering {
                 warn!("reordering stream. q.len(): {}, producer: {}, consumer: {}, out of order: {}",
                     self.q.len(), self.producer, self.consumer, order);

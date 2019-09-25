@@ -42,3 +42,15 @@ message CertificateRequest {
     bytes   identity        = 2;
     repeated Claim  claims  = 3;
 }
+
+
+
+
+message Authorization {
+    string identity = 1;
+    string resource = 2;
+}
+
+message AuthorizationList {
+    repeated Authorization a = 1;
+}

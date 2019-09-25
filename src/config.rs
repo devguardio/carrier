@@ -6,7 +6,6 @@ use mtdparts::parse_mtd;
 use rand::thread_rng;
 use rand::RngCore;
 use std::collections::HashMap;
-use std::env;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::Seek;
@@ -34,8 +33,8 @@ pub struct Protocol {
 
 #[derive(Deserialize, Serialize)]
 pub struct AuthorizationToml {
-    identity: String,
-    resource: String,
+    pub identity: String,
+    pub resource: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -59,18 +58,18 @@ pub struct Axon {
 
 #[derive(Deserialize, Default, Serialize)]
 pub struct ConfigToml {
-    broker:    Option<Vec<String>>,
-    secret:    Option<String>,
-    principal: Option<String>,
-    keepalive: Option<u16>,
-    publish:   Option<PublisherConfigToml>,
-    axons:     Option<Vec<Axon>>,
-    subscribe: Option<SubscriberConfigToml>,
-    authorize: Option<Vec<AuthorizationToml>>,
-    names:     Option<HashMap<String, String>>,
-    clock:     Option<String>,
-    port:      Option<u16>,
-    protocol:  Option<Protocol>,
+    pub broker:    Option<Vec<String>>,
+    pub secret:    Option<String>,
+    pub principal: Option<String>,
+    pub keepalive: Option<u16>,
+    pub clock:     Option<String>,
+    pub port:      Option<u16>,
+    pub publish:   Option<PublisherConfigToml>,
+    pub names:     Option<HashMap<String, String>>,
+    pub subscribe: Option<SubscriberConfigToml>,
+    pub authorize: Option<Vec<AuthorizationToml>>,
+    pub axons:     Option<Vec<Axon>>,
+    pub protocol:  Option<Protocol>,
 }
 
 
@@ -290,13 +289,8 @@ pub enum ClockSource {
 }
 
 impl Default for ClockSource {
-    #[cfg(not(target_os = "android",))]
     fn default() -> Self {
-        ClockSource::File(dirs::home_dir().unwrap_or("/root/".into()).join(".devguard/clock"))
-    }
-    #[cfg(target_os = "android",)]
-    fn default() -> Self {
-        ClockSource::File(dirs::home_dir().unwrap_or("/data/".into()).join(".devguard/clock"))
+        ClockSource::File(persistence_dir().join(".devguard/clock"))
     }
 }
 
@@ -439,9 +433,13 @@ pub fn setup() -> Result<(), Error> {
     }
 
     let s = toml::to_vec(&config).unwrap();
+
+
+
     let mut f = OpenOptions::new()
         .create(true)
         .write(true)
+        .truncate(true)
         .mode(0o600)
         .open(&filename)
         .expect(&format!("cannot create config file {:?}", filename));
@@ -452,33 +450,22 @@ pub fn setup() -> Result<(), Error> {
 }
 
 
-pub fn authorize(identity: identity::Identity) -> Result<(), Error> {
-    #[cfg(not(target_os = "android",))]
-    let defaultfile =
-        dirs::home_dir()
-        .unwrap_or("/root/".into())
-        .join(".devguard/carrier.toml");
-
-    #[cfg(target_os = "android",)]
-    let defaultfile : std::path::PathBuf = "/data/.devguard/carrier.toml".into();
-
-    let filename = env::var("CARRIER_CONFIG_FILE").map(|v| v.into()).unwrap_or(defaultfile);
+pub fn authorize(identity: identity::Identity, resource: String) -> Result<(), Error> {
+    let filename =
+        persistence_dir()
+        .join("carrier.toml");
 
     let mut buffer = String::default();
-    File::open(&filename)
-        .expect(&format!(
-            "cannot open config file {:?}. maybe run carrier setup",
-            filename
-        ))
-        .read_to_string(&mut buffer)
-        .expect(&format!("cannot read config file {:?}", filename));
-    let mut config: ConfigToml = toml::from_str(&buffer).expect(&format!(
-        "cannot open config file {:?}. maybe run carrier setup",
-        filename
-    ));
+    File::open(&filename)?
+        .read_to_string(&mut buffer)?;
+
+    let mut config: ConfigToml = match toml::from_str(&buffer) {
+        Ok(v) => v,
+        Err(e) => return Err(std::io::Error::new(std::io::ErrorKind::Other, format!("{:?}", e)).into()),
+    };
 
     if  config.authorize.is_none() {
-        config.authorize =Some(Vec::new());
+        config.authorize = Some(Vec::new());
     }
 
     for auth in config.authorize.as_ref().unwrap() {
@@ -490,19 +477,79 @@ pub fn authorize(identity: identity::Identity) -> Result<(), Error> {
 
     config.authorize.as_mut().unwrap().push(AuthorizationToml{
         identity: identity.to_string(),
-        resource: "*".to_string(),
+        resource,
     });
 
     let s = toml::to_vec(&config).unwrap();
+
+
+    // make sure the config still parses before writing
+    match toml::from_slice::<ConfigToml>(&s) {
+        Ok(v) => v,
+        Err(e) => {
+            println!("{}", String::from_utf8_lossy(&s));
+            return Err(std::io::Error::new(std::io::ErrorKind::Other, e).into());
+        }
+    };
+
+
     let mut f = OpenOptions::new()
         .create(true)
         .write(true)
+        .truncate(true)
         .mode(0o600)
-        .open(&filename)
-        .expect(&format!("cannot create config file {:?}", filename));
-    f.write_all(&s)
-        .expect(&format!("cannot write config file {:?}", filename));
+        .open(&filename)?;
+    f.write_all(&s)?;
 
+    Ok(())
+}
+
+
+pub fn deauthorize(identity: identity::Identity) -> Result<(), Error> {
+    let filename =
+        persistence_dir()
+        .join("carrier.toml");
+
+    let mut buffer = String::default();
+    File::open(&filename)?
+        .read_to_string(&mut buffer)?;
+
+    let mut config: ConfigToml = match toml::from_str(&buffer) {
+        Ok(v) => v,
+        Err(e) => return Err(std::io::Error::new(std::io::ErrorKind::Other, e).into()),
+    };
+
+    if  config.authorize.is_none() {
+        config.authorize = Some(Vec::new());
+    }
+
+    let mut nur = Vec::new();
+    for auth in std::mem::replace(&mut config.authorize, None).unwrap() {
+        if auth.identity != identity.to_string() {
+            nur.push(auth);
+        }
+    }
+    config.authorize = Some(nur);
+
+    let s = match toml::to_vec(&config) {
+        Ok(v) => v,
+        Err(e) => return Err(std::io::Error::new(std::io::ErrorKind::Other, e).into()),
+    };
+
+    // make sure the config still parses before writing
+    match toml::from_slice::<ConfigToml>(&s) {
+        Ok(v) => v,
+        Err(e) => return Err(std::io::Error::new(std::io::ErrorKind::Other, e).into()),
+    };
+
+
+    let mut f = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .truncate(true)
+        .mode(0o600)
+        .open(&filename)?;
+    f.write_all(&s)?;
 
     Ok(())
 }

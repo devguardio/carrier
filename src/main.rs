@@ -82,13 +82,49 @@ pub fn _main() -> Result<(), Error> {
             Ok(())
         }
         ("authorize", Some(submatches)) => {
-            let identity = submatches
-                .value_of("identity")
-                .unwrap()
-                .to_string()
-                .parse()
-                .expect("parsing shadow");
-            carrier::config::authorize(identity)
+            let config = carrier::config::load()?;
+            if let Some(identity) = submatches.value_of("identity") {
+                let mut headers = carrier::headers::Headers::with_path("/v2/carrier.certificate.v1/authorize");
+                headers.add(":method".into(),  "POST".into());
+                headers.add("identity".into(), identity.to_string().as_bytes().to_vec());
+                headers.add("resource".into(), "*".into());
+
+                let target = config
+                    .resolve_identity(submatches.value_of("identity_or_target").unwrap().to_string())
+                    .expect("resolving identity from cli");
+
+                carrier::connect(config).open(target, headers, print_handler).run()
+            } else {
+                let identity = submatches
+                    .value_of("identity_or_target")
+                    .unwrap()
+                    .to_string()
+                    .parse()
+                    .expect("parsing identity");
+                carrier::config::authorize(identity, "*".to_string())
+            }
+        }
+        ("deauthorize", Some(submatches)) => {
+            let config = carrier::config::load()?;
+            if let Some(identity) = submatches.value_of("identity") {
+                let mut headers = carrier::headers::Headers::with_path("/v2/carrier.certificate.v1/authorize");
+                headers.add(":method".into(),  "DELETE".into());
+                headers.add("identity".into(), identity.to_string().as_bytes().to_vec());
+
+                let target = config
+                    .resolve_identity(submatches.value_of("identity_or_target").unwrap().to_string())
+                    .expect("resolving identity from cli");
+
+                carrier::connect(config).open(target, headers, print_handler).run()
+            } else {
+                let identity = submatches
+                    .value_of("identity_or_target")
+                    .unwrap()
+                    .to_string()
+                    .parse()
+                    .expect("parsing identity");
+                carrier::config::deauthorize(identity)
+            }
         }
 
         #[cfg(any(target_os = "linux", target_os = "macos", target_os = "android",))]
@@ -97,9 +133,10 @@ pub fn _main() -> Result<(), Error> {
             let config = carrier::config::load()?;
             let mut publisher = carrier::publisher::new(config)
                 .route("/v0/shell", None, carrier::publisher::shell::main)
-                .route("/v0/sft", None, carrier::publisher::sft::main)
+                .route("/v0/sft",   None, carrier::publisher::sft::main)
                 .route("/v0/tcp",   None, carrier::publisher::tcp::main)
-                .route("/v2/carrier.sysinfo.v1/sysinfo",    None, carrier::publisher::sysinfo::sysinfo)
+                .route("/v2/carrier.certificate.v1/authorize",   None, carrier::publisher::authorization::main)
+                .route("/v2/carrier.sysinfo.v1/sysinfo",         None, carrier::publisher::sysinfo::sysinfo)
                 .with_disco("carrier-cli".into(), carrier::BUILD_ID.into())
                 .publish(poll);
 
@@ -557,6 +594,7 @@ fn genesis_get_handler(_poll: osaka::Poll, ep: carrier::endpoint::Handle, mut st
 fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
     mut stream: carrier::endpoint::Stream, msg: carrier::proto::GenesisUpdate
 ) {
+    use std::io::{Write};
     let _d = carrier::util::defer(|| {
         info!("stream ended");
         std::process::exit(0);
@@ -578,7 +616,7 @@ fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
 
     loop {
         let b = osaka::sync!(stream);
-        io::stdout().write_all(&b).unwrap();
+        std::io::stdout().write_all(&b).unwrap();
     }
 }
 

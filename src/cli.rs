@@ -18,7 +18,14 @@ pub fn build_cli() -> App<'static, 'static> {
         .subcommand(
             SubCommand::with_name("authorize")
             .about("add authorized identity to publisher config")
-            .arg(Arg::with_name("identity").takes_value(true).required(true).index(1)),
+            .arg(Arg::with_name("identity_or_target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("identity").takes_value(true).required(false).index(2))
+            )
+        .subcommand(
+            SubCommand::with_name("deauthorize")
+            .about("remove authorized identity from  publisher config")
+            .arg(Arg::with_name("identity_or_target").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("identity").takes_value(true).required(false).index(2))
             )
         .subcommand(
             SubCommand::with_name("subscribe")

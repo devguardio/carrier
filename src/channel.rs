@@ -114,6 +114,10 @@ impl Channel {
         }
     }
 
+    pub fn total_vs_lost(&self) -> (u64, u64) {
+        (self.recovery.largest_sent_packet,  self.recovery.total_lost_packet_count)
+    }
+
     pub fn rtt(&self) -> u64 {
         self.recovery.smoothed_rtt
     }
@@ -445,7 +449,7 @@ impl Channel {
                 let mut frame = self.outqueue.pop_front().unwrap();
                 let remove_bytes = frame.len(self.version);
                 if remove_bytes > self.outqueue_bytes {
-                    warn!("BUG outqueue_bytes is less than the frame we just dequeued");
+                    debug!("BUG outqueue_bytes is less than the frame we just dequeued");
                     self.outqueue_bytes = 0;
                 } else {
                     self.outqueue_bytes -= remove_bytes;

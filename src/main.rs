@@ -81,6 +81,25 @@ pub fn _main() -> Result<(), Error> {
             println!("{}", config.secret.identity());
             Ok(())
         }
+        ("sign", Some(submatches)) => {
+            use std::io::Read;
+
+            let config = carrier::config::load()?;
+            let purpose = submatches
+                .value_of("purpose")
+                .unwrap()
+                .to_string();
+
+            let mut text = Vec::new();
+            if let Some(file) = submatches.value_of("file") {
+                let mut f = std::fs::File::open(&file).expect(&format!("cannot open {}", file));
+                f.read_to_end(&mut text)?;
+            } else {
+                std::io::stdin().read_to_end(&mut text)?;
+            }
+            println!("{}", config.secret.sign(purpose.as_bytes(), &text));
+            Ok(())
+        }
         ("authorize", Some(submatches)) => {
             let config = carrier::config::load()?;
             if let Some(identity) = submatches.value_of("identity") {
@@ -137,6 +156,7 @@ pub fn _main() -> Result<(), Error> {
                 .route("/v0/tcp",   None, carrier::publisher::tcp::main)
                 .route("/v2/carrier.certificate.v1/authorize",   None, carrier::publisher::authorization::main)
                 .route("/v2/carrier.sysinfo.v1/sysinfo",         None, carrier::publisher::sysinfo::sysinfo)
+                .route("/v2/carrier.sysinfo.v1/trace",           None, carrier::publisher::trace::main)
                 .with_disco("carrier-cli".into(), carrier::BUILD_ID.into())
                 .publish(poll);
 
@@ -201,6 +221,15 @@ pub fn _main() -> Result<(), Error> {
                         ),
             }
             .run()
+        }
+        ("trace", Some(submatches)) => {
+            let config = carrier::config::load()?;
+            let target = config
+                .resolve_identity(submatches.value_of("target").unwrap().to_string())
+                .expect("resolving identity from cli");
+            trace(target).run()?;
+
+            Ok(())
         }
         ("genesis", Some(submatches)) => {
             use std::process::Command;
@@ -830,4 +859,238 @@ fn tcp_handler(poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: car
         }
 
     }
+}
+
+
+#[osaka]
+pub fn trace(target: carrier::identity::Identity) -> Result<(), Error> {
+
+    let config = carrier::config::load()?;
+    let poll = osaka::Poll::new();
+    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
+    ep.move_target(target.clone());
+    let mut ep = ep.connect(poll.clone());
+    let mut ep = ep.run().unwrap();
+
+    let headers = carrier::headers::Headers::with_path("/carrier.broker.v1/broker/trace");
+
+    let handle = ep.handle();
+    let broker = ep.broker();
+
+    let ep_   = handle.clone();
+
+    ep.open(
+        broker,
+        headers,
+        Some(1024),
+        |poll: osaka::Poll, mut stream: carrier::endpoint::Stream|  {
+            stream.message(carrier::proto::TraceRequest{
+                target: target.to_string(),
+            });
+            trace_stream_handler(poll, stream, handle, target.clone())
+        }
+        )?;
+
+    loop {
+        match osaka::sync!(ep)? {
+            carrier::endpoint::Event::BrokerGone => return Ok(()),
+            carrier::endpoint::Event::OutgoingConnect(q) => {
+                match (&q.cr, &q.requester) {
+                    (Some(cr), _) => {
+                        if !cr.ok {
+                            println!("p2p trace:   unavailable, {}", cr.error);
+                            return Ok(());
+                        }
+                    }
+                    (None, None) => {
+                        println!("p2p trace:   unavailable, no connect response from broker");
+                        return Ok(());
+                    },
+                    _ => {},
+                };
+
+                let ep_   = ep_.clone();
+                let route = ep.accept_outgoing(q, move |_,_|None)?;
+                let headers = carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/trace");
+                ep.open(route,
+                        headers,
+                        Some(1000),
+                        |poll: osaka::Poll, stream: carrier::endpoint::Stream|  {
+                            trace_inner_handler(poll, ep_.clone() , stream)
+                        }
+                )?;
+            }
+            carrier::endpoint::Event::Disconnect { .. } => {}
+            carrier::endpoint::Event::IncommingConnect(_) => (),
+        };
+    }
+}
+
+#[osaka]
+fn trace_stream_handler(
+   _poll: osaka::Poll,
+   mut stream: carrier::endpoint::Stream,
+   ep: carrier::endpoint::Handle,
+   target: carrier::identity::Identity,
+)
+{
+    use prost::Message;
+
+    let target_ = target.clone();
+    let _d = carrier::util::defer(move || {
+        ep.connect(target_, 2);
+    });
+
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    eprintln!("{:?}", headers);
+    if headers.status().unwrap_or(999) > 299 {
+        return;
+    }
+
+    let m = osaka::sync!(stream);
+    let m = carrier::proto::TraceResponse::decode(&m).unwrap();
+    println!("---------------------------");
+    println!("tracing:     {}", target);
+
+    if m.last_seen != 0 {
+        println!("last seen:   {}", m.last_seen);
+    } else {
+        println!("last seen:   not in this epoch");
+    }
+
+    if m.first_seen !=0 {
+        println!("first seen:  {}", m.first_seen);
+    } else {
+        println!("first seen:  not in this epoch");
+    }
+
+    if !m.brokerip.is_empty() {
+        println!("ingress:     {}", m.brokerip);
+    }
+
+    println!("epoch rx:    {}", humanbytes(m.rx_bytes_32 as f64 * 32.0));
+    println!("epoch tx:    {}", humanbytes(m.tx_bytes_32 as f64 * 32.0));
+
+    if m.pkts_sent > 0 {
+        println!("pkt loss:    {}%", ((m.pkts_lost as f64 / m.pkts_sent as f64) * 100.0) as u64);
+    }
+    println!("rtt:         {}ms", m.rtt);
+
+
+    if m.publishing.len() > 0 {
+        for a in &m.publishing {
+            println!("publishing:  {}", carrier::identity::Address::from_bytes(&a.xaddress).map(|s|s.to_string()).unwrap_or_default());
+            // currently meaningless because they're not synced
+            /*
+            println!("  - publishers:      {}", a.publisher_count);
+            if a.publisher_soft_limit != 0 {
+                println!("  - pub soft limit:  {}", a.publisher_soft_limit);
+            }
+            if a.publisher_hard_limit != 0 {
+                println!("  - pub hard limit:  {}", a.publisher_hard_limit);
+            }
+            println!("  - traffic epoch:   {}", humanbytes(a.traffic_epoch_64  as f64 * 64.0));
+            if a.traffic_limit_64 == 0 {
+                println!("  - traffic limit:   unlimited");
+            } else {
+                println!("  - traffic limit:   {}", humanbytes(a.traffic_limit_64  as f64 * 64.0));
+            }
+            */
+        }
+    } else {
+        println!("publishing:  not connected");
+    }
+
+    if m.allocation.is_empty()  {
+        println!("allocation:  not part of an allocation");
+    } else {
+        println!("allocation:  allocated in {}", m.allocation);
+    }
+
+
+}
+
+pub fn humanbytes(mut i: f64) -> String {
+    let mut fix = "B";
+    if i > 1000.0 {
+        i = i/1000.0;
+        fix = "KB"
+    }
+    if i > 1000.0 {
+        i = i/1000.0;
+        fix = "MB"
+    }
+    if i > 1000.0 {
+        i = i/1000.0;
+        fix = "GB"
+    }
+    if i > 1000.0 {
+        i = i/1000.0;
+        fix = "TB"
+    }
+    format!("{:.2}{}", i, fix)
+}
+
+
+#[osaka]
+fn trace_inner_handler(
+   _poll: osaka::Poll,
+   ep: carrier::endpoint::Handle,
+   mut stream: carrier::endpoint::Stream,
+)
+{
+    use prost::Message;
+
+    let _d = carrier::util::defer(move || {
+        ep.disconnect(ep.broker(), carrier::packet::DisconnectReason::Application);
+    });
+
+    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    if headers.status().unwrap_or(999) > 299 {
+        println!("p2p trace:   unavailable {}", headers.status().unwrap_or(999));
+        return;
+    }
+    println!("p2p trace:   connected");
+    let addrs = stream.addrs();
+    match addrs {
+        carrier::endpoint::AddressMode::Discovering(paths) => {
+            println!("peering:     discovering");
+            for (addr, path) in paths {
+                println!("  - path:    {} {:?}/{}", addr, path.0, path.1);
+            }
+        },
+        carrier::endpoint::AddressMode::Established(addr, _paths) => {
+            println!("peering:     settled");
+            println!("  - path:    {}",         addr);
+        },
+    }
+
+
+    for i in 0..100 {
+        stream.message(carrier::proto::InnerTraceRequest{
+            m: Some(carrier::proto::inner_trace_request::M::Ping(Vec::new())),
+        });
+        let msg = osaka::sync!(stream);
+    }
+
+    let addrs = stream.addrs();
+    match addrs {
+        carrier::endpoint::AddressMode::Discovering(paths) => {
+            println!("peering:     discovering");
+            for (addr, path) in paths {
+                println!("  - path:    {} {:?}/{}", addr, path.0, path.1);
+            }
+        },
+        carrier::endpoint::AddressMode::Established(addr, _paths) => {
+            println!("peering:     settled");
+            println!("  - path:    {}",         addr);
+        },
+    }
+    let (total, lost) = stream.total_vs_lost();
+    println!("pkt loss:    {}%", ((lost as f64 / total as f64) * 100.0) as u64);
+    println!("rtt:         {}ms", stream.rtt());
+
+
+
+
 }

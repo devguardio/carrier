@@ -20,6 +20,7 @@ pub mod tcp;
 #[cfg(target_os = "android",)]
 pub mod android;
 pub mod authorization;
+pub mod trace;
 
 pub struct RouteHandler {
     f: Box<dyn Fn(Poll, headers::Headers, &identity::Identity, endpoint::Stream) -> Option<osaka::Task<()>>>,

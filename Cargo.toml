@@ -1,6 +1,6 @@
 [package]
 name        = "carrier"
-version     = "0.12.1"
+version     = "0.12.2"
 authors     = ["Arvid E. Picciani <arvid@devguard.io>"]
 license     = "MIT"
 description = "carrier is a generic secure message system for IoT"
@@ -73,6 +73,8 @@ serde_json          = {version = "1.0", optional = true}
 smbios              = {version = "0.1.7", optional = true}
 cluproccmdline      = {version = "0.1.5", optional = true}
 
+
+#cli
 [target.'cfg(target_arch = "x86_64")'.dependencies]
 env_logger          = {version = "0.6.2", default-features = false, features = ["termcolor", "atty", "humantime"]}
 

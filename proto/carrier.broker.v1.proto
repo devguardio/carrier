@@ -88,21 +88,55 @@ message ExceptionalRoute {
 }
 
 message ClusterConfig {
-    repeated ClusterShard       shards = 1;
-    repeated ExceptionalRoute   exceptional_routes = 2;
+    repeated ClusterShard       shards              = 1;
+    repeated ExceptionalRoute   exceptional_routes  = 2;
+    uint64 epoch                                    = 3;
+    uint64 default_shadow_publisher_limit           = 4;
+    uint64 default_shadow_traffic_limit_32          = 5;
+
 }
 
 message ClusterState {
     ClusterConfig config = 1;
 }
 
+message TraceRequest {
+    string target = 1;
+}
+
+
+message TraceShadow {
+    bytes  xaddress             = 1;
+    uint64 publisher_count      = 2;
+    uint64 publisher_soft_limit = 3;
+    uint64 publisher_hard_limit = 4;
+    uint64 traffic_epoch_64     = 5;
+    uint64 traffic_limit_64     = 6;
+}
+
+message TraceResponse {
+    repeated TraceShadow publishing  = 1;
+    uint64  epoch               = 2;
+    uint64  rx_bytes_32         = 3;
+    uint64  tx_bytes_32         = 4;
+    uint64  last_seen           = 5;
+    uint64  first_seen          = 6;
+    string  allocation          = 7;
+    string  brokerip            = 8;
+    uint64  pkts_sent           = 9;
+    uint64  pkts_lost           = 10;
+    uint64  rtt                 = 11;
+}
+
 service Broker {
-    rpc subscribe    (SubscribeRequest)  returns (stream SubscribeChange) {}
-    rpc publish      (PublishRequest)    returns (stream PublishChange)   {}
-    rpc connect      (ConnectRequest)    returns (stream ConnectResponse) {}
+    rpc subscribe    (SubscribeRequest)     returns (stream SubscribeChange) {}
+    rpc publish      (PublishRequest)       returns (stream PublishChange)   {}
+    rpc connect      (ConnectRequest)       returns (stream ConnectResponse) {}
+    rpc trace        (TraceRequest)         returns (stream TraceResponse)   {}
 
     rpc get_cluster     (Empty)             returns (ClusterConfig)          {}
     rpc patch_cluster   (ClusterConfig)     returns (Confirmation)           {}
+
 }
 
 
@@ -142,3 +176,17 @@ message MoveInstruction {
     bytes  xaddr  = 2;
 }
 
+
+message InnerTraceRequest {
+    oneof m {
+        bool  Invalid = 1;
+        bytes Ping    = 2;
+    }
+}
+
+message InnerTraceResponse {
+    oneof m {
+        bool  Invalid = 1;
+        bytes Pong    = 2;
+    }
+}

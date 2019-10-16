@@ -82,7 +82,10 @@ pub struct QuicRecovery {
     time_of_last_sent_retransmittable_packet: u64,
 
     /// The packet number of the most recently sent packet.
-    largest_sent_packet: u64,
+    pub(crate) largest_sent_packet: u64,
+
+    /// Accumulative amount of packets ever declared lost
+    pub(crate) total_lost_packet_count:  u64,
 
     /// The packet number of the most recently sent packet.
     /// NOT PART OF SPEC
@@ -154,6 +157,7 @@ impl QuicRecovery {
             largest_sent_before_rto: 0,
             time_of_last_sent_retransmittable_packet: 0,
             largest_sent_packet: 0,
+            total_lost_packet_count: 0,
             largest_sent_retransmittable_packet: 0,
             largest_acked_packet: 0,
             loss_time: 0,
@@ -377,6 +381,7 @@ impl QuicRecovery {
         let mut lost_frames = Vec::new();
 
         for seq in lost_packets {
+            self.total_lost_packet_count += 1;
             let mut pkt = self.sent_packets.remove(&seq).unwrap();
 
             // OnPacketsLost

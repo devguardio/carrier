@@ -35,6 +35,7 @@ pub struct Stream {
     stream: u32,
     ii:     Arc<Cell<FutureResult<Vec<u8>>>>,
     again:  osaka::Again,
+    addrs:  Arc<RefCell<AddressMode>>,
 }
 
 impl Stream {
@@ -80,6 +81,20 @@ impl Stream {
             .expect("carrier is not thread safe")
             .window()
     }
+
+    pub fn addrs(&self) -> AddressMode {
+        self.addrs
+            .try_borrow()
+            .expect("carrier is not thread safe")
+            .clone()
+    }
+
+    pub fn total_vs_lost(&self) -> (u64, u64) {
+        self.inner
+            .try_borrow_mut()
+            .expect("carrier is not thread safe")
+            .total_vs_lost()
+    }
 }
 
 impl osaka::Future<Vec<u8>> for Stream {
@@ -89,7 +104,7 @@ impl osaka::Future<Vec<u8>> for Stream {
 }
 
 pub trait StreamFactory {
-    fn f(&mut self, Headers, Stream) -> Option<(osaka::Task<()>, u32)>;
+    fn f(&mut self, Headers, Stream) -> Option<(osaka::Task<()>, u32 /* frag_max*/)>;
 }
 
 impl<F> StreamFactory for F
@@ -110,6 +125,7 @@ struct StreamReceiver {
     a: Arc<Cell<FutureResult<Vec<u8>>>>,
 }
 
+#[derive(Clone)]
 pub enum AddressMode {
     Discovering(HashMap<SocketAddr, (proto::path::Category, usize)>),
     Established(SocketAddr, HashMap<SocketAddr, (proto::path::Category, usize)>),
@@ -118,7 +134,7 @@ pub enum AddressMode {
 struct UdpChannel {
     identity: Identity,
     chan:     Arc<RefCell<Channel>>,
-    addrs:    AddressMode,
+    addrs:    Arc<RefCell<AddressMode>>,
     streams:  HashMap<u32, StreamReceiver>,
     newhandl: Option<Box<dyn StreamFactory>>,
 
@@ -146,6 +162,7 @@ impl Drop for UdpChannel {
 
 enum EndpointCmd {
     Disconnect(RoutingKey, packet::DisconnectReason),
+    Connect(Identity, u16 /*timeout*/),
 }
 
 pub struct Endpoint {
@@ -227,6 +244,7 @@ impl Endpoint {
         let broker_route = noise.route();
         let mut channels = HashMap::new();
         let debug_id = format!("{}::{}", broker_route, identity);
+        let addrs =  Arc::new(RefCell::new(addrs));
         channels.insert(
             noise.route(),
             UdpChannel {
@@ -375,7 +393,7 @@ impl Endpoint {
         if let Some(ref mut chan) = self.channels.remove(&route) {
             let mut chanchan = chan.chan.try_borrow_mut().expect("carrier is not thread safe");
             let pkt = chanchan.disconnect(reason)?;
-            match &chan.addrs {
+            match &*chan.addrs.try_borrow().expect("carrier is not thread safe")  {
                 AddressMode::Discovering(addrs) => {
                     for (addr, _) in addrs.iter() {
                         match self.socket.send_to(&pkt, addr) {
@@ -473,7 +491,7 @@ impl Endpoint {
             paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
         }
         if let Some(chan) = self.channels.get(&self.broker_route) {
-            match &chan.addrs {
+            match &*chan.addrs.try_borrow().expect("carrier is not thread safe")  {
                 AddressMode::Established(addr, _) => {
                     paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
                 },
@@ -493,7 +511,7 @@ impl Endpoint {
             UdpChannel {
                 identity,
                 chan: Arc::new(RefCell::new(channel)),
-                addrs: AddressMode::Discovering(paths.clone()),
+                addrs: Arc::new(RefCell::new(AddressMode::Discovering(paths.clone()))),
                 streams: HashMap::new(),
                 newhandl: Some(Box::new(sf)),
                 broker_stream: q.broker_stream,
@@ -522,7 +540,7 @@ impl Endpoint {
             paths.insert(path.ipaddr.parse().unwrap(), (cat, 0));
         }
         if let Some(chan) = self.channels.get(&self.broker_route) {
-            match &chan.addrs {
+            match &*chan.addrs.try_borrow().expect("carrier is not thread safe")  {
                 AddressMode::Established(addr, _) => {
                     paths.insert(addr.clone(), (proto::path::Category::BrokerOrigin, 0));
                 },
@@ -540,7 +558,7 @@ impl Endpoint {
             UdpChannel {
                 identity:      q.identity,
                 chan:          Arc::new(RefCell::new(Channel::new(self.protocol.clone(), noise, 0x08, debug_id))),
-                addrs:         AddressMode::Discovering(paths.clone()),
+                addrs:         Arc::new(RefCell::new(AddressMode::Discovering(paths.clone()))),
                 streams:       HashMap::new(),
                 newhandl:      Some(Box::new(sf)),
                 broker_stream: Some(q.qstream),
@@ -597,6 +615,7 @@ impl Endpoint {
             stream: stream_id,
             ii: ii.clone(),
             again,
+            addrs: chan.addrs.clone(),
         };
         chan.streams.insert(
             stream_id,
@@ -667,6 +686,11 @@ impl Future<Result<Event, Error>> for Endpoint {
         match self.cmd.1.try_recv() {
             Err(std::sync::mpsc::TryRecvError::Empty) => (),
             Err(std::sync::mpsc::TryRecvError::Disconnected) => unreachable!(),
+            Ok(EndpointCmd::Connect(identity, timeout)) => {
+                if let Err(e) = self.connect(identity, timeout) {
+                    return FutureResult::Done(Err(e));
+                }
+            }
             Ok(EndpointCmd::Disconnect(r, reason)) => {
                 if let Err(e) = self.disconnect(r, reason) {
                     return FutureResult::Done(Err(e));
@@ -701,7 +725,8 @@ impl Future<Result<Event, Error>> for Endpoint {
                             Ok(()) => {
 
 
-                                let settle = if let AddressMode::Discovering(ref mut addrs) = chan.addrs {
+                                let mut chan_addrs = chan.addrs.try_borrow_mut().expect("carrier is not thread safe");
+                                let settle = if let AddressMode::Discovering(ref mut addrs) = *chan_addrs {
                                     trace!("in discovery: received from {}", addr);
                                     let count = {
                                         let (_, count) = addrs.entry(addr).or_insert((proto::path::Category::Internet, 0));
@@ -744,8 +769,8 @@ impl Future<Result<Event, Error>> for Endpoint {
                                         },
                                         addr
                                         );
-                                    chan.addrs = AddressMode::Established(addr, previous);
-                                } else if let AddressMode::Established(ref mut addr_, ref previous) = chan.addrs {
+                                    *chan_addrs = AddressMode::Established(addr, previous);
+                                } else if let AddressMode::Established(ref mut addr_, ref previous) = *chan_addrs {
                                     if addr != *addr_ {
                                         let current_cat =
                                             previous.get(addr_).unwrap_or(&(proto::path::Category::Internet, 0)).0;
@@ -823,7 +848,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                     }
                     ChannelProgress::SendPacket(pkt) => {
                         again = true;
-                        match &chan.addrs {
+                        match &*chan.addrs.try_borrow().expect("carrier is not thread safe") {
                             AddressMode::Discovering(addrs) => {
                                 for (addr, _) in addrs.iter() {
                                     match self.socket.send_to(&pkt, addr) {
@@ -873,6 +898,7 @@ impl Future<Result<Event, Error>> for Endpoint {
                                     stream,
                                     ii: ii.clone(),
                                     again,
+                                    addrs: chan.addrs.clone(),
                                 };
 
                                 if let Some((f, frag_max)) = new.f(headers, stream.clone()) {
@@ -1066,6 +1092,9 @@ impl Future<Result<Event, Error>> for Endpoint {
 }
 
 impl Handle {
+    pub fn connect(&self, identity: Identity, timeout: u16) {
+        self.cmd.send(EndpointCmd::Connect(identity, timeout)).unwrap();
+    }
     pub fn disconnect(&self, route: RoutingKey, reason: packet::DisconnectReason) {
         self.cmd.send(EndpointCmd::Disconnect(route, reason)).unwrap();
     }

@@ -11,11 +11,6 @@ pub fn build_cli() -> App<'static, 'static> {
         .subcommand(SubCommand::with_name("setup").about("initial setup"))
         .subcommand(SubCommand::with_name("identity").about("print out identity"))
         .subcommand(
-            SubCommand::with_name("cluster")
-            .about("coordinate a broker cluster")
-            .arg(Arg::with_name("broker").takes_value(true).required(true).index(1)),
-            )
-        .subcommand(
             SubCommand::with_name("authorize")
             .about("add authorized identity to publisher config")
             .arg(Arg::with_name("identity_or_target").takes_value(true).required(true).index(1))
@@ -31,6 +26,12 @@ pub fn build_cli() -> App<'static, 'static> {
             SubCommand::with_name("subscribe")
             .about("watch a shadow")
             .arg(Arg::with_name("address").takes_value(true).required(true).index(1)),
+            )
+        .subcommand(
+            SubCommand::with_name("sign")
+            .about("sign a text with your identity")
+            .arg(Arg::with_name("purpose").takes_value(true).required(true).index(1))
+            .arg(Arg::with_name("file").takes_value(true).required(false).index(2))
             )
         .subcommand(
             SubCommand::with_name("get")
@@ -83,6 +84,11 @@ pub fn build_cli() -> App<'static, 'static> {
             .arg(Arg::with_name("remote-port").takes_value(true).required(true).index(2))
             .arg(Arg::with_name("remote-host").takes_value(true).required(true).index(3))
             .arg(Arg::with_name("local-port").takes_value(true).required(true).index(4)),
+            )
+        .subcommand(
+            SubCommand::with_name("trace")
+            .about("identify peer information via broker")
+            .arg(Arg::with_name("target").takes_value(true).required(true).index(1))
             )
         .subcommand(
             SubCommand::with_name("sysinfo")

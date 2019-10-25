@@ -1,12 +1,15 @@
-os:
-  - osx
-  - linux
-language: rust
+matrix:
+  include:
+    - env: TARGETNAME=armv7-pc-linux-gnu
+      os: linux
+      script: docker run --privileged -e  TARGETNAME=armv7-pc-linux-gnu -v $TRAVIS_BUILD_DIR:/src/ -w /src/ -ti ubuntu:xenial /src/ci/ci.sh
+    - env: TARGETNAME=x86_64-pc-linux-gnu
+      os: linux
+      script: ci/ci.sh
+    - env: TARGETNAME=x86_64-pc-osx
+      os: osx
+      script: ci/ci.sh
 
-rust:
-  - nightly
-
-cache: cargo
 
 script:
   - ci/ci.sh
@@ -21,5 +24,9 @@ deploy:
   skip_cleanup: true
   on:
     repo: devguardio/carrier
-    tags: true
+#    tags: true
 
+cache: cargo
+before_cache:
+  # Travis can't cache files that are not readable by "others"
+  - chmod -R a+r $HOME/.cargo

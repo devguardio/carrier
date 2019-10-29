@@ -6,6 +6,7 @@ use snow::resolvers::{CryptoResolver, FallbackResolver};
 use snow::{self, params::NoiseParams, Builder};
 use std::io::Read;
 use std::io::Write;
+use hacl_star;
 
 #[derive(Debug,Clone)]
 pub enum MoveRequest {
@@ -336,6 +337,7 @@ fn recv_handshake(
     signature.copy_from_slice(&pkt.payload[pkt.payload.len() - 64..pkt.payload.len()]);
     let signature = Signature::from_array(signature);
 
+
     let mut outbuf = vec![0; pkt.payload.len()];
     let len = noise.read_message(&pkt.payload[..pkt.payload.len() - 64], &mut outbuf)?;
 
@@ -573,7 +575,7 @@ fn new_noise_builder<'builder>(params: NoiseParams) -> Builder<'builder> {
     Builder::with_resolver(
         params,
         Box::new(FallbackResolver::new(
-            Box::new(snow::resolvers::HaclStarResolver::default()),
+            Box::new(hacl_star::HaclStarResolver::default()),
             Box::new(RandResolver::default()),
         )),
     )

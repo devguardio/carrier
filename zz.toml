@@ -1,0 +1,34 @@
+[project]
+version = "0.1.0"
+name = "carrier"
+cincludes = []
+cobjects = [
+    "3rdparty/libbase58/base58.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/kremlib.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/AEAD_Poly1305_64.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Policies.c",
+]
+pkgconfig = []
+#cflags = [ "-D", "KRML_NOUINT128" ]
+lflags = []
+asan = false
+
+[dependencies]
+error   = ""
+hex     = ""
+std     = ""
+byteorder = ""
+
+[variants]
+default = []
+
+[[artifacts]]
+name = "carrier"
+type = "staticlib"
+main = "carrier"

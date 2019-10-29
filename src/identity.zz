@@ -1,0 +1,151 @@
+using <stdint.h>::{uint8_t};
+using <stdint.h>::{size_t};
+using <string.h>::{memcpy, memcmp};
+using <assert.h>::{assert};
+using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
+using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h" as x25519;
+using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
+using "src/libbase58.h" as b58;
+using error;
+using crc8;
+using rand;
+
+export struct Secret    { uint8_t k[32]; };
+export struct Address   { uint8_t k[32]; };
+export struct Identity  { uint8_t k[32]; };
+export struct Signature { uint8_t k[64]; };
+
+fn from_str(usize bound<64> size, error::Error set<error> mut* err, uint8_t mut* to, char* from, usize bound<from> len, int expect_type) {
+    u8 mut b[64 + 3] = {0};
+    size_t mut bs = size + 3;
+    if (!b58::b58tobin(b, &bs, from, len)) {
+        error::fail(err, 22, "invalid bs58");
+        return;
+    }
+
+    if bs != size + 3 {
+        error::fail(err, 22, "invalid len");
+        return;
+    }
+
+    if (b[0] != 8 && b[0] != 9) {
+        error::fail(err, 22, "invalid version %d", b[0]);
+        return;
+    }
+
+    if (bs != size + 3) {
+        error::fail(err, 22, "invalid len %lu", bs);
+        return;
+    }
+
+    usize s2 = size + 2;
+    //if size bound<634>
+    s2 is bound<b>;
+
+    u8 mut crc = 0;
+    if b[0] == 8 {
+        crc = crc8::broken_crc8(0, b, s2);
+    } else {
+        crc = crc8::crc8(0, b, s2);
+    }
+
+    if (crc != b[s2]) {
+        error::fail(err, 22, "invalid checksum. %d != %d\n", b[34], crc);
+        return;
+    }
+
+    if (b[1] != expect_type) {
+        error::fail(err, 22, "expected identity type %d got %d\n", expect_type, b[1]);
+        return;
+    }
+
+    memcpy(to, b + 2, size);
+}
+
+fn to_str(usize size, error::Error set<error> mut* err, char mut* mut to, size_t mut bound<to> len, uint8_t version, uint8_t typ, uint8_t* k) -> usize {
+    u8 static zero[64] = { 0 };
+    if (memcmp(zero, k, size) == 0) {
+        error::fail(err, 22, "invalid address: zero");
+        return 0;
+    }
+
+    u8 mut b[64 + 3] = {0};
+    b[0] = version;
+    b[1] = typ;
+    memcpy(b + 2, k, size);
+    b is safe;
+
+    usize s2 = size + 2;
+    if version == 8 {
+        b[s2] = crc8::broken_crc8(0, b, s2);
+    } else {
+        b[s2] = crc8::crc8(0, b, s2);
+    }
+
+    len -= 1;
+    len is bound<to>;
+    if (!b58::b58enc(to, &len, b, size + 3)) {
+        error::fail(err, 22, "invalid bs58");
+        return 0;
+    }
+    to[len] = 0;
+    return len;
+}
+
+export fn identity_from_str (error::Error set<error> mut* err,  Identity mut* to, char* from, usize len) {
+    from_str(32, err, to->k, from, len, 9);
+}
+
+export fn address_from_str (error::Error set<error> mut* err,   Address mut* to, char* from, usize len) {
+    from_str(32, err, to->k, from, len, 6);
+}
+
+export fn secret_from_str (error::Error set<error> mut* err,    Secret mut* mut to, char* from, usize len) {
+    from_str(32, err, to->k, from, len, 3);
+}
+
+export fn identity_to_str (error::Error set<error> mut* err,    char mut* to, usize len, Identity* from)  -> usize{
+    return to_str(32, err, to, len, 8, 9, from->k);
+}
+
+export fn address_to_str (error::Error set<error> mut* err,     char mut* to, usize len, Address* from)  -> usize{
+    return to_str(32, err, to, len, 8, 6, from->k);
+}
+
+export fn secret_to_str (error::Error set<error> mut* err,      char mut* to, usize len, Secret* from) -> usize {
+    return to_str(32, err, to, len, 8, 3, from->k);
+}
+
+export fn secret_generate (error::Error set<error> mut* err, Secret mut* to) {
+    rand::rand(err, to->k, 32);
+}
+
+export fn signature_from_str (error::Error set<error> mut* err,  Signature mut* to, char* from, usize len) {
+    from_str(64, err, to->k, from, len, 9);
+}
+export fn signature_to_str (error::Error set<error> mut* err,      char mut* to, usize len, Signature* from) -> usize {
+    return to_str(64, err, to, len, 8, 3, from->k);
+}
+
+
+export fn identity_from_secret (Identity mut* pk, Secret* sk) {
+    ed25519::Hacl_Ed25519_secret_to_public(pk->k, (uint8_t mut*)(sk->k));
+}
+
+static uint8_t BASEPOINT [32]  = {9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+export fn address_from_secret (Address mut* pk, Secret* sk) {
+    x25519::Hacl_Curve25519_crypto_scalarmult(pk->k, (u8 mut*)sk->k, (uint8_t mut*)(BASEPOINT));
+}
+
+export fn dh(Address mut *out, Secret* me, Address * them) {
+    x25519::Hacl_Curve25519_crypto_scalarmult(out->k, (u8 mut *)(me->k), (u8 mut *)(them->k));
+}
+
+export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
+    ed25519::Hacl_Ed25519_sign(s->k, (u8 mut* )key->k, (u8 mut* )subject, subject_len);
+}
+
+export fn verify(Identity *pk, Signature mut *s, u8 * subject, usize subject_len) -> bool{
+    return ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, (u8 mut*)subject, subject_len, (u8 mut* )s->k);
+}

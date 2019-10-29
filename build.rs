@@ -3,6 +3,8 @@
 extern crate prost_build;
 extern crate rand;
 extern crate clap;
+extern crate zz;
+extern crate env_logger;
 
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
@@ -64,7 +66,14 @@ pub fn from_git() -> Result<String, Error>
     Ok(gitver)
 }
 
+pub fn build_zz() {
+    zz::build_rs("default");
+}
+
 pub fn main() {
+    build_zz();
+
+
 
     let gitver = match from_git() {
         Ok(v) => v,

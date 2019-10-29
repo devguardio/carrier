@@ -1,5 +1,3 @@
-use bs58::decode::DecodeError;
-use ed25519_dalek::SignatureError;
 use identity;
 use osaka_dns;
 use packet::{RoutingDirection, RoutingKey};
@@ -8,15 +6,50 @@ use snow::SnowError;
 use std::fmt;
 use std::io;
 
+
+
+pub struct ZZError  (pub Vec<u8>);
+
+#[link(name="carrier")]
+extern {
+    pub static sizeof_error_Error: libc::size_t;
+    pub fn error_check(err: *mut u8, file: *const u8, scope: *const u8, line: usize) -> libc::c_int;
+    pub fn error_to_str(err: *mut u8, s: *mut u8, len: usize) -> usize;
+}
+
+impl ZZError {
+    pub fn new() -> Self {
+        Self(vec![0;unsafe{sizeof_error_Error}])
+    }
+    pub fn as_mut_ptr(&mut self) -> *mut u8{
+        self.0.as_mut_ptr()
+    }
+    pub fn check(&mut self) -> Result<(), Error> {
+        unsafe {
+            let this_file = file!();
+            let this_line = line!();
+            let e = error_check(self.as_mut_ptr(), this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
+            if e != 0 {
+                let mut s = [0u8;1024];
+                error_to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
+                Err(Error::ZZ(e as isize, String::from_utf8_lossy(&s).into()))
+            } else {
+                Ok(())
+            }
+        }
+    }
+}
+
+
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
     Snow(SnowError),
-    Bs58(DecodeError),
-    Ed25519(SignatureError),
+    InvalidSignature,
     Dns(osaka_dns::Error),
     Proto(prost::DecodeError),
     Fmt(std::fmt::Error),
+    ZZ(isize, String),
 
     InvalidLen,
     InvalidAddress,
@@ -75,7 +108,6 @@ impl std::error::Error for Error {
     fn cause(&self) -> Option<&dyn std::error::Error> {
         match self {
             Error::Io(e)        => Some(e),
-            Error::Bs58(e)      => Some(e),
             Error::Proto(e)     => Some(e),
             Error::Fmt(e)       => Some(e),
             _ => None,
@@ -88,8 +120,7 @@ impl fmt::Display for Error {
         match self {
             Error::Io(e) => e.fmt(f),
             Error::Snow(e) => e.fmt(f),
-            Error::Bs58(e) => e.fmt(f),
-            Error::Ed25519(e) => e.fmt(f),
+            Error::InvalidSignature => write!(f, "invalid signature"),
             Error::Dns(e) => write!(f, "{:?}", e),
             Error::Proto(e) => e.fmt(f),
             Error::Fmt(e) => e.fmt(f),
@@ -146,6 +177,7 @@ impl fmt::Display for Error {
             Error::InvalidClock(s) => write!(f, "invalid clock configuration: '{}'", s),
             Error::OpenStreamsLimit => write!(f, "excessive number of open streams"),
             Error::CorruptHeader => write!(f, "header was corrupted in flight"),
+            Error::ZZ(i, s) => write!(f, "error {} from libcarrier: {}", i, s),
         }
     }
 }
@@ -162,21 +194,9 @@ impl std::convert::From<std::fmt::Error> for Error {
     }
 }
 
-impl std::convert::From<DecodeError> for Error {
-    fn from(error: DecodeError) -> Self {
-        Error::Bs58(error)
-    }
-}
-
 impl std::convert::From<SnowError> for Error {
     fn from(error: SnowError) -> Self {
         Error::Snow(error)
-    }
-}
-
-impl std::convert::From<SignatureError> for Error {
-    fn from(error: SignatureError) -> Self {
-        Error::Ed25519(error)
     }
 }
 

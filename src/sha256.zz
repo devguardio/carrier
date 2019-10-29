@@ -1,0 +1,117 @@
+using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
+using <string.h>::{memcpy};
+using <assert.h>::{assert};
+using <memory.h>::{memset};
+
+const usize HASHLEN   = 32;
+const usize BLOCKLEN  = 64;
+
+export fn hashlen() -> usize {
+    return HASHLEN;
+}
+
+export fn blocklen() -> usize {
+    return BLOCKLEN;
+}
+
+export struct Sha256 {
+    u32 mut state[137];
+    u8  mut block[64];
+    u8  mut at;
+}
+
+export fn init(Sha256 mut set<isinit> *self) {
+    hacl::Hacl_SHA2_256_init(self->state);
+    self->at = 0;
+}
+
+export fn update(Sha256 mut require<isinit> *self, u8 * mut data, size_t mut len) {
+
+    for (;;) {
+        int fill = (64 - self->at);
+        if len >= fill {
+            memcpy(self->block + self->at, data, fill);
+            hacl::Hacl_SHA2_256_update(self->state, self->block);
+            len  -= fill;
+            data += fill;
+            self->at = 0;
+        } else {
+            memcpy(self->block + self->at, data, len);
+            self->at += len;
+            break;
+        }
+    }
+}
+
+export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out) {
+    hacl::Hacl_SHA2_256_update_last(self->state, self->block, self->at);
+    hacl::Hacl_SHA2_256_finish(self->state, out);
+}
+
+pub fn hkdf(
+    u8 * len<HASHLEN> chaining_key,
+    u8 * input_key_material,
+    usize bound<input_key_material> input_key_material_len,
+    u8 mut * len<HASHLEN> out1,
+    u8 mut * len<HASHLEN> out2,
+    u8 mut * len<HASHLEN> out3)
+{
+    u8 mut temp_key[HASHLEN] = {0};
+    u8 mut temp_hash[HASHLEN + 1] = {0};
+
+    // temporary hashing key
+    hmac(chaining_key, HASHLEN, input_key_material, input_key_material_len, temp_key);
+
+    // output 1
+    if out1 == 0 {
+        return;
+    }
+    temp_hash[0] = 0x01;
+    hmac(temp_key, HASHLEN, temp_hash, 1, out1);
+
+    //output 2
+    if out2 == 0 {
+        return;
+    }
+    memcpy(temp_hash, out1, HASHLEN);
+    temp_hash[HASHLEN] = 0x02;
+    hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out2);
+
+    //output 3
+    if out3 == 0 {
+        return;
+    }
+    memcpy(temp_hash, out2, HASHLEN);
+    temp_hash[HASHLEN] = 0x03;
+    hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out3);
+}
+
+
+pub fn hmac(u8 *key, usize bound<key> keylen, u8* data, usize bound<data> datalen, u8 mut *out) {
+    assert(keylen <= BLOCKLEN);
+
+    u8 mut ipad [BLOCKLEN] = {0};
+    memset(ipad, 0x36, BLOCKLEN);
+
+    u8 mut opad [BLOCKLEN] = {0};
+    memset(opad, 0x5c, BLOCKLEN);
+
+    for (int mut i = 0; i < keylen ; i++) {
+        i is bound<key>;
+        ipad[i] = ipad[i] ^ key[i];
+        opad[i] = opad[i] ^ key[i];
+    }
+
+    u8 mut inner_output[HASHLEN] = {0};
+    Sha256 mut s1 = {0};
+    init(&s1);
+    update(&s1, ipad, BLOCKLEN);
+    update(&s1, data, datalen);
+    finish(&s1, inner_output);
+
+    Sha256 mut s2 = {0};
+    init(&s2);
+    update(&s2, opad, BLOCKLEN);
+    update(&s2, inner_output, HASHLEN);
+    finish(&s2, out);
+}

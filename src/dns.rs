@@ -31,6 +31,7 @@ impl DnsRecord {
     }
 
     pub fn from_signed_txt<S: AsRef<str>>(s: S) -> Option<Self> {
+
         let mut epoch = None;
         let mut priority = None;
         let mut net = None;
@@ -57,26 +58,46 @@ impl DnsRecord {
             }
 
             if s[0] == "c" {
-                if let Ok(v) = s[1].parse() {
-                    epoch = Some(v);
+                match s[1].parse() {
+                    Ok(v) => {
+                        epoch = Some(v)
+                    }
+                    Err(e) => {
+                        trace!("cannot parse c={} : {}", s[1], e)
+                    }
                 }
             }
 
             if s[0] == "p" {
-                if let Ok(v) = s[1].parse() {
-                    priority = Some(v);
+                match s[1].parse() {
+                    Ok(v) => {
+                        priority = Some(v)
+                    }
+                    Err(e) => {
+                        trace!("cannot parse p={} : {}", s[1], e)
+                    }
                 }
             }
 
             if s[0] == "n" {
-                if let Ok(v) = s[1].parse() {
-                    net = Some(v);
+                match s[1].parse() {
+                    Ok(v) => {
+                        net = Some(v)
+                    }
+                    Err(e) => {
+                        trace!("cannot parse n={} : {}", s[1], e)
+                    }
                 }
             }
 
             if s[0] == "x" {
-                if let Ok(v) = s[1].parse() {
-                    xaddr = Some(v);
+                match s[1].parse() {
+                    Ok(v) => {
+                        xaddr = Some(v)
+                    }
+                    Err(e) => {
+                        trace!("cannot parse x={} : {}", s[1], e)
+                    }
                 }
             }
         }

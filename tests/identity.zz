@@ -1,0 +1,111 @@
+using carrier;
+using carrier::identity::{
+    Address,
+    Identity,
+    Secret,
+    identity_from_str,
+    identity_from_secret,
+    identity_to_str,
+    secret_from_str,
+    secret_to_str,
+    address_from_secret,
+    address_to_str,
+    address_from_str,
+    secret_generate,
+};
+using error;
+using <string.h>::{memcmp, strlen};
+using <stdio.h>::{printf};
+using <assert.h>::{assert};
+
+fn test_identity(error::Error set<error> mut* err) {
+    Secret mut sk = {0};
+    secret_generate(err, &sk);
+    if error::check(err) { return; }
+
+    Identity mut pk = {0};
+    identity_from_secret(&pk, &sk);
+
+    char mut buf[50] = {0};
+    identity_to_str(err, buf, sizeof(buf), &pk);
+    if error::check(err) { return; }
+
+    printf("%s\n", buf);
+
+    Identity mut pk2 = {0};
+    identity_from_str(err, &pk2, buf, strlen(buf));
+    if error::check(err) { return; }
+
+    assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
+
+    secret_to_str(err, buf, sizeof(buf), &sk);
+    if error::check(err) { return; }
+
+    printf("%s\n", buf);
+
+    Secret mut sk2 = {0};
+    secret_from_str(err, &sk2, buf, strlen(buf));
+    if error::check(err) { return; }
+
+    assert(memcmp(sk.k, sk2.k, sizeof(sk.k)) == 0);
+exit:
+    return;
+}
+
+fn test_corrupt_identity(error::Error set<error> mut* err) {
+    char *from = "oWVXR9hGa6QgKLGrPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+    Secret mut sk = {0};
+    secret_from_str(err, &sk, from, strlen(from));
+    if !error::check(err) {
+        error::fail(err, 1, "must fail");
+        return;
+    }
+    err->error = 0;
+    *err is clean;
+
+    Identity mut ik = {0};
+    identity_from_str(err, &ik, from, strlen(from));
+    if !error::check(err) {
+        error::fail(err, 1, "must fail");
+        return;
+    }
+    err->error = 0;
+    *err is clean;
+}
+
+fn test_address(error::Error set<error> mut* err) {
+    Secret mut sk = {0};
+    secret_generate(err, &sk);
+    if error::check(err) { return; }
+
+    Address mut pk = {0};
+    address_from_secret(&pk, &sk);
+
+    char mut buf[50] = {0};
+    address_to_str(err, buf, sizeof(buf), &pk);
+    if error::check(err) { return; }
+
+    printf("%s\n", buf);
+
+    Address mut pk2 = {0};
+    address_from_str(err, &pk2, buf, strlen(buf));
+    if error::check(err) { return; }
+
+    assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
+}
+
+export fn main() -> int {
+    error::Error mut err = {0};
+
+    test_identity(&err);
+    error::abort(&err);
+
+    test_corrupt_identity(&err);
+    error::abort(&err);
+
+    test_address(&err);
+    error::abort(&err);
+
+    return 0;
+}

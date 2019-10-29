@@ -1,18 +1,16 @@
 use crate::error::Error;
-use bs58;
 use clear_on_drop::ClearOnDrop;
-use crc8;
-use ed25519_dalek;
 use rand::RngCore;
 use std::fmt;
 use std::str::FromStr;
+use error;
 
 #[derive(Clone, PartialEq, Eq, Hash)]
-pub struct Identity([u8; 32]);
+pub struct Identity(pub [u8; 32]);
 #[derive(Clone)]
 pub struct Secret(ClearOnDrop<Box<[u8; 32]>>);
 #[derive(Clone)]
-pub struct Signature([u8; 64]);
+pub struct Signature(pub [u8; 64]);
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct Address([u8; 32]);
 #[derive(Clone)]
@@ -20,30 +18,54 @@ pub struct SignedAddress(Address, Signature);
 
 // --- Secret
 
+#[link(name="carrier")]
+extern {
+    fn carrier_identity_secret_from_str     (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
+    fn carrier_identity_address_from_str    (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
+    fn carrier_identity_identity_from_str   (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
+    fn carrier_identity_signature_from_str  (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
+
+    fn carrier_identity_secret_to_str       (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
+    fn carrier_identity_address_to_str      (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
+    fn carrier_identity_identity_to_str     (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
+    fn carrier_identity_signature_to_str    (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
+
+    fn carrier_identity_identity_from_secret (to: *mut u8, from: *const u8);
+    fn carrier_identity_address_from_secret  (to: *mut u8, from: *const u8);
+
+    fn carrier_identity_sign (secret: *const u8, signature: *mut u8, subject: *const u8, subject_len: usize);
+    fn carrier_identity_verify (identity: *const u8, signature: *const u8, subject: *const u8, subject_len: usize) -> bool;
+
+    fn carrier_identity_dh(to: *mut u8,  me: *const u8, them: *const u8);
+}
+
 impl Secret {
     pub fn identity(&self) -> Identity {
-        use ed25519_dalek::{PublicKey, SecretKey};
-        let secret_key: SecretKey = SecretKey::from_bytes(&*self.0).unwrap();
-        let pk: PublicKey = (&secret_key).into();
-        Identity::from_bytes(pk.as_bytes()).unwrap()
+        let mut pk = [0u8;32];
+        unsafe {
+            carrier_identity_identity_from_secret(pk.as_mut_ptr(), self.0.as_ptr());
+        }
+        Identity(pk)
     }
 
     pub fn address(&self) -> Address {
-        Address(x25519_dalek::x25519(
-            *self.0.clone(),
-            x25519_dalek::X25519_BASEPOINT_BYTES,
-        ))
+        let mut pk = [0u8;32];
+        unsafe {
+            carrier_identity_address_from_secret(pk.as_mut_ptr(), self.0.as_ptr());
+        }
+        Address(pk)
     }
 
     pub fn sign(&self, purpose: &[u8], text: &[u8]) -> Signature {
-        use ed25519_dalek::{PublicKey, SecretKey};
-        let sk: SecretKey = SecretKey::from_bytes(&*self.0).unwrap();
-        let pk: PublicKey = (&sk).into();
-
-        let kp = ed25519_dalek::Keypair { secret: sk, public: pk };
         let mut stext = purpose.to_vec();
         stext.extend_from_slice(&text);
-        Signature(kp.sign(&stext).to_bytes())
+
+        let mut signature = [0u8;64];
+        unsafe {
+            carrier_identity_sign(self.0.as_ptr(), signature.as_mut_ptr(), stext.as_ptr(), stext.len());
+        }
+
+        Signature(signature)
     }
 
     pub fn gen() -> Self {
@@ -72,50 +94,35 @@ impl Secret {
     }
 
     pub fn to_string(&self) -> String {
-        let mut v = Vec::new();
-        v.push(8 as u8);
-        v.push(3 as u8);
-        v.extend_from_slice(&*self.0);
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new();
+        let len = unsafe {
+            carrier_identity_secret_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
+    }
 
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&v.as_ref(), v.len() as i32, 0);
-        v.push(crc);
-
-        bs58::encode(v).with_alphabet(bs58::alphabet::BITCOIN).into_string()
+    pub fn dh(&self, them: &Address) -> Address {
+        let mut out = [0u8;32];
+        unsafe {
+            carrier_identity_dh(out.as_mut_ptr(),  self.0.as_ptr(), them.0.as_ptr());
+        }
+        Address(out)
     }
 }
 
 impl FromStr for Secret {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let s = bs58::decode(s).with_alphabet(bs58::alphabet::BITCOIN).into_vec()?;
-
-        if s.len() < 35 {
-            return Err(Error::InvalidLen.into());
+        let mut to = [0u8;32];
+        unsafe {
+            let mut err = error::ZZError::new();
+            let s = s.as_bytes();
+            carrier_identity_secret_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            err.check()?;
         }
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&s, s.len() as i32 - 1, 0);
-
-        if crc != s[s.len() - 1] {
-            return Err(Error::InvalidAddress.into());
-        }
-
-        if s[0] != 8 {
-            return Err(Error::InvalidAddress.into());
-        }
-        if s[1] != 3 {
-            return Err(Error::InvalidAddressType {
-                need: address_type_name(3),
-                got:  address_type_name(s[1]),
-            }
-            .into());
-        }
-
-        let mut a = [0u8; 32];
-        a.copy_from_slice(&s[2..s.len() - 1]);
-
-        Ok(Secret(ClearOnDrop::new(Box::new(a))))
+        Ok(Self(ClearOnDrop::new(Box::new(to))))
     }
 }
 
@@ -147,54 +154,27 @@ impl Address {
     }
 
     pub fn to_string(&self) -> String {
-        let mut v = Vec::new();
-        v.push(8 as u8);
-        v.push(6 as u8);
-        v.extend_from_slice(&self.0);
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&v.as_ref(), v.len() as i32, 0);
-        v.push(crc);
-
-        bs58::encode(v).with_alphabet(bs58::alphabet::BITCOIN).into_string()
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new();
+        let len = unsafe {
+            carrier_identity_address_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
     }
 }
 
 impl FromStr for Address {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let s = bs58::decode(s).with_alphabet(bs58::alphabet::BITCOIN).into_vec()?;
-
-        if s.len() < 35 {
-            return Err(Error::InvalidLen.into());
+        let mut to = [0u8;32];
+        unsafe {
+            let mut err = error::ZZError::new();
+            let s = s.as_bytes();
+            carrier_identity_address_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            err.check()?;
         }
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&s, s.len() as i32 - 1, 0);
-
-        if crc != s[s.len() - 1] {
-            return Err(Error::InvalidAddress.into());
-        }
-
-        if s[0] != 8 {
-            return Err(Error::InvalidAddress.into());
-        }
-        if s[1] != 6 {
-            return Err(Error::InvalidAddressType {
-                need: address_type_name(6),
-                got:  address_type_name(s[1]),
-            }
-            .into());
-        }
-
-        if s.len() - 3 < 32 {
-            return Err(Error::InvalidAddress.into());
-        }
-
-        let mut b = [0; 32];
-        b.copy_from_slice(&s[2..s.len() - 1]);
-
-        Ok(Address(b))
+        Ok(Self(to))
     }
 }
 
@@ -214,16 +194,13 @@ impl fmt::Debug for Address {
 
 impl Signature {
     pub fn to_string(&self) -> String {
-        let mut v = Vec::new();
-        v.push(8 as u8);
-        v.push(2 as u8);
-        v.extend_from_slice(&self.0);
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&v.as_ref(), v.len() as i32, 0);
-        v.push(crc);
-
-        bs58::encode(v).with_alphabet(bs58::alphabet::BITCOIN).into_string()
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new();
+        let len = unsafe {
+            carrier_identity_signature_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
     }
 
     pub fn as_bytes(&self) -> &[u8] {
@@ -248,33 +225,14 @@ impl Signature {
 impl FromStr for Signature {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let s = bs58::decode(s).with_alphabet(bs58::alphabet::BITCOIN).into_vec()?;
-        if s.len() < 67 {
-            return Err(Error::InvalidLen.into());
+        let mut to = [0u8;64];
+        unsafe {
+            let mut err = error::ZZError::new();
+            let s = s.as_bytes();
+            carrier_identity_signature_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            err.check()?;
         }
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&s, s.len() as i32 - 1, 0);
-
-        if crc != s[s.len() - 1] {
-            return Err(Error::InvalidAddress.into());
-        }
-
-        if s[0] != 8 {
-            return Err(Error::InvalidAddress.into());
-        }
-        if s[1] != 2 {
-            return Err(Error::InvalidAddressType {
-                need: address_type_name(2),
-                got:  address_type_name(s[1]),
-            }
-            .into());
-        }
-
-        let mut b = [0; 64];
-        b.copy_from_slice(&s[2..s.len() - 1]);
-
-        Ok(Signature(b))
+        Ok(Self(to))
     }
 }
 
@@ -288,13 +246,13 @@ impl fmt::Display for Signature {
 
 impl Identity {
     pub fn verify(&self, purpose: &[u8], text: &[u8], signature: &Signature) -> Result<(), Error> {
-        let sig = ed25519_dalek::Signature::from_bytes(&signature.0)?;
-        let pk = ed25519_dalek::PublicKey::from_bytes(&self.0)?;
-
         let mut stext = purpose.to_vec();
         stext.extend_from_slice(&text);
 
-        pk.verify(&stext, &sig)?;
+        if !unsafe{carrier_identity_verify(self.0.as_ptr(), signature.0.as_ptr(), stext.as_ptr(), stext.len())} {
+            return Err(Error::InvalidSignature);
+        }
+
         Ok(())
     }
 
@@ -317,49 +275,27 @@ impl Identity {
     }
 
     pub fn to_string(&self) -> String {
-        let mut v = Vec::new();
-        v.push(8 as u8);
-        v.push(9 as u8);
-        v.extend_from_slice(&self.0);
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&v.as_ref(), v.len() as i32, 0);
-        v.push(crc);
-
-        bs58::encode(v).with_alphabet(bs58::alphabet::BITCOIN).into_string()
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new();
+        let len = unsafe {
+            carrier_identity_identity_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
     }
 }
 
 impl FromStr for Identity {
     type Err = Error;
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let s = bs58::decode(s).with_alphabet(bs58::alphabet::BITCOIN).into_vec()?;
-
-        if s.len() < 35 {
-            return Err(Error::InvalidLen.into());
+        let mut to = [0u8;32];
+        unsafe {
+            let mut err = error::ZZError::new();
+            let s = s.as_bytes();
+            carrier_identity_identity_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            err.check()?;
         }
-
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let crc = crc8.calc(&s, s.len() as i32 - 1, 0);
-
-        if crc != s[s.len() - 1] {
-            return Err(Error::InvalidAddress.into());
-        }
-
-        if s[0] != 8 {
-            return Err(Error::InvalidAddress.into());
-        }
-        if s[1] != 9 {
-            return Err(Error::InvalidAddressType {
-                need: address_type_name(9),
-                got:  address_type_name(s[1]),
-            }
-            .into());
-        }
-
-        let mut b = [0; 32];
-        b.copy_from_slice(&s[2..s.len() - 1]);
-        Ok(Identity(b))
+        Ok(Self(to))
     }
 }
 
@@ -415,16 +351,6 @@ pub fn generate_x25519() -> (Secret, [u8; 32]) {
     let secret = Secret::gen();
     let public = secret.address();
     (secret, public.0)
-}
-
-fn address_type_name(t: u8) -> String {
-    match t {
-        2 => "Signature".into(),
-        3 => "Secret".into(),
-        6 => "Address".into(),
-        9 => "Identity".into(),
-        a => format!("unknown({})", a),
-    }
 }
 
 #[test]

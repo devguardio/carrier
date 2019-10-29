@@ -1,0 +1,2 @@
+*.zz linguist-language=C
+3rdparty/* linguist-vendored

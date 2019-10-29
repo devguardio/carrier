@@ -1,0 +1,30 @@
+using error;
+using <fcntl.h>::{open};
+using <sys/stat.h>::{O_RDONLY};
+using <unistd.h>::{close, read};
+using <errno.h>::{errno, EINTR};
+
+pub fn rand(error::Error set<error> mut* err, u8 mut* mut bytes, usize mut size) {
+    int fd = open("/dev/random", O_RDONLY);
+    if fd < 0 {
+        error::fail_with_errno(err, "cannot open /dev/random");
+        return;
+    }
+
+    for (;;) {
+        int len = read(fd, bytes, size);
+        if  len < 0 {
+            if errno == EINTR {
+                continue;
+            }
+            error::fail_with_errno(err, "cannot read /dev/random");
+            return;
+        }
+        if len >= size {
+            return;
+        }
+        size    -= len;
+        bytes   += len;
+    }
+    close(fd);
+}

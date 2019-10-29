@@ -1,14 +1,9 @@
 #![feature(generators, generator_trait)]
 
-extern crate bs58;
 extern crate byteorder;
 extern crate clear_on_drop;
-extern crate crc8;
-extern crate ed25519_dalek;
-extern crate rand;
-extern crate sha2;
 extern crate snow;
-extern crate x25519_dalek;
+extern crate rand;
 #[macro_use]
 extern crate log;
 extern crate bytes;
@@ -64,6 +59,8 @@ pub mod stream;
 pub mod subscriber;
 pub mod util;
 pub mod tcp;
+
+mod hacl_star;
 
 pub use easy::connect;
 pub use error::Error;

@@ -2,6 +2,11 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
+#[link(name="carrier")]
+extern {
+    fn carrier_crc8_broken_crc8             (pre: u8, data: *const u8, len: usize) -> u8;
+}
+
 pub const LATEST_VERSION: u8 = 0x9;
 
 pub type RoutingKey = u64;
@@ -85,8 +90,7 @@ impl EncryptedPacket {
 
         let payload = inbuf.to_vec();
 
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        let header_crc8 = crc8.calc(&inbuf_.as_ref(), 4 + 8 + 8, 0);
+        let header_crc8 = unsafe{ carrier_crc8_broken_crc8(0, inbuf_.as_ptr(), 4+8+8) };
 
         Ok((
             EncryptedPacket {
@@ -121,8 +125,7 @@ impl EncryptedPacket {
 
     pub fn crc8(&self) -> u8 {
         let w = self.header();
-        let mut crc8 = crc8::Crc8::create_lsb(130);
-        crc8.calc(&w, w.len() as i32, 0)
+        unsafe{ carrier_crc8_broken_crc8(0, w.as_ptr(), w.len()) }
     }
 
     pub fn encode(mut self) -> Vec<u8> {

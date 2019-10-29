@@ -9,7 +9,6 @@ extern crate osaka;
 extern crate pbr;
 extern crate prost;
 extern crate rand;
-extern crate sha2;
 extern crate tinylogger;
 extern crate byteorder;
 
@@ -268,8 +267,8 @@ pub fn _main() -> Result<(), Error> {
                 std::process::exit(status.code().unwrap_or(1));
             }
 
-            let shaa = carrier::util::sha256file(&filep2).unwrap();
-            let shab = carrier::util::sha256file(&filep).unwrap();
+            let shaa = sha256file(&filep2).unwrap();
+            let shab = sha256file(&filep).unwrap();
 
             if shaa == shab {
                 info!("no changes");
@@ -396,29 +395,7 @@ pub fn _main() -> Result<(), Error> {
             let local_file = submatches.value_of("local-file").unwrap().to_string();
             let remote_file = submatches.value_of("remote-file").unwrap().to_string();
 
-            let sha = {
-                use sha2::{Digest, Sha256};
-                use std::fs::File;
-                use std::io::Read;
-                let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
-
-                let total_size = file.metadata().expect("file metadata").len();
-                let mut pb = ProgressBar::new(total_size);
-                pb.set_units(pbr::Units::Bytes);
-                pb.message("calculating sha of local file ");
-
-                let mut hasher = Sha256::new();
-                let mut buf = vec![0; 10 * 1024];
-                loop {
-                    let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
-                    if len == 0 {
-                        break;
-                    }
-                    hasher.input(&buf[..len]);
-                    pb.add(len as u64);
-                }
-                hasher.result().to_vec()
-            };
+            let sha = sha256file(&local_file).unwrap();
 
             let headers = carrier::headers::Headers::with_path("/v0/sft")
                 .and(":method".into(), "PUT".into())
@@ -436,29 +413,8 @@ pub fn _main() -> Result<(), Error> {
 
             let local_file = submatches.value_of("local-file").unwrap().to_string();
 
-            let sha = {
-                use sha2::{Digest, Sha256};
-                use std::fs::File;
-                use std::io::Read;
-                let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
+            let sha = sha256file(&local_file).unwrap();
 
-                let total_size = file.metadata().expect("file metadata").len();
-                let mut pb = ProgressBar::new(total_size);
-                pb.set_units(pbr::Units::Bytes);
-                pb.message("calculating sha of local file ");
-
-                let mut hasher = Sha256::new();
-                let mut buf = vec![0; 10 * 1024];
-                loop {
-                    let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
-                    if len == 0 {
-                        break;
-                    }
-                    hasher.input(&buf[..len]);
-                    pb.add(len as u64);
-                }
-                hasher.result().to_vec()
-            };
             let headers = carrier::headers::Headers::with_path("/v0/ota")
                 .and(":method".into(), "PUT".into())
                 .and("sha256".into(), sha);
@@ -474,22 +430,7 @@ pub fn _main() -> Result<(), Error> {
 
             let local_file = submatches.value_of("file").expect("need file or url").to_string();
 
-            let sha = {
-                use sha2::{Digest, Sha256};
-                use std::fs::File;
-                use std::io::Read;
-                let mut file = File::open(&local_file).expect(&format!("cannot open {}", &local_file));
-                let mut hasher = Sha256::new();
-                loop {
-                    let mut buf = vec![0; 1024];
-                    let len = file.read(&mut buf).expect(&format!("cannot read {}", &local_file));
-                    if len == 0 {
-                        break;
-                    }
-                    hasher.input(&buf[..len]);
-                }
-                hasher.result().to_vec()
-            };
+            let sha = sha256file(&local_file).unwrap();
 
             let mut headers = carrier::headers::Headers::with_path("/v0/belltower.exec.v0")
                 .and(":method".into(), "PUT".into())
@@ -613,7 +554,7 @@ fn genesis_get_handler(_poll: osaka::Poll, ep: carrier::endpoint::Handle, mut st
         file.flush().unwrap();
     }
 
-    let sha = carrier::util::sha256file(&filep).unwrap();
+    let sha = sha256file(&filep).unwrap();
     if sha != m.sha256 {
         panic!("sha mismatch expected {:x?} but local file is {:x?}", sha, m.sha256);
     }
@@ -1093,4 +1034,47 @@ fn trace_inner_handler(
 
 
 
+}
+
+
+
+
+
+#[link(name="carrier")]
+extern {
+    static sizeof_carrier_sha256_Sha256 : usize;
+    fn carrier_sha256_init(state: *mut u8);
+    fn carrier_sha256_update(state: *mut u8, data: *const u8, len: usize);
+    fn carrier_sha256_finish(state: *mut u8, hash: *mut u8);
+    fn carrier_sha256_hashlen() -> usize;
+}
+
+pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, carrier::Error> {
+    let mut state = vec![0; unsafe{ sizeof_carrier_sha256_Sha256}];
+    unsafe { carrier_sha256_init(state.as_mut_ptr()); }
+
+    let mut file = std::fs::File::open(p)?;
+    use std::io::Read;
+
+    let total_size = file.metadata().expect("file metadata").len();
+    let mut pb = ProgressBar::new(total_size);
+    pb.set_units(pbr::Units::Bytes);
+    pb.message("calculating sha of local file ");
+
+    let mut buf = vec![0; 10 * 1024];
+    loop {
+        let len = file.read(&mut buf)?;
+        if len == 0 {
+            break;
+        }
+        unsafe { carrier_sha256_update(state.as_mut_ptr(), buf[..len].as_ptr(), len); }
+        pb.add(len as u64);
+    }
+
+    let mut out = vec![0; unsafe { carrier_sha256_hashlen() }];
+    unsafe { carrier_sha256_finish(state.as_mut_ptr(), out.as_mut_ptr()); }
+
+    pb.finish();
+
+    Ok(out)
 }

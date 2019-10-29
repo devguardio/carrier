@@ -1,0 +1,126 @@
+/// noise specific implementation of chachapoly
+
+using <endian.h> as endian;
+using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.h" as hacl_chacha;
+using <assert.h>::{assert};
+using <string.h>::{memcpy, memset};
+using sha256;
+using error;
+
+export struct CipherState {
+    u8      mut key[32];
+    bool    mut has_key;
+}
+
+export fn init(CipherState mut * self, u8 *k) {
+    memcpy(self->key, k, 32);
+    self->has_key = true;
+}
+
+export fn encrypt_ad(
+    CipherState mut*    self,
+    error::Error set<error> mut* err,
+    u8*                 unsafe authtext,
+    usize               authtext_len,
+    u8 *                plain,
+    usize bound<plain>  plainlen,
+    u64                 nonce,
+    u8 mut*             ciphertext,
+    usize bound<ciphertext> cipherlen_max,
+) -> usize
+{
+    assert(self->has_key);
+
+    usize cipherlen = plainlen + 16;
+    assert(cipherlen_max >= cipherlen);
+
+    u8 mut* mac = ciphertext + plainlen;
+
+    //noise spec: The 96-bit nonce is formed by encoding 32 bits of zeros followed by little-endian encoding of n.
+    u8  mut nonce12[12] = {0};
+    u64 nonce_le = endian::htole64(nonce);
+    memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
+
+    int xr = hacl_chacha::Hacl_Chacha20Poly1305_aead_encrypt(
+        ciphertext,
+        mac,
+        (u8 mut*)plain,
+        plainlen,
+        (u8 mut*)authtext,
+        authtext_len,
+        self->key,
+        nonce12
+    );
+    if xr != 0 {
+        error::fail(err, xr, "encrypt");
+        return 0;
+    }
+    return cipherlen;
+}
+
+export fn decrypt_ad(
+    CipherState mut*    self,
+    error::Error set<error> mut* err,
+    u8*                 unsafe authtext,
+    usize               authtext_len,
+    u8 *                ciphertext,
+    usize bound<ciphertext> cipherlen,
+    u64                 nonce,
+    u8 mut*             plain,
+    usize bound<plain>  plainlen_max,
+) -> usize
+{
+    assert(self->has_key);
+    usize plainlen = cipherlen - 16;
+    assert(plainlen_max >= plainlen);
+
+    u8 * mac = ciphertext + plainlen;
+
+    u8  mut nonce12[12] = {0};
+    u64 nonce_le = endian::htole64(nonce);
+    memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
+
+    int xr = hacl_chacha::Hacl_Chacha20Poly1305_aead_decrypt(
+        plain,
+        (u8 mut*)ciphertext,
+        plainlen,
+        (u8 mut*)mac,
+        (u8 mut*)authtext,
+        authtext_len,
+        self->key,
+        nonce12
+    );
+    if xr != 0 {
+        error::fail(err, xr, "decrypt");
+        return 0;
+    }
+    return plainlen;
+}
+
+
+export fn encrypt(
+    CipherState mut*    self,
+    error::Error set<error> mut* err,
+    u8 *                plain,
+    usize bound<plain>  plainlen,
+    u64                 nonce,
+    u8 mut*             ciphertext,
+    usize bound<ciphertext> cipherlen_max,
+) -> usize
+{
+    return encrypt_ad(self, err, 0,0, plain, plainlen, nonce, ciphertext, cipherlen_max);
+}
+
+
+export fn decrypt(
+    CipherState mut*    self,
+    error::Error set<error> mut* err,
+    u8 *                ciphertext,
+    usize  bound<ciphertext> cipherlen,
+    u64                 nonce,
+    u8 mut*             plain,
+    usize  bound<plain>  plainlen_max,
+) -> usize
+{
+    return decrypt_ad(self, err, 0, 0, ciphertext, cipherlen, nonce, plain, plainlen_max);
+}

@@ -19,25 +19,7 @@ pub struct SignedAddress(Address, Signature);
 // --- Secret
 
 #[link(name="carrier")]
-extern {
-    fn carrier_identity_secret_from_str     (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
-    fn carrier_identity_address_from_str    (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
-    fn carrier_identity_identity_from_str   (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
-    fn carrier_identity_signature_from_str  (err: *mut u8,  to: *mut u8, from: *const u8, len: usize);
-
-    fn carrier_identity_secret_to_str       (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
-    fn carrier_identity_address_to_str      (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
-    fn carrier_identity_identity_to_str     (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
-    fn carrier_identity_signature_to_str    (err: *mut u8,  to: *mut u8 , len: usize, from: *const u8) -> usize;
-
-    fn carrier_identity_identity_from_secret (to: *mut u8, from: *const u8);
-    fn carrier_identity_address_from_secret  (to: *mut u8, from: *const u8);
-
-    fn carrier_identity_sign (secret: *const u8, signature: *mut u8, subject: *const u8, subject_len: usize);
-    fn carrier_identity_verify (identity: *const u8, signature: *const u8, subject: *const u8, subject_len: usize) -> bool;
-
-    fn carrier_identity_dh(to: *mut u8,  me: *const u8, them: *const u8);
-}
+include!("../target/release/rs/::carrier::identity.rs");
 
 impl Secret {
     pub fn identity(&self) -> Identity {
@@ -97,7 +79,7 @@ impl Secret {
         let mut to = vec![0u8;64];
         let mut err = error::ZZError::new();
         let len = unsafe {
-            carrier_identity_secret_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity_secret_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -119,7 +101,7 @@ impl FromStr for Secret {
         unsafe {
             let mut err = error::ZZError::new();
             let s = s.as_bytes();
-            carrier_identity_secret_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            carrier_identity_secret_from_str (err.as_mut_ptr(), error::ZERR_TAIL,  to.as_mut_ptr(), s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(ClearOnDrop::new(Box::new(to))))
@@ -157,7 +139,7 @@ impl Address {
         let mut to = vec![0u8;64];
         let mut err = error::ZZError::new();
         let len = unsafe {
-            carrier_identity_address_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity_address_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -171,7 +153,7 @@ impl FromStr for Address {
         unsafe {
             let mut err = error::ZZError::new();
             let s = s.as_bytes();
-            carrier_identity_address_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            carrier_identity_address_from_str (err.as_mut_ptr(), error::ZERR_TAIL,  to.as_mut_ptr(), s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(to))
@@ -197,7 +179,7 @@ impl Signature {
         let mut to = vec![0u8;64];
         let mut err = error::ZZError::new();
         let len = unsafe {
-            carrier_identity_signature_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity_signature_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -229,7 +211,7 @@ impl FromStr for Signature {
         unsafe {
             let mut err = error::ZZError::new();
             let s = s.as_bytes();
-            carrier_identity_signature_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            carrier_identity_signature_from_str (err.as_mut_ptr(), error::ZERR_TAIL,  to.as_mut_ptr(), s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(to))
@@ -278,7 +260,7 @@ impl Identity {
         let mut to = vec![0u8;64];
         let mut err = error::ZZError::new();
         let len = unsafe {
-            carrier_identity_identity_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity_identity_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -292,7 +274,7 @@ impl FromStr for Identity {
         unsafe {
             let mut err = error::ZZError::new();
             let s = s.as_bytes();
-            carrier_identity_identity_from_str (err.as_mut_ptr(),  to.as_mut_ptr(), s.as_ptr(), s.len() );
+            carrier_identity_identity_from_str (err.as_mut_ptr(),  error::ZERR_TAIL, to.as_mut_ptr(), s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(to))

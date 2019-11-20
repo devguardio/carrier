@@ -16,7 +16,7 @@ pub fn main() -> int {
     u8 mut t1[32] = {0};
     u8 mut t2[32] = {0};
     u8 mut t3[32] = {0};
-    sha256::hkdf(ck, material, len(material), t1, t2, t3);
+    sha256::hkdf(ck, material, static(len(material)), t1, t2, t3);
 
     if memcmp(t1, out1, 32) != 0 {
         return 1;

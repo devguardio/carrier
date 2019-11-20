@@ -3,9 +3,7 @@ use error::Error;
 use std::io::{Read, Write};
 
 #[link(name="carrier")]
-extern {
-    fn carrier_crc8_broken_crc8             (pre: u8, data: *const u8, len: usize) -> u8;
-}
+include!("../target/release/rs/::carrier::crc8.rs");
 
 pub const LATEST_VERSION: u8 = 0x9;
 

@@ -11,15 +11,14 @@ use std::io;
 pub struct ZZError  (pub Vec<u8>);
 
 #[link(name="carrier")]
-extern {
-    pub static sizeof_error_Error: libc::size_t;
-    pub fn error_check(err: *mut u8, file: *const u8, scope: *const u8, line: usize) -> libc::c_int;
-    pub fn error_to_str(err: *mut u8, s: *mut u8, len: usize) -> usize;
-}
+include!("../target/release/rs/::err.rs");
+
+
+pub const ZERR_TAIL : usize = 1000;
 
 impl ZZError {
     pub fn new() -> Self {
-        Self(vec![0;unsafe{sizeof_error_Error}])
+        Self(vec![0;unsafe{sizeof_err_Err} + ZERR_TAIL])
     }
     pub fn as_mut_ptr(&mut self) -> *mut u8{
         self.0.as_mut_ptr()
@@ -28,10 +27,10 @@ impl ZZError {
         unsafe {
             let this_file = file!();
             let this_line = line!();
-            let e = error_check(self.as_mut_ptr(), this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
-            if e != 0 {
+            let e = err_check(self.as_mut_ptr(), ZERR_TAIL, this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
+            if e  {
                 let mut s = [0u8;1024];
-                error_to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
+                err_to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
                 Err(Error::ZZ(e as isize, String::from_utf8_lossy(&s).into()))
             } else {
                 Ok(())

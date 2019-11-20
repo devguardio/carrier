@@ -65,3 +65,12 @@ sudo tc qdisc del dev lo:1 root
 the wireshark dissector can be used with
 wireshark -X lua_script:wireshark.lua
 
+
+
+rewriting in zz
+-------
+
+stripped release x86_64
+
+2746864
+

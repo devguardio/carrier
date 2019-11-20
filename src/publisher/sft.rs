@@ -9,14 +9,7 @@ use std::io::Write;
 use std::path::Path;
 
 #[link(name="carrier")]
-extern {
-    static sizeof_carrier_sha256_Sha256 : usize;
-    fn carrier_sha256_init(state: *mut u8);
-    fn carrier_sha256_update(state: *mut u8, data: *const u8, len: usize);
-    fn carrier_sha256_finish(state: *mut u8, hash: *mut u8);
-    fn carrier_sha256_hashlen() -> usize;
-    fn carrier_sha256_blocklen() -> usize;
-}
+include!("../../target/release/rs/::carrier::sha256.rs");
 
 pub fn main(
     poll: osaka::Poll,

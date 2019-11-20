@@ -5,42 +5,8 @@ use identity;
 use error;
 
 #[link(name="carrier")]
-extern {
-
-    static sizeof_carrier_sha256_Sha256 : usize;
-    fn carrier_sha256_init(state: *mut u8);
-    fn carrier_sha256_update(state: *mut u8, data: *const u8, len: usize);
-    fn carrier_sha256_finish(state: *mut u8, hash: *mut u8);
-    fn carrier_sha256_hashlen() -> usize;
-    fn carrier_sha256_blocklen() -> usize;
-
-    static sizeof_carrier_cipher_CipherState: usize;
-    fn carrier_cipher_init(state: *mut u8, key: *const u8);
-    fn carrier_cipher_encrypt_ad(
-        state:          *mut u8,
-        err:            *mut u8,
-        authtext:       *const u8,
-        authtext_len:   usize,
-        plain:          *const u8,
-        plainlen:       usize,
-        nonce:          u64,
-        ciphertext:     *mut u8,
-        cipherlen_max:  usize
-    ) -> usize;
-
-    fn carrier_cipher_decrypt_ad(
-        state:          *mut u8,
-        err:            *mut u8,
-        authtext:       *const u8,
-        authtext_len:   usize,
-        ciphertext:     *const u8,
-        cipherlen_max:  usize,
-        nonce:          u64,
-        plain:          *mut u8,
-        plainlen:       usize,
-    ) -> usize;
-
-}
+include!("../target/release/rs/::carrier::cipher.rs");
+include!("../target/release/rs/::carrier::sha256.rs");
 
 #[derive(Default)]
 pub struct HaclStarResolver;
@@ -166,6 +132,7 @@ impl Cipher for CipherChaChaPoly {
             let r = carrier_cipher_encrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
+                error::ZERR_TAIL,
                 authtext.as_ptr(),
                 authtext.len(),
                 plaintext.as_ptr(),
@@ -189,6 +156,7 @@ impl Cipher for CipherChaChaPoly {
             let s = carrier_cipher_decrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
+                error::ZERR_TAIL,
                 authtext.as_ptr(),
                 authtext.len(),
                 ciphertext.as_ptr(),

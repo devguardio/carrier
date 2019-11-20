@@ -21,11 +21,11 @@ uefi    = ["smbios", "cluproccmdline"]
 prost               = "0.5.0"
 prost-derive        = "0.5.0"
 bytes               = "0.4.12"
-hpack               = "0.3.0"
 
 #get rid of these
-osaka               = "0.2.10"
-osaka-dns           = "0.2.11"
+hpack               = "0.3.0"
+osaka               = "0.3.0"
+osaka-dns           = "0.3.0"
 mtdparts            = "0.2.0"
 mio                 = "0.6.16"
 mio-extras          = "2.0.5"
@@ -58,7 +58,7 @@ which               = "2.0.1"
 
 tinylogger          = "0.1.0"
 
-axon                = "0.2.1"
+axon                = "0.3.0"
 clap                = "2.33.0"
 num_cpus            = "1.10.0"
 wait-timeout        = "0.2.0"
@@ -103,7 +103,6 @@ path = "src/main.rs"
 prost-build = "0.5.0"
 rand        = "0.6.5"
 clap        = "2.33.0"
-zz          = { version = "0.1", path = "/home/aep/proj/zz"}
 env_logger  = {version = "0.6.2" }
 
 [profile.release]

@@ -1,11 +1,12 @@
 using carrier::cipher;
-using error;
+using err;
 using hex;
 using <string.h>::{memcmp};
 
 pub fn main() -> int {
 
-    error::Error mut err = {0};
+    err::Err+1000 mut e = {0};
+    err::new(&e);
 
     u8 key[] = {
         0xee, 0x9d, 0x3f, 0xd,  0x82, 0x18, 0x57, 0x3b,
@@ -42,12 +43,13 @@ pub fn main() -> int {
     cipher::init(&c, key);
 
     u8 mut plain[1000] = {0};
-    usize len = cipher::decrypt(&c, &err, ciphertext, len(ciphertext), nonce, plain, len(plain));
-    error::abort(&err);
+    usize l = cipher::decrypt(&c, &e, ciphertext, static(len(ciphertext)), nonce, plain, static(len(plain)));
+    static_attest(len(plain) >= l);
+    err::abort(&e);
 
-    if memcmp(plain, plaintext, sizeof(plaintext)) != 0 {
-        hex::dump(plain, len);
-        hex::dump(plaintext, sizeof(plaintext));
+    if as<int>(memcmp(plain, plaintext, static(len(plaintext)))) != 0 {
+        hex::dump(plain, l);
+        hex::dump(plaintext, static(len(plaintext)));
         return 9;
     }
 

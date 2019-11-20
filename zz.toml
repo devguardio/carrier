@@ -4,6 +4,7 @@ name = "carrier"
 cincludes = []
 cobjects = [
     "3rdparty/libbase58/base58.c",
+    "3rdparty/hacl-star/snapshots/hacl-c/FStar.c",
     "3rdparty/hacl-star/snapshots/hacl-c/kremlib.c",
     "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.c",
     "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.c",
@@ -15,15 +16,16 @@ cobjects = [
     "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Policies.c",
 ]
 pkgconfig = []
-#cflags = [ "-D", "KRML_NOUINT128" ]
+cflags = [ "-D", "KRML_NOUINT128" ]
 lflags = []
 asan = false
 
 [dependencies]
-error   = ""
+err     = ""
 hex     = ""
 std     = ""
 byteorder = ""
+hpack   = ""
 
 [variants]
 default = []

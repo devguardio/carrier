@@ -25,10 +25,10 @@ export fn init(Sha256 mut set<isinit> *self) {
     self->at = 0;
 }
 
-export fn update(Sha256 mut require<isinit> *self, u8 * mut data, size_t mut len) {
+export fn update(Sha256 mut require<isinit> *self, u8 * mut data, usize mut len) {
 
     for (;;) {
-        int fill = (64 - self->at);
+        usize fill = as<usize>(64 - self->at);
         if len >= fill {
             memcpy(self->block + self->at, data, fill);
             hacl::Hacl_SHA2_256_update(self->state, self->block);
@@ -37,7 +37,7 @@ export fn update(Sha256 mut require<isinit> *self, u8 * mut data, size_t mut len
             self->at = 0;
         } else {
             memcpy(self->block + self->at, data, len);
-            self->at += len;
+            self->at += (u8)len;
             break;
         }
     }
@@ -49,12 +49,19 @@ export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out) {
 }
 
 pub fn hkdf(
-    u8 * len<HASHLEN> chaining_key,
+    u8 * chaining_key,
     u8 * input_key_material,
-    usize bound<input_key_material> input_key_material_len,
-    u8 mut * len<HASHLEN> out1,
-    u8 mut * len<HASHLEN> out2,
-    u8 mut * len<HASHLEN> out3)
+    usize input_key_material_len,
+    u8 mut* out1,
+    u8 mut* out2,
+    u8 mut* out3)
+
+where len(chaining_key) == HASHLEN
+where len(out1)         == HASHLEN
+where len(out2)         == HASHLEN
+where len(out3)         == HASHLEN
+where input_key_material_len == len(input_key_material)
+
 {
     u8 mut temp_key[HASHLEN] = {0};
     u8 mut temp_hash[HASHLEN + 1] = {0};
@@ -87,7 +94,10 @@ pub fn hkdf(
 }
 
 
-pub fn hmac(u8 *key, usize bound<key> keylen, u8* data, usize bound<data> datalen, u8 mut *out) {
+pub fn hmac(u8 *key, usize keylen, u8* data, usize datalen, u8 mut *out)
+    where keylen  <= len(key)  && keylen < BLOCKLEN
+    where datalen <= len(data) && keylen < BLOCKLEN
+{
     assert(keylen <= BLOCKLEN);
 
     u8 mut ipad [BLOCKLEN] = {0};
@@ -96,8 +106,7 @@ pub fn hmac(u8 *key, usize bound<key> keylen, u8* data, usize bound<data> datale
     u8 mut opad [BLOCKLEN] = {0};
     memset(opad, 0x5c, BLOCKLEN);
 
-    for (int mut i = 0; i < keylen ; i++) {
-        i is bound<key>;
+    for (usize mut i = 0; i < keylen ; i++) {
         ipad[i] = ipad[i] ^ key[i];
         opad[i] = opad[i] ^ key[i];
     }

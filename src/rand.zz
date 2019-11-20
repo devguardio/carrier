@@ -1,30 +1,33 @@
-using error;
+using err;
 using <fcntl.h>::{open};
 using <sys/stat.h>::{O_RDONLY};
 using <unistd.h>::{close, read};
 using <errno.h>::{errno, EINTR};
 
-pub fn rand(error::Error set<error> mut* err, u8 mut* mut bytes, usize mut size) {
-    int fd = open("/dev/random", O_RDONLY);
+pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
+    where err::checked(*e)
+{
+    int fd = as<int>(open("/dev/random", O_RDONLY));
     if fd < 0 {
-        error::fail_with_errno(err, "cannot open /dev/random");
+        err::fail_with_errno(e, "cannot open /dev/random");
         return;
     }
+    static_attest(err::checked(*e));
 
     for (;;) {
-        int len = read(fd, bytes, size);
-        if  len < 0 {
-            if errno == EINTR {
+        int l = as<int>(read(fd, bytes, size));
+        if  l < 0 {
+            if as<int>(errno) == as<int>(EINTR) {
                 continue;
             }
-            error::fail_with_errno(err, "cannot read /dev/random");
+            err::fail_with_errno(e, "cannot read /dev/random");
             return;
         }
-        if len >= size {
+        if (usize)l >= size {
             return;
         }
-        size    -= len;
-        bytes   += len;
+        size    -= (usize)l;
+        bytes   += (usize)l;
     }
     close(fd);
 }

@@ -3,7 +3,6 @@
 extern crate prost_build;
 extern crate rand;
 extern crate clap;
-extern crate zz;
 extern crate env_logger;
 
 use rand::distributions::Alphanumeric;
@@ -67,7 +66,8 @@ pub fn from_git() -> Result<String, Error>
 }
 
 pub fn build_zz() {
-    zz::build_rs("default");
+    println!("\n\ncargo:rustc-link-lib=static=carrier\n\n");
+    println!("\n\ncargo:rustc-link-search=native={}/target/release/lib/\n\n", std::env::current_dir().unwrap().display());
 }
 
 pub fn main() {

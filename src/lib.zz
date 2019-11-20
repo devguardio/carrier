@@ -1,9 +1,11 @@
 using <stdio.h>::{printf};
 using crc8;
-using error;
+using err;
 using identity;
 using cipher;
 using sha256;
+using hpack::encoder;
+using hpack::decoder;
 
 export fn hellozz() -> int {
     printf("hello carrier\n");

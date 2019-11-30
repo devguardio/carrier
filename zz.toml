@@ -21,11 +21,13 @@ lflags = []
 asan = false
 
 [dependencies]
-err     = ""
-hex     = ""
-std     = ""
-byteorder = ""
-hpack   = ""
+err     = "1"
+hex     = "1"
+std     = "1"
+byteorder = "1"
+hpack   = "1"
+net     = "1"
+string  = "1"
 
 [variants]
 default = []
@@ -34,3 +36,8 @@ default = []
 name = "carrier"
 type = "staticlib"
 main = "carrier"
+
+[[artifacts]]
+name = "zz"
+type = "exe"
+main = "carrier::main"

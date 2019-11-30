@@ -20,7 +20,7 @@ pub fn r1() -> int {
     sha256::update(&s1, (u8 *)"abc", 3);
     sha256::finish(&s1, output);
 
-    return memcmp(output, expect, 32);
+    return (int)memcmp(output, expect, 32);
 }
 
 pub fn r2() -> int {
@@ -41,7 +41,7 @@ pub fn r2() -> int {
     sha256::update(&s1, (u8 *)"", 0);
     sha256::finish(&s1, output);
 
-    return memcmp(output, expect, 32);
+    return (int)memcmp(output, expect, 32);
 }
 
 pub fn r3() -> int {
@@ -64,7 +64,7 @@ pub fn r3() -> int {
     sha256::update(&s1, (u8 *)in, static(len(in)));
     sha256::finish(&s1, output);
 
-    return memcmp(output, expect, 32);
+    return (int)memcmp(output, expect, 32);
 }
 
 pub fn r4() -> int {
@@ -91,7 +91,7 @@ pub fn r4() -> int {
     sha256::update(&s1, (u8 *)in3, static(len(in3)));
     sha256::finish(&s1, output);
 
-    return memcmp(output, expect, 32);
+    return (int)memcmp(output, expect, 32);
 }
 
 pub fn r5() -> int {
@@ -112,11 +112,11 @@ pub fn r5() -> int {
     sha256::Sha256 mut s1 = {0};
     sha256::init(&s1);
     for (int mut i = 0; i < 1000000; i++) {
-        sha256::update(&s1, (u8 *)in, as<usize>(strlen(in)));
+        sha256::update(&s1, (u8 *)in, static(len(in)));
     }
     sha256::finish(&s1, output);
 
-    return memcmp(output, expect, 32);
+    return (int)memcmp(output, expect, 32);
 }
 
 pub fn main() -> int {

@@ -1,7 +1,7 @@
 using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
-using <string.h>::{memcpy};
 using <assert.h>::{assert};
 using <memory.h>::{memset};
+using std;
 
 const usize HASHLEN   = 32;
 const usize BLOCKLEN  = 64;
@@ -25,19 +25,30 @@ export fn init(Sha256 mut set<isinit> *self) {
     self->at = 0;
 }
 
-export fn update(Sha256 mut require<isinit> *self, u8 * mut data, usize mut len) {
+export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
+    where len(data) >= l
+{
+    static_attest(len(self->block) > self->at);
+    static_attest(len(self->block) > 64 - self->at);
 
     for (;;) {
         usize fill = as<usize>(64 - self->at);
-        if len >= fill {
-            memcpy(self->block + self->at, data, fill);
+        if l >= fill {
+            static_attest(len(data) > fill);
+            std::memcpy(self->block + self->at, data, fill);
             hacl::Hacl_SHA2_256_update(self->state, self->block);
-            len  -= fill;
+            l    -= fill;
             data += fill;
             self->at = 0;
         } else {
-            memcpy(self->block + self->at, data, len);
-            self->at += (u8)len;
+
+            static_attest(len(self->block) > (usize)self->at);
+            u8 mut *dst = self->block + self->at;
+            static_attest(len(dst) > l);
+            static_attest(safe(data));
+            static_attest(len(data) > l);
+            std::memcpy(dst, data, l);
+            self->at += (u8)l;
             break;
         }
     }
@@ -52,15 +63,15 @@ pub fn hkdf(
     u8 * chaining_key,
     u8 * input_key_material,
     usize input_key_material_len,
-    u8 mut* out1,
-    u8 mut* out2,
-    u8 mut* out3)
+    u8 mut* unsafe out1,
+    u8 mut* unsafe out2,
+    u8 mut* unsafe out3)
 
-where len(chaining_key) == HASHLEN
-where len(out1)         == HASHLEN
-where len(out2)         == HASHLEN
-where len(out3)         == HASHLEN
-where input_key_material_len == len(input_key_material)
+    where HASHLEN <= len(chaining_key)
+    where out1 == 0 || HASHLEN <= len(out1)
+    where out2 == 0 || HASHLEN <= len(out2)
+    where out3 == 0 || HASHLEN <= len(out3)
+    where input_key_material_len <= len(input_key_material)
 
 {
     u8 mut temp_key[HASHLEN] = {0};
@@ -73,6 +84,7 @@ where input_key_material_len == len(input_key_material)
     if out1 == 0 {
         return;
     }
+    static_attest(safe(out1));
     temp_hash[0] = 0x01;
     hmac(temp_key, HASHLEN, temp_hash, 1, out1);
 
@@ -80,7 +92,8 @@ where input_key_material_len == len(input_key_material)
     if out2 == 0 {
         return;
     }
-    memcpy(temp_hash, out1, HASHLEN);
+    static_attest(safe(out2));
+    std::memcpy(temp_hash, out1, HASHLEN);
     temp_hash[HASHLEN] = 0x02;
     hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out2);
 
@@ -88,7 +101,8 @@ where input_key_material_len == len(input_key_material)
     if out3 == 0 {
         return;
     }
-    memcpy(temp_hash, out2, HASHLEN);
+    static_attest(safe(out3));
+    std::memcpy(temp_hash, out2, HASHLEN);
     temp_hash[HASHLEN] = 0x03;
     hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out3);
 }

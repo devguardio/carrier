@@ -1,4 +1,6 @@
 /// noise specific implementation of chachapoly
+///
+/// ciphertext has 16 bytes hmac at the end
 
 using <endian.h> as endian;
 using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.h" as hacl_chacha;
@@ -20,20 +22,25 @@ export fn init(CipherState mut * self, u8 *k) {
 export fn encrypt_ad(
     CipherState mut*    self,
     err::Err+et mut* e,
-    u8*                 unsafe authtext,
-    usize               authtext_len,
-    u8 *                plain,
-    usize bound<plain>  plainlen,
-    u64                 nonce,
-    u8 mut*             ciphertext,
-    usize bound<ciphertext> cipherlen_max,
+    u8*         unsafe authtext,
+    usize       authtext_len,
+    u8 *        plain,
+    usize       plainlen,
+    u64         nonce,
+    u8 mut*     ciphertext,
+    usize       cipherlen_max,
 ) -> usize
     where err::checked(*e)
+    where len(ciphertext) >= cipherlen_max
+    where len(plain)      >= plainlen
+    where len(ciphertext) > plainlen
+    model return <= cipherlen_max
 {
     assert(self->has_key);
 
     usize cipherlen = plainlen + 16;
     assert(cipherlen_max >= cipherlen);
+    static_attest(cipherlen_max >= cipherlen);
 
     u8 mut* mac = ciphertext + plainlen;
 
@@ -62,19 +69,26 @@ export fn encrypt_ad(
 export fn decrypt_ad(
     CipherState mut*    self,
     err::Err+et mut* e,
-    u8*                 unsafe authtext,
-    usize               authtext_len,
-    u8 *                ciphertext,
-    usize bound<ciphertext> cipherlen,
-    u64                 nonce,
-    u8 mut*             plain,
-    usize bound<plain>  plainlen_max,
+    u8*     unsafe authtext,
+    usize   authtext_len,
+    u8 *    ciphertext,
+    usize   cipherlen,
+    u64     nonce,
+    u8 mut* plain,
+    usize   plainlen_max,
 ) -> usize
     where err::checked(*e)
+    where len(ciphertext) >= cipherlen
+    where len(plain)      >= plainlen_max
 {
     assert(self->has_key);
     usize plainlen = cipherlen - 16;
+
     assert(plainlen_max >= plainlen);
+    static_attest(plainlen_max >= plainlen);
+
+    assert(cipherlen > 16);
+    static_attest(cipherlen > 16);
 
     u8 * mac = ciphertext + plainlen;
 
@@ -103,13 +117,16 @@ export fn decrypt_ad(
 export fn encrypt(
     CipherState mut*    self,
     err::Err+et set<err> mut* e,
-    u8 *                plain,
-    usize bound<plain>  plainlen,
-    u64                 nonce,
-    u8 mut*             ciphertext,
-    usize bound<ciphertext> cipherlen_max,
+    u8 *        plain,
+    usize       plainlen,
+    u64         nonce,
+    u8 mut*     ciphertext,
+    usize       cipherlen_max,
 ) -> usize
     where err::checked(*e)
+    where len(ciphertext) >= cipherlen_max
+    where len(plain)      >= plainlen
+    where len(ciphertext) > plainlen
 {
     return encrypt_ad(self, e, 0,0, plain, plainlen, nonce, ciphertext, cipherlen_max);
 }
@@ -118,13 +135,15 @@ export fn encrypt(
 export fn decrypt(
     CipherState mut*    self,
     err::Err+et set<err> mut* e,
-    u8 *                ciphertext,
-    usize  bound<ciphertext> cipherlen,
-    u64                 nonce,
-    u8 mut*             plain,
-    usize  bound<plain>  plainlen_max,
+    u8 *    ciphertext,
+    usize   cipherlen,
+    u64     nonce,
+    u8 mut* plain,
+    usize   plainlen_max,
 ) -> usize
     where err::checked(*e)
+    where len(ciphertext) >= cipherlen
+    where len(plain)      >= plainlen_max
 {
     return decrypt_ad(self, e, 0, 0, ciphertext, cipherlen, nonce, plain, plainlen_max);
 }

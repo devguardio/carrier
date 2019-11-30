@@ -1,0 +1,383 @@
+using <stdio.h>::{printf};
+using <string.h>::{strlen};
+using err;
+
+
+const usize DYNSIZE = 16;
+
+struct DynamicEntry {
+    char*   keystr;
+    usize   keylen;
+    char*   valstr;
+    usize   vallen;
+}
+
+
+
+enum Repr {
+    Indexed,
+    LiteralWithIncrementalIndexing,
+    SizeUpdate,
+    LiteralNeverIndexed,
+    LiteralWithoutIndexing,
+}
+
+fntype callback(err::Err+et mut*e, void *user, char *key, usize keylen, char *val, usize vallen);
+
+
+fn get_repr(u8 b) -> Repr {
+    if (b & 128) == 128 {
+        return Repr::Indexed;
+    } else if (b & 192) == 64 {
+        return Repr::LiteralWithIncrementalIndexing;
+    } else if (b & 32) == 32 {
+        return Repr::SizeUpdate;
+    } else if (b & 16) == 16 {
+        return Repr::LiteralNeverIndexed;
+    } else {
+        return Repr::LiteralWithoutIndexing;
+    }
+}
+
+pub fn decode_integer(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, u8 prefix_size) -> uint
+    where err::checked(*e)
+    where len(wire) >= l
+    where l > 0
+    where len(wire) > *at
+    where prefix_size > 0
+    where prefix_size < 9
+{
+    // Make sure there's no overflow in the shift operation
+    u8 mut mask = 0xff;
+    if prefix_size < 8 {
+        mask = (1 << prefix_size) - 1;
+    }
+    uint mut value = as<uint>((wire[*at] & mask));
+
+    // Value fits in the prefix bits.
+    if value < as<uint>(mask) {
+        return value;
+    }
+
+
+    usize mut consumed = 1;
+    // The value does not fit into the prefix bits, so we read as many following
+    // bytes as necessary to decode the integer.
+    u8 mut m = 0;
+
+    for (; *at < l ; ) {
+        (*at)++;
+        if *at >= l {
+            break;
+        }
+        static_attest(*at < l);
+
+        consumed += 1;
+        u8 b = wire[*at];
+        value += as<uint>((b & 127) * (1 << m));
+        m += 7;
+
+        if (b & 128) != 128 {
+            return value;
+        }
+
+        // The octet limit is chosen such that the maximum allowed *value* can
+        // never overflow an unsigned 32-bit integer. The maximum value of any
+        // integer that can be encoded with 5 octets is ~2^28
+        if consumed >= 5 {
+            err::fail(e, 15, "integer overflow");
+            return 0;
+        }
+
+    }
+
+    static_attest(err::checked(*e));
+    err::fail(e, 15, "eof");
+    return 0;
+}
+
+
+
+fn decode_literal(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, bool index, DynamicEntry mut * dyn, callback cb, void * unsafe user)
+    where err::checked(*e)
+    where len(wire) >= l
+    where len(wire) > *at
+    where l > 0
+    where safe(cb)
+    where len(dyn) == 16
+{
+    u8 mut prefix;
+    if index {
+        prefix = 6;
+    } else {
+        prefix = 4;
+    }
+    static_attest(prefix == 4 || prefix == 6);
+
+    uint x = decode_integer(e, wire, l, at, prefix);
+    if err::check(e) {
+        return;
+    }
+
+    (*at)++;
+    if l <= *at {
+        err::fail(e, 15, "eof");
+        return;
+    }
+    static_attest(l > *at);
+
+    char * mut key       = 0;
+    usize  mut keylen    = 0;
+
+    if x == 0 {
+        uint strlen1 = decode_integer(e, wire, l, at, 7);
+        if err::check(e) {
+            return;
+        }
+        if (*at)++ >= l {
+            err::fail(e, 15, "eof");
+            return;
+        }
+        if (*at + (usize)strlen1) >= l {
+            err::fail(e, 15, "eof");
+            return;
+        }
+        static_attest(len(wire) > *at);
+        key     = (char*)(wire + *at);
+        keylen  = (usize)strlen1;
+        (*at)  += (usize)strlen1;
+    } else if x > 0 && (usize)x < static(len(STATIC_KEYS)) {
+        key     = STATIC_KEYS[(usize)x];
+        keylen  = (usize)strlen(STATIC_KEYS[(usize)x]);
+    } else if x > 61 && x < 76 {
+        usize di = (usize)x - 61;
+        DynamicEntry *de = &(dyn[di]);
+        key     = de->keystr;
+        keylen  = de->keylen;
+    } else {
+        err::fail(e, 1, "%u not implemented", x);
+        return;
+    }
+
+    static_attest(err::checked(*e));
+    static_attest(l > *at);
+    uint strlen2 = decode_integer(e, wire, l, at, 7);
+    if err::check(e) {
+        return;
+    }
+    if (*at)++ >= l {
+        err::fail(e, 15, "eof");
+        return;
+    }
+    if (*at + (usize)strlen2) > l {
+        err::fail(e, 15, "eof");
+        return;
+    }
+
+    static_attest(len(wire) > *at);
+    cb(e, user, key, keylen, (char*)(wire + *at), strlen2);
+
+    if index {
+        for (usize mut i = 0; i < DYNSIZE; i++) {
+            if (dyn[i]).keystr == 0 {
+                (dyn[i]).keystr = key;
+                (dyn[i]).keylen = keylen;
+                (dyn[i]).valstr = (char*)(wire + *at);
+                (dyn[i]).vallen = (usize)strlen2;
+            }
+        }
+    }
+
+    (*at) += (usize)strlen2 - 1;
+}
+
+export fn decode(err::Err+et mut*e, u8 *wire, usize l, callback cb, void *unsafe user)
+    where err::checked(*e)
+    where len(wire) >= l
+    where safe(cb)
+{
+    DynamicEntry mut dyn[DYNSIZE] = {0};
+
+    for (usize mut i = 0; i < l ; i++) {
+        switch get_repr(wire[i]) {
+            Repr::Indexed => {
+                uint x = decode_integer(e, wire, l, &i, 7);
+                if err::check(e) {
+                    return;
+                }
+
+                if x > 0 && (usize)x < static(len(STATIC_KEYS)) {
+                    cb(e, user, STATIC_KEYS[(usize)x], strlen(STATIC_KEYS[(usize)x]),
+                        STATIC_VALS[(usize)x], strlen(STATIC_VALS[(usize)x]));
+                    if err::check(e) {
+                        return;
+                    }
+                } else if x > 61 && x < 76 {
+                    usize di = (usize)x - 61;
+                    DynamicEntry *de = &(dyn[di]);
+                    cb(e, user, de->keystr, de->keylen, de->valstr, de->vallen);
+                    if err::check(e) { return; }
+                } else {
+                    err::fail(e, 1, "%u not implemented", x);
+                    return;
+                }
+            }
+            Repr::LiteralWithIncrementalIndexing => {
+                static_attest(len(wire) > i);
+                decode_literal(e, wire, l, &i, true, dyn, cb, user);
+                if err::check(e) { return; }
+            }
+            Repr::SizeUpdate => {
+                err::fail(e, 1, "Repr::SizeUpdate not implemented");
+                return;
+            }
+            Repr::LiteralNeverIndexed => {
+                static_attest(len(wire) > i);
+                decode_literal(e, wire, l, &i, false, dyn, cb, user);
+                if err::check(e) { return; }
+            }
+            Repr::LiteralWithoutIndexing => {
+                static_attest(len(wire) > i);
+                decode_literal(e, wire, l, &i, false, dyn, cb, user);
+                if err::check(e) { return; }
+
+            }
+        }
+    }
+}
+
+
+
+static char* STATIC_KEYS[] = {
+    0,
+    ":authority",
+    ":method",
+    ":method",
+    ":path",
+    ":path",
+    ":scheme",
+    ":scheme",
+    ":status",
+    ":status",
+    ":status",
+    ":status",
+    ":status",
+    ":status",
+    ":status",
+    "accept-charset",
+    "accept-encoding",
+    "accept-language",
+    "accept-ranges",
+    "accept",
+    "access-control-allow-origin",
+    "age",
+    "allow",
+    "authorization",
+    "cache-control",
+    "content-disposition",
+    "content-encoding",
+    "content-language",
+    "content-length",
+    "content-location",
+    "content-range",
+    "content-type",
+    "cookie",
+    "date",
+    "etag",
+    "expect",
+    "expires",
+    "from",
+    "host",
+    "if-match",
+    "if-modified-since",
+    "if-none-match",
+    "if-range",
+    "if-unmodified-since",
+    "last-modified",
+    "link",
+    "location",
+    "max-forwards",
+    "proxy-authenticate",
+    "proxy-authorization",
+    "range",
+    "referer",
+    "refresh",
+    "retry-after",
+    "server",
+    "set-cookie",
+    "strict-transport-security",
+    "transfer-encoding",
+    "user-agent",
+    "vary",
+    "via",
+    "www-authenticate",
+};
+
+static char* STATIC_VALS[] = {
+    0,
+    "",
+    "GET",
+    "POST",
+    "/",
+    "/index.html",
+    "http",
+    "https",
+    "200",
+    "204",
+    "206",
+    "304",
+    "400",
+    "404",
+    "500",
+    "",
+    "gzip, deflate",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+};
+
+
+
+

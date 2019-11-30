@@ -1,0 +1,113 @@
+using <stdio.h>::{printf, fread, stdin};
+using hpack::decoder;
+using err;
+
+test ta1 {
+    stdin  = {7, 255, 0}
+    stdout = "2,127"
+}
+
+test ta2 {
+    stdin  = {5, 10}
+    stdout = "1,10"
+}
+
+test ta3 {
+    stdin  = {5, 31, 154, 10}
+    stdout = "3,1337"
+}
+
+test ta4 {
+    stdin  = {5, 63, 154, 10}
+    stdout = "3,1337"
+}
+
+test ta5 {
+    stdin  = {5, 95, 154, 10}
+    stdout = "3,1337"
+}
+
+test ta6 {
+    stdin  = {5, 31, 154, 10, 111, 22}
+    stdout = "3,1337"
+}
+
+test ta7 {
+    stdin  = {7, 127, 0}
+    stdout = "2,127"
+}
+
+test ta8 {
+    stdin  = {7, 127, 128, 1}
+    stdout = "3,255"
+}
+
+test ta9 {
+    stdin  = {8, 255, 0}
+    stdout = "2,255"
+}
+
+test taa {
+    stdin  = {8, 254}
+    stdout = "1,254"
+}
+
+test tab {
+    stdin  = {8, 1}
+    stdout = "1,1"
+}
+
+test tac {
+    stdin  = {8,0}
+    stdout = "1,0"
+}
+
+test tad {
+    stdin  = {8, 0xff, 0xff, 0xff, 0xff, 127}
+    stdout = "5,268435710"
+}
+
+test errcase_short {
+    stdin   = {8, 0xff}
+    exit    = 2
+}
+
+test errcase_eof2 {
+    stdin   = {8, 0xff, 0xff, 0xff, 0xff, 0xff}
+    exit    = 2
+}
+
+test errcase_too_long {
+    stdin   = {1, 0xff,  0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80}
+    exit    = 2
+}
+
+pub fn main() -> int {
+
+    err::Err+1000 mut e = {0};
+    err::new(&e);
+
+    u8 mut buf[1000];
+
+    for(;;) {
+        usize bin = as<usize>(fread(buf, sizeof(char), static(len(buf)), stdin));
+        if bin == 0 {
+            break;
+        }
+        static_attest(bin < len(buf));
+        static_attest(bin > 0);
+
+        usize mut at = 1;
+        static_attest(buf[0] > 0 && buf[0] < 9);
+        uint i = decoder::decode_integer(&e, buf, bin, &at, buf[0]);
+        if err::check(&e) {
+            err::eprint(&e);
+            return 2;
+        }
+        printf("%zu,%lu", at, i);
+    }
+
+
+    return 0;
+
+}

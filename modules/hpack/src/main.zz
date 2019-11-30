@@ -1,0 +1,29 @@
+using <stdio.h>::{printf};
+using err;
+using hpack::encoder;
+using hex;
+
+
+export fn main() -> int {
+    u8 mut wire[100];
+    encoder::Encoder mut enc = {0};
+    encoder::new(&enc, wire, static(len(wire)));
+
+    err::Err+1000 mut e;
+    err::new(&e);
+
+
+    char *key = "beep";
+    char *val = "boop";
+
+    encoder::encode(&enc, &e, (u8*)key, static(len(key)), (u8*)val, static(len(val)));
+    err::abort(&e);
+    usize at = encoder::encode(&enc, &e, (u8*)key, static(len(key)), (u8*)val, static(len(val)));
+    err::abort(&e);
+    static_attest(at < len(wire));
+
+    hex::dump(wire,  at);
+
+    err::abort(&e);
+    return 0;
+}

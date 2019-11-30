@@ -8,7 +8,6 @@ extern crate rand;
 extern crate log;
 extern crate bytes;
 extern crate dirs;
-extern crate hpack;
 pub extern crate mio;
 pub extern crate osaka;
 extern crate osaka_dns;

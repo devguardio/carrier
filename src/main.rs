@@ -1037,13 +1037,10 @@ fn trace_inner_handler(
 }
 
 
-
-
-
 #[link(name="carrier")]
 include!("../target/release/rs/::carrier::sha256.rs");
 
-pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, carrier::Error> {
+pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, Error> {
     let mut state = vec![0; unsafe{ sizeof_carrier_sha256_Sha256}];
     unsafe { carrier_sha256_init(state.as_mut_ptr()); }
 
@@ -1072,3 +1069,7 @@ pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, carrier:
 
     Ok(out)
 }
+
+
+
+

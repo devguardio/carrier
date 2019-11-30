@@ -62,10 +62,12 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
     where err::checked(*e)
     where len(to) >= l && l > 0
     where size == 32 || size == 64
+    model nullterm(to)
 {
     u8 static zero[64] = { 0 };
     if (as<int>(memcmp(zero, k, size)) == 0) {
         err::fail(e, 22, "invalid address: zero");
+        static_attest(nullterm(to));
         return 0;
     }
 
@@ -116,6 +118,7 @@ export fn secret_from_str (err::Err+et mut* e,    Secret mut* mut to, char* from
 export fn identity_to_str (err::Err+et mut* e,    char mut* to, usize l, Identity* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
+    model nullterm(to)
 {
     return to_str(32, e, to, l, 8, 9, from->k);
 }
@@ -123,6 +126,7 @@ export fn identity_to_str (err::Err+et mut* e,    char mut* to, usize l, Identit
 export fn address_to_str (err::Err+et mut* e,     char mut* to, usize l, Address* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
+    model nullterm(to)
 {
     return to_str(32, e, to, l, 8, 6, from->k);
 }
@@ -130,6 +134,7 @@ export fn address_to_str (err::Err+et mut* e,     char mut* to, usize l, Address
 export fn secret_to_str (err::Err+et mut* e,      char mut* to, usize l, Secret* from) -> usize 
     where err::checked(*e)
     where len(to) >= l && l > 0
+    model nullterm(to)
 {
     return to_str(32, e, to, l, 8, 3, from->k);
 }
@@ -173,5 +178,5 @@ export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
 }
 
 export fn verify(Identity *pk, Signature *s, u8 * subject, usize subject_len) -> bool{
-    return ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, (u8 mut*)subject, subject_len, (u8 mut* )s->k);
+    return (bool)ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, (u8 mut*)subject, subject_len, (u8 mut* )s->k);
 }

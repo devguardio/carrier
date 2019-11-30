@@ -1,0 +1,393 @@
+using <stdio.h>::{printf, fopen, fclose, fread, FILE, fgetc, EOF};
+using <string.h>::{memcpy, memset};
+using <stdlib.h>::{atoi};
+
+using string;
+using net::address;
+using err;
+using byteorder;
+using net::udp;
+using time;
+using identity;
+
+
+export const usize MAX_BROKERS = 16;
+
+export struct Broker packed {
+    u8 protocol;
+    u8 reserved[3];
+    u8 xaddr[32];
+    u8 ip4addr[4];
+    u8 ip6addr[16];
+}
+
+export struct Store {
+    u8 version;
+    u8 secret[32];
+    Broker broker[MAX_BROKERS];
+}
+
+
+export fn from_store(Broker *b, address::Address mut *ip4addr, address::Address mut *ip6addr, identity::Address mut *xaddr) -> bool {
+    if b->protocol == 0 {
+        return false;
+    }
+    address::set_ip(ip4addr, address::Type::Ipv4, b->ip4addr);
+    address::set_ip(ip6addr, address::Type::Ipv6, b->ip6addr);
+    memcpy(xaddr->k, b->xaddr, 32);
+    return true;
+}
+
+export fn bootstrap(err::Err+et mut * e, Store mut*store)
+    where err::checked(*e)
+{
+    string::String+2000 mut name = {0};
+    string::append_cstr(&name, "4.carrier.devguard.io");
+
+    address::Address mut dns_servers[16];
+    address::from_cstr(&dns_servers[0], "8.8.8.8:53");
+    address::from_cstr(&dns_servers[1], "1.1.1.1:53");
+    address::from_cstr(&dns_servers[2], "[2001:4860:4860::8888]:53");
+    address::from_cstr(&dns_servers[3], "[2620:119:35::35]:53");
+    usize mut at = 4;
+
+    get_system_dns_servers(dns_servers, &at);
+    static_attest(at < len(dns_servers));
+
+    udp::Socket mut sock4 = {0};
+    udp::open(&sock4, e, address::Type::Ipv4);
+    if err::check(e) {
+        return;
+    }
+
+    udp::Socket mut sock6 = {0};
+    udp::open(&sock6, e, address::Type::Ipv6);
+    if err::check(e) {
+        return;
+    }
+
+    for (usize mut attempt = 0; attempt < 2; attempt++) {
+        for (usize mut i = 0; i < at; i++) {
+            string::String+1000 mut s = {0};
+            address::to_string(&s, &dns_servers[i]);
+            switch (dns_servers[i]).type {
+                address::Type::Ipv4 => {
+                    send_query(e, &name, &sock4,&dns_servers[i]);
+                }
+                address::Type::Ipv6 => {
+                    send_query(e, &name, &sock6,&dns_servers[i]);
+                }
+            }
+        }
+        err::new(e);
+
+        address::Address mut from = {0};
+
+        udp::deadline(&sock4, e, time::from_seconds(1));
+        if err::check(e) {
+            return;
+        }
+        udp::deadline(&sock6, e, time::from_seconds(1));
+        if err::check(e) {
+            return;
+        }
+
+        for (;;) {
+            string::clear(&name);
+            udp::recv(&sock6, e, &name, &from);
+            if err::check(e) {
+                break;
+            }
+            if parse_query(&name, store) {
+                return;
+            }
+        }
+        err::new(e);
+
+        for (;;) {
+            string::clear(&name);
+            udp::recv(&sock4, e, &name, &from);
+            if err::check(e) {
+                break;
+            }
+            if parse_query(&name, store) {
+                return;
+            }
+        }
+        err::new(e);
+    }
+    err::new(e);
+
+    err::fail(e, 1, "dns bootstrap failed");
+}
+
+struct DnsPacket packed {
+    u16 id;
+    u16 flags;
+    u16 queries;
+    u16 answers;
+    u16 authorities;
+    u16 additionals;
+}
+
+fn send_query(
+        err::Err+et mut *e,
+        string::String+st *name,
+        udp::Socket mut*sock,
+        address::Address *dns_server
+    )
+    where err::checked(*e)
+{
+    string::String+1000 mut pkt = {0};
+
+    DnsPacket mut *head= (DnsPacket mut *)pkt.mem;
+
+    head->id          = byteorder::to_be16(0x1337);
+    head->flags       = byteorder::to_be16(0x100); //request recursion
+    head->queries     = byteorder::to_be16(1);
+    head->answers     = 0;
+    head->authorities = 0;
+    head->additionals = byteorder::to_be16(1);
+
+    pkt.len += as<usize>(sizeof(DnsPacket));
+
+    usize mut it = 0;
+    string::String+256 mut part = {0};
+    string::clear(&part);
+    while (string::split(name, '.', &it, &part)) {
+        if part.len >= 255 || (string::space(&part) < (1 + part.len)) {
+            err::fail(e, 22, "name too long");
+            return;
+        }
+        pkt.push((char)part.len);
+        pkt.append(&part);
+        part.clear();
+    }
+    static_attest(err::checked(*e));
+
+
+    u8 end[] = {
+        0,    //end of labels
+        0,    //16bit padding
+        0x10, //request TXT
+        0,    //16bit padding
+        1,    //inet class
+        // opt
+        0,              // root
+        0,      0x29,   // type OPT
+        0x03,   0xe8,   // 1000 bytes max response size
+        0,    // dunno
+        0,    // some other stuff
+        0, 0, // security flags i thing
+        0, 0, // no more data
+
+    };
+    string::append_bytes(&pkt, end, static(len(end)));
+
+    static_attest(len(pkt.mem) >= pkt.len);
+
+    udp::sendto(sock, e, dns_server, (u8*)pkt.mem, pkt.len);
+    // don't care if send failed
+    err::new(e);
+}
+
+pub fn parse_query(string::String+t *pkt, Store mut*store) -> bool
+{
+    static_attest(len(pkt->mem) >= pkt->len);
+
+    if pkt->len < as<usize>(sizeof(DnsPacket)) {
+        return false;
+    }
+
+    DnsPacket mut *head = (DnsPacket mut *)pkt->mem;
+    usize answers = (usize)byteorder::from_be16(head->answers);
+    usize queries = (usize)byteorder::from_be16(head->queries);
+
+    if answers < 1 {
+        return false;
+    }
+
+    usize mut at = as<usize>(sizeof(DnsPacket));
+
+    // skip the query sections
+    for (usize mut i = 0; i < queries; i++) {
+        while at < pkt->len - 1 {
+            static_attest(at < len(pkt->mem));
+            // find end of labels
+            if (pkt->mem)[at] == 0 {
+                // from here the section is 5 more bytes long
+                at += 5;
+                break;
+            }
+            at += 1;
+        }
+    }
+
+
+    usize mut storepos = 0;
+
+    for (usize mut i = 0; i < answers; i++) {
+        // find start of answer header
+        while at < pkt->len - 1 {
+            static_attest(at < len(pkt->mem));
+            if (pkt->mem)[at] == 0 {
+                break;
+            }
+            if as<u8>((pkt->mem)[at]) == 0xc0 {
+                at += 1;
+                break;
+            }
+            at += 1;
+        }
+        at += 1;
+
+        if at + 2 >= pkt->len {
+            break;
+        }
+        static_attest(at < len(pkt->mem));
+
+        u16 record_type = byteorder::from_be16(*as<u16*>(&(pkt->mem)[at]));
+        at += 2;
+
+        if at + 6 >= pkt->len {
+            break;
+        }
+        static_attest(at < len(pkt->mem));
+        u16 record_class = byteorder::from_be16(*as<u16*>(&(pkt->mem)[at]));
+        at += 6;
+
+        if at + 2 >= pkt->len {
+            break;
+        }
+        static_attest(at < len(pkt->mem));
+        u16 record_len = byteorder::from_be16(*as<u16*>(&(pkt->mem)[at]));
+        at += 2;
+
+        if at + (usize)record_len + 1 >= pkt->len {
+            break;
+        }
+        static_attest(at + 1 < len(pkt->mem));
+
+        err::Err+1 mut e;
+        err::new(&e);
+
+        if record_type == 0x10 && record_class == 0x01 {
+            string::String+200 mut record ={0};
+
+            u8 *rm = (u8*)pkt->mem;
+            static_attest(at + 1 < len(rm));
+            u8 * record_b = rm + (at + 1);
+            static_attest(len(record_b) == (usize)record_len - 1);
+            static_attest(safe(record_b));
+            string::append_bytes(&record, record_b, (usize)record_len - 1);
+
+            bool mut has_netaddr = false;
+            bool mut has_xaddr   = false;
+
+            usize mut it = 0;
+            string::String+256 mut part = {0};
+            string::clear(&part);
+            while (string::split(&record, ' ', &it, &part)) {
+                if string::starts_with_cstr(&part, "n=") {
+                    char *from = part.mem + 2;
+                    usize fromlen = part.len - 2;
+                    static_attest(safe(from));
+                    static_attest(len(from) >= fromlen);
+
+                    address::Address mut a = {0};
+                    if address::from_str(&a, from, fromlen) {
+                        memcpy(((store->broker)[storepos]).ip4addr, address::get_ip(&a), 4);
+                        has_netaddr = true;
+                    }
+                } else if string::starts_with_cstr(&part, "n6=") {
+                    char *from = part.mem + 3;
+                    usize fromlen = part.len - 3;
+                    static_attest(safe(from));
+                    static_attest(len(from) >= fromlen);
+
+                    address::Address mut a = {0};
+                    if address::from_str(&a, from, fromlen) {
+                        memcpy(((store->broker)[storepos]).ip6addr, address::get_ip(&a), 16);
+                        has_netaddr = true;
+                    }
+                } else if string::starts_with_cstr(&part, "x=") {
+                    char *from = part.mem + 2;
+                    usize fromlen = part.len - 2;
+                    static_attest(safe(from));
+                    static_attest(fromlen  <= len(from));
+
+                    identity::Address mut addr = {0};
+                    identity::address_from_str (&e,  &addr, from, fromlen);
+                    if !err::check(&e) {
+                        memcpy(((store->broker)[storepos]).xaddr, addr.k, sizeof(((store->broker)[storepos]).xaddr));
+                        has_xaddr = true;
+                    }
+                    err::new(&e);
+                } else if string::starts_with_cstr(&part, "carrier=") {
+
+
+                    char *from = part.mem + 8;
+                    usize fromlen = part.len - 8;
+                    static_attest(safe(from));
+                    static_attest(fromlen == len(from));
+
+                    string::String+20 mut bb = {0};
+                    string::append_bytes(&bb, (u8*)from, fromlen);
+
+                    ((store->broker)[storepos]).protocol = (u8)atoi(bb.mem);
+                }
+
+                string::clear(&part);
+            }
+
+            static_attest(storepos < len(store->broker));
+            if ((store->broker)[storepos]).protocol >0 && has_netaddr && has_xaddr {
+                storepos += 1;
+                if storepos > MAX_BROKERS {
+                    return true;
+                }
+            } else {
+                static_attest(storepos < len(store->broker));
+                memset(&(store->broker)[storepos], 0, sizeof(Broker));
+            }
+
+        }
+        at += (usize)record_len;
+    }
+
+    return true;
+}
+
+fn get_system_dns_servers(address::Address mut *dns_servers, usize mut *at)
+{
+    FILE mut* fp = fopen("/etc/resolv.conf", "r");
+    if fp == 0 {
+        return;
+    }
+    static_attest(safe(fp));
+
+    string::String+300 mut str;
+    for (;;) {
+        if *at >= 16 {
+            break;
+        }
+        static_attest(*at < len(dns_servers));
+
+        string::clear(&str);
+        if !string::fgets(&str, fp) {
+            break;
+        }
+        string::pop(&str);
+
+        if string::starts_with_cstr(&str, "nameserver") {
+            string::String+100 mut sub = {0};
+            string::substr(&str, 11, 0, &sub);
+
+            if address::from_cstr(&dns_servers[*at], sub.mem) {
+                address::set_port(&dns_servers[*at], 53);
+                *at += 1;
+            }
+        }
+    }
+    fclose(fp);
+}

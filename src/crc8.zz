@@ -43,12 +43,17 @@ static u8 crc8_table[256] = {
 // for the next seed. If data is NULL, then return the initial seed. See the
 // test code for an example of the proper usage.
 
-export fn crc8(u8 mut crc, u8* mut data, usize l) -> u8 {
+export fn crc8(u8 mut crc, u8* mut data, usize l) -> u8
+    where l <= len(data)
+{
     if data == 0 {
         return crc;
     }
     crc &= 0xff;
-    u8 *end = data + l;
+    u8 * mut end;
+    unsafe {
+        end = data + l;
+    }
     while data < end {
         unsafe {
             crc = crc8_table[crc ^ *(data++)];
@@ -67,7 +72,9 @@ pub fn crc8_slow(u8 mut crc, u8* mut data, usize mut l) -> u8 {
     }
     crc = ~crc & 0xff;
     while (l-- > 0) {
-        crc = crc ^ (*data++);
+        static_attest(safe(data));
+        crc = crc ^ *data;
+        data++;
         for (uint mut k = 0; k < 8; k++) {
             if (crc & 1) > 0 {
                 crc = (crc >> 1) ^ 0xb2;

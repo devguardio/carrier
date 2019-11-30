@@ -17,6 +17,7 @@ using err;
 using <string.h>::{memcmp};
 using <stdio.h>::{printf};
 using <assert.h>::{assert};
+using string;
 
 fn test_identity(err::Err+et mut* e)
     where err::checked(*e)
@@ -35,7 +36,7 @@ fn test_identity(err::Err+et mut* e)
     printf("%s\n", buf);
 
     Identity mut pk2 = {0};
-    identity_from_str(e, &pk2, buf, static(len(buf)));
+    identity_from_str(e, &pk2, buf, string::strlen(buf));
     if err::check(e) { return; }
 
     assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
@@ -46,7 +47,7 @@ fn test_identity(err::Err+et mut* e)
     printf("%s\n", buf);
 
     Secret mut sk2 = {0};
-    secret_from_str(e, &sk2, buf, static(len(buf)));
+    secret_from_str(e, &sk2, buf, string::strlen(buf));
     if err::check(e) { return; }
 
     assert(memcmp(sk.k, sk2.k, sizeof(sk.k)) == 0);
@@ -94,7 +95,7 @@ fn test_address(err::Err+et mut* e)
     printf("%s\n", buf);
 
     Address mut pk2 = {0};
-    address_from_str(e, &pk2, buf, static(len(buf)));
+    address_from_str(e, &pk2, buf, string::strlen(buf));
     if err::check(e) { return; }
 
     assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);

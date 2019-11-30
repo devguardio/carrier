@@ -1,6 +1,51 @@
 use std::fmt;
-use std::io::{Error, ErrorKind};
 use std::iter::Iterator;
+use error;
+
+
+#[link("carrier")]
+include!("../target/release/rs/::hpack::encoder.rs");
+extern {
+    pub fn hpack_decoder_decode(
+        Ze: *mut u8,
+        Zet: usize,
+        Zwire: *const u8,
+        Zl: usize,
+        Zcb: extern fn(
+            e:      *mut u8,
+            et:     usize,
+            user:   *mut Headers,
+            key:    *const u8,
+            keylen: usize,
+            val:    *const u8,
+            vallen: usize,
+        ),
+        Zuser: *mut Headers
+    );
+}
+
+
+extern "C" fn rs_hpack_decoder_callback(
+    e:      *mut u8,
+    et:     usize,
+    user:   *mut Headers,
+    key:    *const u8,
+    keylen: usize,
+    val:    *const u8,
+    vallen: usize,
+    )
+{
+    let mut rs_key = vec![0; keylen];
+    let mut rs_val = vec![0; vallen];
+
+    unsafe {
+        std::ptr::copy(key, rs_key.as_mut_ptr(), keylen);
+        std::ptr::copy(val, rs_val.as_mut_ptr(), vallen);
+        (*user).f.push((rs_key,rs_val));
+    }
+}
+
+
 
 #[derive(Default, Clone)]
 pub struct Headers {
@@ -92,18 +137,48 @@ impl Headers {
     }
 
     pub fn encode(&self) -> Vec<u8> {
-        use hpack::Encoder;
-        let m = self.f.iter().map(|v| (v.0.as_slice(), v.1.as_slice()));
-        Encoder::new().encode(m)
+        let mut err = error::ZZError::new();
+        let mut encoder = vec![0;unsafe{sizeof_hpack_encoder_Encoder}];
+        let mut mem     = vec![0;2000];
+        unsafe{hpack_encoder_new(
+            encoder.as_mut_ptr(),
+            mem.as_mut_ptr(),
+            mem.len()
+        )};
+
+        let mut at = 0;
+        for (k,v) in &self.f {
+            at = unsafe{hpack_encoder_encode(
+                encoder.as_mut_ptr(),
+                err.as_mut_ptr(),
+                error::ZERR_TAIL,
+                k.as_ptr(),
+                k.len(),
+                v.as_ptr(),
+                v.len())};
+            err.check().unwrap();
+        }
+        mem.truncate(at);
+        mem
     }
 
-    pub fn decode(b: &[u8]) -> Result<Self, Error> {
-        use hpack::Decoder;
-        let h = Decoder::new()
-            .decode(&b)
-            .map_err(|e| Error::new(ErrorKind::InvalidData, format!("{:?}", e)))?;
+    pub fn decode(b: &[u8]) -> Result<Self, error::Error> {
+        let mut nu = Self::default();
 
-        Ok(Self { f: h })
+        let mut err = error::ZZError::new();
+        unsafe{hpack_decoder_decode(
+                err.as_mut_ptr(),
+                error::ZERR_TAIL,
+                b.as_ptr(),
+                b.len(),
+                rs_hpack_decoder_callback,
+                (&mut nu),
+        )};
+
+
+        err.check()?;
+
+        Ok(nu)
     }
 
     pub fn iter<'a>(&'a self) -> impl Iterator<Item = (&[u8], &[u8])> + 'a {

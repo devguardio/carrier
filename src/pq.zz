@@ -1,0 +1,285 @@
+/// the outgoing packet queue
+using <string.h>::{memcpy, memset};
+using <stdio.h>::{printf};
+using <math.h>;
+using <assert.h>::{assert};
+using err;
+
+/// maximum out of order ack before a frame is considered lost
+pub const u64   REORDER_THRESHOLD = 16;
+/// packet queue size
+pub const usize QSIZE             = 64;
+/// maximum frame size
+pub const usize FRAME_SIZE        = 512;
+
+struct Frame {
+    u64 mut packet;
+    u64 mut acked_at;
+    u64 mut sent_at;
+
+    /*debug*/
+    int mut marker;
+
+    u8  mut type;
+    u8  mut payload[FRAME_SIZE];
+    u16 mut payload_len;
+}
+
+pub struct Q {
+    usize mut count;
+    usize mut back;
+    usize mut front;
+    usize mut sent;
+
+
+    u64 mut rtt;
+    u64 mut counter;
+    Frame q[QSIZE];
+}
+
+
+/// allocate the next frame in the queue
+export fn next (Q mut* self, err::Err+et mut* e) -> Frame mut*
+    where err::checked(*e)
+{
+    Frame mut* mut r = 0;
+    if (self->count >= QSIZE) {
+        err::fail(e, 1, "tx queue full");
+        return 0;
+    }
+    (self->count)++;
+    unsafe {
+        r = self->q + (self->back)++;
+    }
+    if (self->back >= QSIZE) {
+        self->back = 0;
+    }
+    return r;
+}
+
+export fn window(Q* self) -> usize {
+    return QSIZE - self->count;
+}
+
+export fn ack(Q mut* self, u64 time, u64 counter) {
+    if (counter == 0) {
+        return;
+    }
+    printf("ack: %lu, front: %lu, count: %zu, back:%zu\n", counter, self->front, self->count, self->back);
+
+#if def("debug")
+    test_pq_lost_frames = 0;
+#endif
+
+    Frame mut* mut qq = self->q;
+    usize mut f = self->front;
+
+    for (usize mut i = 0; i < QSIZE; wrapinc(&f), i++) {
+        printf("  f %zu\n", f);
+        // mark as acked
+        static_attest(f < len(qq));
+        if ((qq[f]).packet == counter) {
+            (qq[f]).acked_at = time;
+            assert(time > (qq[f]).sent_at);
+            if (self->rtt == 0) {
+                self->rtt = (time - (qq[f]).sent_at);
+            } else {
+                self->rtt = (self->rtt + (time - (qq[f]).sent_at)) / 2;
+            }
+        }
+
+        // as long as the front is acked, clear the front and advance
+        if (f == self->front && (qq[f]).acked_at != 0) {
+            memset(qq + f, 0, sizeof(Frame));
+            (self->front)++;
+            (self->count)--;
+            if (self->front  >= QSIZE) {
+                self->front = 0;
+            }
+        } else if ((qq[f]).packet > counter || f == self->sent) {
+            printf("  pk: %lu, co: %zu\n", (qq[f]).packet, counter);
+            break;
+        }
+
+        // if this frame is not acked and too far behind, move it back to the front of the queue
+        if ((qq[f]).acked_at == 0 && (qq[f]).packet > 0 && (qq[f]).packet + REORDER_THRESHOLD < counter) {
+            (qq[f]).sent_at = 0;
+            (qq[f]).packet  = 0;
+
+            Frame mut mov;
+            memcpy(&mov, &(qq[f]), sizeof(Frame));
+            memset(qq + f, 0, sizeof(Frame));
+            wrapinc(&self->front);
+
+
+            for (usize mut i = wrapinc(&self->back); i != self->sent;) {
+                usize p    = wrapdec(&i);
+                unsafe {
+                    memcpy(qq + p, qq + i, sizeof(Frame));
+                }
+            }
+
+            unsafe {
+                memcpy(qq + self->sent, &mov, sizeof(Frame));
+            }
+
+#if def("debug")
+            test_pq_lost_frames++;
+
+            printf("MOVED pos %zu mark %d  to %zu \n", f, mov.marker, self->sent);
+            dump(self);
+#endif
+        }
+        if (f == self->back) {
+            break;
+        }
+    }
+
+}
+
+/// send frames out of the queue
+export fn send(Q mut* self, u64 time, u8 mut* buf , u16 buflen) -> usize {
+    assert(time != 0);
+
+    static_attest(self->sent < len(self->q));
+
+#if def("debug")
+    test_pq_sent_frames = 0;
+#endif
+
+    u64 mut counter = 0;
+
+    u16 mut sent_bytes = 0;
+    for (;self->sent != self->back; ) {
+
+        Frame mut* f = &((self->q)[self->sent]);
+        f is safe;
+
+        if (f->sent_at == 0) {
+
+            if ((sent_bytes + f->payload_len + 1) > buflen) {
+                break;
+            }
+#if def("debug")
+            test_pq_sent_frames++;
+#endif
+            if (counter == 0) {
+                counter = ++(self->counter);
+                printf("sending packet %lu\n", counter);
+            }
+            f->packet   = counter;
+            f->sent_at  = time;
+
+            unsafe {
+                memcpy(buf + sent_bytes, &f->type, 1);
+            }
+            sent_bytes += 1;
+
+            unsafe {
+                memcpy(buf + sent_bytes, f->payload, f->payload_len);
+            }
+            sent_bytes += f->payload_len;
+        }
+        (self->sent)++;
+        if (self->sent >= QSIZE) {
+            self->sent = 0;
+        }
+    }
+    return (usize)sent_bytes;
+}
+
+#if def("debug")
+pub fn dump(Q* q) {
+unsafe{
+    printf("===================================================================\n");
+    printf("      ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        printf("%02d ", i);
+    }
+    printf("\nmark  ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        if (((q->q)[i]).marker != 0) {
+            printf("%02d ", ((q->q)[i]).marker);
+        } else {
+            printf("   ");
+        }
+    }
+    printf("\npckt  ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        if (((q->q)[i]).packet != 0) {
+            printf("%02lu ", ((q->q)[i]).packet);
+        } else {
+            printf("   ");
+        }
+    }
+    printf("\nackd  ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        if (((q->q)[i]).acked_at != 0) {
+            printf("x  ");
+        } else {
+            printf("   ");
+        }
+    }
+    printf("\nfront ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        if (i == q->front) {
+            printf("x  ");
+        } else {
+            printf("   ");
+        }
+    }
+    printf("\nback  ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        if (i == q->back) {
+            printf("x  ");
+        } else {
+            printf("   ");
+        }
+    }
+    printf("\nsent  ");
+    for (int mut i = 0; i < QSIZE; i++) {
+        if (i == q->sent) {
+            printf("x  ");
+        } else {
+            printf("   ");
+        }
+    }
+    printf("\n===================================================================\n");
+}
+}
+
+#endif
+
+#if def("debug")
+static u64 mut test_pq_lost_frames = 0;
+static u64 mut test_pq_sent_frames = 0;
+#endif
+
+
+pub fn test_lost_frames() -> u64 {
+    return test_pq_lost_frames;
+}
+
+pub fn test_sent_frames() -> u64 {
+    return test_pq_sent_frames;
+}
+
+fn wrapinc (usize mut* i) -> usize {
+    *i is safe;
+    usize v = (*i)++;
+    if (*i >= QSIZE) {
+        *i = 0;
+    }
+    return v;
+}
+
+fn wrapdec (usize mut* i) -> usize {
+    *i is safe;
+    usize v = *i;
+    if (*i == 0) {
+        *i = QSIZE;
+    }
+    (*i)--;
+    return v;
+}
+

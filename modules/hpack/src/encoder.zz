@@ -1,0 +1,86 @@
+using err;
+using string;
+using <string.h>::{strlen, memcpy};
+
+export struct Encoder {
+    u8 mut* buf;
+    usize buflen;
+    usize bufat;
+}
+
+export fn new(Encoder mut* self, u8 mut* buf, usize buflen) {
+    self->bufat     = 0;
+    self->buflen    = buflen;
+    self->buf       = buf;
+}
+
+export fn encode(Encoder mut* self, err::Err+et mut *e, u8* key, usize keylen, u8* val, usize vallen) -> usize
+    where err::checked(*e)
+{
+    static_attest(self->buflen == len(self->buf));
+    if self->bufat >= self->buflen {
+        err::fail(e, 1, "overflow");
+        return self->bufat;
+    }
+    (self->buf)[self->bufat] = 0;
+    (self->bufat)++;
+    if self->bufat >= self->buflen {
+        err::fail(e, 1, "overflow");
+        return self->bufat;
+    }
+
+    encode_integer(self, e, keylen, 7);
+    if err::check(e) {
+        err::fail(e, 1, "overflow");
+        return self->bufat;
+    }
+    (self->bufat)++;
+
+    if self->bufat + keylen >= self->buflen {
+        err::fail(e, 1, "overflow");
+        return self->bufat;
+    }
+
+    static_attest(self->bufat < len(self->buf));
+    memcpy(self->buf + self->bufat, key, keylen);
+    (self->bufat)+= keylen;
+
+
+    encode_integer(self, e, vallen, 7);
+    if err::check(e) {
+        return self->bufat;
+    }
+    (self->bufat)++;
+
+    if self->bufat + vallen >= self->buflen {
+        err::fail(e, 1, "overflow");
+        return self->bufat;
+    }
+
+    static_attest(self->bufat < len(self->buf));
+    memcpy(self->buf + self->bufat, val, vallen);
+    (self->bufat)+= vallen;
+
+    return self->bufat;
+}
+
+
+
+pub fn encode_integer(Encoder mut* self,  err::Err+et mut *e, usize value, u8 prefix_size)
+    where self->bufat < self->buflen
+    where err::checked(*e)
+{
+    static_attest(self->buflen == len(self->buf));
+
+    u8 mut mask = 0xff;
+    if prefix_size < 8 {
+        mask = (1 << prefix_size) - 1;
+    }
+
+    if value < (usize)mask {
+        (self->buf)[self->bufat] = ((self->buf)[self->bufat] & ~mask) | (u8)value;
+        return;
+    }
+
+    err::fail(e, 10, "large header field not implemented");
+}

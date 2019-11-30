@@ -1,0 +1,235 @@
+using identity;
+using err;
+using <string.h>::{strlen, memcpy, memset, memcmp};
+using <assert.h>::{assert};
+using symmetric;
+
+using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
+
+
+// NKSig
+// <- s
+// ...
+// -> e, es, sign(e)
+// <- e, ee
+
+
+static u8 zerokey[32] = {0};
+
+
+pub struct Initiator {
+    symmetric::SymmetricState   mut symm;
+    identity::Secret            mut ephermal;
+    identity::Address           mut remote_static;
+    identity::Address           remote_ephermal;
+}
+
+pub fn initiate(
+    Initiator mut *self,
+    err::Err+et mut* e,
+    u8 mut * mut pkt,
+    usize pktlen,
+    u8 * prologue,
+    usize prologue_len,
+    u8 * payload,
+    usize payload_len
+) -> usize
+    where err::checked(*e)
+    where len(pkt) >= pktlen
+    where len(prologue) >= prologue_len
+    where len(payload) >= payload_len
+    where pktlen >  32
+    where pktlen -32 > payload_len
+    model return < pktlen
+{
+    usize total_size = 32 + payload_len + 16;
+    assert(pktlen >= total_size);
+    static_attest(pktlen >= total_size);
+
+    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->remote_static).k, zerokey, 32) != 0);
+
+    symmetric::init(&self->symm, "Noise_NK_25519_ChaChaPoly_SHA256");
+    symmetric::mix_hash(&self->symm, prologue, prologue_len);
+
+    // <- s
+    symmetric::mix_hash(&self->symm, (self->remote_static).k, 32);
+
+    // -> e ,
+    identity::Address mut ephermal_address = {0};
+    identity::address_from_secret(&ephermal_address, &self->ephermal);
+
+    symmetric::mix_hash(&self->symm, ephermal_address.k, 32);
+    memcpy(pkt, ephermal_address.k, 32);
+
+    // , es
+    identity::Address mut dh = {0};
+    identity::dh(&dh, &self->ephermal, &self->remote_static);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+    // payload
+    usize rs = symmetric::encrypt_and_mix_hash(&self->symm, e, payload, payload_len, 0, pkt + 32, pktlen - 32);
+    if err::check(e) {
+        return 0;
+    }
+    assert(rs + 32 == total_size);
+    static_attest(total_size < pktlen);
+    return total_size;
+}
+
+pub struct Responder {
+    symmetric::SymmetricState   mut symm;
+    identity::Secret            ephermal;
+    identity::Secret            statickey;
+    identity::Address           remote_ephermal;
+}
+
+pub fn receive(
+    Responder mut* self,
+    err::Err+et mut* e,
+    u8 mut* mut payload,
+    usize payload_len,
+    u8 * prologue,
+    usize prologue_len,
+    u8 * packet,
+    usize packet_len
+) -> usize
+    where err::checked(*e)
+    where len(packet) >= packet_len
+    where len(prologue) >= prologue_len
+    where len(payload) >= payload_len
+    where len(packet) > 32
+{
+    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->statickey).k, zerokey, 32) != 0);
+
+    if packet_len < 32 + 16 {
+        err::fail(e, 9, "in buffer underflow");
+        return 0;
+    }
+    if payload_len < packet_len - 16 {
+        err::fail(e, 9, "out buffer overflow ");
+        return 0;
+    }
+
+
+    identity::Address mut xaddr = {0};
+    identity::address_from_secret(&xaddr, &self->statickey);
+
+    symmetric::init(&self->symm, "Noise_NK_25519_ChaChaPoly_SHA256");
+    symmetric::mix_hash(&self->symm, prologue, prologue_len);
+
+    // <- s
+    symmetric::mix_hash(&self->symm, xaddr.k, 32);
+
+    // -> e ,
+    memcpy((self->remote_ephermal).k, packet, 32);
+    symmetric::mix_hash(&self->symm, (self->remote_ephermal).k, 32);
+
+    // , es
+    identity::Address mut dh = {0};
+    identity::dh(&dh, &self->statickey, &self->remote_ephermal);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+
+    usize packet_rest = packet_len - 32;
+    usize rs = symmetric::decrypt_and_mix_hash(&self->symm, e, packet + 32, packet_rest, 0, payload, payload_len);
+    if err::check(e) {
+        return 0;
+    }
+    assert(rs == packet_len - 32 - 16);
+
+    return packet_len - 32 - 16;
+}
+
+
+pub fn accept(
+    Responder mut* self,
+    err::Err+et mut* e,
+    u8 mut * mut pkt,
+    usize pktlen,
+    u8 * payload,
+    usize payload_len
+) -> usize
+    where err::checked(*e)
+    where len(pkt) >= pktlen
+    where len(payload) >= payload_len
+    where pktlen > 32 + payload_len + 16
+    where pktlen > 32
+    where pktlen -32 > payload_len
+{
+    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->statickey).k, zerokey, 32) != 0);
+    assert(memcmp((self->remote_ephermal).k, zerokey, 32) != 0);
+
+    usize total_size = 32 + payload_len + 16;
+    static_assert(pktlen >= total_size);
+
+    // <- e,
+    identity::Address mut ephermal_address = {0};
+    identity::address_from_secret(&ephermal_address, &self->ephermal);
+
+    symmetric::mix_hash(&self->symm, ephermal_address.k, 32);
+    memcpy(pkt, ephermal_address.k, 32);
+
+    //, ee
+    identity::Address mut dh = {0};
+    identity::dh(&dh, &self->ephermal, &self->remote_ephermal);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+    // payload
+    usize rs = symmetric::encrypt_and_mix_hash(&self->symm, e, payload, payload_len, 0, pkt + 32, pktlen - 32);
+    if err::check(e) {
+        return 0;
+    }
+    assert(rs + 32 == total_size);
+    return total_size;
+}
+
+pub fn complete(
+    Initiator mut* self,
+    err::Err+et mut* e,
+    u8 mut* mut payload,
+    usize payload_len,
+    u8 * packet,
+    usize packet_len
+) -> usize
+    where err::checked(*e)
+    where err::checked(*e)
+    where len(packet) >= packet_len
+    where len(payload) >= payload_len
+    where len(packet) > 32
+    model len(packet) >= return
+    model len(payload) >= return
+{
+    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+
+    if packet_len < 32 + 16 {
+        err::fail(e, 9, "in buffer underflow");
+        return 0;
+    }
+    if payload_len < packet_len - 16 {
+        err::fail(e, 9, "out buffer overflow ");
+        return 0;
+    }
+
+
+    // <- e ,
+    memcpy((self->remote_ephermal).k, packet, 32);
+    symmetric::mix_hash(&self->symm, (self->remote_ephermal).k, 32);
+
+    // , es
+    identity::Address mut dh = {0};
+    identity::dh(&dh, &self->ephermal, &self->remote_ephermal);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+
+    usize packet_rest = packet_len - 32;
+    usize rs = symmetric::decrypt_and_mix_hash(&self->symm, e, packet + 32, packet_rest, 0, payload, payload_len);
+    if err::check(e) {
+        return 0;
+    }
+    assert(rs == packet_len - 32 - 16);
+
+    return packet_len - 32 - 16;
+}

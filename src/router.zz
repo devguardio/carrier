@@ -1,0 +1,309 @@
+using identity;
+using err;
+using noise;
+using std;
+using hex;
+using byteorder;
+using <assert.h>::{assert};
+using <stdio.h>::{printf};
+using <memory.h>::{strlen};
+using channel;
+using string;
+
+enum Direction {
+    Initiator2Responder,
+    Responder2Initiator,
+}
+
+struct Router {
+    u8 mut                  pkt[1024];
+    usize mut               pkt_len;
+    channel::Channel mut    broker;
+}
+
+pub fn push(Router mut* self, err::Err+et mut* e)
+    where err::checked(*e)
+{
+    printf("incomming pkt %zu\n", self->pkt_len);
+    static_attest(len(self->pkt) >= self->pkt_len);
+    hex::dump(self->pkt, self->pkt_len);
+
+    if self->pkt_len < 4 + 8 + 8 + 16   {
+        err::fail(e, 1, "too small");
+        return;
+    }
+
+    // version 1B
+    if (self->pkt)[0] != 9 {
+        err::fail(e, 1, "invalid version");
+        return;
+    }
+    // reserved 3B
+    // route    8B
+    u8 *rkeymem = self->pkt + 4;
+    static_attest(safe(rkeymem));
+    static_attest(len(rkeymem) > 8);
+    u64 routingkey = read_routing_key(rkeymem, 0);
+    // counter  8B
+    u64 counter = byteorder::from_be64(*(u64*)&(self->pkt)[12]);
+    printf("<> counter %lu\n", counter);
+    usize mut at = 4 + 8 + 8;
+
+    u8 mut * ciphertext     = self->pkt + at;
+    usize ciphertext_len    = self->pkt_len - at;
+    static_attest(safe(ciphertext));
+    static_attest(len(ciphertext) >= ciphertext_len);
+
+    if ciphertext_len <= 16 {
+        err::fail(e, 1, "too small");
+        return;
+    }
+
+    if routingkey == (self->broker).route {
+        channel::push(&(self->broker), e, ciphertext, ciphertext_len, counter);
+    }
+}
+
+
+
+pub fn pull(Router mut* self, err::Err+et mut* e)
+    where err::checked(*e)
+{
+    self->pkt_len = channel::pull(&(self->broker), e, self->pkt, static(len(self->pkt)));
+}
+
+
+static char SIGN_PURPOSE[] = "carrier handshake hash 1";
+static char PROLOGUE[] = "carrier has arrived";
+
+
+struct Initiator {
+    u8 mut pkt[1024];
+    usize mut pkt_len;
+    noise::Initiator mut noise;
+}
+
+//TODO this is minimal prototype code to get v8 working. it sucks
+pub fn initiate(
+    Initiator mut* self,
+    err::Err+et mut* e,
+    identity::Secret *secret,
+    identity::Address * xaddr
+)
+    where err::checked(*e)
+{
+    identity::Identity mut eid = {0};
+    identity::identity_from_secret(&eid, secret);
+
+    std::memcpy(((self->noise).remote_static).k, xaddr->k, 32);
+
+    identity::secret_generate(e, &(self->noise).ephermal);
+    if err::check(e) {
+        return ;
+    }
+
+
+    u8 mut plaintext[512] = {0};
+    usize mut plaintext_len = 0;
+    // TODO some broken crc 1B
+    // flags 1B
+    plaintext_len  += 2;
+    // eid 32B
+    unsafe{
+    std::memcpy(&plaintext[plaintext_len], eid.k, 32);
+    }
+    plaintext_len += 32;
+    // TODO timestamp 8B
+    // TODO revison 4B
+    plaintext_len += 8 + 4;
+    // move target 32B
+    //std::memcpy(body + at, eid.k, 32);
+    //at += 32;
+
+    // padding expected ciphertext size to nearest 64 byte before authentication tag
+    plaintext_len += 64 - ((plaintext_len - 16)  % 64);
+
+
+    printf("plaintext len %zu\n", plaintext_len);
+
+    self->pkt_len  = 0;
+    // version 1B
+    (self->pkt)[0] = 9;
+    // reserved 3B
+    // route    8B
+    // counter  8B
+    self->pkt_len += 4 + 8 + 8;
+
+    u8 mut* pp = self->pkt + self->pkt_len;
+    usize pplen = static(len(self->pkt)) - self->pkt_len;
+    static_attest(safe(pp));
+    static_attest(len(pp) >= pplen);
+
+    usize prologue_len = (usize)strlen(PROLOGUE);
+    static_attest(prologue_len < len((u8*)PROLOGUE));
+
+    self->pkt_len += noise::initiate(
+        &self->noise, e,
+        pp, pplen,
+        (u8*)PROLOGUE, prologue_len,
+        plaintext, plaintext_len
+    );
+
+    if err::check(e) {
+        return;
+    }
+
+    printf("ciphertext len %zu\n", self->pkt_len - 4 - 8 - 8);
+    assert((self->pkt_len - 4 - 8 - 8) % 64 == 0);
+
+
+    printf("handshake hash:\n");
+    hex::dump(((self->noise).symm).h, static(len(((self->noise).symm).h)));
+
+    printf("identity:\n");
+    hex::dump(eid.k, 32);
+
+    //sign handshake hash
+    u8 mut signme[static(len(SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
+    std::memcpy(signme, SIGN_PURPOSE, string::strlen(SIGN_PURPOSE));
+    u8 mut * mem = signme + string::strlen(SIGN_PURPOSE);
+
+    std::memcpy(mem, ((self->noise).symm).h, static(len(((self->noise).symm).h)));
+
+
+    identity::Signature mut*sig= (identity::Signature mut*)(self->pkt + self->pkt_len);
+    static_attest(safe(sig));
+    identity::sign(secret, sig, signme, static(len(signme)));
+    printf("signature:\n");
+    self->pkt_len += 64;
+    printf("packet len %zu\n", self->pkt_len);
+    static_attest(len(self->pkt) >= self->pkt_len);
+    hex::dump(self->pkt, self->pkt_len);
+}
+
+
+pub fn complete (
+    Initiator       mut* self,
+    err::Err+et     mut* e,
+    Router          mut* router,
+)
+    where err::checked(*e)
+{
+    printf("completing with %zu\n", self->pkt_len);
+    static_attest(len(self->pkt) >  self->pkt_len);
+    hex::dump(self->pkt, self->pkt_len);
+
+    if self->pkt_len < 4 + 8 + 8 + 32 + 16  + 64 {
+        err::fail(e, 1, "too small");
+        return;
+    }
+
+    // version 1B
+    if (self->pkt)[0] != 9 {
+        err::fail(e, 1, "invalid version");
+        return;
+    }
+    // reserved 3B
+    // route    8B
+    u8 *rkeymem = self->pkt + 4;
+    static_attest(safe(rkeymem));
+    static_attest(len(rkeymem) > 8);
+    u64 routingkey = read_routing_key(rkeymem, 0);
+    // counter  8B
+    u64 counter = byteorder::from_be64(*&(self->pkt)[12]);
+    printf("<> counter %lu\n", counter);
+    usize mut at = 4 + 8 + 8;
+
+
+    u8 mut *ciphertext       = self->pkt + at;
+    usize ciphertext_len = self->pkt_len - at - 64;
+    static_attest(safe(ciphertext));
+    static_attest(len(ciphertext) >= ciphertext_len);
+
+    u8 mut cleartext[1024] = {0};
+
+    usize cleartext_len = noise::complete(
+        &self->noise,
+        e,
+        cleartext,
+        static(len(cleartext)),
+        ciphertext,
+        ciphertext_len
+    );
+
+    if err::check(e) {
+        return;
+    }
+
+    printf("received cleartext:\n");
+    hex::dump(cleartext, cleartext_len);
+
+    if cleartext_len < 32 + 2 + 8 + 4 {
+        err::fail(e, 1, "too small");
+        return;
+    }
+
+    identity::Identity mut r_identity = {0};
+    u8*pp = cleartext + 2;
+    static_attest(safe(pp));
+    static_attest(len(pp) >= 32);
+    std::memcpy(r_identity.k, pp, 32);
+
+
+    //check handshake signature
+    u8 mut signme[static(len(SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
+    std::memcpy(signme, SIGN_PURPOSE, string::strlen(SIGN_PURPOSE));
+    u8 mut* mem = signme + string::strlen(SIGN_PURPOSE);
+    std::memcpy(mem, ((self->noise).symm).h, static(len(((self->noise).symm).h)));
+    identity::Signature mut * mut sig;
+    unsafe {
+        sig = (identity::Signature mut *)(self->pkt + self->pkt_len - 64);
+    }
+    static_attest(safe(sig));
+    if !identity::verify(&r_identity, sig, signme, static(len(signme))) {
+        err::fail(e, 1, "invalid signature");
+        return;
+    }
+
+    char mut r_identity_str[128] = {0};
+    identity::identity_to_str(e, r_identity_str, static(len(r_identity_str)), &r_identity);
+    if err::check(e) {
+        return;
+    }
+    printf("connected to broker %s\n", r_identity_str);
+
+
+    *router = Router {
+        broker: channel::from_symmetric(&((self->noise).symm), routingkey, false),
+    };
+}
+
+
+
+
+fn read_routing_key( u8 * i, Direction mut * unsafe direction) -> u64
+    where len(i) >= 8
+{
+    if direction != 0 {
+        static_attest(safe(direction));
+        if (i[7] & 0b00000001) == 0 {
+            *direction = Direction::Initiator2Responder;
+        } else {
+            *direction = Direction::Responder2Initiator;
+        }
+    }
+    unsafe {
+        u8 b[8] = {
+            i[0],
+            i[1],
+            i[2],
+            i[3],
+            i[4],
+            i[5],
+            i[6],
+            (i[7] & 0b11111110),
+        };
+        return *((u64*)b);
+    }
+}
+

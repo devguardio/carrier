@@ -1,0 +1,81 @@
+using <stdio.h>::{printf, fread, stdin};
+
+using err;
+using hpack::decoder;
+
+
+
+test test1 {
+    stdin  = {
+        0x82, 0x5, 0x22,
+
+            '/', 'v', '1', '/', 0x64, 0x65, 0x76, 0x67, 0x75, 0x61, 0x72, 0x64,
+            '.' , 'a', 0x72, 0x74, 0x61, 0x6e, 'i', 0x73, 0x2e, 'v', '1', '/', 'h', 'a', 'r',
+            'd', 0x69, 0x6f, 0x2f, 's', 'e', 't',
+
+        0x40, 0x6, 'r', 'e', 'l', 'a', 'y', '1',
+        0x2, 'o', 'n',
+
+        0x40, 0x6, 'r', 'e', 'l', 'a', 'y', '2',
+        0x2, 'o', 'n',
+
+        0xbe,
+
+        0xf, 0x30,
+        0x3, 'o', 'f', 'f',
+
+        0x40, 0x3, 'o', 'f', 'f',
+        0x3, '5', '0', '0'
+    }
+    stdout = r#">:method< = >GET<
+>:path< = >/v1/devguard.artanis.v1/hardio/set<
+>relay1< = >on<
+>relay2< = >on<
+>relay1< = >on<
+>relay1< = >off<
+>off< = >500<
+"#
+}
+
+
+test test2 {
+    stdin = {0x40, 10, 'c', 'u', 's', 't', 'o', 'm', '-', 'k', 'e', 'y',
+        12, 'c', 'u', 's', 't', 'o', 'm', '-', 'v', 'a', 'l', 'u', 'e'
+    }
+    stdout = ">custom-key< = >custom-value<
+"
+}
+
+test test3 {
+    stdin = {0x82}
+    stdout = ">:method< = >GET<
+"
+}
+
+
+test noindex {
+    stdin = {0x00, 0x04, 0x62, 0x65, 0x65, 0x70, 0x04, 0x62, 0x6f, 0x6f, 0x70}
+    stdout = ">beep< = >boop<
+"
+}
+
+
+fn kv_callback(err::Err+et mut*e, void *user, char *key, usize keylen, char *val, usize vallen) {
+    printf(">%.*s< = >%.*s<\n", keylen, key, vallen, val);
+}
+
+export fn main() -> int {
+    err::Err+1000 mut e;
+    err::new(&e);
+
+    u8 mut wire[2000];
+    usize wirelen = as<usize>(fread(wire, sizeof(char), static(len(wire)), stdin));
+    static_attest(len(wire) >= wirelen);
+    decoder::decode(&e, wire, wirelen, kv_callback, 0);
+    if err::check(&e) {
+        err::eprint(&e);
+        return 2;
+    }
+
+    return 0;
+}

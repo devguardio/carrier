@@ -23,7 +23,6 @@ prost-derive        = "0.5.0"
 bytes               = "0.4.12"
 
 #get rid of these
-hpack               = "0.3.0"
 osaka               = "0.3.0"
 osaka-dns           = "0.3.0"
 mtdparts            = "0.2.0"

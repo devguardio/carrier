@@ -4,7 +4,7 @@ using <string.h>::{strlen, memcpy, memset, memcmp};
 using <assert.h>::{assert};
 using symmetric;
 
-using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
+using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
 
 
 // NKSig
@@ -17,7 +17,7 @@ using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
 static u8 zerokey[32] = {0};
 
 
-pub struct Initiator {
+export struct Initiator {
     symmetric::SymmetricState   mut symm;
     identity::Secret            mut ephermal;
     identity::Address           mut remote_static;
@@ -46,8 +46,14 @@ pub fn initiate(
     assert(pktlen >= total_size);
     static_attest(pktlen >= total_size);
 
-    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
-    assert(memcmp((self->remote_static).k, zerokey, 32) != 0);
+    if memcmp((self->ephermal).k, zerokey, 32) == 0 {
+        err::fail(e, 2, "ephermal key is zero");
+        return 0;
+    }
+    if memcmp((self->remote_static).k, zerokey, 32) == 0 {
+        err::fail(e, 2, "remote static is zero");
+        return 0;
+    }
 
     symmetric::init(&self->symm, "Noise_NK_25519_ChaChaPoly_SHA256");
     symmetric::mix_hash(&self->symm, prologue, prologue_len);

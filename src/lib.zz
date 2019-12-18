@@ -7,6 +7,10 @@ using sha256;
 using hpack::encoder;
 using hpack::decoder;
 
+
+//TODO
+const u32 REVISION = 0x1111;
+
 export fn hellozz() -> int {
     printf("hello carrier\n");
     return 0;

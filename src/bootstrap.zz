@@ -1,3 +1,5 @@
+//TODO actually bootstrap should be completely removed once trustvec distribution works and the fixed v4 space has been allocated
+
 using <stdio.h>::{printf, fopen, fclose, fread, FILE, fgetc, EOF};
 using <string.h>::{memcpy, memset};
 using <stdlib.h>::{atoi};
@@ -9,6 +11,8 @@ using byteorder;
 using net::udp;
 using time;
 using identity;
+using io;
+using net;
 
 
 export const usize MAX_BROKERS = 16;
@@ -22,8 +26,9 @@ export struct Broker packed {
 }
 
 export struct Store {
-    u8 version;
-    u8 secret[32];
+    u8  version;
+    u8  secret[32];
+    u64 time;
     Broker broker[MAX_BROKERS];
 }
 
@@ -38,87 +43,126 @@ export fn from_store(Broker *b, address::Address mut *ip4addr, address::Address 
     return true;
 }
 
-export fn bootstrap(err::Err+et mut * e, Store mut*store)
+export fn broker_count(Store * self) -> usize {
+    usize mut c = 0;
+    for (usize mut i = 0; i < MAX_BROKERS; i++) {
+        if self->broker[i].protocol != 0 {
+            c++;
+        }
+    }
+    return c;
+}
+
+
+export struct Bootstrap {
+    address::Address    dns_servers[16];
+    usize               dns_servers_count;
+    udp::Socket         sock4;
+    udp::Socket         sock6;
+    io::Io              mut retry_timer;
+}
+
+export fn new(err::Err+et mut * e,io::Async mut* async, net::Engine *netengine) -> Bootstrap
     where err::checked(*e)
 {
-    string::String+2000 mut name = {0};
-    string::append_cstr(&name, "4.carrier.devguard.io");
 
-    address::Address mut dns_servers[16];
-    address::from_cstr(&dns_servers[0], "8.8.8.8:53");
-    address::from_cstr(&dns_servers[1], "1.1.1.1:53");
-    address::from_cstr(&dns_servers[2], "[2001:4860:4860::8888]:53");
-    address::from_cstr(&dns_servers[3], "[2620:119:35::35]:53");
-    usize mut at = 4;
+    Bootstrap mut self = Bootstrap {
+        dns_servers_count: 0
+    };
 
-    get_system_dns_servers(dns_servers, &at);
-    static_attest(at < len(dns_servers));
+    (self.dns_servers)[0] = address::from_cstr("8.8.8.8:53");
+    (self.dns_servers)[1] = address::from_cstr("1.1.1.1:53");
+    (self.dns_servers)[2] = address::from_cstr("[2001:4860:4860::8888]:53");
+    (self.dns_servers)[3] = address::from_cstr("[2620:119:35::35]:53");
+    self.dns_servers_count = 4;
 
-    udp::Socket mut sock4 = {0};
-    udp::open(&sock4, e, address::Type::Ipv4);
+    get_system_dns_servers(self.dns_servers, &self.dns_servers_count);
+
+    address::Address addr4 = address::from_cstr("0.0.0.0:0");
+    self.sock4 = netengine->new_udp(e, &addr4, async);
     if err::check(e) {
-        return;
+        return self;
     }
 
-    udp::Socket mut sock6 = {0};
-    udp::open(&sock6, e, address::Type::Ipv6);
-    if err::check(e) {
-        return;
-    }
-
-    for (usize mut attempt = 0; attempt < 2; attempt++) {
-        for (usize mut i = 0; i < at; i++) {
-            string::String+1000 mut s = {0};
-            address::to_string(&s, &dns_servers[i]);
-            switch (dns_servers[i]).type {
-                address::Type::Ipv4 => {
-                    send_query(e, &name, &sock4,&dns_servers[i]);
-                }
-                address::Type::Ipv6 => {
-                    send_query(e, &name, &sock6,&dns_servers[i]);
-                }
-            }
-        }
-        err::new(e);
-
-        address::Address mut from = {0};
-
-        udp::deadline(&sock4, e, time::from_seconds(1));
-        if err::check(e) {
-            return;
-        }
-        udp::deadline(&sock6, e, time::from_seconds(1));
-        if err::check(e) {
-            return;
-        }
-
-        for (;;) {
-            string::clear(&name);
-            udp::recv(&sock6, e, &name, &from);
-            if err::check(e) {
-                break;
-            }
-            if parse_query(&name, store) {
-                return;
-            }
-        }
-        err::new(e);
-
-        for (;;) {
-            string::clear(&name);
-            udp::recv(&sock4, e, &name, &from);
-            if err::check(e) {
-                break;
-            }
-            if parse_query(&name, store) {
-                return;
-            }
-        }
-        err::new(e);
-    }
+    address::Address addr6 = address::from_cstr("[::1]:0");
+    self.sock6 = netengine->new_udp(e, &addr6, async);
+    // ignore v6 creation error
     err::new(e);
 
-    err::fail(e, 1, "dns bootstrap failed");
+
+    return self;
+}
+
+
+export fn close(Bootstrap mut * self) {
+    self->sock4.close();
+    self->sock6.close();
+}
+
+export fn next(Bootstrap mut * self, err::Err+et mut * e, io::Async mut* async, Store mut* store) -> io::Result
+    where err::checked(*e)
+{
+    string::String+1500 mut xbuf = {0};
+
+    static_attest(self->dns_servers_count < len(self->dns_servers));
+
+    string::String+10 mut tb = {0};
+    if  !(self->retry_timer).valid() ||  (self->retry_timer).read(e, &tb) == io::Result::Ready {
+        if err::check(e) {
+            return io::Result::Error;
+        }
+
+        (self->retry_timer).close();
+        self->retry_timer = io::timeout(async, e, time::from_seconds(1));
+        if err::check(e) {
+            return io::Result::Error;
+        }
+        async->select(e, &self->retry_timer, io::Ready::Read);
+        if err::check(e) {
+            return io::Result::Error;
+        }
+
+        string::append_cstr(&xbuf, "4.carrier.devguard.io");
+        for (usize mut i = 0; i < self->dns_servers_count; i++) {
+            switch self->dns_servers[i].type {
+                address::Type::Invalid => {
+
+                }
+                address::Type::Ipv4 => {
+                    send_query(e, &xbuf, &self->sock4, self->dns_servers + i);
+                }
+                address::Type::Ipv6 => {
+                    send_query(e, &xbuf, &self->sock6, self->dns_servers + i);
+                }
+            }
+            if err::check(e) {
+                return io::Result::Error;
+            }
+        }
+    }
+
+    xbuf.clear();
+    address::Address mut from = address::new();
+    if (self->sock6).recvfrom(e, &xbuf, &from) == io::Result::Ready {
+        if parse_query(&xbuf, store) {
+            return io::Result::Ready;
+        }
+    }
+    if err::check(e) {
+        return io::Result::Error;
+    }
+
+    xbuf.clear();
+    if (self->sock4).recvfrom(e, &xbuf, &from) == io::Result::Ready {
+        if parse_query(&xbuf, store) {
+            return io::Result::Ready;
+        }
+    }
+    if err::check(e) {
+        return io::Result::Error;
+    }
+
+    return io::Result::Later;
 }
 
 struct DnsPacket packed {
@@ -138,9 +182,16 @@ fn send_query(
     )
     where err::checked(*e)
 {
+
+    {
+        string::String+100 mut dbg = {0};
+        dns_server->to_string(&dbg);
+        printf("sending to %.*s\n", dbg.len, dbg.mem);
+    }
+
     string::String+1000 mut pkt = {0};
 
-    DnsPacket mut *head= (DnsPacket mut *)pkt.mem;
+    DnsPacket mut *head = (DnsPacket mut *)pkt.mem;
 
     head->id          = byteorder::to_be16(0x1337);
     head->flags       = byteorder::to_be16(0x100); //request recursion
@@ -186,7 +237,8 @@ fn send_query(
 
     static_attest(len(pkt.mem) >= pkt.len);
 
-    udp::sendto(sock, e, dns_server, (u8*)pkt.mem, pkt.len);
+    udp::sendto(sock, e, &pkt, dns_server);
+    //e->abort();
     // don't care if send failed
     err::new(e);
 }
@@ -268,9 +320,6 @@ pub fn parse_query(string::String+t *pkt, Store mut*store) -> bool
         }
         static_attest(at + 1 < len(pkt->mem));
 
-        err::Err+1 mut e;
-        err::new(&e);
-
         if record_type == 0x10 && record_class == 0x01 {
             string::String+200 mut record ={0};
 
@@ -281,67 +330,9 @@ pub fn parse_query(string::String+t *pkt, Store mut*store) -> bool
             static_attest(safe(record_b));
             string::append_bytes(&record, record_b, (usize)record_len - 1);
 
-            bool mut has_netaddr = false;
-            bool mut has_xaddr   = false;
-
-            usize mut it = 0;
-            string::String+256 mut part = {0};
-            string::clear(&part);
-            while (string::split(&record, ' ', &it, &part)) {
-                if string::starts_with_cstr(&part, "n=") {
-                    char *from = part.mem + 2;
-                    usize fromlen = part.len - 2;
-                    static_attest(safe(from));
-                    static_attest(len(from) >= fromlen);
-
-                    address::Address mut a = {0};
-                    if address::from_str(&a, from, fromlen) {
-                        memcpy(((store->broker)[storepos]).ip4addr, address::get_ip(&a), 4);
-                        has_netaddr = true;
-                    }
-                } else if string::starts_with_cstr(&part, "n6=") {
-                    char *from = part.mem + 3;
-                    usize fromlen = part.len - 3;
-                    static_attest(safe(from));
-                    static_attest(len(from) >= fromlen);
-
-                    address::Address mut a = {0};
-                    if address::from_str(&a, from, fromlen) {
-                        memcpy(((store->broker)[storepos]).ip6addr, address::get_ip(&a), 16);
-                        has_netaddr = true;
-                    }
-                } else if string::starts_with_cstr(&part, "x=") {
-                    char *from = part.mem + 2;
-                    usize fromlen = part.len - 2;
-                    static_attest(safe(from));
-                    static_attest(fromlen  <= len(from));
-
-                    identity::Address mut addr = {0};
-                    identity::address_from_str (&e,  &addr, from, fromlen);
-                    if !err::check(&e) {
-                        memcpy(((store->broker)[storepos]).xaddr, addr.k, sizeof(((store->broker)[storepos]).xaddr));
-                        has_xaddr = true;
-                    }
-                    err::new(&e);
-                } else if string::starts_with_cstr(&part, "carrier=") {
-
-
-                    char *from = part.mem + 8;
-                    usize fromlen = part.len - 8;
-                    static_attest(safe(from));
-                    static_attest(fromlen == len(from));
-
-                    string::String+20 mut bb = {0};
-                    string::append_bytes(&bb, (u8*)from, fromlen);
-
-                    ((store->broker)[storepos]).protocol = (u8)atoi(bb.mem);
-                }
-
-                string::clear(&part);
-            }
-
+            bool parseok = parse_record(&record, store->broker + storepos);
             static_attest(storepos < len(store->broker));
-            if ((store->broker)[storepos]).protocol >0 && has_netaddr && has_xaddr {
+            if ((store->broker)[storepos]).protocol >0 && parseok {
                 storepos += 1;
                 if storepos > MAX_BROKERS {
                     return true;
@@ -355,7 +346,82 @@ pub fn parse_query(string::String+t *pkt, Store mut*store) -> bool
         at += (usize)record_len;
     }
 
-    return true;
+    return storepos != 0;
+}
+
+
+pub fn parse_record(string::String+st * record, Broker mut *entry) -> bool {
+    err::Err+1 mut e;
+    err::new(&e);
+
+    bool mut has_netaddr = false;
+    bool mut has_xaddr   = false;
+
+    usize mut it = 0;
+    string::String+256 mut part = {0};
+    string::clear(&part);
+    while (string::split(record, ' ', &it, &part)) {
+        if string::starts_with_cstr(&part, "n=") {
+            char *from = part.mem + 2;
+            usize fromlen = part.len - 2;
+            static_attest(safe(from));
+            static_attest(len(from) >= fromlen);
+
+            address::Address mut a = address::from_str(from, fromlen);
+            if a.valid() {
+                memcpy(entry->ip4addr, address::get_ip(&a), 4);
+                has_netaddr = true;
+            }
+        } else if string::starts_with_cstr(&part, "n6=") {
+            char *from = part.mem + 3;
+            usize fromlen = part.len - 3;
+            static_attest(safe(from));
+            static_attest(len(from) >= fromlen);
+
+            address::Address mut a = address::from_str(from, fromlen);
+            if a.valid() {
+                memcpy(entry->ip6addr, address::get_ip(&a), 16);
+                has_netaddr = true;
+            }
+        } else if string::starts_with_cstr(&part, "x=") {
+            char *from = part.mem + 2;
+            usize fromlen = part.len - 2;
+            static_attest(safe(from));
+            static_attest(fromlen  <= len(from));
+
+            identity::Address mut addr = {0};
+            identity::address_from_str (&e,  &addr, from, fromlen);
+            if !err::check(&e) {
+                memcpy(entry->xaddr, addr.k, sizeof(entry->xaddr));
+                has_xaddr = true;
+            }
+            err::new(&e);
+        } else if string::starts_with_cstr(&part, "carrier=") {
+            char *from = part.mem + 8;
+            usize fromlen = part.len - 8;
+            static_attest(safe(from));
+            static_attest(fromlen == len(from));
+
+            string::String+20 mut bb = {0};
+            string::append_bytes(&bb, (u8*)from, fromlen);
+
+            entry->protocol = (u8)atoi(bb.mem);
+        } else if string::starts_with_cstr(&part, "c=") {
+            char *from = part.mem + 2;
+            usize fromlen = part.len - 2;
+            static_attest(safe(from));
+            static_attest(fromlen == len(from));
+
+            string::String+20 mut bb = {0};
+            string::append_bytes(&bb, (u8*)from, fromlen);
+
+            entry->protocol = (u8)atoi(bb.mem);
+        }
+
+        string::clear(&part);
+    }
+
+    return has_netaddr && has_xaddr && entry->protocol != 0;
 }
 
 fn get_system_dns_servers(address::Address mut *dns_servers, usize mut *at)
@@ -383,8 +449,10 @@ fn get_system_dns_servers(address::Address mut *dns_servers, usize mut *at)
             string::String+100 mut sub = {0};
             string::substr(&str, 11, 0, &sub);
 
-            if address::from_cstr(&dns_servers[*at], sub.mem) {
-                address::set_port(&dns_servers[*at], 53);
+
+            dns_servers[*at] = address::from_string(&sub);
+            if (dns_servers[*at]).valid() {
+                (dns_servers[*at]).set_port(53);
                 *at += 1;
             }
         }

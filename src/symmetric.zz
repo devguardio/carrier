@@ -9,7 +9,7 @@ using <assert.h>::{assert};
 using <errno.h> as errno;
 using <stdio.h>::{printf};
 
-pub struct SymmetricState {
+export struct SymmetricState {
      // A chaining key of HASHLEN bytes.
      u8 ck  [sha256::HASHLEN];
      // A hash output of HASHLEN bytes. this is the aad

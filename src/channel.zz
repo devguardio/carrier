@@ -8,8 +8,9 @@ using pq;
 using std;
 using crc8;
 using <assert.h>::{assert};
+using string;
 
-pub struct Channel {
+export struct Channel {
     u64     route;
     bool    responder;
     u64     mut counter_out;
@@ -40,16 +41,13 @@ pub fn from_symmetric(symmetric::SymmetricState * symm, u64 route, bool responde
     return c;
 }
 
-pub fn pull(Channel mut* self, err::Err+et mut* e, u8 mut* mut pkt, usize max_pkt) -> usize
+pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -> usize
     where err::checked(*e)
-    where max_pkt  >= len(pkt)
-    where len(pkt) >= 4 + 8 + 8 + 320
+    where st >= 4 + 8 + 8 + 320
 {
     if self->outgoing_acks_at == 0 {
         return 0;
     }
-
-    assert(max_pkt >= 4 + 8 + 8 + 320);
 
     u64 counter_be = byteorder::to_be64(self->counter_out+ 1 /* rust version has an off by one*/);
     u8* counter_b = (u8*)&counter_be;
@@ -63,33 +61,33 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, u8 mut* mut pkt, usize max_pk
     }
 
     // version 1B
-    pkt[0] = 0x09;
+    buf->mem[0] = 0x09;
     // reserved 3B
-    pkt[1] = 0x00;
-    pkt[2] = 0x00;
-    pkt[3] = 0x00;
-    unsafe{
-    std::memcpy(pkt + 4,     route_b,    8);
-    std::memcpy(pkt + 4 + 8, counter_b,  8);
+    buf->mem[1] = 0x00;
+    buf->mem[2] = 0x00;
+    buf->mem[3] = 0x00;
+    unsafe {
+        std::memcpy(buf->mem + 4,     route_b,    8);
+        std::memcpy(buf->mem + 4 + 8, counter_b,  8);
     }
 
-    usize mut pkt_size = 4 + 8 + 8;
-    usize unencrypted_size = pkt_size;
+    buf->len = 4 + 8 + 8;
+    usize unencrypted_size = buf->len;
 
     //broken header crc
-    pkt[pkt_size] = crc8::broken_crc8(0, pkt, 4 + 8 + 8);
-    pkt_size += 1;
+    buf->mem[buf->len] = (char)crc8::broken_crc8(0, (u8*)buf->mem, 4 + 8 + 8);
+    buf->len += 1;
 
     //flags
-    pkt[pkt_size] = 0x00;
-    pkt_size += 1;
+    buf->mem[buf->len] = 0x00;
+    buf->len += 1;
 
     //payload size
-    u16 mut * payload_size = (u16 mut*)(pkt + pkt_size);
-    pkt_size += 2;
+    u16 mut * payload_size = (u16 mut*)(buf->mem + buf->len);
+    buf->len += 2;
 
 
-    usize size_before_payload = pkt_size;
+    usize size_before_payload = buf->len;
 
 
     // all outgoing acks will fit in because 32 * 8 = 256
@@ -97,51 +95,49 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, u8 mut* mut pkt, usize max_pk
     if self->outgoing_acks_at > 0 {
 
         // frame type
-        pkt[pkt_size] = 0x01;
-        pkt_size += 1;
+        buf->mem[buf->len] = 0x01;
+        buf->len += 1;
 
         // ack delay
-        pkt[pkt_size]       = 0x00;
-        pkt[pkt_size + 1]   = 0x01;
-        pkt_size += 2;
+        buf->mem[buf->len ]       = 0x00;
+        buf->mem[buf->len + 1]   = 0x01;
+        buf->len += 2;
 
         // number of acks
-        pkt[pkt_size]       = 0x00;
-        pkt[pkt_size + 1]   = self->outgoing_acks_at;
-        pkt_size += 2;
+        buf->mem[buf->len ]     = 0x00;
+        buf->mem[buf->len+ 1]   = (char)self->outgoing_acks_at;
+        buf->len += 2;
 
         static_attest(len(self->outgoing_acks) > self->outgoing_acks_at);
         for (usize mut i = 0; i < (usize)self->outgoing_acks_at ; i++) {
-            assert(pkt_size < max_pkt);
+            assert(buf->len < st);
             u64 ackd  = byteorder::to_be64((self->outgoing_acks)[i]);
             unsafe {
-            std::memcpy(pkt + pkt_size, &ackd, 8);
+                std::memcpy(buf->mem + buf->len , &ackd, 8);
             }
-            pkt_size += 8;
+            buf->len += 8;
         }
         self->outgoing_acks_at = 0;
     }
 
-    unsafe {
-        (*payload_size) = byteorder::to_be16(pkt_size - size_before_payload);
-    }
+    (*payload_size) = byteorder::to_be16(buf->len - size_before_payload);
 
     // padding to %64
-    pkt_size += 64 - ((pkt_size + 16) % 64);
-    if pkt_size > max_pkt {
-        pkt_size = max_pkt;
+    buf->len += 64 - ((buf->len + 16) % 64);
+    if buf->len > st {
+        buf->len = st;
     }
 
-    usize padded_size = pkt_size - unencrypted_size;
-    usize budget      = max_pkt - unencrypted_size;
+    usize padded_size = buf->len - unencrypted_size;
+    usize budget      = st       - unencrypted_size;
 
-    static_attest(pkt_size < len(pkt));
-    hex::dump(pkt, pkt_size);
+    static_attest(buf->len < len(buf->mem));
+    hex::dump((u8*)buf->mem, buf->len);
 
-    u8* plaintext = pkt + 4 + 8 + 8;
+    u8* plaintext = (u8*)buf->mem + 4 + 8 + 8;
     static_attest(safe(plaintext));
 
-    u8 mut* ciphertext = pkt + unencrypted_size;
+    u8 mut* ciphertext = (u8 mut*)buf->mem + unencrypted_size;
     static_attest(safe(ciphertext));
 
     static_attest(len(ciphertext) >= padded_size);

@@ -6,6 +6,7 @@ using <errno.h>::{errno, EINTR};
 
 pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
     where err::checked(*e)
+    where len(bytes) >= size
 {
     int fd = as<int>(open("/dev/random", O_RDONLY));
     if fd < 0 {
@@ -21,13 +22,15 @@ pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
                 continue;
             }
             err::fail_with_errno(e, "cannot read /dev/random");
+            close(fd);
             return;
         }
         if (usize)l >= size {
+            close(fd);
             return;
         }
         size    -= (usize)l;
-        bytes   += (usize)l;
+        bytes   = bytes + (usize)l;
     }
     close(fd);
 }

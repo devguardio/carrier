@@ -25,7 +25,7 @@ struct Frame {
     u16 mut payload_len;
 }
 
-pub struct Q {
+export struct Q {
     usize mut count;
     usize mut back;
     usize mut front;

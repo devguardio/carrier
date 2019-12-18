@@ -176,7 +176,7 @@ impl fmt::Debug for Address {
 
 impl Signature {
     pub fn to_string(&self) -> String {
-        let mut to = vec![0u8;64];
+        let mut to = vec![0u8;128];
         let mut err = error::ZZError::new();
         let len = unsafe {
             carrier_identity_signature_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())

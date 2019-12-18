@@ -1,60 +1,60 @@
 using <stdio.h>::{printf};
-using string;
-using net::address;
+using <string.h>::{memcpy};
+using connect;
 using err;
-using byteorder;
-using net::udp;
-using time;
-using bootstrap;
-using identity;
+using channel;
 using router;
+using bootstrap;
+using io::unix;
+using net;
+using io;
+using time;
 
 export fn main() -> int {
-    err::Err+1000 mut e;
-    err::new(&e);
 
     bootstrap::Store mut store = bootstrap::Store {
         version: 1,
         secret: {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,128,29,30,31,32},
     };
-    bootstrap::bootstrap(&e, &store);
-    err::abort(&e);
 
-    for (usize mut i = 0; i < bootstrap::MAX_BROKERS; i++) {
-        address::Address  mut ip4addr = {0};
-        address::Address  mut ip6addr = {0};
-        identity::Address mut xaddr  = {0};
-        if !bootstrap::from_store(&((store.broker)[i]), &ip4addr, &ip6addr, &xaddr) {
-            continue;
+    err::Err+1000 mut e;
+    err::new(&e);
+
+    unix::Async+20 mut async;
+    async.new();
+
+    memcpy(store.secret, store.secret, 32);
+    e.abort();
+
+    io::Io mut tt = io::timeout(&async, &e, time::from_millis(5000));
+    e.abort();
+
+    connect::Connect mut con = {0};
+    con.new(&e, net::os(), &store, &async);
+    e.abort();
+
+
+    for (;;) {
+        if con.poll(&e, &async) == io::Result::Ready {
+            con.close();
+            return 1;
         }
-
-        router::Initiator mut init = {0};
-        router::initiate(&init, &e, (identity::Secret*)&(store.secret), &xaddr);
-        err::abort(&e);
-
-        string::String+1000 mut dbg = {0};
-
-        string::format(&dbg, "\nprotocol: %u\n", ((store.broker)[i]).protocol);
-
-        string::append_cstr(&dbg, "ipv4: ");
-        address::to_string(&dbg, &ip4addr);
-        string::append_cstr(&dbg, "\n");
-
-        string::append_cstr(&dbg, "ipv6: ");
-        address::to_string(&dbg, &ip6addr);
-        string::append_cstr(&dbg, "\n");
+        e.abort();
 
 
-        char mut b[100] = {0};
-        identity::address_to_str(&e, b, static(len(b)), &xaddr);
-        if err::check(&e) {
-            continue;
+        u8 mut buf[16];
+        usize mut l = 16;
+        if tt.read_bytes(&e, buf, &l) == io::Result::Ready {
+            e.new();
+            err::fail(&e, 3, "timeout");
+            e.abort();
+            return 2;
         }
-        string::format(&dbg, "xaddr: %s\n", (char*)b);
-
-        printf("%.*s", (int)dbg.len, dbg.mem);
+        e.abort();
+        async.wait(&e);
+        e.abort();
     }
 
-    return 0;
+    con.close();
 }
 

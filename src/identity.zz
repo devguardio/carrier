@@ -2,10 +2,11 @@ using <stdint.h>::{uint8_t};
 using <stdint.h>::{size_t};
 using <string.h>::{memcpy, memcmp};
 using <assert.h>::{assert};
-using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
-using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h" as x25519;
-using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
-using "src/libbase58.h" as b58;
+using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
+using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h" as x25519;
+using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
+
+using (needs size_t) "../3rdparty/libbase58/libbase58.h" as b58;
 using err;
 using crc8;
 using rand;
@@ -85,12 +86,15 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
 
     static_attest(err::checked(*e));
 
-    l -= 1;
+    //l -= 1;
     if (!as<bool>(b58::b58enc(to, &l, b, size + 3))) {
         err::fail(e, 22, "invalid bs58");
         return 0;
     }
-    to[l] = 0;
+
+    //b58enc already adds a zero
+    l -= 1;
+    //to[l] = 0;
     return l;
 }
 

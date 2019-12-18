@@ -1,0 +1,298 @@
+using <stdio.h>::{printf};
+using <string.h>::{memset, memcpy};
+using string;
+using net::address;
+using err;
+using byteorder;
+using net::udp;
+using time;
+using bootstrap;
+using identity;
+using initiator;
+using io::unix;
+using io;
+using net;
+using cipher;
+using hex;
+using channel;
+
+enum State {
+    Bootstrap,
+    Sending,
+}
+
+export struct Connect {
+    net::Engine*            netengine;
+    bootstrap::Store mut*   store;
+
+    udp::Socket     mut     udp4;
+    udp::Socket     mut     udp6;
+    io::Io          mut     timeout;
+
+    bootstrap::Bootstrap mut bs;
+    channel::Channel mut completed;
+
+    State mut state;
+    usize trying_broker_index;
+
+
+    bootstrap::Broker       mut current_broker;
+    initiator::Initiator    mut initiator;
+    usize retry_sending;
+}
+
+export fn new(Connect mut* self, err::Err+et mut*e, net::Engine *netengine, bootstrap::Store mut* store, io::Async mut* async)
+    where err::checked(*e)
+{
+    memset(self, 0 , sizeof(Connect));
+
+    self->netengine = netengine;
+    self->store = store;
+
+    printf("truststore is empty. bootstrap via dns\n");
+    self->bs = bootstrap::new(e, async, netengine);
+    self->state = State::Bootstrap;
+}
+
+export fn close(Connect mut* self)
+{
+    self->bs.close();
+    self->udp4.close();
+    self->udp6.close();
+}
+
+fn next_broker(Connect mut* self) -> bool
+{
+    static_attest(safe(self->store));
+    for (usize mut i = 0; i < bootstrap::MAX_BROKERS; i++) {
+        if self->trying_broker_index >= bootstrap::MAX_BROKERS {
+            self->trying_broker_index = 0;
+        }
+        static_attest(self->trying_broker_index < len(self->store->broker));
+        if self->store->broker[self->trying_broker_index].protocol != 0 {
+            printf("loading broker slot %zu\n", self->trying_broker_index);
+            memcpy(&self->current_broker, &self->store->broker[self->trying_broker_index], sizeof(bootstrap::Broker));
+            self->trying_broker_index += 1;
+            return true;
+        }
+        self->trying_broker_index += 1;
+    }
+    return false;
+}
+
+
+static u16 PORTS[] = {53, 443, 8443, 80, 123};
+
+export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io::Result
+     where err::checked(*e)
+{
+    static_attest(safe(self->store));
+
+    switch self->state {
+        // TODO retry timeout
+        State::Bootstrap => {
+
+            if self->bs.next(e, async, self->store) == io::Result::Ready {
+                if err::check(e) {
+                    return io::Result::Error;
+                }
+                printf("trustvector complete, ring has %zu brokers\n", self->store->broker_count());
+                self->state = State::Sending ;
+
+                self->bs.close();
+
+                static_attest(safe(self->netengine));
+                address::Address addr4 = address::from_cstr("0.0.0.0:1212");
+                self->udp4 = self->netengine->new_udp(e, &addr4, async);
+                if err::check(e) {
+                    return io::Result::Error;
+                }
+
+                address::Address addr6 = address::from_cstr("[::1]:0");
+                self->udp6 = self->netengine->new_udp(e, &addr6, async);
+                if err::check(e) {
+                    return io::Result::Error;
+                }
+
+                if !self->next_broker(){
+                    err::fail(e, 2, "no brokers in bootstrap store");
+                    return io::Result::Error;
+                }
+                return self->poll(e, async);
+            }
+        }
+        // TODO retry timeout
+        State::Sending => {
+
+            // make sure we always activate
+            if io::valid(&self->timeout) {
+                async->select(e, &self->timeout, io::Ready::Read);
+                if err::check(e) {return io::Result::Error; }
+            }
+            if io::valid(&self->udp4) {
+                async->select(e, &self->udp4, io::Ready::Read);
+                if err::check(e) {return io::Result::Error; }
+            }
+            if io::valid(&self->udp6) {
+                async->select(e, &self->udp6, io::Ready::Read);
+                if err::check(e) {return io::Result::Error; }
+            }
+
+            // receive
+            address::Address    mut fromaddr = {0};
+            self->initiator.pkt.clear();
+            if self->udp4.recvfrom(e, &self->initiator.pkt, &fromaddr) == io::Result::Ready {
+                err::new(e);
+
+
+                channel::Channel mut broker_chan = {0};
+
+                bootstrap::Broker mut redir = {0};
+                self->initiator.complete(e, &broker_chan, &redir);
+                if err::check(e) {
+                    e->eprint();
+                    err::new(e);
+                    // don't return here. we might have stuff to set the timer in the rest of the code
+                } else if redir.protocol != 0 {
+                    memcpy(&self->current_broker, &redir, sizeof(bootstrap::Broker));
+                    self->retry_sending = 0;
+                    self->timeout.close();
+                    return self->poll(e, async);
+                } else {
+                    return io::Result::Ready;
+                }
+                err::new(e);
+            }
+
+            // or timeout
+
+            if self->timeout.valid() {
+                u8 mut buf[16];
+                usize mut l = 16;
+                io::Result rr = self->timeout.read_bytes(e, buf, &l);
+                if err::check(e) {return io::Result::Error; }
+                if rr != io::Result::Ready {
+                    return rr;
+                }
+                printf("timeout waiting for broker response\n");
+            }
+            self->timeout.close();
+
+
+            usize mut wait = 0;
+            switch self->retry_sending {
+                0       => { wait = 100  }
+                1       => { wait = 300  }
+                2       => { wait = 600  }
+                default => { wait = 2000 }
+            }
+
+            self->timeout = io::timeout(async, e, time::from_millis(wait));
+            if err::check(e) {return io::Result::Error; }
+            async->select(e, &self->timeout, io::Ready::Read);
+            if err::check(e) {return io::Result::Error; }
+
+            if self->retry_sending > 5 {
+                self->retry_sending = 0;
+                self->next_broker();
+            }
+
+            // TODO: abstract
+            time::Time now = time::real();
+            self->store->time = now.to_seconds();
+
+
+            address::Address  mut ip4addr = {0};
+            address::Address  mut ip6addr = {0};
+            identity::Address mut xaddr   = {0};
+
+            if !bootstrap::from_store(&self->current_broker, &ip4addr, &ip6addr, &xaddr) {
+                err::fail(e, 3, "current broker is empty");
+                return io::Result::Error;
+            }
+
+            self->initiator.initiate(e, (identity::Secret*)&(self->store->secret), &xaddr, self->store->time);
+            if err::check(e) {return io::Result::Error;}
+
+
+            string::String+150 mut dbn = {0};
+            ip4addr.ip_to_string(&dbn);
+            dbn.append_cstr(" ");
+            static_attest(len(&dbn.mem) > dbn.len);
+            dbn.len += identity::address_to_str(e, dbn.mem + dbn.len, 150 - dbn.len, &xaddr);
+            if err::check(e) {return io::Result::Error; }
+
+            printf("retry %zu sending %zu bytes to %.*s\n", self->retry_sending, self->initiator.pkt.len, (int)dbn.len, dbn.mem);
+            ++self->retry_sending;
+
+            for (usize mut i= 0; i < static(len(PORTS));i++) {
+                ip4addr.set_port(PORTS[i]);
+                ip6addr.set_port(PORTS[i]);
+
+                self->udp4.sendto(e, &self->initiator.pkt, &ip4addr);
+                err::new(e);
+
+                if io::valid(&self->udp6) && ip6addr.valid() {
+                    self->udp6.sendto(e, &self->initiator.pkt, &ip6addr);
+                    err::new(e);
+                }
+           }
+
+
+            async->select(e, &self->udp4, io::Ready::Read);
+
+
+            return io::Result::Later;
+        }
+    }
+
+    return io::Result::Later;
+}
+
+
+export fn sync(err::Err+et mut*e, u8* secret, usize timeout) -> channel::Channel
+    where err::checked(*e)
+{
+
+    bootstrap::Store mut store = bootstrap::Store {
+        version: 1,
+    };
+
+    time::Time now = time::real();
+    store.time = now.to_seconds();
+    memcpy(store.secret, secret, 32);
+
+    unix::Async+20 mut async;
+    async.new();
+
+    Connect mut con = {0};
+    con.new(e, net::os(), &store, &async);
+    if err::check(e) { return channel::Channel{route:0}; }
+
+    io::Io mut tt = io::timeout(&async, e, time::from_millis(timeout));
+    if err::check(e) { return channel::Channel{route:0}; }
+
+    for (;;) {
+        if con.poll(e, &async) == io::Result::Ready {
+            con.close();
+            return channel::Channel{route:0};
+        }
+
+        if err::check(e) { return channel::Channel{route:0}; }
+
+        u8 mut buf[16];
+        usize mut l = 16;
+        if tt.read_bytes(e, buf, &l) == io::Result::Ready {
+            if err::check(e) { return channel::Channel{route:0}; }
+            err::fail(e, 3, "timeout");
+            return channel::Channel{route:0};
+        }
+        if err::check(e) { return channel::Channel{route:0}; }
+        async.wait(e);
+        if err::check(e) { return channel::Channel{route:0}; }
+    }
+
+    con.close();
+    return con.completed;
+}
+

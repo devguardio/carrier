@@ -1,4 +1,4 @@
-using "3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
+using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
 using <assert.h>::{assert};
 using <memory.h>::{memset};
 using std;
@@ -38,7 +38,7 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
             std::memcpy(self->block + self->at, data, fill);
             hacl::Hacl_SHA2_256_update(self->state, self->block);
             l    -= fill;
-            data += fill;
+            data = data + fill;
             self->at = 0;
         } else {
 

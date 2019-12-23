@@ -19,9 +19,9 @@ static u8 zerokey[32] = {0};
 
 export struct Initiator {
     symmetric::SymmetricState   mut symm;
-    identity::Secret            mut ephermal;
+    identity::Secret            mut ephemeral;
     identity::Address           mut remote_static;
-    identity::Address           remote_ephermal;
+    identity::Address           remote_ephemeral;
 }
 
 pub fn initiate(
@@ -46,8 +46,8 @@ pub fn initiate(
     assert(pktlen >= total_size);
     static_attest(pktlen >= total_size);
 
-    if memcmp((self->ephermal).k, zerokey, 32) == 0 {
-        err::fail(e, 2, "ephermal key is zero");
+    if memcmp((self->ephemeral).k, zerokey, 32) == 0 {
+        err::fail(e, 2, "ephemeral key is zero");
         return 0;
     }
     if memcmp((self->remote_static).k, zerokey, 32) == 0 {
@@ -62,15 +62,15 @@ pub fn initiate(
     symmetric::mix_hash(&self->symm, (self->remote_static).k, 32);
 
     // -> e ,
-    identity::Address mut ephermal_address = {0};
-    identity::address_from_secret(&ephermal_address, &self->ephermal);
+    identity::Address mut ephemeral_address = {0};
+    identity::address_from_secret(&ephemeral_address, &self->ephemeral);
 
-    symmetric::mix_hash(&self->symm, ephermal_address.k, 32);
-    memcpy(pkt, ephermal_address.k, 32);
+    symmetric::mix_hash(&self->symm, ephemeral_address.k, 32);
+    memcpy(pkt, ephemeral_address.k, 32);
 
     // , es
     identity::Address mut dh = {0};
-    identity::dh(&dh, &self->ephermal, &self->remote_static);
+    identity::dh(&dh, &self->ephemeral, &self->remote_static);
     symmetric::mix_key(&self->symm, dh.k, 32);
 
     // payload
@@ -85,9 +85,9 @@ pub fn initiate(
 
 pub struct Responder {
     symmetric::SymmetricState   mut symm;
-    identity::Secret            ephermal;
+    identity::Secret            ephemeral;
     identity::Secret            statickey;
-    identity::Address           remote_ephermal;
+    identity::Address           remote_ephemeral;
 }
 
 pub fn receive(
@@ -106,7 +106,7 @@ pub fn receive(
     where len(payload) >= payload_len
     where len(packet) > 32
 {
-    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
     assert(memcmp((self->statickey).k, zerokey, 32) != 0);
 
     if packet_len < 32 + 16 {
@@ -129,12 +129,12 @@ pub fn receive(
     symmetric::mix_hash(&self->symm, xaddr.k, 32);
 
     // -> e ,
-    memcpy((self->remote_ephermal).k, packet, 32);
-    symmetric::mix_hash(&self->symm, (self->remote_ephermal).k, 32);
+    memcpy((self->remote_ephemeral).k, packet, 32);
+    symmetric::mix_hash(&self->symm, (self->remote_ephemeral).k, 32);
 
     // , es
     identity::Address mut dh = {0};
-    identity::dh(&dh, &self->statickey, &self->remote_ephermal);
+    identity::dh(&dh, &self->statickey, &self->remote_ephemeral);
     symmetric::mix_key(&self->symm, dh.k, 32);
 
 
@@ -163,24 +163,25 @@ pub fn accept(
     where pktlen > 32 + payload_len + 16
     where pktlen > 32
     where pktlen -32 > payload_len
+    model return < pktlen
 {
-    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
     assert(memcmp((self->statickey).k, zerokey, 32) != 0);
-    assert(memcmp((self->remote_ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->remote_ephemeral).k, zerokey, 32) != 0);
 
     usize total_size = 32 + payload_len + 16;
     static_assert(pktlen >= total_size);
 
     // <- e,
-    identity::Address mut ephermal_address = {0};
-    identity::address_from_secret(&ephermal_address, &self->ephermal);
+    identity::Address mut ephemeral_address = {0};
+    identity::address_from_secret(&ephemeral_address, &self->ephemeral);
 
-    symmetric::mix_hash(&self->symm, ephermal_address.k, 32);
-    memcpy(pkt, ephermal_address.k, 32);
+    symmetric::mix_hash(&self->symm, ephemeral_address.k, 32);
+    memcpy(pkt, ephemeral_address.k, 32);
 
     //, ee
     identity::Address mut dh = {0};
-    identity::dh(&dh, &self->ephermal, &self->remote_ephermal);
+    identity::dh(&dh, &self->ephemeral, &self->remote_ephemeral);
     symmetric::mix_key(&self->symm, dh.k, 32);
 
     // payload
@@ -208,7 +209,7 @@ pub fn complete(
     model len(packet) >= return
     model len(payload) >= return
 {
-    assert(memcmp((self->ephermal).k, zerokey, 32) != 0);
+    assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
 
     if packet_len < 32 + 16 {
         err::fail(e, 9, "in buffer underflow");
@@ -221,12 +222,12 @@ pub fn complete(
 
 
     // <- e ,
-    memcpy((self->remote_ephermal).k, packet, 32);
-    symmetric::mix_hash(&self->symm, (self->remote_ephermal).k, 32);
+    memcpy((self->remote_ephemeral).k, packet, 32);
+    symmetric::mix_hash(&self->symm, (self->remote_ephemeral).k, 32);
 
     // , es
     identity::Address mut dh = {0};
-    identity::dh(&dh, &self->ephermal, &self->remote_ephermal);
+    identity::dh(&dh, &self->ephemeral, &self->remote_ephemeral);
     symmetric::mix_key(&self->symm, dh.k, 32);
 
 

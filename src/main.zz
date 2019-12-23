@@ -1,6 +1,5 @@
 using <stdio.h>::{printf};
 using <string.h>::{memcpy};
-using connect;
 using err;
 using channel;
 using router;
@@ -9,6 +8,9 @@ using io::unix;
 using net;
 using io;
 using time;
+using endpoint;
+using router;
+
 
 export fn main() -> int {
 
@@ -29,32 +31,32 @@ export fn main() -> int {
     io::Io mut tt = io::timeout(&async, &e, time::from_millis(5000));
     e.abort();
 
-    connect::Connect mut con = {0};
-    con.new(&e, net::os(), &store, &async);
+    endpoint::Endpoint mut ep = {0};
+    ep.start(&e, net::os(), &store, &async);
     e.abort();
 
-
     for (;;) {
-        if con.poll(&e, &async) == io::Result::Ready {
-            con.close();
-            return 1;
+        if ep.poll(&e, &async) == io::Result::Ready {
+            printf("endpoint ready\n");
+            tt.close();
         }
         e.abort();
 
-
-        u8 mut buf[16];
-        usize mut l = 16;
-        if tt.read_bytes(&e, buf, &l) == io::Result::Ready {
-            e.new();
-            err::fail(&e, 3, "timeout");
+        if tt.valid() {
+            u8 mut buf[16];
+            usize mut l = 16;
+            if tt.read_bytes(&e, buf, &l) == io::Result::Ready {
+                e.new();
+                err::fail(&e, 3, "timeout");
+                e.abort();
+                return 2;
+            }
             e.abort();
-            return 2;
         }
-        e.abort();
         async.wait(&e);
         e.abort();
     }
 
-    con.close();
+    ep.close();
 }
 

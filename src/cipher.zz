@@ -46,7 +46,7 @@ export fn encrypt_ad(
 
     //noise spec: The 96-bit nonce is formed by encoding 32 bits of zeros followed by little-endian encoding of n.
     u8  mut nonce12[12] = {0};
-    u64 nonce_le = as<u64>(byteorder::to_be64(nonce));
+    u64 nonce_le = byteorder::to_le64(nonce);
     memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
 
     int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_aead_encrypt(
@@ -93,7 +93,7 @@ export fn decrypt_ad(
     u8 * mac = ciphertext + plainlen;
 
     u8  mut nonce12[12] = {0};
-    u64 nonce_le = as<u64>(byteorder::to_be64(nonce));
+    u64 nonce_le = byteorder::to_le64(nonce);
     memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
 
     int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_aead_decrypt(
@@ -127,6 +127,7 @@ export fn encrypt(
     where len(ciphertext) >= cipherlen_max
     where len(plain)      >= plainlen
     where len(ciphertext) > plainlen
+    model return <= cipherlen_max
 {
     return encrypt_ad(self, e, 0,0, plain, plainlen, nonce, ciphertext, cipherlen_max);
 }

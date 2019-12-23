@@ -15,13 +15,29 @@ using net;
 using cipher;
 using hex;
 using channel;
+using router;
+using peering;
 
 enum State {
     Bootstrap,
-    Sending,
+    Connecting,
+    Connected,
 }
 
-export struct Connect {
+struct ConnectingState {
+    bootstrap::Broker       mut current_broker;
+    initiator::Initiator    mut initiator;
+    usize trying_broker_index;
+    usize retry_sending;
+}
+
+union StateM {
+    bootstrap::Bootstrap    bootstrap;
+    ConnectingState         connecting;
+    router::Router          connected;
+}
+
+export struct Endpoint {
     net::Engine*            netengine;
     bootstrap::Store mut*   store;
 
@@ -29,53 +45,56 @@ export struct Connect {
     udp::Socket     mut     udp6;
     io::Io          mut     timeout;
 
-    bootstrap::Bootstrap mut bs;
-    channel::Channel mut completed;
-
-    State mut state;
-    usize trying_broker_index;
-
-
-    bootstrap::Broker       mut current_broker;
-    initiator::Initiator    mut initiator;
-    usize retry_sending;
+    State   mut state;
+    StateM  mut statem;
 }
 
-export fn new(Connect mut* self, err::Err+et mut*e, net::Engine *netengine, bootstrap::Store mut* store, io::Async mut* async)
+export fn start(Endpoint mut* self, err::Err+et mut*e, net::Engine *netengine, bootstrap::Store mut* store, io::Async mut* async)
     where err::checked(*e)
 {
-    memset(self, 0 , sizeof(Connect));
+    memset(self, 0 , sizeof(Endpoint));
 
     self->netengine = netengine;
-    self->store = store;
+    self->store     = store;
 
     printf("truststore is empty. bootstrap via dns\n");
-    self->bs = bootstrap::new(e, async, netengine);
     self->state = State::Bootstrap;
+    self->statem.bootstrap = bootstrap::new(e, async, netengine);
 }
 
-export fn close(Connect mut* self)
+export fn close(Endpoint mut* self)
 {
-    self->bs.close();
-    self->udp4.close();
-    self->udp6.close();
+    switch self->state {
+        State::Bootstrap => {
+            self->statem.bootstrap.close();
+        }
+        State::Connecting => {
+            self->udp4.close();
+            self->udp6.close();
+        }
+        State::Connected => {
+            self->statem.connected.close();
+        }
+    }
 }
 
-fn next_broker(Connect mut* self) -> bool
+fn next_broker(Endpoint mut* self) -> bool
 {
     static_attest(safe(self->store));
     for (usize mut i = 0; i < bootstrap::MAX_BROKERS; i++) {
-        if self->trying_broker_index >= bootstrap::MAX_BROKERS {
-            self->trying_broker_index = 0;
+        if self->statem.connecting.trying_broker_index >= bootstrap::MAX_BROKERS {
+            self->statem.connecting.trying_broker_index = 0;
         }
-        static_attest(self->trying_broker_index < len(self->store->broker));
-        if self->store->broker[self->trying_broker_index].protocol != 0 {
-            printf("loading broker slot %zu\n", self->trying_broker_index);
-            memcpy(&self->current_broker, &self->store->broker[self->trying_broker_index], sizeof(bootstrap::Broker));
-            self->trying_broker_index += 1;
+        static_attest(self->statem.connecting.trying_broker_index < len(self->store->broker));
+        if self->store->broker[self->statem.connecting.trying_broker_index].protocol != 0 {
+            printf("loading broker slot %zu\n", self->statem.connecting.trying_broker_index);
+            memcpy(&self->statem.connecting.current_broker,
+                &self->store->broker[self->statem.connecting.trying_broker_index],
+                sizeof(bootstrap::Broker));
+            self->statem.connecting.trying_broker_index += 1;
             return true;
         }
-        self->trying_broker_index += 1;
+        self->statem.connecting.trying_broker_index += 1;
     }
     return false;
 }
@@ -83,7 +102,7 @@ fn next_broker(Connect mut* self) -> bool
 
 static u16 PORTS[] = {53, 443, 8443, 80, 123};
 
-export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io::Result
+export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> io::Result
      where err::checked(*e)
 {
     static_attest(safe(self->store));
@@ -92,14 +111,15 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
         // TODO retry timeout
         State::Bootstrap => {
 
-            if self->bs.next(e, async, self->store) == io::Result::Ready {
+            if self->statem.bootstrap.next(e, async, self->store) == io::Result::Ready {
                 if err::check(e) {
                     return io::Result::Error;
                 }
                 printf("trustvector complete, ring has %zu brokers\n", self->store->broker_count());
-                self->state = State::Sending ;
 
-                self->bs.close();
+                self->statem.bootstrap.close();
+                self->state = State::Connecting;
+                memset(&self->statem.connecting, 0, sizeof(ConnectingState));
 
                 static_attest(safe(self->netengine));
                 address::Address addr4 = address::from_cstr("0.0.0.0:1212");
@@ -122,7 +142,7 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
             }
         }
         // TODO retry timeout
-        State::Sending => {
+        State::Connecting => {
 
             // make sure we always activate
             if io::valid(&self->timeout) {
@@ -140,29 +160,33 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
 
             // receive
             address::Address    mut fromaddr = {0};
-            self->initiator.pkt.clear();
-            if self->udp4.recvfrom(e, &self->initiator.pkt, &fromaddr) == io::Result::Ready {
+            self->statem.connecting.initiator.pkt.clear();
+            if self->udp4.recvfrom(e, &self->statem.connecting.initiator.pkt, &fromaddr) == io::Result::Ready {
                 err::new(e);
 
 
-                channel::Channel mut broker_chan = {0};
-
+                channel::Channel  mut broker_chan;
                 bootstrap::Broker mut redir = {0};
-                self->initiator.complete(e, &broker_chan, &redir);
+                self->statem.connecting.initiator.complete(e, &broker_chan, &redir);
                 if err::check(e) {
                     e->eprint();
                     err::new(e);
                     // don't return here. we might have stuff to set the timer in the rest of the code
                 } else if redir.protocol != 0 {
-                    memcpy(&self->current_broker, &redir, sizeof(bootstrap::Broker));
-                    self->retry_sending = 0;
+                    memcpy(&self->statem.connecting.current_broker, &redir, sizeof(bootstrap::Broker));
+                    self->statem.connecting.retry_sending = 0;
                     self->timeout.close();
                     return self->poll(e, async);
                 } else {
+                    self->state = State::Connected;
+                    memset(&self->statem , 0, sizeof(StateM));
+                    broker_chan.peering.received(peering::Transport::Udp, fromaddr);
+                    self->statem.connected = router::new(broker_chan, self->udp4, self->udp6);
                     return io::Result::Ready;
                 }
                 err::new(e);
             }
+            if err::check(e) {return io::Result::Error; }
 
             // or timeout
 
@@ -180,7 +204,7 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
 
 
             usize mut wait = 0;
-            switch self->retry_sending {
+            switch self->statem.connecting.retry_sending {
                 0       => { wait = 100  }
                 1       => { wait = 300  }
                 2       => { wait = 600  }
@@ -192,8 +216,8 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
             async->select(e, &self->timeout, io::Ready::Read);
             if err::check(e) {return io::Result::Error; }
 
-            if self->retry_sending > 5 {
-                self->retry_sending = 0;
+            if self->statem.connecting.retry_sending > 5 {
+                self->statem.connecting.retry_sending = 0;
                 self->next_broker();
             }
 
@@ -206,12 +230,12 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
             address::Address  mut ip6addr = {0};
             identity::Address mut xaddr   = {0};
 
-            if !bootstrap::from_store(&self->current_broker, &ip4addr, &ip6addr, &xaddr) {
+            if !bootstrap::from_store(&self->statem.connecting.current_broker, &ip4addr, &ip6addr, &xaddr) {
                 err::fail(e, 3, "current broker is empty");
                 return io::Result::Error;
             }
 
-            self->initiator.initiate(e, (identity::Secret*)&(self->store->secret), &xaddr, self->store->time);
+            self->statem.connecting.initiator.initiate(e, (identity::Secret*)&(self->store->secret), &xaddr, self->store->time);
             if err::check(e) {return io::Result::Error;}
 
 
@@ -222,18 +246,22 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
             dbn.len += identity::address_to_str(e, dbn.mem + dbn.len, 150 - dbn.len, &xaddr);
             if err::check(e) {return io::Result::Error; }
 
-            printf("retry %zu sending %zu bytes to %.*s\n", self->retry_sending, self->initiator.pkt.len, (int)dbn.len, dbn.mem);
-            ++self->retry_sending;
+            printf("retry %zu sending %zu bytes to %.*s\n",
+                self->statem.connecting.retry_sending,
+                self->statem.connecting.initiator.pkt.len,
+                (int)dbn.len, dbn.mem);
+
+            ++self->statem.connecting.retry_sending;
 
             for (usize mut i= 0; i < static(len(PORTS));i++) {
                 ip4addr.set_port(PORTS[i]);
                 ip6addr.set_port(PORTS[i]);
 
-                self->udp4.sendto(e, &self->initiator.pkt, &ip4addr);
+                self->udp4.sendto(e, &self->statem.connecting.initiator.pkt, &ip4addr);
                 err::new(e);
 
                 if io::valid(&self->udp6) && ip6addr.valid() {
-                    self->udp6.sendto(e, &self->initiator.pkt, &ip6addr);
+                    self->udp6.sendto(e, &self->statem.connecting.initiator.pkt, &ip6addr);
                     err::new(e);
                 }
            }
@@ -244,55 +272,11 @@ export fn poll(Connect mut* self, err::Err+et mut*e, io::Async mut* async) -> io
 
             return io::Result::Later;
         }
+        State::Connected => {
+            return self->statem.connected.poll(e);
+        }
     }
 
     return io::Result::Later;
-}
-
-
-export fn sync(err::Err+et mut*e, u8* secret, usize timeout) -> channel::Channel
-    where err::checked(*e)
-{
-
-    bootstrap::Store mut store = bootstrap::Store {
-        version: 1,
-    };
-
-    time::Time now = time::real();
-    store.time = now.to_seconds();
-    memcpy(store.secret, secret, 32);
-
-    unix::Async+20 mut async;
-    async.new();
-
-    Connect mut con = {0};
-    con.new(e, net::os(), &store, &async);
-    if err::check(e) { return channel::Channel{route:0}; }
-
-    io::Io mut tt = io::timeout(&async, e, time::from_millis(timeout));
-    if err::check(e) { return channel::Channel{route:0}; }
-
-    for (;;) {
-        if con.poll(e, &async) == io::Result::Ready {
-            con.close();
-            return channel::Channel{route:0};
-        }
-
-        if err::check(e) { return channel::Channel{route:0}; }
-
-        u8 mut buf[16];
-        usize mut l = 16;
-        if tt.read_bytes(e, buf, &l) == io::Result::Ready {
-            if err::check(e) { return channel::Channel{route:0}; }
-            err::fail(e, 3, "timeout");
-            return channel::Channel{route:0};
-        }
-        if err::check(e) { return channel::Channel{route:0}; }
-        async.wait(e);
-        if err::check(e) { return channel::Channel{route:0}; }
-    }
-
-    con.close();
-    return con.completed;
 }
 

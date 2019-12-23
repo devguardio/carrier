@@ -9,22 +9,74 @@ using <stdio.h>::{printf};
 using <memory.h>::{strlen};
 using channel;
 using string;
+using io;
+using net::address;
+using net::udp;
 
 enum Direction {
     Initiator2Responder,
     Responder2Initiator,
 }
 
-struct Router {
-    string::String+1024     mut pkt;
+export struct Router {
     channel::Channel        mut broker;
+    string::String+1024     mut pkt;
+
+    udp::Socket             mut udp4;
+    udp::Socket             mut udp6;
 }
 
-
-pub fn new(channel::Channel brk) -> Router {
+pub fn new(channel::Channel brk, udp::Socket udp4, udp::Socket udp6) -> Router {
     return Router {
         broker: brk,
+        udp4:   udp4,
+        udp6:   udp6,
     };
+}
+
+pub fn close(Router mut* self)
+{
+    self->udp4.close();
+    self->udp6.close();
+}
+
+pub fn poll(Router mut*self, err::Err+et mut*e) -> io::Result
+    where err::checked(*e)
+{
+    address::Address mut fromaddr = {0};
+    self->pkt.clear();
+    if self->udp4.recvfrom(e, &self->pkt, &fromaddr) == io::Result::Ready {
+        err::new(e);
+        self->push(e);
+    }
+    if err::check(e) {
+        e->eprint();
+        e->new();
+    }
+
+    if self->broker.pull(e, &self->pkt) {
+        printf("sending pkt to broker\n");
+        hex::dump((u8*)self->pkt.mem, self->pkt.len);
+        if err::check(e) { return io::Result::Error; }
+        for (usize mut i = 0; i < static(len(self->broker.peering.paths)); i++) {
+            if self->broker.peering.paths[i].active {
+                switch self->broker.peering.paths[i].addr.type {
+                    address::Type::Ipv4 => {
+                        self->udp4.sendto(e, &self->pkt, &self->broker.peering.paths[i].addr);
+                    }
+                    address::Type::Ipv6 => {
+                        self->udp6.sendto(e, &self->pkt, &self->broker.peering.paths[i].addr);
+                   }
+               }
+            }
+        }
+    }
+
+    if err::check(e) {
+        return io::Result::Error;
+    }
+
+    return io::Result::Later;
 }
 
 pub fn push(Router mut* self, err::Err+et mut* e)
@@ -70,18 +122,6 @@ pub fn push(Router mut* self, err::Err+et mut* e)
         channel::push(&(self->broker), e, ciphertext, ciphertext_len, counter);
     }
 }
-
-
-
-pub fn pull(Router mut* self, err::Err+et mut* e)
-    where err::checked(*e)
-{
-    channel::pull(&(self->broker), e, &self->pkt);
-}
-
-
-
-
 
 pub fn read_routing_key( u8 * i, Direction mut * unsafe direction) -> u64
     where len(i) >= 8

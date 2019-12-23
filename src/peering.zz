@@ -1,0 +1,32 @@
+/// this will eventually maintain the best path given multiple options
+
+using net::address;
+
+export enum Transport {
+    Tcp,
+    Udp,
+}
+
+export struct Path{
+    Transport           transport;
+    address::Address    addr;
+    bool                active;
+    bool                used;
+}
+
+export struct Peering {
+    Path paths[16];
+}
+
+export fn received(Peering mut *self, Transport transport, address::Address addr) {
+    for (usize mut i = 0; i < static(len(self->paths));i++) {
+        if !self->paths[i].used {
+            self->paths[i].transport    = transport;
+            self->paths[i].addr         = addr;
+            self->paths[i].used         = true;
+            self->paths[i].active       = true;
+            break;
+        }
+    }
+}
+

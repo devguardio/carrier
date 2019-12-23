@@ -42,7 +42,7 @@ pub fn initiate(
 
     std::memcpy(((self->noise).remote_static).k, xaddr->k, 32);
 
-    identity::secret_generate(e, &(self->noise).ephermal);
+    identity::secret_generate(e, &(self->noise).ephemeral);
     if err::check(e) {
         return ;
     }

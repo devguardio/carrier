@@ -1,0 +1,610 @@
+using err;
+using carrier::noise;
+using carrier::cipher;
+using carrier::identity;
+using carrier::symmetric;
+using hex;
+using <string.h>::{memcmp, memcpy};
+using <assert.h>::{assert};
+using <stdio.h>::{printf, fread, stdin};
+using string;
+using json;
+
+
+
+
+test cacophony {
+    stdin = r#"
+    {
+        "protocol_name": "Noise_NK_25519_ChaChaPoly_SHA256",
+        "init_prologue": "4a6f686e2047616c74",
+        "init_ephemeral": "893e28b9dc6ca8d611ab664754b8ceb7bac5117349a4439a6b0569da977c464a",
+        "init_remote_static": "31e0303fd6418d2f8c0e78b91f22e8caed0fbe48656dcf4767e4834f701b8f62",
+        "resp_prologue": "4a6f686e2047616c74",
+        "resp_static": "4a3acbfdb163dec651dfa3194dece676d437029c62a408b4c5ea9114246e4893",
+        "resp_ephemeral": "bbdb4cdbd309f1a1f2e1456967fe288cadd6f712d65dc7b7793d5e63da6b375b",
+        "handshake_hash": "2efa38a9c7c93ac98f3a097af25c2f58b9e7673787717bc27e98827118c2c1a5",
+        "messages": [
+            {
+                "nonce":    0,
+                "payload": "4c756477696720766f6e204d69736573",
+                "ciphertext": "ca35def5ae56cec33dc2036731ab14896bc4c75dbb07a61f879f8e3afa4c79448134d00711fdb390a0d178fa008f6d47d2891e5ea18ae136c3b4c23ac384efb0"
+            },
+            {
+                "nonce":    0,
+                "payload": "4d757272617920526f746862617264",
+                "ciphertext": "95ebc60d2b1fa672c1f46a8aa265ef51bfe38e7ccb39ec5be34069f1448088438ea16e3701bc0d77744f117bee22451c9afa7f4cdbbcff00c04a8ee0913c88"
+            },
+            {
+                "nonce":    0,
+                "payload": "462e20412e20486179656b",
+                "ciphertext": "a62de29ce27cb80245d440d986ed816c156e9d757d7008df2198b0"
+            },
+            {
+                "nonce":    0,
+                "payload": "4361726c204d656e676572",
+                "ciphertext": "174a35f11c689f4530d7208618e0564ae12f2f50ba8eb4df5382ff"
+            },
+            {
+                "nonce":    1,
+                "payload": "4a65616e2d426170746973746520536179",
+                "ciphertext": "337e475ebb8eae60f91974c4e455a5af38d1d8628d1803b160d60442874b0a1777"
+            },
+            {
+                "nonce":    1,
+                "payload": "457567656e2042f6686d20766f6e2042617765726b",
+                "ciphertext": "047e80e060b7bb08b53c5a23dfe9920cae135b9d1dc6302fc475003062723700366346ac9d"
+            }
+        ]
+    }
+    "#
+}
+
+test snow {
+    stdin = r#"
+    {
+      "protocol_name": "Noise_NK_25519_ChaChaPoly_SHA256",
+      "init_prologue": "5468657265206973206e6f20726967687420616e642077726f6e672e2054686572652773206f6e6c792066756e20616e6420626f72696e672e",
+      "init_psks": [],
+      "init_ephemeral": "67fd010419fe7f341d1db5b0668d615b0d97f53ef14fed7495f530be70d94d4e",
+      "init_remote_static": "967438b17f1e639aa31b11dc8080e1b2946069e1313971272de4fe4c183a0045",
+      "resp_prologue": "5468657265206973206e6f20726967687420616e642077726f6e672e2054686572652773206f6e6c792066756e20616e6420626f72696e672e",
+      "resp_psks": [],
+      "resp_static": "591cca41044cefdb98cb0b595f1cd2f8b0432c850b4a4f347cda368262c0cc50",
+      "resp_ephemeral": "c3564f536b83720b1ce00ef30c0379566aa19fa2f874dd259c9bdb51e41560d7",
+      "messages": [
+        {
+          "payload": "2d7597a5cd1e7b0954f9934dfb2ad03b9a19be205eb4cd1932256dce7e885b91",
+          "ciphertext": "5c8952924ba0af89fd8205103f0aba6a4d2476002304694e12c5df2109db5346907639f01029c52b02d1134a658420e73469733b4ddf7e4c524aa3680f0a7bfefb67be0191acd08674113d236eaa5daf"
+        },
+        {
+          "payload": "4ed94a513058c0e1cf189f70edafa41fffbb1353dd72bc645d1676becf8f663b",
+          "ciphertext": "8a3d3fc75e92d49faf527c1205c08a878791c0f7cc5a25cf05b1560f0747a40faf91df6989bb01069fa18f8882e9883543b09941d5ececad68054f9f0aa8338c067f3003cc210b8e6dcd3b402dac1a09"
+        }
+      ]
+    }
+    "#
+}
+
+
+struct Message {
+    bool set;
+    string::String+500 ciphertext;
+    string::String+500 payload;
+    u64 nonce;
+}
+
+struct Testcase {
+    string::String+500 mut init_prologue;
+    u8 init_ephermal[32];
+    u8 init_remote_static[32];
+    string::String+500 mut resp_prologue;
+    u8 resp_static[32];
+    u8 resp_ephemeral[32];
+    u8 handshake_hash[32];
+    Message messages[10];
+}
+
+fn deser_message(err::Err+et mut *e, json::Parser+pt mut* p, Message mut* tc, char *k, json::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    static_attest(safe(v.string));
+    static_attest(nullterm(v.string));
+    tc->set = true;
+    if string::cstr_eq(k, "payload") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 1, "expected string");
+            return;
+        }
+        usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->payload.mem, static(len(tc->payload.mem)));
+        tc->payload.len = l;
+    } else if string::cstr_eq(k, "ciphertext") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 1, "expected string");
+            return;
+        }
+        usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->ciphertext.mem, static(len(tc->ciphertext.mem)));
+        tc->ciphertext.len = l;
+    } else if string::cstr_eq(k, "nonce") {
+        if(v.t != json::ValueType::Integer) {
+            err::fail(e, 1, "expected int");
+            return;
+        }
+        tc->nonce = (u64)v.integer;
+    }
+}
+
+fn deser_messages(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *k, json::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    if v.index > 9 {
+        err::fail(e, 2, "too many messages");
+        return;
+    }
+    if(v.t != json::ValueType::Object) {
+        err::fail(e, 2, "expected object");
+        return;
+    }
+    json::next(p,  e, (json::deserialize_t)deser_message, &tc->messages[v.index]);
+}
+
+fn deser_tc(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *k, json::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    static_attest(safe(v.string));
+    static_attest(nullterm(v.string));
+
+    if string::cstr_eq(k, "init_prologue") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 1, "expected string");
+            return;
+        }
+        usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->init_prologue.mem, static(len(tc->init_prologue.mem)));
+        tc->init_prologue.len = l;
+    } else if string::cstr_eq(k, "init_ephemeral") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        hex::str2bin(v.string, string::strlen(v.string), tc->init_ephermal, static(len(tc->init_ephermal)));
+    } else if string::cstr_eq(k, "init_remote_static") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        hex::str2bin(v.string, string::strlen(v.string), tc->init_remote_static, static(len(tc->init_remote_static)));
+    } else if string::cstr_eq(k, "resp_prologue") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 1, "expected string");
+            return;
+        }
+        usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->resp_prologue.mem, static(len(tc->resp_prologue.mem)));
+        tc->resp_prologue.len = l;
+    } else if string::cstr_eq(k, "resp_static") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        hex::str2bin(v.string, string::strlen(v.string), tc->resp_static, static(len(tc->resp_static)));
+    } else if string::cstr_eq(k, "resp_ephemeral") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        hex::str2bin(v.string, string::strlen(v.string), tc->resp_ephemeral, static(len(tc->resp_ephemeral)));
+    } else if string::cstr_eq(k, "resp_ephemeral") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        hex::str2bin(v.string, string::strlen(v.string), tc->handshake_hash, static(len(tc->handshake_hash)));
+    } else if string::cstr_eq(k, "handshake_hash") {
+        if(v.t != json::ValueType::String) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        hex::str2bin(v.string, string::strlen(v.string), tc->handshake_hash, static(len(tc->handshake_hash)));
+    } else if string::cstr_eq(k, "messages") {
+        if(v.t != json::ValueType::Array) {
+            err::fail(e, 2, "expected string");
+            return;
+        }
+        json::next(p,  e, (json::deserialize_t)deser_messages, tc);
+        if err::check(e) {
+            return;
+        }
+    }
+}
+
+pub fn main() -> int {
+    if t2() != 0  {
+        return 18;
+    }
+
+    err::Err+1000 mut e = {0};
+    e.new();
+
+    Testcase mut tc = {0};
+    json::Parser+1000 mut parser = {0};
+    parser.new(&e, (json::deserialize_t)deser_tc, &tc);
+    if err::check(&e) {
+        e.eprint();
+        return (int)e.error;
+    }
+    for(;;) {
+        u8 mut buf[1000];
+        usize r = (usize)fread(buf, 1, static(len(buf)), stdin);
+        if r < 1 {
+            break;
+        }
+        static_attest(r < len(buf));
+        json::push(&parser, &e, (char*)buf, r);
+        if err::check(&e) {
+            err::eprint(&e);
+            return 2;
+        }
+    }
+
+
+    noise::Initiator mut init = {0};
+    memcpy(init.ephemeral.k, tc.init_ephermal, 32);
+    memcpy(init.remote_static.k, tc.init_remote_static, 32);
+
+    static_attest(tc.init_prologue.len < len(tc.init_prologue.mem));
+    static_attest(tc.messages[0].payload.len < len(tc.messages[0].payload.mem));
+    static_attest(tc.messages[0].ciphertext.len < len(tc.messages[0].ciphertext.mem));
+
+    u8 mut pkt1[1024] = {0};
+    usize pkt1len = noise::initiate(
+        &init, &e,
+        pkt1,
+        static(len(pkt1)),
+        (u8*)tc.init_prologue.mem,
+        tc.init_prologue.len,
+        (u8*)tc.messages[0].payload.mem,
+        tc.messages[0].payload.len
+    );
+
+    if err::check(&e) {
+        e.eprint();
+        return (int)e.error;
+    }
+
+
+    if pkt1len != tc.messages[0].ciphertext.len {
+        return 1;
+    }
+    if memcmp(pkt1, tc.messages[0].ciphertext.mem, tc.messages[0].ciphertext.len) != 0 {
+        hex::dump(pkt1, pkt1len);
+        hex::dump((u8*)tc.messages[0].ciphertext.mem, tc.messages[0].ciphertext.len);
+        return 1;
+    }
+
+
+    // receive
+    u8 mut pkt1r[1024] = {0};
+    noise::Responder mut resp = {0};
+    memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
+    memcpy(resp.statickey.k,  tc.resp_static, 32);
+
+    static_attest(tc.resp_prologue.len < len(tc.resp_prologue.mem));
+    usize pkt1r_size = noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt1, pkt1len);
+    if err::check(&e) {
+        e.eprint();
+        return (int)e.error;
+    }
+
+
+    assert(pkt1r_size == tc.messages[0].payload.len);
+    assert(memcmp(pkt1r, tc.messages[0].payload.mem, tc.messages[0].payload.len) == 0);
+
+    // bad mac
+    {
+        u8 mut pkt_bad[1024] = {0};
+        memcpy(pkt_bad, pkt1, pkt1len);
+        unsafe {
+        pkt_bad[pkt1len - 2] = 0x08;
+        }
+
+        u8 mut pkt1r[1024] = {0};
+        noise::Responder mut resp = {0};
+        memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
+        memcpy(resp.statickey.k,  tc.resp_static, 32);
+
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt_bad, pkt1len);
+        if !err::check(&e) {
+            return 3;
+        }
+    }
+    err::new(&e);
+
+    // bad ephermal
+    {
+        u8 mut pkt_bad[1024] = {0};
+        memcpy(pkt_bad, pkt1, pkt1len);
+        pkt_bad[2] = 0x08;
+
+        u8 mut pkt1r[1024] = {0};
+        noise::Responder mut resp = {0};
+        memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
+        memcpy(resp.statickey.k,  tc.resp_static, 32);
+
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt_bad, pkt1len);
+        if !err::check(&e) {
+            return 3;
+        }
+        err::new(&e);
+    }
+    err::new(&e);
+
+    // bad msg
+    {
+        u8 mut pkt_bad[1024] = {0};
+        memcpy(pkt_bad, pkt1, pkt1len);
+        pkt_bad[33] = 0x08;
+
+        u8 mut pkt1r[1024] = {0};
+        noise::Responder mut resp = {0};
+        memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
+        memcpy(resp.statickey.k,  tc.resp_static, 32);
+
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt_bad, pkt1len);
+        if !err::check(&e) {
+            return 3;
+        }
+    }
+    err::new(&e);
+
+
+    assert(memcmp((resp.symm).h, (init.symm).h, 32) == 0);
+    assert(memcmp((resp.symm).ck, (init.symm).ck, 32) == 0);
+
+
+    // respond
+    static_attest(tc.messages[1].payload.len < len(tc.messages[1].payload.mem));
+    static_attest(tc.messages[1].ciphertext.len < len(tc.messages[1].ciphertext.mem));
+
+    u8 mut pkt2[1200] = {0};
+    usize pkt2len = noise::accept(&resp, &e, pkt2, static(len(pkt2)), (u8*)tc.messages[1].payload.mem, tc.messages[1].payload.len);
+    err::abort(&e);
+
+    assert(memcmp((resp.symm).ck, (init.symm).ck, 32) != 0);
+    assert(memcmp((resp.symm).h, (init.symm).h, 32) != 0);
+
+    assert(pkt2len == tc.messages[1].ciphertext.len);
+    if memcmp(pkt2, tc.messages[1].ciphertext.mem, tc.messages[1].ciphertext.len) != 0 {
+        hex::dump(pkt2, pkt2len);
+        hex::dump((u8*)tc.messages[1].ciphertext.mem, tc.messages[1].ciphertext.len);
+        return 10;
+    }
+    //memcpy(pkt2, msg2_ciphertext, msg2_ciphertext_len);
+
+
+    // final
+    u8 mut pkt2r[1024] = {0};
+    noise::complete(&init, &e, pkt2r, static(len(pkt2r)), pkt2, pkt2len);
+    err::abort(&e);
+
+    assert(memcmp((resp.symm).h, (init.symm).h, 32) == 0);
+
+
+    if tc.handshake_hash[0] != 0 {
+        if (memcmp((resp.symm).h, tc.handshake_hash, 32) != 0) {
+            return 12;
+        }
+    }
+
+
+    // split
+    cipher::CipherState mut init_cipher_init = {0};
+    cipher::CipherState mut init_cipher_resp = {0};
+    symmetric::split(&init.symm, &init_cipher_init, &init_cipher_resp);
+
+    cipher::CipherState mut resp_cipher_init = {0};
+    cipher::CipherState mut resp_cipher_resp = {0};
+    symmetric::split(&resp.symm, &resp_cipher_init, &resp_cipher_resp);
+
+
+
+    // transport mode
+
+
+    for (usize mut msgat = 2; msgat< static(len(tc.messages)); msgat++) {
+        if tc.messages[msgat].set == false {
+            break;
+        }
+
+        cipher::CipherState mut * mut sender   = 0;
+        cipher::CipherState mut * mut receiver = 0;
+        // initiator -> responder
+        if msgat % 2 == 0 {
+            sender   = &init_cipher_init;
+            receiver = &resp_cipher_init;
+        } else {
+            sender   = &resp_cipher_resp;
+            receiver = &init_cipher_resp;
+        }
+        static_attest(safe(sender));
+        static_attest(safe(receiver));
+
+        usize payloadlen = tc.messages[msgat].payload.len;
+        static_attest(payloadlen < len(tc.messages[msgat].payload.mem));
+        usize cipherlen = tc.messages[msgat].ciphertext.len;
+        static_attest(cipherlen < len(tc.messages[msgat].ciphertext.mem));
+
+        u8 mut pkt3[1124] = {0};
+        usize pkt3len = cipher::encrypt(
+                sender, &e,
+                (u8*)tc.messages[msgat].payload.mem, payloadlen,
+                tc.messages[msgat].nonce,
+                pkt3, static(len(pkt3))
+                );
+
+        if err::check(&e) {
+            e.eprint();
+            return (int)e.error;
+        }
+
+        if memcmp(pkt3, tc.messages[msgat].ciphertext.mem, tc.messages[msgat].ciphertext.len) != 0 {
+            printf("message %zu didn't encrypt correctly. size: %zu <> %zu\n", msgat, pkt3len, tc.messages[msgat].ciphertext.len);
+            hex::dump(pkt3, pkt3len);
+            hex::dump((u8*)tc.messages[msgat].ciphertext.mem, cipherlen);
+            return 10;
+        }
+
+    }
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+pub fn t2() ->int {
+    identity::Secret mut init_ephermal  = {
+        0x36, 0xd2, 0x7b, 0x46, 0xc7, 0xce, 0x7d, 0x39, 0xce, 0x1f, 0xbd, 0x3a, 0xd7, 0x3, 0xac, 0x8e, 0xf1, 0x47, 0xe6, 0x40, 0xe2, 0x43, 0x7, 0x72, 0xb6, 0x6b, 0x58, 0xfe, 0x24, 0xf0, 0xe, 0x3c
+    };
+
+    identity::Address mut remote_static = {
+        0xbb, 0x98, 0x20, 0x75, 0xd9, 0x7f, 0xf2, 0xf5,
+        0xd8, 0x81, 0x1f, 0xb1, 0xb2, 0x6b, 0x36, 0xe4,
+        0x7e, 0xdc, 0x16, 0xe3, 0xe7, 0x13, 0xd7, 0xa9,
+        0x32, 0xea, 0x82, 0xd2, 0x9a, 0x6f, 0xdd, 0x2e,
+    };
+
+
+    char * prologue = "carrier has arrived";
+
+    // es a5, e2, 44, 79, a6, 92, ff, 16, 47, c6, d5, ae, c4, e1, f, bb, 69, b6, 8e, f3, d, 7b, 1f, 2e, c3, 1b, 2c, e0, 97, a, 48, 20
+    u8 msg1_payload[] = {
+        0x0, 0x0, 0xa7, 0xc2, 0x65, 0x31, 0x12, 0xd1, 0x1f, 0xd, 0xd4, 0xa0, 0x4f, 0x84, 0x9a, 0x7, 0x8e, 0x9a, 0xb1, 0x92, 0xbb, 0x45, 0x2d, 0x1f, 0x41, 0x81, 0xa2, 0x51, 0xf9, 0x68, 0x8, 0xd4, 0x8c, 0x9a, 0x0, 0x0, 0x1, 0x6e, 0x11, 0xab, 0xc0, 0xb3, 0x0, 0x0, 0x0, 0x5d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+    };
+
+    u8 msg1_ciphertext[] = {
+        0x61, 0xfa, 0xb5, 0xb2, 0xbb, 0x2f, 0x18, 0xa4, 0x83, 0xc6, 0xbf, 0xcc, 0xed, 0x63, 0x54, 0x5c, 0x43, 0xdc, 0xdf, 0x6, 0xb3, 0x36, 0xef, 0x66, 0xa0, 0xe1, 0x2, 0x2e, 0x68, 0x29, 0xc7, 0x5b, 0xfa, 0xbd, 0xe3, 0x31, 0xc9, 0xf0, 0x99, 0x59, 0x4c, 0x56, 0xda, 0x2d, 0x5e, 0x47, 0x20, 0x37, 0xe6, 0x99, 0xd4, 0x59, 0xf5, 0x21, 0x81, 0xe6, 0xc3, 0xe0, 0xdd, 0xac, 0x2, 0x11, 0x49, 0x90, 0x72, 0xbc, 0x61, 0xbd, 0x72, 0xfe, 0x30, 0x3f, 0xb0, 0x3e, 0xe8, 0x2c, 0xc1, 0x70, 0xc9, 0x93, 0x67, 0x5c, 0xf8, 0x63, 0xc8, 0xbd, 0x6f, 0x63, 0x71, 0x7e, 0xd7, 0x37, 0xac, 0x96, 0x3d, 0xd0, 0x81, 0xaf, 0xfb, 0xcf, 0x28, 0xf1, 0x7e, 0xfc, 0xc2, 0x1a, 0x90, 0x27, 0xcf, 0x2d, 0x2d, 0x5b, 0xd2, 0x19, 0xf8, 0xab, 0x1, 0xa3, 0x1b, 0x6b, 0xf0, 0xc4, 0x7, 0x50, 0xf8, 0x50, 0xaa, 0x1c
+    };
+
+
+
+
+    u8 msg2_ciphertext[] = {
+        0xbb, 0x76, 0xf3, 0x95, 0xf2, 0xfc, 0x74, 0xa6, 0x24, 0x56, 0xf6, 0xbc, 0xd0, 0xf3, 0xcc, 0xa0, 0x4, 0x82, 0xf6, 0x8e, 0x1c, 0x53, 0xf3, 0xd1, 0x2f, 0x7a, 0xc1, 0xbe, 0x74, 0xe5, 0x18, 0x65, 0xbf, 0x45, 0x1b, 0x8d, 0xbd, 0x67, 0xcc, 0x1, 0xc1, 0xb9, 0x11, 0x78, 0x54, 0x68, 0xfc, 0x15, 0xfe, 0xf0, 0xb7, 0x9a, 0x97, 0xf5, 0x97, 0x4a, 0x16, 0x43, 0xe, 0x65, 0x90, 0xb0, 0x53, 0xc7, 0x97, 0x6f, 0xc7, 0x51, 0x12, 0x64, 0x75, 0x92, 0xdb, 0xda, 0x63, 0xc6, 0x91, 0xf6, 0x8e, 0x81, 0xce, 0x92, 0x2b, 0x6e, 0xde, 0x62, 0xa7, 0x1a, 0x56, 0x1f, 0x63, 0x3, 0xd0, 0x2a, 0xa5, 0xbd, 0x99, 0xc8, 0x97, 0x8, 0x84, 0xa0, 0x25, 0x12, 0xe3, 0xfe, 0xd0, 0xb6, 0x52, 0xe4, 0xe2, 0x3c, 0x6f, 0xa2, 0xa3, 0xa0, 0xf6, 0xea, 0xd9, 0x12, 0xf0, 0x9e, 0xc3, 0x92, 0x1c, 0xd1, 0xe1, 0xc4
+    };
+
+
+    u8 presplit_ck[] = {
+        0xde, 0x4e, 0x13, 0xf8, 0xdb, 0x2d, 0xc4, 0x8a,
+        0xad, 0xaa, 0xc9, 0x53, 0xcc, 0xe0, 0x5d, 0x4d,
+        0x52, 0x56, 0x61, 0xbc, 0x22, 0xff, 0xb7, 0x9c,
+        0x45, 0xa9, 0xf,  0x76, 0x85, 0x46, 0x20, 0x6e
+    };
+
+    u8 presplit_h[] = {
+        0x1f, 0x70, 0xad, 0x45, 0x4b, 0x15, 0xf3, 0x69,
+        0xaa, 0xd1, 0x44, 0x5d, 0xea, 0x7a, 0x62, 0xaa,
+        0x17, 0xd1, 0xf0, 0x5b, 0x2a, 0xf8, 0x1b, 0x53,
+        0x5,  0xa,  0xe,  0x4,  0xe1, 0x2f, 0x1b, 0xf,
+    };
+
+
+    u8 postsplit_cipher1[] = {
+        0x61, 0xf9, 0xdb, 0xaa, 0x36, 0x56, 0xc5, 0x9d,
+        0xc3, 0xcb, 0xea, 0x67, 0xc9, 0x1a, 0xec, 0x53,
+        0xf4, 0x2b, 0x8c, 0x85, 0xc5, 0xd8, 0x74, 0x8d,
+        0x71, 0x93, 0x8b, 0xa8, 0x29, 0x63, 0x79, 0xef,
+    };
+
+    u8 postsplit_cipher2[] = {
+        0xb1, 0x73, 0xbb, 0xc7, 0x61, 0xf9, 0xdf, 0x98,
+        0xe6, 0x51, 0x8,  0x1b, 0x29, 0xde, 0x3c, 0x17,
+        0xd0, 0xaa, 0xaa, 0xbd, 0xd9, 0xf9, 0x91, 0x58,
+        0x8d, 0xe2, 0x55, 0xfe, 0x2a, 0x68, 0xaa, 0xa5,
+    };
+
+    err::Err+1000 mut e = {0};
+    e.new();
+
+    noise::Initiator mut init = noise::Initiator {
+        ephermal       : init_ephermal,
+        remote_static  : remote_static,
+    };
+
+    u8 mut pkt1[1024] = {0};
+    usize pkt1len = noise::initiate(
+        &init, &e,
+        pkt1,
+        static(len(pkt1)),
+        (u8*)prologue,
+        string::strlen(prologue),
+        msg1_payload,
+        static(len(msg1_payload)));
+
+
+    err::abort(&e);
+
+    if pkt1len != static(len(msg1_ciphertext)) {
+        printf("pkt1 len size %zu <> %zu\n", pkt1len, sizeof(msg1_ciphertext));
+        return 8;
+    }
+    if memcmp(pkt1, msg1_ciphertext, sizeof(msg1_ciphertext)) != 0 {
+        hex::dump(pkt1, pkt1len);
+        hex::dump(msg1_ciphertext, static(len(msg1_ciphertext)));
+        return 8;
+    }
+
+
+    u8 mut pkt2r[1024] = {0};
+    noise::complete(&init, &e, pkt2r, static(len(pkt2r)), msg2_ciphertext, static(len(msg2_ciphertext)));
+    err::abort(&e);
+
+    assert(memcmp((init.symm).ck, presplit_ck, 32) == 0);
+    assert(memcmp((init.symm).h,  presplit_h, 32) == 0);
+
+    cipher::CipherState mut init_cipher_init = {0};
+    cipher::CipherState mut init_cipher_resp = {0};
+    symmetric::split(&init.symm, &init_cipher_init, &init_cipher_resp);
+
+
+    if memcmp(init_cipher_init.key, postsplit_cipher1, sizeof(postsplit_cipher1)) != 0 {
+        hex::dump(init_cipher_init.key, static(len((init_cipher_init.key))));
+        hex::dump(postsplit_cipher1, static(len(postsplit_cipher1)));
+        return 9;
+    }
+
+    if memcmp(init_cipher_resp.key, postsplit_cipher2, sizeof(postsplit_cipher2)) != 0 {
+        hex::dump(init_cipher_resp.key, static(len(init_cipher_resp.key)));
+        hex::dump(postsplit_cipher2, static(len(postsplit_cipher2)));
+        return 9;
+    }
+
+    return 0;
+}
+

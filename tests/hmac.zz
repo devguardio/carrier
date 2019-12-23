@@ -1,0 +1,77 @@
+using carrier::sha256;
+using <string.h>::{memcmp, strlen};
+using hex;
+using <assert.h>::{assert};
+using <stdio.h>::{printf};
+using string;
+
+// NIST
+static char * mut vectors[] = {
+    "09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a",
+    "0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef",
+    "6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca",
+
+    "2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b",
+    "14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204",
+    "468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0",
+
+    "3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97",
+    "f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2",
+    "dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1",
+
+    "9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04",
+    "4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371",
+    "cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2",
+
+    "9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9",
+    "3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c",
+    "29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e",
+
+
+    "c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5",
+    "97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720",
+    "50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c",
+
+    0,
+};
+
+pub fn main() -> int {
+    for (usize mut i = 0; ; i += 3) {
+        static_attest(i < len(vectors));
+        if vectors[i] == 0 {
+            break;
+        }
+        static_attest(len(vectors) > i + 2);
+
+
+        char *keystr = vectors[i];
+        static_attest(safe(keystr));
+        static_attest(nullterm(keystr));
+
+        u8 mut key[1024] = {0};
+        usize keylen = hex::str2bin(keystr, string::strlen(keystr), key, static(len(key)));
+        static_attest(sha256::BLOCKLEN > keylen);
+
+        char *msgstr = vectors[i+1];
+        static_attest(safe(msgstr));
+        static_attest(nullterm(msgstr));
+        u8 mut msg[1024] = {0};
+        usize msglen = hex::str2bin(msgstr, string::strlen(msgstr), msg, static(len(msg)));
+
+        char *macstr = vectors[i+2];
+        static_attest(safe(macstr));
+        static_attest(nullterm(macstr));
+        u8 mut mac[1024] = {0};
+        usize maclen = hex::str2bin(macstr, string::strlen(macstr), mac, static(len(mac)));
+        printf("%zu\n", maclen);
+        assert(maclen == 32);
+
+        u8 mut temp[32] = {0};
+        sha256::hmac(key, keylen, msg, msglen, temp);
+
+        if memcmp(mac, temp, 32) != 0 {
+            return 1;
+        }
+    }
+    return 0;
+}

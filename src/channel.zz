@@ -9,6 +9,7 @@ using std;
 using crc8;
 using <assert.h>::{assert};
 using string;
+using peering;
 
 export struct Channel {
     u64     route;
@@ -17,6 +18,7 @@ export struct Channel {
     cipher::CipherState mut c_mine;
     cipher::CipherState mut c_them;
     pq::Q   mut q;
+    peering::Peering  mut peering;
 
     u64     mut outgoing_acks[32];
     u8      mut outgoing_acks_at;
@@ -25,8 +27,8 @@ export struct Channel {
 
 pub fn from_symmetric(symmetric::SymmetricState * symm, u64 route, bool responder) -> Channel {
     Channel mut c = Channel{
-        route      : route,
-        responder  : responder,
+        route:      route,
+        responder:  responder,
     };
 
     if responder {
@@ -41,12 +43,12 @@ pub fn from_symmetric(symmetric::SymmetricState * symm, u64 route, bool responde
     return c;
 }
 
-pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -> usize
+pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -> bool
     where err::checked(*e)
     where st >= 4 + 8 + 8 + 320
 {
     if self->outgoing_acks_at == 0 {
-        return 0;
+        return false;
     }
 
     u64 counter_be = byteorder::to_be64(self->counter_out+ 1 /* rust version has an off by one*/);
@@ -154,12 +156,13 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -
     );
 
     if err::check(e) {
-        return 0;
+        return false;
     }
 
     self->counter_out += 1;
 
-    return unencrypted_size + cipherlen;
+    buf->len = unencrypted_size + cipherlen;
+    return true;
 }
 
 pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* body, usize l, u64 counter)
@@ -174,7 +177,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* body, usize l, u64 co
         &(self->c_them),
         e,
         body,
-        l - 16,
+        l,
         realcounter,
         body,
         l
@@ -197,13 +200,41 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* body, usize l, u64 co
         static_attest(i < len(frames));
         static_attest(i < len(body));
         switch frames[i] {
-            0 => {}
-            2 => {
-                printf("PING!\n");
+            0x00 => {}
+            0x01 => {
+                printf("received ack frame\n");
+                //TODO
+            }
+            0x02 => {
+                printf("received ping frame\n");
                 ack(self, e, counter);
                 if err::check(e) {
                     return;
                 }
+            }
+            0x03 => {
+                printf("received disconnect frame\n");
+                //TODO
+            }
+            0x04 => {
+                printf("received open frame\n");
+                //TODO
+            }
+            0x05 => {
+                printf("received stream frame\n");
+                //TODO
+            }
+            0x06 => {
+                printf("received close frame\n");
+                //TODO
+            }
+            0x07 => {
+                printf("received configure frame\n");
+                //TODO
+            }
+            0x08 => {
+                printf("received fragment\n");
+                //TODO
             }
             default => {
                 err::fail(e, 194, "invalid frame %u", body[i]);

@@ -28,6 +28,7 @@ byteorder = "1"
 hpack   = "1"
 net     = "1"
 string  = "1"
+json    = "1"
 
 [variants]
 default = []

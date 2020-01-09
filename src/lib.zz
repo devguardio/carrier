@@ -9,7 +9,7 @@ using hpack::decoder;
 
 
 //TODO
-const u32 REVISION = 0x1111;
+pub const u32 REVISION = 0x1111;
 
 export fn hellozz() -> int {
     printf("hello carrier\n");

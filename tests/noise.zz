@@ -96,7 +96,7 @@ struct Message {
 
 struct Testcase {
     string::String+500 mut init_prologue;
-    u8 init_ephermal[32];
+    u8 init_ephemeral[32];
     u8 init_remote_static[32];
     string::String+500 mut resp_prologue;
     u8 resp_static[32];
@@ -169,7 +169,7 @@ fn deser_tc(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *
             err::fail(e, 2, "expected string");
             return;
         }
-        hex::str2bin(v.string, string::strlen(v.string), tc->init_ephermal, static(len(tc->init_ephermal)));
+        hex::str2bin(v.string, string::strlen(v.string), tc->init_ephemeral, static(len(tc->init_ephemeral)));
     } else if string::cstr_eq(k, "init_remote_static") {
         if(v.t != json::ValueType::String) {
             err::fail(e, 2, "expected string");
@@ -250,7 +250,7 @@ pub fn main() -> int {
 
 
     noise::Initiator mut init = {0};
-    memcpy(init.ephemeral.k, tc.init_ephermal, 32);
+    memcpy(init.ephemeral.k, tc.init_ephemeral, 32);
     memcpy(init.remote_static.k, tc.init_remote_static, 32);
 
     static_attest(tc.init_prologue.len < len(tc.init_prologue.mem));
@@ -321,7 +321,7 @@ pub fn main() -> int {
     }
     err::new(&e);
 
-    // bad ephermal
+    // bad ephemeral
     {
         u8 mut pkt_bad[1024] = {0};
         memcpy(pkt_bad, pkt1, pkt1len);
@@ -489,7 +489,7 @@ pub fn main() -> int {
 
 
 pub fn t2() ->int {
-    identity::Secret mut init_ephermal  = {
+    identity::Secret mut init_ephemeral  = {
         0x36, 0xd2, 0x7b, 0x46, 0xc7, 0xce, 0x7d, 0x39, 0xce, 0x1f, 0xbd, 0x3a, 0xd7, 0x3, 0xac, 0x8e, 0xf1, 0x47, 0xe6, 0x40, 0xe2, 0x43, 0x7, 0x72, 0xb6, 0x6b, 0x58, 0xfe, 0x24, 0xf0, 0xe, 0x3c
     };
 
@@ -553,7 +553,7 @@ pub fn t2() ->int {
     e.new();
 
     noise::Initiator mut init = noise::Initiator {
-        ephermal       : init_ephermal,
+        ephemeral       : init_ephemeral,
         remote_static  : remote_static,
     };
 

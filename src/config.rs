@@ -3,8 +3,7 @@ use dirs;
 use error::Error;
 use identity;
 use mtdparts::parse_mtd;
-use rand::thread_rng;
-use rand::RngCore;
+use rand::{RngCore, thread_rng, OsRng};
 use std::collections::HashMap;
 use std::fs::File;
 use std::fs::OpenOptions;
@@ -554,14 +553,31 @@ pub fn deauthorize(identity: identity::Identity) -> Result<(), Error> {
     Ok(())
 }
 
+#[link(name="carrier")]
+include!("../target/release/rs/::carrier::rand.rs");
 
-const PREASSIGNED_FROM_FILE : &'static str = "/.devguard-pre-assigned-secret";
-fn firstgen_identity(mut b: &mut [u8]) {
-    if let Ok(f) = std::fs::read_to_string(PREASSIGNED_FROM_FILE) {
-        let secret = f.trim().parse::<identity::Secret>().expect("/.devguard-pre-assigned-secret is not a valid secret");
-        b.write_all(secret.as_bytes()).unwrap();
-        std::fs::remove_file(PREASSIGNED_FROM_FILE).ok();
-        return;
+
+pub static mut IDENTITY_GENERATOR: Option<Box<Fn(&mut[u8])>> = None;
+
+
+fn firstgen_identity(b: &mut [u8]) {
+    use error;
+
+    let mut err = error::ZZError::new();
+
+
+    unsafe {
+        if let Some(cb) = &mut IDENTITY_GENERATOR {
+            cb(b);
+        }
     }
-    thread_rng().try_fill_bytes(b).unwrap();
+
+    if b == [0xff; 32] || b == [0x0; 32] {
+        unsafe {
+            carrier_rand_rand(err.as_mut_ptr(), error::ZERR_TAIL, b.as_mut_ptr(), b.len());
+        }
+        err.check().unwrap();
+    }
 }
+
+

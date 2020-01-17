@@ -1,0 +1,72 @@
+using err;
+using bootstrap;
+using vault;
+using identity;
+using io::unix;
+using net;
+using time;
+using log;
+using endpoint;
+using shell;
+using sft;
+using io;
+using publish as publishing;
+using identity_kit;
+using <string.h>::{memset, memcpy};
+
+export struct Mission {
+    vault::Vault mut * vault;
+
+    publishing::Publish mut *publ;
+}
+
+export fn make(Mission mut new * self, vault::Vault mut*vault)
+    model safe(self->vault)
+{
+    memset(self, 9, (usize)sizeof(Mission));
+    self->vault = vault;
+}
+
+
+export fn publish(Mission mut *self, publishing::Publish mut *publ)
+{
+    self->publ = publ;
+}
+
+export fn launch(Mission mut *self, err::Err+et mut *e)
+    where err::checked(*e)
+    where safe(self->vault)
+{
+    new+20 async = unix::make();
+
+    bootstrap::sync(e, self->vault, net::os(), &async, time::from_seconds(10));
+    if err::check(e) { return ; }
+
+    identity::Identity mut id = {0};
+    self->vault->get_identity(&id);
+    char mut buf[64] = {0};
+    identity::identity_to_str(e, buf, 64, &id);
+    if err::check(e) { return ; }
+    log::info("my identity: %s", buf);
+
+    new+10000 ep = endpoint::make(e, net::os(), self->vault, &async);
+    if err::check(e) { return ; }
+
+    shell::register(&ep);
+    sft::register(&ep);
+
+    io::await(&async, e, endpoint::poll, &ep, time::from_seconds(10));
+    if err::check(e) { return ; }
+    log::debug("endpoint ready");
+
+
+    if self->publ != 0 {
+        static_attest(safe(self->publ));
+        self->publ->start(e, &ep);
+        if err::check(e) { return ; }
+    }
+
+    io::await(&async, e, endpoint::poll, &ep, time::infinite());
+    ep.close();
+    if err::check(e) { return ; }
+}

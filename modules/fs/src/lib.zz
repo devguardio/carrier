@@ -1,0 +1,19 @@
+using string;
+using err;
+
+inline using "native.h"::{
+    os_get_homedir,
+}
+
+export fn get_homedir(err::Err+et mut *e, string::String+st mut *to)
+    where err::checked(*e)
+{
+    static_attest(to->len < st);
+
+    let rr = (usize)os_get_homedir(to->mem + to->len, st - to->len);
+    if rr == 0 {
+        err::fail_with_errno(e, "homedir");
+    }
+
+    to->len += rr;
+}

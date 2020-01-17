@@ -34,8 +34,7 @@ test {
 }
 
 pub fn main() -> int {
-    err::Err+1000 mut e = {0};
-    err::new(&e);
+    new+1000 e = err::make();
 
 
 

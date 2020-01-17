@@ -16,22 +16,32 @@ cobjects = [
     "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Policies.c",
 ]
 pkgconfig = []
-cflags = [ "-D", "KRML_NOUINT128" ]
+cflags = [ "-D", "KRML_NOUINT128", "-Os"]
 lflags = []
 asan = false
 
 [dependencies]
-err     = "1"
-hex     = "1"
-std     = "1"
-byteorder = "1"
-hpack   = "1"
-net     = "1"
-string  = "1"
-json    = "1"
+err         = "1"
+hex         = "1"
+std         = "1"
+byteorder   = "1"
+hpack       = "1"
+net         = "1"
+string      = "1"
+json        = "1"
+log         = "1"
+protonerf   = "1"
+pool        = "1"
+toml        = "1"
+fs          = "1"
 
 [variants]
 default = []
+
+[[artifacts]]
+name = "carrier"
+type = "lib"
+main = "carrier"
 
 [[artifacts]]
 name = "carrier"
@@ -39,6 +49,11 @@ type = "staticlib"
 main = "carrier"
 
 [[artifacts]]
-name = "zz"
+name = "carrier"
 type = "exe"
 main = "carrier::main"
+
+[[artifacts]]
+name = "carrier"
+type = "npm"
+main = "carrier::mission"

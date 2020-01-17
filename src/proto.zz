@@ -1,0 +1,1355 @@
+using protonerf;
+export enum PathField {
+  Ipaddr = 1,
+  Category = 2,
+}
+
+export fn Path (usize index) -> protonerf::FieldType {
+    switch index {
+        PathField::Ipaddr => {
+            return protonerf::FieldType::Message;
+        }
+        PathField::Category => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum SubscribeRequestField {
+  Shadow = 1,
+  GroupIdentity = 3,
+  GroupSignature = 4,
+}
+
+export fn SubscribeRequest (usize index) -> protonerf::FieldType {
+    switch index {
+        SubscribeRequestField::Shadow => {
+            return protonerf::FieldType::Message;
+        }
+        SubscribeRequestField::GroupIdentity => {
+            return protonerf::FieldType::Message;
+        }
+        SubscribeRequestField::GroupSignature => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum PublishField {
+  Identity = 1,
+  Xaddr = 2,
+}
+
+export fn Publish (usize index) -> protonerf::FieldType {
+    switch index {
+        PublishField::Identity => {
+            return protonerf::FieldType::Message;
+        }
+        PublishField::Xaddr => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum UnpublishField {
+  Identity = 1,
+}
+
+export fn Unpublish (usize index) -> protonerf::FieldType {
+    switch index {
+        UnpublishField::Identity => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export fn Supersede (usize index) -> protonerf::FieldType {
+    switch index {
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum SubscribeChangeField {
+  Publish = 1,
+  Unpublish = 2,
+  Supersede = 3,
+}
+
+export fn SubscribeChange (usize index) -> protonerf::FieldType {
+    switch index {
+        SubscribeChangeField::Publish => {
+            return protonerf::FieldType::Message;
+        }
+        SubscribeChangeField::Unpublish => {
+            return protonerf::FieldType::Message;
+        }
+        SubscribeChangeField::Supersede => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum PublishRequestField {
+  Xaddr = 1,
+  Shadow = 2,
+}
+
+export fn PublishRequest (usize index) -> protonerf::FieldType {
+    switch index {
+        PublishRequestField::Xaddr => {
+            return protonerf::FieldType::Message;
+        }
+        PublishRequestField::Shadow => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum PublishChangeField {
+  Supersede = 1,
+}
+
+export fn PublishChange (usize index) -> protonerf::FieldType {
+    switch index {
+        PublishChangeField::Supersede => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ConnectRequestField {
+  Target = 1,
+  Timestamp = 2,
+  Handshake = 3,
+  Paths = 4,
+  Principal = 5,
+  Timeout = 6,
+}
+
+export fn ConnectRequest (usize index) -> protonerf::FieldType {
+    switch index {
+        ConnectRequestField::Target => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectRequestField::Timestamp => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectRequestField::Handshake => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectRequestField::Paths => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectRequestField::Principal => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectRequestField::Timeout => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ConnectResponseField {
+  Ok = 1,
+  Handshake = 2,
+  Route = 3,
+  Paths = 4,
+  Error = 5,
+}
+
+export fn ConnectResponse (usize index) -> protonerf::FieldType {
+    switch index {
+        ConnectResponseField::Ok => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectResponseField::Handshake => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectResponseField::Route => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectResponseField::Paths => {
+            return protonerf::FieldType::Message;
+        }
+        ConnectResponseField::Error => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ClusterShardField {
+  This = 1,
+  Other = 2,
+}
+
+export fn ClusterShard (usize index) -> protonerf::FieldType {
+    switch index {
+        ClusterShardField::This => {
+            return protonerf::FieldType::Message;
+        }
+        ClusterShardField::Other => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ExceptionalRouteField {
+  Identity = 1,
+  This = 2,
+  Other = 3,
+  Blocked = 4,
+}
+
+export fn ExceptionalRoute (usize index) -> protonerf::FieldType {
+    switch index {
+        ExceptionalRouteField::Identity => {
+            return protonerf::FieldType::Message;
+        }
+        ExceptionalRouteField::This => {
+            return protonerf::FieldType::Message;
+        }
+        ExceptionalRouteField::Other => {
+            return protonerf::FieldType::Message;
+        }
+        ExceptionalRouteField::Blocked => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ClusterConfigField {
+  Shards = 1,
+  ExceptionalRoutes = 2,
+  Epoch = 3,
+  DefaultShadowPublisherLimit = 4,
+  DefaultShadowTrafficLimit32 = 5,
+}
+
+export fn ClusterConfig (usize index) -> protonerf::FieldType {
+    switch index {
+        ClusterConfigField::Shards => {
+            return protonerf::FieldType::Message;
+        }
+        ClusterConfigField::ExceptionalRoutes => {
+            return protonerf::FieldType::Message;
+        }
+        ClusterConfigField::Epoch => {
+            return protonerf::FieldType::Message;
+        }
+        ClusterConfigField::DefaultShadowPublisherLimit => {
+            return protonerf::FieldType::Message;
+        }
+        ClusterConfigField::DefaultShadowTrafficLimit32 => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ClusterStateField {
+  Config = 1,
+}
+
+export fn ClusterState (usize index) -> protonerf::FieldType {
+    switch index {
+        ClusterStateField::Config => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum TraceRequestField {
+  Target = 1,
+}
+
+export fn TraceRequest (usize index) -> protonerf::FieldType {
+    switch index {
+        TraceRequestField::Target => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum TraceShadowField {
+  Xaddress = 1,
+  PublisherCount = 2,
+  PublisherSoftLimit = 3,
+  PublisherHardLimit = 4,
+  TrafficEpoch64 = 5,
+  TrafficLimit64 = 6,
+}
+
+export fn TraceShadow (usize index) -> protonerf::FieldType {
+    switch index {
+        TraceShadowField::Xaddress => {
+            return protonerf::FieldType::Message;
+        }
+        TraceShadowField::PublisherCount => {
+            return protonerf::FieldType::Message;
+        }
+        TraceShadowField::PublisherSoftLimit => {
+            return protonerf::FieldType::Message;
+        }
+        TraceShadowField::PublisherHardLimit => {
+            return protonerf::FieldType::Message;
+        }
+        TraceShadowField::TrafficEpoch64 => {
+            return protonerf::FieldType::Message;
+        }
+        TraceShadowField::TrafficLimit64 => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum TraceResponseField {
+  Publishing = 1,
+  Epoch = 2,
+  RxBytes32 = 3,
+  TxBytes32 = 4,
+  LastSeen = 5,
+  FirstSeen = 6,
+  Allocation = 7,
+  Brokerip = 8,
+  PktsSent = 9,
+  PktsLost = 10,
+  Rtt = 11,
+}
+
+export fn TraceResponse (usize index) -> protonerf::FieldType {
+    switch index {
+        TraceResponseField::Publishing => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::Epoch => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::RxBytes32 => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::TxBytes32 => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::LastSeen => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::FirstSeen => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::Allocation => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::Brokerip => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::PktsSent => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::PktsLost => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponseField::Rtt => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum PeerConnectRequestField {
+  Identity = 1,
+  Timestamp = 2,
+  Handshake = 3,
+  Route = 4,
+  Paths = 5,
+}
+
+export fn PeerConnectRequest (usize index) -> protonerf::FieldType {
+    switch index {
+        PeerConnectRequestField::Identity => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectRequestField::Timestamp => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectRequestField::Handshake => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectRequestField::Route => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectRequestField::Paths => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum PeerConnectResponseField {
+  Ok = 1,
+  Handshake = 2,
+  Paths = 3,
+  Error = 4,
+}
+
+export fn PeerConnectResponse (usize index) -> protonerf::FieldType {
+    switch index {
+        PeerConnectResponseField::Ok => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectResponseField::Handshake => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectResponseField::Paths => {
+            return protonerf::FieldType::Message;
+        }
+        PeerConnectResponseField::Error => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ProtoHeaderField {
+  Len = 1,
+}
+
+export fn ProtoHeader (usize index) -> protonerf::FieldType {
+    switch index {
+        ProtoHeaderField::Len => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export fn Empty (usize index) -> protonerf::FieldType {
+    switch index {
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ConfirmationField {
+  Ok = 1,
+  Error = 2,
+}
+
+export fn Confirmation (usize index) -> protonerf::FieldType {
+    switch index {
+        ConfirmationField::Ok => {
+            return protonerf::FieldType::Message;
+        }
+        ConfirmationField::Error => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum MoveInstructionField {
+  Ipaddr = 1,
+  Xaddr = 2,
+}
+
+export fn MoveInstruction (usize index) -> protonerf::FieldType {
+    switch index {
+        MoveInstructionField::Ipaddr => {
+            return protonerf::FieldType::Message;
+        }
+        MoveInstructionField::Xaddr => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum InnerTraceRequestField {
+  Invalid = 1,
+  Ping = 2,
+}
+
+export fn InnerTraceRequest (usize index) -> protonerf::FieldType {
+    switch index {
+        InnerTraceRequestField::Invalid => {
+            return protonerf::FieldType::Message;
+        }
+        InnerTraceRequestField::Ping => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum InnerTraceResponseField {
+  Invalid = 1,
+  Pong = 2,
+}
+
+export fn InnerTraceResponse (usize index) -> protonerf::FieldType {
+    switch index {
+        InnerTraceResponseField::Invalid => {
+            return protonerf::FieldType::Message;
+        }
+        InnerTraceResponseField::Pong => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ClaimOneField {
+  Target = 1,
+  Resources = 2,
+}
+
+export fn ClaimOne (usize index) -> protonerf::FieldType {
+    switch index {
+        ClaimOneField::Target => {
+            return protonerf::FieldType::Message;
+        }
+        ClaimOneField::Resources => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ClaimAllField {
+  Shadow = 1,
+  Resources = 2,
+}
+
+export fn ClaimAll (usize index) -> protonerf::FieldType {
+    switch index {
+        ClaimAllField::Shadow => {
+            return protonerf::FieldType::Message;
+        }
+        ClaimAllField::Resources => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum RevokerField {
+  Identity = 1,
+}
+
+export fn Revoker (usize index) -> protonerf::FieldType {
+    switch index {
+        RevokerField::Identity => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum DiscoveryResponseField {
+  CarrierRevision = 1,
+  CarrierBuildId = 2,
+  Application = 3,
+  ApplicationVersion = 4,
+  Paths = 5,
+}
+
+export fn DiscoveryResponse (usize index) -> protonerf::FieldType {
+    switch index {
+        DiscoveryResponseField::CarrierRevision => {
+            return protonerf::FieldType::Message;
+        }
+        DiscoveryResponseField::CarrierBuildId => {
+            return protonerf::FieldType::Message;
+        }
+        DiscoveryResponseField::Application => {
+            return protonerf::FieldType::Message;
+        }
+        DiscoveryResponseField::ApplicationVersion => {
+            return protonerf::FieldType::Message;
+        }
+        DiscoveryResponseField::Paths => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum UnameField {
+  Sysname = 1,
+  Nodename = 2,
+  Release = 3,
+  Version = 4,
+  Machine = 5,
+}
+
+export fn Uname (usize index) -> protonerf::FieldType {
+    switch index {
+        UnameField::Sysname => {
+            return protonerf::FieldType::Message;
+        }
+        UnameField::Nodename => {
+            return protonerf::FieldType::Message;
+        }
+        UnameField::Release => {
+            return protonerf::FieldType::Message;
+        }
+        UnameField::Version => {
+            return protonerf::FieldType::Message;
+        }
+        UnameField::Machine => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum LoadField {
+  Avg1 = 1,
+  Avg5 = 2,
+  Avg15 = 3,
+  Clock = 4,
+  Uptime = 5,
+  Idletime = 6,
+  ProcActive = 7,
+  ProcTotal = 8,
+  Cores = 9,
+  Threads = 10,
+}
+
+export fn Load (usize index) -> protonerf::FieldType {
+    switch index {
+        LoadField::Avg1 => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Avg5 => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Avg15 => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Clock => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Uptime => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Idletime => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::ProcActive => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::ProcTotal => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Cores => {
+            return protonerf::FieldType::Message;
+        }
+        LoadField::Threads => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum MemField {
+  Total = 1,
+  Free = 2,
+  Available = 3,
+}
+
+export fn Mem (usize index) -> protonerf::FieldType {
+    switch index {
+        MemField::Total => {
+            return protonerf::FieldType::Message;
+        }
+        MemField::Free => {
+            return protonerf::FieldType::Message;
+        }
+        MemField::Available => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum FileSystemField {
+  Path = 1,
+  Blocksize = 2,
+  Total = 3,
+  Free = 4,
+}
+
+export fn FileSystem (usize index) -> protonerf::FieldType {
+    switch index {
+        FileSystemField::Path => {
+            return protonerf::FieldType::Message;
+        }
+        FileSystemField::Blocksize => {
+            return protonerf::FieldType::Message;
+        }
+        FileSystemField::Total => {
+            return protonerf::FieldType::Message;
+        }
+        FileSystemField::Free => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum FirmwareField {
+  Board = 1,
+  Distro = 2,
+  Release = 3,
+  Revision = 4,
+  Builder = 5,
+  Finger = 6,
+  AndroidApiLevel = 7,
+}
+
+export fn Firmware (usize index) -> protonerf::FieldType {
+    switch index {
+        FirmwareField::Board => {
+            return protonerf::FieldType::Message;
+        }
+        FirmwareField::Distro => {
+            return protonerf::FieldType::Message;
+        }
+        FirmwareField::Release => {
+            return protonerf::FieldType::Message;
+        }
+        FirmwareField::Revision => {
+            return protonerf::FieldType::Message;
+        }
+        FirmwareField::Builder => {
+            return protonerf::FieldType::Message;
+        }
+        FirmwareField::Finger => {
+            return protonerf::FieldType::Message;
+        }
+        FirmwareField::AndroidApiLevel => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum NetAddressField {
+  Addr = 1,
+  Mask = 2,
+  Broadcast = 3,
+}
+
+export fn NetAddress (usize index) -> protonerf::FieldType {
+    switch index {
+        NetAddressField::Addr => {
+            return protonerf::FieldType::Message;
+        }
+        NetAddressField::Mask => {
+            return protonerf::FieldType::Message;
+        }
+        NetAddressField::Broadcast => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum NetdevField {
+  Name = 1,
+  RxPkt = 2,
+  RxErr = 3,
+  TxPkt = 4,
+  TxErr = 5,
+  Up = 6,
+  Macaddr = 7,
+  Mtu = 8,
+  Addrs = 9,
+  Link = 10,
+  LinkChanges = 11,
+  LinkSpeed = 12,
+  LinkDuplex = 13,
+}
+
+export fn Netdev (usize index) -> protonerf::FieldType {
+    switch index {
+        NetdevField::Name => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::RxPkt => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::RxErr => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::TxPkt => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::TxErr => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::Up => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::Macaddr => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::Mtu => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::Addrs => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::Link => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::LinkChanges => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::LinkSpeed => {
+            return protonerf::FieldType::Message;
+        }
+        NetdevField::LinkDuplex => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum SwitchPortField {
+  Port = 1,
+  Link = 2,
+  Speed = 3,
+  Network = 4,
+  Device = 5,
+  None = 6,
+}
+
+export fn SwitchPort (usize index) -> protonerf::FieldType {
+    switch index {
+        SwitchPortField::Port => {
+            return protonerf::FieldType::Message;
+        }
+        SwitchPortField::Link => {
+            return protonerf::FieldType::Message;
+        }
+        SwitchPortField::Speed => {
+            return protonerf::FieldType::Message;
+        }
+        SwitchPortField::Network => {
+            return protonerf::FieldType::Message;
+        }
+        SwitchPortField::Device => {
+            return protonerf::FieldType::Message;
+        }
+        SwitchPortField::None => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum SwitchField {
+  Name = 1,
+  Ports = 2,
+}
+
+export fn Switch (usize index) -> protonerf::FieldType {
+    switch index {
+        SwitchField::Name => {
+            return protonerf::FieldType::Message;
+        }
+        SwitchField::Ports => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum DualbootField {
+  ActiveSide = 1,
+}
+
+export fn Dualboot (usize index) -> protonerf::FieldType {
+    switch index {
+        DualbootField::ActiveSide => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum BelltowerField {
+  Current = 1,
+  Previous = 2,
+}
+
+export fn Belltower (usize index) -> protonerf::FieldType {
+    switch index {
+        BelltowerField::Current => {
+            return protonerf::FieldType::Message;
+        }
+        BelltowerField::Previous => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum SysinfoField {
+  Uname = 1,
+  Mem = 2,
+  Load = 3,
+  Firmware = 4,
+  Fs = 5,
+  Net = 6,
+  Switch = 7,
+  BoardId = 8,
+  CarrierBuildId = 9,
+  Belltower = 10,
+  Dualboot = 11,
+}
+
+export fn Sysinfo (usize index) -> protonerf::FieldType {
+    switch index {
+        SysinfoField::Uname => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Mem => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Load => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Firmware => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Fs => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Net => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Switch => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::BoardId => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::CarrierBuildId => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Belltower => {
+            return protonerf::FieldType::Message;
+        }
+        SysinfoField::Dualboot => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum WifiStationField {
+  Address = 1,
+  Inactive = 2,
+  RxBytes = 3,
+  RxPackets = 4,
+  TxBytes = 5,
+  TxPackets = 6,
+  TxRetries = 7,
+  TxFailed = 8,
+  BeaconLoss = 9,
+  BeaconRx = 10,
+  RxDropMisc = 11,
+  Signal = 12,
+  SignalAvg = 13,
+  BeaconSignalAvg = 14,
+  TxBitrate = 15,
+  RxBitrate = 16,
+  RxDuration = 17,
+  Expected = 18,
+  Authorized = 19,
+  Authenticated = 20,
+  Associated = 21,
+  Preamble = 22,
+  Wmm = 23,
+  Mfp = 24,
+  Tdls = 25,
+  Dtim = 26,
+  BeaconInterval = 27,
+  ShortPreamble = 28,
+  ShortSlotTime = 29,
+  ConnectedTime = 30,
+}
+
+export fn WifiStation (usize index) -> protonerf::FieldType {
+    switch index {
+        WifiStationField::Address => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Inactive => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::RxBytes => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::RxPackets => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::TxBytes => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::TxPackets => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::TxRetries => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::TxFailed => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::BeaconLoss => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::BeaconRx => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::RxDropMisc => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Signal => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::SignalAvg => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::BeaconSignalAvg => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::TxBitrate => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::RxBitrate => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::RxDuration => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Expected => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Authorized => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Authenticated => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Associated => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Preamble => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Wmm => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Mfp => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Tdls => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::Dtim => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::BeaconInterval => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::ShortPreamble => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::ShortSlotTime => {
+            return protonerf::FieldType::Message;
+        }
+        WifiStationField::ConnectedTime => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum WifiInterfaceField {
+  Name = 1,
+  Typ = 2,
+  Phy = 3,
+  Ssid = 4,
+  Channel = 5,
+  Txpower = 6,
+  Stations = 7,
+}
+
+export fn WifiInterface (usize index) -> protonerf::FieldType {
+    switch index {
+        WifiInterfaceField::Name => {
+            return protonerf::FieldType::Message;
+        }
+        WifiInterfaceField::Typ => {
+            return protonerf::FieldType::Message;
+        }
+        WifiInterfaceField::Phy => {
+            return protonerf::FieldType::Message;
+        }
+        WifiInterfaceField::Ssid => {
+            return protonerf::FieldType::Message;
+        }
+        WifiInterfaceField::Channel => {
+            return protonerf::FieldType::Message;
+        }
+        WifiInterfaceField::Txpower => {
+            return protonerf::FieldType::Message;
+        }
+        WifiInterfaceField::Stations => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum DhcpLeaseField {
+  Ts = 1,
+  Mac = 2,
+  Ip = 3,
+  Name = 4,
+}
+
+export fn DhcpLease (usize index) -> protonerf::FieldType {
+    switch index {
+        DhcpLeaseField::Ts => {
+            return protonerf::FieldType::Message;
+        }
+        DhcpLeaseField::Mac => {
+            return protonerf::FieldType::Message;
+        }
+        DhcpLeaseField::Ip => {
+            return protonerf::FieldType::Message;
+        }
+        DhcpLeaseField::Name => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum ArpField {
+  Ip = 1,
+  Hw = 2,
+  Mac = 3,
+  Dev = 4,
+  Value = 5,
+  Null = 6,
+}
+
+export fn Arp (usize index) -> protonerf::FieldType {
+    switch index {
+        ArpField::Ip => {
+            return protonerf::FieldType::Message;
+        }
+        ArpField::Hw => {
+            return protonerf::FieldType::Message;
+        }
+        ArpField::Mac => {
+            return protonerf::FieldType::Message;
+        }
+        ArpField::Dev => {
+            return protonerf::FieldType::Message;
+        }
+        ArpField::Value => {
+            return protonerf::FieldType::Message;
+        }
+        ArpField::Null => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum NetRouteField {
+  Destination = 1,
+  Gateway = 2,
+  Source = 3,
+}
+
+export fn NetRoute (usize index) -> protonerf::FieldType {
+    switch index {
+        NetRouteField::Destination => {
+            return protonerf::FieldType::Message;
+        }
+        NetRouteField::Gateway => {
+            return protonerf::FieldType::Message;
+        }
+        NetRouteField::Source => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum NetSurveyField {
+  Wifi = 1,
+  Dhcp = 2,
+  Arp = 3,
+  Routes = 4,
+}
+
+export fn NetSurvey (usize index) -> protonerf::FieldType {
+    switch index {
+        NetSurveyField::Wifi => {
+            return protonerf::FieldType::Message;
+        }
+        NetSurveyField::Dhcp => {
+            return protonerf::FieldType::Message;
+        }
+        NetSurveyField::Arp => {
+            return protonerf::FieldType::Message;
+        }
+        NetSurveyField::Routes => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum LocationAccuracityField {
+  Hdop = 1,
+  Vdop = 2,
+  Pdop = 3,
+}
+
+export fn LocationAccuracity (usize index) -> protonerf::FieldType {
+    switch index {
+        LocationAccuracityField::Hdop => {
+            return protonerf::FieldType::Message;
+        }
+        LocationAccuracityField::Vdop => {
+            return protonerf::FieldType::Message;
+        }
+        LocationAccuracityField::Pdop => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum GenesisCurrentField {
+  Sha256 = 1,
+  Commit = 2,
+  Data = 3,
+  Stable = 4,
+}
+
+export fn GenesisCurrent (usize index) -> protonerf::FieldType {
+    switch index {
+        GenesisCurrentField::Sha256 => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisCurrentField::Commit => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisCurrentField::Data => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisCurrentField::Stable => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum GenesisUpdateField {
+  Sha256 = 1,
+  PreviousSha256 = 2,
+  Commit = 3,
+  Data = 4,
+}
+
+export fn GenesisUpdate (usize index) -> protonerf::FieldType {
+    switch index {
+        GenesisUpdateField::Sha256 => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisUpdateField::PreviousSha256 => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisUpdateField::Commit => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisUpdateField::Data => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+

@@ -1,10 +1,10 @@
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
 using <assert.h>::{assert};
-using <memory.h>::{memset};
+using <string.h>::{memset};
 using std;
 
-const usize HASHLEN   = 32;
-const usize BLOCKLEN  = 64;
+pub const usize HASHLEN   = 32;
+pub const usize BLOCKLEN  = 64;
 
 export fn hashlen() -> usize {
     return HASHLEN;

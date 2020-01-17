@@ -4,13 +4,16 @@ using carrier::identity::{
     Identity,
     Secret,
     identity_from_str,
+    identity_from_cstr,
     identity_from_secret,
     identity_to_str,
     secret_from_str,
+    secret_from_cstr,
     secret_to_str,
     address_from_secret,
     address_to_str,
     address_from_str,
+    address_from_cstr,
     secret_generate,
 };
 using err;
@@ -22,8 +25,7 @@ using string;
 fn test_identity(err::Err+et mut* e)
     where err::checked(*e)
 {
-    Secret mut sk = {0};
-    secret_generate(e, &sk);
+    new sk = secret_generate(e);
     if err::check(e) { return; }
 
     Identity mut pk = {0};
@@ -35,8 +37,7 @@ fn test_identity(err::Err+et mut* e)
 
     printf("%s\n", buf);
 
-    Identity mut pk2 = {0};
-    identity_from_str(e, &pk2, buf, string::strlen(buf));
+    new pk2 = identity_from_cstr(e, buf);
     if err::check(e) { return; }
 
     assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
@@ -46,8 +47,7 @@ fn test_identity(err::Err+et mut* e)
 
     printf("%s\n", buf);
 
-    Secret mut sk2 = {0};
-    secret_from_str(e, &sk2, buf, string::strlen(buf));
+    new sk2 = secret_from_cstr(e, buf);
     if err::check(e) { return; }
 
     assert(memcmp(sk.k, sk2.k, sizeof(sk.k)) == 0);
@@ -60,8 +60,7 @@ fn test_corrupt_identity(err::Err+et mut* e)
 {
     char *from = "oWVXR9hGa6QgKLGrPaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-    Secret mut sk = {0};
-    secret_from_str(e, &sk, from, static(len(from)));
+    new sk = secret_from_cstr(e, from);
     if !err::check(e) {
         err::fail(e, 1, "must fail");
         return;
@@ -69,8 +68,7 @@ fn test_corrupt_identity(err::Err+et mut* e)
     e->error = 0;
     static_attest(err::checked(*e));
 
-    Identity mut ik = {0};
-    identity_from_str(e, &ik, from, static(len(from)));
+    new ik = identity_from_cstr(e, from);
     if !err::check(e) {
         err::fail(e, 1, "must fail");
         return;
@@ -81,8 +79,7 @@ fn test_corrupt_identity(err::Err+et mut* e)
 fn test_address(err::Err+et mut* e)
     where err::checked(*e)
 {
-    Secret mut sk = {0};
-    secret_generate(e, &sk);
+    new sk = secret_generate(e);
     if err::check(e) { return; }
 
     Address mut pk = {0};
@@ -94,16 +91,14 @@ fn test_address(err::Err+et mut* e)
 
     printf("%s\n", buf);
 
-    Address mut pk2 = {0};
-    address_from_str(e, &pk2, buf, string::strlen(buf));
+    new pk2 = address_from_cstr(e,buf);
     if err::check(e) { return; }
 
     assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
 }
 
 export fn main() -> int {
-    err::Err+1000 mut e = {0};
-    err::new(&e);
+    new+1000 e = err::make();
 
     test_identity(&e);
     err::abort(&e);

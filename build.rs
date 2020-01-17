@@ -67,7 +67,7 @@ pub fn from_git() -> Result<String, Error>
 
 pub fn build_zz() {
     println!("\n\ncargo:rustc-link-lib=static=carrier\n\n");
-    println!("\n\ncargo:rustc-link-search=native={}/target/release/lib/\n\n", std::env::current_dir().unwrap().display());
+    println!("\n\ncargo:rustc-link-search=native={}/target/debug/lib/\n\n", std::env::current_dir().unwrap().display());
 }
 
 pub fn main() {

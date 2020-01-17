@@ -1,0 +1,225 @@
+using stream;
+using identity;
+using err;
+using channel;
+using endpoint;
+using byteorder;
+using hpack;
+using log;
+using slice;
+using protonerf;
+using proto;
+using initiator;
+using <stdlib.h>::{atoi};
+using peering;
+using <string.h>::{memcpy};
+using hex;
+
+export fntype disconnect_t  (channel::Channel mut *chan);
+export fntype connect_t     (channel::Channel mut *chan);
+
+export struct Connect {
+    identity::Identity      target;
+    identity::Identity      principal;
+    initiator::Initiator    initiator;
+    u64                     initiator_time;
+    disconnect_t            on_disconnect;
+    connect_t               on_connect;
+}
+
+static stream::Config ConnectStream = stream::Config {
+    path:   "/carrier.broker.v1/broker/connect",
+    stream: on_stream,
+    close:  on_close,
+};
+
+export fn start(Connect mut *self, err::Err+et mut*e, endpoint::Endpoint mut*ep)
+    where err::checked(*e)
+    where safe(ep->store)
+{
+
+    identity::identity_from_secret(
+        &self->principal,
+        (identity::Secret*)&(ep->store->secret)
+    );
+
+    self->initiator_time = ep->store->time;
+    self->initiator.initiate(
+        e,
+        false,
+        (identity::Secret*)&(ep->store->secret),
+        initiator::Move::Never,
+        0,
+        0,
+        self->initiator_time
+    );
+    if err::check(e) { return; }
+
+
+    stream::Stream mut* streami = ep->broker()->open(e, &ConnectStream);
+    if err::check(e) { return; }
+    static_attest(safe(streami));
+    streami->user2 = self;
+}
+
+fn on_close(stream::Stream mut *self) {
+    //TODO
+    log::error("connect closed");
+
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+    static_attest(safe(self->user2));
+    Connect mut *this = self->user2;
+
+    if this->on_disconnect != 0 {
+        static_attest(safe(this->on_disconnect));
+        this->on_disconnect(self->chan);
+    }
+}
+
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> bool
+    where err::checked(*e)
+{
+    static_attest(safe(self->chan));
+    static_attest(safe(self->user2));
+    Connect mut *this = self->user2;
+
+    if self->state == 0 {
+        int mut rcode = 0;
+        for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+            if it.key.eq_cstr(":status") {
+                rcode = (int)atoi((char*)it.val.mem);
+            }
+        }
+        if err::check(e) {
+            return false;
+        }
+        if rcode != 200 {
+            log::error("connect response");
+            for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+                log::error("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+            }
+            self->close();
+            return true;
+        }
+
+
+        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100 + this->initiator.pkt.len);
+        if err::check(e) {
+            return false;
+        }
+        static_attest(frame->slice.size > 8);
+
+        self->state = 1;
+
+        frame->push32(byteorder::to_be32(1)); // stream
+        frame->push64(byteorder::to_be64(2)); // order
+        frame->push16(0); // size placeholder
+
+        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Principal, this->principal.k, 32);
+        e->abort();
+
+        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Target, this->target.k, 32);
+        e->abort();
+
+        protonerf::encode_varint(frame, e, proto::ConnectRequestField::Timestamp, this->initiator_time);
+        e->abort();
+
+        protonerf::encode_varint(frame, e, proto::ConnectRequestField::Timeout, 1);
+        e->abort();
+
+        static_attest(len(this->initiator.pkt.mem) >= this->initiator.pkt.len);
+        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Handshake, (u8*)this->initiator.pkt.mem, this->initiator.pkt.len);
+        e->abort();
+
+    } else if self->state == 1 {
+
+        peering::Peering mut peerings = {0};
+        memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
+
+        static_attest(safe(bs->mem));
+        let mut dec = protonerf::decode(proto::ConnectResponse, bs->mem, bs->size);
+        bool mut ok = false;
+        slice::slice::Slice mut handshake = {0};
+        u64 mut route = 0;
+        for(;;) {
+            let field = dec.next(e);
+            if err::check(e) {
+                e->eprint();
+                return true;
+            }
+            if !field.valid {
+                break;
+            }
+            switch field.index {
+                proto::ConnectResponseField::Error => {
+                    log::error("error: %.*s", field.value.v_len, field.a);
+                }
+                proto::ConnectResponseField::Ok => {
+                    ok = field.value.v_bool != 0;
+                }
+                proto::ConnectResponseField::Paths => {
+                    peerings.from_proto(e, field);
+                    if err::check(e) {
+                        e->eprint();
+                        return true;
+                    }
+                }
+                proto::ConnectResponseField::Route => {
+                    route = byteorder::to_be64(field.value.v_u64);
+                }
+                proto::ConnectResponseField::Handshake => {
+                    handshake.mem  = field.a;
+                    handshake.size = field.value.v_len;
+                }
+            }
+        }
+
+        if ok {
+            if handshake.mem == 0 || route == 0 {
+                err::fail(e, 13, "missing protobuf field");
+                return true;
+            }
+            static_attest(len(handshake.mem) >= handshake.size);
+
+            // unfortunate misdesign of tunneling an entire init packet
+            // which actually contains no interesting information
+            if handshake.size < 1 + 3 + 8 + 8 + 32 + 16 + 3 + 32 + 8 {
+                err::fail(e, 1, "too small");
+                return true;
+            }
+            memcpy(this->initiator.pkt.mem, handshake.mem, handshake.size);
+            this->initiator.pkt.len = handshake.size;
+
+
+            endpoint::Endpoint mut * ep = self->chan->endpoint;
+            err::assert_safe(ep);
+            let nuchan = ep->statem.connected.next_channel();
+            if nuchan == 0 {
+                return false;
+            }
+            static_attest(safe(nuchan));
+
+            this->initiator.complete(e, nuchan, 0);
+            if err::check(e) {
+                return true;
+            }
+
+            nuchan->q.allocator = self->chan->q.allocator;
+            nuchan->store       = self->chan->store;
+            nuchan->endpoint    = self->chan->endpoint;
+            memcpy(&nuchan->peering, &peerings, sizeof(peering::Peering));
+
+            if this->on_connect != 0 {
+                static_attest(safe(this->on_connect));
+                this->on_connect(nuchan);
+            }
+
+        } else {
+            self->close();
+        }
+    }
+
+    return true;
+}
+

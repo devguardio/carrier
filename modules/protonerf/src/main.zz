@@ -1,0 +1,94 @@
+using <stdio.h>::{printf};
+using err;
+using protonerf;
+using hex;
+using string;
+using slice;
+
+
+
+
+enum SimpleMessageField {
+    lucky_number = 1,
+    blurp        = 2,
+    bob          = 3,
+}
+
+fn SimpleMessage(usize index) -> protonerf::FieldType{
+    switch index {
+        SimpleMessageField::lucky_number => {
+            return protonerf::FieldType::Uint32;
+        }
+        SimpleMessageField::blurp => {
+            return protonerf::FieldType::String;
+        }
+        default => {
+            return protonerf::FieldType::Skip;
+        }
+    }
+}
+
+
+export fn main() -> int {
+    new+1000 e = err::make();
+
+    string::String+1000 mut buf;
+    buf.clear();
+    slice::MutSlice mut sl = buf.append_slice();
+
+
+
+    protonerf::encode_varint(&sl, &e, SimpleMessageField::lucky_number, -9000);
+    e.abort();
+
+    protonerf::encode_bytes(&sl, &e, SimpleMessageField::blurp, (u8*)"Bob", 3);
+    e.abort();
+
+    static_attest(buf.len < len(buf.mem));
+    hex::dump((u8*)buf.mem, buf.len);
+
+
+    u8 msg[] = {
+        /*
+        // blurp = Bob
+        0x12, 0x03, 0x42, 0x6f, 0x62,
+        // -9000
+        0x08, 0xe0, 0x88, 0xc9, 0xff, 0x0f,
+        // [123,32, 332]
+        0x18,0x7b,0x18,0x20,0x18,0xcc,0x02,
+        */
+
+
+
+        // 1: ok = true
+        0x8, 0x1,
+
+        // 2: handshake = 123
+        0x12, 0x3, 0x31, 0x32, 0x33,
+
+        // 3: paths = [..,..]
+        0x1a, 0x7, 0xa, 0x3, 0x61, 0x62, 0x63, 0x10, 0x1,
+        0x1a, 0x7, 0xa, 0x3, 0x61, 0x62, 0x63, 0x10, 0x1,
+
+        // 4: error = "dibs"
+        0x22, 0x4, 0x64, 0x69, 0x62, 0x73
+    };
+
+
+    for (protonerf::Decoder mut dec = protonerf::decode(SimpleMessage, msg, static(len(msg)));;) {
+        protonerf::Field v = dec.next(&e);
+        e.abort();
+        if !v.valid {
+            break;
+        }
+
+        printf("index: %u , val: %d\n", v.index, v.value.v_i64);
+    }
+
+    return 0;
+}
+
+
+
+
+

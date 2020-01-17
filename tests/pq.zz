@@ -1,0 +1,141 @@
+using err;
+using carrier::pq;
+using carrier::channel;
+using <stdio.h>::{fprintf, stderr, EOF};
+using <assert.h>::{assert};
+using pool;
+using <stdio.h>::{getchar};
+
+
+test oom {
+    stdin = {
+        // enqueue 100 frames
+        1,  100,
+    }
+    // the 100th frame queue should not work
+    exit  = 1
+}
+
+test packing {
+    stdin = {
+        // enqueue 5 frames
+        1, 5,
+        // at buffer of 100 bytes, send 1 packet, 15  bytes long
+        2, 100, 1, 15,
+        // expect empty queue
+        3,
+        // after 1 ms
+        4, 1,
+        // the packet 1 was acked
+        5, 1,
+        // expect empty queue
+        3,
+    }
+}
+
+test loss {
+    stdin = {
+        // enqueue 20 frames
+        1, 20,
+        // at buffer of 5 bytes, send 20 packets, each 3 bytes long
+        2, 5, 20, 3,
+        // expect empty queue
+        3,
+        // after 2 ms
+        4, 2,
+        // the packet 1 was acked
+        5, 1,
+        // expect empty queue
+        3,
+        // after 2 ms
+        4, 2,
+        // the packet 20 was acked, which means we have to resend 2-14
+        5, 20,
+        // at buffer of 5 bytes, send 15 packets, each 3 bytes long
+        2, 5, 15, 3,
+        // expect empty queue
+        3,
+        // rtt should be 3, because packet 20 had an rtt of 4  and packet 1 of 2
+        6, 3,
+    }
+}
+
+fn main() -> int
+{
+    err::Err+1000 mut e;
+    e.make();
+
+    u64 mut time  = 1;
+    u64 mut out_counter = 1;
+
+    pool::Pool+1000 mut p = {0};
+    p.make(16);
+    pq::Q+100 mut q = {0};
+    q.allocator = (pool::Pool mut*)&p;
+
+    for(;;) {
+        fprintf(stderr, "time %u\n", time);
+
+        let mode        = (usize)getchar();
+
+        switch mode {
+            1 => {
+                let in_times    = (usize)getchar();
+                if in_times     == (usize)EOF { return 0; }
+
+                for (usize mut i = 0;i < in_times ;i++) {
+                    let frame = q.alloc(&e, channel::FrameType::Open, 10);
+                    if err::check(&e) {
+                        return 1;
+                    }
+                    assert(frame);
+                    frame->push16(123);
+                }
+            }
+            2 => {
+                let outbuf_size = (usize)getchar();
+                if outbuf_size  == (usize)EOF { return 0; }
+                let out_times   = (usize)getchar();
+                if out_times    == (usize)EOF { return 0; }
+                let out_expected_size = (usize)getchar();
+                if out_expected_size == (usize)EOF { return 0; }
+
+                u8 mut outbuf[1000];
+                for (usize mut i = 0;i < out_times ; i++) {
+                    usize sent1 = q.send(time, outbuf, outbuf_size, out_counter++);
+                    if out_expected_size != sent1 {
+                        return 2;
+                    }
+                }
+            }
+            3 => {
+                u8 mut outbuf[1000];
+                usize sent1 = q.send(time, outbuf, static(len(outbuf)), out_counter);
+                if sent1 != 0 {
+                    return 3;
+                }
+            }
+            4 => {
+                let more = (usize)getchar();
+                if more == (usize)EOF { return 0; }
+                time += (u64)more;
+            }
+            5 => {
+                let counter = (usize)getchar();
+                if counter  == (usize)EOF { return 0; }
+                q.ack(time, counter);
+            }
+            6 => {
+                let val = (u64)getchar();
+                if val  == (u64)EOF { return 0; }
+                if q.rtt != val {
+                    fprintf(stderr, "test expected rtt %u, but it is actually %u\n", val, q.rtt);
+                    return 6;
+                }
+            }
+            default => {
+                return 0;
+            }
+        }
+    }
+}

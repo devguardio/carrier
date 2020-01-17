@@ -2,27 +2,25 @@ using <stdio.h>::{printf};
 using err;
 using hpack::encoder;
 using hex;
+using slice;
 
 
 export fn main() -> int {
     u8 mut wire[100];
-    encoder::Encoder mut enc = {0};
-    encoder::new(&enc, wire, static(len(wire)));
+
+    new ms = slice::mut_slice::make(wire, static(len(wire)));
 
     err::Err+1000 mut e;
-    err::new(&e);
-
+    err::make(&e);
 
     char *key = "beep";
     char *val = "boop";
 
-    encoder::encode(&enc, &e, (u8*)key, static(len(key)), (u8*)val, static(len(val)));
+    encoder::encode(&ms, &e, (u8*)key, static(len(key)), (u8*)val, static(len(val)));
     err::abort(&e);
-    usize at = encoder::encode(&enc, &e, (u8*)key, static(len(key)), (u8*)val, static(len(val)));
+    encoder::encode(&ms, &e, (u8*)key, static(len(key)), (u8*)val, static(len(val)));
     err::abort(&e);
-    static_attest(at < len(wire));
-
-    hex::dump(wire,  at);
+    hex::dump_slice(&ms);
 
     err::abort(&e);
     return 0;

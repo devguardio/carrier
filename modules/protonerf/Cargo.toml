@@ -1,0 +1,12 @@
+[package]
+name = "protonerf"
+version = "0.1.0"
+authors = ["Arvid E. Picciani <aep@exys.org>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+pest = "2.1"
+pest_derive = "2.1"
+heck = "0.3.1"

@@ -1,0 +1,15 @@
+[project]
+version = "0.1.0"
+name = "fs"
+cincludes = []
+cobjects = []
+pkgconfig = []
+cflags = []
+lflags = []
+
+[variants]
+default = []
+
+[dependencies]
+string = "1"
+err = "1"

@@ -6,57 +6,95 @@ using hex;
 using byteorder;
 using <assert.h>::{assert};
 using <stdio.h>::{printf};
-using <memory.h>::{strlen, memcpy, memset};
+using <string.h>::{strlen, memcpy, memset};
 using string;
 using cipher;
 using router;
 using symmetric;
-using bootstrap;
+using vault;
 using carrier;
 using crc8;
 using channel;
-
-static char PROLOGUE[] = "carrier has arrived";
-static char SIGN_PURPOSE[] = "carrier handshake hash 1";
+using log;
+using endpoint;
+using clock;
+using bootstrap;
 
 export struct Initiator {
     string::String+1024 mut pkt;
     noise::Initiator mut    noise;
+    u64 tick_time_start;
+    bool secure;
+}
+
+
+export enum Move {
+    Self,
+    Never,
+    Target,
 }
 
 //TODO this is minimal prototype code to get v9 working.
 //     dont forget fuzzing when implementing v10
 pub fn initiate(
-    Initiator mut* self,
-    err::Err+et mut* e,
-    identity::Secret *secret,
-    identity::Address * xaddr,
-    u64 network_time,
+    Initiator mut*      self,
+    err::Err+et mut*    e,
+    bool                secure,
+    identity::Secret*   secret,
+    Move                move,
+    identity::Identity* unsafe cluster_target,
+    identity::Address*  unsafe xaddr,
+    u64                 vector_time,
 )
     where err::checked(*e)
 {
     memset(self, 0, sizeof(Initiator));
+    self->secure = secure;
+
+    identity::nullcheck(e, secret->k);
+    if err::check(e) {
+        return ;
+    }
 
     identity::Identity mut eid = {0};
     identity::identity_from_secret(&eid, secret);
 
-    std::memcpy(((self->noise).remote_static).k, xaddr->k, 32);
+    if secure {
+        err::assert_safe(xaddr);
+        identity::nullcheck(e, xaddr->k);
+        e->abort();
+        std::memcpy(((self->noise).remote_static).k, xaddr->k, 32);
+    }
 
-    identity::secret_generate(e, &(self->noise).ephemeral);
+    identity::secret_generate(&(self->noise).ephemeral, e);
     if err::check(e) {
         return ;
     }
 
 
-    // encrypted header
     u8 mut plaintext[512] = {0};
+
+    // flags
+    switch move {
+        Move::Never => {
+            plaintext[1] = 0b01000000;
+        }
+        Move::Self  => {}
+        Move::Target => {
+            plaintext[1] = 0b00100000;
+        }
+    }
+
     usize mut plaintext_len = 0;
-    plaintext_len  += 2;
+    if secure {
+        // flags + crc
+        plaintext_len  += 2;
+    }
 
     memcpy(plaintext + plaintext_len, eid.k, 32);
     plaintext_len += 32;
 
-    u64 network_time_be = byteorder::to_be64(network_time);
+    u64 network_time_be = byteorder::to_be64(vector_time);
     memcpy(plaintext + plaintext_len, &network_time_be, 8);
     plaintext_len += 8;
 
@@ -64,64 +102,92 @@ pub fn initiate(
     memcpy(plaintext + plaintext_len, &revision_be, 4);
     plaintext_len += 4;
 
-    // move target 32B
-    //std::memcpy(body + at, eid.k, 32);
-    //at += 32;
+    if secure {
+        // move target 32B
+        if move == Move::Target && cluster_target != 0 {
+            static_attest(safe(cluster_target));
+            std::memcpy(plaintext + plaintext_len, cluster_target->k, 32);
+            plaintext_len += 32;
+        }
 
-    // padding expected ciphertext size to nearest 64 byte before authentication tag
-    plaintext_len += 64 - ((plaintext_len - 16)  % 64);
+        // padding expected ciphertext size to nearest 64 byte before authentication tag
+        plaintext_len += 64 - ((plaintext_len - 16)  % 64);
+    } else {
+        // padding expected ciphertext size to nearest 128 byte before authentication tag
+        plaintext_len += 128 - ((plaintext_len)  % 128);
+    }
 
 
-    printf("plaintext len %zu\n", plaintext_len);
+    //printf("plaintext len %zu\n", plaintext_len);
 
     self->pkt.len  = 0;
     // version 1B
-    (self->pkt.mem)[0] = 9;
+    if secure {
+        (self->pkt.mem)[0] = 9;
+    } else {
+        (self->pkt.mem)[0] = 8;
+        (self->pkt.mem)[1] = 0xff;
+        (self->pkt.mem)[2] = 0xff;
+        (self->pkt.mem)[3] = 0xff;
+    }
     // reserved 3B
     // route    8B
     // counter  8B
     self->pkt.len += 4 + 8 + 8;
 
-    // does this even do anything? the initiation header should actually be always the same
-    plaintext[0] = crc8::broken_crc8(0, (u8*)self->pkt.mem, self->pkt.len);
+    if secure {
+        // this is so stupid
+        plaintext[0] = crc8::broken_crc8(0, (u8*)self->pkt.mem, self->pkt.len);
+    }
 
     u8 mut* pp = (u8 mut*)self->pkt.mem + self->pkt.len;
     usize pplen = static(len(self->pkt.mem)) - self->pkt.len;
     static_attest(safe(pp));
     static_attest(len(pp) >= pplen);
 
-    usize prologue_len = (usize)strlen(PROLOGUE);
-    static_attest(prologue_len < len((u8*)PROLOGUE));
+    usize prologue_len = (usize)strlen(endpoint::PROLOGUE);
+    static_attest(prologue_len < len((u8*)endpoint::PROLOGUE));
 
 
-    printf("plaintext:\n");
-    hex::dump(plaintext, plaintext_len);
+    //printf("plaintext:\n");
+    //hex::dump(plaintext, plaintext_len);
 
-    self->pkt.len += noise::initiate(
-        &self->noise, e,
-        pp, pplen,
-        (u8*)PROLOGUE, prologue_len,
-        plaintext, plaintext_len
-    );
+    if secure {
+        self->pkt.len += noise::initiate(
+            &self->noise, e,
+            pp, pplen,
+            (u8*)endpoint::PROLOGUE, prologue_len,
+            plaintext, plaintext_len
+        );
+    } else {
+        self->pkt.len += noise::initiate_insecure(
+            &self->noise, e,
+            pp, pplen,
+            (u8*)endpoint::PROLOGUE, prologue_len,
+            plaintext, plaintext_len
+        );
+    }
 
     if err::check(e) {
         return;
     }
 
-    printf("ciphertext len %zu\n", self->pkt.len - 4 - 8 - 8);
-    assert((self->pkt.len - 4 - 8 - 8) % 64 == 0);
+    //printf("ciphertext len %zu\n", self->pkt.len - 4 - 8 - 8);
+    if secure {
+        assert((self->pkt.len - 4 - 8 - 8) % 64 == 0);
+    }
 
 
-    printf("handshake hash:\n");
-    hex::dump(((self->noise).symm).h, static(len(((self->noise).symm).h)));
+    //printf("handshake hash:\n");
+    //hex::dump(((self->noise).symm).h, static(len(((self->noise).symm).h)));
 
-    printf("identity:\n");
-    hex::dump(eid.k, 32);
+    //printf("identity:\n");
+    //hex::dump(eid.k, 32);
 
     //sign handshake hash
-    u8 mut signme[static(len(SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
-    std::memcpy(signme, SIGN_PURPOSE, string::strlen(SIGN_PURPOSE));
-    u8 mut * mem = signme + string::strlen(SIGN_PURPOSE);
+    u8 mut signme[static(len(endpoint::SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
+    std::memcpy(signme, endpoint::SIGN_PURPOSE, string::strlen(endpoint::SIGN_PURPOSE));
+    u8 mut * mem = signme + string::strlen(endpoint::SIGN_PURPOSE);
 
     std::memcpy(mem, ((self->noise).symm).h, static(len(((self->noise).symm).h)));
 
@@ -130,9 +196,12 @@ pub fn initiate(
     static_attest(safe(sig));
     identity::sign(secret, sig, signme, static(len(signme)));
     self->pkt.len += 64;
-    printf("packet len %zu\n", self->pkt.len);
-    static_attest(len(self->pkt.mem) >= self->pkt.len);
-    hex::dump((u8*)self->pkt.mem, self->pkt.len);
+
+    //printf("packet len %zu\n", self->pkt.len);
+    //static_attest(len(self->pkt.mem) >= self->pkt.len);
+    //hex::dump((u8*)self->pkt.mem, self->pkt.len);
+
+    self->tick_time_start = clock::tick();
 }
 
 
@@ -140,14 +209,14 @@ pub fn complete (
     Initiator       mut* self,
     err::Err+et     mut* e,
 
-    channel::Channel    mut* broker_chan,
-    bootstrap::Broker   mut* redirect,
+    channel::Channel    mut* chan,
+    vault::Broker   mut* unsafe redirect,
 )
     where err::checked(*e)
 {
-    printf("completing with %zu\n", self->pkt.len);
-    static_attest(len(self->pkt.mem) >  self->pkt.len);
-    hex::dump((u8*)self->pkt.mem, self->pkt.len);
+    //printf("completing with %zu\n", self->pkt.len);
+    //static_attest(len(self->pkt.mem) >  self->pkt.len);
+    //hex::dump((u8*)self->pkt.mem, self->pkt.len);
 
     if self->pkt.len < 4 + 8 + 8 + 32 + 16  + 64 {
         err::fail(e, 1, "too small");
@@ -155,9 +224,17 @@ pub fn complete (
     }
 
     // version 1B
-    if (self->pkt.mem)[0] != 9 {
-        err::fail(e, 1, "invalid version");
-        return;
+    let mut version = (self->pkt.mem)[0];
+    if self->secure {
+        if version != 9 {
+            err::fail(e, 1, "invalid version %d", version);
+            return;
+        }
+    } else {
+        if version != 8 {
+            err::fail(e, 1, "invalid version %d", version);
+            return;
+        }
     }
     // reserved 3B
     // route    8B
@@ -167,7 +244,7 @@ pub fn complete (
     u64 route = router::read_routing_key(rkeymem, 0);
     // counter  8B
     u64 counter = byteorder::from_be64(*&(self->pkt.mem)[12]);
-    printf("<> counter %lu\n", counter);
+    //printf("<> counter %lu\n", counter);
     usize mut at = 4 + 8 + 8;
 
 
@@ -191,17 +268,22 @@ pub fn complete (
         return;
     }
 
-    printf("received cleartext:\n");
-    hex::dump(cleartext, cleartext_len);
+    //printf("received cleartext:\n");
+    //hex::dump(cleartext, cleartext_len);
 
     if cleartext_len < 32 + 2 + 8 + 4 {
         err::fail(e, 1, "too small");
         return;
     }
 
-    // flags
-    bool flag_mov       = (cleartext[1] & 0b01000000) != 0;
-    u8 * mut pp = cleartext + 2;
+    bool mut flag_mov = false;
+    u8 * mut pp = cleartext;
+    if self->secure {
+        // flags
+        flag_mov = (cleartext[1] & 0b01000000) != 0;
+        pp  = cleartext + 2;
+    }
+
 
     // remote identity
     identity::Identity mut r_identity = {0};
@@ -220,9 +302,9 @@ pub fn complete (
 
 
     //check handshake signature
-    u8 mut signme[static(len(SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
-    std::memcpy(signme, SIGN_PURPOSE, string::strlen(SIGN_PURPOSE));
-    u8 mut* mem = signme + string::strlen(SIGN_PURPOSE);
+    u8 mut signme[static(len(endpoint::SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
+    std::memcpy(signme, endpoint::SIGN_PURPOSE, string::strlen(endpoint::SIGN_PURPOSE));
+    u8 mut* mem = signme + string::strlen(endpoint::SIGN_PURPOSE);
     std::memcpy(mem, ((self->noise).symm).h, static(len(((self->noise).symm).h)));
     identity::Signature mut * mut sig;
     unsafe {
@@ -244,7 +326,8 @@ pub fn complete (
 
 
     // move instructions
-    if flag_mov {
+    if flag_mov  && redirect != 0 {
+        static_attest(safe(redirect));
         u16 mut instruction_len = 0;
         unsafe {
             instruction_len = byteorder::from_be64(*(u64*)pp);
@@ -255,15 +338,18 @@ pub fn complete (
         string::append_bytes(&movinstr, pp, (usize)instruction_len);
 
         if bootstrap::parse_record(&movinstr, redirect) {
-            printf("cluster move %.*s\n", (int)movinstr.len, movinstr.mem);
+            //log::debug("cluster move %.*s", (int)movinstr.len, movinstr.mem);
             return;
         }
     }
 
-
-    printf("connected to broker %s\n", r_identity_str);
-    *broker_chan = channel::from_symmetric(
+    *chan = channel::from_symmetric(
         &self->noise.symm,
+        version,
         route,
-        false);
+        false
+    );
+
+    chan->q.rtt = (clock::tick() - self->tick_time_start);
+    log::info("channel to %s via route %d rtt %ums", r_identity_str, route, chan->q.rtt);
 }

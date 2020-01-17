@@ -1,7 +1,6 @@
 syntax = "proto3";
 package carrier.broker.v1;
 
-
 message Path {
     enum Category {
         Invalid         = 0;
@@ -14,11 +13,20 @@ message Path {
 }
 
 
+message FilterByRole {
+    fixed32 roles = 1;
+}
+
+message Filter {
+    FilterByRole role = 1;
+}
+
 message SubscribeRequest {
-    bytes   shadow      = 1;
-    // filter = 2;
-    bytes   group_identity  = 3;
-    bytes   group_signature = 4;
+    bytes   shadow              = 1;
+    repeated Filter filter      = 2;
+    bytes   group_key           = 3;
+    bytes   group_shard         = 4;
+    uint32  shard_weight        = 5;
 }
 
 

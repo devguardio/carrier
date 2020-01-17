@@ -1,62 +1,276 @@
 using <stdio.h>::{printf};
-using <string.h>::{memcpy};
 using err;
-using channel;
-using router;
-using bootstrap;
-using io::unix;
-using net;
-using io;
-using time;
-using endpoint;
-using router;
+using carrier;
+using string;
+using publish;
 
 
-export fn main() -> int {
+fn cmd_identity(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+    new vault = carrier::vault::from_carriertoml(&e);
+    e.abort();
 
-    bootstrap::Store mut store = bootstrap::Store {
-        version: 1,
-        secret: {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,128,29,30,31,32},
+    carrier::identity::Identity mut identity = {0};
+    vault.get_identity(&identity);
+
+    char mut buf[64] = {0};
+    carrier::identity::identity_to_str(&e, buf, 64, &identity);
+    e.abort();
+    printf("%s\n", buf);
+    return 0;
+}
+
+
+fn cmd_publish(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+
+    new vault = carrier::vault::from_carriertoml(&e);
+    e.abort();
+
+    new+30 publ = publish::from_carriertoml(&e);
+    e.abort();
+
+    new+2000 mission = carrier::mission::make(&vault);
+    mission.publish(&publ);
+    mission.launch(&e);
+    e.abort();
+
+    return 0;
+}
+
+fn shell_usage() -> int {
+    printf("USAGE:\n    carrier shell [OPTIONS] <target>\n");
+    return 2;
+}
+
+fn cmd_shell(usize mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    char * mut posarg = 0;
+    for (usize mut i = 2; i < argc; i++) {
+        if posarg == 0 {
+            posarg = argv[i];
+        } else {
+            printf("error: unexpected argument %s\n", argv[i]);
+            return shell_usage();
+        }
+    }
+    if posarg == 0 {
+        printf("error: missing required argument <target>\n");
+        return shell_usage();
+    }
+
+    new+5000 e = err::make();
+
+
+    static_attest(nullterm(posarg));
+    static_attest(safe(posarg));
+    new target = carrier::identity::identity_from_cstr (&e, posarg);
+    if err::check(&e) {
+        static_attest(err::checked(e));
+        err::fail(&e, 3, "parsing identity: %s", posarg);
+        e.eprint();
+        return 2;
+    }
+    e.abort();
+
+    new vault = carrier::vault::from_carriertoml(&e);
+    e.abort();
+
+    new+2000 mission = carrier::mission::make(&vault);
+    mission.launch(&e);
+    e.abort();
+    return 0;
+}
+
+
+
+
+
+static char * USAGE = "
+carrier 0.13 [zz]
+devguard carrier is a secure message system for IoT
+
+Usage:
+    carrier <subcommand>
+
+Local Commands:
+    identity            print out identity
+    publish             publish services on carrier
+
+Remote Commands:
+    shell               open a shell
+";
+
+export fn main(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    if argc > 1
+    {
+        char * arg = argv[1];
+        static_attest(nullterm(arg));
+        if string::cstr_eq(arg, "identity") {
+            return cmd_identity(argc, argv);
+        } else if string::cstr_eq(arg, "publish") {
+            return cmd_publish(argc, argv);
+        } else if string::cstr_eq(arg, "shell") {
+            return cmd_shell(argc, argv);
+        }
+    }
+    printf("%s", USAGE);
+    return 1;
+}
+
+/*
+
+inline using "argparse.h"::{
+    (struct argparse_option) as argparse_option,
+    (struct argparse) as argparse,
+    argparse_init,
+    argparse_describe,
+    argparse_parse,
+    OPT_END,
+    OPT_HELP,
+    OPT_GROUP,
+    OPT_BOOLEAN,
+};
+
+export fn main(int mut argc, char *mut* argv) -> int
+    where (usize)argc == len(argv)
+{
+    bool mut explode = false;
+    argparse_option mut options[] = {
+        OPT_HELP(),
+        OPT_BOOLEAN('x', "explode", &explode, "shall we kaboom?"),
+        OPT_GROUP(""),
+        OPT_END(),
     };
 
-    err::Err+1000 mut e;
-    err::new(&e);
+    argparse mut argp = {0};
+    argparse_init(&argp, options, 0, 0);
+    argparse_describe(&argp, USAGE, 0);
+    argc = (int)argparse_parse(&argp, argc, argv);
+
+
+
+
+    new+5000 e = err::make();
+
+    new vault = carrier::vault::from_carriertoml(&e);
+    e.abort();
+
+    new+2000 mission = carrier::mission::make(&vault);
+    mission.launch(&e);
+    e.abort();
+}
+
+*/
+/*
+
+
+export fn main(int argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    if argc < 2 {
+        printf("arg1: target identity");
+        return 3;
+    }
+    char *argv1 = argv[1];
+
+    new+5000 e = err::make();
+
+    let new target = carrier::identity::identity_from_cstr(&e, argv1);
+    e.abort();
+
+    new vault = carrier::vault::from_carriertoml(&e);
+    e.abort();
+
+    new+2000 mission = carrier::mission::make(&vault);
+    mission.connect(target);
+    mission.launch(&e);
+    e.abort();
+
+    
+
+    new ik = identity_kit::carriertoml(&e);
+    e.abort();
+
+    new store = bootstrap::empty();
+
+    store.load_ik(&e, &ik);
+    e.abort();
 
     unix::Async+20 mut async;
     async.new();
 
-    memcpy(store.secret, store.secret, 32);
+    bootstrap::sync(&e, &store, net::os(), &async, time::from_seconds(10));
     e.abort();
 
-    io::Io mut tt = io::timeout(&async, &e, time::from_millis(5000));
+    //store.broker[0].protocol = 9;
+    //char *xa = "oSaoKYLdcdqGAJPkt3scwP2H8FuEy58GjT59LwpigL4y7h9";
+    //identity::address_from_str(&e, (identity::Address mut*)store.broker[0].xaddr, xa, static(len(xa)));
+    //e.abort();
+    //address::Address xi = address::from_cstr("127.0.0.1:8443");
+    //memcpy(store.broker[0].ip4addr, xi.get_ip(), 4);
+
+
+    identity::Identity mut id = {0};
+    identity::identity_from_secret(&id, (identity::Secret*)&store.secret);
+    char mut buf[64] = {0};
+    identity::identity_to_str(&e, buf, 64, &id);
+    e.abort();
+    log::info("my identity: %s", buf);
+
+    endpoint::Endpoint+1000 mut ep = {0};
+    ep.new(&e, net::os(), &store, &async);
     e.abort();
 
-    endpoint::Endpoint mut ep = {0};
-    ep.start(&e, net::os(), &store, &async);
+    endpoint::cluster_target(&ep, &con.target);
+
+    shell::register(&ep);
+    sft::register(&ep);
+
+    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(10));
+    e.abort();
+    log::debug("endpoint ready");
+
+    //publish::start(&ep, &e);
+    //e.abort();
+
+    con.on_disconnect = on_disconnect;
+    con.on_connect    = on_connect;
+    con.start(&e, &ep);
     e.abort();
 
-    for (;;) {
-        if ep.poll(&e, &async) == io::Result::Ready {
-            printf("endpoint ready\n");
-            tt.close();
-        }
-        e.abort();
-
-        if tt.valid() {
-            u8 mut buf[16];
-            usize mut l = 16;
-            if tt.read_bytes(&e, buf, &l) == io::Result::Ready {
-                e.new();
-                err::fail(&e, 3, "timeout");
-                e.abort();
-                return 2;
-            }
-            e.abort();
-        }
-        async.wait(&e);
-        e.abort();
-    }
-
+    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
     ep.close();
+    e.abort();
+
+    log::debug("byeeee");
+
+
+    return 0;
 }
 
+
+fn on_connect(channel::Channel mut*chan)
+{
+    err::Err+200 mut e;
+    e.new();
+    shell::open(&e, chan);
+    e.abort();
+}
+
+fn on_disconnect(channel::Channel mut*chan)
+{
+    log::info("shell done");
+    static_attest(safe(chan->endpoint));
+    chan->endpoint->close();
+}
+
+
+*/

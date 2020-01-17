@@ -225,11 +225,10 @@ pub fn main() -> int {
     }
 
     err::Err+1000 mut e = {0};
-    e.new();
+    e.make();
 
     Testcase mut tc = {0};
-    json::Parser+1000 mut parser = {0};
-    parser.new(&e, (json::deserialize_t)deser_tc, &tc);
+    new+1000 parser = json::parser(&e, (json::deserialize_t)deser_tc, &tc);
     if err::check(&e) {
         e.eprint();
         return (int)e.error;
@@ -247,7 +246,6 @@ pub fn main() -> int {
             return 2;
         }
     }
-
 
     noise::Initiator mut init = {0};
     memcpy(init.ephemeral.k, tc.init_ephermal, 32);
@@ -291,7 +289,8 @@ pub fn main() -> int {
     memcpy(resp.statickey.k,  tc.resp_static, 32);
 
     static_attest(tc.resp_prologue.len < len(tc.resp_prologue.mem));
-    usize pkt1r_size = noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt1, pkt1len);
+    usize pkt1r_size = noise::receive(&resp, &e,
+        pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt1, pkt1len);
     if err::check(&e) {
         e.eprint();
         return (int)e.error;
@@ -319,7 +318,7 @@ pub fn main() -> int {
             return 3;
         }
     }
-    err::new(&e);
+    err::make(&e);
 
     // bad ephermal
     {
@@ -336,9 +335,9 @@ pub fn main() -> int {
         if !err::check(&e) {
             return 3;
         }
-        err::new(&e);
+        err::make(&e);
     }
-    err::new(&e);
+    err::make(&e);
 
     // bad msg
     {
@@ -356,7 +355,7 @@ pub fn main() -> int {
             return 3;
         }
     }
-    err::new(&e);
+    err::make(&e);
 
 
     assert(memcmp((resp.symm).h, (init.symm).h, 32) == 0);
@@ -550,11 +549,11 @@ pub fn t2() ->int {
     };
 
     err::Err+1000 mut e = {0};
-    e.new();
+    e.make();
 
     noise::Initiator mut init = noise::Initiator {
-        ephermal       : init_ephermal,
-        remote_static  : remote_static,
+        ephemeral:      init_ephermal,
+        remote_static:  remote_static,
     };
 
     u8 mut pkt1[1024] = {0};

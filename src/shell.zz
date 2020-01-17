@@ -1,0 +1,301 @@
+using endpoint;
+using stream;
+using err;
+using slice;
+using io;
+using log;
+using hpack;
+using string;
+using time;
+using pool;
+using io::unix;
+using channel;
+
+inline using "posix.h"::{O_RDWR, O_NOCTTY, posix_openpt, grantpt, unlockpt, ptsname, open as stdopen, makerawpty};
+using <unistd.h>::{close, fork, dup2, execv, write};
+using <sys/types.h>::{pid_t};
+using <signal.h>::{kill, SIGTERM};
+using <sys/wait.h>::{waitpid, WNOHANG};
+using <stdlib.h>::{exit, setsid};
+using <sys/ioctl.h>::{ioctl, TIOCSCTTY};
+using <stdio.h>::{printf};
+
+export fn register(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&ShellConfig);
+}
+
+static io::Io mut stdinio = {0};
+static stream::Config OutShellConfig = stream::Config {
+    path:       "/v0/shell",
+    close:      out_shell_close,
+    stream:     out_shell_stream,
+    poll:       out_shell_poll,
+};
+
+export fn open(err::Err+et mut*e, channel::Channel mut*chan)
+    where err::checked(*e)
+{
+    stream::Stream mut* streami = chan->open(e, &OutShellConfig);
+    if err::check(e) { return; }
+    static_attest(safe(streami));
+}
+
+fn out_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+    where err::checked(*e)
+{
+    if !stdinio.valid() {
+        stdinio = unix::stdin();
+        unix::make_read_async(&stdinio, async);
+    }
+
+    async->select(e, &stdinio, io::Ready::Read);
+    if err::check(e) { return; }
+
+    let mut *frame = self->stream(e, 300);
+    if err::check(e) {
+        e->eprint();
+        e->make();
+        return;
+    }
+    err::assert(frame->push(1));
+
+    if stdinio.read_slice(e, frame) != io::Result::Ready {
+        self->cancel();
+    }
+    if err::check(e) { return; }
+
+}
+
+fn out_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+{
+    if msg->size < 2 ||  msg->size > 0xffffff {
+        return true;
+    }
+    write(1, msg->mem+1 , msg->size - 1);
+    return true;
+}
+
+fn out_shell_close(stream::Stream mut *self)
+{
+    log::error("shell closed\n");
+}
+
+
+struct Shell {
+    io::Io  master;
+    pid_t   pid;
+    string::String+100 mut inbuf;
+}
+
+static stream::Config ShellConfig = stream::Config {
+    path:       "/v0/shell",
+    open:       in_shell_open,
+    close:      in_shell_close,
+    stream:     in_shell_stream,
+    poll:       in_shell_poll,
+};
+
+fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, void mut * user_config, slice::Slice *headers)
+    where err::checked(*e)
+{
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+
+    Shell mut * state = alloc(e);
+    if err::check(e) { return; }
+    self->user2 = state;
+
+    in_shell_open_impl(state, e);
+    if err::check(e) {
+        e->eprint();
+        e->make();
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
+        if err::check(e) { e->make(); }
+        self->close();
+        return;
+    }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    if err::check(e) { return; }
+}
+
+
+fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
+    where err::checked(*e)
+{
+    int masterfd = (int)posix_openpt((int)O_RDWR|(int)O_NOCTTY);
+    if masterfd <= 0 {
+        err::fail_with_errno(e, "posix_openpt");
+        return;
+    }
+
+    if grantpt(masterfd) != 0 {
+        err::fail_with_errno(e, "grantpt");
+        close(masterfd);
+        return;
+    }
+
+    if unlockpt(masterfd) != 0 {
+        err::fail_with_errno(e, "unlockpt");
+        close(masterfd);
+        return;
+    }
+
+    char *slavename = ptsname(masterfd);
+    int slavefd = (int)stdopen(slavename, (int)O_RDWR|(int)O_NOCTTY);
+    if slavefd <= 0 {
+        err::fail_with_errno(e, "open slave tty");
+        close(masterfd);
+        return;
+    }
+
+    let pid = (pid_t)fork();
+    if pid == -1 {
+        err::fail_with_errno(e, "fork");
+        close(slavefd);
+        close(masterfd);
+        return;
+    }
+
+    if pid == 0 {
+        //child
+        close(masterfd);
+
+        //makerawpty(slavefd);
+
+        dup2(slavefd,0);
+        dup2(slavefd,1);
+        dup2(slavefd,2);
+
+        // Make the current process a new session leader
+        setsid();
+
+        // As the child is a session leader, set the controlling terminal to be the slave side of the PTY
+        // (Mandatory for programs like the shell to make them manage correctly their outputs)
+        ioctl(0, TIOCSCTTY, 1);
+
+
+        char mut * args[] = {"/bin/sh", "-i", "-l", 0};
+        execv(args[0], args);
+
+
+        exit(1);
+    } else {
+        //parent
+        close(slavefd);
+
+        self->pid = pid;
+        self->master = unix::unix(masterfd);
+    }
+
+}
+
+fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+    where safe(msg->mem)
+{
+    Shell mut * state = (Shell mut*)self->user2;
+    static_attest(safe(state));
+
+
+    if msg->size < 2 {
+        return true;
+    }
+
+    if msg->mem[0] != 1 {
+        return true;
+    }
+
+    let msgmem  = msg->mem + 1;
+    let msgsize = msg->size - 1;
+
+    if state->master.valid() {
+        usize mut blen = msgsize;
+        state->master.write_bytes(e, msgmem, &blen);
+        if blen > 0 { // TODO handle partial write
+            return true;
+        }
+    }
+    return false;
+}
+
+fn in_shell_close(stream::Stream mut *self)
+{
+    log::error("shell closed\n");
+
+    Shell mut * state = (Shell mut*)self->user2;
+    self->user2 = 0;
+
+    static_attest(safe(state));
+    if state->master.valid() {
+        state->master.close();
+    }
+
+    if state->pid != 0 {
+        kill(state->pid, SIGTERM);
+        int mut wstatus;
+        waitpid(state->pid, &wstatus, WNOHANG);
+        state->pid = 0;
+    }
+
+    static_attest(pool::member(state, &sshpool));
+    sshpool.free(state);
+}
+
+fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+    where err::checked(*e)
+{
+    Shell mut * state = (Shell mut*)self->user2;
+    static_attest(safe(state));
+
+    if state->master.ctx.async == 0 {
+        unix::make_read_async(&state->master, async);
+    }
+    async->select(e, &state->master, io::Ready::Read);
+    if err::check(e) { return; }
+
+    if state->inbuf.len == 0 {
+        if state->master.valid() {
+            if state->master.read(e, &state->inbuf) == io::Result::Error {
+                self->close();
+            }
+            e->make();
+        }
+    }
+
+    if state->inbuf.len != 0 {
+        static_attest(state->inbuf.len <= static(len(state->inbuf.mem)));
+        let mut *frame = self->stream(e, 1 + state->inbuf.len);
+        if err::check(e) {
+            e->eprint();
+            e->make();
+            return;
+        }
+        err::assert(frame->push(1));
+        err::assert(frame->append_bytes((u8*)state->inbuf.mem, state->inbuf.len));
+        state->inbuf.clear();
+    }
+
+}
+
+
+
+static pool::Pool+640 mut sshpool = {0};
+fn alloc(err::Err+et mut*e) -> Shell mut *
+    where err::checked(*e)
+    model safe(return)
+{
+    if sshpool.used == 0 {
+        sshpool.make(64);
+    }
+    let r = (Shell mut *)sshpool.alloc(sizeof(Shell));
+    if r == 0 {
+        err::fail(e, 4, "oom");
+        static_attest(safe(0));
+        return 0;
+    }
+    static_attest(safe(r));
+    return r;
+}

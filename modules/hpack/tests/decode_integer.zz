@@ -1,68 +1,69 @@
 using <stdio.h>::{printf, fread, stdin};
 using hpack::decoder;
 using err;
+using slice;
 
-test ta1 {
+test {
     stdin  = {7, 255, 0}
     stdout = "2,127"
 }
 
-test ta2 {
+test {
     stdin  = {5, 10}
     stdout = "1,10"
 }
 
-test ta3 {
+test {
     stdin  = {5, 31, 154, 10}
     stdout = "3,1337"
 }
 
-test ta4 {
+test {
     stdin  = {5, 63, 154, 10}
     stdout = "3,1337"
 }
 
-test ta5 {
+test {
     stdin  = {5, 95, 154, 10}
     stdout = "3,1337"
 }
 
-test ta6 {
+test {
     stdin  = {5, 31, 154, 10, 111, 22}
     stdout = "3,1337"
 }
 
-test ta7 {
+test {
     stdin  = {7, 127, 0}
     stdout = "2,127"
 }
 
-test ta8 {
+test {
     stdin  = {7, 127, 128, 1}
     stdout = "3,255"
 }
 
-test ta9 {
+test {
     stdin  = {8, 255, 0}
     stdout = "2,255"
 }
 
-test taa {
+test {
     stdin  = {8, 254}
     stdout = "1,254"
 }
 
-test tab {
+test {
     stdin  = {8, 1}
     stdout = "1,1"
 }
 
-test tac {
+test {
     stdin  = {8,0}
     stdout = "1,0"
 }
 
-test tad {
+test {
     stdin  = {8, 0xff, 0xff, 0xff, 0xff, 127}
     stdout = "5,268435710"
 }
@@ -94,17 +95,18 @@ pub fn main() -> int {
         if bin == 0 {
             break;
         }
-        static_attest(bin < len(buf));
-        static_attest(bin > 0);
+        static_attest(len(buf)>1);
+        static_attest(bin <= len(buf));
+        let s  = slice::slice::new(buf + 1, bin - 1);
+        let mut it = decoder::decode(s);
 
-        usize mut at = 1;
         static_attest(buf[0] > 0 && buf[0] < 9);
-        uint i = decoder::decode_integer(&e, buf, bin, &at, buf[0]);
+        uint i = it.decode_integer(&e, buf[0]);
         if err::check(&e) {
             err::eprint(&e);
             return 2;
         }
-        printf("%zu,%lu", at, i);
+        printf("%zu,%u", it.at, i);
     }
 
 

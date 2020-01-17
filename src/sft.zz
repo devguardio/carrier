@@ -1,0 +1,53 @@
+using endpoint;
+using stream;
+using err;
+using slice;
+using io;
+using log;
+using hpack;
+using string;
+using time;
+using <stdlib.h>::{exit, calloc, free};
+
+export fn register(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&StupidFileTransfer);
+}
+
+
+static stream::Config StupidFileTransfer = stream::Config {
+    path:       "/v0/sft",
+    open:       sft_open,
+    close:      sft_close,
+    stream:     sft_stream,
+};
+
+fn sft_open(stream::Stream mut *self, err::Err+et mut*e, void mut * user_config, slice::Slice *headers)
+    where err::checked(*e)
+{
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"100", 3);
+    if err::check(e) { return; }
+
+    log::info("SFT open %u", self->id);
+}
+
+fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+    where safe(msg->mem)
+{
+    if msg->size >= 10000 {
+        return false;
+    }
+
+    log::info("SFT stream %u", self->id);
+
+    return true;
+}
+
+fn sft_close(stream::Stream mut *self)
+{
+}
+

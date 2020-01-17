@@ -1,0 +1,32 @@
+WHITESPACE  = _{ " " | NEWLINE}
+COMMENT     = _{
+    ("/*" ~ (!"*/" ~ ANY)* ~ "*/") |
+    ("//" ~ (!NEWLINE ~ ANY)* ~ NEWLINE)
+}
+
+alpha       = { 'a'..'z' | 'A'..'Z' }
+digit       = { '0'..'9' }
+ident       = @{ (alpha | digit | "_") + }
+number      = @{ digit * }
+
+
+repeated = { "repeated"  }
+field = {repeated? ~ ident ~ ident ~ "=" ~ number ~ ";"}
+enumfield = {ident ~ "=" ~ number ~ ";"}
+oneof = { "oneof" ~ ident ~ "{" ~  field* ~  "}" }
+ienum   = {"enum" ~ ident ~ "{" ~ enumfield* ~  "}" }
+message = {"message" ~ ident ~ "{" ~ (ienum | field | oneof)* ~ "}" }
+
+string_literal = @{ "\"" ~ ( "\"\"" | "\\\""    | (!"\"" ~ ANY) )* ~ "\"" }
+
+syntax = { "syntax" ~"=" ~ string_literal ~ ";" }
+package = { "package" ~ (alpha | digit | "_" | "." ) * ~ ";"  }
+
+arg = { ident+  }
+args = { arg ~ ( "," ~ arg)* }
+rpc = {"rpc" ~ ident ~ "(" ~ args ~ ")" ~ "returns" ~ "(" ~ args ~ ")" ~ "{" ~ "}" }
+service =  {"service" ~ ident ~ "{" ~ rpc* ~ "}" }
+
+file = {
+  ( syntax | package | message | service ) +
+}

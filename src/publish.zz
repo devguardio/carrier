@@ -1,0 +1,493 @@
+using <stdio.h>::{printf};
+using <string.h>::{memcpy, memset};
+using <assert.h>::{assert};
+using <stdlib.h>::{exit};
+using err;
+using channel;
+using router;
+using bootstrap;
+using io::unix;
+using net;
+using io;
+using time;
+using endpoint;
+using router;
+using hex;
+using log;
+using pq;
+using byteorder;
+using identity;
+using protonerf;
+using string;
+using stream;
+using slice;
+using net::address;
+using hpack;
+using slice::{Slice};
+using peering;
+using proto;
+using noise;
+using responder;
+
+
+export struct Authorize {
+    bool                mut used;
+    identity::Identity  mut identity;
+    string::String+128  mut resource;
+}
+
+export struct Publish+ {
+    identity::Address network;
+
+    usize tail;
+    Authorize authorize[];
+}
+
+static stream::Config PublishStream = stream::Config {
+    path:   "/carrier.broker.v1/broker/publish",
+    stream: stream_to_publish,
+    close:  close_publish,
+};
+
+
+export fn start(Publish mut *self, err::Err+et mut*e, endpoint::Endpoint mut*endpoint)
+    where err::checked(*e)
+{
+    endpoint->broker_stream_registry[0]             = &PeerConnect;
+    endpoint->broker_stream_registry_user_config[0] = self;
+
+    stream::Stream mut* streami = endpoint->broker()->open(e, &PublishStream);
+    if err::check(e) {
+        return;
+    }
+    static_attest(safe(streami));
+    streami->user2 = self;
+}
+
+fn close_publish(stream::Stream mut *self) {
+    log::error("publish closed\n");
+    exit(1);
+}
+
+fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
+    where err::checked(*e)
+{
+    static_attest(safe(self->user2));
+    Publish mut *this = self->user2;
+
+    static_attest(safe(self->chan));
+    if self->state == 0 {
+        log::debug("publish response headers:");
+        for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+            log::debug("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+        }
+        if err::check(e) {
+            return false;
+        }
+
+
+        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
+        if err::check(e) {
+            return false;
+        }
+
+        self->state = 1;
+
+        frame->push32(byteorder::to_be32(1)); // stream
+        frame->push64(byteorder::to_be64(2)); // order
+        frame->push16(0); // size placeholder
+
+        protonerf::encode_bytes(frame, e, 1, this->network.k, 32);
+        if err::check(e) {
+            return false;
+        }
+        protonerf::encode_bytes(frame, e, 2, this->network.k, 32);
+        if err::check(e) {
+            return false;
+        }
+    } else if self->state == 1 {
+        // the only message after headers is supersede
+        // TODO stop endpoint
+    }
+
+    return true;
+}
+
+static stream::Config PeerConnect = stream::Config {
+    path:       "/carrier.broker.v1/peer/connect",
+    open:       on_remote_open,
+    stream:     stream_connect,
+};
+
+
+pub fn on_remote_open(stream::Stream mut*self, err::Err+et mut*e, void mut *user_config, slice::Slice *headers)
+    where err::checked(*e)
+{
+    self->user2 = user_config;
+
+    static_attest(safe(self->chan));
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    if err::check(e) { return ; }
+}
+
+fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+    where safe(msg->mem)
+{
+    static_attest(safe(self->chan));
+    let this = (Publish mut*)self->user2;
+    static_attest(safe(this));
+    static_attest(this->tail == len(this->authorize));
+
+    if self->state == 0 {
+        self->state = 1;
+        identity::Identity mut ii = {0};
+        bool mut has_identity = false;
+        slice::slice::Slice mut handshake = {0};
+        u64 mut timestamp = 0;
+        u64 mut route     = 0;
+        peering::Peering mut peerings = {0};
+        memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
+
+
+        let mut dec = protonerf::decode(proto::PeerConnectRequest, msg->mem, msg->size);
+        for (;;) {
+            let field = dec.next(e);
+            if err::check(e) {
+                return true;
+            }
+            if !field.valid {
+                break;
+            }
+            switch field.index {
+                proto::PeerConnectRequestField::Identity => {
+                    if field.a == 0 || field.value.v_len != 32 {
+                        err::fail(e, 1, "unexpected proto wire");
+                        return false;
+                    }
+                    memcpy(ii.k, field.a, 32);
+
+                    char mut m[60];
+                    usize l = identity::identity_to_str(e, m, 60, &ii);
+                    if err::check(e) {
+                        return true;
+                    }
+                    log::info("connect request from identity %.*s", (int)l, m);
+                    has_identity = true;
+                }
+                proto::PeerConnectRequestField::Timestamp => {
+                    timestamp = field.value.v_u64;
+                }
+                proto::PeerConnectRequestField::Handshake => {
+                    handshake.mem  = field.a;
+                    handshake.size = field.value.v_len;
+                }
+                proto::PeerConnectRequestField::Route => {
+                    route = byteorder::to_be64(field.value.v_u64);
+                }
+                proto::PeerConnectRequestField::Paths => {
+                    peerings.from_proto(e, field);
+                    if err::check(e) {
+                        return true;
+                    }
+                }
+                default => {
+                }
+            }
+        }
+
+        if !has_identity || handshake.mem == 0 || timestamp == 0 || route == 0 {
+            err::fail(e, 13, "missing protobuf field");
+            return true;
+        }
+        static_attest(len(handshake.mem) >= handshake.size);
+
+        // unfortunate misdesign of tunneling an entire init packet
+        // which actually contains no interesting information
+        if handshake.size < 1 + 3 + 8 + 8 + 32 + 16 + 3 + 32 + 8 {
+            err::fail(e, 1, "too small");
+            return true;
+        }
+        handshake.mem  = handshake.mem  + (1 + 3 + 8 + 8);
+        handshake.size = handshake.size - (1 + 3 + 8 + 8);
+
+        noise::Responder mut rsp = {0};
+        identity::secret_generate(&rsp.ephemeral, e);
+        rsp.receive_insecure(
+                (u8*)endpoint::PROLOGUE,
+                static(len(endpoint::PROLOGUE)),
+                handshake.mem,
+                handshake.size - 64
+        );
+        if err::check(e) {
+            return true;
+        }
+
+
+
+        // match the handshake identity with the broker
+        let mut id = handshake;
+        id.mem  = id.mem  + 32;
+        id.size = 32;
+        if !id.eq_bytes(ii.k, 32) {
+            err::fail(e, 13, "identity mismatch");
+            return true;
+        }
+
+
+        self->user1 = route;
+
+
+        log::error("signature check not implemented, accepting everything");
+        //FIXME compare route
+        //FIXME check signature
+        //FIXME authorizations
+
+
+        let mut authorized = false;
+        for (usize mut i = 0; i < this->tail; i++) {
+            if this->authorize[i].used {
+                if this->authorize[i].identity.eq(&ii) {
+                    authorized = true;
+                }
+            }
+        }
+        if !authorized {
+            let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 34);
+            if err::check(e) {
+                return false;
+            }
+            frame->push32(byteorder::to_be32(self->id));
+            frame->push64(byteorder::to_be64((self->order_outgoing)++));
+            frame->push16(0); // size placeholder
+
+            protonerf::encode_varint(frame, e, proto::PeerConnectResponseField::Ok, 0);
+            if err::check(e) {
+                return true;
+            }
+            protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponseField::Handshake , 0);
+            if err::check(e) {
+                return true;
+            }
+            protonerf::encode_bytes(frame, e, proto::PeerConnectResponseField::Error, (u8*)"not authorized", 14);
+            if err::check(e) {
+                return true;
+            }
+
+            self->close();
+            return true;
+        }
+
+
+
+        // the packet is ok from here and will be responded to
+        endpoint::Endpoint mut * ep = self->chan->endpoint;
+        err::assert_safe(ep);
+        let nuchan = ep->statem.connected.next_channel();
+
+        slice::MutSlice mut * mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 290);
+        if err::check(e) {
+            e->eprint();
+            unsafe { frame = 0; }
+            e->make();
+        }
+
+        // oom
+        if nuchan == 0 || frame == 0 {
+            log::error("oom");
+
+            let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 30);
+            if err::check(e) {
+                return false;
+            }
+            frame->push32(byteorder::to_be32(self->id));
+            frame->push64(byteorder::to_be64((self->order_outgoing)++));
+            frame->push16(0); // size placeholder
+
+            protonerf::encode_varint(frame, e, proto::PeerConnectResponseField::Ok, 0);
+            if err::check(e) {
+                return true;
+            }
+            protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponseField::Handshake , 0);
+            if err::check(e) {
+                return true;
+            }
+            protonerf::encode_bytes(frame, e, proto::PeerConnectResponseField::Error, (u8*)"out of mem", 10);
+            if err::check(e) {
+                return true;
+            }
+
+            self->close();
+            return true;
+        }
+        static_attest(safe(nuchan));
+
+        frame->push32(byteorder::to_be32(self->id));
+        frame->push64(byteorder::to_be64((self->order_outgoing)++));
+        frame->push16(0); // size placeholder
+
+        protonerf::encode_varint(frame, e, proto::PeerConnectResponseField::Ok, 1);
+        if err::check(e) {
+            return true;
+        }
+
+
+        // handshake, full packet version 0x08
+        protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponseField::Handshake, 252);
+        if err::check(e) {
+            return true;
+        }
+
+        static_attest(len(frame->slice.mem) > frame->at);
+        static_attest(len(frame->slice.mem) > frame->at + 252);
+        static_attest(safe(self->chan->store));
+        responder::accept_insecure(
+            &rsp,
+            e,
+            (identity::Secret*)&self->chan->store->secret,
+            route,
+            timestamp,
+            frame
+        );
+        if err::check(e) {
+            return true;
+        }
+
+        //TODO paths
+
+        protonerf::encode_bytes(frame, e, proto::PeerConnectResponseField::Error, (u8*)"",0);
+        if err::check(e) {
+            return true;
+        }
+
+        log::info("accepted %zu %lu\n", frame->at, route);
+
+        *nuchan = channel::from_symmetric(&rsp.symm, 0x08, route, true);
+        nuchan->q.allocator = self->chan->q.allocator;
+        nuchan->store       = self->chan->store;
+        nuchan->endpoint    = self->chan->endpoint;
+        memcpy(&nuchan->peering, &peerings, sizeof(peering::Peering));
+
+    } else {
+        log::error("broker error in peer connect");
+        hex::dump_slice(msg);
+        for (let mut it = hpack::decoder::decode(*msg); it.next(e); ) {
+            log::error("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+        }
+
+    }
+    return true;
+
+}
+
+pub fn cleanup_dead_route(channel::Channel mut * chan, u64 dead_route)
+{
+    for (usize mut i = 0 ; i < static(len(chan->streams)); i++) {
+        if chan->streams[i].user1 == dead_route {
+            chan->streams[i].closing = true;
+        }
+    }
+}
+
+
+
+using toml;
+using fs;
+using string;
+using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF};
+
+export fn from_carriertoml(Publish+tail mut new *self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    memset(self, 0 , (usize)sizeof(Publish) + (tail * (usize)sizeof(Authorize)));
+    self->tail = tail;
+
+    new+1000 parser = toml::parser(e, (toml::deserialize_t)load_from_toml_cb, self);
+    if err::check(e) {return;}
+
+    string::String+300 mut ff;
+    ff.clear();
+    fs::get_homedir(e, &ff);
+    if err::check(e) {return;}
+    ff.append_cstr("/.devguard/carrier.toml");
+
+    let f = (FILE mut*)fopen(ff.mem, "r");
+    if f == 0 {
+        err::fail_with_errno(e, "open %s", ff.mem);
+        return;
+    }
+
+    char mut buf[300];
+    for(;;) {
+        usize bin = as<usize>(fread(buf, sizeof(char), static(len(buf)), f));
+        if bin == 0 {
+            break;
+        }
+        static_attest(bin < len(buf));
+        toml::push(&parser, e, buf, bin);
+        if err::check(e) { fclose(f); return; }
+    }
+
+    fclose(f);
+}
+
+
+fn load_from_toml_cb_publish(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    let this = (Publish mut*)user;
+    static_attest(safe(this));
+
+    if string::cstr_eq(k, "shadow") || string::cstr_eq(k, "network") {
+        err::assert_safe(v.string);
+        static_attest(nullterm(v.string));
+        identity::address_from_cstr (&this->network, e, v.string);
+    }
+}
+
+fn load_from_toml_cb_authorize(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    let this = (Authorize mut*)user;
+    static_attest(safe(this));
+
+    if string::cstr_eq(k, "identity") {
+        this->used = true;
+        err::assert_safe(v.string);
+        static_attest(nullterm(v.string));
+        identity::identity_from_cstr (&this->identity , e, v.string);
+    } else if string::cstr_eq(k, "resource") {
+        this->resource.clear();
+        this->resource.append_cstr(v.string);
+    }
+}
+
+fn load_from_toml_cb(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    let this = (Publish mut*)user;
+    static_attest(safe(this));
+    static_attest(this->tail == len(this->authorize));
+
+    if string::cstr_eq(k, "publish") && v.t == toml::ValueType::Object {
+        toml::next(p, e, load_from_toml_cb_publish, user);
+    } else if string::cstr_eq(k, "authorize") && v.t == toml::ValueType::Object {
+
+        for (usize mut i = 0; i < this->tail; i++) {
+            if !this->authorize[i].used {
+                toml::next(p, e, load_from_toml_cb_authorize, &this->authorize[i]);
+                return;
+            }
+        }
+
+        err::fail(e, 1, "too many [[authorize]] sections for tail memory");
+    }
+}
+
+

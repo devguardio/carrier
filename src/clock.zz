@@ -1,0 +1,11 @@
+using time;
+
+pub fn tick() -> u64 {
+    let n = time::tick();
+    return n.to_millis();
+}
+
+pub fn vec() -> u64 {
+    let n = time::real();
+    return n.to_millis();
+}

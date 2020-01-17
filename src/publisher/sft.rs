@@ -9,7 +9,7 @@ use std::io::Write;
 use std::path::Path;
 
 #[link(name="carrier")]
-include!("../../target/release/rs/::carrier::sha256.rs");
+include!("../../target/release/rs/_carrier_sha256.rs");
 
 pub fn main(
     poll: osaka::Poll,

@@ -28,6 +28,7 @@ pub struct Protocol {
     pub stream_tx_queue:        Option<usize>,
     pub p2p:                    Option<bool>,
     pub local_port:             Option<u16>,
+    pub tcp:                    Option<bool>,
 }
 
 #[derive(Deserialize, Serialize)]

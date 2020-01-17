@@ -1226,37 +1226,41 @@ impl EndpointBuilder {
             records.push(record.clone());
         }
 
-        // try tcp
-        loop {
+        if let Some(true) = self.protocol.tcp {
+            // try tcp
+            loop {
 
-            let mut record = match records.pop() {
-                Some(v) => v,
-                None => return Err(Error::OutOfOptions),
-            };
+                let mut record = match records.pop() {
+                    Some(v) => v,
+                    None => return Err(Error::OutOfOptions),
+                };
 
-            info!("attempting tcp connection with {}", &record.addr);
-            let guard = super::tcp::spawn(record.addr);
-            record.addr = guard.addr;
+                info!("attempting tcp connection with {}", &record.addr);
+                let guard = super::tcp::spawn(record.addr);
+                record.addr = guard.addr;
 
-            let mut v = self.clone().connect_to(poll.clone(), record);
-            match osaka::sync!(v) {
-                Err(e) => return Err(e),
-                Ok((Some(mut ep), _)) => {
-                    ep.tcp_bridge = Some(guard);
-                    return Ok(ep);
-                }
-                Ok((None, None)) => continue,
-                Ok((None, Some(mut record))) => {
-                    records.push(record.clone());
-                    record.addr.set_port(443);
-                    records.push(record.clone());
-                    record.addr.set_port(53);
-                    records.push(record.clone());
-                    record.addr.set_port(123);
-                    records.push(record.clone());
-                    continue;
+                let mut v = self.clone().connect_to(poll.clone(), record);
+                match osaka::sync!(v) {
+                    Err(e) => return Err(e),
+                    Ok((Some(mut ep), _)) => {
+                        ep.tcp_bridge = Some(guard);
+                        return Ok(ep);
+                    }
+                    Ok((None, None)) => continue,
+                    Ok((None, Some(mut record))) => {
+                        records.push(record.clone());
+                        record.addr.set_port(443);
+                        records.push(record.clone());
+                        record.addr.set_port(53);
+                        records.push(record.clone());
+                        record.addr.set_port(123);
+                        records.push(record.clone());
+                        continue;
+                    }
                 }
             }
+        } else {
+            return Err(Error::OutOfOptions);
         }
 
     }

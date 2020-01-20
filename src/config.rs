@@ -560,13 +560,7 @@ include!("../target/release/rs/::carrier::rand.rs");
 
 pub static mut IDENTITY_GENERATOR: Option<Box<Fn(&mut[u8])>> = None;
 
-
 fn firstgen_identity(b: &mut [u8]) {
-    use error;
-
-    let mut err = error::ZZError::new();
-
-
     unsafe {
         if let Some(cb) = &mut IDENTITY_GENERATOR {
             cb(b);
@@ -574,11 +568,15 @@ fn firstgen_identity(b: &mut [u8]) {
     }
 
     if b == [0xff; 32] || b == [0x0; 32] {
-        unsafe {
-            carrier_rand_rand(err.as_mut_ptr(), error::ZERR_TAIL, b.as_mut_ptr(), b.len());
-        }
-        err.check().unwrap();
+        panic!("secret file is zero and IDENTITY_GENERATOR is not set or not working. check your system specific carrier manual why identity might be missing");
     }
 }
 
-
+pub fn default_identity_generator(b: &mut [u8]) {
+    use error;
+    let mut err = error::ZZError::new();
+    unsafe {
+        carrier_rand_rand(err.as_mut_ptr(), error::ZERR_TAIL, b.as_mut_ptr(), b.len());
+    }
+    err.check().unwrap();
+}

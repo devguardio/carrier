@@ -555,7 +555,7 @@ pub fn deauthorize(identity: identity::Identity) -> Result<(), Error> {
 }
 
 #[link(name="carrier")]
-include!("../target/release/rs/::carrier::rand.rs");
+include!("../target/release/rs/_carrier_rand.rs");
 
 
 pub static mut IDENTITY_GENERATOR: Option<Box<Fn(&mut[u8])>> = None;

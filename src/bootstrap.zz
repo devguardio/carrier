@@ -140,6 +140,9 @@ export fn next(Bootstrap mut * self, err::Err+et mut * e, io::Async mut* async, 
             }
         }
     }
+    if err::check(e) {
+        return io::Result::Error;
+    }
 
     xbuf.clear();
     address::Address mut from = address::new();

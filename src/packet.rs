@@ -3,7 +3,7 @@ use error::Error;
 use std::io::{Read, Write};
 
 #[link(name="carrier")]
-include!("../target/release/rs/::carrier::crc8.rs");
+include!("../target/release/rs/_carrier_crc8.rs");
 
 pub const LATEST_VERSION: u8 = 0x9;
 

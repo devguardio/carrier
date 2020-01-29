@@ -19,7 +19,7 @@ pub struct SignedAddress(Address, Signature);
 // --- Secret
 
 #[link(name="carrier")]
-include!("../target/release/rs/::carrier::identity.rs");
+include!("../target/release/rs/_carrier_identity.rs");
 
 impl Secret {
     pub fn identity(&self) -> Identity {

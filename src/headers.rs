@@ -4,7 +4,7 @@ use error;
 
 
 #[link("carrier")]
-include!("../target/release/rs/::hpack::encoder.rs");
+include!("../target/release/rs/_hpack_encoder.rs");
 extern {
     pub fn hpack_decoder_decode(
         Ze: *mut u8,

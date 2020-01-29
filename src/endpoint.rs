@@ -466,7 +466,7 @@ impl Endpoint {
         debug!("ConnectResponse {:#?}", cr.paths);
 
         let pkt = EncryptedPacket::decode(&cr.handshake)?;
-        let hs_identity = requester.recv_response(pkt).unwrap();
+        let hs_identity = requester.recv_response(pkt)?;
         let noise = requester.into_transport()?;
 
         if identity != hs_identity {

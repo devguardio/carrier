@@ -31,6 +31,7 @@ export fn encode(Encoder mut* self, err::Err+et mut *e, u8* key, usize keylen, u
 
     encode_integer(self, e, keylen, 7);
     if err::check(e) {
+        static_attest(err::checked(*e));
         err::fail(e, 1, "overflow");
         return self->bufat;
     }

@@ -5,8 +5,8 @@ use identity;
 use error;
 
 #[link(name="carrier")]
-include!("../target/release/rs/::carrier::cipher.rs");
-include!("../target/release/rs/::carrier::sha256.rs");
+include!("../target/release/rs/_carrier_cipher.rs");
+include!("../target/release/rs/_carrier_sha256.rs");
 
 #[derive(Default)]
 pub struct HaclStarResolver;

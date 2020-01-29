@@ -11,7 +11,7 @@ use std::io;
 pub struct ZZError  (pub Vec<u8>);
 
 #[link(name="carrier")]
-include!("../target/release/rs/::err.rs");
+include!("../target/release/rs/_err.rs");
 
 
 pub const ZERR_TAIL : usize = 1000;

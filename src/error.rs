@@ -1,5 +1,4 @@
 use identity;
-use osaka_dns;
 use packet::{RoutingDirection, RoutingKey};
 use prost;
 use snow::SnowError;
@@ -10,15 +9,15 @@ use std::io;
 
 pub struct ZZError  (pub Vec<u8>);
 
-#[link(name="carrier")]
-include!("../target/release/rs/_err.rs");
+#[path = "../target/release/rs/err.rs"]
+mod err;
 
 
 pub const ZERR_TAIL : usize = 1000;
 
 impl ZZError {
     pub fn new() -> Self {
-        Self(vec![0;unsafe{sizeof_err_Err} + ZERR_TAIL])
+        Self(vec![0;unsafe{err::sizeof_Err} + ZERR_TAIL])
     }
     pub fn as_mut_ptr(&mut self) -> *mut u8{
         self.0.as_mut_ptr()
@@ -27,10 +26,10 @@ impl ZZError {
         unsafe {
             let this_file = file!();
             let this_line = line!();
-            let e = err_check(self.as_mut_ptr(), ZERR_TAIL, this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
+            let e = err::check(self.as_mut_ptr(), ZERR_TAIL, this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
             if e  {
                 let mut s = [0u8;1024];
-                err_to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
+                err::to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
                 Err(Error::ZZ(e as isize, String::from_utf8_lossy(&s).into()))
             } else {
                 Ok(())
@@ -45,7 +44,6 @@ pub enum Error {
     Io(io::Error),
     Snow(SnowError),
     InvalidSignature,
-    Dns(osaka_dns::Error),
     Proto(prost::DecodeError),
     Fmt(std::fmt::Error),
     ZZ(isize, String),
@@ -120,7 +118,6 @@ impl fmt::Display for Error {
             Error::Io(e) => e.fmt(f),
             Error::Snow(e) => e.fmt(f),
             Error::InvalidSignature => write!(f, "invalid signature"),
-            Error::Dns(e) => write!(f, "{:?}", e),
             Error::Proto(e) => e.fmt(f),
             Error::Fmt(e) => e.fmt(f),
 
@@ -196,12 +193,6 @@ impl std::convert::From<std::fmt::Error> for Error {
 impl std::convert::From<SnowError> for Error {
     fn from(error: SnowError) -> Self {
         Error::Snow(error)
-    }
-}
-
-impl std::convert::From<osaka_dns::Error> for Error {
-    fn from(error: osaka_dns::Error) -> Self {
-        Error::Dns(error)
     }
 }
 

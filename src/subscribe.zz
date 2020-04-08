@@ -1,0 +1,88 @@
+using <stdio.h>::{printf};
+using <string.h>::{memcpy};
+using <assert.h>::{assert};
+using <stdlib.h>::{exit};
+using err;
+using channel;
+using router;
+using bootstrap;
+using io::unix;
+using net;
+using io;
+using time;
+using endpoint;
+using router;
+using hex;
+using log;
+using pq;
+using byteorder;
+using identity;
+using protonerf;
+using string;
+using stream;
+using slice;
+using net::address;
+using hpack;
+using slice::{Slice};
+using peering;
+using proto;
+using noise;
+using responder;
+
+
+static stream::Config Subscribe = stream::Config {
+    stream: on_stream,
+    close:  on_close,
+};
+
+export fn start(endpoint::Endpoint mut*self, err::Err+et mut*e)
+    where err::checked(*e)
+{
+    stream::Stream mut* streami = self->broker()->open(e, &Subscribe);
+    if err::check(e) { return; }
+    static_attest(safe(streami));
+}
+
+fn on_close(stream::Stream mut *self) {
+    log::error("subscribe closed\n");
+    exit(1);
+}
+
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
+    where err::checked(*e)
+{
+    static_attest(safe(self->chan));
+    if self->state == 0 {
+        log::debug("subscribe response headers:");
+        for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+            log::debug("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+        }
+        if err::check(e) {
+            return false;
+        }
+
+
+        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
+        if err::check(e) {
+            return false;
+        }
+
+        self->state = 1;
+
+        frame->push32(byteorder::to_be32(1)); // stream
+        frame->push64(byteorder::to_be64(2)); // order
+        frame->push16(0); // size placeholder
+
+        u8 xaddr[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,128,29,30,31,32};
+        protonerf::encode_bytes(frame, e, proto::SubscribeRequestField::Shadow, xaddr, 32);
+        if err::check(e) {
+            return false;
+        }
+    } else if self->state == 1 {
+        // the only message after headers is supersede
+        // TODO stop endpoint
+    }
+
+    return true;
+}
+

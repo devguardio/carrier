@@ -3,8 +3,12 @@ use std::iter::Iterator;
 use error;
 
 
-#[link("carrier")]
-include!("../target/release/rs/_hpack_encoder.rs");
+#[path = "../target/release/rs/slice_mut_slice.rs"]
+mod mut_slice;
+
+#[path = "../target/release/rs/hpack_encoder.rs"]
+mod hpack_encoder;
+
 extern {
     pub fn hpack_decoder_decode(
         Ze: *mut u8,
@@ -138,24 +142,28 @@ impl Headers {
 
     pub fn encode(&self) -> Vec<u8> {
         let mut err = error::ZZError::new();
-        let mut encoder = vec![0;unsafe{sizeof_hpack_encoder_Encoder}];
+
         let mut mem     = vec![0;2000];
-        unsafe{hpack_encoder_new(
-            encoder.as_mut_ptr(),
-            mem.as_mut_ptr(),
-            mem.len()
-        )};
+        let mut slice   = mut_slice::MutSlice::new();
+        unsafe {
+            mut_slice::make(slice._self_mut(), mem.as_mut_ptr(), mem.len());
+        }
 
         let mut at = 0;
         for (k,v) in &self.f {
-            at = unsafe{hpack_encoder_encode(
-                encoder.as_mut_ptr(),
+            unsafe{hpack_encoder::encode(
+                slice._self_mut(),
+
                 err.as_mut_ptr(),
                 error::ZERR_TAIL,
+
                 k.as_ptr(),
                 k.len(),
+
                 v.as_ptr(),
-                v.len())};
+                v.len())
+            };
+            at = slice.inner.at;
             err.check().unwrap();
         }
         mem.truncate(at);

@@ -8,8 +8,8 @@ use std::fs::{rename, File};
 use std::io::Write;
 use std::path::Path;
 
-#[link(name="carrier")]
-include!("../../target/release/rs/_carrier_sha256.rs");
+#[path = "../../target/release/rs/carrier_sha256.rs"]
+mod sha256;
 
 pub fn main(
     poll: osaka::Poll,
@@ -66,21 +66,21 @@ pub fn sft_(_poll: osaka::Poll, mut stream: endpoint::Stream, path: String, sha:
 
     stream.send(Headers::with(":status", "100").encode());
 
-    let mut state = vec![0; unsafe{ sizeof_carrier_sha256_Sha256}];
-    unsafe { carrier_sha256_init(state.as_mut_ptr()); }
+    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256}];
+    unsafe { sha256::init(state.as_mut_ptr()); }
 
     loop {
         let b = osaka::sync!(stream);
         if b.len() == 0 {
             break;
         }
-        unsafe { carrier_sha256_update(state.as_mut_ptr(), b.as_ptr(), b.len()); }
+        unsafe { sha256::update(state.as_mut_ptr(), b.as_ptr(), b.len()); }
         file.write(&b).expect("file write");
     }
     drop(file);
 
-    let mut out = vec![0; unsafe { carrier_sha256_hashlen() }];
-    unsafe { carrier_sha256_finish(state.as_mut_ptr(), out.as_mut_ptr()); }
+    let mut out = vec![0; unsafe { sha256::hashlen() }];
+    unsafe { sha256::finish(state.as_mut_ptr(), out.as_mut_ptr()); }
     if out != sha {
         let headers = Headers::with_error(409, "sha mismatch");
         stream.send(headers.encode());

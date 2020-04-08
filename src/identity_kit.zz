@@ -1,0 +1,23 @@
+using err;
+using bootstrap;
+using identity;
+using <stdio.h>::{printf, fopen, fclose, fread, FILE, fgetc, EOF};
+
+export struct IdentityKit
+{
+    identity::Secret    principal;
+    identity::Secret    network;
+}
+
+
+export fn ephemeral(IdentityKit mut new* self, err::Err+et mut *e)
+     where err::checked(*e)
+{
+    identity::secret_generate (&self->principal, e);
+    if err::check(e) {return;}
+
+    identity::secret_generate (&self->network, e);
+    if err::check(e) {return;}
+}
+
+

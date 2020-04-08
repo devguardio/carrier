@@ -1,103 +1,205 @@
 /// the outgoing packet queue
 using <string.h>::{memcpy, memset};
-using <stdio.h>::{printf};
 using <math.h>;
 using <assert.h>::{assert};
 using err;
+using endpoint;
+using pool;
+using log;
+using slice;
+using channel;
+using channel::{FrameType};
+using <stdio.h>::{fprintf, stderr};
+using hex;
+using byteorder;
 
 /// maximum out of order ack before a frame is considered lost
-pub const u64   REORDER_THRESHOLD = 16;
-/// packet queue size
-pub const usize QSIZE             = 64;
-/// maximum frame size
-pub const usize FRAME_SIZE        = 512;
+pub const u64 REORDER_THRESHOLD = 3;
+
+/// keepalive
+pub const u64 KEEPALIVE = 5000;
+
+/// Don't send TLP faster than x * rtt
+pub const u64 MIN_TLP = 5;
+
+/// if nothing was received for x TLPs, the connection is dead
+pub const u64 DEAD_TLPS = 20;
+
+/// no packet ever received and we sent that many pings * KEEPALIVE
+pub const u64 DEAD_PINGS = 5;
+
+/// each tlp, wait this much longer for a response
+pub const u64 BACKOFF = 50;
+
 
 struct Frame {
-    u64 mut packet;
     u64 mut acked_at;
     u64 mut sent_at;
+    u64 packet;
 
-    /*debug*/
-    int mut marker;
-
-    u8  mut type;
-    u8  mut payload[FRAME_SIZE];
-    u16 mut payload_len;
+    u8              type;
+    slice::MutSlice mut buf;
 }
 
-export struct Q {
+export struct Q+ {
+
+    /// how many frames are in queue
     usize mut count;
+
+    /// the next unused entry
     usize mut back;
+
+    /// first used entry in the ring, anything left of this was acked and can be reused
     usize mut front;
+
+    /// to the left is sent but not acked frames, to the right is frames we send next
     usize mut sent;
 
-
+    /// current round trip time
     u64 mut rtt;
-    u64 mut counter;
-    Frame q[QSIZE];
+
+
+    // timers
+    u64 mut tlp_counter;
+    u64 mut time_last_ack_received;
+    u64 mut time_last_ping_sent;
+
+    pool::Pool mut* allocator;
+
+    /// ring buffer
+    Frame q[];
+}
+
+
+export fn clear(Q+qt mut* self) {
+    for (usize mut i = 0; i < qt; i++) {
+        if self->q[i].buf.slice.mem != 0 {
+            unsafe {
+                pool::free(self->allocator, (u8 mut*)(self->q[i].buf.slice.mem));
+            }
+        }
+        memset(self->q + i, 0, sizeof(Frame));
+    }
+    memset(self, 0, sizeof(Q));
 }
 
 
 /// allocate the next frame in the queue
-export fn next (Q mut* self, err::Err+et mut* e) -> Frame mut*
+export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType type, usize size) -> slice::MutSlice mut *
     where err::checked(*e)
+    model safe(return) // this is technically wrong, but the prover isnt good enough yet
+    model safe(return->slice.mem)
+    model len(return->slice.mem) >= size
+    model return->slice.size == size
+    model return->slice.size >= len(return->slice.mem)
+    model return->at <= return->slice.size
 {
-    Frame mut* mut r = 0;
-    if (self->count >= QSIZE) {
-        err::fail(e, 1, "tx queue full");
-        return 0;
+    err::assert_safe(self->allocator);
+    void mut *payload = self->allocator->malloc(size);
+    if payload == 0 {
+        err::fail(e, 12, "cannot alloc %u b: %u free", size, self->allocator->free_bytes());
+        unsafe {
+            return 0;
+        }
+    }
+
+    Frame mut* mut r;
+    if (self->count + 1 >= qt) {
+        self->allocator->free(payload);
+        err::fail(e, 12, "maxq");
+        unsafe {
+            return 0;
+        }
     }
     (self->count)++;
     unsafe {
         r = self->q + (self->back)++;
     }
-    if (self->back >= QSIZE) {
+
+    if (self->back >= qt) {
         self->back = 0;
     }
-    return r;
+
+    memset(r, 0, sizeof(Frame));
+    static_attest(safe(r));
+    r->type = (u8)type;
+    r->buf.slice.mem  = payload;
+    r->buf.slice.size = size;
+
+    static_attest(safe(r->buf.slice.mem));
+    static_attest(len(r->buf.slice.mem) == size);
+    static_attest(r->buf.slice.size == size);
+    static_attest(r->buf.at <= r->buf.slice.size);
+
+    return &r->buf;
 }
 
-export fn window(Q* self) -> usize {
-    return QSIZE - self->count;
+/// undo last allocation without sending anything
+export fn cancel(Q+qt mut* self)
+{
+    wrapdec(self, &self->back);
+    unsafe {
+        pool::free(self->allocator, (u8 mut*)(self->q[self->back].buf.slice.mem));
+    }
+    static_attest(self->back < len(self->q));
+    memset(self->q + self->back, 0, sizeof(Frame));
+    self->count -= 1;
 }
 
-export fn ack(Q mut* self, u64 time, u64 counter) {
+export fn window(Q+qt * self) -> usize {
+    return qt- self->count;
+}
+
+export fn ack(Q+qt mut* self, u64 time, u64 counter) {
     if (counter == 0) {
         return;
     }
-    printf("ack: %lu, front: %lu, count: %zu, back:%zu\n", counter, self->front, self->count, self->back);
+    //log::debug("ack: %lu, front: %lu, count: %zu, back:%zu", counter, self->front, self->count, self->back);
 
-#if def("debug")
-    test_pq_lost_frames = 0;
-#endif
+
 
     Frame mut* mut qq = self->q;
     usize mut f = self->front;
 
-    for (usize mut i = 0; i < QSIZE; wrapinc(&f), i++) {
-        printf("  f %zu\n", f);
-        // mark as acked
+    bool mut ack_was_useful = false;
+
+    for (usize mut i = 0; i < qt; wrapinc(self, &f), i++) {
         static_attest(f < len(qq));
+        // mark as acked
         if ((qq[f]).packet == counter) {
+            //log::debug("  acked packet %zu frame %zu ", counter, f);
             (qq[f]).acked_at = time;
-            assert(time > (qq[f]).sent_at);
+
+            assert(time >= qq[f].sent_at);
+
             if (self->rtt == 0) {
                 self->rtt = (time - (qq[f]).sent_at);
             } else {
                 self->rtt = (self->rtt + (time - (qq[f]).sent_at)) / 2;
             }
+            if (self->rtt == 0) {
+                self->rtt = 1;
+            }
+
+            ack_was_useful = true;
         }
 
         // as long as the front is acked, clear the front and advance
         if (f == self->front && (qq[f]).acked_at != 0) {
+            static_attest(safe(self->allocator));
+
+            unsafe {
+                pool::free(self->allocator, (u8 mut*)(qq[f].buf.slice.mem));
+            }
+
             memset(qq + f, 0, sizeof(Frame));
             (self->front)++;
             (self->count)--;
-            if (self->front  >= QSIZE) {
+            if (self->front  >= qt) {
                 self->front = 0;
             }
         } else if ((qq[f]).packet > counter || f == self->sent) {
-            printf("  pk: %lu, co: %zu\n", (qq[f]).packet, counter);
+            //log::debug("  pk: %lu, co: %zu", (qq[f]).packet, counter);
             break;
         }
 
@@ -109,11 +211,11 @@ export fn ack(Q mut* self, u64 time, u64 counter) {
             Frame mut mov;
             memcpy(&mov, &(qq[f]), sizeof(Frame));
             memset(qq + f, 0, sizeof(Frame));
-            wrapinc(&self->front);
+            wrapinc(self, &self->front);
 
 
-            for (usize mut i = wrapinc(&self->back); i != self->sent;) {
-                usize p    = wrapdec(&i);
+            for (usize mut i = wrapinc(self, &self->back); i != self->sent;) {
+                usize p    = wrapdec(self, &i);
                 unsafe {
                     memcpy(qq + p, qq + i, sizeof(Frame));
                 }
@@ -123,50 +225,151 @@ export fn ack(Q mut* self, u64 time, u64 counter) {
                 memcpy(qq + self->sent, &mov, sizeof(Frame));
             }
 
-#if def("debug")
-            test_pq_lost_frames++;
-
-            printf("MOVED pos %zu mark %d  to %zu \n", f, mov.marker, self->sent);
-            dump(self);
-#endif
         }
         if (f == self->back) {
             break;
         }
     }
 
+    if ack_was_useful {
+        self->time_last_ack_received = time;
+        self->tlp_counter = 0;
+    }
+
+}
+
+
+/// tail loss probe or ping and return the time when we need to call this function again
+export fn keepalive(Q+qt mut* self, u64 now) -> u64
+{
+    if self->tlp_counter >= DEAD_TLPS {
+        return 0;
+    }
+
+    let mut ref_time = self->time_last_ack_received;
+    if self->time_last_ping_sent > ref_time {
+        ref_time = self->time_last_ping_sent;
+    }
+
+
+    //log::debug("count: %u | now: %u | ref_time: %u | rtt: %u", self->count, now, ref_time, self->rtt);
+
+    // if the last ack was 2 * rtt ago, resend the oldest not-ack'd packet
+    if self->count > 0 && ref_time != 0 && self->rtt != 0 {
+        let mut tt = (2 * self->rtt) + (self->tlp_counter * BACKOFF);
+        if tt < MIN_TLP {
+            tt = MIN_TLP;
+        }
+
+        if ref_time == now {
+            return tt;
+        }
+
+        if now >= tt + ref_time {
+            self->time_last_ping_sent = now;
+            log::warn("TLP %u, was expected within %zu ms at rtt current %zu", self->tlp_counter, tt, self->rtt);
+
+            static_attest(self->front < len(self->q));
+
+            // TODO ideally we'd keep the old pkt market somehow, because we still may get the delayed ack,
+            // but might loose the new packet this is now resent in
+
+            bool mut did_mark_some = false;
+            //self->dump();
+            // mark all old frames as lost
+            for (usize mut i = 0; i < qt; i++) {
+                if self->q[i].sent_at != 0 && self->q[i].acked_at == 0 && now >= self->q[i].sent_at + tt {
+                    //log::debug("  resend %u (lost pkt %zu) type %u size %u", i, self->q[i].packet, self->q[i].type, self->q[i].buf.at);
+
+                    //unsafe {
+                    //    hex::dump(self->q[i].buf.slice.mem, self->q[i].buf.at);
+                    //}
+
+
+                    self->q[i].sent_at = 0;
+
+                    did_mark_some = true;
+                }
+            }
+            // reset the sent pointer to the front. send() will reiterate
+            self->sent = self->front;
+
+            //self->dump();
+
+            if did_mark_some {
+                self->tlp_counter += 1;
+            }
+            return tt;
+        }
+        return ref_time + tt - now;
+    }
+
+
+    // if there's nothing to dequeue, just send pings every KEEPALIVE ms
+    let tt = KEEPALIVE + (self->tlp_counter * BACKOFF);
+    if now >= tt + ref_time {
+        self->tlp_counter += 1;
+        if self->tlp_counter >= DEAD_PINGS {
+            return 0;
+        }
+        self->time_last_ping_sent = now;
+        //log::debug("sending ping %u, expected in %zu", self->tlp_counter, tt);
+
+        err::Err+0 mut e;
+        e.make();
+        let mut *frame = self->alloc(&e, channel::FrameType::Ping, 1);
+        return tt;
+    }
+    return ref_time + tt - now;
+}
+
+
+
+
+fn make_frame_size(Frame mut* frame)
+{
+    static_attest(frame->buf.slice.size >= len(frame->buf.slice.mem));
+    static_attest(frame->buf.at  <= len(frame->buf.slice.mem));
+    switch frame->type {
+        channel::FrameType::Ack         => {}
+        channel::FrameType::Ping        => {}
+        channel::FrameType::Disconnect  => {}
+        channel::FrameType::Open        => {
+            err::assert(frame->buf.slice.size >= 4 + 2 + 4);
+            u16 bsize = byteorder::to_be16(frame->buf.at - 4 - 2);
+            memcpy(frame->buf.mem() + 4, &bsize, 2);
+        }
+        channel::FrameType::Stream => {
+            err::assert(frame->buf.slice.size >= 4 + 8 + 2);
+            u16 bsize = byteorder::to_be16(frame->buf.at - 4 - 8 - 2);
+            memcpy(frame->buf.mem() + 4 + 8, &bsize, 2);
+        }
+        channel::FrameType::Close => {
+            err::assert(frame->buf.at == 13 || frame->buf.at == 12);
+        }
+    }
 }
 
 /// send frames out of the queue
-export fn send(Q mut* self, u64 time, u8 mut* buf , u16 buflen) -> usize {
+export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) -> usize {
     assert(time != 0);
 
     static_attest(self->sent < len(self->q));
-
-#if def("debug")
-    test_pq_sent_frames = 0;
-#endif
-
-    u64 mut counter = 0;
 
     u16 mut sent_bytes = 0;
     for (;self->sent != self->back; ) {
 
         Frame mut* f = &((self->q)[self->sent]);
-        f is safe;
 
         if (f->sent_at == 0) {
 
-            if ((sent_bytes + f->payload_len + 1) > buflen) {
+            if ((sent_bytes + (u16)f->buf.at + 1) > buflen) {
                 break;
             }
-#if def("debug")
-            test_pq_sent_frames++;
-#endif
-            if (counter == 0) {
-                counter = ++(self->counter);
-                printf("sending packet %lu\n", counter);
-            }
+
+            make_frame_size(f);
+
+            //log::debug("frame: %zu, sent in pkt %zu", self->sent, counter);
             f->packet   = counter;
             f->sent_at  = time;
 
@@ -176,110 +379,93 @@ export fn send(Q mut* self, u64 time, u8 mut* buf , u16 buflen) -> usize {
             sent_bytes += 1;
 
             unsafe {
-                memcpy(buf + sent_bytes, f->payload, f->payload_len);
+                memcpy(buf + sent_bytes, (u8 mut*)f->buf.slice.mem, f->buf.at);
             }
-            sent_bytes += f->payload_len;
+            sent_bytes += (u16)f->buf.at;
         }
         (self->sent)++;
-        if (self->sent >= QSIZE) {
+        if (self->sent >= qt) {
             self->sent = 0;
         }
     }
     return (usize)sent_bytes;
 }
 
-#if def("debug")
-pub fn dump(Q* q) {
-unsafe{
-    printf("===================================================================\n");
-    printf("      ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        printf("%02d ", i);
-    }
-    printf("\nmark  ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        if (((q->q)[i]).marker != 0) {
-            printf("%02d ", ((q->q)[i]).marker);
-        } else {
-            printf("   ");
-        }
-    }
-    printf("\npckt  ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        if (((q->q)[i]).packet != 0) {
-            printf("%02lu ", ((q->q)[i]).packet);
-        } else {
-            printf("   ");
-        }
-    }
-    printf("\nackd  ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        if (((q->q)[i]).acked_at != 0) {
-            printf("x  ");
-        } else {
-            printf("   ");
-        }
-    }
-    printf("\nfront ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        if (i == q->front) {
-            printf("x  ");
-        } else {
-            printf("   ");
-        }
-    }
-    printf("\nback  ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        if (i == q->back) {
-            printf("x  ");
-        } else {
-            printf("   ");
-        }
-    }
-    printf("\nsent  ");
-    for (int mut i = 0; i < QSIZE; i++) {
-        if (i == q->sent) {
-            printf("x  ");
-        } else {
-            printf("   ");
-        }
-    }
-    printf("\n===================================================================\n");
-}
-}
-
-#endif
-
-#if def("debug")
-static u64 mut test_pq_lost_frames = 0;
-static u64 mut test_pq_sent_frames = 0;
-#endif
-
-
-pub fn test_lost_frames() -> u64 {
-    return test_pq_lost_frames;
-}
-
-pub fn test_sent_frames() -> u64 {
-    return test_pq_sent_frames;
-}
-
-fn wrapinc (usize mut* i) -> usize {
+fn wrapinc (Q+qt * self, usize mut* i) -> usize {
     *i is safe;
     usize v = (*i)++;
-    if (*i >= QSIZE) {
+    if (*i >= qt) {
         *i = 0;
     }
     return v;
 }
 
-fn wrapdec (usize mut* i) -> usize {
+fn wrapdec (Q+qt * self, usize mut* i) -> usize {
     *i is safe;
     usize v = *i;
     if (*i == 0) {
-        *i = QSIZE;
+        *i = qt;
     }
     (*i)--;
     return v;
 }
 
+
+pub fn dump(Q+qt * self) {
+unsafe{
+    fprintf(stderr,"===================================================================\n");
+    fprintf(stderr,"      ");
+    for (int mut i = 0; i < qt; i++) {
+        fprintf(stderr,"%02d ", i);
+    }
+    //fprintf(stderr,"\nmark  ");
+    //for (int mut i = 0; i < qt; i++) {
+    //    if (((self->q)[i]).marker != 0) {
+    //        fprintf(stderr,"%02d ", ((self->q)[i]).marker);
+    //    } else {
+    //        fprintf(stderr,"   ");
+    //    }
+    //}
+    fprintf(stderr,"\npckt  ");
+    for (int mut i = 0; i < qt; i++) {
+        if (((self->q)[i]).packet != 0) {
+            fprintf(stderr,"%02lu ", ((self->q)[i]).packet);
+        } else {
+            fprintf(stderr,"   ");
+        }
+    }
+    fprintf(stderr,"\nackd  ");
+    for (int mut i = 0; i < qt; i++) {
+        if (((self->q)[i]).acked_at != 0) {
+            fprintf(stderr,"x  ");
+        } else {
+            fprintf(stderr,"   ");
+        }
+    }
+    fprintf(stderr,"\nfront ");
+    for (int mut i = 0; i < qt; i++) {
+        if (i == self->front) {
+            fprintf(stderr,"x  ");
+        } else {
+            fprintf(stderr,"   ");
+        }
+    }
+    fprintf(stderr,"\nback  ");
+    for (int mut i = 0; i < qt; i++) {
+        if (i == self->back) {
+            fprintf(stderr,"x  ");
+        } else {
+            fprintf(stderr,"   ");
+        }
+    }
+    fprintf(stderr,"\nsent  ");
+    for (int mut i = 0; i < qt; i++) {
+        if (i == self->sent) {
+            fprintf(stderr,"x  ");
+        } else {
+            fprintf(stderr,"   ");
+        }
+    }
+    fprintf(stderr,"\n===================================================================\n");
+}
+}

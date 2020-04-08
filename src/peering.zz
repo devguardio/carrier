@@ -1,15 +1,29 @@
 /// this will eventually maintain the best path given multiple options
 
+
+using <stdio.h>::{printf};
 using net::address;
+using err;
+using proto;
+using protonerf;
+using log;
 
 export enum Transport {
     Tcp,
     Udp,
 }
 
-export struct Path{
+export enum Class {
+    Invalid         = 0,
+    Local           = 1,
+    Internet        = 2,
+    BrokerOrigin    = 3,
+}
+
+export struct Path {
     Transport           transport;
     address::Address    addr;
+    Class               klass;
     bool                active;
     bool                used;
 }
@@ -18,15 +32,74 @@ export struct Peering {
     Path paths[16];
 }
 
-export fn received(Peering mut *self, Transport transport, address::Address addr) {
+export fn received(Peering mut *self, Transport transport, address::Address addr, Class klass) {
     for (usize mut i = 0; i < static(len(self->paths));i++) {
+        if self->paths[i].addr.eq(&addr) {
+            return;
+        }
         if !self->paths[i].used {
             self->paths[i].transport    = transport;
             self->paths[i].addr         = addr;
+            self->paths[i].klass        = klass;
             self->paths[i].used         = true;
             self->paths[i].active       = true;
-            break;
+            return;
         }
     }
 }
 
+export fn from_proto(Peering mut *self, err::Err+et mut*e, protonerf::Field field)
+    where err::checked(*e)
+{
+    if field.a == 0 {
+        return;
+    }
+    static_attest(len(field.a) == field.value.v_len);
+    static_attest(safe(field.a));
+    let mut dec2 = protonerf::decode(proto::Path, field.a, field.value.v_len);
+
+
+    address::Address mut ip = {0};
+    Class mut cat = Class::Invalid;
+    for (;;) {
+        let field = dec2.next(e);
+        if err::check(e) {
+            return;
+        }
+        if !field.valid {
+            break;
+        }
+        switch field.index {
+            proto::PathField::Category => {
+                switch field.value.v_u64 {
+                    1 => {
+                        cat = Class::Local;
+                    }
+                    2 => {
+                        cat = Class::Internet;
+                    }
+                    3 => {
+                        cat = Class::BrokerOrigin;
+                    }
+                    default => {
+                    }
+                }
+            }
+            proto::PathField::Ipaddr => {
+                if field.a != 0 {
+                    static_attest(len(field.a) == field.value.v_len);
+                    static_attest(safe(field.a));
+                    address::from_str(&ip, (char*)field.a, field.value.v_len);
+                    if ip.valid() {
+                        log::debug("path: %.*s", field.value.v_len, field.a);
+                    } else {
+                        log::debug("cannot parse path: %.*s", field.value.v_len, field.a);
+                    }
+                }
+            }
+        }
+    }
+    if ip.valid() {
+        self->received(Transport::Udp, ip, cat);
+    }
+}

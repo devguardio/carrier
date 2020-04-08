@@ -4,9 +4,11 @@ use snow::types::{Random, Dh, Hash, Cipher};
 use identity;
 use error;
 
-#[link(name="carrier")]
-include!("../target/release/rs/_carrier_cipher.rs");
-include!("../target/release/rs/_carrier_sha256.rs");
+#[path = "../target/release/rs/carrier_cipher.rs"]
+mod cipher;
+
+#[ path = "../target/release/rs/carrier_sha256.rs"]
+mod sha256;
 
 #[derive(Default)]
 pub struct HaclStarResolver;
@@ -62,8 +64,8 @@ struct HashSHA256(Vec<u8>);
 impl Default for HashSHA256 {
     fn default() -> Self {
         unsafe {
-            let mut state = vec![0; sizeof_carrier_sha256_Sha256];
-            carrier_sha256_init(state.as_mut_ptr());
+            let mut state = vec![0; sha256::sizeof_Sha256];
+            sha256::init(state.as_mut_ptr());
             Self(state)
         }
     }
@@ -126,10 +128,10 @@ impl Cipher for CipherChaChaPoly {
     fn encrypt(&self, nonce: u64, authtext: &[u8], plaintext: &[u8], out: &mut [u8]) -> usize {
         unsafe {
             let mut err = error::ZZError::new();
-            let mut state = vec![0u8;sizeof_carrier_cipher_CipherState];
-            carrier_cipher_init(state.as_mut_ptr(), self.key.as_ptr());
+            let mut state = vec![0u8;cipher::sizeof_CipherState];
+            cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
-            let r = carrier_cipher_encrypt_ad(
+            let r = cipher::encrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
                 error::ZERR_TAIL,
@@ -150,10 +152,10 @@ impl Cipher for CipherChaChaPoly {
     fn decrypt(&self, nonce: u64, authtext: &[u8], ciphertext: &[u8], out: &mut [u8]) -> Result<usize, ()> {
         unsafe {
             let mut err = error::ZZError::new();
-            let mut state = vec![0u8;sizeof_carrier_cipher_CipherState];
-            carrier_cipher_init(state.as_mut_ptr(), self.key.as_ptr());
+            let mut state = vec![0u8;cipher::sizeof_CipherState];
+            cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
-            let s = carrier_cipher_decrypt_ad(
+            let s = cipher::decrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
                 error::ZERR_TAIL,
@@ -180,11 +182,11 @@ impl Cipher for CipherChaChaPoly {
 
 impl Hash for HashSHA256 {
     fn block_len(&self) -> usize {
-        unsafe { carrier_sha256_blocklen() }
+        unsafe { sha256::blocklen() }
     }
 
     fn hash_len(&self) -> usize {
-        unsafe { carrier_sha256_hashlen() }
+        unsafe { sha256::hashlen() }
     }
 
     fn name(&self) -> &'static str {
@@ -197,13 +199,13 @@ impl Hash for HashSHA256 {
 
     fn input(&mut self, data: &[u8]) {
         unsafe {
-            carrier_sha256_update(self.0.as_mut_ptr(), data.as_ptr(), data.len());
+            sha256::update(self.0.as_mut_ptr(), data.as_ptr(), data.len());
         }
     }
 
     fn result(&mut self, out: &mut [u8]) {
         unsafe {
-            carrier_sha256_finish(self.0.as_mut_ptr(), out.as_mut_ptr());
+            sha256::finish(self.0.as_mut_ptr(), out.as_mut_ptr());
         }
         self.reset();
     }

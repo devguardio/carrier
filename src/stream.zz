@@ -1,0 +1,132 @@
+using err;
+using channel;
+using log;
+using slice::{Slice, MutSlice};
+using byteorder;
+using io;
+
+export fntype open_fn   (Stream mut* self, err::Err+et mut *e, void mut * user_config, Slice *headers);
+export fntype close_fn  (Stream mut* self);
+export fntype stream_fn (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
+export fntype poll_fn   (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
+
+export struct Config {
+    char *      path;
+    open_fn     open;
+    close_fn    close;
+    stream_fn   stream;
+    poll_fn     poll;
+}
+
+export struct Stream {
+    Config *config;
+    channel::Channel mut* chan;
+    u32 id;
+    u64 order_incomming;
+    u64 order_outgoing;
+
+    bool closing;
+
+    //user
+    usize       state;
+    u64         user1;
+    void mut*   user2;
+}
+
+
+/// allocate a frame for sending later
+export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> MutSlice mut *
+    where err::checked(*e)
+    where reserved_size < 10000
+    model safe(return) // this is technically wrong, but the prover isnt good enough yet
+    model safe(return->slice.mem)
+    model len(return->slice.mem) >= reserved_size + 14
+    model return->slice.size == reserved_size + 14
+    model return->slice.size >= len(return->slice.mem)
+    model return->at <= return->slice.size
+{
+    static_attest(safe(self->chan));
+    let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, reserved_size + 14);
+    if err::check(e) {
+        unsafe {
+            return 0;
+        }
+    }
+
+    err::assert(frame->push32(byteorder::to_be32(self->id)));
+    err::assert(frame->push64(byteorder::to_be64((self->order_outgoing)++)));
+    err::assert(frame->push16(0));
+    return frame;
+}
+
+
+/// undo last allocation without sending.
+/// CAN ONLY UNDO THE LAST ALLOC
+export fn cancel(Stream mut * self)
+{
+    static_attest(safe(self->chan));
+    self->chan->q.cancel();
+    (self->order_outgoing)--;
+}
+
+export fn close(Stream mut* self)
+{
+    self->closing = true;
+}
+
+pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b) -> bool
+    where err::checked(*e)
+{
+    if order <= self->order_incomming {
+        // already seen, dont resend
+        return true;
+    }
+    if order != self->order_incomming + 1 {
+        // TODO buffer
+        // cannot accept, resend later
+        return false;
+    }
+
+    if self->config == 0 {
+        self->order_incomming += 1;
+        return true;
+    }
+    static_attest(safe(self->config));
+
+    if self->config->stream == 0 {
+        self->order_incomming += 1;
+        return true;
+    }
+    static_attest(safe(self->config->stream));
+
+    bool accepted = self->config->stream(self, e, b);
+    if accepted {
+        self->order_incomming += 1;
+    }
+    return accepted;
+}
+
+pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
+    where err::checked(*e)
+{
+    if order <= self->order_incomming {
+        // already seen, dont resend
+        return true;
+    }
+    if order != self->order_incomming + 1 {
+        // TODO buffer
+        // cannot accept, resend later
+        return false;
+    }
+    self->order_incomming += 1;
+
+    static_attest(safe(self->config));
+    if self->config->close == 0 {
+        return true;
+    }
+    static_attest(safe(self->config->close));
+
+    self->config->close(self);
+    return true;
+}
+

@@ -2,8 +2,8 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
-#[link(name="carrier")]
-include!("../target/release/rs/_carrier_crc8.rs");
+#[path =  "../target/release/rs/carrier_crc8.rs"]
+mod crc8;
 
 pub const LATEST_VERSION: u8 = 0x9;
 
@@ -88,7 +88,7 @@ impl EncryptedPacket {
 
         let payload = inbuf.to_vec();
 
-        let header_crc8 = unsafe{ carrier_crc8_broken_crc8(0, inbuf_.as_ptr(), 4+8+8) };
+        let header_crc8 = unsafe{ crc8::broken_crc8(0, inbuf_.as_ptr(), 4+8+8) };
 
         Ok((
             EncryptedPacket {
@@ -123,7 +123,7 @@ impl EncryptedPacket {
 
     pub fn crc8(&self) -> u8 {
         let w = self.header();
-        unsafe{ carrier_crc8_broken_crc8(0, w.as_ptr(), w.len()) }
+        unsafe{ crc8::broken_crc8(0, w.as_ptr(), w.len()) }
     }
 
     pub fn encode(mut self) -> Vec<u8> {

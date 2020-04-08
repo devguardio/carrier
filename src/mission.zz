@@ -1,0 +1,63 @@
+using err;
+using bootstrap;
+using vault;
+using io::unix;
+using net;
+using endpoint;
+using publish as publishing;
+using identity_kit;
+using <string.h>::{memset, memcpy};
+using io;
+using identity;
+using time;
+using bootstrap;
+using net;
+using endpoint;
+using log;
+
+export struct Mission+ {
+    vault::Vault        mut vault;
+    io::unix::Async+100 mut async;
+    endpoint::Endpoint+ mut ep;
+}
+
+export fn start(Mission+mt mut new * self, err::Err+et mut *e, identity::Identity * unsafe cluster_target)
+    where err::checked(*e)
+    where mt > mt/32
+    model safe(self->ep.store)
+{
+    static_attest(safe(self->ep.store));
+
+    io::unix::make(&self->async);
+    vault::from_carriertoml(&self->vault, e);
+    if err::check(e) { return ; }
+
+    identity::Identity mut id = {0};
+    self->vault.get_identity(&id);
+    char mut buf[64] = {0};
+    identity::identity_to_str(e, buf, 64, &id);
+    if err::check(e) { return ; }
+    log::info("my identity: %s", buf);
+
+    bootstrap::sync(e, &self->vault, net::os(), &self->async, time::from_seconds(10));
+    if err::check(e) { return ; }
+
+    endpoint::make(&self->ep, e, net::os(), &self->vault, &self->async);
+    if err::check(e) { return ; }
+
+    if cluster_target != 0 {
+        unsafe {
+            endpoint::cluster_target(&self->ep, mt, cluster_target);
+        }
+    }
+
+    io::await(&self->async, e, endpoint::poll, &self->ep, time::from_seconds(10));
+    if err::check(e) { return ; }
+}
+
+export fn run(Mission+mt mut *self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    io::await(&self->async, e, endpoint::poll, &self->ep, time::infinite());
+    if err::check(e) { return ; }
+}

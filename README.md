@@ -1,5 +1,14 @@
 [![Build Status](https://travis-ci.org/aep/devguard.svg?branch=master)](https://travis-ci.org/aep/devguard)
 
+
+
+this is legacy rust code, it only compiles with +nightly-2019-11-17
+
+carrier is being completely rewritten in zz
+
+
+
+
 carrier is a generic secure message system for IoT
 -----------
 

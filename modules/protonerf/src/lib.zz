@@ -1,0 +1,270 @@
+using err;
+using <string.h>::{memcpy};
+using slice;
+
+export enum FieldType {
+    Skip        = 0,
+    Int32       = 1,
+    Int64       = 2,
+    Uint32      = 3,
+    Uint64      = 4,
+    Sint32      = 5,
+    Sint64      = 6,
+    Bool        = 7,
+    Enum        = 8,
+    Fixed64     = 9,
+    Sfixed64    = 10,
+    Double      = 11,
+    String      = 12,
+    Bytes       = 13,
+    Message     = 14,
+    Repeated    = 15,
+    Fixed32     = 16,
+    Sfixed32    = 17,
+    Float       = 18,
+}
+
+export fntype message_encoding_fn(usize index) -> FieldType;
+
+export fn encode_bytes(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u8*b, usize l)
+    where len(b) >= l
+    where err::checked(*e)
+{
+    encode_bytes_start(str, e, index, l);
+    if err::check(e) {
+        return;
+    }
+    if !str->append_bytes (b,l) {
+        err::fail(e, 3, "short write");
+        return;
+    }
+}
+
+export fn encode_bytes_start(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, usize l)
+    where err::checked(*e)
+{
+    if str->at + 1 + l > str->slice.size  {
+        err::fail(e, 3, "short write");
+        return;
+    }
+
+    u8 mut*mm = str->mem();
+    static_attest(str->at < len(mm));
+    mm[str->at]  = (index << 3) | 2;
+    str->at += 1;
+    static_attest(str->at <= len(str->slice.mem));
+    write_varint(str, e, (u32)l, (u32)(l >> 32));
+}
+
+export fn encode_varint(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u64 mut value)
+    where err::checked(*e)
+{
+    if str->at + 1 > str->slice.size {
+        err::fail(e, 3, "short write");
+        return;
+    }
+    u8 mut*mm = str->mem();
+    static_attest(str->at < len(mm));
+    mm[str->at]  = index << 3;
+    str->at +=1;
+    write_varint(str, e, (u32)value, (u32)(value >> 32));
+}
+
+export struct Decoder {
+    u8    *mem;
+    usize size;
+    usize at;
+    message_encoding_fn instructions;
+}
+
+
+export fn decode(message_encoding_fn instructions, u8 *mem, usize size) -> Decoder {
+    return Decoder {
+        mem:    mem,
+        size:   size,
+        instructions: instructions,
+    };
+}
+
+export union Value {
+    usize   v_len;
+    u64     v_u64;
+    i64     v_i64;
+    bool    v_bool;
+}
+
+export struct Field {
+    bool        valid;
+    u64         index;
+
+    Value       value;
+    u8*         a;
+}
+
+
+
+fn write_varint(slice::MutSlice mut*str, err::Err+et mut*e, u32 mut low, u32 mut high)
+    where err::checked(*e)
+{
+    usize mut i = 0;
+    u8 mut buffer[10];
+    u8 mut byte = (u8)(low & 0x7f);
+    low = low >> 7;
+
+    while (i < 4 && (low != 0 || high != 0))
+    {
+        byte |= 0x80;
+        buffer[i] = byte;
+        i++;
+        byte = (u8)(low & 0x7f);
+        low = low >> 7;
+    }
+
+    if high != 0 {
+        byte = (u8)((u32)byte | ((high & 0x07) << 4));
+        high = high >> 3;
+
+        while high > 0 {
+            byte |= 0x80;
+            static_attest(i < len(buffer));
+            buffer[i] = byte;
+            i++;
+            byte = (u8)(high & 0x7f);
+            high = high >> 7;
+        }
+    }
+
+    static_attest(i < len(buffer));
+    buffer[i] = byte;
+    i++;
+
+    if str->at + i > str->slice.size {
+        err::fail(e, 3, "short write");
+        return;
+    }
+    static_attest(str->at < len(str->slice.mem));
+    memcpy(str->mem() + str->at , buffer, i);
+    str->at += i;
+}
+
+
+fn read_varint(Decoder mut*self, err::Err+et mut*e) -> u64
+    where err::checked(*e)
+{
+    u64 mut val = 0;
+    for (u64 mut intlen =0;;intlen++) {
+        (self->at)++;
+        if self->at >= self->size {
+            err::fail(e, 3, "short read");
+            return 0;
+        }
+        static_attest(self->at < len(self->mem));
+        u8 b = self->mem[self->at];
+        val |= (u64)(b & 127)  << (7 * intlen);
+        if (b & 128) == 0 {
+            break;
+        }
+    }
+    return val;
+}
+
+
+
+
+export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
+    where err::checked(*e)
+{
+
+    for (; self->at < self->size; (self->at)++) {
+        static_attest(self->at < len(self->mem));
+        u8 mut b = self->mem[self->at];
+
+
+        u8 index = b >> 3;
+
+        switch (b & 7) {
+
+            // Varint
+            0 => {
+                u64 val = self->read_varint(e);
+                if err::check(e) {return Field{valid: false}; }
+                (self->at)++;
+
+                return Field {
+                    valid:      true,
+                    index:      index,
+                    value:      Value {
+                        v_u64: val,
+                    }
+                };
+            }
+
+            // Fixed64
+            1 => {
+                if (self->at + 8) >= self->size {
+                    err::fail(e, 3, "short read");
+                    if err::check(e) {return Field{valid: false}; }
+                }
+                static_attest(self->at < len(self->mem));
+                u64 val = *(u64*)(self->mem + self->at);
+                self->at += 8;
+
+                return Field {
+                    valid:      true,
+                    index:      index,
+                    value:      Value {
+                        v_u64: val,
+                    }
+                };
+            }
+
+            // Bytes
+            2 => {
+                u64 l = self->read_varint(e);
+                if err::check(e) {return Field{valid: false};}
+                if ((u64)(self->at) + l) >= (u64)self->size {
+                    err::fail(e, 3, "short read");
+                    if err::check(e) {return Field{valid: false}; }
+                }
+                static_attest(self->at + 1 < len(self->mem));
+                u8*a = self->mem + (self->at + 1);
+                self->at += 1 + (usize)l;
+
+                return Field {
+                    valid:      true,
+                    index:      index,
+                    value:      Value {
+                        v_len:   l,
+                    },
+                    a:          a,
+                };
+            }
+
+            // Fixed32
+            5 => {
+                if (self->at + 4) >= self->size {
+                    err::fail(e, 3, "short read");
+                    if err::check(e) {return Field{valid: false}; }
+                }
+                static_attest(self->at < len(self->mem));
+                u64 val = *(u64*)(self->mem + self->at);
+                self->at += 4;
+
+                return Field {
+                    valid:      true,
+                    index:      index,
+                    value:      Value {
+                        v_u64: val,
+                    }
+                };
+            }
+            default => {
+                err::fail(e, 2, "invalid wire type %u", b & 7);
+            }
+        }
+    }
+
+    return Field{valid: false};
+}
+
+

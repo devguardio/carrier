@@ -1,0 +1,56 @@
+using <stdio.h>::{printf, stdin};
+using <assert.h>::{assert};
+using err;
+using protonerf;
+using hex;
+using string;
+using slice;
+
+
+test {
+    stdin = {0x23,0x22,0x22}
+}
+
+
+fn SimpleMessage(usize index) -> protonerf::FieldType{
+    return protonerf::FieldType::Uint64;
+}
+
+
+pub fn main() -> int {
+    err::Err+1000 mut e;
+    e.new();
+
+    string::String+8 mut inp;
+    inp.clear();
+    inp.fgets(stdin);
+
+    string::String+1000 mut buf;
+    buf.clear();
+    slice::Slice mut sl = buf.slice();
+
+
+    u64 mut number = 0;
+    unsafe {
+        number = *(u64*)inp.mem;
+    }
+
+    protonerf::encode_varint(&sl, &e, 1, number);
+    e.abort();
+
+    static_attest(buf.len < len(buf.mem));
+    hex::dump((u8*)buf.mem, buf.len);
+
+    protonerf::Decoder mut dec = protonerf::decode(SimpleMessage, (u8*)buf.mem, buf.len);
+
+    protonerf::Field v = dec.next(&e);
+    e.abort();
+
+    if !v.valid {
+        return 1;
+    }
+
+    assert(v.value.v_u64 == number);
+
+    return 0;
+}

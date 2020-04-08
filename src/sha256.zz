@@ -1,6 +1,6 @@
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
 using <assert.h>::{assert};
-using <memory.h>::{memset};
+using <string.h>::{memset};
 using std;
 
 pub const usize HASHLEN   = 32;

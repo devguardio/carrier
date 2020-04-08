@@ -1,34 +1,186 @@
 using cipher;
 using symmetric;
 using <stdio.h>::{printf, fprintf, stderr};
+using <string.h>::{memcpy};
 using err;
 using hex;
 using byteorder;
 using pq;
 using std;
 using crc8;
-using <assert.h>::{assert};
+using <string.h>::{memset};
 using string;
 using peering;
+using log;
+using stream;
+using endpoint;
+using slice;
+using clock;
+using io;
+using router;
+using time;
+using hpack;
+using protonerf;
+using proto;
+using carrier;
+using vault;
+
+export enum FrameType {
+    Ack         = 1,
+    Ping        = 2,
+    Disconnect  = 3,
+    Open        = 4,
+    Stream      = 5,
+    Close       = 6,
+    Configure   = 7,
+    Fragmented  = 8,
+}
 
 export struct Channel {
+    vault::Vault mut* store;
+    endpoint::Endpoint  mut* endpoint;
+
+    u8      version;
     u64     route;
     bool    responder;
     u64     mut counter_out;
+    bool    this_is_the_broker_channel;
+
     cipher::CipherState mut c_mine;
     cipher::CipherState mut c_them;
-    pq::Q   mut q;
-    peering::Peering  mut peering;
+    pq::Q+16            mut q;
+    io::Io              mut timer;
 
-    u64     mut outgoing_acks[32];
-    u8      mut outgoing_acks_at;
+    u32                 mut streamidcounter;
+    stream::Stream      mut streams[8];
+    peering::Peering    mut peering;
+
+    u64 mut outgoing_acks[32];
+    u8  mut outgoing_acks_at;
+}
+
+pub fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> stream::Stream mut *
+    where err::checked(*e)
+    model (return == 0) ||  safe(return)
+{
+    let r = self->alloc_stream(1 + self->streamidcounter * 2, conf);
+    if r == 0 {
+        err::fail(e,1,"oom");
+        return 0;
+    }
+    static_attest(safe(r));
+
+    let mut *frame = self->q.alloc(e, FrameType::Open, 100);
+    if err::check(e) {
+        r->id = 0;
+        return 0;
+    }
+
+    frame->push32(byteorder::to_be32(r->id)); // stream
+    frame->push16(0); // size placeholder
+
+    static_attest(nullterm(conf->path));
+    static_attest(safe(conf->path));
+    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, string::strlen(conf->path));
+    if err::check(e) {
+        r->id = 0;
+        return 0;
+    }
+
+    self->streamidcounter += 1;
+    return r;
+}
+
+pub fn cleanup(Channel mut* self) {
+    for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
+        if self->streams[i].config != 0 {
+            let config = self->streams[i].config;
+            static_attest(safe(config));
+            if config->close != 0 {
+                static_attest(safe(config->close));
+                config->close(&self->streams[i]);
+            }
+        }
+    }
+    self->q.clear();
+}
+
+pub fn alloc_stream(Channel mut* self, u32 streamid, stream::Config * unsafe config) -> stream::Stream mut * {
+    for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
+        if self->streams[i].id == 0 {
+            memset(self->streams + i, 0, sizeof(stream::Stream));
+            self->streams[i].id = streamid;
+            self->streams[i].order_outgoing  = 2;
+            self->streams[i].config = config;
+            self->streams[i].chan   = self;
+            return self->streams + i;
+        }
+    }
+    return 0;
+}
+
+pub fn stream_exists(Channel mut* self, u32 streamid) -> bool {
+    for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
+        if self->streams[i].id == streamid {
+            return true;
+        }
+    }
+    return false;
 }
 
 
-pub fn from_symmetric(symmetric::SymmetricState * symm, u64 route, bool responder) -> Channel {
+fn send_close_frame(Channel mut* self, err::Err+et mut *e, u32 streamid, u64 order)
+    where err::checked(*e)
+{
+    slice::MutSlice mut * frame = self->q.alloc(e, FrameType::Close, 16);
+    if err::check(e) {
+        e->make();
+        return;
+    }
+
+    frame->push32(byteorder::to_be32(streamid)); // stream
+    frame->push64(byteorder::to_be64(order)); // order
+
+    if self->version >= 0x09 {
+        frame->push(0); //TODO set reason
+    }
+}
+
+fn clean_closed(Channel mut* self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
+        if self->streams[i].closing && self->streams[i].id != 0 {
+            stream::Config *config = self->streams[i].config;
+            if config != 0 {
+                static_attest(safe(config));
+                stream::close_fn cb = config->close;
+                if cb != 0 {
+                    static_attest(safe(cb));
+                    cb(self->streams + i);
+                }
+                let order = self->streams[i].order_outgoing;
+
+                self->send_close_frame(
+                    e,
+                    self->streams[i].id,
+                    self->streams[i].order_outgoing
+                );
+                if err::check(e) {
+                    return;
+                }
+
+            }
+            memset(self->streams + i, 0, sizeof(stream::Stream));
+        }
+    }
+}
+
+pub fn from_symmetric(symmetric::SymmetricState * symm, u8 version, u64 route, bool responder) -> Channel {
     Channel mut c = Channel{
         route:      route,
         responder:  responder,
+        version:    version,
     };
 
     if responder {
@@ -38,27 +190,77 @@ pub fn from_symmetric(symmetric::SymmetricState * symm, u64 route, bool responde
     }
 
     c.counter_out = 1;
-    c.outgoing_acks_at = 1;
+
+    // why was this 1?!
+    c.outgoing_acks_at = 0;
 
     return c;
 }
 
-pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -> bool
+fn disconnect(Channel mut* this) {
+    endpoint::Endpoint mut * ep = (endpoint::Endpoint mut *)this->endpoint;
+    err::assert_safe(ep);
+    ep->statem.connected.disconnect(this->route);
+}
+
+
+pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string::String+st mut* buf) -> io::Result
     where err::checked(*e)
     where st >= 4 + 8 + 8 + 320
 {
-    if self->outgoing_acks_at == 0 {
-        return false;
+    // poll user streams
+    for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
+        if self->streams[i].config != 0 {
+            let config = self->streams[i].config;
+            static_attest(safe(config));
+            if config->poll != 0 {
+                static_attest(safe(config->poll));
+                config->poll(&self->streams[i], e, async);
+                if err::check(e) {
+                    return io::Result::Error;
+                }
+            }
+        }
     }
 
-    u64 counter_be = byteorder::to_be64(self->counter_out+ 1 /* rust version has an off by one*/);
+    self->clean_closed(e);
+    if err::check(e) {
+        return io::Result::Error;
+    }
+
+
+    if self->timer.valid() {
+        self->timer.close();
+    }
+    let now = clock::tick();
+    let tlp = self->q.keepalive(now);
+    if tlp == 0 {
+        log::error("[%lu] connection is dead", self->route);
+        disconnect(self);
+        return io::Result::Later;
+    }
+
+
+    //log::debug("[%lu] next timer in %lu", self->route, tlp);
+
+    self->timer = io::timeout(async, e, time::from_millis(tlp));
+    if err::check(e) {
+        return io::Result::Error;
+    }
+    async->select(e, &self->timer, io::Ready::Read);
+    if err::check(e) {
+        return io::Result::Error;
+    }
+
+
+    u64 counter_be = byteorder::to_be64(self->counter_out + 1 /* rust version has an off by one*/);
     u8* counter_b = (u8*)&counter_be;
 
     u64 mut route   = self->route;
     u8 mut* mut route_b = (u8 mut*)&route;
     if self->responder {
         unsafe {
-        route_b[7] |= 0b00000001;
+            route_b[7] |= 0b00000001;
         }
     }
 
@@ -110,9 +312,10 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -
         buf->mem[buf->len+ 1]   = (char)self->outgoing_acks_at;
         buf->len += 2;
 
+        //TODO acks must be sorted
         static_attest(len(self->outgoing_acks) > self->outgoing_acks_at);
         for (usize mut i = 0; i < (usize)self->outgoing_acks_at ; i++) {
-            assert(buf->len < st);
+            err::assert(buf->len < st);
             u64 ackd  = byteorder::to_be64((self->outgoing_acks)[i]);
             unsafe {
                 std::memcpy(buf->mem + buf->len , &ackd, 8);
@@ -121,6 +324,17 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -
         }
         self->outgoing_acks_at = 0;
     }
+
+    // deque some frames
+    static_attest(len(buf->mem) > buf->len);
+    buf->len += self->q.send(now, (u8 mut*)buf->mem + buf->len, st - buf->len, self->counter_out);
+
+
+    // nothing in the packet
+    if buf->len - size_before_payload < 1 {
+        return io::Result::Later;
+    }
+
 
     (*payload_size) = byteorder::to_be16(buf->len - size_before_payload);
 
@@ -133,22 +347,26 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -
     usize padded_size = buf->len - unencrypted_size;
     usize budget      = st       - unencrypted_size;
 
-    static_attest(buf->len < len(buf->mem));
-    hex::dump((u8*)buf->mem, buf->len);
 
     u8* plaintext = (u8*)buf->mem + 4 + 8 + 8;
     static_attest(safe(plaintext));
+
+
 
     u8 mut* ciphertext = (u8 mut*)buf->mem + unencrypted_size;
     static_attest(safe(ciphertext));
 
     static_attest(len(ciphertext) >= padded_size);
     static_attest(len(ciphertext) >= budget);
+    static_attest(buf->len < len(buf->mem));
+
+    //log::debug("pkt before encrypt:");
+    //hex::dump((u8*)buf->mem, buf->len);
 
     usize cipherlen = cipher::encrypt(
         &(self->c_mine),
         e,
-        ciphertext,
+        plaintext,
         padded_size,
         self->counter_out,
         ciphertext,
@@ -156,20 +374,21 @@ pub fn pull(Channel mut* self, err::Err+et mut* e, string::String+st mut* buf) -
     );
 
     if err::check(e) {
-        return false;
+        return io::Result::Error;
     }
 
     self->counter_out += 1;
 
     buf->len = unencrypted_size + cipherlen;
-    return true;
+    return io::Result::Ready;
 }
 
-pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* body, usize l, u64 counter)
+pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u64 counter, u8 version)
     where err::checked(*e)
     where len(body) >= l
     where l > 16
 {
+
     // counter is offset by one in the rust implementation
     u64 realcounter = counter - 1;
 
@@ -186,61 +405,379 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* body, usize l, u64 co
         return;
     }
 
+
     // broken crc and flags 2B
+    if version >= 9 {
+        body = body + 2;
+    }
+    
     // payload len 2B
     usize mut frames_len;
-    unsafe {frames_len = byteorder::from_be16(*(u16*)(body + 2)) }
-    u8 *frames = body + 4;
+    unsafe {frames_len = byteorder::from_be16(*(u16*)(body)) }
+    u8 *frames = body + 2;
     if frames_len >= plainlen - 4 {
         err::fail(e, 192, "corrupt");
         return;
     }
 
-    for (usize mut i = 0; i < frames_len; i++) {
+
+    //log::debug("incomming frames");
+    //static_attest(len(frames) > frames_len);
+    //hex::dump(frames, frames_len);
+
+    // non-ack frames require an ack to be sent
+    bool mut ack_required  = false;
+    // transient failure, tell the remote to resend
+    bool mut please_resend = false;
+
+    for (usize mut i = 0; i < frames_len; ) {
         static_attest(i < len(frames));
         static_attest(i < len(body));
-        switch frames[i] {
+        u8 frametype = frames[i];
+        i++;
+        switch frametype {
             0x00 => {}
-            0x01 => {
-                printf("received ack frame\n");
-                //TODO
+            FrameType::Ack => {
+                if i + 2 + 2  >= frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+                static_attest(i < len(frames));
+                u16 delay = byteorder::from_be16(*(u16*)(frames + i));
+                i += 2;
+                static_attest(i < len(frames));
+                usize count = (usize)byteorder::from_be16(*(u16*)(frames + i));
+                i += 2;
+
+                if i + 8 * count > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+
+                for (usize mut j = 0; j < count; j++) {
+                    static_attest(i < len(frames));
+                    static_attest(i < len(frames) - 8);
+                    u64 mut ackorder = byteorder::from_be64(*(u64*)(frames + i));
+                    i += 8;
+
+                    // acks are off by one in original rust impl
+                    ackorder -= 1;
+
+
+                    log::info("[%lu] received ack %lu", self->route, ackorder);
+
+                    self->q.ack(clock::tick(), ackorder);
+                }
             }
-            0x02 => {
-                printf("received ping frame\n");
-                ack(self, e, counter);
+            FrameType::Ping => {
+                ack_required = true;
+
+                log::debug("[%lu] received ping frame", self->route);
                 if err::check(e) {
                     return;
                 }
             }
-            0x03 => {
-                printf("received disconnect frame\n");
+            FrameType::Disconnect => {
+                ack_required = true;
+
+                log::warn("[%lu] received disconnect frame", self->route);
                 //TODO
             }
-            0x04 => {
-                printf("received open frame\n");
-                //TODO
+            FrameType::Open => {
+                ack_required = true;
+                if i + 4 + 2  >= frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+                static_attest(i < len(frames));
+                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                i += 4;
+                static_attest(i < len(frames));
+                usize size    = (usize)byteorder::from_be16(*(u16*)(frames + i));
+                i += 2;
+
+
+                if i + size > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+
+                static_attest(i < len(frames));
+                u8 * hmem = frames + i;
+                static_attest(size < len(hmem));
+                new header_slice = slice::slice::make(hmem, size);
+
+                i += size;
+                static_attest(i < len(frames));
+
+                if self->stream_exists(streamid) {
+                    log::debug("[%lu] received open stream=%u (DUP)", self->route, streamid, size);
+                } else {
+                    log::debug("[%lu] received open stream=%u, size=%zu", self->route, streamid, size);
+
+                    slice::Slice mut path = {0};
+                    for(let mut it = hpack::decoder::decode(header_slice); it.next(e);) {
+                        if it.key.eq_cstr(":path") {
+                            path = it.val;
+                        }
+                    }
+                    if err::check(e) {
+                        return;
+                    }
+                    static_attest(len(path.mem) >= path.size);
+
+                    err::assert_safe(self->endpoint);
+
+                    stream::Config ** mut registry = self->endpoint->p2p_stream_registry;
+                    void mut ** mut registry_user = self->endpoint->p2p_stream_registry_user_config;
+                    usize mut registry_len = static(len(self->endpoint->p2p_stream_registry));
+                    if self->this_is_the_broker_channel {
+                        registry        = self->endpoint->broker_stream_registry;
+                        registry_user   = self->endpoint->broker_stream_registry_user_config;
+                        registry_len    = static(len(self->endpoint->broker_stream_registry));
+                    }
+                    static_attest(len(registry)         >= registry_len);
+                    static_attest(len(registry_user)    >= registry_len);
+
+
+                    let mut accepted = false;
+                    if path.eq_cstr("/v2/carrier.discovery.v1/discover") {
+                        accepted = true;
+                        self->disco(e, streamid);
+                        if err::check(e) {
+                            e->eprint();
+                            e->make();
+                            please_resend = true;
+                        }
+                    } else if path.size > 0 {
+
+
+                        for (usize mut i = 0; i < registry_len; i++) {
+                            stream::Config * mut conf = registry[i];
+                            void mut * userconf = registry_user[i];
+                            if conf == 0 {
+                                break;
+                            }
+                            static_attest(safe(conf));
+                            err::assert_safe(conf->path);
+                            static_attest(nullterm(conf->path));
+
+                            if path.eq_cstr(conf->path) {
+                                accepted = true;
+
+                                stream::Stream mut* streami = self->alloc_stream(streamid, conf);
+                                if streami == 0 {
+                                    log::warn("max streams");
+                                    please_resend = true;
+                                } else {
+                                    static_attest(safe(streami));
+                                    streami->order_incomming = 1;
+                                    streami->order_outgoing = 1;
+                                    err::assert_safe(conf->open);
+                                    conf->open(streami, e, userconf, &header_slice);
+
+                                    if err::check(e) {
+                                        e->eprint();
+                                        e->make();
+                                        please_resend = true;
+                                    }
+
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if !accepted {
+                        log::warn("[%lu] no service accepts path '%.*s'", self->route, path.size, path.mem);
+
+                        let mut *frame = self->q.alloc(e, FrameType::Stream, 28);
+                        if err::check(e) {
+                            e->eprint();
+                            e->make();
+                            please_resend = true;
+                        } else {
+                            frame->push32(byteorder::to_be32(streamid)); // stream
+                            frame->push64(byteorder::to_be64(1)); // order
+                            frame->push16(0); // size placeholder
+
+                            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"404", 3);
+                            if err::check(e) { return ; }
+                            self->send_close_frame(e, streamid, 2);
+                            if err::check(e) {
+                                e->eprint();
+                                e->make();
+                            }
+                        }
+                    }
+                }
             }
-            0x05 => {
-                printf("received stream frame\n");
-                //TODO
+            FrameType::Stream => {
+                ack_required = true;
+                if i + 4 + 8 + 2  > frames_len {
+                    err::fail(e, 192, "short read. %d > %d", i + 4 + 8 + 2, frames_len);
+                    return;
+                }
+                static_attest(i < len(frames));
+                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                i += 4;
+                static_attest(i < len(frames));
+                u64 order   = byteorder::from_be64(*(u64*)(frames + i));
+                i += 8;
+                static_attest(i < len(frames));
+                usize size    = (usize)byteorder::from_be16(*(u16*)(frames + i));
+                i += 2;
+
+                log::debug("[%lu] received stream frame for stream=%u, order=%u, size=%zu",
+                    self->route, streamid, order, size);
+
+                if i > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+                if i + size > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+                static_attest(len(frames) > i);
+                static_attest(len(frames +i) > size);
+
+
+
+                let mut found_channel = false;
+                for (usize mut j =0 ; j < static(len(self->streams)); j++) {
+                    if self->streams[j].id == streamid {
+                        found_channel = true;
+                        new bs = slice::slice::make(frames + i, size);
+                        let accepted = self->streams[j].incomming_stream(
+                            e,
+                            order,
+                            &bs
+                        );
+                        if err::check(e) {
+                            e->eprint();
+                            e->make();
+                            please_resend = true;
+                        } else if !accepted {
+                            //TODO send backpressure signal
+                            err::fail(e, 192, "stream %u ordering is backpressured at position %u, unable to accept %u",
+                                    streamid, self->streams[j].order_incomming, order);
+                            please_resend = true;
+                        }
+                    }
+                }
+                if !found_channel {
+                    log::warn("frame for unknown stream %zu",streamid);
+                    self->send_close_frame(e, streamid, 2);
+                    if err::check(e) {
+                        e->make();
+                    }
+                }
+
+                i += size;
+                static_attest(i <= len(frames));
+
+
             }
-            0x06 => {
-                printf("received close frame\n");
-                //TODO
+            FrameType::Close => {
+                ack_required = true;
+                if self->version >= 0x09 {
+                    if i + 4 + 8 + 1  > frames_len {
+                        err::fail(e, 192, "[%lu] short read",  self->route);
+                        return;
+                    }
+                } else {
+                    if i + 4 + 8  > frames_len {
+                        err::fail(e, 192, "[%lu] short read",  self->route);
+                        return;
+                    }
+                }
+                static_attest(i < len(frames));
+                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                i += 4;
+                static_attest(i < len(frames));
+                u64 order   = byteorder::from_be64(*(u64*)(frames + i));
+                i += 8;
+                static_attest(i < len(frames));
+
+                if self->version >= 0x09 {
+                    u8 reason = *(frames + i);
+                    i += 1;
+                    static_attest(i <= len(frames));
+                }
+
+                log::info("[%lu] received close for stream=%u, order=%u", self->route, streamid, order);
+
+                for (usize mut i =0 ; i < static(len(self->streams)); i++) {
+                    if self->streams[i].id == streamid {
+                        static_attest(len(frames) > i);
+                        bool accepted = self->streams[i].incomming_close(
+                            e,
+                            order
+                        );
+                        if err::check(e) {
+                            return;
+                        }
+                        if !accepted {
+                            err::fail(e, 192, "stream %u ordering is backpressured at position %u, unable to accept %u",
+                                streamid, self->streams[i].order_incomming, order);
+                            please_resend = true;
+                        }
+                    }
+                }
             }
-            0x07 => {
-                printf("received configure frame\n");
-                //TODO
+            FrameType::Configure => {
+                ack_required = true;
+                if i + 3  > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+                static_attest(i < len(frames));
+                //flags
+                i += 1;
+
+                static_attest(i < len(frames));
+                usize size    = (usize)byteorder::from_be16(*(u16*)(frames + i));
+
+                if i + size > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+
+                i += size;
+                static_attest(len(frames) > i);
             }
-            0x08 => {
-                printf("received fragment\n");
-                //TODO
+            FrameType::Fragmented => {
+                ack_required = true;
+                if i + 4 + 8 + 4  > frames_len {
+                    err::fail(e, 192, "short read");
+                    return;
+                }
+                static_attest(i < len(frames));
+
+                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                i += 4;
+                static_attest(i < len(frames));
+
+                u64 order   = byteorder::from_be64(*(u64*)(frames + i));
+                i += 8;
+                static_attest(i < len(frames));
+
+                u32 fragments = byteorder::from_be32(*(u32*)(frames + i));
+                i += 4;
+                static_attest(i < len(frames));
+
+                log::debug("[%lu] received fragemented for stream=%u, order=%u", self->route, streamid, order);
             }
             default => {
                 err::fail(e, 194, "invalid frame %u", body[i]);
                 return;
             }
         }
+        if ack_required && !please_resend {
+            ack(self, e, counter);
+        }
+        //log::debug("[%lu] end of frames", self->route);
     }
 }
 
@@ -250,8 +787,92 @@ pub fn ack(Channel mut* self, err::Err mut* e, u64 ackd) {
         (self->outgoing_acks)[(usize)self->outgoing_acks_at] = ackd;
         self->outgoing_acks_at+=1;
     } else {
-        fprintf(stderr, "outgoing ack buffer overflow\n");
+        log::error("outgoing ack buffer overflow");
     }
 }
 
+fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
+    where err::checked(*e)
+{
+    let mut *frame1 = self->q.alloc(e, FrameType::Stream, 14 + 14);
+    if err::check(e) { return; }
 
+    err::assert(frame1->push32(byteorder::to_be32(stream_id)));
+    err::assert(frame1->push64(byteorder::to_be64(1)));
+    err::assert(frame1->push16(0));
+
+
+    usize mut memneeded = 0;
+    err::assert_safe(self->endpoint);
+    for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
+        stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];
+        if conf == 0 {
+            break;
+        }
+        static_attest(safe(conf));
+        err::assert_safe(conf->path);
+        static_attest(nullterm(conf->path));
+        memneeded += 2 + string::strlen(conf->path);
+    }
+
+    //header
+    memneeded += 4 + 8 + 2;
+    // revision
+    memneeded += 8;
+    // application strings
+    memneeded += 10;
+
+
+
+    let mut *frame2 = self->q.alloc(e, FrameType::Stream, memneeded);
+    static_attest(frame2->slice.size >= 20);
+    if err::check(e) {
+        e->make();
+        hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"500", 3);
+        if err::check(e) { return; }
+    } else {
+        hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"200", 3);
+        if err::check(e) { return; }
+
+        err::assert(frame2->push32(byteorder::to_be32(stream_id)));
+        err::assert(frame2->push64(byteorder::to_be64(2)));
+        err::assert(frame2->push16(1));
+
+        protonerf::encode_varint(frame2, e, proto::DiscoveryResponseField::CarrierRevision, carrier::REVISION);
+        e->abort();
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::CarrierBuildId,           (u8*)"??", 2);
+        e->abort();
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::Application,              (u8*)"zz", 2);
+        e->abort();
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::ApplicationVersion,      (u8*)"??", 2);
+        e->abort();
+
+        for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
+            stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];
+            if conf == 0 {
+                break;
+            }
+            static_attest(safe(conf));
+            err::assert_safe(conf->path);
+            static_attest(nullterm(conf->path));
+
+            protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::Paths,
+                (u8*)conf->path,
+                string::strlen(conf->path)
+            );
+            e->abort();
+        }
+    }
+
+    slice::MutSlice mut * frame3 = self->q.alloc(e, FrameType::Close, 16);
+    if err::check(e) {
+        return;
+    }
+
+    frame3->push32(byteorder::to_be32(stream_id)); // stream
+    frame3->push64(byteorder::to_be64(3)); // order
+
+    if self->version >= 0x09 {
+        frame3->push(0); //TODO set reason
+    }
+}

@@ -1,0 +1,105 @@
+using <stdio.h>::{printf};
+using noise;
+using slice::{MutSlice};
+using err;
+using identity;
+using byteorder;
+using crc8;
+using std;
+using carrier;
+using endpoint;
+using string;
+using symmetric;
+using hex;
+using <assert.h>::{assert};
+
+pub fn accept_insecure(
+    noise::Responder mut* self,
+    err::Err+et mut* e,
+    identity::Secret  *secret,
+    u64 mut route,
+    u64 timestamp,
+    MutSlice mut *frame,
+)
+    where err::checked(*e)
+    where frame->slice.size >= 271
+{
+    let size_before_any = frame->at;
+
+    frame->push(0x08);
+    frame->push(0x00);
+    frame->push(0x00);
+    frame->push(0x00);
+
+    unsafe {
+        *(((u8 mut*)&route) + 7) |= 0b00000001;
+    }
+    frame->push64(route);
+    frame->push64(byteorder::to_be64(0)); //counter
+
+    // <- e,
+    identity::Address mut ephemeral_address = {0};
+    identity::address_from_secret(&ephemeral_address, &self->ephemeral);
+    symmetric::mix_hash(&self->symm, ephemeral_address.k, 32);
+    frame->append_bytes(ephemeral_address.k, 32);
+
+    //, ee
+    identity::Address mut dh = {0};
+    identity::dh(&dh, &self->ephemeral, &self->remote_ephemeral);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+    // encrypted header
+    static_attest(frame->at < frame->slice.size);
+    let before_encrypt_len = frame->at;
+    let before_encrypt_mem = frame->mem() + frame->at;
+
+    // identity
+    identity::Identity mut eid = {0};
+    identity::identity_from_secret(&eid, secret);
+    frame->append_bytes(eid.k, 32);
+
+    // timestamp
+    frame->push64(byteorder::to_be64(timestamp));
+
+    // revision
+    frame->push32(byteorder::to_be32(carrier::REVISION));
+
+
+    frame->at += 16;
+
+    // junk overhead required to get rust version working which incorrectly
+    // checks is the packet is 120 bytes
+    frame->at += 76;
+
+    static_attest(frame->at  < len(frame->slice.mem));
+    static_attest(frame->at - before_encrypt_len + 16 < len(before_encrypt_mem));
+    static_attest(frame->slice.size  <= len(frame->slice.mem));
+
+    printf("<> pre encrypt %zu\n", frame->at);
+    hex::dump_slice(frame);
+
+    usize rs = symmetric::encrypt_and_mix_hash(&self->symm, e,
+        before_encrypt_mem, frame->at - before_encrypt_len - 16,
+        0,
+        before_encrypt_mem, frame->at - before_encrypt_len
+    );
+
+
+    //signature
+    u8 mut signme[static(len(endpoint::SIGN_PURPOSE) + len(self->symm.h))] = {0};
+    std::memcpy(signme, endpoint::SIGN_PURPOSE, string::strlen(endpoint::SIGN_PURPOSE));
+    u8 mut * mem = signme + string::strlen(endpoint::SIGN_PURPOSE);
+    std::memcpy(mem, self->symm.h, static(len(self->symm.h)));
+
+    identity::Signature mut sig = {0};
+    identity::sign(secret, &sig, signme, static(len(signme)));
+    printf("<> %zu %zu\n", frame->at, size_before_any);
+    static_attest(frame->slice.size  <= len(frame->slice.mem));
+
+    hex::dump_slice(frame);
+    assert(frame->append_bytes(sig.k, 64));
+    hex::dump_slice(frame);
+
+    printf("TOTAL %zu %zu %zu\n", frame->at, size_before_any, frame->at - size_before_any);
+
+}

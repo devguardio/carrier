@@ -1,15 +1,14 @@
 using <stdio.h>::{printf};
 using <string.h>::{strlen};
 using err;
-
+using slice::{Slice};
+using <string.h>::{memcpy};
 
 const usize DYNSIZE = 16;
 
-struct DynamicEntry {
-    char*   keystr;
-    usize   keylen;
-    char*   valstr;
-    usize   vallen;
+struct Entry {
+    Slice key;
+    Slice val;
 }
 
 
@@ -22,7 +21,7 @@ enum Repr {
     LiteralWithoutIndexing,
 }
 
-fntype callback(err::Err+et mut*e, void *user, char *key, usize keylen, char *val, usize vallen);
+fntype callback(err::Err+et mut*e, void mut*user, Slice *key, Slice *val);
 
 
 fn get_repr(u8 b) -> Repr {
@@ -39,20 +38,21 @@ fn get_repr(u8 b) -> Repr {
     }
 }
 
-pub fn decode_integer(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, u8 prefix_size) -> uint
+pub fn decode_integer(Iterator mut* self, err::Err+et mut*e, u8 prefix_size) -> uint
     where err::checked(*e)
-    where len(wire) >= l
-    where l > 0
-    where len(wire) > *at
     where prefix_size > 0
     where prefix_size < 9
 {
+
     // Make sure there's no overflow in the shift operation
     u8 mut mask = 0xff;
     if prefix_size < 8 {
         mask = (1 << prefix_size) - 1;
     }
-    uint mut value = as<uint>((wire[*at] & mask));
+
+    static_attest(len(self->wire.mem) > self->at);
+    uint mut value = as<uint>((self->wire.mem[self->at] & mask));
+    (self->at)++;
 
     // Value fits in the prefix bits.
     if value < as<uint>(mask) {
@@ -65,19 +65,17 @@ pub fn decode_integer(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, u8 pr
     // bytes as necessary to decode the integer.
     u8 mut m = 0;
 
-    for (; *at < l ; ) {
-        (*at)++;
-        if *at >= l {
-            break;
-        }
-        static_attest(*at < l);
+    for (; self->at < self->wire.size; (self->at)++) {
+
 
         consumed += 1;
-        u8 b = wire[*at];
+        static_attest(len(self->wire.mem) > self->at);
+        u8 b = self->wire.mem[self->at];
         value += as<uint>((b & 127) * (1 << m));
         m += 7;
 
         if (b & 128) != 128 {
+            (self->at)++;
             return value;
         }
 
@@ -98,14 +96,10 @@ pub fn decode_integer(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, u8 pr
 
 
 
-fn decode_literal(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, bool index, DynamicEntry mut * dyn, callback cb, void * unsafe user)
+fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
     where err::checked(*e)
-    where len(wire) >= l
-    where len(wire) > *at
-    where l > 0
-    where safe(cb)
-    where len(dyn) == 16
 {
+
     u8 mut prefix;
     if index {
         prefix = 6;
@@ -114,136 +108,149 @@ fn decode_literal(err::Err+et mut*e, u8 *wire, usize l, usize mut *at, bool inde
     }
     static_attest(prefix == 4 || prefix == 6);
 
-    uint x = decode_integer(e, wire, l, at, prefix);
+    uint x = self->decode_integer(e, prefix);
     if err::check(e) {
-        return;
+        return false;
     }
-
-    (*at)++;
-    if l <= *at {
+    if self->wire.size <= self->at  {
         err::fail(e, 15, "eof");
-        return;
+        return false;
     }
-    static_attest(l > *at);
-
-    char * mut key       = 0;
-    usize  mut keylen    = 0;
+    static_attest(self->wire.size  > self->at);
 
     if x == 0 {
-        uint strlen1 = decode_integer(e, wire, l, at, 7);
+        uint strlen1 = self->decode_integer(e, 7);
         if err::check(e) {
-            return;
+            return false;
         }
-        if (*at)++ >= l {
+        if (self->at  + (usize)strlen1) >= self->wire.size {
             err::fail(e, 15, "eof");
-            return;
+            return false;
         }
-        if (*at + (usize)strlen1) >= l {
-            err::fail(e, 15, "eof");
-            return;
-        }
-        static_attest(len(wire) > *at);
-        key     = (char*)(wire + *at);
-        keylen  = (usize)strlen1;
-        (*at)  += (usize)strlen1;
+        static_attest(len(self->wire.mem) > self->at);
+        self->key = Slice {
+            mem:    (self->wire.mem + self->at),
+            size:   (usize)strlen1,
+        };
+        self->at  += (usize)strlen1;
     } else if x > 0 && (usize)x < static(len(STATIC_KEYS)) {
-        key     = STATIC_KEYS[(usize)x];
-        keylen  = (usize)strlen(STATIC_KEYS[(usize)x]);
+        self->key = Slice {
+            mem:    (u8*)STATIC_KEYS[(usize)x],
+            size:   (usize)strlen(STATIC_KEYS[(usize)x]),
+        };
     } else if x > 61 && x < 76 {
         usize di = (usize)x - 61;
-        DynamicEntry *de = &(dyn[di]);
-        key     = de->keystr;
-        keylen  = de->keylen;
+        Entry *de = &(self->dyn[di]);
+        self->key = de->key;
     } else {
         err::fail(e, 1, "%u not implemented", x);
-        return;
+        return false;
     }
 
     static_attest(err::checked(*e));
-    static_attest(l > *at);
-    uint strlen2 = decode_integer(e, wire, l, at, 7);
+    uint strlen2 = self->decode_integer(e, 7);
     if err::check(e) {
-        return;
+        return false;
     }
-    if (*at)++ >= l {
+    if (self->at  + (usize)strlen2) > self->wire.size {
         err::fail(e, 15, "eof");
-        return;
-    }
-    if (*at + (usize)strlen2) > l {
-        err::fail(e, 15, "eof");
-        return;
+        return false;
     }
 
-    static_attest(len(wire) > *at);
-    cb(e, user, key, keylen, (char*)(wire + *at), strlen2);
+    static_attest(len(self->wire.mem) > self->at);
+    self->val = Slice {
+        mem:    (self->wire.mem + self->at),
+        size:   (usize)strlen2,
+    };
 
     if index {
         for (usize mut i = 0; i < DYNSIZE; i++) {
-            if (dyn[i]).keystr == 0 {
-                (dyn[i]).keystr = key;
-                (dyn[i]).keylen = keylen;
-                (dyn[i]).valstr = (char*)(wire + *at);
-                (dyn[i]).vallen = (usize)strlen2;
+            if (self->dyn[i]).key.mem == 0 {
+                (self->dyn[i]).key = self->key;
+                (self->dyn[i]).val = self->val;
             }
         }
     }
 
-    (*at) += (usize)strlen2 - 1;
+    self->at += (usize)strlen2 ;
+    return true;
 }
 
-export fn decode(err::Err+et mut*e, u8 *wire, usize l, callback cb, void *unsafe user)
-    where err::checked(*e)
-    where len(wire) >= l
-    where safe(cb)
-{
-    DynamicEntry mut dyn[DYNSIZE] = {0};
 
-    for (usize mut i = 0; i < l ; i++) {
-        switch get_repr(wire[i]) {
+
+export struct Iterator {
+    Slice   key;
+    Slice   val;
+
+    Slice   wire;
+    usize   mut at;
+    Entry mut dyn[DYNSIZE];
+}
+
+export fn decode(Slice wire) -> Iterator
+{
+    return Iterator {
+        wire: wire,
+        at:   0,
+    };
+}
+
+export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
+    where err::checked(*e)
+    model len(self->key.mem) >= self->key.size
+    model len(self->val.mem) >= self->val.size
+{
+
+    self->key = Slice{mem:0};
+    self->val = Slice{mem:0};
+    static_attest(len(self->key.mem) >= self->key.size);
+    static_attest(len(self->val.mem) >= self->val.size);
+
+    for (; self->at < self->wire.size ; self->at += 1) {
+        static_attest(self->at < len(self->wire.mem));
+        switch get_repr(self->wire.mem[self->at]) {
             Repr::Indexed => {
-                uint x = decode_integer(e, wire, l, &i, 7);
+                uint x = self->decode_integer(e, 7);
                 if err::check(e) {
-                    return;
+                    return false;
                 }
 
                 if x > 0 && (usize)x < static(len(STATIC_KEYS)) {
-                    cb(e, user, STATIC_KEYS[(usize)x], strlen(STATIC_KEYS[(usize)x]),
-                        STATIC_VALS[(usize)x], strlen(STATIC_VALS[(usize)x]));
-                    if err::check(e) {
-                        return;
-                    }
+                    self->key = Slice {
+                        size:   (usize)strlen(STATIC_KEYS[(usize)x]),
+                        mem:    (u8*)STATIC_KEYS[(usize)x],
+                    };
+                    self->val = Slice {
+                        size:   (usize)strlen(STATIC_VALS[(usize)x]),
+                        mem:    (u8*)STATIC_VALS[(usize)x],
+                    };
+                    return true;
                 } else if x > 61 && x < 76 {
                     usize di = (usize)x - 61;
-                    DynamicEntry *de = &(dyn[di]);
-                    cb(e, user, de->keystr, de->keylen, de->valstr, de->vallen);
-                    if err::check(e) { return; }
+                    self->key = self->dyn[di].key;
+                    self->val = self->dyn[di].val;
+                    return true;
                 } else {
                     err::fail(e, 1, "%u not implemented", x);
-                    return;
+                    return false;
                 }
             }
             Repr::LiteralWithIncrementalIndexing => {
-                static_attest(len(wire) > i);
-                decode_literal(e, wire, l, &i, true, dyn, cb, user);
-                if err::check(e) { return; }
+                return self->decode_literal(e, true);
             }
             Repr::SizeUpdate => {
                 err::fail(e, 1, "Repr::SizeUpdate not implemented");
-                return;
+                return false;
             }
             Repr::LiteralNeverIndexed => {
-                static_attest(len(wire) > i);
-                decode_literal(e, wire, l, &i, false, dyn, cb, user);
-                if err::check(e) { return; }
+                return self->decode_literal(e, false);
             }
             Repr::LiteralWithoutIndexing => {
-                static_attest(len(wire) > i);
-                decode_literal(e, wire, l, &i, false, dyn, cb, user);
-                if err::check(e) { return; }
-
+                return self->decode_literal(e, false);
             }
         }
     }
+    return false;
 }
 
 

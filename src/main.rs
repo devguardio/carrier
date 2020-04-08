@@ -1037,12 +1037,12 @@ fn trace_inner_handler(
 }
 
 
-#[link(name="carrier")]
-include!("../target/release/rs/_carrier_sha256.rs");
+#[path = "../target/release/rs/carrier_sha256.rs"]
+mod sha256;
 
-pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, Error> {
-    let mut state = vec![0; unsafe{ sizeof_carrier_sha256_Sha256}];
-    unsafe { carrier_sha256_init(state.as_mut_ptr()); }
+pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, carrier::Error> {
+    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256}];
+    unsafe { sha256::init(state.as_mut_ptr()); }
 
     let mut file = std::fs::File::open(p)?;
     use std::io::Read;
@@ -1058,18 +1058,17 @@ pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, Error> {
         if len == 0 {
             break;
         }
-        unsafe { carrier_sha256_update(state.as_mut_ptr(), buf[..len].as_ptr(), len); }
+        unsafe { sha256::update(state.as_mut_ptr(), buf[..len].as_ptr(), len); }
         pb.add(len as u64);
     }
 
-    let mut out = vec![0; unsafe { carrier_sha256_hashlen() }];
-    unsafe { carrier_sha256_finish(state.as_mut_ptr(), out.as_mut_ptr()); }
+    let mut out = vec![0; unsafe { sha256::hashlen() }];
+    unsafe { sha256::finish(state.as_mut_ptr(), out.as_mut_ptr()); }
 
     pb.finish();
 
     Ok(out)
 }
-
 
 
 

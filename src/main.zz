@@ -1,62 +1,154 @@
 using <stdio.h>::{printf};
-using <string.h>::{memcpy};
 using err;
+using carrier;
+using string;
+using publish;
+using mission;
+using shell;
+using sft;
+using connect;
+using log;
 using channel;
-using router;
-using bootstrap;
-using io::unix;
-using net;
-using io;
-using time;
-using endpoint;
-using router;
 
-
-export fn main() -> int {
-
-    bootstrap::Store mut store = bootstrap::Store {
-        version: 1,
-        secret: {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,128,29,30,31,32},
-    };
-
-    err::Err+1000 mut e;
-    err::new(&e);
-
-    unix::Async+20 mut async;
-    async.new();
-
-    memcpy(store.secret, store.secret, 32);
+fn cmd_identity(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+    new vault = carrier::vault::from_carriertoml(&e);
     e.abort();
 
-    io::Io mut tt = io::timeout(&async, &e, time::from_millis(5000));
+    carrier::identity::Identity mut id= {0};
+    vault.get_identity(&id);
+
+    char mut buf[64] = {0};
+    carrier::identity::identity_to_str(&e, buf, 64, &id);
     e.abort();
-
-    endpoint::Endpoint mut ep = {0};
-    ep.start(&e, net::os(), &store, &async);
-    e.abort();
-
-    for (;;) {
-        if ep.poll(&e, &async) == io::Result::Ready {
-            printf("endpoint ready\n");
-            tt.close();
-        }
-        e.abort();
-
-        if tt.valid() {
-            u8 mut buf[16];
-            usize mut l = 16;
-            if tt.read_bytes(&e, buf, &l) == io::Result::Ready {
-                e.new();
-                err::fail(&e, 3, "timeout");
-                e.abort();
-                return 2;
-            }
-            e.abort();
-        }
-        async.wait(&e);
-        e.abort();
-    }
-
-    ep.close();
+    printf("%s\n", buf);
+    return 0;
 }
 
+
+fn cmd_publish(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+
+    new+30 publisher = publish::from_carriertoml(&e);
+    e.abort();
+
+    new+10000 mi = mission::start(&e, 0);
+    e.abort();
+
+    publisher.start(&e, &mi.ep);
+    e.abort();
+
+    shell::register(&mi.ep);
+    sft::register(&mi.ep);
+
+    mi.run(&e);
+    e.abort();
+
+    return 0;
+}
+
+fn shell_usage() -> int {
+    printf("USAGE:\n    carrier shell [OPTIONS] <target>\n");
+    return 2;
+}
+
+fn cmd_shell(usize mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+
+    char * mut posarg = 0;
+    for (usize mut i = 2; i < argc; i++) {
+        if posarg == 0 {
+            posarg = argv[i];
+        } else {
+            printf("error: unexpected argument %s\n", argv[i]);
+            return shell_usage();
+        }
+    }
+    if posarg == 0 {
+        printf("error: missing required argument <target>\n");
+        return shell_usage();
+    }
+
+    static_attest(nullterm(posarg));
+    static_attest(safe(posarg));
+    new target = carrier::identity::identity_from_cstr (&e, posarg);
+    if err::check(&e) {
+        static_attest(err::checked(e));
+        err::fail(&e, 3, "parsing identity: %s", posarg);
+        e.eprint();
+        return 2;
+    }
+    e.abort();
+
+
+    new+10000 mi = mission::start(&e, &target);
+    e.abort();
+
+    new con = connect::start(&e, &mi.ep, target);
+    e.abort();
+    con.on_disconnect = on_disconnect;
+    con.on_connect    = on_connect;
+
+    mi.run(&e);
+    e.abort();
+
+    return 0;
+
+}
+
+fn on_connect(channel::Channel mut*chan)
+{
+    new+1000 e = err::make();
+    shell::open(&e, chan);
+    e.abort();
+}
+
+fn on_disconnect(channel::Channel mut*chan)
+{
+    log::info("shell done");
+    static_attest(safe(chan->endpoint));
+    chan->endpoint->close();
+}
+
+
+
+
+static char * USAGE = "
+carrier 0.13 [zz]
+devguard carrier is a secure message system for IoT
+
+Usage:
+    carrier <subcommand>
+
+Local Commands:
+    identity            print out identity
+    publish             publish services on carrier
+
+Remote Commands:
+    shell               open a shell
+";
+
+export fn main(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    if argc > 1
+    {
+        char * arg = argv[1];
+        static_attest(nullterm(arg));
+        if string::cstr_eq(arg, "identity") {
+            return cmd_identity(argc, argv);
+        } else if string::cstr_eq(arg, "publish") {
+            return cmd_publish(argc, argv);
+        } else if string::cstr_eq(arg, "shell") {
+            return cmd_shell(argc, argv);
+        }
+    }
+    printf("%s", USAGE);
+    return 1;
+}

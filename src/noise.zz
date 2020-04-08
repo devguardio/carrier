@@ -3,9 +3,10 @@ using err;
 using <string.h>::{strlen, memcpy, memset, memcmp};
 using <assert.h>::{assert};
 using symmetric;
+using hex;
 
+using <stdio.h>::{printf};
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
-
 
 // NKSig
 // <- s
@@ -13,9 +14,11 @@ using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac
 // -> e, es, sign(e)
 // <- e, ee
 
+//NNSig
+// -> e, sign(e)
+// <- e, ee
 
 static u8 zerokey[32] = {0};
-
 
 export struct Initiator {
     symmetric::SymmetricState   mut symm;
@@ -50,16 +53,15 @@ pub fn initiate(
         err::fail(e, 2, "ephemeral key is zero");
         return 0;
     }
-    if memcmp((self->remote_static).k, zerokey, 32) == 0 {
-        err::fail(e, 2, "remote static is zero");
-        return 0;
-    }
+    bool has_remote_static = (memcmp((self->remote_static).k, zerokey, 32) != 0);
 
     symmetric::init(&self->symm, "Noise_NK_25519_ChaChaPoly_SHA256");
     symmetric::mix_hash(&self->symm, prologue, prologue_len);
 
-    // <- s
-    symmetric::mix_hash(&self->symm, (self->remote_static).k, 32);
+    if has_remote_static {
+        // <- s
+        symmetric::mix_hash(&self->symm, (self->remote_static).k, 32);
+    }
 
     // -> e ,
     identity::Address mut ephemeral_address = {0};
@@ -83,11 +85,80 @@ pub fn initiate(
     return total_size;
 }
 
+pub fn initiate_insecure(
+    Initiator mut *self,
+    err::Err+et mut* e,
+    u8 mut * mut pkt,
+    usize pktlen,
+    u8 * prologue,
+    usize prologue_len,
+    u8 * payload,
+    usize payload_len
+) -> usize
+    where err::checked(*e)
+    where len(pkt) >= pktlen
+    where len(prologue) >= prologue_len
+    where len(payload) >= payload_len
+    where pktlen >  32
+    where pktlen -32 > payload_len
+    model return < pktlen
+{
+    usize total_size = 32 + payload_len;
+    assert(pktlen >= total_size);
+    static_attest(pktlen >= total_size);
+
+    if memcmp((self->ephemeral).k, zerokey, 32) == 0 {
+        err::fail(e, 2, "ephemeral key is zero");
+        return 0;
+    }
+
+    symmetric::init(&self->symm, "Noise_NN_25519_ChaChaPoly_SHA256");
+    symmetric::mix_hash(&self->symm, prologue, prologue_len);
+
+    // -> e ,
+    identity::Address mut ephemeral_address = {0};
+    identity::address_from_secret(&ephemeral_address, &self->ephemeral);
+
+    symmetric::mix_hash(&self->symm, ephemeral_address.k, 32);
+    memcpy(pkt, ephemeral_address.k, 32);
+
+    // payload
+    memcpy(pkt + 32, payload, payload_len);
+    symmetric::mix_hash(&self->symm, payload, payload_len);
+
+    static_attest(total_size < pktlen);
+    return total_size;
+}
+
 pub struct Responder {
     symmetric::SymmetricState   mut symm;
     identity::Secret            ephemeral;
     identity::Secret            statickey;
     identity::Address           remote_ephemeral;
+}
+
+
+
+pub fn receive_insecure(
+    Responder mut* self,
+    u8 * prologue,
+    usize prologue_len,
+    u8 * packet,
+    usize packet_len,
+)
+    where len(prologue) >= prologue_len
+    where len(packet) >= packet_len
+    where len(packet) > 32
+{
+    symmetric::init(&self->symm, "Noise_NN_25519_ChaChaPoly_SHA256");
+    symmetric::mix_hash(&self->symm, prologue, prologue_len);
+
+    // -> e ,
+    memcpy((self->remote_ephemeral).k, packet, 32);
+    symmetric::mix_hash(&self->symm, (self->remote_ephemeral).k, 32);
+
+    static_attest(packet_len < 0xffffffffffffff00 && packet_len > 32);
+    symmetric::mix_hash(&self->symm, packet + 32, packet_len - 32);
 }
 
 pub fn receive(
@@ -98,7 +169,8 @@ pub fn receive(
     u8 * prologue,
     usize prologue_len,
     u8 * packet,
-    usize packet_len
+    usize packet_len,
+
 ) -> usize
     where err::checked(*e)
     where len(packet) >= packet_len
@@ -107,7 +179,6 @@ pub fn receive(
     where len(packet) > 32
 {
     assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
-    assert(memcmp((self->statickey).k, zerokey, 32) != 0);
 
     if packet_len < 32 + 16 {
         err::fail(e, 9, "in buffer underflow");
@@ -119,14 +190,16 @@ pub fn receive(
     }
 
 
-    identity::Address mut xaddr = {0};
-    identity::address_from_secret(&xaddr, &self->statickey);
 
     symmetric::init(&self->symm, "Noise_NK_25519_ChaChaPoly_SHA256");
     symmetric::mix_hash(&self->symm, prologue, prologue_len);
 
     // <- s
+    assert(memcmp((self->statickey).k, zerokey, 32) != 0);
+    identity::Address mut xaddr = {0};
+    identity::address_from_secret(&xaddr, &self->statickey);
     symmetric::mix_hash(&self->symm, xaddr.k, 32);
+
 
     // -> e ,
     memcpy((self->remote_ephemeral).k, packet, 32);
@@ -139,6 +212,7 @@ pub fn receive(
 
 
     usize packet_rest = packet_len - 32;
+
     usize rs = symmetric::decrypt_and_mix_hash(&self->symm, e, packet + 32, packet_rest, 0, payload, payload_len);
     if err::check(e) {
         return 0;
@@ -166,7 +240,6 @@ pub fn accept(
     model return < pktlen
 {
     assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
-    assert(memcmp((self->statickey).k, zerokey, 32) != 0);
     assert(memcmp((self->remote_ephemeral).k, zerokey, 32) != 0);
 
     usize total_size = 32 + payload_len + 16;
@@ -225,7 +298,7 @@ pub fn complete(
     memcpy((self->remote_ephemeral).k, packet, 32);
     symmetric::mix_hash(&self->symm, (self->remote_ephemeral).k, 32);
 
-    // , es
+    // , ee
     identity::Address mut dh = {0};
     identity::dh(&dh, &self->ephemeral, &self->remote_ephemeral);
     symmetric::mix_key(&self->symm, dh.k, 32);

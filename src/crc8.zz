@@ -43,7 +43,7 @@ static u8 crc8_table[256] = {
 // for the next seed. If data is NULL, then return the initial seed. See the
 // test code for an example of the proper usage.
 
-export fn crc8(u8 mut crc, u8* mut data, usize l) -> u8
+export fn crc8(u8 mut crc, u8* unsafe mut data, usize l) -> u8
     where l <= len(data)
 {
     if data == 0 {
@@ -66,7 +66,7 @@ export fn crc8(u8 mut crc, u8* mut data, usize l) -> u8
 // need a table, and which can be used to generate crc8_table[]. Entry k in the
 // table is the CRC-8 of the single byte k, with an initial crc value of zero.
 // 0xb2 is the bit reflection of 0x4d, the polynomial coefficients below x^8.
-pub fn crc8_slow(u8 mut crc, u8* mut data, usize mut l) -> u8 {
+pub fn crc8_slow(u8 mut crc, u8* unsafe mut data, usize mut l) -> u8 {
     if data == 0 {
         return crc;
     }
@@ -88,7 +88,7 @@ pub fn crc8_slow(u8 mut crc, u8* mut data, usize mut l) -> u8 {
 
 
 // this is the equivalent of the broken rust code in v8
-export fn broken_crc8(u8 mut crc, u8* data, usize length) -> u8
+export fn broken_crc8(u8 mut crc, u8 * unsafe mut data, usize length) -> u8
     where len(data) >= length
 {
     for(usize mut i = 0; i < length; i++) {

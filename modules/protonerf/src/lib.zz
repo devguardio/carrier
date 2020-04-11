@@ -1,6 +1,8 @@
 using err;
 using <string.h>::{memcpy};
 using slice;
+using <stdio.h>::{fprintf, stderr};
+using <stdint.h>::{UINT32_MAX};
 
 export enum FieldType {
     Skip        = 0,
@@ -53,7 +55,13 @@ export fn encode_bytes_start(slice::MutSlice mut *str, err::Err+et mut*e, u8 ind
     mm[str->at]  = (index << 3) | 2;
     str->at += 1;
     static_attest(str->at <= len(str->slice.mem));
-    write_varint(str, e, (u32)l, (u32)(l >> 32));
+
+    //TODO l >> 32 on android yields l. WHAT?
+    if l >= (usize)UINT32_MAX {
+        write_varint(str, e, (u32)l, (u32)(l >> 32));
+    } else {
+        write_varint(str, e, (u32)l, 0);
+    }
 }
 
 export fn encode_varint(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u64 mut value)

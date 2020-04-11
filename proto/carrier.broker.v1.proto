@@ -51,13 +51,20 @@ message SubscribeChange{
 }
 
 message PublishRequest {
-    bytes   xaddr    = 1;
-    bytes   shadow   = 2;
+    bytes   xaddr       = 1;
+    bytes   shadow      = 2;
+    bool    shortcut    = 3;
+}
+
+message Shortcut {
+    string  shortcut = 1;
+    uint64  expires  = 2;
 }
 
 message PublishChange{
     oneof m {
-        Supersede supersede = 1;
+        Supersede   supersede = 1;
+        Shortcut    shortcut  = 2;
     }
 }
 
@@ -68,6 +75,7 @@ message ConnectRequest {
     repeated Path paths     = 4;
     bytes   principal       = 5;
     uint32  timeout         = 6;
+    string  shortcut        = 7;
 }
 
 message ConnectResponse {

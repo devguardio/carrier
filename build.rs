@@ -16,7 +16,7 @@ use std::process::{Command, Stdio};
 use std::io::Error;
 use clap::Shell;
 
-include!("src/cli.rs");
+//include!("src/cli.rs");
 
 pub fn from_git() -> Result<String, Error>
 {
@@ -67,7 +67,7 @@ pub fn from_git() -> Result<String, Error>
 
 pub fn build_zz() {
     println!("\n\ncargo:rustc-link-lib=static=carrier\n\n");
-    println!("\n\ncargo:rustc-link-search=native={}/target/debug/lib/\n\n", std::env::current_dir().unwrap().display());
+    println!("\n\ncargo:rustc-link-search=native={}/target/release/lib/\n\n", std::env::current_dir().unwrap().display());
 }
 
 pub fn main() {
@@ -92,10 +92,10 @@ pub fn main() {
     f.write_all(b"\";\n").unwrap();
 
 
-    let mut app = build_cli();
-    app.gen_completions("carrier",  // We need to specify the bin name manually
-        Shell::Bash,                // Then say which shell to build completions for
-        out_dir);// Then say where write the completions to
+//    let mut app = build_cli();
+//    app.gen_completions("carrier",  // We need to specify the bin name manually
+//        Shell::Bash,                // Then say which shell to build completions for
+//        out_dir);// Then say where write the completions to
 
 
     let mut config = prost_build::Config::new();

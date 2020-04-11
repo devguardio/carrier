@@ -79,7 +79,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
                         self->channels[j].peering.paths[i].addr.to_string(&s);
                         //log::debug("    sending to %.*s", s.len, s.mem);
 
-                        switch self->channels[j].peering.paths[i].addr.type {
+                        switch self->channels[j].peering.paths[i].addr.typ {
                             address::Type::Invalid => {
                             }
                             address::Type::Ipv4 => {

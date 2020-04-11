@@ -187,12 +187,10 @@ export struct Iterator {
     Entry mut dyn[DYNSIZE];
 }
 
-export fn decode(Slice wire) -> Iterator
+export fn decode(Iterator mut new*self, Slice *wire)
 {
-    return Iterator {
-        wire: wire,
-        at:   0,
-    };
+    memcpy(&self->wire, wire, sizeof(Slice));
+    self->at   = 0;
 }
 
 export fn next(Iterator mut *self, err::Err+et mut*e) -> bool

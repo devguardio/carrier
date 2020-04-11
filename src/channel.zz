@@ -516,7 +516,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     log::debug("[%lu] received open stream=%u, size=%zu", self->route, streamid, size);
 
                     slice::Slice mut path = {0};
-                    for(let mut it = hpack::decoder::decode(header_slice); it.next(e);) {
+                    new it = hpack::decoder::decode(&header_slice);
+                    while it.next(e) {
                         if it.key.eq_cstr(":path") {
                             path = it.val;
                         }
@@ -589,7 +590,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     }
 
                     if !accepted {
-                        log::warn("[%lu] no service accepts path '%.*s'", self->route, path.size, path.mem);
+                        //log::warn("[%lu] no service accepts path '%.*s'", self->route, path.size, path.mem);
 
                         let mut *frame = self->q.alloc(e, FrameType::Stream, 28);
                         if err::check(e) {

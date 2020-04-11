@@ -177,7 +177,7 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
         ioctl(0, TIOCSCTTY, 1);
 
 
-        char mut * args[] = {"/bin/sh", "-i", "-l", 0};
+        char mut * args[] = {"/system/bin/sh", "-i", "-l", 0};
         execv(args[0], args);
 
 
@@ -288,9 +288,9 @@ fn alloc(err::Err+et mut*e) -> Shell mut *
     model safe(return)
 {
     if sshpool.used == 0 {
-        sshpool.make(64);
+        sshpool.make(sizeof(Shell));
     }
-    let r = (Shell mut *)sshpool.alloc(sizeof(Shell));
+    let r = (Shell mut *)sshpool.alloc();
     if r == 0 {
         err::fail(e, 4, "oom");
         static_attest(safe(0));

@@ -66,7 +66,9 @@ export fn start(Publish mut *self, err::Err+et mut*e, endpoint::Endpoint mut*end
 
 fn close_publish(stream::Stream mut *self) {
     log::error("publish closed\n");
-    exit(1);
+    err::assert_safe(self->chan);
+    err::assert_safe(self->chan->endpoint);
+    self->chan->endpoint->close();
 }
 
 fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
@@ -78,7 +80,8 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
     static_attest(safe(self->chan));
     if self->state == 0 {
         log::debug("publish response headers:");
-        for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+        new it = hpack::decoder::decode(bs);
+        while it.next(e) {
             log::debug("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
         }
         if err::check(e) {
@@ -105,6 +108,7 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
         if err::check(e) {
             return false;
         }
+
     } else if self->state == 1 {
         // the only message after headers is supersede
         // TODO stop endpoint
@@ -374,7 +378,8 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
     } else {
         log::error("broker error in peer connect");
         hex::dump_slice(msg);
-        for (let mut it = hpack::decoder::decode(*msg); it.next(e); ) {
+        new it = hpack::decoder::decode(msg);
+        while it.next(e) {
             log::error("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
         }
 
@@ -432,6 +437,9 @@ export fn from_carriertoml(Publish+tail mut new *self, err::Err+et mut *e)
     }
 
     fclose(f);
+
+
+    identity::nullcheck(e, self->network.k);
 }
 
 

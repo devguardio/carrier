@@ -1,72 +1,80 @@
 using err;
 using bootstrap;
 using vault;
-using identity;
 using io::unix;
 using net;
-using time;
-using log;
 using endpoint;
-using shell;
-using sft;
-using io;
 using publish as publishing;
 using identity_kit;
 using <string.h>::{memset, memcpy};
+using io;
+using identity;
+using time;
+using bootstrap;
+using net;
+using endpoint;
+using log;
 
-export struct Mission {
-    vault::Vault mut * vault;
-
-    publishing::Publish mut *publ;
+export struct Mission+ {
+    vault::Vault        mut vault;
+    io::unix::Async+100 mut async;
+    endpoint::Endpoint+ mut ep;
 }
 
-export fn make(Mission mut new * self, vault::Vault mut*vault)
-    model safe(self->vault)
-{
-    memset(self, 9, (usize)sizeof(Mission));
-    self->vault = vault;
-}
-
-
-export fn publish(Mission mut *self, publishing::Publish mut *publ)
-{
-    self->publ = publ;
-}
-
-export fn launch(Mission mut *self, err::Err+et mut *e)
+export fn start(Mission+mt mut new * self, err::Err+et mut *e, identity::Identity * unsafe cluster_target)
     where err::checked(*e)
-    where safe(self->vault)
+    where mt > mt/32
+    model safe(self->ep.store)
 {
-    new+20 async = unix::make();
+    static_attest(safe(self->ep.store));
 
-    bootstrap::sync(e, self->vault, net::os(), &async, time::from_seconds(10));
+    io::unix::make(&self->async);
+    vault::from_carriertoml(&self->vault, e);
     if err::check(e) { return ; }
 
     identity::Identity mut id = {0};
-    self->vault->get_identity(&id);
+    self->vault.get_identity(&id);
     char mut buf[64] = {0};
     identity::identity_to_str(e, buf, 64, &id);
     if err::check(e) { return ; }
     log::info("my identity: %s", buf);
 
-    new+10000 ep = endpoint::make(e, net::os(), self->vault, &async);
+
+    /*
+    self->vault.broker[0] = vault::Broker {
+        protocol:   0x09,
+        ip4addr:    {127,0,0,1},
+    };
+    identity::address_from_cstr((identity::Address mut*)&self->vault.broker[0].xaddr, e, "oSaoKYLdcdqGAJPkt3scwP2H8FuEy58GjT59LwpigL4y7h9");
+    e->abort();
+    */
+
+    bootstrap::sync(e, &self->vault, net::os(), &self->async, time::from_seconds(10));
     if err::check(e) { return ; }
 
-    shell::register(&ep);
-    sft::register(&ep);
-
-    io::await(&async, e, endpoint::poll, &ep, time::from_seconds(10));
+    endpoint::make(&self->ep, e, net::os(), &self->vault, &self->async);
     if err::check(e) { return ; }
-    log::debug("endpoint ready");
 
-
-    if self->publ != 0 {
-        static_attest(safe(self->publ));
-        self->publ->start(e, &ep);
-        if err::check(e) { return ; }
+    if cluster_target != 0 {
+        unsafe {
+            endpoint::cluster_target(&self->ep, mt, cluster_target);
+        }
     }
 
-    io::await(&async, e, endpoint::poll, &ep, time::infinite());
-    ep.close();
+    io::await(&self->async, e, endpoint::poll, &self->ep, time::from_seconds(30));
     if err::check(e) { return ; }
 }
+
+export fn run(Mission+mt mut *self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    io::await(&self->async, e, endpoint::poll, &self->ep, time::infinite());
+    if err::check(e) { return ; }
+}
+
+
+export fn close(Mission mut *self)
+{
+    self->ep.close();
+}
+

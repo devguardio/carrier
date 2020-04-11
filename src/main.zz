@@ -3,7 +3,12 @@ using err;
 using carrier;
 using string;
 using publish;
-
+using mission;
+using shell;
+using sft;
+using connect;
+using log;
+using channel;
 
 fn cmd_identity(int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
@@ -12,11 +17,11 @@ fn cmd_identity(int mut argc, char ** argv) -> int
     new vault = carrier::vault::from_carriertoml(&e);
     e.abort();
 
-    carrier::identity::Identity mut identity = {0};
-    vault.get_identity(&identity);
+    carrier::identity::Identity mut id= {0};
+    vault.get_identity(&id);
 
     char mut buf[64] = {0};
-    carrier::identity::identity_to_str(&e, buf, 64, &identity);
+    carrier::identity::identity_to_str(&e, buf, 64, &id);
     e.abort();
     printf("%s\n", buf);
     return 0;
@@ -28,15 +33,19 @@ fn cmd_publish(int mut argc, char ** argv) -> int
 {
     new+5000 e = err::make();
 
-    new vault = carrier::vault::from_carriertoml(&e);
+    new+30 publisher = publish::from_carriertoml(&e);
     e.abort();
 
-    new+30 publ = publish::from_carriertoml(&e);
+    new+10000 mi = mission::start(&e, 0);
     e.abort();
 
-    new+2000 mission = carrier::mission::make(&vault);
-    mission.publish(&publ);
-    mission.launch(&e);
+    publisher.start(&e, &mi.ep);
+    e.abort();
+
+    //shell::register(&mi.ep);
+    //sft::register(&mi.ep);
+
+    mi.run(&e);
     e.abort();
 
     return 0;
@@ -50,6 +59,8 @@ fn shell_usage() -> int {
 fn cmd_shell(usize mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
 {
+    new+5000 e = err::make();
+
     char * mut posarg = 0;
     for (usize mut i = 2; i < argc; i++) {
         if posarg == 0 {
@@ -64,9 +75,6 @@ fn cmd_shell(usize mut argc, char ** argv) -> int
         return shell_usage();
     }
 
-    new+5000 e = err::make();
-
-
     static_attest(nullterm(posarg));
     static_attest(safe(posarg));
     new target = carrier::identity::identity_from_cstr (&e, posarg);
@@ -78,15 +86,35 @@ fn cmd_shell(usize mut argc, char ** argv) -> int
     }
     e.abort();
 
-    new vault = carrier::vault::from_carriertoml(&e);
+
+    new+10000 mi = mission::start(&e, &target);
     e.abort();
 
-    new+2000 mission = carrier::mission::make(&vault);
-    mission.launch(&e);
+    new con = connect::start(&e, &mi.ep, target);
     e.abort();
+    con.on_disconnect = on_disconnect;
+    con.on_connect    = on_connect;
+
+    mi.run(&e);
+    e.abort();
+
     return 0;
+
 }
 
+fn on_connect(channel::Channel mut*chan)
+{
+    new+1000 e = err::make();
+    shell::open(&e, chan);
+    e.abort();
+}
+
+fn on_disconnect(channel::Channel mut*chan)
+{
+    log::info("shell done");
+    static_attest(safe(chan->endpoint));
+    chan->endpoint->close();
+}
 
 
 
@@ -124,153 +152,3 @@ export fn main(int mut argc, char ** argv) -> int
     printf("%s", USAGE);
     return 1;
 }
-
-/*
-
-inline using "argparse.h"::{
-    (struct argparse_option) as argparse_option,
-    (struct argparse) as argparse,
-    argparse_init,
-    argparse_describe,
-    argparse_parse,
-    OPT_END,
-    OPT_HELP,
-    OPT_GROUP,
-    OPT_BOOLEAN,
-};
-
-export fn main(int mut argc, char *mut* argv) -> int
-    where (usize)argc == len(argv)
-{
-    bool mut explode = false;
-    argparse_option mut options[] = {
-        OPT_HELP(),
-        OPT_BOOLEAN('x', "explode", &explode, "shall we kaboom?"),
-        OPT_GROUP(""),
-        OPT_END(),
-    };
-
-    argparse mut argp = {0};
-    argparse_init(&argp, options, 0, 0);
-    argparse_describe(&argp, USAGE, 0);
-    argc = (int)argparse_parse(&argp, argc, argv);
-
-
-
-
-    new+5000 e = err::make();
-
-    new vault = carrier::vault::from_carriertoml(&e);
-    e.abort();
-
-    new+2000 mission = carrier::mission::make(&vault);
-    mission.launch(&e);
-    e.abort();
-}
-
-*/
-/*
-
-
-export fn main(int argc, char ** argv) -> int
-    where (usize)argc == len(argv)
-{
-    if argc < 2 {
-        printf("arg1: target identity");
-        return 3;
-    }
-    char *argv1 = argv[1];
-
-    new+5000 e = err::make();
-
-    let new target = carrier::identity::identity_from_cstr(&e, argv1);
-    e.abort();
-
-    new vault = carrier::vault::from_carriertoml(&e);
-    e.abort();
-
-    new+2000 mission = carrier::mission::make(&vault);
-    mission.connect(target);
-    mission.launch(&e);
-    e.abort();
-
-    
-
-    new ik = identity_kit::carriertoml(&e);
-    e.abort();
-
-    new store = bootstrap::empty();
-
-    store.load_ik(&e, &ik);
-    e.abort();
-
-    unix::Async+20 mut async;
-    async.new();
-
-    bootstrap::sync(&e, &store, net::os(), &async, time::from_seconds(10));
-    e.abort();
-
-    //store.broker[0].protocol = 9;
-    //char *xa = "oSaoKYLdcdqGAJPkt3scwP2H8FuEy58GjT59LwpigL4y7h9";
-    //identity::address_from_str(&e, (identity::Address mut*)store.broker[0].xaddr, xa, static(len(xa)));
-    //e.abort();
-    //address::Address xi = address::from_cstr("127.0.0.1:8443");
-    //memcpy(store.broker[0].ip4addr, xi.get_ip(), 4);
-
-
-    identity::Identity mut id = {0};
-    identity::identity_from_secret(&id, (identity::Secret*)&store.secret);
-    char mut buf[64] = {0};
-    identity::identity_to_str(&e, buf, 64, &id);
-    e.abort();
-    log::info("my identity: %s", buf);
-
-    endpoint::Endpoint+1000 mut ep = {0};
-    ep.new(&e, net::os(), &store, &async);
-    e.abort();
-
-    endpoint::cluster_target(&ep, &con.target);
-
-    shell::register(&ep);
-    sft::register(&ep);
-
-    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(10));
-    e.abort();
-    log::debug("endpoint ready");
-
-    //publish::start(&ep, &e);
-    //e.abort();
-
-    con.on_disconnect = on_disconnect;
-    con.on_connect    = on_connect;
-    con.start(&e, &ep);
-    e.abort();
-
-    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
-    ep.close();
-    e.abort();
-
-    log::debug("byeeee");
-
-
-    return 0;
-}
-
-
-fn on_connect(channel::Channel mut*chan)
-{
-    err::Err+200 mut e;
-    e.new();
-    shell::open(&e, chan);
-    e.abort();
-}
-
-fn on_disconnect(channel::Channel mut*chan)
-{
-    log::info("shell done");
-    static_attest(safe(chan->endpoint));
-    chan->endpoint->close();
-}
-
-
-*/

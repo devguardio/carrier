@@ -57,3 +57,17 @@ main = "carrier::main"
 name = "carrier"
 type = "npm"
 main = "carrier::mission"
+
+[[artifacts]]
+name = "carrier"
+type = "rust"
+main = "carrier"
+
+[[artifacts]]
+name = "carrier"
+type = "cmake"
+main = "carrier::mission"
+
+[repos]
+extra = "git://github.com/zetzit/nursery.git"
+

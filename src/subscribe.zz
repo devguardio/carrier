@@ -54,7 +54,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
     static_attest(safe(self->chan));
     if self->state == 0 {
         log::debug("subscribe response headers:");
-        for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+        new it = hpack::decoder::decode(bs);
+        while it.next(e) {
             log::debug("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
         }
         if err::check(e) {

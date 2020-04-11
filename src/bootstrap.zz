@@ -60,13 +60,13 @@ export fn bootstrap(Bootstrap mut new*self, err::Err+et mut * e, vault::Vault mu
     get_system_dns_servers(self->dns_servers, &self->dns_servers_count);
 
     new addr4 = address::from_cstr("0.0.0.0:0");
-    net::make_udp(&self->sock4, netengine, e, &addr4, async);
+    net::udp(&self->sock4, netengine, e, &addr4, async);
     if err::check(e) {
         return;
     }
 
     new addr6 = address::from_cstr("[::1]:0");
-    net::make_udp(&self->sock6, netengine, e, &addr6, async);
+    net::udp(&self->sock6, netengine, e, &addr6, async);
     // ignore v6 creation error
     err::make(e);
 }
@@ -110,7 +110,7 @@ export fn poll(Bootstrap mut * self, err::Err+et mut * e, io::Async mut* async) 
             string::append_cstr(&xbuf, "4.carrier.devguard.io");
         }
         for (usize mut i = 0; i < self->dns_servers_count; i++) {
-            switch self->dns_servers[i].type {
+            switch self->dns_servers[i].typ {
                 address::Type::Invalid => {
 
                 }

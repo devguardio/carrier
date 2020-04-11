@@ -14,6 +14,7 @@ using <stdlib.h>::{atoi};
 using peering;
 using <string.h>::{memcpy};
 using hex;
+using string;
 
 export fntype disconnect_t  (channel::Channel mut *chan);
 export fntype connect_t     (channel::Channel mut *chan);
@@ -23,6 +24,7 @@ export struct Connect {
     identity::Identity      principal;
     initiator::Initiator    initiator;
     u64                     initiator_time;
+    string::String+1024     mut initiator_pkt;
     disconnect_t            on_disconnect;
     connect_t               on_connect;
 }
@@ -33,10 +35,11 @@ static stream::Config ConnectStream = stream::Config {
     close:  on_close,
 };
 
-export fn start(Connect mut *self, err::Err+et mut*e, endpoint::Endpoint mut*ep)
+export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity target)
     where err::checked(*e)
     where safe(ep->store)
 {
+    memcpy(&self->target.k, &target.k, static(len(self->target.k)));
 
     identity::identity_from_secret(
         &self->principal,
@@ -51,7 +54,8 @@ export fn start(Connect mut *self, err::Err+et mut*e, endpoint::Endpoint mut*ep)
         initiator::Move::Never,
         0,
         0,
-        self->initiator_time
+        self->initiator_time,
+        &self->initiator_pkt
     );
     if err::check(e) { return; }
 
@@ -86,7 +90,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
 
     if self->state == 0 {
         int mut rcode = 0;
-        for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+        new it = hpack::decoder::decode(bs);
+        while it.next(e) {
             if it.key.eq_cstr(":status") {
                 rcode = (int)atoi((char*)it.val.mem);
             }
@@ -96,7 +101,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         }
         if rcode != 200 {
             log::error("connect response");
-            for (let mut it = hpack::decoder::decode(*bs); it.next(e); ) {
+            new it = hpack::decoder::decode(bs);
+            while it.next(e) {
                 log::error("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
             }
             self->close();
@@ -104,7 +110,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         }
 
 
-        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100 + this->initiator.pkt.len);
+        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100 + this->initiator_pkt.len);
         if err::check(e) {
             return false;
         }
@@ -128,8 +134,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         protonerf::encode_varint(frame, e, proto::ConnectRequestField::Timeout, 1);
         e->abort();
 
-        static_attest(len(this->initiator.pkt.mem) >= this->initiator.pkt.len);
-        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Handshake, (u8*)this->initiator.pkt.mem, this->initiator.pkt.len);
+        static_attest(len(this->initiator_pkt.mem) >= this->initiator_pkt.len);
+        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Handshake, (u8*)this->initiator_pkt.mem, this->initiator_pkt.len);
         e->abort();
 
     } else if self->state == 1 {
@@ -188,8 +194,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
                 err::fail(e, 1, "too small");
                 return true;
             }
-            memcpy(this->initiator.pkt.mem, handshake.mem, handshake.size);
-            this->initiator.pkt.len = handshake.size;
+            memcpy(this->initiator_pkt.mem, handshake.mem, handshake.size);
+            this->initiator_pkt.len = handshake.size;
 
 
             endpoint::Endpoint mut * ep = self->chan->endpoint;
@@ -200,7 +206,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             }
             static_attest(safe(nuchan));
 
-            this->initiator.complete(e, nuchan, 0);
+            this->initiator.complete(e, nuchan, 0, &this->initiator_pkt);
             if err::check(e) {
                 return true;
             }

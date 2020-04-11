@@ -37,7 +37,7 @@ struct Frame {
     u64 mut sent_at;
     u64 packet;
 
-    u8              type;
+    u8              typ;
     slice::MutSlice mut buf;
 }
 
@@ -85,7 +85,7 @@ export fn clear(Q+qt mut* self) {
 
 
 /// allocate the next frame in the queue
-export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType type, usize size) -> slice::MutSlice mut *
+export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) -> slice::MutSlice mut *
     where err::checked(*e)
     model safe(return) // this is technically wrong, but the prover isnt good enough yet
     model safe(return->slice.mem)
@@ -95,7 +95,7 @@ export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType type, usize size) -
     model return->at <= return->slice.size
 {
     err::assert_safe(self->allocator);
-    void mut *payload = self->allocator->alloc(size);
+    void mut *payload = self->allocator->malloc(size);
     if payload == 0 {
         err::fail(e, 12, "cannot alloc %u b: %u free", size, self->allocator->free_bytes());
         unsafe {
@@ -122,7 +122,7 @@ export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType type, usize size) -
 
     memset(r, 0, sizeof(Frame));
     static_attest(safe(r));
-    r->type = (u8)type;
+    r->typ = (u8)typ;
     r->buf.slice.mem  = payload;
     r->buf.slice.size = size;
 
@@ -279,7 +279,7 @@ export fn keepalive(Q+qt mut* self, u64 now) -> u64
             // mark all old frames as lost
             for (usize mut i = 0; i < qt; i++) {
                 if self->q[i].sent_at != 0 && self->q[i].acked_at == 0 && now >= self->q[i].sent_at + tt {
-                    //log::debug("  resend %u (lost pkt %zu) type %u size %u", i, self->q[i].packet, self->q[i].type, self->q[i].buf.at);
+                    //log::debug("  resend %u (lost pkt %zu) typ %u size %u", i, self->q[i].packet, self->q[i].typ, self->q[i].buf.at);
 
                     //unsafe {
                     //    hex::dump(self->q[i].buf.slice.mem, self->q[i].buf.at);
@@ -330,7 +330,7 @@ fn make_frame_size(Frame mut* frame)
 {
     static_attest(frame->buf.slice.size >= len(frame->buf.slice.mem));
     static_attest(frame->buf.at  <= len(frame->buf.slice.mem));
-    switch frame->type {
+    switch frame->typ {
         channel::FrameType::Ack         => {}
         channel::FrameType::Ping        => {}
         channel::FrameType::Disconnect  => {}
@@ -374,7 +374,7 @@ export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) 
             f->sent_at  = time;
 
             unsafe {
-                memcpy(buf + sent_bytes, &f->type, 1);
+                memcpy(buf + sent_bytes, &f->typ, 1);
             }
             sent_bytes += 1;
 

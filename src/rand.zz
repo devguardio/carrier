@@ -8,9 +8,9 @@ pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
     where err::checked(*e)
     where len(bytes) >= size
 {
-    int fd = as<int>(open("/dev/random", O_RDONLY));
+    int fd = as<int>(open("/dev/urandom", O_RDONLY));
     if fd < 0 {
-        err::fail_with_errno(e, "cannot open /dev/random");
+        err::fail_with_errno(e, "cannot open /dev/urandom");
         return;
     }
     static_attest(err::checked(*e));
@@ -21,7 +21,7 @@ pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
             if as<int>(errno) == as<int>(EINTR) {
                 continue;
             }
-            err::fail_with_errno(e, "cannot read /dev/random");
+            err::fail_with_errno(e, "cannot read /dev/urandom");
             close(fd);
             return;
         }

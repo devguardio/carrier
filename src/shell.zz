@@ -177,7 +177,7 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
         ioctl(0, TIOCSCTTY, 1);
 
 
-        char mut * args[] = {"/system/bin/sh", "-i", "-l", 0};
+        char mut * args[ ] = {"/bin/sh", "-i", "-l", 0};
         execv(args[0], args);
 
 

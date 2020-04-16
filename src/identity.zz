@@ -239,18 +239,25 @@ export fn verify(Identity *pk, Signature *s, u8 * subject, usize subject_len) ->
 }
 
 
-export fn nullcheck(err::Err+et mut* e, u8 * k)
-    where err::checked(*e)
+export fn isnull(u8 * k) -> bool
     where len(k) >= 32
 {
     u8 first = k[0];
     for (usize mut i = 1; i < 32; i++) {
         if first != k[i] {
-            return;
+            return false;
         }
     }
-    err::fail(e, 22, "invalid ed25519: 32 identical bytes");
-    return;
+    return true;
+}
+
+export fn nullcheck(err::Err+et mut* e, u8 * k)
+    where err::checked(*e)
+    where len(k) >= 32
+{
+    if isnull(k) {
+        err::fail(e, 22, "invalid ed25519: 32 identical bytes");
+    }
 }
 
 

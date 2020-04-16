@@ -1,0 +1,221 @@
+using stream;
+using err;
+using endpoint;
+using slice;
+using identity;
+using hpack;
+using log;
+
+
+static stream::Config AuthorizeConfig = stream::Config {
+    path:       "/v2/carrier.certificate.v1/authorize",
+    open:       authorize_open,
+    stream:     authorize_stream,
+};
+
+export fn register(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&AuthorizeConfig);
+}
+
+fn authorize_open(stream::Stream mut *self, err::Err+et mut*e, void mut * user_config, slice::Slice *headers)
+    where err::checked(*e)
+{
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+    if err::check(e) {
+        e->eprint();
+        e->make();
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
+        if err::check(e) { e->make(); }
+        self->close();
+        return;
+    }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    if err::check(e) { return; }
+}
+
+fn authorize_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+    where safe(msg->mem)
+{
+    return true;
+}
+
+
+
+
+
+
+export struct Authorize {
+    identity::Identity  mut identity;
+    string::String+128  mut resource;
+
+    Authorize mut *next;
+}
+
+export struct Config {
+    identity::Address mut network;
+    Authorize mut*authorize;
+}
+
+export fn authorize_connect(Config * self, identity::Identity *ii) -> bool
+{
+    let mut item = self->authorize;
+    while item != 0 {
+        static_attest(safe(item));
+        if identity::isnull(item->identity.k) {
+            continue;
+        }
+        if item->identity.eq(ii) {
+            return true;
+        }
+        item = item->next;
+    }
+    return false;
+}
+
+export fn authorize_open_stream(Config * self, identity::Identity *ii, char * path) -> bool
+    where nullterm(path)
+{
+    let mut item = self->authorize;
+    while item != 0 {
+        static_attest(safe(item));
+        if identity::isnull(item->identity.k) {
+            continue;
+        }
+        if item->identity.eq(ii) {
+            if item->resource.eq_cstr("*") {
+                return true;
+            }
+            if item->resource.eq_cstr(path) {
+                return true;
+            }
+        }
+        item = item->next;
+    }
+    return false;
+}
+
+using toml;
+using fs;
+using string;
+using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF};
+using <string.h>::{memset};
+using endpoint;
+
+export fn from_carriertoml(endpoint::Endpoint mut *ep, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    memset(&ep->config, 0 , (usize)sizeof(Config));
+
+    new+1000 parser = toml::parser(e, (toml::deserialize_t)load_from_toml_cb, ep);
+    if err::check(e) {return;}
+
+    string::String+300 mut ff;
+    ff.clear();
+    fs::get_homedir(e, &ff);
+    if err::check(e) {return;}
+    ff.append_cstr("/.devguard/carrier.toml");
+
+    let f = (FILE mut*)fopen(ff.mem, "r");
+    if f == 0 {
+        err::fail_with_errno(e, "open %s", ff.mem);
+        return;
+    }
+
+    char mut buf[300];
+    for(;;) {
+        usize bin = as<usize>(fread(buf, sizeof(char), static(len(buf)), f));
+        if bin == 0 {
+            break;
+        }
+        static_attest(bin < len(buf));
+        toml::push(&parser, e, buf, bin);
+        if err::check(e) { fclose(f); return; }
+    }
+
+    fclose(f);
+
+    identity::nullcheck(e, ep->config.network.k);
+    if err::check(e) { return; }
+
+    identity::nullcheck(e, ep->vault.secret);
+    if err::check(e) { return; }
+}
+
+
+fn load_from_toml_cb_publish(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    let this = (endpoint::Endpoint mut*)user;
+    static_attest(safe(this));
+
+    if string::cstr_eq(k, "shadow") || string::cstr_eq(k, "network") {
+        err::assert_safe(v.string);
+        static_attest(nullterm(v.string));
+        identity::address_from_cstr (&this->config.network, e, v.string);
+    }
+}
+
+fn load_from_toml_cb_authorize(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+    let this = (Authorize mut*)user;
+    static_attest(safe(this));
+
+    if string::cstr_eq(k, "identity") {
+        err::assert_safe(v.string);
+        static_attest(nullterm(v.string));
+        identity::identity_from_cstr (&this->identity , e, v.string);
+    } else if string::cstr_eq(k, "resource") {
+        this->resource.clear();
+        this->resource.append_cstr(v.string);
+    }
+}
+
+fn load_from_toml_cb(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
+    where err::checked(*e)
+    where nullterm(k)
+{
+
+    let this = (endpoint::Endpoint mut*)user;
+    static_attest(safe(this));
+    static_attest(nullterm(v.string));
+    static_attest(nullterm(k));
+    static_attest(safe(v.string));
+
+    if string::cstr_eq(k, "publish") && v.t == toml::ValueType::Object {
+        toml::next(p, e, load_from_toml_cb_publish, user);
+    } else if string::cstr_eq(k, "authorize") && v.t == toml::ValueType::Object {
+
+        let nu = (Authorize mut*)this->framebuffer.malloc(sizeof(Authorize));
+        if (nu == 0) {
+            err::fail(e, 1, "too many [[authorize]] sections. increase endpoint tail memory");
+            return;
+        }
+
+
+        if this->config.authorize == 0 {
+            this->config.authorize = nu;
+        } else {
+            let mut end = this->config.authorize;
+            static_attest(safe(end));
+            while end->next != 0 {
+                end = end->next;
+            }
+            end->next = nu;
+        }
+
+        toml::next(p, e, load_from_toml_cb_authorize, nu);
+
+    } else if v.t == toml::ValueType::String && string::cstr_eq(k, "secret") {
+        identity::secret_from_cstr((identity::Secret mut*)&this->vault.secret, e, v.string);
+    }
+}
+
+

@@ -16,7 +16,6 @@ using endpoint;
 using log;
 
 export struct Mission+ {
-    vault::Vault        mut vault;
     io::unix::Async+100 mut async;
     endpoint::Endpoint+ mut ep;
 }
@@ -24,21 +23,12 @@ export struct Mission+ {
 export fn start(Mission+mt mut new * self, err::Err+et mut *e, identity::Identity * unsafe cluster_target)
     where err::checked(*e)
     where mt > mt/32
-    model safe(self->ep.store)
 {
-    static_attest(safe(self->ep.store));
 
     io::unix::make(&self->async);
-    vault::from_carriertoml(&self->vault, e);
-    if err::check(e) { return ; }
 
-    identity::Identity mut id = {0};
-    self->vault.get_identity(&id);
-    char mut buf[64] = {0};
-    identity::identity_to_str(e, buf, 64, &id);
+    endpoint::from_carriertoml(&self->ep, e);
     if err::check(e) { return ; }
-    log::info("my identity: %s", buf);
-
 
     /*
     self->vault.broker[0] = vault::Broker {
@@ -49,10 +39,10 @@ export fn start(Mission+mt mut new * self, err::Err+et mut *e, identity::Identit
     e->abort();
     */
 
-    bootstrap::sync(e, &self->vault, net::os(), &self->async, time::from_seconds(10));
+    bootstrap::sync(e, &self->ep.vault, net::os(), &self->async, time::from_seconds(10));
     if err::check(e) { return ; }
 
-    endpoint::make(&self->ep, e, net::os(), &self->vault, &self->async);
+    self->ep.start(e, net::os(), &self->async);
     if err::check(e) { return ; }
 
     if cluster_target != 0 {

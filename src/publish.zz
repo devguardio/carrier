@@ -30,19 +30,6 @@ using noise;
 using responder;
 
 
-export struct Authorize {
-    bool                mut used;
-    identity::Identity  mut identity;
-    string::String+128  mut resource;
-}
-
-export struct Publish+ {
-    identity::Address network;
-
-    usize tail;
-    Authorize authorize[];
-}
-
 static stream::Config PublishStream = stream::Config {
     path:   "/carrier.broker.v1/broker/publish",
     stream: stream_to_publish,
@@ -50,13 +37,12 @@ static stream::Config PublishStream = stream::Config {
 };
 
 
-export fn start(Publish mut *self, err::Err+et mut*e, endpoint::Endpoint mut*endpoint)
+export fn publish(endpoint::Endpoint mut*self, err::Err+et mut*e)
     where err::checked(*e)
 {
-    endpoint->broker_stream_registry[0]             = &PeerConnect;
-    endpoint->broker_stream_registry_user_config[0] = self;
+    self->broker_stream_registry[0] = &PeerConnect;
 
-    stream::Stream mut* streami = endpoint->broker()->open(e, &PublishStream);
+    stream::Stream mut* streami = self->broker()->open(e, &PublishStream);
     if err::check(e) {
         return;
     }
@@ -74,9 +60,6 @@ fn close_publish(stream::Stream mut *self) {
 fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
     where err::checked(*e)
 {
-    static_attest(safe(self->user2));
-    Publish mut *this = self->user2;
-
     static_attest(safe(self->chan));
     if self->state == 0 {
         log::debug("publish response headers:");
@@ -100,11 +83,13 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
         frame->push64(byteorder::to_be64(2)); // order
         frame->push16(0); // size placeholder
 
-        protonerf::encode_bytes(frame, e, 1, this->network.k, 32);
+        static_attest(safe(self->chan->endpoint));
+
+        protonerf::encode_bytes(frame, e, 1, self->chan->endpoint->config.network.k, 32);
         if err::check(e) {
             return false;
         }
-        protonerf::encode_bytes(frame, e, 2, this->network.k, 32);
+        protonerf::encode_bytes(frame, e, 2, self->chan->endpoint->config.network.k, 32);
         if err::check(e) {
             return false;
         }
@@ -142,9 +127,6 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
     where safe(msg->mem)
 {
     static_attest(safe(self->chan));
-    let this = (Publish mut*)self->user2;
-    static_attest(safe(this));
-    static_attest(this->tail == len(this->authorize));
 
     if self->state == 0 {
         self->state = 1;
@@ -248,17 +230,10 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         log::error("signature check not implemented, accepting everything");
         //FIXME compare route
         //FIXME check signature
-        //FIXME authorizations
 
+        static_attest(safe(self->chan->endpoint));
+        let authorized = self->chan->endpoint->config.authorize_connect(&ii);
 
-        let mut authorized = false;
-        for (usize mut i = 0; i < this->tail; i++) {
-            if this->authorize[i].used {
-                if this->authorize[i].identity.eq(&ii) {
-                    authorized = true;
-                }
-            }
-        }
         if !authorized {
             let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 34);
             if err::check(e) {
@@ -373,6 +348,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         nuchan->q.allocator = self->chan->q.allocator;
         nuchan->store       = self->chan->store;
         nuchan->endpoint    = self->chan->endpoint;
+        memcpy(&nuchan->peer,  &ii, sizeof(identity::Identity));
         memcpy(&nuchan->peering, &peerings, sizeof(peering::Peering));
 
     } else {
@@ -397,105 +373,5 @@ pub fn cleanup_dead_route(channel::Channel mut * chan, u64 dead_route)
     }
 }
 
-
-
-using toml;
-using fs;
-using string;
-using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF};
-
-export fn from_carriertoml(Publish+tail mut new *self, err::Err+et mut *e)
-    where err::checked(*e)
-{
-    memset(self, 0 , (usize)sizeof(Publish) + (tail * (usize)sizeof(Authorize)));
-    self->tail = tail;
-
-    new+1000 parser = toml::parser(e, (toml::deserialize_t)load_from_toml_cb, self);
-    if err::check(e) {return;}
-
-    string::String+300 mut ff;
-    ff.clear();
-    fs::get_homedir(e, &ff);
-    if err::check(e) {return;}
-    ff.append_cstr("/.devguard/carrier.toml");
-
-    let f = (FILE mut*)fopen(ff.mem, "r");
-    if f == 0 {
-        err::fail_with_errno(e, "open %s", ff.mem);
-        return;
-    }
-
-    char mut buf[300];
-    for(;;) {
-        usize bin = as<usize>(fread(buf, sizeof(char), static(len(buf)), f));
-        if bin == 0 {
-            break;
-        }
-        static_attest(bin < len(buf));
-        toml::push(&parser, e, buf, bin);
-        if err::check(e) { fclose(f); return; }
-    }
-
-    fclose(f);
-
-
-    identity::nullcheck(e, self->network.k);
-}
-
-
-fn load_from_toml_cb_publish(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
-    where err::checked(*e)
-    where nullterm(k)
-{
-    let this = (Publish mut*)user;
-    static_attest(safe(this));
-
-    if string::cstr_eq(k, "shadow") || string::cstr_eq(k, "network") {
-        err::assert_safe(v.string);
-        static_attest(nullterm(v.string));
-        identity::address_from_cstr (&this->network, e, v.string);
-    }
-}
-
-fn load_from_toml_cb_authorize(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
-    where err::checked(*e)
-    where nullterm(k)
-{
-    let this = (Authorize mut*)user;
-    static_attest(safe(this));
-
-    if string::cstr_eq(k, "identity") {
-        this->used = true;
-        err::assert_safe(v.string);
-        static_attest(nullterm(v.string));
-        identity::identity_from_cstr (&this->identity , e, v.string);
-    } else if string::cstr_eq(k, "resource") {
-        this->resource.clear();
-        this->resource.append_cstr(v.string);
-    }
-}
-
-fn load_from_toml_cb(err::Err+et mut *e, toml::Parser+pt mut* p, void mut *user, char *k, toml::Value v)
-    where err::checked(*e)
-    where nullterm(k)
-{
-    let this = (Publish mut*)user;
-    static_attest(safe(this));
-    static_attest(this->tail == len(this->authorize));
-
-    if string::cstr_eq(k, "publish") && v.t == toml::ValueType::Object {
-        toml::next(p, e, load_from_toml_cb_publish, user);
-    } else if string::cstr_eq(k, "authorize") && v.t == toml::ValueType::Object {
-
-        for (usize mut i = 0; i < this->tail; i++) {
-            if !this->authorize[i].used {
-                toml::next(p, e, load_from_toml_cb_authorize, &this->authorize[i]);
-                return;
-            }
-        }
-
-        err::fail(e, 1, "too many [[authorize]] sections for tail memory");
-    }
-}
 
 

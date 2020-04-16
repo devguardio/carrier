@@ -37,20 +37,19 @@ static stream::Config ConnectStream = stream::Config {
 
 export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity target)
     where err::checked(*e)
-    where safe(ep->store)
 {
     memcpy(&self->target.k, &target.k, static(len(self->target.k)));
 
     identity::identity_from_secret(
         &self->principal,
-        (identity::Secret*)&(ep->store->secret)
+        (identity::Secret*)&(ep->vault.secret)
     );
 
-    self->initiator_time = ep->store->time;
+    self->initiator_time = ep->vault.time;
     self->initiator.initiate(
         e,
         false,
-        (identity::Secret*)&(ep->store->secret),
+        (identity::Secret*)&(ep->vault.secret),
         initiator::Move::Never,
         0,
         0,
@@ -206,7 +205,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             }
             static_attest(safe(nuchan));
 
-            this->initiator.complete(e, nuchan, 0, &this->initiator_pkt);
+            this->initiator.complete(e, nuchan, 0, &this->initiator_pkt, &this->target);
             if err::check(e) {
                 return true;
             }
@@ -214,6 +213,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             nuchan->q.allocator = self->chan->q.allocator;
             nuchan->store       = self->chan->store;
             nuchan->endpoint    = self->chan->endpoint;
+            memcpy(&nuchan->peer,  &this->target, sizeof(identity::Identity));
             memcpy(&nuchan->peering, &peerings, sizeof(peering::Peering));
 
             if this->on_connect != 0 {

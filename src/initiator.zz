@@ -215,6 +215,8 @@ pub fn complete (
     vault::Broker   mut* unsafe redirect,
 
     string::String+st   mut* pkt,
+
+    identity::Identity * unsafe expect_identity,
 )
     where err::checked(*e)
     where st>=1024
@@ -319,6 +321,14 @@ pub fn complete (
     if !identity::verify(&r_identity, sig, signme, static(len(signme))) {
         err::fail(e, 1, "invalid signature");
         return;
+    }
+
+
+    if expect_identity != 0 {
+        static_attest(safe(expect_identity));
+        if !expect_identity->eq(&r_identity) {
+            err::fail(e, 1, "mismatched identity");
+        }
     }
 
     char mut r_identity_str[128] = {0};

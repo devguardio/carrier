@@ -24,6 +24,7 @@ using protonerf;
 using proto;
 using carrier;
 using vault;
+using identity;
 
 export enum FrameType {
     Ack         = 1,
@@ -37,6 +38,7 @@ export enum FrameType {
 }
 
 export struct Channel {
+    identity::Identity peer;
     vault::Vault mut* store;
     endpoint::Endpoint  mut* endpoint;
 
@@ -539,7 +541,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     }
                     static_attest(len(registry)         >= registry_len);
                     static_attest(len(registry_user)    >= registry_len);
-
+                    static_attest(safe(path.mem));
+                    static_attest(nullterm(path.mem));
 
                     let mut accepted = false;
                     if path.eq_cstr("/v2/carrier.discovery.v1/discover") {
@@ -550,8 +553,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                             e->make();
                             please_resend = true;
                         }
-                    } else if path.size > 0 {
-
+                    } else if path.size > 0 && (self->this_is_the_broker_channel ||
+                        self->endpoint->config.authorize_open_stream(&self->peer, (char*)path.mem)) {
 
                         for (usize mut i = 0; i < registry_len; i++) {
                             stream::Config * mut conf = registry[i];
@@ -856,6 +859,10 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
             static_attest(safe(conf));
             err::assert_safe(conf->path);
             static_attest(nullterm(conf->path));
+
+            if self->this_is_the_broker_channel || !self->endpoint->config.authorize_open_stream(&self->peer, conf->path) {
+                continue;
+            }
 
             protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::Paths,
                 (u8*)conf->path,

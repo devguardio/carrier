@@ -190,6 +190,7 @@ pub fn read_routing_key(u8 * i, Direction mut * unsafe direction) -> u64
 pub fn next_channel(Router mut* self) -> channel::Channel mut * {
     for (usize mut i = 0; i < static(len(self->channels)); i++) {
         if self->channels[i].route == 0 {
+            memset(self->channels + i, 0, sizeof(channel::Channel));
             return &self->channels[i];
         }
     }

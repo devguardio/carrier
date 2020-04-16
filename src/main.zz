@@ -9,16 +9,20 @@ using sft;
 using connect;
 using log;
 using channel;
+using config;
+using endpoint;
+using identity;
 
 fn cmd_identity(int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
 {
-    new+5000 e = err::make();
-    new vault = carrier::vault::from_carriertoml(&e);
+    new+10000 e = err::make();
+
+    new+1000 ep = endpoint::from_carriertoml(&e);
     e.abort();
 
     carrier::identity::Identity mut id= {0};
-    vault.get_identity(&id);
+    ep.vault.get_identity(&id);
 
     char mut buf[64] = {0};
     carrier::identity::identity_to_str(&e, buf, 64, &id);
@@ -31,19 +35,18 @@ fn cmd_identity(int mut argc, char ** argv) -> int
 fn cmd_publish(int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
 {
-    new+5000 e = err::make();
-
-    new+30 publisher = publish::from_carriertoml(&e);
-    e.abort();
+    new+10000 e = err::make();
 
     new+10000 mi = mission::start(&e, 0);
     e.abort();
+    print_identity(&mi.ep);
 
-    publisher.start(&e, &mi.ep);
+    publish::publish(&mi.ep, &e);
     e.abort();
 
-    //shell::register(&mi.ep);
-    //sft::register(&mi.ep);
+    shell::register(&mi.ep);
+    sft::register(&mi.ep);
+    config::register(&mi.ep);
 
     mi.run(&e);
     e.abort();
@@ -89,6 +92,7 @@ fn cmd_shell(usize mut argc, char ** argv) -> int
 
     new+10000 mi = mission::start(&e, &target);
     e.abort();
+    print_identity(&mi.ep);
 
     new con = connect::start(&e, &mi.ep, target);
     e.abort();
@@ -151,4 +155,18 @@ export fn main(int mut argc, char ** argv) -> int
     }
     printf("%s", USAGE);
     return 1;
+}
+
+
+
+fn print_identity(endpoint::Endpoint *self)
+{
+    new+1000 e = err::make();
+
+    identity::Identity mut id = {0};
+    self->vault.get_identity(&id);
+    char mut buf[64] = {0};
+    identity::identity_to_str(&e, buf, 64, &id);
+    e.abort();
+    log::info("my identity: %s", buf);
 }

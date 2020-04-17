@@ -1,7 +1,7 @@
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
 using <assert.h>::{assert};
 using <string.h>::{memset};
-using std;
+using mem;
 
 pub const usize HASHLEN   = 32;
 pub const usize BLOCKLEN  = 64;
@@ -35,7 +35,7 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
         usize fill = as<usize>(64 - self->at);
         if l >= fill {
             static_attest(len(data) > fill);
-            std::memcpy(self->block + self->at, data, fill);
+            mem::copy(data, self->block + self->at, fill);
             hacl::Hacl_SHA2_256_update(self->state, self->block);
             l    -= fill;
             data = data + fill;
@@ -47,7 +47,7 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
             static_attest(len(dst) > l);
             static_attest(safe(data));
             static_attest(len(data) > l);
-            std::memcpy(dst, data, l);
+            mem::copy(data, dst, l);
             self->at += (u8)l;
             break;
         }
@@ -93,7 +93,7 @@ pub fn hkdf(
         return;
     }
     static_attest(safe(out2));
-    std::memcpy(temp_hash, out1, HASHLEN);
+    mem::copy(out1, temp_hash, HASHLEN);
     temp_hash[HASHLEN] = 0x02;
     hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out2);
 
@@ -102,7 +102,7 @@ pub fn hkdf(
         return;
     }
     static_attest(safe(out3));
-    std::memcpy(temp_hash, out2, HASHLEN);
+    mem::copy(out2, temp_hash, HASHLEN);
     temp_hash[HASHLEN] = 0x03;
     hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out3);
 }

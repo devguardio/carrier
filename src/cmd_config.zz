@@ -1,0 +1,254 @@
+using err;
+using carrier;
+using connect;
+using log;
+using channel;
+using identity;
+using string;
+using endpoint;
+using <stdio.h>::{fprintf, stderr, printf};
+using cmd_common::{print_identity};
+using mem;
+using stream;
+using cmd_common;
+using cmd_config_auth_list;
+using cmd_config_auth_add;
+using cmd_config_net;
+using slice;
+using proto;
+using protonerf;
+
+static char * USAGE = "
+Usage:
+    carrier config <target> <subcommand>
+
+Target:
+    self: the local device
+    <identity>: a remote device on the carrier network
+
+Subcommands:
+    auth add [ self | <identity> ] <resource>    add authorization
+    auth del <identity> <resource>               remove authorization
+    auth list                                    list authorizations
+    net get                                      get current network
+    net join [ self | <secret> ]                 join network
+";
+
+export enum Target {
+    None,
+    Self,
+    Identity,
+}
+
+export enum Service {
+    None,
+    Auth,
+    Net,
+}
+
+export enum Method {
+    None,
+    Get,
+    Add,
+    Remove,
+    Join,
+}
+
+pub fn cmd(usize mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+    new+1000 ep = endpoint::from_home_carriertoml(&e);
+    e.abort();
+
+    identity::Identity mut target_id = {0};
+    Target  mut target  = Target::None;
+    Method  mut method  = Method::None;
+    Service mut service = Service::None;
+
+    Target  mut authme = Target::None;
+    identity::Identity mut auth_id = {0};
+    char * mut resource = 0;
+
+    identity::Secret  mut net_secret = {0};
+
+    for (usize mut i = 2; i < argc; i++) {
+        char * arg = argv[i];
+        static_attest(safe(arg));
+        static_attest(nullterm(arg));
+        if target == Target::None {
+            if string::cstr_eq(arg, "self") {
+                target = Target::Self;
+            } else {
+                target = Target::Identity;
+                identity::identity_from_str (&target_id, &e, arg, string::strlen(arg));
+                if err::check(&e) {
+                    e.fail(err::InvalidArgument, "parsing remote target identity from commandline argument");
+                    e.eprintf(stderr);
+                    return 1;
+                }
+            }
+        } else if service == Service::None {
+            if string::cstr_eq(arg, "auth") {
+                service = Service::Auth;
+            } else if string::cstr_eq(arg, "net") {
+                service = Service::Net;
+            } else {
+                fprintf(stderr, "%s", USAGE);
+                return 1;
+            }
+        } else if method == Method::None {
+            if string::cstr_eq(arg, "add") {
+                method = Method::Add;
+            } else if string::cstr_eq(arg, "set") {
+                method = Method::Join;
+            } else if string::cstr_eq(arg, "join") {
+                method = Method::Join;
+            } else if string::cstr_eq(arg, "ls") {
+                method = Method::Get;
+            } else if string::cstr_eq(arg, "get") {
+                method = Method::Get;
+            } else if string::cstr_eq(arg, "list") {
+                method = Method::Get;
+            } else if string::cstr_eq(arg, "rm") {
+                method = Method::Remove;
+            } else if string::cstr_eq(arg, "del") {
+                method = Method::Remove;
+            } else {
+                fprintf(stderr, "%s", USAGE);
+                return 1;
+            }
+
+            if method == Method::Get {
+                if service == Service::Auth {
+                    if target == Target::Self {
+                        cmd_config_auth_list::run_self(&e, &ep);
+                        e.abort();
+                        return 0;
+                    } else {
+                        cmd_config_auth_list::run_remote(&e, &ep, &target_id);
+                        e.abort();
+                        return 0;
+                    }
+                } else if service == Service::Net {
+                    if target == Target::Self {
+                        cmd_config_net::run_self_net_get(&e, &ep);
+                        e.abort();
+                        return 0;
+                    } else {
+                        cmd_config_net::run_remote_net_get(&e, &ep, &target_id);
+                        e.abort();
+                        return 0;
+                    }
+                }
+            }
+        } else if service == Service::Auth {
+            if authme == Target::None {
+                if string::cstr_eq(arg, "self") {
+                    authme = Target::Self;
+                    if method == Method::Remove {
+                        fprintf(stderr, "cannot deauthorize self\n");
+                        fprintf(stderr, "%s", USAGE);
+                        return 1;
+                    }
+                    ep.vault.get_identity(&auth_id);
+                } else {
+                    authme = Target::Identity;
+                    identity::identity_from_str (&auth_id, &e, arg, string::strlen(arg));
+                    if err::check(&e) {
+                        e.fail(err::InvalidArgument, "parsing auth add identity from commandline argument");
+                        e.eprintf(stderr);
+                        return 1;
+                    }
+                }
+
+            } else if method == Method::Remove || method == Method::Add {
+                if target == Target::Self {
+                    cmd_config_auth_add::run_self(&e, &ep, &auth_id, arg, method);
+                    e.abort();
+                    return 0;
+                } else {
+                    cmd_config_auth_add::run_remote(&e, &ep, &target_id, &auth_id, arg, method);
+                    e.abort();
+                    return 0;
+                }
+            }
+        } else if service == Service::Net {
+            if string::cstr_eq(arg, "self") {
+                mem::copy(ep.vault.mem->network_secret, net_secret.k, 32);
+            } else {
+                identity::secret_from_str (&net_secret, &e, arg, string::strlen(arg));
+                if err::check(&e) {
+                    e.fail(err::InvalidArgument, "parsing network secret from commandline argument");
+                    e.eprintf(stderr);
+                    return 1;
+                }
+            }
+            if target == Target::Self {
+                if method == Method::Join {
+                    cmd_config_net::run_self_net_join(&e, &ep, &net_secret);
+                    e.abort();
+                    return 0;
+                }
+            } else {
+                if method == Method::Join {
+                    cmd_config_net::run_remote_net_join(&e, &ep, &target_id, &net_secret);
+                    e.abort();
+                    return 0;
+                }
+            }
+        }
+    }
+
+    fprintf(stderr, "%s", USAGE);
+    return 1;
+}
+
+
+export symbol RemoteOpFailed;
+
+pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    if self->state == 0 {
+        self->state = 1;
+        return cmd_common::on_stream_want_header_200(self, e, msg);
+    } else {
+        self->state = 2;
+        static_attest(safe(msg->mem));
+
+
+        let mut ok = false;
+        char * mut remote_error = 0;
+        usize  mut remote_error_len = 0;
+
+        let mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (;;) {
+            let field = decoder.next(e);
+            if err::check(e) { return true; }
+            if !field.valid {break;}
+
+            switch field.index {
+                proto::ConfigResult::Ok => {
+                    ok = field.value.v_bool;
+                }
+                proto::ConfigResult::Error => {
+                    remote_error        = (char*)field.a;
+                    remote_error_len    = field.value.v_len;
+                }
+                default => {
+                }
+            }
+        }
+        if err::check(e) { return true; }
+
+        if !ok {
+            err::fail(e, RemoteOpFailed, "remote call error: %.*s", remote_error_len, remote_error);
+            return true;
+        }
+
+        log::info("done");
+        return true;
+    }
+}
+

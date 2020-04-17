@@ -3,7 +3,7 @@ using err;
 using hex;
 using <string.h>::{memcmp};
 using string;
-using <stdio.h>::{fread, stdin};
+using <stdio.h>::{fread, stdin, stderr};
 
 
 test {
@@ -63,7 +63,7 @@ pub fn main() -> int {
     usize l = cipher::decrypt(&c, &e, ciphertext, static(len(ciphertext)), nonce, plain, static(len(plain)));
     static_attest(len(plain) >= l);
     if err::check(&e) {
-        e.eprint();
+        e.eprintf(stderr);
         return 1;
     }
 

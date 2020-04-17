@@ -16,8 +16,8 @@ using <string.h>::{memcpy};
 using hex;
 using string;
 
-export fntype disconnect_t  (channel::Channel mut *chan);
-export fntype connect_t     (channel::Channel mut *chan);
+export fntype disconnect_t  (Connect mut *con, endpoint::Endpoint mut *ep);
+export fntype connect_t     (Connect mut *con, channel::Channel mut *chan);
 
 export struct Connect {
     identity::Identity      target;
@@ -27,6 +27,9 @@ export struct Connect {
     string::String+1024     mut initiator_pkt;
     disconnect_t            on_disconnect;
     connect_t               on_connect;
+
+    void mut *user1;
+    usize mut user2;
 }
 
 static stream::Config ConnectStream = stream::Config {
@@ -38,18 +41,22 @@ static stream::Config ConnectStream = stream::Config {
 export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity target)
     where err::checked(*e)
 {
+    static_attest(safe(ep->vault.mem));
     memcpy(&self->target.k, &target.k, static(len(self->target.k)));
 
     identity::identity_from_secret(
         &self->principal,
-        (identity::Secret*)&(ep->vault.secret)
+        (identity::Secret*)&(ep->vault.mem->secret)
     );
 
-    self->initiator_time = ep->vault.time;
+
+    static_attest(safe(ep->vault.mem));
+
+    self->initiator_time = ep->vault.mem->time;
     self->initiator.initiate(
         e,
         false,
-        (identity::Secret*)&(ep->vault.secret),
+        (identity::Secret*)&(ep->vault.mem->secret),
         initiator::Move::Never,
         0,
         0,
@@ -65,7 +72,7 @@ export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut
     streami->user2 = self;
 }
 
-fn on_close(stream::Stream mut *self) {
+fn on_close(stream::Stream mut *self, err::Err+et mut*e) {
     //TODO
     log::error("connect closed");
 
@@ -76,7 +83,7 @@ fn on_close(stream::Stream mut *self) {
 
     if this->on_disconnect != 0 {
         static_attest(safe(this->on_disconnect));
-        this->on_disconnect(self->chan);
+        this->on_disconnect(this, self->chan->endpoint);
     }
 }
 
@@ -121,20 +128,20 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         frame->push64(byteorder::to_be64(2)); // order
         frame->push16(0); // size placeholder
 
-        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Principal, this->principal.k, 32);
+        protonerf::encode_bytes(frame, e, proto::ConnectRequest::Principal, this->principal.k, 32);
         e->abort();
 
-        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Target, this->target.k, 32);
+        protonerf::encode_bytes(frame, e, proto::ConnectRequest::Target, this->target.k, 32);
         e->abort();
 
-        protonerf::encode_varint(frame, e, proto::ConnectRequestField::Timestamp, this->initiator_time);
+        protonerf::encode_varint(frame, e, proto::ConnectRequest::Timestamp, this->initiator_time);
         e->abort();
 
-        protonerf::encode_varint(frame, e, proto::ConnectRequestField::Timeout, 1);
+        protonerf::encode_varint(frame, e, proto::ConnectRequest::Timeout, 1);
         e->abort();
 
         static_attest(len(this->initiator_pkt.mem) >= this->initiator_pkt.len);
-        protonerf::encode_bytes(frame, e, proto::ConnectRequestField::Handshake, (u8*)this->initiator_pkt.mem, this->initiator_pkt.len);
+        protonerf::encode_bytes(frame, e, proto::ConnectRequest::Handshake, (u8*)this->initiator_pkt.mem, this->initiator_pkt.len);
         e->abort();
 
     } else if self->state == 1 {
@@ -143,37 +150,37 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
 
         static_attest(safe(bs->mem));
-        let mut dec = protonerf::decode(proto::ConnectResponse, bs->mem, bs->size);
+        let mut dec = protonerf::decode(bs->mem, bs->size);
         bool mut ok = false;
         slice::slice::Slice mut handshake = {0};
         u64 mut route = 0;
         for(;;) {
             let field = dec.next(e);
             if err::check(e) {
-                e->eprint();
+                e->elog();
                 return true;
             }
             if !field.valid {
                 break;
             }
             switch field.index {
-                proto::ConnectResponseField::Error => {
+                proto::ConnectResponse::Error => {
                     log::error("error: %.*s", field.value.v_len, field.a);
                 }
-                proto::ConnectResponseField::Ok => {
+                proto::ConnectResponse::Ok => {
                     ok = field.value.v_bool != 0;
                 }
-                proto::ConnectResponseField::Paths => {
+                proto::ConnectResponse::Paths => {
                     peerings.from_proto(e, field);
                     if err::check(e) {
-                        e->eprint();
+                        e->elog();
                         return true;
                     }
                 }
-                proto::ConnectResponseField::Route => {
+                proto::ConnectResponse::Route => {
                     route = byteorder::to_be64(field.value.v_u64);
                 }
-                proto::ConnectResponseField::Handshake => {
+                proto::ConnectResponse::Handshake => {
                     handshake.mem  = field.a;
                     handshake.size = field.value.v_len;
                 }
@@ -182,7 +189,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
 
         if ok {
             if handshake.mem == 0 || route == 0 {
-                err::fail(e, 13, "missing protobuf field");
+                err::fail(e, err::InvalidArgument, "missing protobuf field");
                 return true;
             }
             static_attest(len(handshake.mem) >= handshake.size);
@@ -190,7 +197,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             // unfortunate misdesign of tunneling an entire init packet
             // which actually contains no interesting information
             if handshake.size < 1 + 3 + 8 + 8 + 32 + 16 + 3 + 32 + 8 {
-                err::fail(e, 1, "too small");
+                err::fail(e, err::InvalidArgument, "too small");
                 return true;
             }
             memcpy(this->initiator_pkt.mem, handshake.mem, handshake.size);
@@ -210,6 +217,14 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
                 return true;
             }
 
+            if nuchan->route != route {
+                err::fail(e, err::InvalidArgument, "broker and peer disagree on route");
+                nuchan->route = 0;
+                return true;
+            }
+
+            self->broker_route = route;
+
             nuchan->q.allocator = self->chan->q.allocator;
             nuchan->store       = self->chan->store;
             nuchan->endpoint    = self->chan->endpoint;
@@ -218,7 +233,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
 
             if this->on_connect != 0 {
                 static_attest(safe(this->on_connect));
-                this->on_connect(nuchan);
+                this->on_connect(this, nuchan);
             }
 
         } else {

@@ -1,0 +1,174 @@
+using err;
+using endpoint;
+using identity;
+using vault;
+using mem;
+using sync;
+using <stdio.h>::{fprintf, stderr, printf};
+using stream;
+using cmd_common;
+using cmd_config;
+using proto;
+using protonerf;
+using slice;
+using hex;
+using string;
+using log;
+
+export fn run_self_net_get(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+)
+    where err::checked(*e)
+{
+    static_attest(safe(endpoint->vault.mem));
+    if identity::isnull(endpoint->vault.mem->network) {
+    } else {
+        char mut buf[64] = {0};
+        identity::address_to_str(e, buf, 64, (identity::Address*)endpoint->vault.mem->network);
+        if err::check(e) { return; }
+        printf("address = %s\n", buf);
+    }
+
+    static_attest(safe(endpoint->vault.mem));
+    if identity::isnull(endpoint->vault.mem->network_secret) {
+    } else {
+        char mut buf[64] = {0};
+        identity::secret_to_str(e, buf, 64, (identity::Secret*)endpoint->vault.mem->network_secret);
+        if err::check(e) { return; }
+        printf("secret  = %s\n", buf);
+    }
+}
+
+export fn run_self_net_join(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+    identity::Secret *net_secret
+)
+    where err::checked(*e)
+{
+    static_attest(safe(endpoint->vault.mem));
+
+    mem::copy(net_secret->k, endpoint->vault.mem->network_secret, 32);
+    identity::address_from_secret(
+        (identity::Address mut*)&endpoint->vault.mem->network,
+        (identity::Secret*)endpoint->vault.mem->network_secret
+    );
+
+    err::assert_safe(endpoint->vault.save);
+    endpoint->vault.save(&endpoint->vault, e);
+    if err::check(e) {return;}
+
+    run_self_net_get(e, endpoint);
+    if err::check(e) {return;}
+}
+
+export fn run_remote_net_join(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+    identity::Identity *target,
+    identity::Secret *net_secret,
+)
+    where err::checked(*e)
+{
+    new mx = sync::start(e, endpoint);
+    if err::check(e) { return; }
+
+    mx.connect(e, target);
+    if err::check(e) { return; }
+
+    let stx = mx.open(e, &NetSetStream);
+    if err::check(e) { return; }
+    static_attest(safe(stx));
+    stx->errors_are_fatal = true;
+
+    let frame = stx->stream(e, 64);
+    if err::check(e) { return; }
+
+    char mut buf[64] = {0};
+    identity::secret_to_str(e, buf, 64, net_secret);
+    if err::check(e) { return; }
+
+    protonerf::encode_bytes(frame, e, proto::NetworkJoin::Secret, (u8*)buf, string::strlen(buf));
+    if err::check(e) { return; }
+
+    mx.wait(e);
+    if err::check(e) { return; }
+}
+
+static stream::Config NetSetStream = stream::Config {
+    path:   "/v2/carrier.config.v1/net_join",
+    stream: cmd_config::on_result_stream,
+    close:  on_close,
+};
+
+export fn run_remote_net_get(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+    identity::Identity *target,
+)
+    where err::checked(*e)
+{
+    new mx = sync::start(e, endpoint);
+    if err::check(e) { return; }
+
+    mx.connect(e, target);
+    if err::check(e) { return; }
+
+    mx.open(e, &NetGetStream);
+    if err::check(e) { return; }
+
+    mx.wait(e);
+    if err::check(e) { return; }
+}
+
+static stream::Config NetGetStream = stream::Config {
+    path:   "/v2/carrier.config.v1/net_get",
+    stream: on_stream,
+    close:  on_close,
+};
+
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    if self->state == 0 {
+        self->state = 1;
+        return cmd_common::on_stream_want_header_200(self, e, msg);
+    } else {
+        self->state = 2;
+        static_attest(safe(msg->mem));
+
+        let mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (;;) {
+            let field = decoder.next(e);
+            if err::check(e) { return true; }
+            if !field.valid {break;}
+
+            switch field.index {
+                proto::NetworkGetResult::Address => {
+                    if field.a != 0 {
+                        static_attest(safe(field.a));
+                        static_attest(len(field.a) > field.value.v_len);
+                        printf("address = %.*s\n", field.value.v_len, field.a);
+                    }
+                }
+                default => {}
+            }
+
+        }
+        if err::check(e) { return true; }
+        return true;
+    }
+}
+
+symbol RemoteOpFailed;
+fn on_close(stream::Stream mut* self, err::Err+et mut*e)
+{
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+    self->chan->endpoint->close();
+    if self->state <  2 {
+        err::fail(e, cmd_config::RemoteOpFailed, "closed early");
+    }
+}
+

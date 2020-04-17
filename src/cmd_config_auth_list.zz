@@ -1,0 +1,142 @@
+using err;
+using identity;
+using endpoint;
+using connect;
+using hpack;
+using protonerf;
+using slice;
+using proto;
+using stream;
+using cmd_common;
+using channel;
+using <stdlib.h>::{atoi, exit};
+using <stdio.h>::{fprintf, stderr, printf};
+using endpoint;
+using sync;
+
+fn run_self_auth_list_print(void mut * unsafe _, identity::Identity *id, char *resource)
+    where nullterm(resource)
+{
+    new+1000 e = err::make();
+
+    char mut buf[64] = {0};
+    identity::identity_to_str(&e, buf, 64, id);
+    e.abort();
+
+    printf("%s\t%s\n", buf, resource);
+}
+
+export fn run_self(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+)
+    where err::checked(*e)
+{
+    printf("IDENTITY                                       \tPATH\n");
+    endpoint->vault.list_authorizations(e, run_self_auth_list_print, 0);
+    if err::check(e) {
+        return;
+    }
+}
+
+export fn run_remote(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+    identity::Identity *target,
+)
+    where err::checked(*e)
+{
+    new mx = sync::start(e, endpoint);
+    if err::check(e) { return; }
+
+    mx.connect(e, target);
+    if err::check(e) { return; }
+
+    mx.open(e, &AuthListStream);
+    if err::check(e) { return; }
+
+    mx.wait(e);
+    if err::check(e) { return; }
+}
+
+static stream::Config AuthListStream = stream::Config {
+    path:   "/v2/carrier.config.v1/auth_list",
+    stream: on_stream,
+    close:  on_close,
+};
+
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    if self->state == 0 {
+        self->state = 1;
+        return cmd_common::on_stream_want_header_200(self, e, msg);
+    } else {
+        self->state = 2;
+
+        static_attest(safe(msg->mem));
+
+        printf("IDENTITY                                       \tPATH\n");
+        let mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (;;) {
+            let field = decoder.next(e);
+            if err::check(e) { return true; }
+            if !field.valid {break;}
+
+            switch field.index {
+                proto::AuthListResult::Auth => {
+                    if field.a != 0 {
+                        static_attest(safe(field.a));
+                        static_attest(len(field.a) > field.value.v_len);
+                        let mut decoder = protonerf::decode(field.a, field.value.v_len);
+
+                        char * mut id = 0;
+                        usize  mut id_l = 0;
+                        char * mut path       = 0;
+                        usize  mut path_l     = 0;
+
+                        for (;;) {
+                            let field = decoder.next(e);
+                            if err::check(e) { return true; }
+                            if !field.valid {break;}
+
+                            switch field.index {
+                                proto::AuthorizationAdd::Identity => {
+                                    id   = (char*)field.a;
+                                    id_l = field.value.v_len;
+                                }
+                                proto::AuthorizationAdd::Path => {
+                                    path   = (char*)field.a;
+                                    path_l = field.value.v_len;
+                                }
+                                default => {
+                                }
+                            }
+                        }
+
+                        if id != 0 && path != 0 {
+                            printf("%.*s\t%.*s\n", id_l, id, path_l, path);
+                        }
+
+                    }
+                }
+                default => {
+                }
+            }
+
+        }
+        if err::check(e) { return true; }
+        return true;
+    }
+}
+
+symbol RemoteOpFailed;
+fn on_close(stream::Stream mut* self, err::Err+et mut*e)
+{
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+    self->chan->endpoint->close();
+    if self->state <  2 {
+        err::fail(e, RemoteOpFailed, "closed early");
+    }
+}

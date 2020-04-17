@@ -1,0 +1,143 @@
+using bootstrap;
+using endpoint;
+using err;
+using identity;
+using io;
+using io::unix;
+using log;
+using net;
+using time;
+using connect as connectI;
+using channel;
+using stream;
+
+export struct Sync {
+    io::unix::Async+100 mut async;
+    endpoint::Endpoint  mut *ep;
+    connectI::Connect   mut con;
+    channel::Channel    mut *chan;
+    bool waiting;
+    bool error;
+}
+
+export fn start(Sync mut new * self, err::Err+et mut *e, endpoint::Endpoint mut *ep)
+    where err::checked(*e)
+{
+    io::unix::make(&self->async);
+    self->ep = ep;
+
+
+    /*
+    self->vault.broker[0] = vault::Broker {
+        protocol:   0x09,
+        ip4addr:    {127,0,0,1},
+    };
+    identity::address_from_cstr((identity::Address mut*)&self->vault.broker[0].xaddr, e, "oSaoKYLdcdqGAJPkt3scwP2H8FuEy58GjT59LwpigL4y7h9");
+    e->abort();
+    */
+
+    bootstrap::sync(e, &self->ep->vault, net::os(), &self->async, time::from_seconds(10));
+    if err::check(e) { return ; }
+
+}
+
+export fn wait(Sync mut *self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    static_attest(safe(self->ep));
+
+    io::await(&self->async, e, endpoint::poll, self->ep, time::infinite());
+    if err::check(e) { return; }
+}
+
+export fn close(Sync mut *self, int exit_code)
+{
+    static_attest(safe(self->ep));
+    self->ep->close();
+}
+
+export fn connect(Sync mut new * self, err::Err+et mut*e, identity::Identity *target)
+    where err::checked(*e)
+    model safe(self->chan)
+{
+    static_attest(safe(self->ep));
+    self->chan = 0;
+    static_attest(safe(self->chan));
+
+    endpoint::cluster_target(self->ep, target);
+
+    self->ep->start(e, net::os(), &self->async);
+    if err::check(e) { return ; }
+
+    io::await(&self->async, e, endpoint::poll, self->ep, time::from_seconds(30));
+    if err::check(e) { return ; }
+
+    connectI::start(&self->con, e, self->ep, *target);
+    if err::check(e) { return; }
+
+    self->con.user1 = self;
+    self->con.on_disconnect = on_disconnect;
+    self->con.on_connect    = on_connect;
+
+    self->iwait(e);
+    if err::check(e) { return; }
+}
+
+fn on_connect(connectI::Connect mut *con, channel::Channel mut*chan)
+{
+    chan->errors_are_fatal = true;
+
+    Sync mut *self = (Sync mut*)con->user1;
+    err::assert_safe(self);
+    self->waiting = false;
+    self->chan    = chan;
+}
+
+fn on_disconnect(connectI::Connect mut*con, endpoint::Endpoint mut*ep)
+{
+    Sync mut *self = (Sync mut*)con->user1;
+    err::assert_safe(self);
+    self->error = true;
+    self->waiting = false;
+    ep->close();
+}
+
+export fn open(Sync mut new * self, err::Err+et mut*e, stream::Config * sc) -> stream::Stream mut *
+    where err::checked(*e)
+    where safe(self->chan)
+    where safe(sc->path)
+    where nullterm(sc->path)
+{
+    static_attest(safe(self->ep));
+
+    stream::Stream mut* streami = self->chan->open(e, sc);
+    if err::check(e) { return 0; }
+    static_attest(safe(streami));
+    return streami;
+}
+
+
+
+
+symbol Failed;
+
+fn iwait(Sync mut*self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+
+    static_attest(safe(self->ep));
+
+    self->error   = false;
+    self->waiting = true;
+    while (self->waiting) {
+        let r = self->ep->poll(e, &self->async);
+        if err::check(e) { return; }
+        io::wait(&self->async, e);
+        if err::check(e) { return; }
+    }
+
+    if self->error {
+        err::fail(e, Failed, "connection failed");
+    }
+}
+

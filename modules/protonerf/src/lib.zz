@@ -1,8 +1,6 @@
 using err;
 using <string.h>::{memcpy};
 using slice;
-using <stdio.h>::{fprintf, stderr};
-using <stdint.h>::{UINT32_MAX};
 
 export enum FieldType {
     Skip        = 0,
@@ -26,27 +24,13 @@ export enum FieldType {
     Float       = 18,
 }
 
-export fntype message_encoding_fn(usize index) -> FieldType;
-
-export fn encode_bytes(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u8*b, usize l)
-    where len(b) >= l
-    where err::checked(*e)
-{
-    encode_bytes_start(str, e, index, l);
-    if err::check(e) {
-        return;
-    }
-    if !str->append_bytes (b,l) {
-        err::fail(e, 3, "short write");
-        return;
-    }
-}
+export symbol Invalid;
 
 export fn encode_bytes_start(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, usize l)
     where err::checked(*e)
 {
-    if str->at + 1 + l > str->slice.size  {
-        err::fail(e, 3, "short write");
+    if str->at + 1  > str->slice.size  {
+        err::fail(e, err::OutOfTail, "short write");
         return;
     }
 
@@ -55,20 +39,34 @@ export fn encode_bytes_start(slice::MutSlice mut *str, err::Err+et mut*e, u8 ind
     mm[str->at]  = (index << 3) | 2;
     str->at += 1;
     static_attest(str->at <= len(str->slice.mem));
+    write_varint(str, e, (u32)l, (u32)(l >> 32));
+}
 
-    //TODO l >> 32 on android yields l. WHAT?
-    if l >= (usize)UINT32_MAX {
-        write_varint(str, e, (u32)l, (u32)(l >> 32));
-    } else {
-        write_varint(str, e, (u32)l, 0);
+export fn encode_bytes(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u8*b, usize l)
+    where len(b) >= l
+    where err::checked(*e)
+{
+    if str->at + 1 + l > str->slice.size  {
+        err::fail(e, err::OutOfTail, "short write");
+        return;
     }
+
+    u8 mut*mm = str->mem();
+    static_attest(str->at < len(mm));
+    mm[str->at]  = (index << 3) | 2;
+    str->at += 1;
+    static_attest(str->at <= len(str->slice.mem));
+    write_varint(str, e, (u32)l, (u32)(l >> 32));
+    static_attest(str->at < len(mm));
+    memcpy(mm + str->at, b, l);
+    str->at += l;
 }
 
 export fn encode_varint(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u64 mut value)
     where err::checked(*e)
 {
     if str->at + 1 > str->slice.size {
-        err::fail(e, 3, "short write");
+        err::fail(e, err::OutOfTail, "short write");
         return;
     }
     u8 mut*mm = str->mem();
@@ -82,15 +80,13 @@ export struct Decoder {
     u8    *mem;
     usize size;
     usize at;
-    message_encoding_fn instructions;
 }
 
 
-export fn decode(message_encoding_fn instructions, u8 *mem, usize size) -> Decoder {
+export fn decode(u8 *mem, usize size) -> Decoder {
     return Decoder {
         mem:    mem,
         size:   size,
-        instructions: instructions,
     };
 }
 
@@ -147,7 +143,7 @@ fn write_varint(slice::MutSlice mut*str, err::Err+et mut*e, u32 mut low, u32 mut
     i++;
 
     if str->at + i > str->slice.size {
-        err::fail(e, 3, "short write");
+        err::fail(e, err::OutOfTail, "short write");
         return;
     }
     static_attest(str->at < len(str->slice.mem));
@@ -163,7 +159,7 @@ fn read_varint(Decoder mut*self, err::Err+et mut*e) -> u64
     for (u64 mut intlen =0;;intlen++) {
         (self->at)++;
         if self->at >= self->size {
-            err::fail(e, 3, "short read");
+            err::fail(e, Invalid, "short read");
             return 0;
         }
         static_attest(self->at < len(self->mem));
@@ -210,7 +206,7 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
             // Fixed64
             1 => {
                 if (self->at + 8) >= self->size {
-                    err::fail(e, 3, "short read");
+                    err::fail(e, Invalid, "short read");
                     if err::check(e) {return Field{valid: false}; }
                 }
                 static_attest(self->at < len(self->mem));
@@ -231,7 +227,7 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
                 u64 l = self->read_varint(e);
                 if err::check(e) {return Field{valid: false};}
                 if ((u64)(self->at) + l) >= (u64)self->size {
-                    err::fail(e, 3, "short read");
+                    err::fail(e, Invalid, "short read");
                     if err::check(e) {return Field{valid: false}; }
                 }
                 static_attest(self->at + 1 < len(self->mem));
@@ -251,7 +247,7 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
             // Fixed32
             5 => {
                 if (self->at + 4) >= self->size {
-                    err::fail(e, 3, "short read");
+                    err::fail(e, Invalid, "short read");
                     if err::check(e) {return Field{valid: false}; }
                 }
                 static_attest(self->at < len(self->mem));
@@ -267,7 +263,7 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
                 };
             }
             default => {
-                err::fail(e, 2, "invalid wire type %u", b & 7);
+                err::fail(e, Invalid, "invalid wire type %u", b & 7);
             }
         }
     }

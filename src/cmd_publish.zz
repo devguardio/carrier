@@ -1,0 +1,51 @@
+using err;
+using cmd_common;
+using publish;
+using shell;
+using sft;
+using config;
+using io;
+using net;
+using bootstrap;
+using time;
+using endpoint;
+
+pub fn cmd(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    return run();
+}
+
+export fn run() -> int {
+
+    new+1000  e     = err::make();
+    new+100   async = io::unix::make();
+
+    new+10000 ep = endpoint::from_home_carriertoml(&e);
+    e.abort();
+
+    cmd_common::print_identity(&ep);
+
+    bootstrap::sync(&e, &ep.vault, net::os(), &async, time::from_seconds(10));
+    e.abort();
+
+    ep.start(&e, net::os(), &async);
+    e.abort();
+
+    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
+    e.abort();
+
+    publish::publish(&ep, &e);
+    e.abort();
+
+    shell::register(&ep);
+    sft::register(&ep);
+    config::register(&ep);
+
+
+    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
+    e.abort();
+    return 0;
+}
+
+

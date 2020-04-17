@@ -62,7 +62,7 @@ fn test_corrupt_identity(err::Err+et mut* e)
 
     new sk = secret_from_cstr(e, from);
     if !err::check(e) {
-        err::fail(e, 1, "must fail");
+        err::fail(e, err::InvalidArgument, "must fail");
         return;
     }
     e->error = 0;
@@ -70,7 +70,7 @@ fn test_corrupt_identity(err::Err+et mut* e)
 
     new ik = identity_from_cstr(e, from);
     if !err::check(e) {
-        err::fail(e, 1, "must fail");
+        err::fail(e, err::InvalidArgument, "must fail");
         return;
     }
     e->error = 0;

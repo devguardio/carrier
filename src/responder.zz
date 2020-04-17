@@ -5,7 +5,7 @@ using err;
 using identity;
 using byteorder;
 using crc8;
-using std;
+using mem;
 using carrier;
 using endpoint;
 using string;
@@ -87,9 +87,9 @@ pub fn accept_insecure(
 
     //signature
     u8 mut signme[static(len(endpoint::SIGN_PURPOSE) + len(self->symm.h))] = {0};
-    std::memcpy(signme, endpoint::SIGN_PURPOSE, string::strlen(endpoint::SIGN_PURPOSE));
-    u8 mut * mem = signme + string::strlen(endpoint::SIGN_PURPOSE);
-    std::memcpy(mem, self->symm.h, static(len(self->symm.h)));
+    mem::copy(endpoint::SIGN_PURPOSE, signme, string::strlen(endpoint::SIGN_PURPOSE));
+    u8 mut * m = signme + string::strlen(endpoint::SIGN_PURPOSE);
+    mem::copy(self->symm.h, m, static(len(self->symm.h)));
 
     identity::Signature mut sig = {0};
     identity::sign(secret, &sig, signme, static(len(signme)));

@@ -23,7 +23,7 @@ asan = false
 [dependencies]
 err         = "1"
 hex         = "1"
-std         = "1"
+mem         = "1"
 byteorder   = "1"
 hpack       = "1"
 net         = "1"
@@ -56,7 +56,7 @@ main = "carrier::main"
 [[artifacts]]
 name = "carrier"
 type = "npm"
-main = "carrier::mission"
+main = "carrier"
 
 [[artifacts]]
 name = "carrier"
@@ -66,7 +66,7 @@ main = "carrier"
 [[artifacts]]
 name = "carrier"
 type = "cmake"
-main = "carrier::mission"
+main = "carrier"
 
 [repos]
 extra = "git://github.com/zetzit/nursery.git"

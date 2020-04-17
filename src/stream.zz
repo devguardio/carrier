@@ -5,8 +5,8 @@ using slice::{Slice, MutSlice};
 using byteorder;
 using io;
 
-export fntype open_fn   (Stream mut* self, err::Err+et mut *e, void mut * user_config, Slice *headers);
-export fntype close_fn  (Stream mut* self);
+export fntype open_fn   (Stream mut* self, err::Err+et mut *e, Slice *headers);
+export fntype close_fn  (Stream mut* self, err::Err+et mut *e);
 export fntype stream_fn (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
 export fntype poll_fn   (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
 
@@ -25,7 +25,10 @@ export struct Stream {
     u64 order_incomming;
     u64 order_outgoing;
 
+    // don't catch errors. let them bubble to the top
+    bool errors_are_fatal;
     bool closing;
+    u64 broker_route;
 
     //user
     usize       state;
@@ -126,7 +129,16 @@ pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     }
     static_attest(safe(self->config->close));
 
-    self->config->close(self);
+    self->config->close(self, e);
+    if err::check(e) {
+        if self->errors_are_fatal {
+            return false;
+        } else {
+            e->elog();
+            e->make();
+        }
+    }
+
     return true;
 }
 

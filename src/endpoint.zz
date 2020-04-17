@@ -28,11 +28,14 @@ using noise;
 using responder;
 using peering;
 using vault;
-using config;
+using vault_toml;
 
 export const char* PROLOGUE = "carrier has arrived";
 export const char* SIGN_PURPOSE = "carrier handshake hash 1";
 
+
+
+export symbol InvalidBootstrap;
 
 const usize RETRY_EACH_BROKER = 5;
 
@@ -60,19 +63,12 @@ union StateM {
 export struct Endpoint+ {
     net::Engine*            netengine;
     vault::Vault            vault;
-    config::Config          config;
 
     initiator::Move         cluster_move;
     identity::Identity      cluster_target;
 
     stream::Config *        broker_stream_registry[2];
-
-
-    //TODO do we really need these?
-    void mut *              broker_stream_registry_user_config[2];
-
-    stream::Config *        p2p_stream_registry[16];
-    void mut *              p2p_stream_registry_user_config[16];
+    stream::Config *        p2p_stream_registry[32];
 
     udp::Socket     mut udp4;
     udp::Socket     mut udp6;
@@ -81,12 +77,12 @@ export struct Endpoint+ {
     State           mut state;
     StateM          mut statem;
 
+    pool::Pool+1024 mut streampool;
     pool::Pool+     mut framebuffer;
 }
 
-export fn start(Endpoint+xt mut* self, err::Err+et mut*e, net::Engine *netengine, io::Async mut* async)
+export fn start(Endpoint mut* self, err::Err+et mut*e, net::Engine *netengine, io::Async mut* async)
     where err::checked(*e)
-    where xt > xt/32
 {
     self->netengine = netengine;
     self->state = State::Connecting;
@@ -97,15 +93,25 @@ export fn none(Endpoint+xt mut new* self)
     where xt > xt/32
 {
     memset(self, 0, sizeof(Endpoint));
+    self->streampool.make(sizeof(stream::Stream));
     self->framebuffer.make(32);
 }
 
-export fn from_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e)
+export fn from_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e, char *file_name)
+    where err::checked(*e)
+    where xt > xt/32
+    where nullterm(file_name)
+{
+    none(self);
+    vault_toml::from_carriertoml(&self->vault, e, file_name);
+}
+
+export fn from_home_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e)
     where err::checked(*e)
     where xt > xt/32
 {
     none(self);
-    config::from_carriertoml(self, e);
+    vault_toml::from_home_carriertoml(&self->vault, e);
 }
 
 export fn broker(Endpoint mut* self) -> channel::Channel mut *
@@ -114,12 +120,13 @@ export fn broker(Endpoint mut* self) -> channel::Channel mut *
     return &self->statem.connected.channels[0];
 }
 
-export fn cluster_target(Endpoint+xt mut* self, identity::Identity * target)
+export fn cluster_target(Endpoint mut* self, identity::Identity * target)
 {
     memcpy(&self->cluster_target, target, sizeof(identity::Identity));
     self->cluster_move = initiator::Move::Target;
 }
 
+//TODO send disconnect packet
 export fn close(Endpoint mut* self)
 {
     switch self->state {
@@ -152,11 +159,12 @@ fn next_broker(Endpoint mut* self) -> bool
         if self->statem.connecting.trying_broker_index >= vault::MAX_BROKERS {
             self->statem.connecting.trying_broker_index = 0;
         }
-        static_attest(self->statem.connecting.trying_broker_index < len(self->vault.broker));
-        if self->vault.broker[self->statem.connecting.trying_broker_index].protocol != 0 {
+        static_attest(safe(self->vault.mem));
+        static_attest(self->statem.connecting.trying_broker_index < len(self->vault.mem->broker));
+        if self->vault.mem->broker[self->statem.connecting.trying_broker_index].protocol != 0 {
             log::debug("loading broker slot %zu", self->statem.connecting.trying_broker_index);
             memcpy(&self->statem.connecting.current_broker,
-                &self->vault.broker[self->statem.connecting.trying_broker_index],
+                &self->vault.mem->broker[self->statem.connecting.trying_broker_index],
                 sizeof(vault::Broker));
             self->statem.connecting.trying_broker_index += 1;
             return true;
@@ -171,7 +179,7 @@ static u16 PORTS[] = {53, 443, 8443, 80, 123};
 
 
 
-fn do_state_connect(Endpoint+xt mut* self, err::Err+et mut*e, io::Async mut* async)
+fn do_state_connect(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     log::info("trustvector complete, ring has %zu brokers", self->vault.broker_count());
@@ -180,7 +188,7 @@ fn do_state_connect(Endpoint+xt mut* self, err::Err+et mut*e, io::Async mut* asy
     memset(&self->statem.connecting, 0, sizeof(ConnectingState));
 
     static_attest(safe(self->netengine));
-    new addr4 = address::from_cstr("0.0.0.0:1212");
+    new addr4 = address::from_cstr("0.0.0.0:0");
     net::udp(&self->udp4, self->netengine, e, &addr4, async);
     if err::check(e) {
         return;
@@ -193,7 +201,7 @@ fn do_state_connect(Endpoint+xt mut* self, err::Err+et mut*e, io::Async mut* asy
     }
 
     if !self->next_broker(){
-        err::fail(e, 2, "no brokers in bootstrap store");
+        err::fail(e, InvalidBootstrap, "no brokers in bootstrap store");
         return;
     }
 }
@@ -233,7 +241,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                 vault::Broker mut redir = {0};
                 self->statem.connecting.initiator.complete(e, &broker_chan, &redir, &self->statem.connecting.pkt_in, 0);
                 if err::check(e) {
-                    e->eprint();
+                    e->elog();
                     err::make(e);
                     // don't return here. we might have stuff to set the timer in the rest of the code
                 } else if redir.protocol != 0 {
@@ -251,6 +259,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                     broker_chan.q.allocator = &self->framebuffer;
                     broker_chan.store  = &self->vault;
                     broker_chan.this_is_the_broker_channel = true;
+                    broker_chan.errors_are_fatal = true;
 
                     self->statem.connected  = router::make(broker_chan, self->udp4, self->udp6);
                     self->statem.connected.channels[0].endpoint = self;
@@ -296,28 +305,30 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
 
             // TODO: abstract
             // TODO: this is stupid in the first place. the protocol needs a different replay protection
+            static_attest(safe(self->vault.mem));
             time::Time now = time::real();
-            self->vault.time = now.to_millis();
+            self->vault.mem->time = now.to_millis();
 
             address::Address  mut ip4addr = {0};
             address::Address  mut ip6addr = {0};
             identity::Address mut xaddr   = {0};
 
             if !bootstrap::from_store(&self->statem.connecting.current_broker, &ip4addr, &ip6addr, &xaddr) {
-                err::fail(e, 3, "current broker is empty");
+                err::fail(e, InvalidBootstrap, "current broker is empty");
                 return io::Result::Error;
             }
 
+            static_attest(safe(self->vault.mem));
             if self->statem.connecting.retry_sending % 3 == 0 {
                 log::debug("resetting crypto state");
                 self->statem.connecting.initiator.initiate(
                     e,
                     true,
-                    (identity::Secret*)&(self->vault.secret),
+                    (identity::Secret*)&(self->vault.mem->secret),
                     self->cluster_move,
                     &self->cluster_target,
                     &xaddr,
-                    self->vault.time,
+                    self->vault.mem->time,
                     &self->statem.connecting.pkt_out
                 );
                 if err::check(e) {return io::Result::Error;}

@@ -6,7 +6,7 @@ using carrier::symmetric;
 using hex;
 using <string.h>::{memcmp, memcpy};
 using <assert.h>::{assert};
-using <stdio.h>::{printf, fread, stdin};
+using <stdio.h>::{printf, fread, stdin, stderr};
 using string;
 using json;
 
@@ -114,21 +114,21 @@ fn deser_message(err::Err+et mut *e, json::Parser+pt mut* p, Message mut* tc, ch
     tc->set = true;
     if string::cstr_eq(k, "payload") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 1, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->payload.mem, static(len(tc->payload.mem)));
         tc->payload.len = l;
     } else if string::cstr_eq(k, "ciphertext") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 1, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->ciphertext.mem, static(len(tc->ciphertext.mem)));
         tc->ciphertext.len = l;
     } else if string::cstr_eq(k, "nonce") {
         if(v.t != json::ValueType::Integer) {
-            err::fail(e, 1, "expected int");
+            err::fail(e, err::InvalidArgument, "expected int");
             return;
         }
         tc->nonce = (u64)v.integer;
@@ -140,11 +140,11 @@ fn deser_messages(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, 
     where nullterm(k)
 {
     if v.index > 9 {
-        err::fail(e, 2, "too many messages");
+        err::fail(e, err::InvalidArgument, "too many messages");
         return;
     }
     if(v.t != json::ValueType::Object) {
-        err::fail(e, 2, "expected object");
+        err::fail(e, err::InvalidArgument, "expected object");
         return;
     }
     json::next(p,  e, (json::deserialize_t)deser_message, &tc->messages[v.index]);
@@ -159,57 +159,57 @@ fn deser_tc(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *
 
     if string::cstr_eq(k, "init_prologue") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 1, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->init_prologue.mem, static(len(tc->init_prologue.mem)));
         tc->init_prologue.len = l;
     } else if string::cstr_eq(k, "init_ephemeral") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         hex::str2bin(v.string, string::strlen(v.string), tc->init_ephermal, static(len(tc->init_ephermal)));
     } else if string::cstr_eq(k, "init_remote_static") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         hex::str2bin(v.string, string::strlen(v.string), tc->init_remote_static, static(len(tc->init_remote_static)));
     } else if string::cstr_eq(k, "resp_prologue") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 1, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         usize l = hex::str2bin(v.string, string::strlen(v.string), (u8 mut*)tc->resp_prologue.mem, static(len(tc->resp_prologue.mem)));
         tc->resp_prologue.len = l;
     } else if string::cstr_eq(k, "resp_static") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         hex::str2bin(v.string, string::strlen(v.string), tc->resp_static, static(len(tc->resp_static)));
     } else if string::cstr_eq(k, "resp_ephemeral") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         hex::str2bin(v.string, string::strlen(v.string), tc->resp_ephemeral, static(len(tc->resp_ephemeral)));
     } else if string::cstr_eq(k, "resp_ephemeral") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         hex::str2bin(v.string, string::strlen(v.string), tc->handshake_hash, static(len(tc->handshake_hash)));
     } else if string::cstr_eq(k, "handshake_hash") {
         if(v.t != json::ValueType::String) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         hex::str2bin(v.string, string::strlen(v.string), tc->handshake_hash, static(len(tc->handshake_hash)));
     } else if string::cstr_eq(k, "messages") {
         if(v.t != json::ValueType::Array) {
-            err::fail(e, 2, "expected string");
+            err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
         json::next(p,  e, (json::deserialize_t)deser_messages, tc);
@@ -230,7 +230,7 @@ pub fn main() -> int {
     Testcase mut tc = {0};
     new+1000 parser = json::parser(&e, (json::deserialize_t)deser_tc, &tc);
     if err::check(&e) {
-        e.eprint();
+        e.eprintf(stderr);
         return (int)e.error;
     }
     for(;;) {
@@ -242,7 +242,7 @@ pub fn main() -> int {
         static_attest(r < len(buf));
         json::push(&parser, &e, (char*)buf, r);
         if err::check(&e) {
-            err::eprint(&e);
+            err::eprintf(&e, stderr);
             return 2;
         }
     }
@@ -267,7 +267,7 @@ pub fn main() -> int {
     );
 
     if err::check(&e) {
-        e.eprint();
+        e.eprintf(stderr);
         return (int)e.error;
     }
 
@@ -292,7 +292,7 @@ pub fn main() -> int {
     usize pkt1r_size = noise::receive(&resp, &e,
         pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.len, pkt1, pkt1len);
     if err::check(&e) {
-        e.eprint();
+        e.eprintf(stderr);
         return (int)e.error;
     }
 
@@ -443,7 +443,7 @@ pub fn main() -> int {
                 );
 
         if err::check(&e) {
-            e.eprint();
+            e.eprintf(stderr);
             return (int)e.error;
         }
 

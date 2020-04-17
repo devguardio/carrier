@@ -12,6 +12,7 @@ struct Entry {
 }
 
 
+export symbol Invalid;
 
 enum Repr {
     Indexed,
@@ -83,14 +84,14 @@ pub fn decode_integer(Iterator mut* self, err::Err+et mut*e, u8 prefix_size) -> 
         // never overflow an unsigned 32-bit integer. The maximum value of any
         // integer that can be encoded with 5 octets is ~2^28
         if consumed >= 5 {
-            err::fail(e, 15, "integer overflow");
+            err::fail(e, Invalid, "integer overflow");
             return 0;
         }
 
     }
 
     static_attest(err::checked(*e));
-    err::fail(e, 15, "eof");
+    err::fail(e, Invalid, "short read");
     return 0;
 }
 
@@ -113,7 +114,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
         return false;
     }
     if self->wire.size <= self->at  {
-        err::fail(e, 15, "eof");
+        err::fail(e, Invalid, "short read");
         return false;
     }
     static_attest(self->wire.size  > self->at);
@@ -124,7 +125,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
             return false;
         }
         if (self->at  + (usize)strlen1) >= self->wire.size {
-            err::fail(e, 15, "eof");
+            err::fail(e, Invalid, "short read");
             return false;
         }
         static_attest(len(self->wire.mem) > self->at);
@@ -143,7 +144,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
         Entry *de = &(self->dyn[di]);
         self->key = de->key;
     } else {
-        err::fail(e, 1, "%u not implemented", x);
+        err::fail(e, err::NotImplemented, "%u not implemented", x);
         return false;
     }
 
@@ -153,7 +154,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
         return false;
     }
     if (self->at  + (usize)strlen2) > self->wire.size {
-        err::fail(e, 15, "eof");
+        err::fail(e, Invalid, "short read");
         return false;
     }
 
@@ -229,7 +230,7 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
                     self->val = self->dyn[di].val;
                     return true;
                 } else {
-                    err::fail(e, 1, "%u not implemented", x);
+                    err::fail(e, err::NotImplemented, "%u not implemented", x);
                     return false;
                 }
             }
@@ -237,7 +238,7 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
                 return self->decode_literal(e, true);
             }
             Repr::SizeUpdate => {
-                err::fail(e, 1, "Repr::SizeUpdate not implemented");
+                err::fail(e, err::NotImplemented, "Repr::SizeUpdate not implemented");
                 return false;
             }
             Repr::LiteralNeverIndexed => {

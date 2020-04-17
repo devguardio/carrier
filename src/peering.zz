@@ -56,7 +56,7 @@ export fn from_proto(Peering mut *self, err::Err+et mut*e, protonerf::Field fiel
     }
     static_attest(len(field.a) == field.value.v_len);
     static_attest(safe(field.a));
-    let mut dec2 = protonerf::decode(proto::Path, field.a, field.value.v_len);
+    let mut dec2 = protonerf::decode(field.a, field.value.v_len);
 
 
     address::Address mut ip = {0};
@@ -70,7 +70,7 @@ export fn from_proto(Peering mut *self, err::Err+et mut*e, protonerf::Field fiel
             break;
         }
         switch field.index {
-            proto::PathField::Category => {
+            proto::Path::Category => {
                 switch field.value.v_u64 {
                     1 => {
                         cat = Class::Local;
@@ -85,7 +85,7 @@ export fn from_proto(Peering mut *self, err::Err+et mut*e, protonerf::Field fiel
                     }
                 }
             }
-            proto::PathField::Ipaddr => {
+            proto::Path::Ipaddr => {
                 if field.a != 0 {
                     static_attest(len(field.a) == field.value.v_len);
                     static_attest(safe(field.a));

@@ -1,0 +1,121 @@
+using err;
+using endpoint;
+using identity;
+using connect;
+using sync;
+using hpack;
+using protonerf;
+using slice;
+using proto;
+using stream;
+using string;
+using cmd_common;
+using channel;
+using <stdlib.h>::{atoi, exit};
+using protonerf;
+using proto;
+using cmd_config;
+using log;
+
+export fn run_self(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut*endpoint,
+    identity::Identity *addme,
+    char *resource,
+    cmd_config::Method method,
+)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    if method == cmd_config::Method::Add {
+        endpoint->vault.add_authorization(e, addme, resource);
+    } else if method == cmd_config::Method::Remove {
+        endpoint->vault.del_authorization(e, addme, resource);
+    }
+
+    if err::check(e) {
+        return;
+    }
+    err::assert_safe(endpoint->vault.save);
+    endpoint->vault.save(&endpoint->vault, e);
+    log::info("done");
+}
+
+
+export fn run_remote(
+    err::Err+et mut *e,
+    endpoint::Endpoint mut* ep,
+    identity::Identity *target,
+    identity::Identity *addme,
+    char *resource,
+    cmd_config::Method method,
+)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    new mx = sync::start(e, ep);
+    if err::check(e) { return; }
+
+    mx.connect(e, target);
+    if err::check(e) { return; }
+
+    stream::Config * mut sc = 0;
+    if method == cmd_config::Method::Add {
+        sc = &AuthAddStream;
+    } else if method == cmd_config::Method::Remove {
+        sc = &AuthDelStream;
+    }
+
+    let stx = mx.open(e, sc);
+    if err::check(e){ return; }
+    static_attest(safe(stx));
+    stx->errors_are_fatal = true;
+
+    let slen = string::strlen(resource);
+    err::assert(slen < 125);
+    let frame = stx->stream(e, 150 + slen);
+    if err::check(e) { return; }
+
+    char mut buf[64] = {0};
+    identity::identity_to_str(e, buf, 64, target);
+    if err::check(e) { return; }
+
+    protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Identity, (u8*)buf, string::strlen(buf));
+    if err::check(e) { return; }
+
+    protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Path, (u8*)resource, slen);
+    if err::check(e) { return; }
+
+    mx.wait(e);
+    if err::check(e) { return; }
+
+    mx.wait(e);
+    if err::check(e) { return; }
+
+    log::info("done");
+}
+
+static stream::Config AuthAddStream = stream::Config {
+    path:   "/v2/carrier.config.v1/auth_add",
+    stream: cmd_config::on_result_stream,
+    close:  on_close,
+};
+
+static stream::Config AuthDelStream = stream::Config {
+    path:   "/v2/carrier.config.v1/auth_del",
+    stream: cmd_config::on_result_stream,
+    close:  on_close,
+};
+
+
+fn on_close(stream::Stream mut* self, err::Err+et mut*e)
+{
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+    self->chan->endpoint->close();
+
+    if self->state <  2 {
+        err::fail(e, cmd_config::RemoteOpFailed, "closed early");
+    }
+}
+

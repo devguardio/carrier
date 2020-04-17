@@ -54,7 +54,7 @@ fn out_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* as
 
     let mut *frame = self->stream(e, 300);
     if err::check(e) {
-        e->eprint();
+        e->elog();
         e->make();
         return;
     }
@@ -76,7 +76,7 @@ fn out_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * 
     return true;
 }
 
-fn out_shell_close(stream::Stream mut *self)
+fn out_shell_close(stream::Stream mut *self, err::Err+et mut*e)
 {
     log::error("shell closed\n");
 }
@@ -96,7 +96,7 @@ static stream::Config ShellConfig = stream::Config {
     poll:       in_shell_poll,
 };
 
-fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, void mut * user_config, slice::Slice *headers)
+fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     where err::checked(*e)
 {
     let mut *frame = self->stream(e, 14);
@@ -109,7 +109,7 @@ fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, void mut * user_co
 
     in_shell_open_impl(state, e);
     if err::check(e) {
-        e->eprint();
+        e->elog();
         e->make();
         hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
         if err::check(e) { e->make(); }
@@ -221,7 +221,7 @@ fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * m
     return false;
 }
 
-fn in_shell_close(stream::Stream mut *self)
+fn in_shell_close(stream::Stream mut *self, err::Err+et mut*e)
 {
     log::error("shell closed\n");
 
@@ -269,7 +269,7 @@ fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* asy
         static_attest(state->inbuf.len <= static(len(state->inbuf.mem)));
         let mut *frame = self->stream(e, 1 + state->inbuf.len);
         if err::check(e) {
-            e->eprint();
+            e->elog();
             e->make();
             return;
         }
@@ -292,7 +292,7 @@ fn alloc(err::Err+et mut*e) -> Shell mut *
     }
     let r = (Shell mut *)sshpool.alloc();
     if r == 0 {
-        err::fail(e, 4, "oom");
+        err::fail(e, err::OutOfTail, "oom");
         static_attest(safe(0));
         return 0;
     }

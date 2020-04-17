@@ -97,7 +97,7 @@ export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) ->
     err::assert_safe(self->allocator);
     void mut *payload = self->allocator->malloc(size);
     if payload == 0 {
-        err::fail(e, 12, "cannot alloc %u b: %u free", size, self->allocator->free_bytes());
+        err::fail(e, err::OutOfTail, "cannot alloc %u b: %u free", size, self->allocator->free_bytes());
         unsafe {
             return 0;
         }
@@ -106,7 +106,7 @@ export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) ->
     Frame mut* mut r;
     if (self->count + 1 >= qt) {
         self->allocator->free(payload);
-        err::fail(e, 12, "maxq");
+        err::fail(e, err::OutOfTail, "maxq");
         unsafe {
             return 0;
         }

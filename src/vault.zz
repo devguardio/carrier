@@ -1,50 +1,300 @@
 using err;
-using endpoint;
 using identity;
 using identity_kit;
 using <stdio.h>::{printf};
-using <string.h>::{memcpy, memset};
+using <string.h>::{memset, memmove};
+using string;
+using mem;
 
 export const usize MAX_BROKERS = 16;
 
 export struct Broker packed {
     u8 protocol;
     u8 reserved[3];
+
     u8 xaddr[32];
     u8 ip4addr[4];
     u8 ip6addr[16];
 }
 
-export struct Vault {
+export struct Authorize packed {
+    u8   identity[32];
+    char resource[];
+}
+
+export struct Mem packed {
     u8  version;
-    u8  secret[32];
+    u8  reserved[3];
+
     u64 time;
+
+    //TODO this needs some extra runtime guards
+    //     just in case there's a bug in the surrounding fields
+    u8  secret[32];
+
+    u8  principal[32];
+    u8  network[32];
+    u8  network_secret[32];
+
     Broker broker[MAX_BROKERS];
+
+    // the rest to align to 512
+    u8  authorized[504];
 }
 
-export fn empty(Vault mut new *self) {
-    self->version =  1;
-}
+export fntype save_fn (Vault *self, err::Err+et mut *e);
+export fntype close_fn(Vault *self);
 
-export fn from_identity_kit(Vault mut new *self, err::Err+et mut * e, identity_kit::IdentityKit *ik)
-    where err::checked(*e)
+export struct Vault
 {
-    self->version = 1;
+    Mem mut*    mem;
 
-    //TODO principal != identity secret
-    memcpy(self->secret, ik->principal.k, 32);
+    save_fn     save;
+    close_fn    close;
+
+    string::String+256  mut file_name;
 }
 
-export fn get_identity(Vault * self, identity::Identity mut*id) {
-    identity::identity_from_secret(id, (identity::Secret*)&self->secret);
+export fn open_mmap(Vault mut new *self, err::Err+et mut *e, u8 mut*mm, usize size)
+    where len(mm) >= size
+{
+    memset(self, 0, sizeof(Vault));
+    self->mem   = (Mem  mut*)mm;
+    self->save  = (save_fn)nop;
+    self->close = (close_fn)nop;
+}
+fn nop() {}
+
+
+export fn get_identity(Vault * self, identity::Identity mut*id)
+{
+    static_attest(safe(self->mem));
+
+    identity::identity_from_secret(id, (identity::Secret*)&self->mem->secret);
 }
 
-export fn broker_count(Vault * self) -> usize {
+export fn broker_count(Vault * self) -> usize
+{
+    static_attest(safe(self->mem));
     usize mut c = 0;
     for (usize mut i = 0; i < MAX_BROKERS; i++) {
-        if self->broker[i].protocol != 0 {
+        if self->mem->broker[i].protocol != 0 {
             c++;
         }
     }
     return c;
+}
+
+
+export fn authorize_connect(Vault * self, identity::Identity *ii) -> bool
+{
+    return self->authorize_open_stream(ii, 0);
+
+}
+export fn authorize_open_stream(Vault * self, identity::Identity *ii, char * unsafe path) -> bool
+    where path == 0 || nullterm(path)
+{
+    static_attest(safe(self->mem));
+    u8 mut* mm = self->mem->authorized;
+
+    for (usize mut i = 0; i < static(len(mm)); i++) {
+        if i  + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/  >= static(len(mm))  {
+            break;
+        }
+
+        u8 mut * mm_identity   = mm + i + 1;
+        u8 mut * mm_resource   = mm + i + 1 + 32;
+
+        if mm[i] == 0 {
+            break;
+        } else {
+            i += 1; //start
+            i += 32; //identity
+
+            if identity::eq((identity::Identity*)mm_identity, ii) {
+                if path == 0 {
+                    return true;
+                }
+                static_attest(safe(path));
+                static_attest(nullterm(mm_resource));
+                if string::cstr_eq("*", (char*)mm_resource) {
+                    return true;
+                }
+                if string::cstr_eq(path, (char*)mm_resource) {
+                    return true;
+                }
+            }
+
+            for (; i < static(len(mm)); i++) {
+                if (mm[i] == 0 /*end*/) {
+                    break;
+                }
+            }
+        }
+
+    }
+    return false;
+}
+
+export fn add_authorization(
+    Vault mut * self,
+    err::Err+et mut *e,
+    identity::Identity *addme,
+    char *resource
+)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    static_attest(safe(self->mem));
+    u8 mut* mm = self->mem->authorized;
+    let resource_len = string::strlen(resource);
+    for (usize mut i = 0; i < static(len(mm)); i++) {
+        if i  + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/  >= static(len(mm))  {
+            // no way to store more, oom
+            break;
+        }
+        u8 mut * mm_identity   = mm + i + 1;
+        u8 mut * mm_resource   = mm + i + 1 + 32;
+
+
+        if i + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/ + resource_len >= static(len(mm))  {
+            // can't put resource in there
+            break;
+        }
+        // same check but overflow blah
+        if static(len(mm)) -  1 /*start*/ - 32 /*identity*/ - 1 /*end*/ < resource_len {
+            break;
+        }
+
+        // no start bits, this is free space to take
+        if mm[i] == 0 {
+            mm[i] = 1;
+            mem::copy(addme->k, mm_identity, 32);
+            mem::copy(resource, mm_resource, resource_len);
+            mm[i + 1 + 32 + resource_len ] = 0;
+            return;
+
+        } else {
+
+            i += 1; //start
+            i += 32; //identity
+
+
+            if identity::eq((identity::Identity*)mm_identity, addme) {
+                static_attest(nullterm(mm_resource));
+                if string::cstr_eq(resource, (char*)mm_resource) {
+                    return;
+                }
+            }
+
+            for (; i < static(len(mm)); i++) {
+                if (mm[i] == 0 /*end*/) {
+                    break;
+                }
+            }
+        }
+    }
+    err::fail(e, err::OutOfTail, "too many [[authorize]] sections");
+    return;
+}
+
+export fn del_authorization(
+    Vault mut * self,
+    err::Err+et mut *e,
+    identity::Identity *delme,
+    char *resource,
+)
+    where nullterm(resource)
+    where err::checked(*e)
+{
+
+    static_attest(safe(self->mem));
+    u8 mut* mm = self->mem->authorized;
+
+    for (usize mut i = 0; i < static(len(mm)); i++) {
+        if i  + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/  >= static(len(mm))  {
+            // no way to store more, oom
+            break;
+        }
+        u8 mut * mm_identity   = mm + i + 1;
+        u8 mut * mm_resource   = mm + i + 1 + 32;
+
+        if mm[i] == 0 {
+            return;
+        } else {
+            let original_start = i;
+
+            i += 1; //start
+            i += 32; //identity
+
+            for (; i < static(len(mm)); i++) {
+                if (mm[i] == 0 /*end*/) {
+                    break;
+                }
+            }
+
+            static_attest(nullterm(mm_resource));
+            if identity::eq((identity::Identity*)mm_identity, delme) && string::cstr_eq(resource, (char*)mm_resource) {
+
+                let start_of_next_item = i + 1;
+                let size_of_this_item = start_of_next_item - original_start;
+                // trust me, it wont overflow
+                static_attest(start_of_next_item > original_start);
+
+                if start_of_next_item >= static(len(mm)) {
+                    // we're deleting the last item. just zero it out
+                    memset(mm + original_start, 0, size_of_this_item);
+                } else {
+                    let size_of_rest      = static(len(mm)) - start_of_next_item;
+                    // move everything to the left
+                    mem::move(mm + start_of_next_item, mm + original_start, size_of_rest);
+                    // zero out the tail that is now left over
+                    mem::set(mm + (static(len(mm)) - size_of_this_item), 0, size_of_this_item);
+                }
+
+                return;
+            }
+
+        }
+    }
+    return;
+}
+
+
+export fntype list_authorizations_cb(void mut * unsafe user, identity::Identity *id, char *resource);
+export fn list_authorizations(
+    Vault mut * self,
+    err::Err+et mut *e,
+    list_authorizations_cb cb,
+    void mut * unsafe user,
+)
+    where err::checked(*e)
+    where safe(cb)
+{
+    static_attest(safe(self->mem));
+    u8 mut* mm = self->mem->authorized;
+    for (usize mut i = 0; i < static(len(mm)); i++) {
+        if i  + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/  >= static(len(mm))  {
+            // no way to store more, oom
+            break;
+        }
+        u8 mut * mm_identity   = mm + i + 1;
+        u8 mut * mm_resource   = mm + i + 1 + 32;
+
+        if mm[i] == 0 {
+            return;
+        } else {
+            cb(user, (identity::Identity*)mm_identity, (char*)mm_resource);
+
+            i += 1; //start
+            i += 32; //identity
+
+            for (; i < static(len(mm)); i++) {
+                if (mm[i] == 0 /*end*/) {
+                    break;
+                }
+            }
+        }
+    }
+    return;
 }

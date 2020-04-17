@@ -12,6 +12,9 @@ using crc8;
 using rand;
 using string;
 
+
+export symbol Invalid;
+
 export struct Secret    { u8 k[32]; };
 export struct Address   { u8 k[32]; };
 export struct Identity  { u8 k[32]; };
@@ -24,18 +27,22 @@ fn from_str(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 
     where err::checked(*e)
 {
     u8 mut b[64 + 3] = {0};
-    usize mut bs = size + 3;
+    usize mut bs;
+    unsafe {bs = size + 3;}
     if !as<bool>(b58::b58tobin(b, &bs, from, l)) {
-        err::fail(e, 22, "invalid bs58");
+        err::fail(e, Invalid, "invalid bs58");
         return;
     }
-    static_attest(err::checked(*e));
+
+    if bs != size + 3 {
+        err::fail(e, Invalid, "invalid size");
+        return;
+    }
 
     if (b[0] != 8 && b[0] != 9) {
-        err::fail(e, 22, "invalid version %d", b[0]);
+        err::fail(e, Invalid, "invalid version %d", b[0]);
         return;
     }
-    static_attest(err::checked(*e));
 
 
     usize s2 = size + 2;
@@ -48,13 +55,13 @@ fn from_str(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 
     }
 
     if (crc != b[s2]) {
-        err::fail(e, 22, "invalid checksum. %d != %d\n", b[34], crc);
+        err::fail(e, Invalid, "invalid checksum. %d != %d\n", b[34], crc);
         return;
     }
     static_attest(err::checked(*e));
 
     if (b[1] != expect_type) {
-        err::fail(e, 22, "expected identity type %d got %d\n", expect_type, b[1]);
+        err::fail(e, Invalid, "expected identity type %d got %d\n", expect_type, b[1]);
         return;
     }
 
@@ -70,7 +77,7 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
 {
     u8 static zero[64] = { 0 };
     if (as<int>(memcmp(zero, k, size)) == 0) {
-        err::fail(e, 22, "invalid address: zero");
+        err::fail(e, Invalid, "invalid address: zero");
         static_attest(nullterm(to));
         return 0;
     }
@@ -91,7 +98,7 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
 
     //l -= 1;
     if (!as<bool>(b58::b58enc(to, &l, b, size + 3))) {
-        err::fail(e, 22, "invalid bs58");
+        err::fail(e, Invalid, "invalid bs58");
         return 0;
     }
 
@@ -256,7 +263,7 @@ export fn nullcheck(err::Err+et mut* e, u8 * k)
     where len(k) >= 32
 {
     if isnull(k) {
-        err::fail(e, 22, "invalid ed25519: 32 identical bytes");
+        err::fail(e, Invalid, "invalid ed25519: 32 identical bytes");
     }
 }
 

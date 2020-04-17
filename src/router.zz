@@ -1,7 +1,6 @@
 using identity;
 using err;
 using noise;
-using std;
 using hex;
 using byteorder;
 using <stdio.h>::{printf};
@@ -14,6 +13,9 @@ using net::udp;
 using log;
 using endpoint;
 using publish;
+
+
+export symbol OutOfOptions;
 
 const usize MAX_CHANNELS = 6;
 
@@ -52,10 +54,12 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
     self->pkt.clear();
     if self->udp4.recvfrom(e, &self->pkt, &fromaddr) == io::Result::Ready {
         err::make(e);
-        self->push(e);
+        if !self->push(e) {
+            return io::Result::Error;
+        }
     }
     if err::check(e) {
-        e->eprint();
+        e->elog();
         e->make();
     }
 
@@ -83,21 +87,25 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
                             address::Type::Invalid => {
                             }
                             address::Type::Ipv4 => {
-                                self->udp4.sendto(e, &self->pkt, &self->channels[j].peering.paths[i].addr);
-                                if err::check(e) {
-                                    e->eprint();
+                                if io::valid(&self->udp4) {
+                                    self->udp4.sendto(e, &self->pkt, &self->channels[j].peering.paths[i].addr);
+                                    if err::check(e) {
+                                        e->elog();
+                                    }
+                                    e->make();
                                 }
-                                e->make();
                             }
                             address::Type::Ipv6 => {
-                                self->udp6.sendto(e, &self->pkt, &self->channels[j].peering.paths[i].addr);
-                                e->make();
+                                if io::valid(&self->udp6) {
+                                    self->udp6.sendto(e, &self->pkt, &self->channels[j].peering.paths[i].addr);
+                                    e->make();
+                                }
                             }
                         }
                     }
                 }
                 if !has_any_addr {
-                    err::fail(e, 1, "no addr to send to");
+                    err::fail(e, OutOfOptions, "no addr to send to");
                 }
             }
         }
@@ -110,19 +118,19 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
     return io::Result::Later;
 }
 
-pub fn push(Router mut* self, err::Err+et mut* e)
+pub fn push(Router mut* self, err::Err+et mut* e) -> bool /*keep going*/
     where err::checked(*e)
 {
     if self->pkt.len < 4 + 8 + 8 + 16   {
-        err::fail(e, 1, "too small");
-        return;
+        err::fail(e, channel::InvalidFrame, "too small");
+        return true;
     }
 
     // version 1B
     let version = (self->pkt.mem)[0];
     if version < 8 {
-        err::fail(e, 1, "invalid version");
-        return;
+        err::fail(e, channel::InvalidFrame, "invalid version");
+        return true;
     }
     // reserved 3B
     // route    8B
@@ -143,21 +151,26 @@ pub fn push(Router mut* self, err::Err+et mut* e)
     static_attest(len(ciphertext) >= ciphertext_len);
 
     if ciphertext_len <= 16 {
-        err::fail(e, 1, "too small");
-        return;
+        err::fail(e, channel::InvalidFrame, "too small");
+        return true;
     }
 
     for (usize mut i = 0; i < static(len(self->channels)); i++) {
         if self->channels[i].route == routingkey {
             channel::push(&self->channels[i], e, ciphertext, ciphertext_len, counter, version);
             if err::check(e) {
-                e->eprint();
-                e->make();
+                if self->channels[i].errors_are_fatal {
+                    return false;
+                } else {
+                    e->elog();
+                    e->make();
+                }
             }
-            return;
+            return true;
         }
     }
-    log::warn("unroutable pkt. size: %zu, counter: %zu, route: %zu", (self->pkt).len, counter, routingkey);
+    log::debug("unroutable pkt. size: %zu, counter: %zu, route: %zu", (self->pkt).len, counter, routingkey);
+    return true;
 }
 
 
@@ -198,17 +211,36 @@ pub fn next_channel(Router mut* self) -> channel::Channel mut * {
 }
 
 
-pub fn disconnect(Router mut* self, u64 route) {
+
+export symbol Disconnected;
+
+pub fn disconnect(Router mut* self, err::Err+et mut*e, u64 route)
+    where err::checked(*e)
+{
     for (usize mut i = 0; i < static(len(self->channels)); i++) {
         if self->channels[i].route == route {
-            self->channels[i].cleanup();
+            self->channels[i].cleanup(e);
             memset(&self->channels[i], 0, sizeof(channel::Channel));
             if i == 0 {
-                err::panic("broker disconnect");
+                err::fail(e, Disconnected, "broker channel closed");
             }
             if i != 0 {
-                publish::cleanup_dead_route(&self->channels[0], route);
+                cleanup_dead_broker_route(&self->channels[0], route);
             }
+        }
+    }
+}
+
+fn cleanup_dead_broker_route(channel::Channel mut * chan, u64 dead_route)
+{
+    for (usize mut i = 0 ; i < static(len(chan->streams)); i++) {
+        if chan->streams[i] == 0 {
+            continue;
+        }
+        let strx = chan->streams[i];
+        static_attest(safe(strx));
+        if strx->broker_route == dead_route {
+            strx->closing = true;
         }
     }
 }

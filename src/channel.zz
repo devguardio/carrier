@@ -1,12 +1,11 @@
 using cipher;
 using symmetric;
 using <stdio.h>::{printf, fprintf, stderr};
-using <string.h>::{memcpy};
 using err;
 using hex;
 using byteorder;
 using pq;
-using std;
+using mem;
 using crc8;
 using <string.h>::{memset};
 using string;
@@ -25,6 +24,10 @@ using proto;
 using carrier;
 using vault;
 using identity;
+using pool;
+
+export symbol InvalidFrame;
+export symbol Backpressure;
 
 export enum FrameType {
     Ack         = 1,
@@ -48,13 +51,19 @@ export struct Channel {
     u64     mut counter_out;
     bool    this_is_the_broker_channel;
 
+    // don't catch errors. let them bubble to the top
+    bool errors_are_fatal;
+
     cipher::CipherState mut c_mine;
     cipher::CipherState mut c_them;
     pq::Q+16            mut q;
     io::Io              mut timer;
 
     u32                 mut streamidcounter;
-    stream::Stream      mut streams[8];
+
+    //TODO ideally we'd want to have 2 owned stream memory banks here, and 16 shared
+    //     but this is something zz should provide as high level datastructure
+    stream::Stream mut *mut streams[16];
     peering::Peering    mut peering;
 
     u64 mut outgoing_acks[32];
@@ -63,11 +72,13 @@ export struct Channel {
 
 pub fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> stream::Stream mut *
     where err::checked(*e)
+    where safe(conf->path)
+    where nullterm(conf->path)
     model (return == 0) ||  safe(return)
 {
     let r = self->alloc_stream(1 + self->streamidcounter * 2, conf);
     if r == 0 {
-        err::fail(e,1,"oom");
+        err::fail(e, err::OutOfTail, "oom");
         return 0;
     }
     static_attest(safe(r));
@@ -93,29 +104,56 @@ pub fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> strea
     return r;
 }
 
-pub fn cleanup(Channel mut* self) {
+pub fn cleanup(Channel mut* self, err::Err+et mut*e)
+    where err::checked(*e)
+{
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
-        if self->streams[i].config != 0 {
-            let config = self->streams[i].config;
+        if self->streams[i] != 0 {
+            stream::Stream mut* strx = self->streams[i];
+            static_attest(safe(strx));
+            let config = strx->config;
             static_attest(safe(config));
             if config->close != 0 {
                 static_attest(safe(config->close));
-                config->close(&self->streams[i]);
+                config->close(strx, e);
+                if err::check(e) {
+                    if strx->errors_are_fatal {
+                        return;
+                    } else {
+                        e->elog();
+                        e->make();
+                    }
+                }
             }
+
+            static_attest(safe(self->endpoint));
+            static_attest(pool::member(strx, &self->endpoint->streampool));
+            self->endpoint->streampool.free(strx);
+            self->streams[i] = 0;
         }
     }
     self->q.clear();
 }
 
 pub fn alloc_stream(Channel mut* self, u32 streamid, stream::Config * unsafe config) -> stream::Stream mut * {
+    static_attest(safe(self->endpoint));
+    static_attest(pool::continuous(self->endpoint->streampool));
+
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
-        if self->streams[i].id == 0 {
-            memset(self->streams + i, 0, sizeof(stream::Stream));
-            self->streams[i].id = streamid;
-            self->streams[i].order_outgoing  = 2;
-            self->streams[i].config = config;
-            self->streams[i].chan   = self;
-            return self->streams + i;
+        if self->streams[i] == 0 {
+            let strx = (stream::Stream mut*)self->endpoint->streampool.alloc();
+            if strx == 0 {
+                return 0;
+            }
+            static_attest(safe(strx));
+
+            strx->id = streamid;
+            strx->order_outgoing  = 2;
+            strx->config = config;
+            strx->chan   = self;
+
+            self->streams[i] = strx;
+            return strx;
         }
     }
     return 0;
@@ -123,8 +161,12 @@ pub fn alloc_stream(Channel mut* self, u32 streamid, stream::Config * unsafe con
 
 pub fn stream_exists(Channel mut* self, u32 streamid) -> bool {
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
-        if self->streams[i].id == streamid {
-            return true;
+        if self->streams[i] != 0 {
+            let strx = self->streams[i];
+            static_attest(safe(strx));
+            if strx->id == streamid {
+                return true;
+            }
         }
     }
     return false;
@@ -152,28 +194,45 @@ fn clean_closed(Channel mut* self, err::Err+et mut *e)
     where err::checked(*e)
 {
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
-        if self->streams[i].closing && self->streams[i].id != 0 {
-            stream::Config *config = self->streams[i].config;
-            if config != 0 {
-                static_attest(safe(config));
-                stream::close_fn cb = config->close;
+        if self->streams[i] == 0 {
+            continue;
+        }
+        let strx = self->streams[i];
+        static_attest(safe(strx));
+
+        if strx->closing {
+            if strx->config != 0 {
+                static_attest(safe(strx->config));
+                stream::close_fn cb = strx->config->close;
                 if cb != 0 {
                     static_attest(safe(cb));
-                    cb(self->streams + i);
+                    cb(strx, e);
                 }
-                let order = self->streams[i].order_outgoing;
+
+                if err::check(e) {
+                    if strx->errors_are_fatal {
+                        return;
+                    } else {
+                        e->elog();
+                        e->make();
+                    }
+                }
+
+                let order = strx->order_outgoing;
 
                 self->send_close_frame(
                     e,
-                    self->streams[i].id,
-                    self->streams[i].order_outgoing
+                    strx->id,
+                    strx->order_outgoing
                 );
                 if err::check(e) {
                     return;
                 }
-
             }
-            memset(self->streams + i, 0, sizeof(stream::Stream));
+            static_attest(safe(self->endpoint));
+            static_attest(pool::member(strx, &self->endpoint->streampool));
+            self->endpoint->streampool.free(strx);
+            self->streams[i] = 0;
         }
     }
 }
@@ -199,10 +258,12 @@ pub fn from_symmetric(symmetric::SymmetricState * symm, u8 version, u64 route, b
     return c;
 }
 
-fn disconnect(Channel mut* this) {
+fn disconnect(Channel mut* this, err::Err+et mut* e)
+    where err::checked(*e)
+{
     endpoint::Endpoint mut * ep = (endpoint::Endpoint mut *)this->endpoint;
     err::assert_safe(ep);
-    ep->statem.connected.disconnect(this->route);
+    ep->statem.connected.disconnect(e, this->route);
 }
 
 
@@ -212,14 +273,17 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 {
     // poll user streams
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
-        if self->streams[i].config != 0 {
-            let config = self->streams[i].config;
-            static_attest(safe(config));
-            if config->poll != 0 {
-                static_attest(safe(config->poll));
-                config->poll(&self->streams[i], e, async);
-                if err::check(e) {
-                    return io::Result::Error;
+        if self->streams[i] !=0 {
+            stream::Stream mut* strx = self->streams[i];
+            static_attest(safe(strx));
+            if strx->config != 0 {
+                static_attest(safe(strx->config));
+                if strx->config->poll != 0 {
+                    static_attest(safe(strx->config->poll));
+                    strx->config->poll(strx, e, async);
+                    if err::check(e) {
+                        return io::Result::Error;
+                    }
                 }
             }
         }
@@ -238,7 +302,8 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
     let tlp = self->q.keepalive(now);
     if tlp == 0 {
         log::error("[%lu] connection is dead", self->route);
-        disconnect(self);
+        disconnect(self, e);
+        if err::check(e) { return io::Result::Error; }
         return io::Result::Later;
     }
 
@@ -272,9 +337,10 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
     buf->mem[1] = 0x00;
     buf->mem[2] = 0x00;
     buf->mem[3] = 0x00;
+
     unsafe {
-        std::memcpy(buf->mem + 4,     route_b,    8);
-        std::memcpy(buf->mem + 4 + 8, counter_b,  8);
+        mem::copy(route_b,      buf->mem + 4,     8);
+        mem::copy(counter_b,    buf->mem + 4 + 8, 8);
     }
 
     buf->len = 4 + 8 + 8;
@@ -320,7 +386,7 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
             err::assert(buf->len < st);
             u64 ackd  = byteorder::to_be64((self->outgoing_acks)[i]);
             unsafe {
-                std::memcpy(buf->mem + buf->len , &ackd, 8);
+                mem::copy(&ackd, buf->mem + buf->len , 8);
             }
             buf->len += 8;
         }
@@ -385,6 +451,8 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
     return io::Result::Ready;
 }
 
+
+
 pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u64 counter, u8 version)
     where err::checked(*e)
     where len(body) >= l
@@ -418,7 +486,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
     unsafe {frames_len = byteorder::from_be16(*(u16*)(body)) }
     u8 *frames = body + 2;
     if frames_len >= plainlen - 4 {
-        err::fail(e, 192, "corrupt");
+        err::fail(e, InvalidFrame, "corrupt");
         return;
     }
 
@@ -441,7 +509,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
             0x00 => {}
             FrameType::Ack => {
                 if i + 2 + 2  >= frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
                 static_attest(i < len(frames));
@@ -452,7 +520,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 i += 2;
 
                 if i + 8 * count > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
 
@@ -466,7 +534,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     ackorder -= 1;
 
 
-                    log::info("[%lu] received ack %lu", self->route, ackorder);
+                    log::debug("[%lu] received ack %lu", self->route, ackorder);
 
                     self->q.ack(clock::tick(), ackorder);
                 }
@@ -488,7 +556,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
             FrameType::Open => {
                 ack_required = true;
                 if i + 4 + 2  >= frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
                 static_attest(i < len(frames));
@@ -500,7 +568,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
 
 
                 if i + size > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
 
@@ -532,15 +600,12 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     err::assert_safe(self->endpoint);
 
                     stream::Config ** mut registry = self->endpoint->p2p_stream_registry;
-                    void mut ** mut registry_user = self->endpoint->p2p_stream_registry_user_config;
                     usize mut registry_len = static(len(self->endpoint->p2p_stream_registry));
                     if self->this_is_the_broker_channel {
                         registry        = self->endpoint->broker_stream_registry;
-                        registry_user   = self->endpoint->broker_stream_registry_user_config;
                         registry_len    = static(len(self->endpoint->broker_stream_registry));
                     }
                     static_attest(len(registry)         >= registry_len);
-                    static_attest(len(registry_user)    >= registry_len);
                     static_attest(safe(path.mem));
                     static_attest(nullterm(path.mem));
 
@@ -549,16 +614,15 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                         accepted = true;
                         self->disco(e, streamid);
                         if err::check(e) {
-                            e->eprint();
+                            e->elog();
                             e->make();
                             please_resend = true;
                         }
                     } else if path.size > 0 && (self->this_is_the_broker_channel ||
-                        self->endpoint->config.authorize_open_stream(&self->peer, (char*)path.mem)) {
+                        self->endpoint->vault.authorize_open_stream(&self->peer, (char*)path.mem)) {
 
                         for (usize mut i = 0; i < registry_len; i++) {
                             stream::Config * mut conf = registry[i];
-                            void mut * userconf = registry_user[i];
                             if conf == 0 {
                                 break;
                             }
@@ -578,12 +642,22 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                                     streami->order_incomming = 1;
                                     streami->order_outgoing = 1;
                                     err::assert_safe(conf->open);
-                                    conf->open(streami, e, userconf, &header_slice);
+                                    conf->open(streami, e, &header_slice);
+
 
                                     if err::check(e) {
-                                        e->eprint();
+                                        e->elog();
                                         e->make();
-                                        please_resend = true;
+                                        let mut *frame = streami->stream(e, 14);
+                                        if frame  == 0{
+                                            please_resend = true;
+                                            log::warn("oom while sending 500");
+                                        } else {
+                                            static_attest(err::checked(*e));
+                                            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
+                                            if err::check(e) { e->make(); }
+                                            streami->close();
+                                        }
                                     }
 
                                 }
@@ -597,7 +671,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
 
                         let mut *frame = self->q.alloc(e, FrameType::Stream, 28);
                         if err::check(e) {
-                            e->eprint();
+                            e->elog();
                             e->make();
                             please_resend = true;
                         } else {
@@ -609,7 +683,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                             if err::check(e) { return ; }
                             self->send_close_frame(e, streamid, 2);
                             if err::check(e) {
-                                e->eprint();
+                                e->elog();
                                 e->make();
                             }
                         }
@@ -619,7 +693,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
             FrameType::Stream => {
                 ack_required = true;
                 if i + 4 + 8 + 2  > frames_len {
-                    err::fail(e, 192, "short read. %d > %d", i + 4 + 8 + 2, frames_len);
+                    err::fail(e, InvalidFrame, "short read. %d > %d", i + 4 + 8 + 2, frames_len);
                     return;
                 }
                 static_attest(i < len(frames));
@@ -636,11 +710,11 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     self->route, streamid, order, size);
 
                 if i > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
                 if i + size > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
                 static_attest(len(frames) > i);
@@ -650,22 +724,33 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
 
                 let mut found_channel = false;
                 for (usize mut j =0 ; j < static(len(self->streams)); j++) {
-                    if self->streams[j].id == streamid {
+                    if self->streams[j] == 0 {
+                        continue;
+                    }
+                    stream::Stream mut*strx = self->streams[j];
+                    static_attest(safe(strx));
+
+                    if strx->id == streamid {
                         found_channel = true;
                         new bs = slice::slice::make(frames + i, size);
-                        let accepted = self->streams[j].incomming_stream(
+                        let accepted = strx->incomming_stream(
                             e,
                             order,
                             &bs
                         );
                         if err::check(e) {
-                            e->eprint();
-                            e->make();
-                            please_resend = true;
+                            if strx->errors_are_fatal {
+                                please_resend = true;
+                                return;
+                            } else {
+                                e->elog();
+                                e->make();
+                                please_resend = true;
+                            }
                         } else if !accepted {
                             //TODO send backpressure signal
-                            err::fail(e, 192, "stream %u ordering is backpressured at position %u, unable to accept %u",
-                                    streamid, self->streams[j].order_incomming, order);
+                            err::fail(e, Backpressure, "stream %u ordering is backpressured at position %u, unable to accept %u",
+                                    streamid, strx->order_incomming, order);
                             please_resend = true;
                         }
                     }
@@ -687,12 +772,12 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 ack_required = true;
                 if self->version >= 0x09 {
                     if i + 4 + 8 + 1  > frames_len {
-                        err::fail(e, 192, "[%lu] short read",  self->route);
+                        err::fail(e, InvalidFrame, "[%lu] short read",  self->route);
                         return;
                     }
                 } else {
                     if i + 4 + 8  > frames_len {
-                        err::fail(e, 192, "[%lu] short read",  self->route);
+                        err::fail(e, InvalidFrame, "[%lu] short read",  self->route);
                         return;
                     }
                 }
@@ -710,12 +795,18 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     static_attest(i <= len(frames));
                 }
 
-                log::info("[%lu] received close for stream=%u, order=%u", self->route, streamid, order);
+                log::debug("[%lu] received close for stream=%u, order=%u", self->route, streamid, order);
 
                 for (usize mut i =0 ; i < static(len(self->streams)); i++) {
-                    if self->streams[i].id == streamid {
+                    if self->streams[i] == 0 {
+                        continue;
+                    }
+                    let strx = self->streams[i];
+                    static_attest(safe(strx));
+
+                    if strx->id == streamid {
                         static_attest(len(frames) > i);
-                        bool accepted = self->streams[i].incomming_close(
+                        bool accepted = strx->incomming_close(
                             e,
                             order
                         );
@@ -723,8 +814,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                             return;
                         }
                         if !accepted {
-                            err::fail(e, 192, "stream %u ordering is backpressured at position %u, unable to accept %u",
-                                streamid, self->streams[i].order_incomming, order);
+                            err::fail(e, Backpressure, "stream %u ordering is backpressured at position %u, unable to accept %u",
+                                streamid, strx->order_incomming, order);
                             please_resend = true;
                         }
                     }
@@ -733,7 +824,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
             FrameType::Configure => {
                 ack_required = true;
                 if i + 3  > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
                 static_attest(i < len(frames));
@@ -744,7 +835,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 usize size    = (usize)byteorder::from_be16(*(u16*)(frames + i));
 
                 if i + size > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
 
@@ -754,7 +845,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
             FrameType::Fragmented => {
                 ack_required = true;
                 if i + 4 + 8 + 4  > frames_len {
-                    err::fail(e, 192, "short read");
+                    err::fail(e, InvalidFrame, "short read");
                     return;
                 }
                 static_attest(i < len(frames));
@@ -774,7 +865,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 log::debug("[%lu] received fragemented for stream=%u, order=%u", self->route, streamid, order);
             }
             default => {
-                err::fail(e, 194, "invalid frame %u", body[i]);
+                err::fail(e, InvalidFrame, "invalid frame %u", body[i]);
                 return;
             }
         }
@@ -842,13 +933,13 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
         err::assert(frame2->push64(byteorder::to_be64(2)));
         err::assert(frame2->push16(1));
 
-        protonerf::encode_varint(frame2, e, proto::DiscoveryResponseField::CarrierRevision, carrier::REVISION);
+        protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, carrier::REVISION);
         e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::CarrierBuildId,           (u8*)"??", 2);
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,           (u8*)"??", 2);
         e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::Application,              (u8*)"zz", 2);
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Application,              (u8*)"zz", 2);
         e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::ApplicationVersion,      (u8*)"??", 2);
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::ApplicationVersion,      (u8*)"??", 2);
         e->abort();
 
         for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
@@ -860,11 +951,11 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
             err::assert_safe(conf->path);
             static_attest(nullterm(conf->path));
 
-            if self->this_is_the_broker_channel || !self->endpoint->config.authorize_open_stream(&self->peer, conf->path) {
+            if self->this_is_the_broker_channel || !self->endpoint->vault.authorize_open_stream(&self->peer, conf->path) {
                 continue;
             }
 
-            protonerf::encode_bytes(frame2, e, proto::DiscoveryResponseField::Paths,
+            protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Paths,
                 (u8*)conf->path,
                 string::strlen(conf->path)
             );

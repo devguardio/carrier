@@ -1,7 +1,7 @@
 using identity;
 using err;
 using noise;
-using std;
+using mem;
 using hex;
 using byteorder;
 using <assert.h>::{assert};
@@ -64,7 +64,7 @@ pub fn initiate(
         err::assert_safe(xaddr);
         identity::nullcheck(e, xaddr->k);
         e->abort();
-        std::memcpy(((self->noise).remote_static).k, xaddr->k, 32);
+        mem::copy(xaddr->k, ((self->noise).remote_static).k, 32);
     }
 
     identity::secret_generate(&(self->noise).ephemeral, e);
@@ -108,7 +108,7 @@ pub fn initiate(
         // move target 32B
         if move == Move::Target && cluster_target != 0 {
             static_attest(safe(cluster_target));
-            std::memcpy(plaintext + plaintext_len, cluster_target->k, 32);
+            mem::copy(cluster_target->k, plaintext + plaintext_len, 32);
             plaintext_len += 32;
         }
 
@@ -188,10 +188,9 @@ pub fn initiate(
 
     //sign handshake hash
     u8 mut signme[static(len(endpoint::SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
-    std::memcpy(signme, endpoint::SIGN_PURPOSE, string::strlen(endpoint::SIGN_PURPOSE));
-    u8 mut * mem = signme + string::strlen(endpoint::SIGN_PURPOSE);
-
-    std::memcpy(mem, ((self->noise).symm).h, static(len(((self->noise).symm).h)));
+    mem::copy(endpoint::SIGN_PURPOSE, signme, string::strlen(endpoint::SIGN_PURPOSE));
+    u8 mut * mm = signme + string::strlen(endpoint::SIGN_PURPOSE);
+    mem::copy(((self->noise).symm).h,  mm, static(len(((self->noise).symm).h)));
 
 
     identity::Signature mut*sig= (identity::Signature mut*)(pkt->mem + pkt->len);
@@ -226,7 +225,7 @@ pub fn complete (
     //hex::dump((u8*)pkt->mem, pkt->len);
 
     if pkt->len < 4 + 8 + 8 + 32 + 16  + 64 {
-        err::fail(e, 1, "too small");
+        err::fail(e, channel::InvalidFrame , "too small");
         return;
     }
 
@@ -234,12 +233,12 @@ pub fn complete (
     let mut version = (pkt->mem)[0];
     if self->secure {
         if version != 9 {
-            err::fail(e, 1, "invalid version %d", version);
+            err::fail(e, channel::InvalidFrame, "invalid version %d", version);
             return;
         }
     } else {
         if version != 8 {
-            err::fail(e, 1, "invalid version %d", version);
+            err::fail(e, channel::InvalidFrame, "invalid version %d", version);
             return;
         }
     }
@@ -279,7 +278,7 @@ pub fn complete (
     //hex::dump(cleartext, cleartext_len);
 
     if cleartext_len < 32 + 2 + 8 + 4 {
-        err::fail(e, 1, "too small");
+        err::fail(e, channel::InvalidFrame, "too small");
         return;
     }
 
@@ -296,7 +295,7 @@ pub fn complete (
     identity::Identity mut r_identity = {0};
     static_attest(safe(pp));
     static_attest(len(pp) >= 32);
-    std::memcpy(r_identity.k, pp, 32);
+    mem::copy(pp, r_identity.k, 32);
 
     pp = pp + 32;
 
@@ -310,16 +309,16 @@ pub fn complete (
 
     //check handshake signature
     u8 mut signme[static(len(endpoint::SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
-    std::memcpy(signme, endpoint::SIGN_PURPOSE, string::strlen(endpoint::SIGN_PURPOSE));
-    u8 mut* mem = signme + string::strlen(endpoint::SIGN_PURPOSE);
-    std::memcpy(mem, ((self->noise).symm).h, static(len(((self->noise).symm).h)));
+    mem::copy(endpoint::SIGN_PURPOSE, signme, string::strlen(endpoint::SIGN_PURPOSE));
+    u8 mut* mm = signme + string::strlen(endpoint::SIGN_PURPOSE);
+    mem::copy(((self->noise).symm).h, mm, static(len(((self->noise).symm).h)));
     identity::Signature mut * mut sig;
     unsafe {
         sig = (identity::Signature mut *)(pkt->mem + pkt->len - 64);
     }
     static_attest(safe(sig));
     if !identity::verify(&r_identity, sig, signme, static(len(signme))) {
-        err::fail(e, 1, "invalid signature");
+        err::fail(e, channel::InvalidFrame, "invalid signature");
         return;
     }
 
@@ -327,7 +326,7 @@ pub fn complete (
     if expect_identity != 0 {
         static_attest(safe(expect_identity));
         if !expect_identity->eq(&r_identity) {
-            err::fail(e, 1, "mismatched identity");
+            err::fail(e, channel::InvalidFrame, "mismatched identity");
         }
     }
 
@@ -366,5 +365,5 @@ pub fn complete (
     );
 
     chan->q.rtt = (clock::tick() - self->tick_time_start);
-    log::info("channel to %s via route %d rtt %ums", r_identity_str, route, chan->q.rtt);
+    log::debug("channel to %s via route %d rtt %ums", r_identity_str, route, chan->q.rtt);
 }

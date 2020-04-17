@@ -1,0 +1,110 @@
+using identity;
+using endpoint;
+using log;
+using err;
+using hex;
+using stream;
+using string;
+using slice;
+using hpack;
+using <stdlib.h>::{atoi};
+using <stdio.h>::{printf};
+using protonerf;
+using proto;
+
+export symbol OpenResponse;
+
+pub fn print_identity(endpoint::Endpoint *self)
+{
+    new+1000 e = err::make();
+
+    identity::Identity mut id = {0};
+    self->vault.get_identity(&id);
+    char mut buf[64] = {0};
+    identity::identity_to_str(&e, buf, 64, &id);
+    e.abort();
+    log::info("my identity: %s", buf);
+}
+
+pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    if self->state == 0 {
+        self->state = 1;
+
+        int mut rcode = 0;
+        new it = hpack::decoder::decode(msg);
+        while it.next(e) {
+            if it.key.eq_cstr(":status") {
+                rcode = (int)atoi((char*)it.val.mem);
+            }
+        }
+        if err::check(e) {
+            return false;
+        }
+        if rcode != 200 {
+            new it = hpack::decoder::decode(msg);
+            while it.next(e) {
+                log::error("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+            }
+            err::fail(e, OpenResponse, "remote channel not accepted");
+            e->abort();
+            self->close();
+            return true;
+        }
+        return true;
+    } else {
+        self->state = 2;
+
+        static_attest(safe(msg->mem));
+        err::assert_safe(self->user2);
+        static_attest(nullterm(self->user2));
+
+        log::warn("%s.proto unavailable, printing unlabeled data. see documentation for CARRIER_PROTO_PATHS", self->user2);
+
+        let mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (;;) {
+             let field = decoder.next(e);
+             if err::check(e) { return true; }
+             if !field.valid {break;}
+
+             if field.a != 0 {
+                 printf("field %lu:\n", field.index);
+                 static_attest(len(field.a) > field.value.v_len);
+                 hex::dump(field.a, field.value.v_len);
+             } else {
+                 printf("field %lu : %lu\n", field.index, field.value.v_u64);
+             }
+        }
+        if err::check(e) { return true; }
+
+        return true;
+    }
+}
+
+
+export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    int mut rcode = 0;
+    new it = hpack::decoder::decode(msg);
+    while it.next(e) {
+        if it.key.eq_cstr(":status") {
+            rcode = (int)atoi((char*)it.val.mem);
+        }
+    }
+    if err::check(e) {
+        return false;
+    }
+    if rcode != 200 {
+        new it = hpack::decoder::decode(msg);
+        while it.next(e) {
+            log::error("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+        }
+        err::fail(e, OpenResponse, "remote channel not accepted");
+        e->abort();
+        self->close();
+        return true;
+    }
+    return true;
+}

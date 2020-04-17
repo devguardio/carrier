@@ -54,16 +54,16 @@ fn main() {
                 }
 
                 if fields.len() > 0 {
-                    println!("export enum {}Field {{", name);
+                    println!("export enum {} {{", name);
                     for (repeated, typ, fieldname, val) in &fields {
                         println!("  {} = {},", fieldname, val);
                     }
                     println!("}}\n");
                 }
-                println!("export fn {} (usize index) -> protonerf::FieldType {{", name);
+                println!("export fn {}Types (usize index) -> protonerf::FieldType {{", name);
                 println!("    switch index {{");
                 for (repeated, typ, fieldname, val) in &fields {
-                    println!("        {}Field::{} => {{", name, fieldname);
+                    println!("        {}::{} => {{", name, fieldname);
                     let ztype = match typ.as_str() {
                         "double"    => "Double",
                         "float"     => "Float",

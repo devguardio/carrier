@@ -4,6 +4,7 @@ using <string.h>::{strlen, memcpy, memset, memcmp};
 using <assert.h>::{assert};
 using symmetric;
 using hex;
+using channel;
 
 using <stdio.h>::{printf};
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
@@ -17,8 +18,6 @@ using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac
 //NNSig
 // -> e, sign(e)
 // <- e, ee
-
-static u8 zerokey[32] = {0};
 
 export struct Initiator {
     symmetric::SymmetricState   mut symm;
@@ -49,11 +48,12 @@ pub fn initiate(
     assert(pktlen >= total_size);
     static_attest(pktlen >= total_size);
 
-    if memcmp((self->ephemeral).k, zerokey, 32) == 0 {
-        err::fail(e, 2, "ephemeral key is zero");
+    identity::nullcheck(e, (self->ephemeral).k);
+    if err::check(e) {
         return 0;
     }
-    bool has_remote_static = (memcmp((self->remote_static).k, zerokey, 32) != 0);
+
+    bool has_remote_static = !identity::isnull(self->remote_static.k);
 
     symmetric::init(&self->symm, "Noise_NK_25519_ChaChaPoly_SHA256");
     symmetric::mix_hash(&self->symm, prologue, prologue_len);
@@ -107,8 +107,8 @@ pub fn initiate_insecure(
     assert(pktlen >= total_size);
     static_attest(pktlen >= total_size);
 
-    if memcmp((self->ephemeral).k, zerokey, 32) == 0 {
-        err::fail(e, 2, "ephemeral key is zero");
+    identity::nullcheck(e, (self->ephemeral).k);
+    if err::check(e) {
         return 0;
     }
 
@@ -178,14 +178,17 @@ pub fn receive(
     where len(payload) >= payload_len
     where len(packet) > 32
 {
-    assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
+    identity::nullcheck(e, (self->ephemeral).k);
+    if err::check(e) {
+        return 0;
+    }
 
     if packet_len < 32 + 16 {
-        err::fail(e, 9, "in buffer underflow");
+        err::fail(e, channel::InvalidFrame, "in buffer underflow");
         return 0;
     }
     if payload_len < packet_len - 16 {
-        err::fail(e, 9, "out buffer overflow ");
+        err::fail(e, channel::InvalidFrame, "out buffer overflow ");
         return 0;
     }
 
@@ -195,7 +198,10 @@ pub fn receive(
     symmetric::mix_hash(&self->symm, prologue, prologue_len);
 
     // <- s
-    assert(memcmp((self->statickey).k, zerokey, 32) != 0);
+    identity::nullcheck(e, self->statickey.k);
+    if err::check(e) {
+        return 0;
+    }
     identity::Address mut xaddr = {0};
     identity::address_from_secret(&xaddr, &self->statickey);
     symmetric::mix_hash(&self->symm, xaddr.k, 32);
@@ -239,8 +245,14 @@ pub fn accept(
     where pktlen -32 > payload_len
     model return < pktlen
 {
-    assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
-    assert(memcmp((self->remote_ephemeral).k, zerokey, 32) != 0);
+    identity::nullcheck(e, self->ephemeral.k);
+    if err::check(e) {
+        return 0;
+    }
+    identity::nullcheck(e, self->remote_ephemeral.k);
+    if err::check(e) {
+        return 0;
+    }
 
     usize total_size = 32 + payload_len + 16;
     static_assert(pktlen >= total_size);
@@ -282,14 +294,17 @@ pub fn complete(
     model len(packet) >= return
     model len(payload) >= return
 {
-    assert(memcmp((self->ephemeral).k, zerokey, 32) != 0);
+    identity::nullcheck(e, (self->ephemeral).k);
+    if err::check(e) {
+        return 0;
+    }
 
     if packet_len < 32 + 16 {
-        err::fail(e, 9, "in buffer underflow");
+        err::fail(e, channel::InvalidFrame, "in buffer underflow");
         return 0;
     }
     if payload_len < packet_len - 16 {
-        err::fail(e, 9, "out buffer overflow ");
+        err::fail(e, channel::InvalidFrame, "out buffer overflow ");
         return 0;
     }
 

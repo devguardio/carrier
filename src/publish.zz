@@ -1,7 +1,6 @@
 using <stdio.h>::{printf};
 using <string.h>::{memcpy, memset};
 using <assert.h>::{assert};
-using <stdlib.h>::{exit};
 using err;
 using channel;
 using router;
@@ -29,7 +28,6 @@ using proto;
 using noise;
 using responder;
 
-
 static stream::Config PublishStream = stream::Config {
     path:   "/carrier.broker.v1/broker/publish",
     stream: stream_to_publish,
@@ -50,7 +48,7 @@ export fn publish(endpoint::Endpoint mut*self, err::Err+et mut*e)
     streami->user2 = self;
 }
 
-fn close_publish(stream::Stream mut *self) {
+fn close_publish(stream::Stream mut *self, err::Err+et mut*e) {
     log::error("publish closed\n");
     err::assert_safe(self->chan);
     err::assert_safe(self->chan->endpoint);
@@ -84,12 +82,14 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
         frame->push16(0); // size placeholder
 
         static_attest(safe(self->chan->endpoint));
+        static_attest(safe(self->chan->endpoint->vault.mem));
 
-        protonerf::encode_bytes(frame, e, 1, self->chan->endpoint->config.network.k, 32);
+
+        protonerf::encode_bytes(frame, e, 1, self->chan->endpoint->vault.mem->network, 32);
         if err::check(e) {
             return false;
         }
-        protonerf::encode_bytes(frame, e, 2, self->chan->endpoint->config.network.k, 32);
+        protonerf::encode_bytes(frame, e, 2, self->chan->endpoint->vault.mem->network, 32);
         if err::check(e) {
             return false;
         }
@@ -109,11 +109,9 @@ static stream::Config PeerConnect = stream::Config {
 };
 
 
-pub fn on_remote_open(stream::Stream mut*self, err::Err+et mut*e, void mut *user_config, slice::Slice *headers)
+pub fn on_remote_open(stream::Stream mut*self, err::Err+et mut*e, slice::Slice *headers)
     where err::checked(*e)
 {
-    self->user2 = user_config;
-
     static_attest(safe(self->chan));
     let mut *frame = self->stream(e, 14);
     if err::check(e) { return; }
@@ -139,7 +137,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
 
 
-        let mut dec = protonerf::decode(proto::PeerConnectRequest, msg->mem, msg->size);
+        let mut dec = protonerf::decode(msg->mem, msg->size);
         for (;;) {
             let field = dec.next(e);
             if err::check(e) {
@@ -149,9 +147,9 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
                 break;
             }
             switch field.index {
-                proto::PeerConnectRequestField::Identity => {
+                proto::PeerConnectRequest::Identity => {
                     if field.a == 0 || field.value.v_len != 32 {
-                        err::fail(e, 1, "unexpected proto wire");
+                        err::fail(e, channel::InvalidFrame, "unexpected proto wire");
                         return false;
                     }
                     memcpy(ii.k, field.a, 32);
@@ -164,17 +162,17 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
                     log::info("connect request from identity %.*s", (int)l, m);
                     has_identity = true;
                 }
-                proto::PeerConnectRequestField::Timestamp => {
+                proto::PeerConnectRequest::Timestamp => {
                     timestamp = field.value.v_u64;
                 }
-                proto::PeerConnectRequestField::Handshake => {
+                proto::PeerConnectRequest::Handshake => {
                     handshake.mem  = field.a;
                     handshake.size = field.value.v_len;
                 }
-                proto::PeerConnectRequestField::Route => {
+                proto::PeerConnectRequest::Route => {
                     route = byteorder::to_be64(field.value.v_u64);
                 }
-                proto::PeerConnectRequestField::Paths => {
+                proto::PeerConnectRequest::Paths => {
                     peerings.from_proto(e, field);
                     if err::check(e) {
                         return true;
@@ -186,7 +184,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         }
 
         if !has_identity || handshake.mem == 0 || timestamp == 0 || route == 0 {
-            err::fail(e, 13, "missing protobuf field");
+            err::fail(e, channel::InvalidFrame, "missing protobuf field");
             return true;
         }
         static_attest(len(handshake.mem) >= handshake.size);
@@ -194,7 +192,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         // unfortunate misdesign of tunneling an entire init packet
         // which actually contains no interesting information
         if handshake.size < 1 + 3 + 8 + 8 + 32 + 16 + 3 + 32 + 8 {
-            err::fail(e, 1, "too small");
+            err::fail(e, channel::InvalidFrame, "too small");
             return true;
         }
         handshake.mem  = handshake.mem  + (1 + 3 + 8 + 8);
@@ -219,12 +217,12 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         id.mem  = id.mem  + 32;
         id.size = 32;
         if !id.eq_bytes(ii.k, 32) {
-            err::fail(e, 13, "identity mismatch");
+            err::fail(e, channel::InvalidFrame, "identity mismatch");
             return true;
         }
 
 
-        self->user1 = route;
+        self->broker_route = route;
 
 
         log::error("signature check not implemented, accepting everything");
@@ -232,7 +230,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         //FIXME check signature
 
         static_attest(safe(self->chan->endpoint));
-        let authorized = self->chan->endpoint->config.authorize_connect(&ii);
+        let authorized = self->chan->endpoint->vault.authorize_connect(&ii);
 
         if !authorized {
             let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 34);
@@ -243,15 +241,15 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             frame->push64(byteorder::to_be64((self->order_outgoing)++));
             frame->push16(0); // size placeholder
 
-            protonerf::encode_varint(frame, e, proto::PeerConnectResponseField::Ok, 0);
+            protonerf::encode_varint(frame, e, proto::PeerConnectResponse::Ok, 0);
             if err::check(e) {
                 return true;
             }
-            protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponseField::Handshake , 0);
+            protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponse::Handshake , 0);
             if err::check(e) {
                 return true;
             }
-            protonerf::encode_bytes(frame, e, proto::PeerConnectResponseField::Error, (u8*)"not authorized", 14);
+            protonerf::encode_bytes(frame, e, proto::PeerConnectResponse::Error, (u8*)"not authorized", 14);
             if err::check(e) {
                 return true;
             }
@@ -269,14 +267,23 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
 
         slice::MutSlice mut * mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 290);
         if err::check(e) {
-            e->eprint();
+            e->elog();
             unsafe { frame = 0; }
             e->make();
         }
 
         // oom
         if nuchan == 0 || frame == 0 {
-            log::error("oom");
+            if nuchan == 0 {
+                log::error("cannot accept: max channels");
+            } else {
+                log::error("cannot accept: max framepool");
+            }
+
+            if frame != 0 {
+                self->chan->q.cancel();
+                unsafe { frame = 0; }
+            }
 
             let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 30);
             if err::check(e) {
@@ -286,15 +293,15 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             frame->push64(byteorder::to_be64((self->order_outgoing)++));
             frame->push16(0); // size placeholder
 
-            protonerf::encode_varint(frame, e, proto::PeerConnectResponseField::Ok, 0);
+            protonerf::encode_varint(frame, e, proto::PeerConnectResponse::Ok, 0);
             if err::check(e) {
                 return true;
             }
-            protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponseField::Handshake , 0);
+            protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponse::Handshake , 0);
             if err::check(e) {
                 return true;
             }
-            protonerf::encode_bytes(frame, e, proto::PeerConnectResponseField::Error, (u8*)"out of mem", 10);
+            protonerf::encode_bytes(frame, e, proto::PeerConnectResponse::Error, (u8*)"out of mem", 10);
             if err::check(e) {
                 return true;
             }
@@ -308,14 +315,14 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         frame->push64(byteorder::to_be64((self->order_outgoing)++));
         frame->push16(0); // size placeholder
 
-        protonerf::encode_varint(frame, e, proto::PeerConnectResponseField::Ok, 1);
+        protonerf::encode_varint(frame, e, proto::PeerConnectResponse::Ok, 1);
         if err::check(e) {
             return true;
         }
 
 
         // handshake, full packet version 0x08
-        protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponseField::Handshake, 252);
+        protonerf::encode_bytes_start(frame, e, proto::PeerConnectResponse::Handshake, 252);
         if err::check(e) {
             return true;
         }
@@ -323,10 +330,11 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         static_attest(len(frame->slice.mem) > frame->at);
         static_attest(len(frame->slice.mem) > frame->at + 252);
         static_attest(safe(self->chan->store));
+        static_attest(safe(self->chan->store->mem));
         responder::accept_insecure(
             &rsp,
             e,
-            (identity::Secret*)&self->chan->store->secret,
+            (identity::Secret*)&self->chan->store->mem->secret,
             route,
             timestamp,
             frame
@@ -337,7 +345,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
 
         //TODO paths
 
-        protonerf::encode_bytes(frame, e, proto::PeerConnectResponseField::Error, (u8*)"",0);
+        protonerf::encode_bytes(frame, e, proto::PeerConnectResponse::Error, (u8*)"",0);
         if err::check(e) {
             return true;
         }
@@ -363,15 +371,4 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
     return true;
 
 }
-
-pub fn cleanup_dead_route(channel::Channel mut * chan, u64 dead_route)
-{
-    for (usize mut i = 0 ; i < static(len(chan->streams)); i++) {
-        if chan->streams[i].user1 == dead_route {
-            chan->streams[i].closing = true;
-        }
-    }
-}
-
-
 

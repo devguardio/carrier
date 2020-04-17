@@ -1,4 +1,4 @@
-using <stdio.h>::{printf, fread, stdin};
+using <stdio.h>::{printf, fread, stdin, stderr};
 using hpack::decoder;
 using err;
 using slice;
@@ -86,7 +86,7 @@ test errcase_too_long {
 pub fn main() -> int {
 
     err::Err+1000 mut e = {0};
-    err::new(&e);
+    err::make(&e);
 
     u8 mut buf[1000];
 
@@ -97,13 +97,13 @@ pub fn main() -> int {
         }
         static_attest(len(buf)>1);
         static_attest(bin <= len(buf));
-        let s  = slice::slice::new(buf + 1, bin - 1);
-        let mut it = decoder::decode(s);
+        new s  = slice::slice::make(buf + 1, bin - 1);
+        new mut it = decoder::decode(&s);
 
         static_attest(buf[0] > 0 && buf[0] < 9);
         uint i = it.decode_integer(&e, buf[0]);
         if err::check(&e) {
-            err::eprint(&e);
+            err::eprintf(&e, stderr);
             return 2;
         }
         printf("%zu,%u", it.at, i);

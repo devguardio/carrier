@@ -1,0 +1,64 @@
+using err;
+using carrier;
+using shell;
+using connect;
+using log;
+using channel;
+using endpoint;
+using <stdio.h>::{fprintf, stderr};
+using cmd_common::{print_identity};
+using sync;
+
+fn shell_usage() -> int {
+    fprintf(stderr, "USAGE:\n    carrier shell [OPTIONS] <target>\n");
+    return 2;
+}
+
+pub fn cmd(usize mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+
+    char * mut posarg = 0;
+    for (usize mut i = 2; i < argc; i++) {
+        if posarg == 0 {
+            posarg = argv[i];
+        } else {
+            fprintf(stderr, "error: unexpected argument %s\n", argv[i]);
+            return shell_usage();
+        }
+    }
+    if posarg == 0 {
+        fprintf(stderr, "error: missing required argument <target>\n");
+        return shell_usage();
+    }
+
+    static_attest(nullterm(posarg));
+    static_attest(safe(posarg));
+    new target = carrier::identity::identity_from_cstr (&e, posarg);
+    if err::check(&e) {
+        static_attest(err::checked(e));
+        err::fail(&e, err::InvalidArgument, "parsing identity: %s", posarg);
+        e.elog();
+        return 2;
+    }
+    e.abort();
+
+    new+1000 ep = endpoint::from_home_carriertoml(&e);
+    e.abort();
+
+    new mx = sync::start(&e, &ep);
+    e.abort();
+
+    mx.connect(&e, &target);
+    e.abort();
+
+    shell::open(&e, mx.chan);
+    e.abort();
+
+    mx.wait(&e);
+    e.abort();
+
+    return 0;
+
+}

@@ -8,7 +8,7 @@ export fn encode(slice::MutSlice mut* slice, err::Err+et mut *e, u8* key, usize 
     where err::checked(*e)
 {
     if slice->at >= slice->slice.size || slice->at + 1 >= slice->slice.size {
-        err::fail(e, 1, "overflow");
+        err::fail(e, err::OutOfTail, "overflow");
         return;
     }
 
@@ -16,7 +16,7 @@ export fn encode(slice::MutSlice mut* slice, err::Err+et mut *e, u8* key, usize 
     slice->at += 1;
 
     if slice->at + 1 >= slice->slice.size {
-        err::fail(e, 1, "overflow");
+        err::fail(e, err::OutOfTail, "overflow");
         return;
     }
 
@@ -29,7 +29,7 @@ export fn encode(slice::MutSlice mut* slice, err::Err+et mut *e, u8* key, usize 
     slice->at += 1;
 
     if slice->at + keylen >= slice->slice.size {
-        err::fail(e, 1, "overflow");
+        err::fail(e, err::OutOfTail, "overflow");
         return;
     }
     memcpy(slice->mem() + slice->at, key, keylen);
@@ -43,7 +43,7 @@ export fn encode(slice::MutSlice mut* slice, err::Err+et mut *e, u8* key, usize 
     slice->at += 1;
 
     if slice->at >= slice->slice.size || slice->at >= slice->slice.size - vallen {
-        err::fail(e, 1, "overflow");
+        err::fail(e, err::OutOfTail, "overflow");
         return;
     }
 
@@ -58,7 +58,7 @@ pub fn encode_integer(slice::MutSlice mut* slice, err::Err+et mut *e, usize valu
     where err::checked(*e)
 {
     if slice->at >= slice->slice.size {
-        err::fail(e, 10, "eof");
+        err::fail(e, err::OutOfTail, "eof");
         return;
     }
     u8 mut mask = 0xff;
@@ -71,5 +71,6 @@ pub fn encode_integer(slice::MutSlice mut* slice, err::Err+et mut *e, usize valu
         return;
     }
 
-    err::fail(e, 10, "large header field not implemented");
+    err::fail(e, err::NotImplemented, "large header field not implemented");
+
 }

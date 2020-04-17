@@ -22,7 +22,7 @@ static stream::Config StupidFileTransfer = stream::Config {
     stream:     sft_stream,
 };
 
-fn sft_open(stream::Stream mut *self, err::Err+et mut*e, void mut * user_config, slice::Slice *headers)
+fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     where err::checked(*e)
 {
     let mut *frame = self->stream(e, 14);
@@ -47,7 +47,7 @@ fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -
     return true;
 }
 
-fn sft_close(stream::Stream mut *self)
+fn sft_close(stream::Stream mut *self, err::Err+et mut*e)
 {
 }
 

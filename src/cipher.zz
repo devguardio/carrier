@@ -19,6 +19,9 @@ export fn init(CipherState mut * self, u8 *k) {
     self->has_key = true;
 }
 
+
+export symbol EncryptionError;
+
 export fn encrypt_ad(
     CipherState mut*    self,
     err::Err+et mut* e,
@@ -60,7 +63,7 @@ export fn encrypt_ad(
         nonce12
     ));
     if xr != 0 {
-        err::fail(e, (u8)xr, "encrypt");
+        err::fail(e, EncryptionError, "encrypt");
         return 0;
     }
     return cipherlen;
@@ -107,7 +110,7 @@ export fn decrypt_ad(
         nonce12
     ));
     if xr != 0 {
-        err::fail(e, (u8)xr, "decrypt");
+        err::fail(e, EncryptionError, "decrypt");
         return 0;
     }
     return plainlen;

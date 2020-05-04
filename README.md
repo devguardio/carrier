@@ -3,6 +3,23 @@
 carrier is a generic secure message system for IoT
 -----------
 
+
+
+
+building the legacy rust code:
+
+
+zz build --release
+cargo +nightly-2019-11-17 build
+
+
+
+
+
+
+
+
+
 read a intro here: https://devguard.io/intro.html
 ------------
 

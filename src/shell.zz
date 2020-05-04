@@ -19,6 +19,7 @@ using <sys/wait.h>::{waitpid, WNOHANG};
 using <stdlib.h>::{exit, setsid};
 using <sys/ioctl.h>::{ioctl, TIOCSCTTY};
 using <stdio.h>::{printf};
+inline using "shell.h"::{SHPATH};
 
 export fn register(endpoint::Endpoint mut*ep)
 {
@@ -177,7 +178,7 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
         ioctl(0, TIOCSCTTY, 1);
 
 
-        char mut * args[ ] = {"/bin/sh", "-i", "-l", 0};
+        char mut * args[ ] = {SHPATH, "-i", "-l", 0};
         execv(args[0], args);
 
 

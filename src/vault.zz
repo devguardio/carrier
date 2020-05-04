@@ -5,6 +5,7 @@ using <stdio.h>::{printf};
 using <string.h>::{memset, memmove};
 using string;
 using mem;
+using log;
 
 export const usize MAX_BROKERS = 16;
 
@@ -88,14 +89,29 @@ export fn broker_count(Vault * self) -> usize
 
 export fn authorize_connect(Vault * self, identity::Identity *ii) -> bool
 {
-    return self->authorize_open_stream(ii, 0);
+    static_attest(safe(self->mem));
+    u8 mut* mm = self->mem->authorized;
 
+    return self->authorize_open_stream(ii, 0);
 }
 export fn authorize_open_stream(Vault * self, identity::Identity *ii, char * unsafe path) -> bool
     where path == 0 || nullterm(path)
 {
     static_attest(safe(self->mem));
     u8 mut* mm = self->mem->authorized;
+
+
+    if mm[0] == 0 {
+        if path == 0 {
+            log::warn("no authorizations configured, accepting config");
+            return true;
+        }
+        if string::cstr_eq(path, "/v2/carrier.config.v1/auth_add") {
+            log::warn("no authorizations configured, accepting %s", path);
+            return true;
+        }
+        log::warn("no authorizations configured, not accepting %s", path);
+    }
 
     for (usize mut i = 0; i < static(len(mm)); i++) {
         if i  + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/  >= static(len(mm))  {

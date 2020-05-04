@@ -1,6 +1,7 @@
 using err;
 using <string.h>::{memcpy};
 using slice;
+using <stdint.h>::{UINT32_MAX};
 
 export enum FieldType {
     Skip        = 0,
@@ -39,7 +40,10 @@ export fn encode_bytes_start(slice::MutSlice mut *str, err::Err+et mut*e, u8 ind
     mm[str->at]  = (index << 3) | 2;
     str->at += 1;
     static_attest(str->at <= len(str->slice.mem));
-    write_varint(str, e, (u32)l, (u32)(l >> 32));
+
+    //TODO evidently this is broken on 32bit arm, but who cares, we dont support packets that large anyway
+    //write_varint(str, e, (u32)l, (u32)(l >> 32));
+    write_varint(str, e, (u32)l, 0);
 }
 
 export fn encode_bytes(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u8*b, usize l)
@@ -56,7 +60,11 @@ export fn encode_bytes(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u8
     mm[str->at]  = (index << 3) | 2;
     str->at += 1;
     static_attest(str->at <= len(str->slice.mem));
-    write_varint(str, e, (u32)l, (u32)(l >> 32));
+
+    //TODO evidently this is broken on 32bit arm, but who cares, we dont support packets that large anyway
+    //write_varint(str, e, (u32)l, (u32)(l >> 32));
+    write_varint(str, e, (u32)l, 0);
+
     static_attest(str->at < len(mm));
     memcpy(mm + str->at, b, l);
     str->at += l;

@@ -72,7 +72,7 @@ export fn connect(Sync mut new * self, err::Err+et mut*e, identity::Identity *ta
     io::await(&self->async, e, endpoint::poll, self->ep, time::from_seconds(30));
     if err::check(e) { return ; }
 
-    connectI::start(&self->con, e, self->ep, *target);
+    connectI::start(&self->con, e, self->ep, target);
     if err::check(e) { return; }
 
     self->con.user1 = self;

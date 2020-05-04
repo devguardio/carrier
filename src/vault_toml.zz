@@ -28,6 +28,8 @@ export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char 
     memset(self, 0, sizeof(vault::Vault));
 
     self->mem = &yolo;
+    memset(self->mem, 0, sizeof(vault::Mem));
+
     err::assert_safe(self->mem);
 
     new+1000 parser = toml::parser(e, toml::U{

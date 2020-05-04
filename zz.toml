@@ -18,7 +18,6 @@ cobjects = [
 pkgconfig = []
 cflags = [ "-D", "KRML_NOUINT128", "-Os"]
 lflags = []
-asan = false
 
 [dependencies]
 err         = "1"

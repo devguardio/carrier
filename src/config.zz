@@ -234,6 +234,7 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice
         return return_err(self, e);
     }
 
+
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));
     if impl == 1 {

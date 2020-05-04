@@ -38,11 +38,11 @@ static stream::Config ConnectStream = stream::Config {
     close:  on_close,
 };
 
-export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity target)
+export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity *target)
     where err::checked(*e)
 {
     static_attest(safe(ep->vault.mem));
-    memcpy(&self->target.k, &target.k, static(len(self->target.k)));
+    memcpy(&self->target.k, target->k, static(len(self->target.k)));
 
     identity::identity_from_secret(
         &self->principal,

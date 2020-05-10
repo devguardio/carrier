@@ -1,0 +1,56 @@
+using endpoint;
+using stream;
+using err;
+using slice;
+using io;
+using log;
+using hpack;
+using string;
+using time;
+using <stdlib.h>::{exit, calloc, free};
+using sysinfo;
+
+export fn register(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&ConfigSysinfo);
+    ep->register_stream(&ConfigSensors);
+}
+static stream::Config ConfigSysinfo = stream::Config {
+    path:       "/v2/carrier.sysinfo.v1/sysinfo",
+    open:       sysinfo_open,
+};
+static stream::Config ConfigSensors = stream::Config {
+    path:       "/v2/carrier.sysinfo.v1/sensors",
+    open:       sensors_open,
+};
+
+fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+    where err::checked(*e)
+{
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    if err::check(e) { return; }
+
+    let mut *frame2 = self->stream(e, 1500);
+    sysinfo::sysinfo(frame2);
+
+    self->close();
+}
+
+fn sensors_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+    where err::checked(*e)
+{
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    if err::check(e) { return; }
+
+    let mut *frame2 = self->stream(e, 1500);
+    sysinfo::sensors(e, frame2);
+    if err::check(e) { return; }
+
+    self->close();
+}

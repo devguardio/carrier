@@ -258,3 +258,33 @@ message Location {
     LocationVelocity   velocity = 7;
 
 }
+
+
+message Sensor {
+    string name = 1;
+
+    enum ValueType {
+        None = 0;
+        MilliCelsius = 1;
+    };
+
+    ValueType vtype = 2;
+    uint64 value = 3;
+}
+
+message Sensors {
+    repeated Sensor sensors = 1;
+}
+
+
+
+
+message None {}
+
+service SysinfoService{
+    rpc sysinfo     (None)  returns (Sysinfo);
+    rpc netsurvey   (None)  returns (NetSurvey);
+    rpc sensors     (None)  returns (Sensors);
+}
+
+

@@ -14,7 +14,7 @@ repeated = { "repeated"  }
 field = {repeated? ~ ident ~ ident ~ "=" ~ number ~ ";"}
 enumfield = {ident ~ "=" ~ number ~ ";"}
 oneof = { "oneof" ~ ident ~ "{" ~  field* ~  "}" }
-ienum   = {"enum" ~ ident ~ "{" ~ enumfield* ~  "}" }
+ienum   = {"enum" ~ ident ~ "{" ~ enumfield* ~  "}" ~ ";"? }
 message = {"message" ~ ident ~ "{" ~ (ienum | field | oneof)* ~ "}" }
 
 string_literal = @{ "\"" ~ ( "\"\"" | "\\\""    | (!"\"" ~ ANY) )* ~ "\"" }
@@ -24,9 +24,9 @@ package = { "package" ~ (alpha | digit | "_" | "." ) * ~ ";"  }
 
 arg = { ident+  }
 args = { arg ~ ( "," ~ arg)* }
-rpc = {"rpc" ~ ident ~ "(" ~ args ~ ")" ~ "returns" ~ "(" ~ args ~ ")" ~ "{" ~ "}" }
+rpc = {"rpc" ~ ident ~ "(" ~ args ~ ")" ~ "returns" ~ "(" ~ args ~ ")" ~ ("{" ~ "}")? ~ ";"? }
 service =  {"service" ~ ident ~ "{" ~ rpc* ~ "}" }
 
 file = {
-  ( syntax | package | message | service ) +
+  SOI ~  ( ienum | syntax | package | message | service )+ ~ EOI
 }

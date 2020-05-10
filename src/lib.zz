@@ -11,6 +11,7 @@ using endpoint;
 using shell;
 using sft;
 using config;
+using pub_sysinfo;
 
 
 //TODO

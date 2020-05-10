@@ -1,6 +1,6 @@
 [project]
 version = "0.1.0"
-name = "protonerf"
+name = "sysinfo"
 cincludes = []
 cobjects = []
 pkgconfig = []
@@ -11,6 +11,10 @@ lflags = []
 default = []
 
 [dependencies]
+protonerf = "1"
+string = "1"
+slice = "1"
 err = "1"
 hex = "1"
-byteorder = "1"
+log = "1"
+time = "1"

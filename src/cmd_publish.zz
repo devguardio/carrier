@@ -9,6 +9,7 @@ using net;
 using bootstrap;
 using time;
 using endpoint;
+using pub_sysinfo;
 
 pub fn cmd(int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
@@ -21,7 +22,7 @@ export fn run() -> int {
     new+1000  e     = err::make();
     new+100   async = io::unix::make();
 
-    new+10000 ep = endpoint::from_home_carriertoml(&e);
+    new+100000 ep = endpoint::from_home_carriertoml(&e);
     e.abort();
 
     cmd_common::print_identity(&ep);
@@ -41,6 +42,7 @@ export fn run() -> int {
     shell::register(&ep);
     sft::register(&ep);
     config::register(&ep);
+    pub_sysinfo::register(&ep);
 
 
     io::await(&async, &e, endpoint::poll, &ep, time::infinite());

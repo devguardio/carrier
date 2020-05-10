@@ -45,13 +45,6 @@ export fn open(err::Err+et mut*e, channel::Channel mut*chan)
 fn out_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
     where err::checked(*e)
 {
-    if !stdinio.valid() {
-        stdinio = unix::stdin();
-        unix::make_read_async(&stdinio, async);
-    }
-
-    async->select(e, &stdinio, io::Ready::Read);
-    if err::check(e) { return; }
 
     let mut *frame = self->stream(e, 300);
     if err::check(e) {
@@ -60,6 +53,14 @@ fn out_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* as
         return;
     }
     err::assert(frame->push(1));
+
+    // make sure we do NOT select before stream alloc, so that if alloc fails, we wait to the next poll loop
+    if !stdinio.valid() {
+        stdinio = unix::stdin();
+        unix::make_read_async(&stdinio, async);
+    }
+    async->select(e, &stdinio, io::Ready::Read);
+    if err::check(e) { return; }
 
     if stdinio.read_slice(e, frame) != io::Result::Ready {
         self->cancel();
@@ -97,7 +98,7 @@ static stream::Config ShellConfig = stream::Config {
     poll:       in_shell_poll,
 };
 
-fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     where err::checked(*e)
 {
     let mut *frame = self->stream(e, 14);
@@ -108,7 +109,20 @@ fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *head
     if err::check(e) { return; }
     self->user2 = state;
 
-    in_shell_open_impl(state, e);
+
+
+    new+300 command = string::make();
+    new it = hpack::decoder::decode(headers);
+    while it.next(e) {
+        if it.key.eq_cstr("command") {
+            static_attest(safe(it.val.mem));
+            command.append_bytes(it.val.mem, it.val.size);
+            break;
+        }
+    }
+    if err::check(e) { return; }
+
+    in_shell_open_impl(state, e, command.cstr());
     if err::check(e) {
         e->elog();
         e->make();
@@ -123,8 +137,9 @@ fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *head
 }
 
 
-fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
+fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e, char * command)
     where err::checked(*e)
+    where nullterm(command)
 {
     int masterfd = (int)posix_openpt((int)O_RDWR|(int)O_NOCTTY);
     if masterfd <= 0 {
@@ -178,8 +193,13 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
         ioctl(0, TIOCSCTTY, 1);
 
 
-        char mut * args[ ] = {SHPATH, "-i", "-l", 0};
-        execv(args[0], args);
+        if string::strlen(command) > 0 {
+            char mut * args[] = {SHPATH, "-i", "-l", "-c", (char mut*)command, 0};
+            execv(args[0], args);
+        } else {
+            char mut * args[] = {SHPATH, "-i", "-l", 0};
+            execv(args[0], args);
+        }
 
 
         exit(1);
@@ -193,7 +213,7 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e)
 
 }
 
-fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+export fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
     where err::checked(*e)
     where safe(msg->mem)
 {
@@ -222,9 +242,9 @@ fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * m
     return false;
 }
 
-fn in_shell_close(stream::Stream mut *self, err::Err+et mut*e)
+export fn in_shell_close(stream::Stream mut *self, err::Err+et mut*e)
 {
-    log::error("shell closed\n");
+    log::warn("shell closed");
 
     Shell mut * state = (Shell mut*)self->user2;
     self->user2 = 0;
@@ -245,7 +265,7 @@ fn in_shell_close(stream::Stream mut *self, err::Err+et mut*e)
     sshpool.free(state);
 }
 
-fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+export fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     Shell mut * state = (Shell mut*)self->user2;
@@ -254,12 +274,15 @@ fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* asy
     if state->master.ctx.async == 0 {
         unix::make_read_async(&state->master, async);
     }
-    async->select(e, &state->master, io::Ready::Read);
-    if err::check(e) { return; }
 
     if state->inbuf.len == 0 {
         if state->master.valid() {
+            async->select(e, &state->master, io::Ready::Read);
+            if err::check(e) { return; }
+
             if state->master.read(e, &state->inbuf) == io::Result::Error {
+                e->elog();
+                log::warn("shell ended");
                 self->close();
             }
             e->make();

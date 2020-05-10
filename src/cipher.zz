@@ -42,8 +42,7 @@ export fn encrypt_ad(
     assert(self->has_key);
 
     usize cipherlen = plainlen + 16;
-    assert(cipherlen_max >= cipherlen);
-    static_attest(cipherlen_max >= cipherlen);
+    err::assert(cipherlen_max >= cipherlen);
 
     u8 mut* mac = ciphertext + plainlen;
 
@@ -87,11 +86,8 @@ export fn decrypt_ad(
     assert(self->has_key);
     usize plainlen = cipherlen - 16;
 
-    assert(plainlen_max >= plainlen);
-    static_attest(plainlen_max >= plainlen);
-
-    assert(cipherlen > 16);
-    static_attest(cipherlen > 16);
+    err::assert(plainlen_max >= plainlen);
+    err::assert(cipherlen > 16);
 
     u8 * mac = ciphertext + plainlen;
 

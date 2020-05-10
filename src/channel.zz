@@ -56,7 +56,7 @@ export struct Channel {
 
     cipher::CipherState mut c_mine;
     cipher::CipherState mut c_them;
-    pq::Q+16            mut q;
+    pq::Q+64            mut q;
     io::Io              mut timer;
 
     u32                 mut streamidcounter;

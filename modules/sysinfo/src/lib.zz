@@ -1,0 +1,117 @@
+using <stdio.h>::{printf};
+using slice;
+using proto;
+using string;
+using err;
+using protonerf;
+using hex;
+using log;
+using time;
+
+inline using (needs
+    protonerf::encode_bytes,
+    protonerf::encode_varint,
+    protonerf::encode_f64,
+    err::Err,
+    proto::Uname,
+    proto::Mem,
+    proto::Load,
+    proto::Firmware,
+    proto::Sensor,
+    proto::Sensors,
+    proto::Sensor__ValueType,
+    slice::mut_slice::MutSlice,
+    slice::slice::Slice,
+    err::fail_with_errno,
+    time::Time,
+) "os.h"::{
+    os_sysinfo_uname,
+    os_sysinfo_mem,
+    os_sysinfo_load,
+    os_sysinfo_firmware,
+    os_sysinfo_sensors,
+};
+
+fn uname(slice::MutSlice mut*sl)
+{
+    new+300 e   = err::make();
+    new+1000 buf = string::make();
+    let mut sl2 = buf.append_slice();
+
+    os_sysinfo_uname((err::Err mut*)&e, 300, &sl2);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Uname, sl2.mem(), sl2.at);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+}
+
+fn mem(slice::MutSlice mut*sl)
+{
+    new+300 e   = err::make();
+    new+1000 buf = string::make();
+    let mut sl2 = buf.append_slice();
+
+    os_sysinfo_mem((err::Err mut*)&e, 300, &sl2);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Mem, sl2.mem(), sl2.at);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+}
+
+fn load(slice::MutSlice mut*sl)
+{
+    new+300 e   = err::make();
+    new+1000 buf = string::make();
+    let mut sl2 = buf.append_slice();
+
+    os_sysinfo_load((err::Err mut*)&e, 300, &sl2);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Load, sl2.mem(), sl2.at);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+}
+
+fn firmware(slice::MutSlice mut*sl)
+{
+    new+300 e   = err::make();
+    new+1000 buf = string::make();
+    let mut sl2 = buf.append_slice();
+
+    os_sysinfo_firmware((err::Err mut*)&e, 300, &sl2);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Firmware, sl2.mem(), sl2.at);
+    if err::check(&e) {
+        e.elog();
+        return;
+    }
+}
+
+export fn sysinfo(slice::MutSlice mut*sl) {
+    uname(sl);
+    mem(sl);
+    load(sl);
+    firmware(sl);
+}
+
+export fn sensors(err::Err+et mut*e, slice::MutSlice mut*sl)
+{
+    os_sysinfo_sensors(e, et, sl);
+}

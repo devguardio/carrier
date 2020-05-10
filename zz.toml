@@ -33,6 +33,7 @@ protonerf   = "1"
 pool        = "1"
 toml        = "1"
 fs          = "1"
+sysinfo     = "1"
 
 [variants]
 default = []

@@ -8,7 +8,11 @@ use heck::CamelCase;
 pub struct ProtoParser;
 
 
-fn parse_member(p: pest::iterators::Pair<Rule>, fields: &mut Vec<(bool,String,String,String)>) {
+fn parse_member(
+    p: pest::iterators::Pair<Rule>,
+    fields: &mut Vec<(bool,String,String,String)>,
+    enums:  &mut Vec<(String, Vec<(String, usize)>)>,
+){
     match p.as_rule() {
         Rule::field => {
             let mut p = p.into_inner();
@@ -26,11 +30,26 @@ fn parse_member(p: pest::iterators::Pair<Rule>, fields: &mut Vec<(bool,String,St
             fields.push((repeated, typ.to_camel_case(), name.to_camel_case(), val));
         },
         Rule::oneof => {
-            for p in p.into_inner() {
-                parse_member(p, fields);
+            let mut p = p.into_inner();
+            let _name = p.next().unwrap().as_str().to_string();
+            for p in p {
+                parse_member(p, fields, enums);
             }
         }
-        _ => {
+        Rule::ienum => {
+            let mut p = p.into_inner();
+            let name = p.next().unwrap().as_str().to_string();
+            let mut r = Vec::new();
+            for p in p {
+                let mut p = p.into_inner();
+                let name = p.next().unwrap().as_str().to_string();
+                let val  :usize = p.next().unwrap().as_str().to_string().parse().unwrap();
+                r.push((name,val));
+            }
+            enums.push((name,r));
+        }
+        r => {
+            panic!("unexpected rule {:?} in member {:?}", r, p);
         }
     }
 }
@@ -49,8 +68,19 @@ fn main() {
                 let name = p.next().unwrap().as_str().to_string();
 
                 let mut fields = Vec::new();
+                let mut enums  = Vec::new();
                 for p in p {
-                    parse_member(p, &mut fields);
+                    parse_member(p, &mut fields, &mut enums);
+                }
+
+                for e in enums {
+                    println!("export enum {}__{} {{", name, e.0);
+                    for (name,val) in &e.1{
+                        println!("  {} = {},", name, val);
+                    }
+                    println!("}}\n");
+
+
                 }
 
                 if fields.len() > 0 {

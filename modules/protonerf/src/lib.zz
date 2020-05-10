@@ -1,7 +1,9 @@
 using err;
+using <stdio.h>::{printf};
 using <string.h>::{memcpy};
 using slice;
 using <stdint.h>::{UINT32_MAX};
+using byteorder;
 
 export enum FieldType {
     Skip        = 0,
@@ -82,6 +84,22 @@ export fn encode_varint(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u
     mm[str->at]  = index << 3;
     str->at +=1;
     write_varint(str, e, (u32)value, (u32)(value >> 32));
+}
+
+export fn encode_f64(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, f64 mut value)
+    where err::checked(*e)
+{
+    if str->at + 1 > str->slice.size || str->slice.size < 9{
+        err::fail(e, err::OutOfTail, "short write");
+        return;
+    }
+
+    u64 mut xv = 0;
+    memcpy(&xv, &value, 8);
+
+    xv = byteorder::to_le64(xv);
+    str->push(index << 3 | 1);
+    str->push64(xv);
 }
 
 export struct Decoder {

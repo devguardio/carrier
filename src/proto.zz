@@ -1,4 +1,11 @@
 using protonerf;
+export enum Path__Category {
+  Invalid = 0,
+  Local = 1,
+  Internet = 2,
+  BrokerOrigin = 3,
+}
+
 export enum Path {
   Ipaddr = 1,
   Category = 2,
@@ -651,6 +658,116 @@ export fn RevokerTypes (usize index) -> protonerf::FieldType {
 }
 
 
+export enum Claim {
+  Opt = 1,
+  One = 2,
+  All = 3,
+  Revoker = 4,
+}
+
+export fn ClaimTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Claim::Opt => {
+            return protonerf::FieldType::Message;
+        }
+        Claim::One => {
+            return protonerf::FieldType::Message;
+        }
+        Claim::All => {
+            return protonerf::FieldType::Message;
+        }
+        Claim::Revoker => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum Certificate {
+  LastValidEpoch = 1,
+  Identity = 2,
+  Authority = 3,
+  Serial = 4,
+  Claims = 5,
+}
+
+export fn CertificateTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Certificate::LastValidEpoch => {
+            return protonerf::FieldType::Message;
+        }
+        Certificate::Identity => {
+            return protonerf::FieldType::Message;
+        }
+        Certificate::Authority => {
+            return protonerf::FieldType::Message;
+        }
+        Certificate::Serial => {
+            return protonerf::FieldType::Message;
+        }
+        Certificate::Claims => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum CertificateRequest {
+  LastValidEpoch = 1,
+  Identity = 2,
+  Claims = 3,
+}
+
+export fn CertificateRequestTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        CertificateRequest::LastValidEpoch => {
+            return protonerf::FieldType::Message;
+        }
+        CertificateRequest::Identity => {
+            return protonerf::FieldType::Message;
+        }
+        CertificateRequest::Claims => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum Authorization {
+  Identity = 1,
+  Resource = 2,
+}
+
+export fn AuthorizationTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Authorization::Identity => {
+            return protonerf::FieldType::Message;
+        }
+        Authorization::Resource => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum AuthorizationList {
+  A = 1,
+}
+
+export fn AuthorizationListTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        AuthorizationList::A => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
 export enum DiscoveryResponse {
   CarrierRevision = 1,
   CarrierBuildId = 2,
@@ -868,6 +985,12 @@ export fn NetAddressTypes (usize index) -> protonerf::FieldType {
     return protonerf::FieldType::Skip;
 }
 
+
+export enum Netdev__Duplex {
+  Invalid = 0,
+  Half = 1,
+  Full = 2,
+}
 
 export enum Netdev {
   Name = 1,
@@ -1263,6 +1386,11 @@ export fn DhcpLeaseTypes (usize index) -> protonerf::FieldType {
 }
 
 
+export enum Arp__HwType {
+  Unknown = 0,
+  Ethernet = 1,
+}
+
 export enum Arp {
   Ip = 1,
   Hw = 2,
@@ -1362,6 +1490,163 @@ export fn LocationAccuracityTypes (usize index) -> protonerf::FieldType {
         LocationAccuracity::Pdop => {
             return protonerf::FieldType::Message;
         }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum Satellite__Constellation {
+  Unknown = 0,
+  Galileo = 1,
+  Gps = 2,
+  Glonass = 3,
+}
+
+export enum Satellite {
+  Constellation = 1,
+  Prn = 2,
+  Elevation = 3,
+  Azimuth = 4,
+  Snr = 5,
+  Fix = 6,
+}
+
+export fn SatelliteTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Satellite::Constellation => {
+            return protonerf::FieldType::Message;
+        }
+        Satellite::Prn => {
+            return protonerf::FieldType::Message;
+        }
+        Satellite::Elevation => {
+            return protonerf::FieldType::Message;
+        }
+        Satellite::Azimuth => {
+            return protonerf::FieldType::Message;
+        }
+        Satellite::Snr => {
+            return protonerf::FieldType::Message;
+        }
+        Satellite::Fix => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum LocationVelocity {
+  Course = 1,
+  Speed = 2,
+}
+
+export fn LocationVelocityTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        LocationVelocity::Course => {
+            return protonerf::FieldType::Message;
+        }
+        LocationVelocity::Speed => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum Location__Fix {
+  None = 0,
+  Gps = 1,
+  DGps = 2,
+  Pps = 3,
+  Rtk = 4,
+  FloatRtk = 5,
+  Estimated = 6,
+  Manual = 7,
+  Simulation = 8,
+}
+
+export enum Location {
+  Latitude = 1,
+  Longitude = 2,
+  Altitude = 3,
+  Fix = 4,
+  Accuracity = 5,
+  Satellites = 6,
+  Velocity = 7,
+}
+
+export fn LocationTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Location::Latitude => {
+            return protonerf::FieldType::Message;
+        }
+        Location::Longitude => {
+            return protonerf::FieldType::Message;
+        }
+        Location::Altitude => {
+            return protonerf::FieldType::Message;
+        }
+        Location::Fix => {
+            return protonerf::FieldType::Message;
+        }
+        Location::Accuracity => {
+            return protonerf::FieldType::Message;
+        }
+        Location::Satellites => {
+            return protonerf::FieldType::Message;
+        }
+        Location::Velocity => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum Sensor__ValueType {
+  None = 0,
+  MilliCelsius = 1,
+}
+
+export enum Sensor {
+  Name = 1,
+  Vtype = 2,
+  Value = 3,
+}
+
+export fn SensorTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Sensor::Name => {
+            return protonerf::FieldType::Message;
+        }
+        Sensor::Vtype => {
+            return protonerf::FieldType::Message;
+        }
+        Sensor::Value => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export enum Sensors {
+  Sensors = 1,
+}
+
+export fn SensorsTypes (usize index) -> protonerf::FieldType {
+    switch index {
+        Sensors::Sensors => {
+            return protonerf::FieldType::Message;
+        }
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
+export fn NoneTypes (usize index) -> protonerf::FieldType {
+    switch index {
     }
     return protonerf::FieldType::Skip;
 }

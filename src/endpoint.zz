@@ -9,7 +9,6 @@ using time;
 using bootstrap;
 using identity;
 using initiator;
-using io::unix;
 using io;
 using net;
 using cipher;
@@ -137,8 +136,14 @@ export fn close(Endpoint mut* self)
         State::Connected => {
             self->statem.connected.close();
         }
+        default => {
+        }
     }
     self->state = State::Closed;
+    if self->vault.i_close != 0 {
+        static_attest(safe(self->vault.i_close));
+        self->vault.i_close(&self->vault);
+    }
 }
 
 export fn register_stream(Endpoint mut* self, stream::Config *conf)
@@ -159,12 +164,11 @@ fn next_broker(Endpoint mut* self) -> bool
         if self->statem.connecting.trying_broker_index >= vault::MAX_BROKERS {
             self->statem.connecting.trying_broker_index = 0;
         }
-        static_attest(safe(self->vault.mem));
-        static_attest(self->statem.connecting.trying_broker_index < len(self->vault.mem->broker));
-        if self->vault.mem->broker[self->statem.connecting.trying_broker_index].protocol != 0 {
+        static_attest(self->statem.connecting.trying_broker_index < len(self->vault.broker));
+        if self->vault.broker[self->statem.connecting.trying_broker_index].protocol != 0 {
             log::debug("loading broker slot %zu", self->statem.connecting.trying_broker_index);
             memcpy(&self->statem.connecting.current_broker,
-                &self->vault.mem->broker[self->statem.connecting.trying_broker_index],
+                &self->vault.broker[self->statem.connecting.trying_broker_index],
                 sizeof(vault::Broker));
             self->statem.connecting.trying_broker_index += 1;
             return true;
@@ -305,9 +309,10 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
 
             // TODO: abstract
             // TODO: this is stupid in the first place. the protocol needs a different replay protection
-            static_attest(safe(self->vault.mem));
-            time::Time now = time::real();
-            self->vault.mem->time = now.to_millis();
+            //time::Time now = time::real();
+            //self->vault.mem->time = now.to_millis();
+
+
 
             address::Address  mut ip4addr = {0};
             address::Address  mut ip6addr = {0};
@@ -318,17 +323,16 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                 return io::Result::Error;
             }
 
-            static_attest(safe(self->vault.mem));
             if self->statem.connecting.retry_sending % 3 == 0 {
                 log::debug("resetting crypto state");
+
                 self->statem.connecting.initiator.initiate(
                     e,
                     true,
-                    (identity::Secret*)&(self->vault.mem->secret),
+                    &self->vault,
                     self->cluster_move,
                     &self->cluster_target,
                     &xaddr,
-                    self->vault.mem->time,
                     &self->statem.connecting.pkt_out
                 );
                 if err::check(e) {return io::Result::Error;}
@@ -374,6 +378,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
             log::debug("quitting time");
             return io::Result::Ready;
         }
+        State::Invalid => {}
     }
 
     return io::Result::Later;

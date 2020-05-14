@@ -32,12 +32,9 @@ export fn run_self(
     } else if method == cmd_config::Method::Remove {
         endpoint->vault.del_authorization(e, addme, resource);
     }
-
     if err::check(e) {
         return;
     }
-    err::assert_safe(endpoint->vault.save);
-    endpoint->vault.save(&endpoint->vault, e);
     log::info("done");
 }
 

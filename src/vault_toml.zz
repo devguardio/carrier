@@ -6,10 +6,24 @@ using string;
 using identity;
 using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF, fprintf, stderr, fputc};
 using <string.h>::{memcpy, memset};
+using <stdlib.h>::{malloc, free};
 using log;
+using time;
 
-//TODO meh
-static vault::Mem mut yolo = {0};
+struct Authorize {
+    bool used;
+    identity::Identity identity;
+    string::String+300 mut path;
+}
+
+struct Mem {
+    identity::Secret secret;
+    identity::Address network;
+    identity::Secret network_secret;
+
+    Authorize auth[32];
+    string::String+2000 mut file_name;
+}
 
 export fn from_home_carriertoml(vault::Vault mut new *self, err::Err+et mut *e)
     where err::checked(*e)
@@ -21,43 +35,58 @@ export fn from_home_carriertoml(vault::Vault mut new *self, err::Err+et mut *e)
     from_carriertoml(self, e, s.cstr());
 }
 
+fn close(vault::Vault mut*self) {
+    if self->user != 0 {
+        free(self->user);
+        self->user = 0;
+    }
+}
+
 export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * file_name)
     where err::checked(*e)
     where nullterm(file_name)
 {
     memset(self, 0, sizeof(vault::Vault));
 
-    self->mem = &yolo;
-    memset(self->mem, 0, sizeof(vault::Mem));
+    self->i_get_secret           = i_get_secret;
+    self->i_get_network          = i_get_network;
+    self->i_advance_clock        = i_advance_clock;
+    self->i_set_network          = i_set_network;
+    self->i_list_authorizations  = i_list_authorizations;
+    self->i_del_authorization    = i_del_authorization;
+    self->i_add_authorization    = i_add_authorization;
 
-    err::assert_safe(self->mem);
+
+    self->user = malloc(sizeof(Mem));
+    Mem mut * this = (Mem mut *)self->user;
+    memset(this, 0, sizeof(Mem));
+    static_attest(safe(this));
 
     new+1000 parser = toml::parser(e, toml::U{
         it: load_from_toml_cb,
-        user1: self
+        user1: this
     });
     if err::check(e) {return;}
 
-    self->file_name.clear();
-    self->file_name.append_cstr(file_name);
-    self->save = save_to_toml;
+    this->file_name.clear();
+    this->file_name.append_cstr(file_name);
 
-    let mut f = (FILE mut*)fopen(self->file_name.cstr(), "r");
+    let mut f = (FILE mut*)fopen(this->file_name.cstr(), "r");
     if f == 0 {
-        f = (FILE mut*)fopen(self->file_name.cstr(), "w");
+        f = (FILE mut*)fopen(this->file_name.cstr(), "w");
         if f == 0 {
-            err::fail_with_errno(e, "open %s", self->file_name.cstr());
+            err::fail_with_errno(e, "open %s", this->file_name.cstr());
             return;
         }
-        identity::secret_generate ((identity::Secret mut*)self->mem->secret, e);
-        if err::check(e) {return;}
-        identity::secret_generate ((identity::Secret mut*)self->mem->network_secret, e);
-        if err::check(e) {return;}
-        identity::address_from_secret((identity::Address mut*)self->mem->network, (identity::Secret *)self->mem->network_secret);
+        identity::secret_generate (&this->secret, e);
+        if err::check(e) {fclose(f); return;}
+        identity::secret_generate (&this->network_secret, e);
+        if err::check(e) {fclose(f); return;}
+        identity::address_from_secret(&this->network, &this->network_secret);
 
-        save_to_toml(self, e);
-        if err::check(e) {return;}
-        log::info("created %s\n", self->file_name.cstr());
+        save_to_toml(this, e);
+        if err::check(e) {fclose(f); return;}
+        log::info("created %s\n", this->file_name.cstr());
     }
 
     char mut buf[300];
@@ -76,10 +105,10 @@ export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char 
 
     fclose(f);
 
-    identity::nullcheck(e, self->mem->network);
+    identity::nullcheck(e, this->network.k);
     if err::check(e) { return; }
 
-    identity::nullcheck(e, self->mem->secret);
+    identity::nullcheck(e, this->secret.k);
     if err::check(e) { return; }
 
 }
@@ -89,18 +118,19 @@ fn load_from_toml_cb_publish(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut
     where err::checked(*e)
     where nullterm(k)
 {
-    let this = (vault::Vault mut*)u->user1;
+    let this = (Mem mut*)u->user1;
     static_attest(safe(this));
-    static_attest(safe(this->mem));
 
     if string::cstr_eq(k, "shadow") || string::cstr_eq(k, "address") {
         err::assert_safe(v.string);
         static_attest(nullterm(v.string));
-        identity::address_from_cstr ((identity::Address mut*)&this->mem->network, e, v.string);
+        identity::address_from_cstr (&this->network, e, v.string);
+        if err::check(e) { return; }
     } else if string::cstr_eq(k, "secret") {
         err::assert_safe(v.string);
         static_attest(nullterm(v.string));
-        identity::secret_from_cstr ((identity::Secret mut*)&this->mem->network_secret, e, v.string);
+        identity::secret_from_cstr (&this->network_secret, e, v.string);
+        if err::check(e) { return; }
     }
 }
 
@@ -108,34 +138,28 @@ fn load_from_toml_authorize_iter(toml::U *self, err::Err+et mut *e, toml::Parser
     where err::checked(*e)
     where nullterm(k)
 {
-    let this = (vault::Vault mut*)self->user1;
+    let this = (Mem mut*)self->user1;
     static_attest(safe(this));
-    static_attest(safe(this->mem));
 
-    static_attest(self->user2 < len(this->mem->authorized) -  1 - 32);
-    u8 mut * mem_identity  = this->mem->authorized + self->user2 + 1;
-    u8 mut * mem_resource  = mem_identity + 32;
-    usize len_resource = static(len(this->mem->authorized)) - self->user2 - 32 - 1;
+    static_attest(self->user2 < len(this->auth));
+    Authorize mut *a = this->auth + self->user2;
 
     if string::cstr_eq(k, "identity") {
         err::assert_safe(v.string);
         static_attest(nullterm(v.string));
         identity::identity_from_cstr (
-            (identity::Identity mut*)mem_identity,
+            &a->identity,
             e,
             v.string
         );
+        if err::check(e) { return; }
     } else if string::cstr_eq(k, "resource") {
-        usize mut sl = string::strlen(v.string);
-        if sl >= len_resource - 1 {
-            sl = len_resource - 1;
-        }
-        memcpy(mem_resource, v.string, sl);
-        mem_resource[sl] = 0;
+        a->path.clear();
+        a->path.append_cstr(v.string);
     }
 
-    if !identity::isnull(mem_identity) && mem_resource[0] != 0 {
-        this->mem->authorized[self->user2] = 1;
+    if !identity::isnull(a->identity.k) && a->path.slen() > 0 {
+        a->used = true;
     }
 }
 
@@ -144,9 +168,8 @@ fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, cha
     where nullterm(k)
 {
 
-    let this = (vault::Vault mut*)u->user1;
+    let this = (Mem mut*)u->user1;
     static_attest(safe(this));
-    static_attest(safe(this->mem));
     static_attest(nullterm(v.string));
     static_attest(nullterm(k));
     static_attest(safe(v.string));
@@ -156,40 +179,25 @@ fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, cha
     } else if string::cstr_eq(k, "network") && v.t == toml::ValueType::Object {
         toml::next(p, e, toml::U{it: load_from_toml_cb_publish, user1: this});
     } else if string::cstr_eq(k, "authorize") && v.t == toml::ValueType::Object {
-        for (usize mut i = 0; i < static(len(this->mem->authorized)); i++) {
-            if (i + 1 /*start*/ + 32 /*identity*/ + 1 /*end*/) >= static(len(this->mem->authorized)) {
-                // no way to store more, oom
-                break;
-            }
-            // no start bits, this is free space to take
-            if this->mem->authorized[i] == 0 {
+        for (usize mut i = 0; i < static(len(this->auth)); i++) {
+            if !this->auth[i].used {
                 toml::next(p, e, toml::U{
                     it:     load_from_toml_authorize_iter,
                     user1:  this,
                     user2:  i,
                 });
-                return;
-            } else {
-                i += 1 /*start*/ + 32 /*identity*/;
-                for (; i < static(len(this->mem->authorized)); i++) {
-                    if (this->mem->authorized[i] == 0 /*end*/) {
-                        break;
-                    }
-                }
+                break;
             }
         }
-        err::fail(e, err::OutOfTail, "too many [[authorize]] sections");
-        return;
-
     } else if v.t == toml::ValueType::String && string::cstr_eq(k, "secret") {
-        identity::secret_from_cstr((identity::Secret mut*)&this->mem->secret, e, v.string);
+        identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
     }
 }
 
 
 
 
-fn save_to_toml(vault::Vault *self, err::Err+et mut *e)
+fn save_to_toml(Mem *self, err::Err+et mut *e)
     where err::checked(*e)
 {
     let out = (FILE mut*)fopen(self->file_name.cstr(), "w");
@@ -198,52 +206,124 @@ fn save_to_toml(vault::Vault *self, err::Err+et mut *e)
         return;
     }
 
-    static_attest(safe(self->mem));
-
     char mut buf[120] = {0};
-    identity::secret_to_str(e, buf, static(len(buf)), (identity::Secret*)&self->mem->secret);
+    identity::secret_to_str(e, buf, static(len(buf)), (identity::Secret*)&self->secret);
     if err::check(e) { fclose(out); return; }
     fprintf(out , "secret = \"%s\"\n", buf);
 
 
-    if !identity::isnull(self->mem->network) {
-        identity::address_to_str(e, buf, static(len(buf)), (identity::Address*)&self->mem->network);
+    if !identity::isnull(self->network.k) {
+        identity::address_to_str(e, buf, static(len(buf)), &self->network);
         if err::check(e) { fclose(out); return; }
         fprintf(out , "\n[network]\naddress = \"%s\"\n", buf);
 
-        if !identity::isnull(self->mem->network_secret) {
-            identity::secret_to_str(e, buf, static(len(buf)), (identity::Secret*)&self->mem->network_secret);
+        if !identity::isnull(self->network_secret.k) {
+            identity::secret_to_str(e, buf, static(len(buf)), &self->network_secret);
             if err::check(e) { fclose(out); return; }
             fprintf(out, "secret = \"%s\"\n", buf);
         }
     }
 
-    for (usize mut i = 0; i < static(len(self->mem->authorized)); i++) {
-        if i >= static(len(self->mem->authorized)) - 1 /*start*/ - 32 /*identity*/  - 1 /*end*/ {
-            break;
+    for (usize mut i = 0; i < static(len(self->auth)); i++) {
+        if !self->auth[i].used {
+            continue;
         }
-        if self->mem->authorized[i] == 0 {
-            break;
-        } else {
-            u8 * idmem = self->mem->authorized + i + 1;
-            i = i + 1; //start
-
-            identity::identity_to_str(e, buf, static(len(buf)), (identity::Identity*)(idmem));
-            fprintf(out , "\n[[authorize]]\nidentity = \"%s\"\nresource = \"", buf);
-
-            i += 32; //identity
-
-            for (; i < static(len(self->mem->authorized)); i++) {
-                if (self->mem->authorized[i] == 0 /*end*/) {
-                    break;
-                }
-                fputc(self->mem->authorized[i], out);
-            }
-            fprintf(out , "\"\n");
-
-        }
+        identity::identity_to_str(e, buf, static(len(buf)), &self->auth[i].identity);
+        fprintf(out , "\n[[authorize]]\nidentity = \"%s\"\nresource = \"", buf);
+        fprintf(out , "\"%.*s\"\n", self->auth[i].path.len, self->auth[i].path.mem);
     }
 
     fprintf(out , "\n");
     fclose(out);
+}
+
+
+fn i_get_secret (vault::Vault *self, identity::Secret  mut * secret)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(secret, &this->secret, sizeof(identity::Secret));
+}
+
+fn i_get_network (vault::Vault *self, identity::Address mut * network)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(network, &this->network, sizeof(identity::Address));
+}
+
+fn i_advance_clock (vault::Vault *self) -> u64
+{
+    let now = time::real();
+    return now.to_millis();
+}
+
+fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * secret)
+    where err::checked(*e)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(&this->network_secret, secret, sizeof(identity::Secret));
+    identity::address_from_secret(&this->network, &this->network_secret);
+
+    save_to_toml(this, e);
+}
+
+fn i_del_authorization(vault::Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    for (usize mut i = 0; i < static(len(this->auth)); i++) {
+        if !this->auth[i].used {
+            continue;
+        }
+        if this->auth[i].identity.eq(delme) && this->auth[i].path.eq_cstr(resource) {
+            this->auth[i].used = false;
+            memset(this->auth + i, 0, sizeof(Authorize));
+        }
+    }
+    save_to_toml(this, e);
+}
+
+fn i_add_authorization(vault::Vault mut * self,err::Err+et mut *e, identity::Identity *addme, char *resource)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    for (usize mut i = 0; i < static(len(this->auth)); i++) {
+        if this->auth[i].used {
+            continue;
+        }
+        memcpy(&this->auth[i].identity, addme, sizeof(identity::Identity));
+        this->auth[i].path.clear();
+        this->auth[i].path.append_cstr(resource);
+        this->auth[i].used = true;
+        save_to_toml(this, e);
+        return;
+    }
+    err::fail(e, err::OutOfTail, "too many [[authorize]] sections");
+    return;
+}
+
+fn i_list_authorizations(vault::Vault * self, err::Err+et mut *e, vault::list_authorizations_cb cb, void mut * unsafe user)
+    where err::checked(*e)
+    where safe(cb)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    for (usize mut i = 0; i < static(len(this->auth)); i++) {
+        if !this->auth[i].used {
+            continue;
+        }
+        cb(user, &this->auth[i].identity, this->auth[i].path.cstr());
+    }
 }

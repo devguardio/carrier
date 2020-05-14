@@ -1,6 +1,5 @@
-size_t os_get_homedir(char *to, size_t to_len);
 
-#if defined(__unix__) || defined(__APPLE__)
+#if defined(__linux__) || defined(__APPLE__)
 
 
 #include <unistd.h>
@@ -9,7 +8,7 @@ size_t os_get_homedir(char *to, size_t to_len);
 #include <string.h>
 
 
-size_t os_get_homedir(char *to, size_t to_len)
+static size_t os_get_homedir(char *to, size_t to_len)
 {
     struct passwd *pw = getpwuid(getuid());
     if (pw == 0) {
@@ -29,5 +28,14 @@ size_t os_get_homedir(char *to, size_t to_len)
 }
 
 
+#else
+static size_t os_get_homedir(char *to, size_t to_len)
+{
+    *to = '/';
+    return 1;
+}
 #endif
+
+
+
 

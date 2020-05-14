@@ -112,13 +112,14 @@ fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     {
         static_attest(safe(self->chan));
         static_attest(safe(self->chan->endpoint));
-        static_attest(safe(self->chan->endpoint->vault.mem));
         slice::MutSlice mut * frame = self->stream(e, 128);
         if err::check(e) { return; }
 
-        identity::Address mut id = {0};
+
+        identity::Address mut addr = {0};
+        self->chan->endpoint->vault.get_network(&addr);
         char mut buf[64] = {0};
-        identity::address_to_str(e, buf, 64, (identity::Address*)&self->chan->endpoint->vault.mem->network);
+        identity::address_to_str(e, buf, 64, &addr);
         if err::check(e) { return; }
 
         protonerf::encode_bytes(frame, e, proto::NetworkGetResult::Address, (u8*)buf, string::strlen(buf));
@@ -245,14 +246,6 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice
     if err::check(e) {
         return return_err(self, e);
     }
-    if self->chan->endpoint->vault.save != 0 {
-        static_attest(safe(self->chan->endpoint->vault.save));
-        self->chan->endpoint->vault.save(&self->chan->endpoint->vault, e);
-    }
-    if err::check(e) {
-        return return_err(self, e);
-    }
-
 
     protonerf::encode_varint(frame, e, proto::ConfigResult::Ok, 1);
     if err::check(e) { return true; }
@@ -298,28 +291,15 @@ fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *ms
         return return_err(self, e);
     }
 
-    
+
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));
-    static_attest(safe(self->chan->endpoint->vault.mem));
 
-    mem::copy(nusecret.k, self->chan->endpoint->vault.mem->network_secret, 32);
-    identity::address_from_secret(
-        (identity::Address mut*)self->chan->endpoint->vault.mem->network,
-        (identity::Secret*)self->chan->endpoint->vault.mem->network_secret
-   );
+    self->chan->endpoint->vault.set_network(e, &nusecret);
 
     if err::check(e) {
         return return_err(self, e);
     }
-    if self->chan->endpoint->vault.save != 0 {
-        static_attest(safe(self->chan->endpoint->vault.save));
-        self->chan->endpoint->vault.save(&self->chan->endpoint->vault, e);
-    }
-    if err::check(e) {
-        return return_err(self, e);
-    }
-
 
     protonerf::encode_varint(frame, e, proto::ConfigResult::Ok, 1);
     if err::check(e) { return true; }

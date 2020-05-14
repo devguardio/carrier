@@ -69,11 +69,11 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Sli
              if !field.valid {break;}
 
              if field.a != 0 {
-                 printf("field %lu:\n", field.index);
+                 log::warn("field %u:\n", field.index);
                  static_attest(len(field.a) > field.value.v_len);
                  hex::dump(field.a, field.value.v_len);
              } else {
-                 printf("field %lu : %lu\n", field.index, field.value.v_u64);
+                 log::warn("field %u : %u\n", field.index, field.value.v_u64);
              }
         }
         if err::check(e) { return true; }

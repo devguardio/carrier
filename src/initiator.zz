@@ -17,8 +17,9 @@ using crc8;
 using channel;
 using log;
 using endpoint;
-using clock;
 using bootstrap;
+using vault;
+using time;
 
 export struct Initiator {
     noise::Initiator mut    noise;
@@ -39,11 +40,10 @@ pub fn initiate(
     Initiator mut*      self,
     err::Err+et mut*    e,
     bool                secure,
-    identity::Secret*   secret,
+    vault::Vault*       vault,
     Move                move,
     identity::Identity* unsafe cluster_target,
     identity::Address*  unsafe xaddr,
-    u64                 vector_time,
     string::String+st   mut* pkt,
 )
     where err::checked(*e)
@@ -52,13 +52,8 @@ pub fn initiate(
     memset(self, 0, sizeof(Initiator));
     self->secure = secure;
 
-    identity::nullcheck(e, secret->k);
-    if err::check(e) {
-        return ;
-    }
-
     identity::Identity mut eid = {0};
-    identity::identity_from_secret(&eid, secret);
+    vault->get_identity(&eid);
 
     if secure {
         err::assert_safe(xaddr);
@@ -96,7 +91,7 @@ pub fn initiate(
     memcpy(plaintext + plaintext_len, eid.k, 32);
     plaintext_len += 32;
 
-    u64 network_time_be = byteorder::to_be64(vector_time);
+    u64 network_time_be = byteorder::to_be64(vault->vector_time());
     memcpy(plaintext + plaintext_len, &network_time_be, 8);
     plaintext_len += 8;
 
@@ -195,14 +190,17 @@ pub fn initiate(
 
     identity::Signature mut*sig= (identity::Signature mut*)(pkt->mem + pkt->len);
     static_attest(safe(sig));
-    identity::sign(secret, sig, signme, static(len(signme)));
+
+    vault->sign(sig, signme, static(len(signme)));
     pkt->len += 64;
 
     //printf("packet len %zu\n", pkt->len);
     //static_attest(len(pkt->mem) >= pkt->len);
     //hex::dump((u8*)pkt->mem, pkt->len);
 
-    self->tick_time_start = clock::tick();
+    let now_t = time::tick();
+    let now = now_t.to_millis();
+    self->tick_time_start = now_t.to_millis();
 }
 
 
@@ -364,6 +362,7 @@ pub fn complete (
         false
     );
 
-    chan->q.rtt = (clock::tick() - self->tick_time_start);
+    let now = time::tick();
+    chan->q.rtt = (now.to_millis() - self->tick_time_start);
     log::debug("channel to %s via route %d rtt %ums", r_identity_str, route, chan->q.rtt);
 }

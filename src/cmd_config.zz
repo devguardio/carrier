@@ -31,7 +31,7 @@ Subcommands:
     auth del <identity> <resource>               remove authorization
     auth list                                    list authorizations
     net get                                      get current network
-    net join [ self | <secret> ]                 join network
+    net join <secret>                            join network
 ";
 
 export enum Target {
@@ -174,15 +174,11 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                 }
             }
         } else if service == Service::Net {
-            if string::cstr_eq(arg, "self") {
-                mem::copy(ep.vault.mem->network_secret, net_secret.k, 32);
-            } else {
-                identity::secret_from_str (&net_secret, &e, arg, string::strlen(arg));
-                if err::check(&e) {
-                    e.fail(err::InvalidArgument, "parsing network secret from commandline argument");
-                    e.eprintf(stderr);
-                    return 1;
-                }
+            identity::secret_from_str (&net_secret, &e, arg, string::strlen(arg));
+            if err::check(&e) {
+                e.fail(err::InvalidArgument, "parsing network secret from commandline argument");
+                e.eprintf(stderr);
+                return 1;
             }
             if target == Target::Self {
                 if method == Method::Join {

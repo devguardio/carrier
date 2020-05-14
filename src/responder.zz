@@ -12,11 +12,12 @@ using string;
 using symmetric;
 using hex;
 using <assert.h>::{assert};
+using vault;
 
 pub fn accept_insecure(
     noise::Responder mut* self,
     err::Err+et mut* e,
-    identity::Secret  *secret,
+    vault::Vault *store,
     u64 mut route,
     u64 timestamp,
     MutSlice mut *frame,
@@ -55,7 +56,7 @@ pub fn accept_insecure(
 
     // identity
     identity::Identity mut eid = {0};
-    identity::identity_from_secret(&eid, secret);
+    store->get_identity(&eid);
     frame->append_bytes(eid.k, 32);
 
     // timestamp
@@ -92,7 +93,7 @@ pub fn accept_insecure(
     mem::copy(self->symm.h, m, static(len(self->symm.h)));
 
     identity::Signature mut sig = {0};
-    identity::sign(secret, &sig, signme, static(len(signme)));
+    store->sign(&sig, signme, static(len(signme)));
     printf("<> %zu %zu\n", frame->at, size_before_any);
     static_attest(frame->slice.size  <= len(frame->slice.mem));
 

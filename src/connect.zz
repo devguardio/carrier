@@ -41,26 +41,17 @@ static stream::Config ConnectStream = stream::Config {
 export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity *target)
     where err::checked(*e)
 {
-    static_attest(safe(ep->vault.mem));
     memcpy(&self->target.k, target->k, static(len(self->target.k)));
 
-    identity::identity_from_secret(
-        &self->principal,
-        (identity::Secret*)&(ep->vault.mem->secret)
-    );
+    ep->vault.get_identity(&self->principal);
 
-
-    static_attest(safe(ep->vault.mem));
-
-    self->initiator_time = ep->vault.mem->time;
     self->initiator.initiate(
         e,
         false,
-        (identity::Secret*)&(ep->vault.mem->secret),
+        &ep->vault,
         initiator::Move::Never,
         0,
         0,
-        self->initiator_time,
         &self->initiator_pkt
     );
     if err::check(e) { return; }

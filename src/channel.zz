@@ -14,7 +14,6 @@ using log;
 using stream;
 using endpoint;
 using slice;
-using clock;
 using io;
 using router;
 using time;
@@ -273,18 +272,12 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 {
     // poll user streams
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
-        if self->streams[i] !=0 {
+        if self->streams[i] != 0 {
             stream::Stream mut* strx = self->streams[i];
             static_attest(safe(strx));
-            if strx->config != 0 {
-                static_attest(safe(strx->config));
-                if strx->config->poll != 0 {
-                    static_attest(safe(strx->config->poll));
-                    strx->config->poll(strx, e, async);
-                    if err::check(e) {
-                        return io::Result::Error;
-                    }
-                }
+            strx->do_poll(e, async);
+            if err::check(e) {
+                return io::Result::Error;
             }
         }
     }
@@ -298,7 +291,9 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
     if self->timer.valid() {
         self->timer.close();
     }
-    let now = clock::tick();
+
+    let now_t = time::tick();
+    let now = now_t.to_millis();
     let tlp = self->q.keepalive(now);
     if tlp == 0 {
         log::error("[%lu] connection is dead", self->route);
@@ -395,7 +390,9 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 
     // deque some frames
     static_attest(len(buf->mem) > buf->len);
-    buf->len += self->q.send(now, (u8 mut*)buf->mem + buf->len, st - buf->len, self->counter_out);
+    if st - buf->len > 16 {
+        buf->len += self->q.send(now, (u8 mut*)buf->mem + buf->len, st - buf->len -16, self->counter_out);
+    }
 
 
     // nothing in the packet
@@ -408,8 +405,8 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 
     // padding to %64
     buf->len += 64 - ((buf->len + 16) % 64);
-    if buf->len > st {
-        buf->len = st;
+    if buf->len > st - 16{
+        buf->len = st - 16;
     }
 
     usize padded_size = buf->len - unencrypted_size;
@@ -430,6 +427,7 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 
     //log::debug("pkt before encrypt:");
     //hex::dump((u8*)buf->mem, buf->len);
+
 
     usize cipherlen = cipher::encrypt(
         &(self->c_mine),
@@ -536,7 +534,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
 
                     log::debug("[%lu] received ack %lu", self->route, ackorder);
 
-                    self->q.ack(clock::tick(), ackorder);
+                    let now = time::tick();
+                    self->q.ack(now.to_millis(), ackorder);
                 }
             }
             FrameType::Ping => {

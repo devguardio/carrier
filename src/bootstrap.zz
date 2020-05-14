@@ -13,7 +13,6 @@ using time;
 using identity;
 using io;
 using net;
-using identity_kit;
 using vault;
 
 export fn sync(err::Err+et mut * e, vault::Vault mut* store, net::Engine *netengine, io::Async mut* async, time::Time timeout)
@@ -323,17 +322,16 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
             static_attest(safe(record_b));
             string::append_bytes(&record, record_b, (usize)record_len - 1);
 
-            static_attest(safe(store->mem));
-            bool parseok = parse_record(&record, store->mem->broker + storepos);
-            static_attest(storepos < len(store->mem->broker));
-            if ((store->mem->broker)[storepos]).protocol >0 && parseok {
+            bool parseok = parse_record(&record, store->broker + storepos);
+            static_attest(storepos < len(store->broker));
+            if ((store->broker)[storepos]).protocol >0 && parseok {
                 storepos += 1;
                 if storepos > vault::MAX_BROKERS {
                     return true;
                 }
             } else {
-                static_attest(storepos < len(store->mem->broker));
-                memset(&(store->mem->broker)[storepos], 0, sizeof(vault::Broker));
+                static_attest(storepos < len(store->broker));
+                memset(&(store->broker)[storepos], 0, sizeof(vault::Broker));
             }
 
         }

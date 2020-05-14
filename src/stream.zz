@@ -4,6 +4,8 @@ using log;
 using slice::{Slice, MutSlice};
 using byteorder;
 using io;
+using time;
+using string;
 
 export fntype open_fn   (Stream mut* self, err::Err+et mut *e, Slice *headers);
 export fntype close_fn  (Stream mut* self, err::Err+et mut *e);
@@ -34,13 +36,16 @@ export struct Stream {
     usize       state;
     u64         user1;
     void mut*   user2;
+
+    bool        memory_pressure;
+    io::Io      memory_pressure_timer_io;
 }
 
 
 /// allocate a frame for sending later
 export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> MutSlice mut *
     where err::checked(*e)
-    where reserved_size < 10000
+    where reserved_size < 100000
     model safe(return) // this is technically wrong, but the prover isnt good enough yet
     model safe(return->slice.mem)
     model len(return->slice.mem) >= reserved_size + 14
@@ -51,6 +56,9 @@ export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> M
     static_attest(safe(self->chan));
     let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, reserved_size + 14);
     if err::check(e) {
+        if e->error == err::OutOfTail {
+            self->memory_pressure = true;
+        }
         unsafe {
             return 0;
         }
@@ -142,3 +150,33 @@ pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     return true;
 }
 
+pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
+    where err::checked(*e)
+{
+    if self->memory_pressure{
+        self->memory_pressure_timer_io.close();
+        self->memory_pressure_timer_io = async->timeout(e, time::from_millis(100));
+        if err::check(e) { return; }
+        self->memory_pressure = false;
+    }
+    if self->memory_pressure_timer_io.valid() {
+        new+20 s = string::make();
+        if self->memory_pressure_timer_io.read(e, &s) == io::Result::Later {
+            return;
+        } else {
+            self->memory_pressure_timer_io.close();
+        }
+    }
+
+    if self->config == 0 {
+        return;
+    }
+    static_attest(safe(self->config));
+    if self->config->poll != 0 {
+        static_attest(safe(self->config->poll));
+        self->config->poll(self, e, async);
+        if err::check(e) {
+            return;
+        }
+    }
+}

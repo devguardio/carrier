@@ -1,6 +1,3 @@
-[submodule "3rdparty/libbase58"]
-	path = 3rdparty/libbase58
-	url = https://github.com/bitcoin/libbase58.git
 [submodule "3rdparty/hacl-star"]
 	path = 3rdparty/hacl-star
 	url = git@github.com:project-everest/hacl-star.git

@@ -16,4 +16,6 @@ export fn get_homedir(err::Err+et mut *e, string::String+st mut *to)
     }
 
     to->len += rr;
+    err::assert(to->len < st);
+    to->mem[to->len] = 0;
 }

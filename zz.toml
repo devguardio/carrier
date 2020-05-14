@@ -3,7 +3,6 @@ version = "0.1.0"
 name = "carrier"
 cincludes = []
 cobjects = [
-    "3rdparty/libbase58/base58.c",
     "3rdparty/hacl-star/snapshots/hacl-c/FStar.c",
     "3rdparty/hacl-star/snapshots/hacl-c/kremlib.c",
     "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.c",
@@ -39,35 +38,16 @@ sysinfo     = "1"
 default = []
 
 [[artifacts]]
-name = "carrier"
+name = "xarrier"
 type = "lib"
-main = "carrier"
-
-[[artifacts]]
-name = "carrier"
-type = "staticlib"
-main = "carrier"
+main = "carrier::xarrier"
 
 [[artifacts]]
 name = "carrier"
 type = "exe"
 main = "carrier::main"
 
-[[artifacts]]
-name = "carrier"
-type = "npm"
-main = "carrier"
-
-[[artifacts]]
-name = "carrier"
-type = "rust"
-main = "carrier"
-
-[[artifacts]]
-name = "carrier"
-type = "cmake"
-main = "carrier"
-
 [repos]
-extra = "git://github.com/zetzit/nursery.git"
+#extra = "git://github.com/zetzit/nursery.git"
+nursery = "/home/aep/proj/zznursery"
 

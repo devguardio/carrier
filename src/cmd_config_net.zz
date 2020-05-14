@@ -21,22 +21,15 @@ export fn run_self_net_get(
 )
     where err::checked(*e)
 {
-    static_attest(safe(endpoint->vault.mem));
-    if identity::isnull(endpoint->vault.mem->network) {
+    identity::Address mut addr= {0};
+    endpoint->vault.get_network(&addr);
+
+    if identity::isnull(addr.k) {
     } else {
         char mut buf[64] = {0};
-        identity::address_to_str(e, buf, 64, (identity::Address*)endpoint->vault.mem->network);
+        identity::address_to_str(e, buf, 64, &addr);
         if err::check(e) { return; }
         printf("address = %s\n", buf);
-    }
-
-    static_attest(safe(endpoint->vault.mem));
-    if identity::isnull(endpoint->vault.mem->network_secret) {
-    } else {
-        char mut buf[64] = {0};
-        identity::secret_to_str(e, buf, 64, (identity::Secret*)endpoint->vault.mem->network_secret);
-        if err::check(e) { return; }
-        printf("secret  = %s\n", buf);
     }
 }
 
@@ -47,16 +40,7 @@ export fn run_self_net_join(
 )
     where err::checked(*e)
 {
-    static_attest(safe(endpoint->vault.mem));
-
-    mem::copy(net_secret->k, endpoint->vault.mem->network_secret, 32);
-    identity::address_from_secret(
-        (identity::Address mut*)&endpoint->vault.mem->network,
-        (identity::Secret*)endpoint->vault.mem->network_secret
-    );
-
-    err::assert_safe(endpoint->vault.save);
-    endpoint->vault.save(&endpoint->vault, e);
+    endpoint->vault.set_network(e, net_secret);
     if err::check(e) {return;}
 
     run_self_net_get(e, endpoint);

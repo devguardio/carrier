@@ -6,7 +6,7 @@ using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h" as x25519;
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
 
-using (needs size_t) "../3rdparty/libbase58/libbase58.h" as b58;
+using (needs size_t) "libbase58.h" as b58;
 using err;
 using crc8;
 using rand;

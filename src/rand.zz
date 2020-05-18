@@ -1,36 +1,12 @@
 using err;
-using <fcntl.h>::{open};
-using <sys/stat.h>::{O_RDONLY};
-using <unistd.h>::{close, read};
-using <errno.h>::{errno, EINTR};
+inline using (needs err::fail_with_errno) "rand_os.h"::{os_rand};
 
 pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
     where err::checked(*e)
     where len(bytes) >= size
 {
-    int fd = as<int>(open("/dev/urandom", O_RDONLY));
-    if fd < 0 {
-        err::fail_with_errno(e, "cannot open /dev/urandom");
-        return;
-    }
-    static_attest(err::checked(*e));
-
-    for (;;) {
-        int l = as<int>(read(fd, bytes, size));
-        if  l < 0 {
-            if as<int>(errno) == as<int>(EINTR) {
-                continue;
-            }
-            err::fail_with_errno(e, "cannot read /dev/urandom");
-            close(fd);
-            return;
-        }
-        if (usize)l >= size {
-            close(fd);
-            return;
-        }
-        size    -= (usize)l;
-        bytes   = bytes + (usize)l;
-    }
-    close(fd);
+    os_rand(e, et, bytes, size);
 }
+
+
+

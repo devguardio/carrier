@@ -1,0 +1,307 @@
+using toml;
+using err;
+using vault;
+using fs;
+using string;
+using identity;
+using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF, fprintf, stderr, fputc};
+using <string.h>::{memcpy, memset};
+using <stdlib.h>::{malloc, free};
+using log;
+using time;
+inline using "esp.h" as esp;
+
+struct Authorize {
+    bool used;
+    identity::Identity identity;
+    string::String+300 mut path;
+}
+
+struct Mem {
+    identity::Secret secret;
+    identity::Address network;
+    identity::Secret network_secret;
+
+    Authorize auth[32];
+    string::String+2000 mut file_name;
+}
+
+fn close(vault::Vault mut*self) {
+}
+
+export fn open(vault::Vault mut new *self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    memset(self, 0, sizeof(vault::Vault));
+
+    self->i_get_secret           = i_get_secret;
+    self->i_get_network          = i_get_network;
+    self->i_advance_clock        = i_advance_clock;
+    self->i_set_network          = i_set_network;
+    self->i_list_authorizations  = i_list_authorizations;
+    self->i_del_authorization    = i_del_authorization;
+    self->i_add_authorization    = i_add_authorization;
+    self->i_close                = close;
+}
+
+fn i_advance_clock (vault::Vault *self) -> u64
+{
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
+
+    u64 mut val = 0;
+    esp::nvs_get_u64(handle, "clock", &val);
+    val += 1;
+
+    esp::nvs_set_u64(handle, "clock", val + 1);
+
+    esp::nvs_close(handle);
+    return val;
+}
+
+
+fn i_get_secret  (vault::Vault *self, identity::Secret mut * secret)
+{
+    new+200 e = err::make();
+
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("identity", esp::NVS_READWRITE , &handle));
+
+    char mut val[100] = {0};
+    usize mut val_l = 100;
+    esp::esp_err_t ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, "secret", val, &val_l));
+    if (unsafe<bool>(ee != esp::ESP_OK)) {
+        identity::Secret mut nu = {0};
+        esp::esp_fill_random(nu.k, 32);
+
+        val_l = identity::secret_to_str(&e, val, val_l, &nu);
+        e.abort();
+
+        esp::nvs_set_str(handle, "secret", val);
+        esp::nvs_commit(handle);
+
+        memset(val, 0, 100);
+        val_l = 100;
+        esp::ESP_ERROR_CHECK(esp::nvs_get_str(handle, "secret", val, &val_l));
+    }
+
+    esp::nvs_close(handle);
+
+    identity::secret_from_str(secret, &e, val, val_l - 1);
+    e.abort();
+}
+
+fn i_get_network (vault::Vault *self, identity::Address mut * addr)
+{
+    new+200 e = err::make();
+
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
+
+    char mut val[100] = {0};
+    usize mut val_l = 100;
+    esp::esp_err_t ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, "network", val, &val_l));
+    if (unsafe<bool>(ee != esp::ESP_OK)) {
+        identity::Secret mut nu = {0};
+        esp::esp_fill_random(nu.k, 32);
+
+        val_l = identity::secret_to_str(&e, val, val_l, &nu);
+        e.abort();
+
+        esp::nvs_set_str(handle, "network", val);
+        esp::nvs_commit(handle);
+
+        memset(val, 0, 100);
+        val_l = 100;
+        esp::ESP_ERROR_CHECK(esp::nvs_get_str(handle, "network", val, &val_l));
+    }
+
+    esp::nvs_close(handle);
+
+    identity::Secret mut secret = {0};
+    identity::secret_from_str(&secret, &e, val, val_l - 1);
+    e.abort();
+
+    identity::address_from_secret(addr, &secret);
+}
+
+fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * secret)
+    where err::checked(*e)
+{
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
+
+    char mut val[100] = {0};
+    usize mut val_l = 100;
+
+    val_l = identity::secret_to_str(e, val, val_l, secret);
+    if err::check(e) { return; }
+
+    esp::nvs_set_str(handle, "network", val);
+    esp::nvs_commit(handle);
+
+    esp::nvs_close(handle);
+}
+
+
+fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_authorizations_cb cb, void mut *user)
+    where err::checked(*e)
+    where safe(cb)
+{
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
+
+    for (usize mut i = 0; i < 25;  i++) {
+        char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
+        key[5] = 64 + (char)i;
+
+        char mut val[255] = {0};
+        usize mut val_l = 255;
+
+        key[6] = 'i';
+        esp::esp_err_t mut ee = unsafe<esp::esp_err_t>(esp::nvs_get_str(handle, key, val, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+
+        new id = identity::identity_from_str(e, val, val_l - 1);
+        if err::check(e) {
+            e->elog();
+            e->make();
+            continue;
+        }
+
+        val_l = 255;
+        key[6] = 'p';
+        ee = unsafe<esp::esp_err_t>(esp::nvs_get_str(handle, key, val, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+
+        cb(user, &id, val);
+
+    }
+    esp::nvs_close(handle);
+}
+
+
+fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *delme, char *resource)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
+
+    for (usize mut i = 0; i < 25;  i++) {
+        char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
+        key[5] = 64 + (char)i;
+
+        char mut val[255] = {0};
+        usize mut val_l = 255;
+
+        key[6] = 'i';
+        esp::esp_err_t mut ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, key, val, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+
+        new id = identity::identity_from_str(e, val, val_l - 1);
+        if err::check(e) {
+            e->elog();
+            e->make();
+            continue;
+        }
+
+
+        memset(val, 0, 255);
+        val_l = 255;
+        key[6] = 'p';
+        ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, key, val, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+        static_attest(nullterm(val));
+
+        if (delme->eq(&id) && string::cstr_eq(resource, val)) {
+            key[6] = 'i';
+            esp::nvs_erase_key(handle, key);
+            key[6] = 'p';
+            esp::nvs_erase_key(handle, key);
+            break;
+        }
+
+    }
+    esp::nvs_close(handle);
+}
+
+fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *addme, char *resource)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    esp::nvs_handle_t mut handle = 0;
+    esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
+
+    for (usize mut i = 0; i < 25;  i++) {
+        char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
+        key[5] = 64 + (char)i;
+
+        char mut val[255] = {0};
+        usize mut val_l = 255;
+
+        key[6] = 'i';
+
+        esp::esp_err_t mut ee = unsafe<esp::esp_err_t>(esp::nvs_get_str(handle, key, val, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+
+        new id = identity::identity_from_str(e, val, val_l - 1);
+        if err::check(e) {
+            e->elog();
+            e->make();
+            continue;
+        }
+
+        val_l = 255;
+        key[6] = 'p';
+        ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, key, val, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+
+        static_attest(nullterm(val));
+        if (addme->eq(&id) && string::cstr_eq(resource, val)) {
+            esp::nvs_close(handle);
+            return;
+        }
+    }
+
+    for (usize mut i = 0; i < 25;  i++) {
+        char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
+        key[5] = 64 + (char)i;
+
+        usize mut val_l = 0;
+        key[6] = 'i';
+        let mut ee = unsafe<esp::esp_err_t>(esp::nvs_get_str(handle, key, 0, &val_l));
+        if (unsafe<bool>(ee != ESP_OK)) {
+            continue;
+        };
+
+        char mut val[255] = {0};
+        val_l = identity::identity_to_str(e, val, 255, addme);
+        if err::check(e) {
+            esp::nvs_close(handle);
+            return;
+        }
+
+
+        esp::nvs_set_str(handle, key, val);
+
+
+        key[6] = 'p';
+        esp::nvs_set_str(handle, key, resource);
+        break;
+    }
+
+    esp::nvs_close(handle);
+}

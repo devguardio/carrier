@@ -55,6 +55,7 @@ export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char 
     self->i_list_authorizations  = i_list_authorizations;
     self->i_del_authorization    = i_del_authorization;
     self->i_add_authorization    = i_add_authorization;
+    self->i_close                = close;
 
 
     self->user = malloc(sizeof(Mem));

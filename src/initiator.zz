@@ -44,6 +44,7 @@ pub fn initiate(
     Move                move,
     identity::Identity* unsafe cluster_target,
     identity::Address*  unsafe xaddr,
+    u64                 vector_time,
     string::String+st   mut* pkt,
 )
     where err::checked(*e)
@@ -91,7 +92,7 @@ pub fn initiate(
     memcpy(plaintext + plaintext_len, eid.k, 32);
     plaintext_len += 32;
 
-    u64 network_time_be = byteorder::to_be64(vault->vector_time());
+    u64 network_time_be = byteorder::to_be64(vector_time);
     memcpy(plaintext + plaintext_len, &network_time_be, 8);
     plaintext_len += 8;
 

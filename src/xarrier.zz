@@ -1,0 +1,52 @@
+using <stdio.h>::{printf};
+using crc8;
+using err;
+using identity;
+using cipher;
+using sha256;
+using hpack::encoder;
+using hpack::decoder;
+using bootstrap;
+using endpoint;
+using config;
+//using pub_sysinfo;
+using cmd_common;
+using net;
+using time;
+using io;
+using publish;
+using vault;
+using vault_esp32;
+
+export fn run() -> int {
+    new+1000  e     = err::make();
+    new       async = io::select::make();
+
+
+    new+40000 ep = endpoint::native(&e);
+    e.abort();
+
+    cmd_common::print_identity(&ep);
+
+    bootstrap::sync(&e, &ep.vault, net::os(), &async, time::from_seconds(10));
+    e.abort();
+
+    ep.start(&e, net::os(), &async);
+    e.abort();
+
+    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
+    e.abort();
+
+    publish::publish(&ep, &e);
+    e.abort();
+
+    //shell::register(&ep);
+    //sft::register(&ep);
+    config::register(&ep);
+    //pub_sysinfo::register(&ep);
+
+
+    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
+    e.abort();
+    return 0;
+}

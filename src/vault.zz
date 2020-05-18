@@ -5,7 +5,7 @@ using mem;
 using string;
 using <string.h>::{memcpy};
 
-export fntype close_fn (Vault *self);
+export fntype close_fn (Vault mut*self);
 
 export fntype get_secret_fn         (Vault *self, identity::Secret  mut * secret);
 export fntype get_network_fn        (Vault *self, identity::Address mut * address);

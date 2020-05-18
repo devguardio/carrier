@@ -33,6 +33,14 @@ export const char* PROLOGUE = "carrier has arrived";
 export const char* SIGN_PURPOSE = "carrier handshake hash 1";
 
 
+inline using (needs
+    vault::Vault,
+    Endpoint,
+    err::Err,
+) "endpoint.h"::{
+    os_carrier_endpoint_open,
+};
+
 
 export symbol InvalidBootstrap;
 
@@ -111,6 +119,22 @@ export fn from_home_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e)
 {
     none(self);
     vault_toml::from_home_carriertoml(&self->vault, e);
+}
+
+export fn native(Endpoint+xt mut new* self, err::Err+et mut*e)
+    where err::checked(*e)
+    where xt > xt/32
+{
+    none(self);
+    os_carrier_endpoint_open(self, e, et);
+}
+
+export fn from_vault(Endpoint+xt mut new* self, err::Err+et mut*e, vault::Vault vault)
+    where err::checked(*e)
+    where xt > xt/32
+{
+    none(self);
+    self->vault = vault;
 }
 
 export fn broker(Endpoint mut* self) -> channel::Channel mut *
@@ -333,6 +357,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                     self->cluster_move,
                     &self->cluster_target,
                     &xaddr,
+                    self->vault.vector_time(),
                     &self->statem.connecting.pkt_out
                 );
                 if err::check(e) {return io::Result::Error;}

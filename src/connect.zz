@@ -45,6 +45,9 @@ export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut
 
     ep->vault.get_identity(&self->principal);
 
+
+    self->initiator_time = ep->vault.vector_time();
+
     self->initiator.initiate(
         e,
         false,
@@ -52,6 +55,7 @@ export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut
         initiator::Move::Never,
         0,
         0,
+        self->initiator_time,
         &self->initiator_pkt
     );
     if err::check(e) { return; }

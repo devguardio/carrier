@@ -11,6 +11,7 @@
 #include "zz/carrier/carrier_identity.h"
 #include "zz/carrier/carrier_sync.h"
 #include "zz/carrier/slice_slice.h"
+#include "zz/carrier/hpack_decoder.h"
 
 void on_close(carrier_stream_Stream * self, err_Err *e, size_t err_tail);
 bool on_stream(carrier_stream_Stream* self, err_Err* e, size_t et, slice_slice_Slice const * msg);
@@ -57,6 +58,12 @@ void main(int argc, char **argv) {
     carrier_stream_Stream *stream = carrier_sync_open(sync, e, TAIL_ERR, &SysinfoStream);
     err_abort(e, TAIL_ERR, __FILE__, __FUNCTION__, __LINE__);
 
+    // store user state integer
+    stream->user1 = 0;
+    // store user pointer
+    //stream->user2 = &whatever;
+
+
     // wait for endpoint to close
     carrier_sync_wait(sync, e, TAIL_ERR);
     err_abort(e, TAIL_ERR, __FILE__, __FUNCTION__, __LINE__);
@@ -66,8 +73,6 @@ void main(int argc, char **argv) {
 // after carrier_sync_open was successful, on_close is always called, even when the remote died or rejected the stream
 // so a quick and dirty remote error handling could be to just set a flag in on_stream
 // which we check here to see if we ever received data
-//
-// a more elaborate error handling would look for error headers in Config.open
 void on_close(carrier_stream_Stream * self, err_Err *e, size_t err_tail)
 {
     printf("stream closed\n");
@@ -75,12 +80,23 @@ void on_close(carrier_stream_Stream * self, err_Err *e, size_t err_tail)
 }
 
 
-// receive bytes from the stream. note that this in this example, we're getting protobuf
-// decoding this is up to the higher level code, or you could use protonerf directly here
+// receive bytes from the stream.
 bool on_stream(carrier_stream_Stream* self, err_Err* e, size_t et, slice_slice_Slice const * msg)
 {
-    printf("received bytes: %.*s\n", msg->size, msg->mem);
+    if (self->user1 == 0) {
+        self->user1 = 1;
+        /// first packet is always hpack headers by convention
+        hpack_decoder_Iterator it = {0};
+        hpack_decoder_decode (&it, msg);
+        while (hpack_decoder_next(&it, e, et)) {
+            printf("[%.*s = %.*s]\n", it.key.size, it.key.mem, it.val.size, it.val.mem);
+        }
+    } else {
+        // we're getting protobuf from the sysinfo endpoint
+        // decoding this is up to the higher level code, or you could use protonerf directly here
+        printf("received bytes: %.*s\n", msg->size, msg->mem);
 
+    }
     // packet accepted, do not resend
     return true;
 }

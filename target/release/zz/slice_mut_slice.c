@@ -2,10 +2,6 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
@@ -18,29 +14,14 @@ typedef struct slice_slice_Slice_t slice_slice_Slice;
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 3 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 #include <string.h>
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
 
 #line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t {
@@ -65,23 +46,29 @@ struct slice_mut_slice_MutSlice_t {
 ;
 const size_t sizeof_slice_mut_slice_MutSlice = sizeof(slice_mut_slice_MutSlice);
 
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
 #line 1 ""
 #include <stddef.h>
 
 #line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
 #line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
 #line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
@@ -90,44 +77,34 @@ bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const
 bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
 #line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * __attribute__ ((visibility ("default"))) slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self)
-{
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
-#line 18 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-  slice_mut_slice_MutSlice*  const  r  =     self;
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
-#line 19 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-;
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#line 20 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-;
-
-#line 21 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-  return     r;
-
-}
-
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool __attribute__ ((visibility ("default"))) slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b)
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool __attribute__ ((visibility ("default"))) slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b)
 {
 if ((
-#line 78 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at >(    self ->slice .size -    1  )  )){
+#line 93 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at >(    self ->slice .size -    2  )  )){
 
-#line 79 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+#line 94 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
   return     false;
 
 }
 
 
-#line 82 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    ))    ) [     self ->at] =     b;
+#line 97 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    memcpy((    slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    ))    ) +    self ->at  ),( &    b),    2    );
 
-#line 83 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at +=     1;
+#line 98 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at +=     2;
 
-#line 85 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+#line 100 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
   return     true;
 
 }
@@ -158,50 +135,6 @@ if ((((
 }
 
 
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void __attribute__ ((visibility ("default"))) slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size)
-{
-
-#line 31 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->slice .size =     size;
-
-#line 32 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->slice .mem =     mem;
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at =     0;
-
-#line 34 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-;
-
-}
-
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool __attribute__ ((visibility ("default"))) slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b)
-{
-if ((
-#line 122 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at >(    self ->slice .size -    8  )  )){
-
-#line 123 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-  return     false;
-
-}
-
-
-#line 126 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    memcpy((    slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    ))    ) +    self ->at  ),( &    b),    8    );
-
-#line 127 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at +=     8;
-
-#line 129 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-  return     true;
-
-}
-
-
 #line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool __attribute__ ((visibility ("default"))) slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b)
 {
@@ -214,6 +147,31 @@ bool __attribute__ ((visibility ("default"))) slice_mut_slice_append_cstr (slice
 
 #line 70 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
   return     slice_mut_slice_append_bytes(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    )),    (uint8_t const * )(    b),    l    );
+
+}
+
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool __attribute__ ((visibility ("default"))) slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b)
+{
+if ((
+#line 78 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at >(    self ->slice .size -    1  )  )){
+
+#line 79 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+  return     false;
+
+}
+
+
+#line 82 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    ))    ) [     self ->at] =     b;
+
+#line 83 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at +=     1;
+
+#line 85 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+  return     true;
 
 }
 
@@ -237,27 +195,21 @@ uint8_t * __attribute__ ((visibility ("default"))) slice_mut_slice_mem (slice_mu
 }
 
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool __attribute__ ((visibility ("default"))) slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b)
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void __attribute__ ((visibility ("default"))) slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size)
 {
-if ((
-#line 93 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at >(    self ->slice .size -    2  )  )){
 
-#line 94 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-  return     false;
+#line 31 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->slice .size =     size;
 
-}
+#line 32 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->slice .mem =     mem;
 
+#line 33 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at =     0;
 
-#line 97 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    memcpy((    slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    ))    ) +    self ->at  ),( &    b),    2    );
-
-#line 98 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-    self ->at +=     2;
-
-#line 100 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-  return     true;
+#line 34 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+;
 
 }
 
@@ -282,6 +234,50 @@ if ((
     self ->at +=     4;
 
 #line 115 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+  return     true;
+
+}
+
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * __attribute__ ((visibility ("default"))) slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self)
+{
+
+#line 18 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+  slice_mut_slice_MutSlice*  const  r  =     self;
+
+#line 19 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+;
+
+#line 20 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+;
+
+#line 21 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+  return     r;
+
+}
+
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool __attribute__ ((visibility ("default"))) slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b)
+{
+if ((
+#line 122 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at >(    self ->slice .size -    8  )  )){
+
+#line 123 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+  return     false;
+
+}
+
+
+#line 126 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    memcpy((    slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    self    ))    ) +    self ->at  ),( &    b),    8    );
+
+#line 127 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+    self ->at +=     8;
+
+#line 129 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
   return     true;
 
 }

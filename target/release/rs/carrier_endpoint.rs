@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
+pub const SIGN_PURPOSE : *const u8 = b"carrier handshake hash 1".as_ptr();
 pub const RETRY_EACH_BROKER : usize = 5;
 #[repr(C)]
 pub enum State {
@@ -203,23 +204,10 @@ impl rsEndpoint {
     }
 }
 pub const PROLOGUE : *const u8 = b"carrier has arrived".as_ptr();
-pub const SIGN_PURPOSE : *const u8 = b"carrier handshake hash 1".as_ptr();
 extern {
 
-    #[link_name = "carrier_endpoint_from_vault"]
-    pub fn r#from_vault( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize,  Zvault: super::carrier_vault::Vault);
 
 
-    #[link_name = "carrier_endpoint_close"]
-    pub fn r#close( Zself: *mut u8);
-
-    #[link_name = "carrier_endpoint_next_broker"]
-    pub fn r#next_broker( Zself: *mut u8)  -> bool;
-
-
-
-    #[link_name = "carrier_endpoint_do_state_connect"]
-    pub fn r#do_state_connect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8);
 
     #[link_name = "sizeof_carrier_endpoint_ConnectingState"]
     pub static sizeof_ConnectingState: libc::size_t;
@@ -230,33 +218,45 @@ extern {
     #[link_name = "sizeof_carrier_endpoint_Endpoint"]
     pub fn sizeof_Endpoint(tail: libc::size_t) -> libc::size_t;
 
-    #[link_name = "carrier_endpoint_native"]
-    pub fn r#native( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize);
+    #[link_name = "carrier_endpoint_next_broker"]
+    pub fn r#next_broker( Zself: *mut u8)  -> bool;
 
     #[link_name = "carrier_endpoint_broker"]
     pub fn r#broker( Zself: *mut u8)  -> *mut u8;
 
-    #[link_name = "carrier_endpoint_from_carriertoml"]
-    pub fn r#from_carriertoml( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8);
-
-    #[link_name = "carrier_endpoint_register_stream"]
-    pub fn r#register_stream( Zself: *mut u8,  Zconf: *const u8);
-
-
-
     #[link_name = "carrier_endpoint_cluster_target"]
     pub fn r#cluster_target( Zself: *mut u8,  Ztarget: *const u8);
-
-    #[link_name = "carrier_endpoint_poll"]
-    pub fn r#poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8)  -> super::io::Result;
-
-    #[link_name = "carrier_endpoint_start"]
-    pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Znetengine: *const u8,  Zasync: *mut u8);
 
     #[link_name = "carrier_endpoint_none"]
     pub fn r#none( Zself: *mut u8,  Zxt: usize);
 
+    #[link_name = "carrier_endpoint_from_carriertoml"]
+    pub fn r#from_carriertoml( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8);
+
+    #[link_name = "carrier_endpoint_do_state_connect"]
+    pub fn r#do_state_connect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8);
+
+    #[link_name = "carrier_endpoint_close"]
+    pub fn r#close( Zself: *mut u8);
+
+    #[link_name = "carrier_endpoint_native"]
+    pub fn r#native( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize);
+
+
+    #[link_name = "carrier_endpoint_poll"]
+    pub fn r#poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8)  -> super::io::Result;
+
+    #[link_name = "carrier_endpoint_from_vault"]
+    pub fn r#from_vault( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize,  Zvault: super::carrier_vault::Vault);
+
+    #[link_name = "carrier_endpoint_register_stream"]
+    pub fn r#register_stream( Zself: *mut u8,  Zconf: *const u8);
+
     #[link_name = "carrier_endpoint_from_home_carriertoml"]
     pub fn r#from_home_carriertoml( Zself: *mut u8,  Zxt: usize,  Ze: *mut u8,  Zet: usize);
+
+
+    #[link_name = "carrier_endpoint_start"]
+    pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Znetengine: *const u8,  Zasync: *mut u8);
 
 }

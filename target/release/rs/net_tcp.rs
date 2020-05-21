@@ -1,8 +1,8 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
-pub type send_fn = extern fn( Zsock: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *const u8,  Zmemlen: *mut usize)  -> super::io::Result;
 pub type recv_fn = extern fn( Zsock: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *mut u8,  Zmemlen: *mut usize)  -> super::io::Result;
+pub type send_fn = extern fn( Zsock: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *const u8,  Zmemlen: *mut usize)  -> super::io::Result;
 
 pub struct rsSocket {
     pub inner:  Box<Socket>,
@@ -67,17 +67,17 @@ impl rsSocket {
 }
 extern {
 
-
-    #[link_name = "sizeof_net_tcp_Socket"]
-    pub static sizeof_Socket: libc::size_t;
-
     #[link_name = "net_tcp_recv"]
     pub fn r#recv( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: *mut u8,  Zst: usize)  -> super::io::Result;
+
 
     #[link_name = "net_tcp_send"]
     pub fn r#send( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: *const u8,  Zst: usize)  -> super::io::Result;
 
     #[link_name = "net_tcp_close"]
     pub fn r#close( Zself: *mut u8);
+
+    #[link_name = "sizeof_net_tcp_Socket"]
+    pub static sizeof_Socket: libc::size_t;
 
 }

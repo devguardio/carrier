@@ -1,8 +1,8 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
-pub type new_tcp_server_fn = extern fn( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8)  -> super::net_tcp_server::Server;
 pub type new_udp_fn = extern fn( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8)  -> super::net_udp::Socket;
+pub type new_tcp_server_fn = extern fn( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8)  -> super::net_tcp_server::Server;
 
 pub struct rsEngine {
     pub inner:  Box<Engine>,
@@ -67,12 +67,6 @@ impl rsEngine {
 }
 extern {
 
-    #[link_name = "net_tcp_server"]
-    pub fn r#tcp_server( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
-
-
-    #[link_name = "net_udp"]
-    pub fn r#udp( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
 
     #[link_name = "sizeof_net_Engine"]
     pub static sizeof_Engine: libc::size_t;
@@ -80,5 +74,11 @@ extern {
 
     #[link_name = "net_os"]
     pub fn r#os()  -> *const u8;
+
+    #[link_name = "net_tcp_server"]
+    pub fn r#tcp_server( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
+
+    #[link_name = "net_udp"]
+    pub fn r#udp( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
 
 }

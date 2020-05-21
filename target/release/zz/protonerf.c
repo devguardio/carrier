@@ -2,29 +2,21 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-union protonerf_Value_t;
-typedef union protonerf_Value_t protonerf_Value;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+union protonerf_Value_t;
+typedef union protonerf_Value_t protonerf_Value;
 
 #line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 struct protonerf_Field_t;
@@ -34,6 +26,14 @@ typedef struct protonerf_Field_t protonerf_Field;
 struct protonerf_Decoder_t;
 typedef struct protonerf_Decoder_t protonerf_Decoder;
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
@@ -42,11 +42,23 @@ typedef struct string_String_t string_String;
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
 #line 1 ""
 #include <stddef.h>
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
 #line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
@@ -54,8 +66,139 @@ void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e,
 #line 14 "/home/aep/proj/zz/modules/err/src/lib.zz"
 extern const __attribute__ ((unused)) size_t err_OutOfTail;
 
-#line 3 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 #include <string.h>
+
+#line 136 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+static void protonerf_write_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint32_t low, uint32_t high);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+union protonerf_Value_t {
+
+#line 120 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t v_len ;
+
+#line 121 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint64_t v_u64 ;
+
+#line 122 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   int64_t v_i64 ;
+
+#line 123 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   bool v_bool ;
+}
+;
+const size_t sizeof_protonerf_Value = sizeof(protonerf_Value);
+
+#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Field_t {
+
+#line 127 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   bool valid ;
+
+#line 128 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint64_t index ;
+
+#line 130 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   protonerf_Value value ;
+
+#line 131 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint8_t const *  a ;
+}
+;
+const size_t sizeof_protonerf_Field = sizeof(protonerf_Field);
+
+#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Decoder_t {
+
+#line 106 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint8_t const *  mem ;
+
+#line 107 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t size ;
+
+#line 108 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t at ;
+}
+;
+const size_t sizeof_protonerf_Decoder = sizeof(protonerf_Decoder);
+
+#line 112 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+protonerf_Decoder protonerf_decode (uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
+#include <stdarg.h>
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 51 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+void protonerf_encode_bytes (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uint8_t const *  const  b, uintptr_t const  l);
 
 #line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 
@@ -123,61 +266,35 @@ uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
 #line 89 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 void protonerf_encode_f64 (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, double value);
 
-#line 8 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-typedef enum {
-    protonerf_FieldType_Skip = 0,
-    protonerf_FieldType_Int32 = 1,
-    protonerf_FieldType_Int64 = 2,
-    protonerf_FieldType_Uint32 = 3,
-    protonerf_FieldType_Uint64 = 4,
-    protonerf_FieldType_Sint32 = 5,
-    protonerf_FieldType_Sint64 = 6,
-    protonerf_FieldType_Bool = 7,
-    protonerf_FieldType_Enum = 8,
-    protonerf_FieldType_Fixed64 = 9,
-    protonerf_FieldType_Sfixed64 = 10,
-    protonerf_FieldType_Double = 11,
-    protonerf_FieldType_String = 12,
-    protonerf_FieldType_Bytes = 13,
-    protonerf_FieldType_Message = 14,
-    protonerf_FieldType_Repeated = 15,
-    protonerf_FieldType_Fixed32 = 16,
-    protonerf_FieldType_Sfixed32 = 17,
-    protonerf_FieldType_Float = 18,
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
-} protonerf_FieldType;
+#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdio.h>
 
-#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-union protonerf_Value_t {
-
-#line 120 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t v_len ;
-
-#line 121 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint64_t v_u64 ;
-
-#line 122 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   int64_t v_i64 ;
-
-#line 123 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   bool v_bool ;
-}
-;
-const size_t sizeof_protonerf_Value = sizeof(protonerf_Value);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
 
 #line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
 slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 30 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+extern const __attribute__ ((unused)) size_t protonerf_Invalid;
+
+#line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -1539,288 +1656,107 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 136 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-static void protonerf_write_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint32_t low, uint32_t high);
-
-#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-void protonerf_encode_bytes_start (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uintptr_t const  l);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Field_t {
-
-#line 127 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   bool valid ;
-
-#line 128 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint64_t index ;
-
-#line 130 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   protonerf_Value value ;
-
-#line 131 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint8_t const *  a ;
-}
-;
-const size_t sizeof_protonerf_Field = sizeof(protonerf_Field);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 30 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-extern const __attribute__ ((unused)) size_t protonerf_Invalid;
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
 #line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
-#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-void protonerf_encode_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uint64_t value);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 51 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-void protonerf_encode_bytes (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Decoder_t {
-
-#line 106 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint8_t const *  mem ;
-
-#line 107 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t size ;
-
-#line 108 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t at ;
-}
-;
-const size_t sizeof_protonerf_Decoder = sizeof(protonerf_Decoder);
-
-#line 1 "/home/aep/proj/zz/modules/symbols/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
 
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
 
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
 
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#line 8 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+typedef enum {
+    protonerf_FieldType_Skip = 0,
+    protonerf_FieldType_Int32 = 1,
+    protonerf_FieldType_Int64 = 2,
+    protonerf_FieldType_Uint32 = 3,
+    protonerf_FieldType_Uint64 = 4,
+    protonerf_FieldType_Sint32 = 5,
+    protonerf_FieldType_Sint64 = 6,
+    protonerf_FieldType_Bool = 7,
+    protonerf_FieldType_Enum = 8,
+    protonerf_FieldType_Fixed64 = 9,
+    protonerf_FieldType_Sfixed64 = 10,
+    protonerf_FieldType_Double = 11,
+    protonerf_FieldType_String = 12,
+    protonerf_FieldType_Bytes = 13,
+    protonerf_FieldType_Message = 14,
+    protonerf_FieldType_Repeated = 15,
+    protonerf_FieldType_Fixed32 = 16,
+    protonerf_FieldType_Sfixed32 = 17,
+    protonerf_FieldType_Float = 18,
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+} protonerf_FieldType;
 
-#line 112 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-protonerf_Decoder protonerf_decode (uint8_t const *  const  mem, uintptr_t const  size);
+#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+void protonerf_encode_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uint64_t value);
 
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
 
 #line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
 
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
 
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
 #line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
-#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint64_t byteorder_to_le64 (uint64_t const  x)
-{
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
 
-#line 85 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  int const  __workaround  =     BYTE_ORDER;
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 
-#line 87 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-(void)__workaround;
-        #if BYTE_ORDER == BIG_ENDIAN
-            return bswap_64(x);
-        #else
-            return x;
-        #endif
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
-}
+#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+void protonerf_encode_bytes_start (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uintptr_t const  l);
 
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#line 89 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-void __attribute__ ((visibility ("default"))) protonerf_encode_f64 (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, double value)
-{
-if ((((
-#line 92 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    str ->at +    1  ) >    str ->slice .size  ) ||(    str ->slice .size <    9  )  )){
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 93 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    err_fail(    (err_Err* )(    e),
-#line 89 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    et,
-#line 93 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    err_OutOfTail,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::protonerf::encode_f64",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    93,
-#line 93 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    "short write"    );
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
 
-#line 94 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  return ;
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
 
-}
-
-
-#line 97 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  uint64_t xv  =     0;
-
-#line 98 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    memcpy(( &    xv),( &    value),    8    );
-
-#line 100 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    xv =     byteorder_to_le64(    xv    );
-
-#line 101 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    slice_mut_slice_push(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),((    index <<    3  ) |    1  )    );
-
-#line 102 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    slice_mut_slice_push64(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),    xv    );
-
-}
-
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
 #line 136 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 static void protonerf_write_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint32_t low, uint32_t high)
@@ -1940,105 +1876,16 @@ if (((
 }
 
 
-#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-void __attribute__ ((visibility ("default"))) protonerf_encode_bytes_start (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uintptr_t const  l)
+#line 112 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+protonerf_Decoder __attribute__ ((visibility ("default"))) protonerf_decode (uint8_t const *  const  mem, uintptr_t const  size)
 {
-if (((
-#line 35 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    str ->at +    1  ) >    str ->slice .size  )){
 
-#line 36 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    err_fail(    (err_Err* )(    e),
-#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    et,
-#line 36 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    err_OutOfTail,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::protonerf::encode_bytes_start",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    36,
-#line 36 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    "short write"    );
-
-#line 37 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  return ;
-
-}
-
-
-#line 40 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  uint8_t*  const  mm  =     slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    ))    );
-
-#line 41 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-;
-
-#line 42 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    mm [     str ->at] = ((    index <<    3  ) |    2  );
-
-#line 43 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    str ->at +=     1;
-
-#line 44 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-;
-
-#line 48 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    protonerf_write_varint(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),    (err_Err* )(    e),
-#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    et,    (uint32_t)(
-#line 48 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    l),    0    );
-
-}
-
-
-#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-void __attribute__ ((visibility ("default"))) protonerf_encode_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uint64_t value)
-{
-if (((
-#line 78 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    str ->at +    1  ) >    str ->slice .size  )){
-
-#line 79 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    err_fail(    (err_Err* )(    e),
-#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    et,
-#line 79 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    err_OutOfTail,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::protonerf::encode_varint",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    79,
-#line 79 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    "short write"    );
-
-#line 80 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  return ;
-
-}
-
-
-#line 82 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  uint8_t*  const  mm  =     slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    ))    );
-
-#line 83 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-;
-
-#line 84 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    mm [     str ->at] = (    index <<    3  );
-
-#line 85 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    str ->at +=     1;
-
-#line 86 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    protonerf_write_varint(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),    (err_Err* )(    e),
-#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    et,    (uint32_t)(
-#line 86 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    value),    (uint32_t)((    value >>    32  ))    );
+#line 113 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  return     (protonerf_Decoder){.mem = 
+#line 114 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    mem,.size = 
+#line 115 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    size,};
 
 }
 
@@ -2105,68 +1952,66 @@ if ((((
 }
 
 
-#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et)
+#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint64_t byteorder_to_le64 (uint64_t const  x)
 {
 
-#line 184 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  uint64_t val  =     0;
-  for (
+#line 85 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  int const  __workaround  =     BYTE_ORDER;
 
-#line 185 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  uint64_t intlen  =     0;;
-(    intlen ++)){
+#line 87 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+(void)__workaround;
+        #if BYTE_ORDER == BIG_ENDIAN
+            return bswap_64(x);
+        #else
+            return x;
+        #endif
 
-#line 186 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-(    self ->at ++);
-if ((
-#line 187 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    self ->at >=    self ->size  )){
+}
 
-#line 188 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+
+#line 89 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+void __attribute__ ((visibility ("default"))) protonerf_encode_f64 (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, double value)
+{
+if ((((
+#line 92 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    str ->at +    1  ) >    str ->slice .size  ) ||(    str ->slice .size <    9  )  )){
+
+#line 93 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
     err_fail(    (err_Err* )(    e),
-#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+#line 89 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
     et,
-#line 188 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    protonerf_Invalid,
+#line 93 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    err_OutOfTail,
 #line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
     "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
 #line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::protonerf::read_varint",
+    "::protonerf::encode_f64",
 #line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    188,
-#line 188 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    "short read"    );
+    93,
+#line 93 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    "short write"    );
 
-#line 189 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  return     0;
-
-}
-
-
-#line 191 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-;
-
-#line 192 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  uint8_t const  b  =     self ->mem [     self ->at];
-
-#line 193 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    val |= (    (uint64_t)((    b &    127  )) <<(    7 *    intlen  )  );
-if (((
-#line 194 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    b &    128  ) ==    0  )){
-
-#line 195 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-break;
+#line 94 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  return ;
 
 }
 
 
-}
+#line 97 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  uint64_t xv  =     0;
 
+#line 98 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    memcpy(( &    xv),( &    value),    8    );
 
-#line 198 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  return     val;
+#line 100 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    xv =     byteorder_to_le64(    xv    );
+
+#line 101 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    slice_mut_slice_push(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),((    index <<    3  ) |    1  )    );
+
+#line 102 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    slice_mut_slice_push64(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),    xv    );
 
 }
 
@@ -2489,16 +2334,171 @@ break;}
 }
 
 
-#line 112 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-protonerf_Decoder __attribute__ ((visibility ("default"))) protonerf_decode (uint8_t const *  const  mem, uintptr_t const  size)
+#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+void __attribute__ ((visibility ("default"))) protonerf_encode_varint (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uint64_t value)
+{
+if (((
+#line 78 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    str ->at +    1  ) >    str ->slice .size  )){
+
+#line 79 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    err_fail(    (err_Err* )(    e),
+#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    et,
+#line 79 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    err_OutOfTail,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::protonerf::encode_varint",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    79,
+#line 79 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    "short write"    );
+
+#line 80 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  return ;
+
+}
+
+
+#line 82 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  uint8_t*  const  mm  =     slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    ))    );
+
+#line 83 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+;
+
+#line 84 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    mm [     str ->at] = (    index <<    3  );
+
+#line 85 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    str ->at +=     1;
+
+#line 86 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    protonerf_write_varint(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),    (err_Err* )(    e),
+#line 75 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    et,    (uint32_t)(
+#line 86 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    value),    (uint32_t)((    value >>    32  ))    );
+
+}
+
+
+#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et)
 {
 
-#line 113 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-  return     (protonerf_Decoder){.mem = 
-#line 114 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    mem,.size = 
-#line 115 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-    size,};
+#line 184 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  uint64_t val  =     0;
+  for (
+
+#line 185 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  uint64_t intlen  =     0;;
+(    intlen ++)){
+
+#line 186 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+(    self ->at ++);
+if ((
+#line 187 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    self ->at >=    self ->size  )){
+
+#line 188 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    err_fail(    (err_Err* )(    e),
+#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    et,
+#line 188 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    protonerf_Invalid,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::protonerf::read_varint",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    188,
+#line 188 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    "short read"    );
+
+#line 189 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  return     0;
+
+}
+
+
+#line 191 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+;
+
+#line 192 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  uint8_t const  b  =     self ->mem [     self ->at];
+
+#line 193 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    val |= (    (uint64_t)((    b &    127  )) <<(    7 *    intlen  )  );
+if (((
+#line 194 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    b &    128  ) ==    0  )){
+
+#line 195 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+break;
+
+}
+
+
+}
+
+
+#line 198 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  return     val;
+
+}
+
+
+#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+void __attribute__ ((visibility ("default"))) protonerf_encode_bytes_start (slice_mut_slice_MutSlice*  const  str, err_Err*  const  e, uintptr_t const  et, uint8_t const  index, uintptr_t const  l)
+{
+if (((
+#line 35 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    str ->at +    1  ) >    str ->slice .size  )){
+
+#line 36 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    err_fail(    (err_Err* )(    e),
+#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    et,
+#line 36 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    err_OutOfTail,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::protonerf::encode_bytes_start",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    36,
+#line 36 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    "short write"    );
+
+#line 37 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  return ;
+
+}
+
+
+#line 40 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+  uint8_t*  const  mm  =     slice_mut_slice_mem(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    ))    );
+
+#line 41 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+;
+
+#line 42 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    mm [     str ->at] = ((    index <<    3  ) |    2  );
+
+#line 43 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    str ->at +=     1;
+
+#line 44 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+;
+
+#line 48 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    protonerf_write_varint(    (slice_mut_slice_MutSlice* )(    slice_mut_slice_borrow(    str    )),    (err_Err* )(    e),
+#line 32 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    et,    (uint32_t)(
+#line 48 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+    l),    0    );
 
 }
 

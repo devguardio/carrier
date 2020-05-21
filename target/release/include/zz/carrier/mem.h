@@ -6,6 +6,6 @@
 #include <stddef.h>
 extern void mem_move (void const *  const  src, void*  const  dst, uintptr_t const  n);
 extern void mem_set (void*  const  dst, uint8_t const  c, uintptr_t const  n);
-extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
 extern bool mem_eq (void const *  const  a, void const *  const  b, uintptr_t const  n);
+extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
 #endif

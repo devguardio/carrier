@@ -6,5 +6,4 @@
 #include <stddef.h>
 char  const * symbols_nameof (uintptr_t const  s);
 char  const * symbols_nameof_checked (uintptr_t const  s);
-char  const * symbols_nameof (uintptr_t const  s);
 #endif

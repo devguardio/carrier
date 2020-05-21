@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
+pub type recvfrom_fn = extern fn( Zsock: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *mut u8,  Zmemlen: *mut usize,  Zaddr: *mut u8)  -> super::io::Result;
 
 pub struct rsSocket {
     pub inner:  Box<Socket>,
@@ -62,18 +63,14 @@ impl rsSocket {
         }
     }
 }
-pub type recvfrom_fn = extern fn( Zsock: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *mut u8,  Zmemlen: *mut usize,  Zaddr: *mut u8)  -> super::io::Result;
 pub type sendto_fn = extern fn( Zsock: *mut u8,  Ze: *const u8,  Zet: usize,  Zmem: *const u8,  Zmemlen: *mut usize,  Zaddr: *const u8)  -> super::io::Result;
 extern {
-    #[link_name = "sizeof_net_udp_Socket"]
-    pub static sizeof_Socket: libc::size_t;
-
-    #[link_name = "net_udp_close"]
-    pub fn r#close( Zself: *mut u8);
-
 
     #[link_name = "net_udp_recvfrom"]
     pub fn r#recvfrom( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: *mut u8,  Zst: usize,  Zfrom: *mut u8)  -> super::io::Result;
+
+    #[link_name = "sizeof_net_udp_Socket"]
+    pub static sizeof_Socket: libc::size_t;
 
 
     #[link_name = "net_udp_sendto"]
@@ -81,5 +78,8 @@ extern {
 
     #[link_name = "net_udp_os_new"]
     pub fn r#os_new( Z_engine: *const u8,  Ze: *mut u8,  Zet: usize,  Zaddr: *const u8,  Zasync: *mut u8)  -> super::net_udp::Socket;
+
+    #[link_name = "net_udp_close"]
+    pub fn r#close( Zself: *mut u8);
 
 }

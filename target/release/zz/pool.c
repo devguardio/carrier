@@ -14,10 +14,6 @@ typedef struct err_Err_t err_Err;
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 21 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 struct pool_Pool_t;
 typedef struct pool_Pool_t pool_Pool;
@@ -30,20 +26,33 @@ typedef struct string_String_t string_String;
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
 #line 1 ""
 #include <stddef.h>
 
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+#line 5 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdint.h>
 
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 12 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#define pool_ALIGN ((uintptr_t )    (uintptr_t)(    sizeof(    uintptr_t    )))
 
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 250 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-static void pool_bitarray_clear (uint8_t*  const  a, uintptr_t const  index);
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 179 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_assert (bool const  a, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t {
@@ -56,22 +65,81 @@ struct slice_slice_Slice_t {
 }
 ;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
+#line 21 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+struct pool_Pool_t {
 
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
+#line 22 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+   uintptr_t blocksize ;
 
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
+#line 23 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+   uintptr_t poolsize ;
+
+#line 25 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+   uint8_t*  used ;
+
+#line 26 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+   uint8_t*  pool ;
+
+#line 29 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+   uint8_t mem[] ;
 }
 ;
+size_t sizeof_pool_Pool(size_t tail) { return sizeof(pool_Pool) + (tail * sizeof(uint8_t)); }
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+#line 103 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void * pool_alloc (pool_Pool*  const  self);
 
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+#line 157 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_panic (char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <string.h>
+
+#line 7 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+
+#line 1 "/home/aep/proj/zz/modules/pool/src/asan.h"
+// Marks memory region [addr, addr+size) as unaddressable.
+// This memory must be previously allocated by the user program. Accessing
+// addresses in this region from instrumented code is forbidden until
+// this region is unpoisoned. This function is not guaranteed to poison
+// the whole region - it may poison only subregion of [addr, addr+size) due
+// to ASan alignment restrictions.
+// Method is NOT thread-safe in the sense that no two threads can
+// (un)poison memory in the same memory region simultaneously.
+void __asan_poison_memory_region(void const volatile *addr, size_t size);
+// Marks memory region [addr, addr+size) as addressable.
+// This memory must be previously allocated by the user program. Accessing
+// addresses in this region is allowed until this region is poisoned again.
+// This function may unpoison a superregion of [addr, addr+size) due to
+// ASan alignment restrictions.
+// Method is NOT thread-safe in the sense that no two threads can
+// (un)poison memory in the same memory region simultaneously.
+void __asan_unpoison_memory_region(void const volatile *addr, size_t size);
+
+// User code should use macros instead of functions.
+#if defined(__SANITIZE_ADDRESS__)
+#define ASAN_POISON_MEMORY_REGION(addr, size) \
+    __asan_poison_memory_region((addr), (size))
+#define ASAN_UNPOISON_MEMORY_REGION(addr, size) \
+    __asan_unpoison_memory_region((addr), (size))
+#else
+#define ASAN_POISON_MEMORY_REGION(addr, size) \
+    ((void)(addr), (void)(size))
+#define ASAN_UNPOISON_MEMORY_REGION(addr, size) \
+    ((void)(addr), (void)(size))
+#endif
+
+#line 38 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -1433,50 +1501,11 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
 #line 244 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 static void pool_bitarray_set (uint8_t*  const  a, uintptr_t const  index);
 
-#line 21 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-struct pool_Pool_t {
-
-#line 22 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-   uintptr_t blocksize ;
-
-#line 23 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-   uintptr_t poolsize ;
-
-#line 25 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-   uint8_t*  used ;
-
-#line 26 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-   uint8_t*  pool ;
-
-#line 29 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-   uint8_t mem[] ;
-}
-;
-size_t sizeof_pool_Pool(size_t tail) { return sizeof(pool_Pool) + (tail * sizeof(uint8_t)); }
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 1 "/home/aep/proj/zz/modules/symbols/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t {
@@ -1503,117 +1532,79 @@ struct err_Err_t {
 }
 ;
 
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
 
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
 
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
 
-#line 3 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-#include <string.h>
-
-#line 5 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdint.h>
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 
 #line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
 
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 256 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-static bool pool_bitarray_test (uint8_t*  const  a, uintptr_t const  index);
-
-#line 72 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-uintptr_t pool_free_bytes (pool_Pool const *  const  self);
-
-#line 12 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#define pool_ALIGN ((uintptr_t )    (uintptr_t)(    sizeof(    uintptr_t    )))
-
-#line 7 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/asan.h"
-// Marks memory region [addr, addr+size) as unaddressable.
-// This memory must be previously allocated by the user program. Accessing
-// addresses in this region from instrumented code is forbidden until
-// this region is unpoisoned. This function is not guaranteed to poison
-// the whole region - it may poison only subregion of [addr, addr+size) due
-// to ASan alignment restrictions.
-// Method is NOT thread-safe in the sense that no two threads can
-// (un)poison memory in the same memory region simultaneously.
-void __asan_poison_memory_region(void const volatile *addr, size_t size);
-// Marks memory region [addr, addr+size) as addressable.
-// This memory must be previously allocated by the user program. Accessing
-// addresses in this region is allowed until this region is poisoned again.
-// This function may unpoison a superregion of [addr, addr+size) due to
-// ASan alignment restrictions.
-// Method is NOT thread-safe in the sense that no two threads can
-// (un)poison memory in the same memory region simultaneously.
-void __asan_unpoison_memory_region(void const volatile *addr, size_t size);
-
-// User code should use macros instead of functions.
-#if defined(__SANITIZE_ADDRESS__)
-#define ASAN_POISON_MEMORY_REGION(addr, size) \
-    __asan_poison_memory_region((addr), (size))
-#define ASAN_UNPOISON_MEMORY_REGION(addr, size) \
-    __asan_unpoison_memory_region((addr), (size))
-#else
-#define ASAN_POISON_MEMORY_REGION(addr, size) \
-    ((void)(addr), (void)(size))
-#define ASAN_UNPOISON_MEMORY_REGION(addr, size) \
-    ((void)(addr), (void)(size))
-#endif
-
-#line 179 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_assert (bool const  a, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 120 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void * pool_malloc (pool_Pool*  const  self, uintptr_t size);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 103 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void * pool_alloc (pool_Pool*  const  self);
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
 #line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
 
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
 
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdio.h>
+
+#line 75 "/home/aep/proj/zz/modules/hex/src/lib.zz"
+void hex_fdump (FILE*  const  f, uint8_t const *  const  data, uintptr_t const  l);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 256 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+static bool pool_bitarray_test (uint8_t*  const  a, uintptr_t const  index);
+
+#line 120 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void * pool_malloc (pool_Pool*  const  self, uintptr_t size);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 250 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+static void pool_bitarray_clear (uint8_t*  const  a, uintptr_t const  index);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
 #line 263 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 typedef void (*pool_iterator) (pool_Pool*  const  self, void*  const  block, void*  const  user);
@@ -1621,69 +1612,173 @@ typedef void (*pool_iterator) (pool_Pool*  const  self, void*  const  block, voi
 #line 271 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 void pool_each (pool_Pool*  const  self, pool_iterator const  it, void*  const  user);
 
-#line 157 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_panic (char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
+#include <stdarg.h>
 
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
 
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 256 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+static bool pool_bitarray_test (uint8_t*  const  a, uintptr_t const  index);
 
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 75 "/home/aep/proj/zz/modules/hex/src/lib.zz"
-void hex_fdump (FILE*  const  f, uint8_t const *  const  data, uintptr_t const  l);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 72 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+uintptr_t pool_free_bytes (pool_Pool const *  const  self);
 
 #line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
 
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 38 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 203 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void pool_free (pool_Pool*  const  self, void const *  ptr_);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
 #line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
 #line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
 
-#line 250 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-static void pool_bitarray_clear (uint8_t*  const  a, uintptr_t const  index)
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 203 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void pool_free (pool_Pool*  const  self, void const *  ptr_);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 103 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void * __attribute__ ((visibility ("default"))) pool_alloc (pool_Pool*  const  self)
 {
 
-#line 253 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    a [ (    index /    8  )] &=     (uint8_t)(( ~(    1 <<(    index %    8  )  )));
+#line 108 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  void*  const  r  =     pool_malloc(    self,(    self ->blocksize -    8  )    );
+
+#line 110 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+;
+
+#line 112 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  return     r;
+
+}
+
+
+#line 38 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void __attribute__ ((visibility ("default"))) pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize)
+{
+
+#line 42 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    blocksize +=     8;
+if (((
+#line 44 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    blocksize %    pool_ALIGN  ) >    0  )){
+
+#line 45 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    blocksize += (    pool_ALIGN -(    blocksize %    pool_ALIGN  )  );
+
+}
+
+
+#line 49 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    err_assert((    pt >(    pt /    (uintptr_t)(    blocksize)  )  ),
+#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/pool/src/lib.zz",
+#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::pool::make",
+#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    49    );
+
+#line 50 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    err_assert(((    (uintptr_t)(    blocksize) %    pool_ALIGN  ) ==    0  ),
+#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/pool/src/lib.zz",
+#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::pool::make",
+#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    50    );
+
+#line 52 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    self ->blocksize =     blocksize;
+
+#line 53 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  uintptr_t usedmemlen  = ((    pt /    (uintptr_t)(    blocksize)  ) /    8  );
+{
+
+#line 54 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    usedmemlen += (    pool_ALIGN -(    usedmemlen %    pool_ALIGN  )  );
+
+}
+
+
+#line 56 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    self ->used =     self ->mem;
+
+#line 57 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    self ->pool = (    self ->mem +    usedmemlen  );
+
+#line 59 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    err_assert(((    (uintptr_t)(    self ->used) %    pool_ALIGN  ) ==    0  ),
+#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/pool/src/lib.zz",
+#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::pool::make",
+#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    59    );
+
+#line 60 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    err_assert(((    (uintptr_t)(    self ->pool) %    pool_ALIGN  ) ==    0  ),
+#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/pool/src/lib.zz",
+#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::pool::make",
+#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    60    );
+
+#line 62 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    self ->poolsize = (    pt -    usedmemlen  );
+
+#line 64 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    memset(    self ->used,    0,    usedmemlen    );
+
+#line 66 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    ASAN_POISON_MEMORY_REGION(    self ->pool,    self ->poolsize    );
+
+#line 68 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+;
 
 }
 
@@ -1694,88 +1789,6 @@ static void pool_bitarray_set (uint8_t*  const  a, uintptr_t const  index)
 
 #line 247 "/home/aep/proj/zz/modules/pool/src/lib.zz"
     a [ (    index /    8  )] |=     (uint8_t)((    1 <<(    index %    8  )  ));
-
-}
-
-
-#line 256 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-static bool pool_bitarray_test (uint8_t*  const  a, uintptr_t const  index)
-{
-
-#line 259 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  return ((    a [ (    index /    8  )] &    (uint8_t)((    1 <<(    index %    8  )  ))  ) >    0  );
-
-}
-
-
-#line 72 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-uintptr_t __attribute__ ((visibility ("default"))) pool_free_bytes (pool_Pool const *  const  self)
-{
-
-#line 74 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-;
-
-#line 75 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-;
-
-#line 77 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  uintptr_t c  =     0;
-  for (
-
-#line 78 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  uintptr_t i  =     0;(    i <(    self ->poolsize /    (uintptr_t)(    self ->blocksize)  )  );
-(    i ++)){
-
-#line 80 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-;
-if ((
-#line 81 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    self ->used [ (    i /    8  )] ==    0xff  )){
-
-#line 82 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    i +=     7;
-
-#line 83 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-continue;
-
-}
-
-
-#line 86 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-;
-if ((
-#line 87 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    self ->used [ (    i /    8  )] ==    0x00  )){
-
-#line 88 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    c += (    8 *    (uintptr_t)(    self ->blocksize)  );
-
-#line 89 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    i +=     7;
-
-#line 90 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-continue;
-
-}
-
-
-#line 93 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-;
-if ((
-#line 94 "/home/aep/proj/zz/modules/pool/src/lib.zz"
- !    pool_bitarray_test(    self ->used,    i    ))){
-
-#line 95 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    c +=     (uintptr_t)(    self ->blocksize);
-
-}
-
-
-}
-
-
-#line 98 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  return     c;
 
 }
 
@@ -1974,18 +1987,12 @@ if (
 }
 
 
-#line 103 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void * __attribute__ ((visibility ("default"))) pool_alloc (pool_Pool*  const  self)
+#line 250 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+static void pool_bitarray_clear (uint8_t*  const  a, uintptr_t const  index)
 {
 
-#line 108 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  void*  const  r  =     pool_malloc(    self,(    self ->blocksize -    8  )    );
-
-#line 110 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-;
-
-#line 112 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  return     r;
+#line 253 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    a [ (    index /    8  )] &=     (uint8_t)(( ~(    1 <<(    index %    8  )  )));
 
 }
 
@@ -2048,88 +2055,84 @@ if (
 }
 
 
-#line 38 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void __attribute__ ((visibility ("default"))) pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize)
+#line 256 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+static bool pool_bitarray_test (uint8_t*  const  a, uintptr_t const  index)
 {
 
-#line 42 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    blocksize +=     8;
-if (((
-#line 44 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    blocksize %    pool_ALIGN  ) >    0  )){
-
-#line 45 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    blocksize += (    pool_ALIGN -(    blocksize %    pool_ALIGN  )  );
+#line 259 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  return ((    a [ (    index /    8  )] &    (uint8_t)((    1 <<(    index %    8  )  ))  ) >    0  );
 
 }
 
 
-#line 49 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    err_assert((    pt >(    pt /    (uintptr_t)(    blocksize)  )  ),
-#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/pool/src/lib.zz",
-#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::pool::make",
-#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    49    );
-
-#line 50 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    err_assert(((    (uintptr_t)(    blocksize) %    pool_ALIGN  ) ==    0  ),
-#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/pool/src/lib.zz",
-#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::pool::make",
-#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    50    );
-
-#line 52 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    self ->blocksize =     blocksize;
-
-#line 53 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-  uintptr_t usedmemlen  = ((    pt /    (uintptr_t)(    blocksize)  ) /    8  );
+#line 72 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+uintptr_t __attribute__ ((visibility ("default"))) pool_free_bytes (pool_Pool const *  const  self)
 {
 
-#line 54 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    usedmemlen += (    pool_ALIGN -(    usedmemlen %    pool_ALIGN  )  );
-
-}
-
-
-#line 56 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    self ->used =     self ->mem;
-
-#line 57 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    self ->pool = (    self ->mem +    usedmemlen  );
-
-#line 59 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    err_assert(((    (uintptr_t)(    self ->used) %    pool_ALIGN  ) ==    0  ),
-#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/pool/src/lib.zz",
-#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::pool::make",
-#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    59    );
-
-#line 60 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    err_assert(((    (uintptr_t)(    self ->pool) %    pool_ALIGN  ) ==    0  ),
-#line 181 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/pool/src/lib.zz",
-#line 182 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::pool::make",
-#line 183 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    60    );
-
-#line 62 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    self ->poolsize = (    pt -    usedmemlen  );
-
-#line 64 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    memset(    self ->used,    0,    usedmemlen    );
-
-#line 66 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-    ASAN_POISON_MEMORY_REGION(    self ->pool,    self ->poolsize    );
-
-#line 68 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#line 74 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 ;
+
+#line 75 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+;
+
+#line 77 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  uintptr_t c  =     0;
+  for (
+
+#line 78 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  uintptr_t i  =     0;(    i <(    self ->poolsize /    (uintptr_t)(    self ->blocksize)  )  );
+(    i ++)){
+
+#line 80 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+;
+if ((
+#line 81 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    self ->used [ (    i /    8  )] ==    0xff  )){
+
+#line 82 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    i +=     7;
+
+#line 83 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+continue;
+
+}
+
+
+#line 86 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+;
+if ((
+#line 87 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    self ->used [ (    i /    8  )] ==    0x00  )){
+
+#line 88 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    c += (    8 *    (uintptr_t)(    self ->blocksize)  );
+
+#line 89 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    i +=     7;
+
+#line 90 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+continue;
+
+}
+
+
+#line 93 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+;
+if ((
+#line 94 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+ !    pool_bitarray_test(    self ->used,    i    ))){
+
+#line 95 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+    c +=     (uintptr_t)(    self ->blocksize);
+
+}
+
+
+}
+
+
+#line 98 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+  return     c;
 
 }
 

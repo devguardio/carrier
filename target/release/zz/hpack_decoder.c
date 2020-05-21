@@ -6,33 +6,17 @@
 struct string_String_t;
 typedef struct string_String_t string_String;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 182 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 struct hpack_decoder_Iterator_t;
 typedef struct hpack_decoder_Iterator_t hpack_decoder_Iterator;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
 
 #line 9 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 struct hpack_decoder_Entry_t;
@@ -42,29 +26,43 @@ typedef struct hpack_decoder_Entry_t hpack_decoder_Entry;
 struct hpack_decoder_Iterator_t;
 typedef struct hpack_decoder_Iterator_t hpack_decoder_Iterator;
 
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 15 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-extern const __attribute__ ((unused)) size_t hpack_decoder_Invalid;
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
 
 #line 1 ""
 #include <stddef.h>
 
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
+#include <stdarg.h>
 
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <string.h>
+
+#line 191 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+void hpack_decoder_decode (hpack_decoder_Iterator*  const  self, slice_slice_Slice const *  const  wire);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t {
@@ -77,11 +75,87 @@ struct slice_slice_Slice_t {
 }
 ;
 
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+#line 9 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+struct hpack_decoder_Entry_t {
 
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+#line 10 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   slice_slice_Slice key ;
+
+#line 11 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   slice_slice_Slice val ;
+}
+;
+
+#line 7 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+#define hpack_decoder_DYNSIZE ((uintptr_t )    16)
+
+#line 182 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+struct hpack_decoder_Iterator_t {
+
+#line 183 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   slice_slice_Slice key ;
+
+#line 184 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   slice_slice_Slice val ;
+
+#line 186 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   slice_slice_Slice wire ;
+
+#line 187 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   uintptr_t at ;
+
+#line 188 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+   hpack_decoder_Entry dyn[    hpack_decoder_DYNSIZE] ;
+}
+;
+const size_t sizeof_hpack_decoder_Iterator = sizeof(hpack_decoder_Iterator);
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 15 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+extern const __attribute__ ((unused)) size_t hpack_decoder_Invalid;
+
+#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+extern unsigned int hpack_decoder_decode_integer (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const  prefix_size);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
 #line 17 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 typedef enum {
@@ -93,36 +167,150 @@ typedef enum {
 
 } hpack_decoder_Repr;
 
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
+#line 257 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+static const  __attribute__ ((unused)) char  const * hpack_decoder_STATIC_KEYS  [  ] ={
+#line 258 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    0,
+#line 259 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":authority",
+#line 260 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":method",
+#line 261 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":method",
+#line 262 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":path",
+#line 263 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":path",
+#line 264 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":scheme",
+#line 265 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":scheme",
+#line 266 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 267 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 268 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 269 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 270 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 271 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 272 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    ":status",
+#line 273 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "accept-charset",
+#line 274 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "accept-encoding",
+#line 275 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "accept-language",
+#line 276 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "accept-ranges",
+#line 277 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "accept",
+#line 278 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "access-control-allow-origin",
+#line 279 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "age",
+#line 280 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "allow",
+#line 281 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "authorization",
+#line 282 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "cache-control",
+#line 283 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-disposition",
+#line 284 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-encoding",
+#line 285 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-language",
+#line 286 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-length",
+#line 287 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-location",
+#line 288 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-range",
+#line 289 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "content-type",
+#line 290 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "cookie",
+#line 291 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "date",
+#line 292 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "etag",
+#line 293 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "expect",
+#line 294 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "expires",
+#line 295 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "from",
+#line 296 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "host",
+#line 297 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "if-match",
+#line 298 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "if-modified-since",
+#line 299 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "if-none-match",
+#line 300 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "if-range",
+#line 301 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "if-unmodified-since",
+#line 302 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "last-modified",
+#line 303 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "link",
+#line 304 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "location",
+#line 305 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "max-forwards",
+#line 306 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "proxy-authenticate",
+#line 307 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "proxy-authorization",
+#line 308 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "range",
+#line 309 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "referer",
+#line 310 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "refresh",
+#line 311 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "retry-after",
+#line 312 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "server",
+#line 313 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "set-cookie",
+#line 314 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "strict-transport-security",
+#line 315 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "transfer-encoding",
+#line 316 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "user-agent",
+#line 317 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "vary",
+#line 318 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "via",
+#line 319 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "www-authenticate",};
 
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
 
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
+#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdio.h>
 
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
 
 #line 25 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 typedef void (*hpack_decoder_callback) (err_Err*  const  e, uintptr_t const  et, void*  const  user, slice_slice_Slice const *  const  key, slice_slice_Slice const *  const  val);
@@ -1490,93 +1678,54 @@ mypow10(int exponent)
 #line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
 
 #line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
 
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
 
 #line 16 "/home/aep/proj/zz/modules/err/src/lib.zz"
 extern const __attribute__ ((unused)) size_t err_NotImplemented;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
 #line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
 slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 
-#line 3 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-#include <string.h>
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 191 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-void hpack_decoder_decode (hpack_decoder_Iterator*  const  self, slice_slice_Slice const *  const  wire);
-
-#line 9 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-struct hpack_decoder_Entry_t {
-
-#line 10 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   slice_slice_Slice key ;
-
-#line 11 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   slice_slice_Slice val ;
-}
-;
-
-#line 7 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-#define hpack_decoder_DYNSIZE ((uintptr_t )    16)
-
-#line 182 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-struct hpack_decoder_Iterator_t {
-
-#line 183 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   slice_slice_Slice key ;
-
-#line 184 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   slice_slice_Slice val ;
-
-#line 186 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   slice_slice_Slice wire ;
-
-#line 187 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   uintptr_t at ;
-
-#line 188 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-   hpack_decoder_Entry dyn[    hpack_decoder_DYNSIZE] ;
-}
-;
-const size_t sizeof_hpack_decoder_Iterator = sizeof(hpack_decoder_Iterator);
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
 
 #line 322 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 static const  __attribute__ ((unused)) char  const * hpack_decoder_STATIC_VALS  [  ] ={
@@ -1705,216 +1854,71 @@ static const  __attribute__ ((unused)) char  const * hpack_decoder_STATIC_VALS  
 #line 384 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
     "",};
 
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 1 "/home/aep/proj/zz/modules/symbols/src/lib.zz"
-#include <stdio.h>
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
 
 #line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
 
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #line 28 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 static hpack_decoder_Repr hpack_decoder_get_repr (uint8_t const  b);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 257 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-static const  __attribute__ ((unused)) char  const * hpack_decoder_STATIC_KEYS  [  ] ={
-#line 258 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    0,
-#line 259 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":authority",
-#line 260 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":method",
-#line 261 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":method",
-#line 262 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":path",
-#line 263 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":path",
-#line 264 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":scheme",
-#line 265 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":scheme",
-#line 266 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 267 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 268 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 269 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 270 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 271 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 272 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    ":status",
-#line 273 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "accept-charset",
-#line 274 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "accept-encoding",
-#line 275 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "accept-language",
-#line 276 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "accept-ranges",
-#line 277 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "accept",
-#line 278 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "access-control-allow-origin",
-#line 279 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "age",
-#line 280 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "allow",
-#line 281 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "authorization",
-#line 282 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "cache-control",
-#line 283 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-disposition",
-#line 284 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-encoding",
-#line 285 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-language",
-#line 286 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-length",
-#line 287 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-location",
-#line 288 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-range",
-#line 289 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "content-type",
-#line 290 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "cookie",
-#line 291 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "date",
-#line 292 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "etag",
-#line 293 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "expect",
-#line 294 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "expires",
-#line 295 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "from",
-#line 296 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "host",
-#line 297 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "if-match",
-#line 298 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "if-modified-since",
-#line 299 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "if-none-match",
-#line 300 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "if-range",
-#line 301 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "if-unmodified-since",
-#line 302 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "last-modified",
-#line 303 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "link",
-#line 304 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "location",
-#line 305 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "max-forwards",
-#line 306 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "proxy-authenticate",
-#line 307 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "proxy-authorization",
-#line 308 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "range",
-#line 309 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "referer",
-#line 310 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "refresh",
-#line 311 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "retry-after",
-#line 312 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "server",
-#line 313 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "set-cookie",
-#line 314 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "strict-transport-security",
-#line 315 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "transfer-encoding",
-#line 316 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "user-agent",
-#line 317 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "vary",
-#line 318 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "via",
-#line 319 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "www-authenticate",};
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #line 197 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 bool hpack_decoder_next (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et);
 
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
-#line 28 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-static hpack_decoder_Repr hpack_decoder_get_repr (uint8_t const  b);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
 
 #line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
 #line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-extern unsigned int hpack_decoder_decode_integer (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const  prefix_size);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
 #line 100 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 static bool hpack_decoder_decode_literal (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, bool const  index);
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
 
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
 
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
+#line 28 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+static hpack_decoder_Repr hpack_decoder_get_repr (uint8_t const  b);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
 
 #line 191 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
 void __attribute__ ((visibility ("default"))) hpack_decoder_decode (hpack_decoder_Iterator*  const  self, slice_slice_Slice const *  const  wire)
@@ -1925,6 +1929,128 @@ void __attribute__ ((visibility ("default"))) hpack_decoder_decode (hpack_decode
 
 #line 194 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
     self ->at =     0;
+
+}
+
+
+#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+unsigned int __attribute__ ((visibility ("hidden"))) hpack_decoder_decode_integer (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const  prefix_size)
+{
+
+#line 49 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  uint8_t mask  =     0xff;
+if ((
+#line 50 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    prefix_size <    8  )){
+
+#line 51 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    mask = ((    1 <<    prefix_size  ) -    1  );
+
+}
+
+
+#line 54 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+;
+
+#line 55 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  unsigned int value  =     (unsigned int)((    self ->wire .mem [     self ->at] &    mask  ));
+
+#line 56 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+(    self ->at ++);
+if ((
+#line 59 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    value <    (unsigned int)(    mask)  )){
+
+#line 60 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     value;
+
+}
+
+
+#line 64 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  uintptr_t consumed  =     1;
+
+#line 67 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  uint8_t m  =     0;
+  for (;(
+#line 69 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    self ->at <    self ->wire .size  );
+(    self ->at ++)){
+
+#line 72 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    consumed +=     1;
+
+#line 73 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+;
+
+#line 74 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  uint8_t const  b  =     self ->wire .mem [     self ->at];
+
+#line 75 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    value +=     (unsigned int)(((    b &    127  ) *(    1 <<    m  )  ));
+
+#line 76 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    m +=     7;
+if (((
+#line 78 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    b &    128  ) !=    128  )){
+
+#line 79 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+(    self ->at ++);
+
+#line 80 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     value;
+
+}
+
+if ((
+#line 86 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    consumed >=    5  )){
+
+#line 87 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    err_fail(    (err_Err* )(    e),
+#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    et,
+#line 87 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    hpack_decoder_Invalid,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::hpack::decoder::decode_integer",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    87,
+#line 87 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "integer overflow"    );
+
+#line 88 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     0;
+
+}
+
+
+}
+
+
+#line 93 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+;
+
+#line 94 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    err_fail(    (err_Err* )(    e),
+#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    et,
+#line 94 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    hpack_decoder_Invalid,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::hpack::decoder::decode_integer",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    94,
+#line 94 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    "short read"    );
+
+#line 95 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     0;
 
 }
 
@@ -2127,174 +2253,6 @@ break;}
 
 #line 252 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
   return     false;
-
-}
-
-
-#line 28 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-static hpack_decoder_Repr hpack_decoder_get_repr (uint8_t const  b)
-{
-if (((
-#line 29 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    b &    128  ) ==    128  )){
-
-#line 30 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     hpack_decoder_Repr_Indexed;
-
-}
- else if (((
-#line 31 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    b &    192  ) ==    64  )){
-
-#line 32 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     hpack_decoder_Repr_LiteralWithIncrementalIndexing;
-
-}
- else if (((
-#line 33 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    b &    32  ) ==    32  )){
-
-#line 34 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     hpack_decoder_Repr_SizeUpdate;
-
-}
- else if (((
-#line 35 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    b &    16  ) ==    16  )){
-
-#line 36 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     hpack_decoder_Repr_LiteralNeverIndexed;
-
-}
- else {
-
-#line 38 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     hpack_decoder_Repr_LiteralWithoutIndexing;
-
-}
-
-
-}
-
-
-#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-unsigned int __attribute__ ((visibility ("hidden"))) hpack_decoder_decode_integer (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const  prefix_size)
-{
-
-#line 49 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  uint8_t mask  =     0xff;
-if ((
-#line 50 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    prefix_size <    8  )){
-
-#line 51 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    mask = ((    1 <<    prefix_size  ) -    1  );
-
-}
-
-
-#line 54 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-;
-
-#line 55 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  unsigned int value  =     (unsigned int)((    self ->wire .mem [     self ->at] &    mask  ));
-
-#line 56 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-(    self ->at ++);
-if ((
-#line 59 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    value <    (unsigned int)(    mask)  )){
-
-#line 60 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     value;
-
-}
-
-
-#line 64 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  uintptr_t consumed  =     1;
-
-#line 67 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  uint8_t m  =     0;
-  for (;(
-#line 69 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    self ->at <    self ->wire .size  );
-(    self ->at ++)){
-
-#line 72 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    consumed +=     1;
-
-#line 73 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-;
-
-#line 74 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  uint8_t const  b  =     self ->wire .mem [     self ->at];
-
-#line 75 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    value +=     (unsigned int)(((    b &    127  ) *(    1 <<    m  )  ));
-
-#line 76 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    m +=     7;
-if (((
-#line 78 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    b &    128  ) !=    128  )){
-
-#line 79 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-(    self ->at ++);
-
-#line 80 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     value;
-
-}
-
-if ((
-#line 86 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    consumed >=    5  )){
-
-#line 87 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    err_fail(    (err_Err* )(    e),
-#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    et,
-#line 87 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    hpack_decoder_Invalid,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::hpack::decoder::decode_integer",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    87,
-#line 87 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "integer overflow"    );
-
-#line 88 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     0;
-
-}
-
-
-}
-
-
-#line 93 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-;
-
-#line 94 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    err_fail(    (err_Err* )(    e),
-#line 42 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    et,
-#line 94 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    hpack_decoder_Invalid,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::hpack::decoder::decode_integer",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    94,
-#line 94 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-    "short read"    );
-
-#line 95 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
-  return     0;
 
 }
 
@@ -2581,6 +2539,52 @@ if ((
 
 #line 177 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
   return     true;
+
+}
+
+
+#line 28 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+static hpack_decoder_Repr hpack_decoder_get_repr (uint8_t const  b)
+{
+if (((
+#line 29 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    b &    128  ) ==    128  )){
+
+#line 30 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     hpack_decoder_Repr_Indexed;
+
+}
+ else if (((
+#line 31 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    b &    192  ) ==    64  )){
+
+#line 32 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     hpack_decoder_Repr_LiteralWithIncrementalIndexing;
+
+}
+ else if (((
+#line 33 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    b &    32  ) ==    32  )){
+
+#line 34 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     hpack_decoder_Repr_SizeUpdate;
+
+}
+ else if (((
+#line 35 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+    b &    16  ) ==    16  )){
+
+#line 36 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     hpack_decoder_Repr_LiteralNeverIndexed;
+
+}
+ else {
+
+#line 38 "/home/aep/proj/devguard/carrier/modules/hpack/src/decoder.zz"
+  return     hpack_decoder_Repr_LiteralWithoutIndexing;
+
+}
+
 
 }
 

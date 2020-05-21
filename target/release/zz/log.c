@@ -2,13 +2,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
@@ -23,290 +23,15 @@ typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-
-#line 1 ""
-#include <stddef.h>
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 13 "/home/aep/proj/zz/modules/log/src/lib.zz"
-typedef enum {
-    log_LogLevel_Invalid = 99999,
-    log_LogLevel_None = 0,
-    log_LogLevel_Error = 1,
-    log_LogLevel_Warn = 2,
-    log_LogLevel_Info = 3,
-    log_LogLevel_Debug = 4,
-
-} log_LogLevel;
-
-#line 25 "/home/aep/proj/zz/modules/log/src/lib.zz"
-static log_LogLevel log_log_level ();
-
-#line 4 "/home/aep/proj/zz/modules/log/src/lib.zz"
-
-#line 1 "/home/aep/proj/zz/modules/log/src/os.h"
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
-#if defined(__ANDROID__)
-#include <android/log.h>
-
-    #define os_zz_log_error(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        __android_log_vprint( ANDROID_LOG_ERROR, mod, fmt, args); \
-        va_end (args);
-
-    #define os_zz_log_debug(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        __android_log_vprint( ANDROID_LOG_DEBUG, mod, fmt, args); \
-        va_end (args);
-
-    #define os_zz_log_info(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        __android_log_vprint( ANDROID_LOG_INFO, mod, fmt, args); \
-        va_end (args);
-
-    #define os_zz_log_warn(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        __android_log_vprint( ANDROID_LOG_WARN, mod, fmt, args); \
-        va_end (args);
-
-#elif defined (__XTENSA__)
-
-
-    #define getenv(a) 0
-
-    typedef enum {
-        ESP_LOG_NONE,       /*!< No log output */
-        ESP_LOG_ERROR,      /*!< Critical errors, software module can not recover on its own */
-        ESP_LOG_WARN,       /*!< Error conditions from which recovery measures have been taken */
-        ESP_LOG_INFO,       /*!< Information messages which describe normal flow of events */
-        ESP_LOG_DEBUG,      /*!< Extra information which is not necessary for normal use (values, pointers, sizes, etc). */
-        ESP_LOG_VERBOSE     /*!< Bigger chunks of debugging information, or frequent messages which can potentially flood the output. */
-    } esp_log_level_t;
-
-    void nop__esp_log_writev (esp_log_level_t level, const char* tag, const char* format, va_list args) {}
-    void esp_log_writev () __attribute__ ((weak, alias ("nop__esp_log_writev")));
-
-
-    #define os_zz_log_error(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        esp_log_writev(ESP_LOG_ERROR, mod, fmt, args); \
-        va_end (args);
-
-    #define os_zz_log_debug(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        esp_log_writev(ESP_LOG_DEBUG, mod, fmt, args); \
-        va_end (args);
-
-    #define os_zz_log_info(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        esp_log_writev(ESP_LOG_INFO, mod, fmt, args); \
-        va_end (args);
-
-    #define os_zz_log_warn(mod, fmt) \
-        va_list args; \
-        va_start (args, fmt); \
-        esp_log_writev(ESP_LOG_WARN, mod, fmt, args); \
-        va_end (args);
-
-
-#else
-
-    #define os_zz_log_error(mod, fmt) \
-        fprintf(stderr, "[\x1B[31mERR\x1B[0m] %s ", mod); \
-        va_list args; \
-        va_start (args, fmt); \
-        vfprintf( \
-            stderr, \
-            fmt, \
-            args \
-        ); \
-        va_end (args); \
-        fprintf(stderr, "\n"); \
-
-    #define os_zz_log_warn(mod, fmt) \
-        fprintf(stderr, "[\x1B[33mWRN\x1B[0m] %s ", module); \
-        va_list args; \
-        va_start (args, fmt); \
-        vfprintf( \
-            stderr, \
-            fmt, \
-            args \
-        ); \
-        va_end (args); \
-        fprintf(stderr, "\n"); \
-
-    #define os_zz_log_info(mod, fmt) \
-        fprintf(stderr, "[\x1B[32mINF\x1B[0m] %s ", module); \
-        va_list args; \
-        va_start (args, fmt); \
-        vfprintf( \
-            stderr, \
-            fmt, \
-            args \
-        ); \
-        va_end (args); \
-        fprintf(stderr, "\n"); \
-
-
-    #define os_zz_log_debug(mod, fmt) \
-        fprintf(stderr, "[\x1B[36mDBG\x1B[0m] %s ", module); \
-        va_list args; \
-        va_start (args, fmt); \
-        vfprintf( \
-            stderr, \
-            fmt, \
-            args \
-        ); \
-        va_end (args); \
-        fprintf(stderr, "\n"); \
-
-#endif
-
-
-#line 60 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void log_warn (char const *  const  module, char const *  const  fmt, ...);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
 #line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
 #include <stdarg.h>
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#line 1 ""
+#include <stddef.h>
 
 #line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 23 "/home/aep/proj/zz/modules/log/src/lib.zz"
-static  __attribute__ ((unused)) log_LogLevel log_s_log_level =    log_LogLevel_Invalid;
-
-#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_cstr_eq (char const *  const  a, char const *  const  b);
-
-#line 25 "/home/aep/proj/zz/modules/log/src/lib.zz"
-static log_LogLevel log_log_level ();
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 76 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void log_debug (char const *  const  module, char const *  const  fmt, ...);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 52 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void log_error (char const *  const  module, char const *  const  fmt, ...);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 68 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void log_info (char const *  const  module, char const *  const  fmt, ...);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -1668,29 +1393,342 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_cstr_eq (char const *  const  a, char const *  const  b);
+
+#line 13 "/home/aep/proj/zz/modules/log/src/lib.zz"
+typedef enum {
+    log_LogLevel_Invalid = 99999,
+    log_LogLevel_None = 0,
+    log_LogLevel_Error = 1,
+    log_LogLevel_Warn = 2,
+    log_LogLevel_Info = 3,
+    log_LogLevel_Debug = 4,
+
+} log_LogLevel;
+
+#line 25 "/home/aep/proj/zz/modules/log/src/lib.zz"
+static log_LogLevel log_log_level ();
+
+#line 4 "/home/aep/proj/zz/modules/log/src/lib.zz"
+
+#line 1 "/home/aep/proj/zz/modules/log/src/os.h"
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+
+#if defined(__ANDROID__)
+#include <android/log.h>
+
+    #define os_zz_log_error(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        __android_log_vprint( ANDROID_LOG_ERROR, mod, fmt, args); \
+        va_end (args);
+
+    #define os_zz_log_debug(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        __android_log_vprint( ANDROID_LOG_DEBUG, mod, fmt, args); \
+        va_end (args);
+
+    #define os_zz_log_info(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        __android_log_vprint( ANDROID_LOG_INFO, mod, fmt, args); \
+        va_end (args);
+
+    #define os_zz_log_warn(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        __android_log_vprint( ANDROID_LOG_WARN, mod, fmt, args); \
+        va_end (args);
+
+#elif defined (__XTENSA__)
+
+
+    #define getenv(a) 0
+
+    typedef enum {
+        ESP_LOG_NONE,       /*!< No log output */
+        ESP_LOG_ERROR,      /*!< Critical errors, software module can not recover on its own */
+        ESP_LOG_WARN,       /*!< Error conditions from which recovery measures have been taken */
+        ESP_LOG_INFO,       /*!< Information messages which describe normal flow of events */
+        ESP_LOG_DEBUG,      /*!< Extra information which is not necessary for normal use (values, pointers, sizes, etc). */
+        ESP_LOG_VERBOSE     /*!< Bigger chunks of debugging information, or frequent messages which can potentially flood the output. */
+    } esp_log_level_t;
+
+    void nop__esp_log_writev (esp_log_level_t level, const char* tag, const char* format, va_list args) {}
+    void esp_log_writev () __attribute__ ((weak, alias ("nop__esp_log_writev")));
+
+
+    #define os_zz_log_error(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        esp_log_writev(ESP_LOG_ERROR, mod, fmt, args); \
+        va_end (args);
+
+    #define os_zz_log_debug(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        esp_log_writev(ESP_LOG_DEBUG, mod, fmt, args); \
+        va_end (args);
+
+    #define os_zz_log_info(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        esp_log_writev(ESP_LOG_INFO, mod, fmt, args); \
+        va_end (args);
+
+    #define os_zz_log_warn(mod, fmt) \
+        va_list args; \
+        va_start (args, fmt); \
+        esp_log_writev(ESP_LOG_WARN, mod, fmt, args); \
+        va_end (args);
+
+
+#else
+
+    #define os_zz_log_error(mod, fmt) \
+        fprintf(stderr, "[\x1B[31mERR\x1B[0m] %s ", mod); \
+        va_list args; \
+        va_start (args, fmt); \
+        vfprintf( \
+            stderr, \
+            fmt, \
+            args \
+        ); \
+        va_end (args); \
+        fprintf(stderr, "\n"); \
+
+    #define os_zz_log_warn(mod, fmt) \
+        fprintf(stderr, "[\x1B[33mWRN\x1B[0m] %s ", module); \
+        va_list args; \
+        va_start (args, fmt); \
+        vfprintf( \
+            stderr, \
+            fmt, \
+            args \
+        ); \
+        va_end (args); \
+        fprintf(stderr, "\n"); \
+
+    #define os_zz_log_info(mod, fmt) \
+        fprintf(stderr, "[\x1B[32mINF\x1B[0m] %s ", module); \
+        va_list args; \
+        va_start (args, fmt); \
+        vfprintf( \
+            stderr, \
+            fmt, \
+            args \
+        ); \
+        va_end (args); \
+        fprintf(stderr, "\n"); \
+
+
+    #define os_zz_log_debug(mod, fmt) \
+        fprintf(stderr, "[\x1B[36mDBG\x1B[0m] %s ", module); \
+        va_list args; \
+        va_start (args, fmt); \
+        vfprintf( \
+            stderr, \
+            fmt, \
+            args \
+        ); \
+        va_end (args); \
+        fprintf(stderr, "\n"); \
+
+#endif
+
+
+#line 76 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void log_debug (char const *  const  module, char const *  const  fmt, ...);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
 
 #line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
 uintptr_t string_slen (string_String const *  const  self);
 
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 52 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void log_error (char const *  const  module, char const *  const  fmt, ...);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 23 "/home/aep/proj/zz/modules/log/src/lib.zz"
+static  __attribute__ ((unused)) log_LogLevel log_s_log_level =    log_LogLevel_Invalid;
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
 #line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
 #line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 60 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void log_warn (char const *  const  module, char const *  const  fmt, ...);
+
+#line 68 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void log_info (char const *  const  module, char const *  const  fmt, ...);
+
+#line 25 "/home/aep/proj/zz/modules/log/src/lib.zz"
+static log_LogLevel log_log_level ();
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 76 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void __attribute__ ((visibility ("default"))) log_debug (char const *  const  module, char const *  const  fmt, ...)
+{
+if ((
+#line 78 "/home/aep/proj/zz/modules/log/src/lib.zz"
+    log_log_level(    ) <    log_LogLevel_Debug  )){
+
+#line 79 "/home/aep/proj/zz/modules/log/src/lib.zz"
+  return ;
+
+}
+
+
+#line 81 "/home/aep/proj/zz/modules/log/src/lib.zz"
+    os_zz_log_debug(    module,    fmt    );
+
+}
+
+
+#line 52 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void __attribute__ ((visibility ("default"))) log_error (char const *  const  module, char const *  const  fmt, ...)
+{
+if ((
+#line 54 "/home/aep/proj/zz/modules/log/src/lib.zz"
+    log_log_level(    ) <    log_LogLevel_Error  )){
+
+#line 55 "/home/aep/proj/zz/modules/log/src/lib.zz"
+  return ;
+
+}
+
+
+#line 57 "/home/aep/proj/zz/modules/log/src/lib.zz"
+    os_zz_log_error(    module,    fmt    );
+
+}
+
 
 #line 60 "/home/aep/proj/zz/modules/log/src/lib.zz"
 void __attribute__ ((visibility ("default"))) log_warn (char const *  const  module, char const *  const  fmt, ...)
@@ -1707,6 +1745,25 @@ if ((
 
 #line 65 "/home/aep/proj/zz/modules/log/src/lib.zz"
     os_zz_log_warn(    module,    fmt    );
+
+}
+
+
+#line 68 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void __attribute__ ((visibility ("default"))) log_info (char const *  const  module, char const *  const  fmt, ...)
+{
+if ((
+#line 70 "/home/aep/proj/zz/modules/log/src/lib.zz"
+    log_log_level(    ) <    log_LogLevel_Info  )){
+
+#line 71 "/home/aep/proj/zz/modules/log/src/lib.zz"
+  return ;
+
+}
+
+
+#line 73 "/home/aep/proj/zz/modules/log/src/lib.zz"
+    os_zz_log_info(    module,    fmt    );
 
 }
 
@@ -1790,63 +1847,6 @@ if (
 
 #line 48 "/home/aep/proj/zz/modules/log/src/lib.zz"
   return     log_s_log_level;
-
-}
-
-
-#line 76 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void __attribute__ ((visibility ("default"))) log_debug (char const *  const  module, char const *  const  fmt, ...)
-{
-if ((
-#line 78 "/home/aep/proj/zz/modules/log/src/lib.zz"
-    log_log_level(    ) <    log_LogLevel_Debug  )){
-
-#line 79 "/home/aep/proj/zz/modules/log/src/lib.zz"
-  return ;
-
-}
-
-
-#line 81 "/home/aep/proj/zz/modules/log/src/lib.zz"
-    os_zz_log_debug(    module,    fmt    );
-
-}
-
-
-#line 52 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void __attribute__ ((visibility ("default"))) log_error (char const *  const  module, char const *  const  fmt, ...)
-{
-if ((
-#line 54 "/home/aep/proj/zz/modules/log/src/lib.zz"
-    log_log_level(    ) <    log_LogLevel_Error  )){
-
-#line 55 "/home/aep/proj/zz/modules/log/src/lib.zz"
-  return ;
-
-}
-
-
-#line 57 "/home/aep/proj/zz/modules/log/src/lib.zz"
-    os_zz_log_error(    module,    fmt    );
-
-}
-
-
-#line 68 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void __attribute__ ((visibility ("default"))) log_info (char const *  const  module, char const *  const  fmt, ...)
-{
-if ((
-#line 70 "/home/aep/proj/zz/modules/log/src/lib.zz"
-    log_log_level(    ) <    log_LogLevel_Info  )){
-
-#line 71 "/home/aep/proj/zz/modules/log/src/lib.zz"
-  return ;
-
-}
-
-
-#line 73 "/home/aep/proj/zz/modules/log/src/lib.zz"
-    os_zz_log_info(    module,    fmt    );
 
 }
 

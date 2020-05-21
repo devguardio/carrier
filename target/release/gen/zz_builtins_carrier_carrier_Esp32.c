@@ -2,40 +2,42 @@
 #define ZZ_EXPORT_HEADER___zz__builtins
 #include <stddef.h>
 const __attribute__ ((unused)) size_t hpack_decoder_Invalid = 1;
-const __attribute__ ((unused)) size_t protonerf_Invalid = 2;
-const __attribute__ ((unused)) size_t carrier_cmd_common_OpenResponse = 3;
-const __attribute__ ((unused)) size_t err_NotImplemented = 4;
+const __attribute__ ((unused)) size_t carrier_router_OutOfOptions = 2;
+const __attribute__ ((unused)) size_t err_OutOfTail = 3;
+const __attribute__ ((unused)) size_t carrier_router_Disconnected = 4;
 const __attribute__ ((unused)) size_t carrier_channel_Backpressure = 5;
-const __attribute__ ((unused)) size_t err_OutOfTail = 6;
-const __attribute__ ((unused)) size_t carrier_channel_InvalidFrame = 7;
-const __attribute__ ((unused)) size_t io_Timeout = 8;
-const __attribute__ ((unused)) size_t carrier_router_Disconnected = 9;
-const __attribute__ ((unused)) size_t carrier_endpoint_InvalidBootstrap = 10;
-const __attribute__ ((unused)) size_t carrier_identity_Invalid = 11;
-const __attribute__ ((unused)) size_t err_SystemError = 12;
-const __attribute__ ((unused)) size_t carrier_cipher_EncryptionError = 13;
-const __attribute__ ((unused)) size_t toml_ParseError = 14;
-const __attribute__ ((unused)) size_t carrier_router_OutOfOptions = 15;
+const __attribute__ ((unused)) size_t carrier_cipher_EncryptionError = 6;
+const __attribute__ ((unused)) size_t carrier_cmd_common_OpenResponse = 7;
+const __attribute__ ((unused)) size_t err_SystemError = 8;
+const __attribute__ ((unused)) size_t carrier_sync_Failed = 9;
+const __attribute__ ((unused)) size_t io_NotImplemented = 10;
+const __attribute__ ((unused)) size_t toml_ParseError = 11;
+const __attribute__ ((unused)) size_t protonerf_Invalid = 12;
+const __attribute__ ((unused)) size_t carrier_endpoint_InvalidBootstrap = 13;
+const __attribute__ ((unused)) size_t carrier_channel_InvalidFrame = 14;
+const __attribute__ ((unused)) size_t io_Timeout = 15;
 const __attribute__ ((unused)) size_t err_InvalidArgument = 16;
-const __attribute__ ((unused)) size_t io_NotImplemented = 17;
-size_t __attribute__ ((unused)) __zz_symbol_names_len = 18;
+const __attribute__ ((unused)) size_t err_NotImplemented = 17;
+const __attribute__ ((unused)) size_t carrier_identity_Invalid = 18;
+size_t __attribute__ ((unused)) __zz_symbol_names_len = 19;
 const char * __attribute__ ((unused)) __zz_symbol_names[] = {0,
     "hpack::decoder::Invalid",
-    "protonerf::Invalid",
-    "carrier::cmd_common::OpenResponse",
-    "err::NotImplemented",
-    "carrier::channel::Backpressure",
+    "carrier::router::OutOfOptions",
     "err::OutOfTail",
+    "carrier::router::Disconnected",
+    "carrier::channel::Backpressure",
+    "carrier::cipher::EncryptionError",
+    "carrier::cmd_common::OpenResponse",
+    "err::SystemError",
+    "carrier::sync::Failed",
+    "io::NotImplemented",
+    "toml::ParseError",
+    "protonerf::Invalid",
+    "carrier::endpoint::InvalidBootstrap",
     "carrier::channel::InvalidFrame",
     "io::Timeout",
-    "carrier::router::Disconnected",
-    "carrier::endpoint::InvalidBootstrap",
-    "carrier::identity::Invalid",
-    "err::SystemError",
-    "carrier::cipher::EncryptionError",
-    "toml::ParseError",
-    "carrier::router::OutOfOptions",
     "err::InvalidArgument",
-    "io::NotImplemented",
+    "err::NotImplemented",
+    "carrier::identity::Invalid",
 };
 #endif

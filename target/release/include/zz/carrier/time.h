@@ -7,7 +7,7 @@ struct time_Time_t;
 typedef struct time_Time_t time_Time;
 struct time_Time_t;
 typedef struct time_Time_t time_Time;
-uint64_t time_to_seconds (time_Time const *  const  self);
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
 
 #ifndef ZZ_EXPORT_time_Time
 #define ZZ_EXPORT_time_Time
@@ -20,12 +20,12 @@ struct time_Time_t {
 const size_t sizeof_time_Time;
 
 #endif
-time_Time time_tick ();
-#include <stdint.h>
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-time_Time time_from_millis (uint64_t const  millis);
 time_Time time_from_seconds (uint64_t const  secs);
-uint64_t time_to_millis (time_Time const *  const  self);
+time_Time time_tick ();
+time_Time time_from_millis (uint64_t const  millis);
 time_Time time_infinite ();
 time_Time time_real ();
+#include <stdint.h>
+uint64_t time_to_millis (time_Time const *  const  self);
+uint64_t time_to_seconds (time_Time const *  const  self);
 #endif

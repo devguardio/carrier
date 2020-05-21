@@ -6,48 +6,30 @@
 #include <string.h>
 #include "zz/carrier/net_tcp_server.h"
 
-napi_value js_io_wait(napi_env env, napi_callback_info info);
-napi_value js_string_append_bytes(napi_env env, napi_callback_info info);
-napi_value js_io_read_slice(napi_env env, napi_callback_info info);
-napi_value js_string_slen(napi_env env, napi_callback_info info);
-napi_value js_string_slice(napi_env env, napi_callback_info info);
-napi_value js_io_select(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info);
-napi_value js_net_address_none(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_mem(napi_env env, napi_callback_info info);
-napi_value js_io_read_bytes(napi_env env, napi_callback_info info);
-napi_value js_net_address_from_string(napi_env env, napi_callback_info info);
-napi_value js_net_address_ip_to_string(napi_env env, napi_callback_info info);
-napi_value js_io_write_bytes(napi_env env, napi_callback_info info);
-napi_value js_net_address_set_port(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_append_cstr(napi_env env, napi_callback_info info);
-napi_value js_string_clear(napi_env env, napi_callback_info info);
-napi_value js_string_cstr(napi_env env, napi_callback_info info);
-napi_value js_string_append_slice(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_borrow(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_make(napi_env env, napi_callback_info info);
-napi_value js_net_address_get_port(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push64(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_make(napi_env env, napi_callback_info info);
-napi_value js_string_starts_with_cstr(napi_env env, napi_callback_info info);
-napi_value js_err_eprintf(napi_env env, napi_callback_info info);
-napi_value js_string_eq_cstr(napi_env env, napi_callback_info info);
-napi_value js_net_tcp_send(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info);
-napi_value js_err_check(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push32(napi_env env, napi_callback_info info);
 napi_value js_string_append_cstr(napi_env env, napi_callback_info info);
-napi_value js_net_tcp_close(napi_env env, napi_callback_info info);
-napi_value js_err_fail(napi_env env, napi_callback_info info);
-napi_value js_string_format(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
-napi_value js_net_address_from_str_ipv4(napi_env env, napi_callback_info info);
-napi_value js_err_fail_with_errno(napi_env env, napi_callback_info info);
-napi_value js_io_timeout(napi_env env, napi_callback_info info);
+napi_value js_string_substr(napi_env env, napi_callback_info info);
+napi_value js_net_address_get_port(napi_env env, napi_callback_info info);
+napi_value js_io_wait(napi_env env, napi_callback_info info);
+napi_value js_net_address_eq(napi_env env, napi_callback_info info);
+napi_value js_net_address_from_cstr(napi_env env, napi_callback_info info);
+napi_value js_net_address_from_str_ipv6(napi_env env, napi_callback_info info);
+napi_value js_net_address_to_string(napi_env env, napi_callback_info info);
+napi_value js_net_address_get_ip(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_append_cstr(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push(napi_env env, napi_callback_info info);
+napi_value js_io_read_slice(napi_env env, napi_callback_info info);
+napi_value js_string_slice(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info);
+napi_value js_err_to_str(napi_env env, napi_callback_info info);
+napi_value js_net_tcp_server_close(napi_env env, napi_callback_info info);
+napi_value js_string_push(napi_env env, napi_callback_info info);
 napi_value js_net_udp_close(napi_env env, napi_callback_info info);
-napi_value js_io_write(napi_env env, napi_callback_info info);
-napi_value js_time_to_seconds(napi_env env, napi_callback_info info);
-napi_value js_net_udp(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push16(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_borrow(napi_env env, napi_callback_info info);
+napi_value js_io_write_cstr(napi_env env, napi_callback_info info);
+napi_value js_err_fail(napi_env env, napi_callback_info info);
+napi_value js_err_check(napi_env env, napi_callback_info info);
 napi_value js_err_backtrace(napi_env env, napi_callback_info info);
 napi_value js_err_fail_with_errno(napi_env env, napi_callback_info info);
 napi_value js_symbols_nameof_checked(napi_env env, napi_callback_info info);
@@ -55,48 +37,88 @@ napi_value js_symbols_nameof(napi_env env, napi_callback_info info);
 napi_value js_err_fail(napi_env env, napi_callback_info info);
 napi_value js_io_select(napi_env env, napi_callback_info info);
 napi_value js_net_tcp_server_accept(napi_env env, napi_callback_info info);
+napi_value js_net_address_set_port(napi_env env, napi_callback_info info);
 napi_value js_io_await(napi_env env, napi_callback_info info);
-napi_value js_net_address_get_ip(napi_env env, napi_callback_info info);
-napi_value js_net_address_set_ip(napi_env env, napi_callback_info info);
-napi_value js_string_push(napi_env env, napi_callback_info info);
-napi_value js_net_tcp_recv(napi_env env, napi_callback_info info);
 napi_value js_string_space(napi_env env, napi_callback_info info);
-napi_value js_io_wake(napi_env env, napi_callback_info info);
-napi_value js_net_address_from_str(napi_env env, napi_callback_info info);
-napi_value js_net_tcp_server(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push16(napi_env env, napi_callback_info info);
-napi_value js_string_vformat(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push(napi_env env, napi_callback_info info);
-napi_value js_net_tcp_server_os_new(napi_env env, napi_callback_info info);
+napi_value js_time_to_seconds(napi_env env, napi_callback_info info);
+napi_value js_string_eq_cstr(napi_env env, napi_callback_info info);
+napi_value js_net_address_ip_to_string(napi_env env, napi_callback_info info);
+napi_value js_io_write_bytes(napi_env env, napi_callback_info info);
+napi_value js_net_address_from_str_ipv4(napi_env env, napi_callback_info info);
 napi_value js_err_abort(napi_env env, napi_callback_info info);
-napi_value js_err_elog(napi_env env, napi_callback_info info);
-napi_value js_string_pop(napi_env env, napi_callback_info info);
-napi_value js_string_fgets(napi_env env, napi_callback_info info);
-napi_value js_net_udp_sendto(napi_env env, napi_callback_info info);
-napi_value js_io_valid(napi_env env, napi_callback_info info);
-napi_value js_net_address_eq(napi_env env, napi_callback_info info);
 napi_value js_io_readline(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_append_bytes(napi_env env, napi_callback_info info);
-napi_value js_io_channel(napi_env env, napi_callback_info info);
-napi_value js_string_substr(napi_env env, napi_callback_info info);
-napi_value js_err_make(napi_env env, napi_callback_info info);
-napi_value js_io_close(napi_env env, napi_callback_info info);
-napi_value js_time_more_than(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq(napi_env env, napi_callback_info info);
-napi_value js_net_address_to_string(napi_env env, napi_callback_info info);
-napi_value js_io_write_cstr(napi_env env, napi_callback_info info);
-napi_value js_err_to_str(napi_env env, napi_callback_info info);
-napi_value js_string_split(napi_env env, napi_callback_info info);
 napi_value js_string_ends_with_cstr(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push64(napi_env env, napi_callback_info info);
 napi_value js_string_append(napi_env env, napi_callback_info info);
-napi_value js_net_udp_recvfrom(napi_env env, napi_callback_info info);
+napi_value js_string_pop(napi_env env, napi_callback_info info);
+napi_value js_net_tcp_send(napi_env env, napi_callback_info info);
 napi_value js_time_to_millis(napi_env env, napi_callback_info info);
-napi_value js_net_address_from_str_ipv6(napi_env env, napi_callback_info info);
-napi_value js_net_address_valid(napi_env env, napi_callback_info info);
-napi_value js_net_address_from_cstr(napi_env env, napi_callback_info info);
-napi_value js_net_tcp_server_close(napi_env env, napi_callback_info info);
-napi_value js_string_make(napi_env env, napi_callback_info info);
+napi_value js_net_tcp_server(napi_env env, napi_callback_info info);
+napi_value js_string_slen(napi_env env, napi_callback_info info);
+napi_value js_io_channel(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push32(napi_env env, napi_callback_info info);
+napi_value js_string_fgets(napi_env env, napi_callback_info info);
+napi_value js_string_cstr(napi_env env, napi_callback_info info);
 napi_value js_io_read(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_make(napi_env env, napi_callback_info info);
+napi_value js_string_split(napi_env env, napi_callback_info info);
+napi_value js_string_make(napi_env env, napi_callback_info info);
+napi_value js_net_address_none(napi_env env, napi_callback_info info);
+napi_value js_net_address_from_string(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq(napi_env env, napi_callback_info info);
+napi_value js_net_tcp_server_os_new(napi_env env, napi_callback_info info);
+napi_value js_net_udp_sendto(napi_env env, napi_callback_info info);
+napi_value js_string_append_bytes(napi_env env, napi_callback_info info);
+napi_value js_io_read_bytes(napi_env env, napi_callback_info info);
+napi_value js_io_write(napi_env env, napi_callback_info info);
+napi_value js_net_address_valid(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
+napi_value js_string_append_slice(napi_env env, napi_callback_info info);
+napi_value js_string_starts_with_cstr(napi_env env, napi_callback_info info);
+napi_value js_net_tcp_recv(napi_env env, napi_callback_info info);
+napi_value js_io_valid(napi_env env, napi_callback_info info);
+napi_value js_err_elog(napi_env env, napi_callback_info info);
+napi_value js_err_eprintf(napi_env env, napi_callback_info info);
+napi_value js_time_more_than(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_make(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_append_bytes(napi_env env, napi_callback_info info);
+napi_value js_err_make(napi_env env, napi_callback_info info);
+napi_value js_string_format(napi_env env, napi_callback_info info);
+napi_value js_io_close(napi_env env, napi_callback_info info);
+napi_value js_net_address_set_ip(napi_env env, napi_callback_info info);
+napi_value js_net_address_from_str(napi_env env, napi_callback_info info);
+napi_value js_net_udp(napi_env env, napi_callback_info info);
+napi_value js_string_clear(napi_env env, napi_callback_info info);
+napi_value js_net_tcp_close(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_mem(napi_env env, napi_callback_info info);
+napi_value js_io_timeout(napi_env env, napi_callback_info info);
+napi_value js_string_vformat(napi_env env, napi_callback_info info);
+napi_value js_io_wake(napi_env env, napi_callback_info info);
+napi_value js_net_udp_recvfrom(napi_env env, napi_callback_info info);
+
+
+napi_value js_net_tcp_server_close(napi_env env, napi_callback_info info) {
+    napi_status status;
+
+    size_t argc = 16;
+    napi_value argv[16];
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
+    assert(argc < 16);
+    assert(status == napi_ok);
+
+
+
+                    void * thismem;
+                    status = napi_unwrap(env, jsthis, &thismem);
+                    assert(status == napi_ok);
+                    size_t local_0_tail = (*(size_t*)thismem);
+                    void * local_0 = thismem + sizeof(size_t);
+
+                    napi_value jsreturn = 0;
+    net_tcp_server_close( local_0);
+    return jsreturn;
+}
 
 
 napi_value jsGet_net_tcp_server_Server_ctx(napi_env env, napi_callback_info info) {
@@ -207,9 +229,9 @@ napi_value js_new_net_tcp_server_Server(napi_env env, napi_callback_info info) {
 
 void js_register_net_tcp_server_Server (napi_env env, napi_value exports) {
     napi_property_descriptor properties[] = {
-        { "tcp_server", 0, js_net_tcp_server, 0, 0, 0, napi_default, 0 },
         { "accept", 0, js_net_tcp_server_accept, 0, 0, 0, napi_default, 0 },
         { "close", 0, js_net_tcp_server_close, 0, 0, 0, napi_default, 0 },
+        { "tcp_server", 0, js_net_tcp_server, 0, 0, 0, napi_default, 0 },
         { "ctx", 0, 0, jsGet_net_tcp_server_Server_ctx, 0, 0, napi_default, 0},
         { "impl_close", 0, 0, jsGet_net_tcp_server_Server_impl_close, 0, 0, napi_default, 0},
         { "impl_accept", 0, 0, jsGet_net_tcp_server_Server_impl_accept, 0, 0, napi_default, 0},
@@ -398,35 +420,15 @@ napi_value js_net_tcp_server_os_new(napi_env env, napi_callback_info info) {
 }
 
 
-napi_value js_net_tcp_server_close(napi_env env, napi_callback_info info) {
-    napi_status status;
-
-    size_t argc = 16;
-    napi_value argv[16];
-    napi_value jsthis;
-    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
-    assert(argc < 16);
-    assert(status == napi_ok);
-
-
-
-                    void * thismem;
-                    status = napi_unwrap(env, jsthis, &thismem);
-                    assert(status == napi_ok);
-                    size_t local_0_tail = (*(size_t*)thismem);
-                    void * local_0 = thismem + sizeof(size_t);
-
-                    napi_value jsreturn = 0;
-    net_tcp_server_close( local_0);
-    return jsreturn;
-}
-
-
 napi_value js_net_tcp_server_Init(napi_env env, napi_value exports)
 {
     js_register_net_tcp_server_Server(env, exports);
     napi_value ff;
     napi_status status;
+    status = napi_create_function(env, "close", NAPI_AUTO_LENGTH, js_net_tcp_server_close, 0, &ff);
+    assert(status == napi_ok);
+    status = napi_set_named_property(env, exports, "close", ff);
+    assert(status == napi_ok);
     status = napi_create_function(env, "accept", NAPI_AUTO_LENGTH, js_net_tcp_server_accept, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "accept", ff);
@@ -434,10 +436,6 @@ napi_value js_net_tcp_server_Init(napi_env env, napi_value exports)
     status = napi_create_function(env, "os_new", NAPI_AUTO_LENGTH, js_net_tcp_server_os_new, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "os_new", ff);
-    assert(status == napi_ok);
-    status = napi_create_function(env, "close", NAPI_AUTO_LENGTH, js_net_tcp_server_close, 0, &ff);
-    assert(status == napi_ok);
-    status = napi_set_named_property(env, exports, "close", ff);
     assert(status == napi_ok);
     return exports;
 }

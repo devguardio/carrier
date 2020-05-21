@@ -1,30 +1,6 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
-#[repr(C)]
-pub enum FieldType {
-    protonerf_FieldType_Skip = 0,
-    protonerf_FieldType_Int32 = 1,
-    protonerf_FieldType_Int64 = 2,
-    protonerf_FieldType_Uint32 = 3,
-    protonerf_FieldType_Uint64 = 4,
-    protonerf_FieldType_Sint32 = 5,
-    protonerf_FieldType_Sint64 = 6,
-    protonerf_FieldType_Bool = 7,
-    protonerf_FieldType_Enum = 8,
-    protonerf_FieldType_Fixed64 = 9,
-    protonerf_FieldType_Sfixed64 = 10,
-    protonerf_FieldType_Double = 11,
-    protonerf_FieldType_String = 12,
-    protonerf_FieldType_Bytes = 13,
-    protonerf_FieldType_Message = 14,
-    protonerf_FieldType_Repeated = 15,
-    protonerf_FieldType_Fixed32 = 16,
-    protonerf_FieldType_Sfixed32 = 17,
-    protonerf_FieldType_Float = 18,
-
-}
-
 
 pub struct rsValue {
     pub inner:  Box<Value>,
@@ -207,40 +183,64 @@ impl rsDecoder {
         }
     }
 }
-extern {
-    #[link_name = "protonerf_encode_f64"]
-    pub fn r#encode_f64( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: f64);
+#[repr(C)]
+pub enum FieldType {
+    protonerf_FieldType_Skip = 0,
+    protonerf_FieldType_Int32 = 1,
+    protonerf_FieldType_Int64 = 2,
+    protonerf_FieldType_Uint32 = 3,
+    protonerf_FieldType_Uint64 = 4,
+    protonerf_FieldType_Sint32 = 5,
+    protonerf_FieldType_Sint64 = 6,
+    protonerf_FieldType_Bool = 7,
+    protonerf_FieldType_Enum = 8,
+    protonerf_FieldType_Fixed64 = 9,
+    protonerf_FieldType_Sfixed64 = 10,
+    protonerf_FieldType_Double = 11,
+    protonerf_FieldType_String = 12,
+    protonerf_FieldType_Bytes = 13,
+    protonerf_FieldType_Message = 14,
+    protonerf_FieldType_Repeated = 15,
+    protonerf_FieldType_Fixed32 = 16,
+    protonerf_FieldType_Sfixed32 = 17,
+    protonerf_FieldType_Float = 18,
 
+}
+
+extern {
+    #[link_name = "protonerf_write_varint"]
+    pub fn r#write_varint( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zlow: u32,  Zhigh: u32);
 
     #[link_name = "sizeof_protonerf_Value"]
     pub static sizeof_Value: libc::size_t;
 
-    #[link_name = "protonerf_write_varint"]
-    pub fn r#write_varint( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zlow: u32,  Zhigh: u32);
-
-    #[link_name = "protonerf_encode_bytes_start"]
-    pub fn r#encode_bytes_start( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zl: usize);
-
     #[link_name = "sizeof_protonerf_Field"]
     pub static sizeof_Field: libc::size_t;
+
+    #[link_name = "sizeof_protonerf_Decoder"]
+    pub static sizeof_Decoder: libc::size_t;
+
+    #[link_name = "protonerf_decode"]
+    pub fn r#decode( Zmem: *const u8,  Zsize: usize)  -> super::protonerf::Decoder;
+
+    #[link_name = "protonerf_encode_bytes"]
+    pub fn r#encode_bytes( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zb: *const u8,  Zl: usize);
+
+    #[link_name = "protonerf_encode_f64"]
+    pub fn r#encode_f64( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: f64);
+
+
+    #[link_name = "protonerf_next"]
+    pub fn r#next( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> super::protonerf::Field;
 
 
     #[link_name = "protonerf_encode_varint"]
     pub fn r#encode_varint( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: u64);
 
-    #[link_name = "protonerf_encode_bytes"]
-    pub fn r#encode_bytes( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zb: *const u8,  Zl: usize);
-
-    #[link_name = "sizeof_protonerf_Decoder"]
-    pub static sizeof_Decoder: libc::size_t;
-
     #[link_name = "protonerf_read_varint"]
     pub fn r#read_varint( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> u64;
 
-    #[link_name = "protonerf_next"]
-    pub fn r#next( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> super::protonerf::Field;
-
-    #[link_name = "protonerf_decode"]
-    pub fn r#decode( Zmem: *const u8,  Zsize: usize)  -> super::protonerf::Decoder;
+    #[link_name = "protonerf_encode_bytes_start"]
+    pub fn r#encode_bytes_start( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zl: usize);
 
 }

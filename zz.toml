@@ -54,11 +54,6 @@ name = "carrier"
 main = "carrier"
 
 [[artifacts]]
-type = "staticlib"
-name = "carrier"
-main = "carrier"
-
-[[artifacts]]
 type = "exe"
 name = "carrier"
 main = "carrier::main"

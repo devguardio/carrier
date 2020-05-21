@@ -2,6 +2,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#line 69 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+extern uint8_t carrier_crc8_crc8_slow (uint8_t crc, uint8_t const *  data, uintptr_t l);
+
 #line 15 "/home/aep/proj/devguard/carrier/src/crc8.zz"
 static const  __attribute__ ((unused)) uint8_t carrier_crc8_crc8_table  [     256 ] ={
 #line 16 "/home/aep/proj/devguard/carrier/src/crc8.zz"
@@ -52,56 +55,8 @@ static const  __attribute__ ((unused)) uint8_t carrier_crc8_crc8_table  [     25
 #line 46 "/home/aep/proj/devguard/carrier/src/crc8.zz"
 uint8_t carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l);
 
-#line 69 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-extern uint8_t carrier_crc8_crc8_slow (uint8_t crc, uint8_t const *  data, uintptr_t l);
-
 #line 91 "/home/aep/proj/devguard/carrier/src/crc8.zz"
 uint8_t carrier_crc8_broken_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  length);
-
-#line 46 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-uint8_t __attribute__ ((visibility ("default"))) carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l)
-{
-if ((
-#line 49 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-    data ==    0  )){
-
-#line 50 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-  return     crc;
-
-}
-
-
-#line 52 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-    crc &=     0xff;
-
-#line 53 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-  uint8_t const *  end ;
-{
-
-#line 55 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-    end = (    data +    l  );
-
-}
-
-while ((
-#line 57 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-    data <    end  )){
-{
-
-#line 59 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-    crc =     carrier_crc8_crc8_table [ (    crc ^( *(    data ++))  )];
-
-}
-
-
-}
-
-
-#line 62 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-  return     crc;
-
-}
-
 
 #line 69 "/home/aep/proj/devguard/carrier/src/crc8.zz"
 uint8_t __attribute__ ((visibility ("hidden"))) carrier_crc8_crc8_slow (uint8_t crc, uint8_t const *  data, uintptr_t l)
@@ -159,6 +114,51 @@ if (((
 
 #line 86 "/home/aep/proj/devguard/carrier/src/crc8.zz"
   return (    crc ^    0xff  );
+
+}
+
+
+#line 46 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+uint8_t __attribute__ ((visibility ("default"))) carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l)
+{
+if ((
+#line 49 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+    data ==    0  )){
+
+#line 50 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+  return     crc;
+
+}
+
+
+#line 52 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+    crc &=     0xff;
+
+#line 53 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+  uint8_t const *  end ;
+{
+
+#line 55 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+    end = (    data +    l  );
+
+}
+
+while ((
+#line 57 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+    data <    end  )){
+{
+
+#line 59 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+    crc =     carrier_crc8_crc8_table [ (    crc ^( *(    data ++))  )];
+
+}
+
+
+}
+
+
+#line 62 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+  return     crc;
 
 }
 

@@ -2,29 +2,21 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+struct string_String_2000_t;
+typedef struct string_String_2000_t string_String_2000;
+struct string_String_300_t;
+typedef struct string_String_300_t string_String_300;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-struct string_String_300_t;
-typedef struct string_String_300_t string_String_300;
-struct string_String_2000_t;
-typedef struct string_String_2000_t string_String_2000;
-
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t;
-typedef struct time_Time_t time_Time;
-
-#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_Vault_t;
-typedef struct carrier_vault_Vault_t carrier_vault_Vault;
+#line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_Parser_t;
+typedef struct toml_Parser_t toml_Parser;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
@@ -36,14 +28,6 @@ typedef struct err_Err_200_t err_Err_200;
 struct carrier_identity_Identity_t;
 typedef struct carrier_identity_Identity_t carrier_identity_Identity;
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-struct string_String_300_t;
-typedef struct string_String_300_t string_String_300;
-struct string_String_2000_t;
-typedef struct string_String_2000_t string_String_2000;
-
 #line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
 struct carrier_identity_Secret_t;
 typedef struct carrier_identity_Secret_t carrier_identity_Secret;
@@ -51,6 +35,42 @@ typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 #line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
 struct carrier_identity_Address_t;
 typedef struct carrier_identity_Address_t carrier_identity_Address;
+
+#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Identity_t;
+typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+struct string_String_2000_t;
+typedef struct string_String_2000_t string_String_2000;
+struct string_String_300_t;
+typedef struct string_String_300_t string_String_300;
+
+#line 14 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+struct carrier_vault_esp32_Authorize_t;
+typedef struct carrier_vault_esp32_Authorize_t carrier_vault_esp32_Authorize;
+
+#line 20 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+struct carrier_vault_esp32_Mem_t;
+typedef struct carrier_vault_esp32_Mem_t carrier_vault_esp32_Mem;
+
+#line 42 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_U_t;
+typedef struct toml_U_t toml_U;
+
+#line 20 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_Value_t;
+typedef struct toml_Value_t toml_Value;
+
+#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_Vault_t;
+typedef struct carrier_vault_Vault_t carrier_vault_Vault;
+
+#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Signature_t;
+typedef struct carrier_identity_Signature_t carrier_identity_Signature;
 
 #line 22 "/home/aep/proj/devguard/carrier/src/vault.zz"
 struct carrier_vault_Broker_t;
@@ -64,21 +84,37 @@ typedef struct carrier_vault_Vault_t carrier_vault_Vault;
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_Parser_t;
-typedef struct toml_Parser_t toml_Parser;
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
 
-#line 20 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_Value_t;
-typedef struct toml_Value_t toml_Value;
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t;
+typedef struct time_Time_t time_Time;
 
 #line 42 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 struct toml_U_t;
 typedef struct toml_U_t toml_U;
 
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_ParserStack_t;
+typedef struct toml_ParserStack_t toml_ParserStack;
+
+#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Signature_t;
+typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t;
+typedef struct time_Time_t time_Time;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_authorize_open_stream_cb_s_t;
+typedef struct carrier_vault_authorize_open_stream_cb_s_t carrier_vault_authorize_open_stream_cb_s;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
@@ -86,89 +122,45 @@ typedef struct err_Err_t err_Err;
 struct err_Err_200_t;
 typedef struct err_Err_200_t err_Err_200;
 
-#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Signature_t;
-typedef struct carrier_identity_Signature_t carrier_identity_Signature;
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
-
-#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Secret_t;
-typedef struct carrier_identity_Secret_t carrier_identity_Secret;
-
-#line 14 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-struct carrier_vault_esp32_Authorize_t;
-typedef struct carrier_vault_esp32_Authorize_t carrier_vault_esp32_Authorize;
-
-#line 20 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-struct carrier_vault_esp32_Mem_t;
-typedef struct carrier_vault_esp32_Mem_t carrier_vault_esp32_Mem;
-
-#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_ParserStack_t;
-typedef struct toml_ParserStack_t toml_ParserStack;
-
 #line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 struct toml_Parser_t;
 typedef struct toml_Parser_t toml_Parser;
 
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t;
-typedef struct time_Time_t time_Time;
-
-#line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_authorize_open_stream_cb_s_t;
-typedef struct carrier_vault_authorize_open_stream_cb_s_t carrier_vault_authorize_open_stream_cb_s;
-
-#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Signature_t;
-typedef struct carrier_identity_Signature_t carrier_identity_Signature;
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_millis (time_Time const *  const  self);
-
 #line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
 #line 1 ""
 #include <stddef.h>
 
-#line 56 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
-#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
+#line 104 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+void toml_close (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et);
 
-#line 17 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_list_authorizations_cb) (void*  const  user, carrier_identity_Identity const *  const  id, char const *  const  resource);
+#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
 
-#line 62 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_list_authorizations (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Secret_t {
+   uint8_t k[    32] ;
+}
+;
 
-#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Address_t {
+   uint8_t k[    32] ;
+}
+;
 
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Identity_t {
+   uint8_t k[    32] ;
+}
+;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t {
@@ -178,17 +170,6 @@ struct string_String_t {
 
 #line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
    char mem[] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_300_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[300] ;
 }
 ;
 
@@ -203,11 +184,149 @@ struct string_String_2000_t {
 }
 ;
 
-#line 15 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_del_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_300_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[300] ;
+}
+;
+
+#line 14 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+struct carrier_vault_esp32_Authorize_t {
+
+#line 15 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   bool used ;
+
+#line 16 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   carrier_identity_Identity identity ;
+
+#line 17 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   string_String_300 path ;
+}
+;
+
+#line 20 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+struct carrier_vault_esp32_Mem_t {
+
+#line 21 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   carrier_identity_Secret secret ;
+
+#line 22 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   carrier_identity_Address network ;
+
+#line 23 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   carrier_identity_Secret network_secret ;
+
+#line 25 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   carrier_vault_esp32_Authorize auth[    32] ;
+
+#line 26 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+   string_String_2000 file_name ;
+}
+;
+
+#line 13 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+typedef enum {
+    toml_ValueType_String = 0,
+    toml_ValueType_Object = 1,
+    toml_ValueType_Integer = 2,
+    toml_ValueType_Array = 3,
+
+} toml_ValueType;
+
+#line 20 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_Value_t {
+
+#line 21 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_ValueType t ;
+
+#line 22 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   char const *  string ;
+
+#line 23 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   int integer ;
+
+#line 24 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t index ;
+}
+;
+
+#line 39 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+typedef void (*toml_Iter) (toml_U const *  const  u, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
+
+#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 86 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_sign (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+
+#line 1 "/home/aep/proj/devguard/carrier/src/esp.h"
+#include <esp_system.h>
+
+
+typedef enum {
+    NVS_READONLY,
+    NVS_READWRITE
+} nvs_open_mode_t;
+
+typedef uint32_t nvs_handle_t;
+
+esp_err_t nvs_open(const char* name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle);
+
+esp_err_t nvs_get_u64 (nvs_handle_t handle, const char* key, uint64_t* out_value);
+esp_err_t nvs_get_str (nvs_handle_t handle, const char* key, char* out_value, size_t* length);
+esp_err_t nvs_get_blob(nvs_handle_t handle, const char* key, void* out_value, size_t* length);
+
+esp_err_t nvs_set_u64 (nvs_handle_t handle, const char* key, uint64_t value);
+esp_err_t nvs_set_str (nvs_handle_t handle, const char* key, const char* value);
+esp_err_t nvs_set_blob(nvs_handle_t handle, const char* key, const void* value, size_t length);
+
+esp_err_t nvs_erase_key(nvs_handle_t handle, const char* key);
+
+esp_err_t nvs_commit(nvs_handle_t handle);
+void nvs_close(nvs_handle_t handle);
+
+#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_cstr_eq (char const *  const  a, char const *  const  b);
 
 #line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
 uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
+
+#line 237 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 17 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_list_authorizations_cb) (void*  const  user, carrier_identity_Identity const *  const  id, char const *  const  resource);
+
+#line 147 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+
+#line 183 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
+
+#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 50 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
 
 #line 8 "/home/aep/proj/devguard/carrier/src/vault.zz"
 typedef void (*carrier_vault_close_fn) (carrier_vault_Vault*  const  self);
@@ -226,6 +345,9 @@ typedef void (*carrier_vault_set_network_fn) (carrier_vault_Vault const *  const
 
 #line 18 "/home/aep/proj/devguard/carrier/src/vault.zz"
 typedef void (*carrier_vault_list_authorizations_fn) (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+
+#line 15 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_del_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
 
 #line 16 "/home/aep/proj/devguard/carrier/src/vault.zz"
 typedef void (*carrier_vault_add_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
@@ -288,78 +410,52 @@ struct carrier_vault_Vault_t {
 }
 ;
 
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <string.h>
 
-#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#line 63 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_get_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
 
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 74 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_set_network (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  network);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_cstr_eq (char const *  const  a, char const *  const  b);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 12 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-
-#line 1 "/home/aep/proj/devguard/carrier/src/esp.h"
-#include <esp_system.h>
-
-
-typedef enum {
-    NVS_READONLY,
-    NVS_READWRITE
-} nvs_open_mode_t;
-
-typedef uint32_t nvs_handle_t;
-
-esp_err_t nvs_open(const char* name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle);
-
-esp_err_t nvs_get_u64 (nvs_handle_t handle, const char* key, uint64_t* out_value);
-esp_err_t nvs_get_str (nvs_handle_t handle, const char* key, char* out_value, size_t* length);
-esp_err_t nvs_get_blob(nvs_handle_t handle, const char* key, void* out_value, size_t* length);
-
-esp_err_t nvs_set_u64 (nvs_handle_t handle, const char* key, uint64_t value);
-esp_err_t nvs_set_str (nvs_handle_t handle, const char* key, const char* value);
-esp_err_t nvs_set_blob(nvs_handle_t handle, const char* key, const void* value, size_t length);
-
-esp_err_t nvs_erase_key(nvs_handle_t handle, const char* key);
-
-esp_err_t nvs_commit(nvs_handle_t handle);
-void nvs_close(nvs_handle_t handle);
+#line 94 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
 
 #line 47 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
 static uint64_t carrier_vault_esp32_i_advance_clock (carrier_vault_Vault const *  const  self);
 
-#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
 
-#line 68 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+#line 29 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_close (carrier_vault_Vault*  const  self);
 
-#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+#line 32 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+void carrier_vault_esp32_open (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdio.h>
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 74 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_set_network (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  network);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -1721,114 +1817,40 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 3 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-#include <string.h>
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 63 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_get_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 94 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
-#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
-
-#line 147 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
-
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#line 237 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
-
-#line 29 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_close (carrier_vault_Vault*  const  self);
-
-#line 32 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-void carrier_vault_esp32_open (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 118 "/home/aep/proj/devguard/carrier/src/vault.zz"
-bool carrier_vault_authorize_connect (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 155 "/home/aep/proj/devguard/carrier/src/vault.zz"
-bool carrier_vault_authorize_open_stream (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii, char const *  const  path);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 62 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_list_authorizations (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
 
 #line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
 
-#line 13 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_millis (time_Time const *  const  self);
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 27 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 typedef enum {
-    toml_ValueType_String = 0,
-    toml_ValueType_Object = 1,
-    toml_ValueType_Integer = 2,
-    toml_ValueType_Array = 3,
+    toml_ParserState_Document = 0,
+    toml_ParserState_SectionKey = 1,
+    toml_ParserState_Object = 2,
+    toml_ParserState_Key = 3,
+    toml_ParserState_PostKey = 4,
+    toml_ParserState_PreVal = 5,
+    toml_ParserState_StringVal = 6,
+    toml_ParserState_IntVal = 7,
+    toml_ParserState_PostVal = 8,
 
-} toml_ValueType;
-
-#line 20 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_Value_t {
-
-#line 21 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_ValueType t ;
-
-#line 22 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   char const *  string ;
-
-#line 23 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   int integer ;
-
-#line 24 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t index ;
-}
-;
-
-#line 39 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-typedef void (*toml_Iter) (toml_U const *  const  u, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
+} toml_ParserState;
 
 #line 40 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 typedef void (*toml_Pop) (toml_U const *  const  u, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
@@ -1850,50 +1872,193 @@ struct toml_U_t {
 }
 ;
 
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_ParserStack_t {
+
+#line 51 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_ParserState state ;
+
+#line 52 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_U user ;
+
+#line 53 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   bool in_array ;
+
+#line 54 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t index ;
+}
+;
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Signature_t {
+   uint8_t k[    64] ;
+}
+;
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 8 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+#define toml_MAX_DEPTH ((uintptr_t )    64)
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 63 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_get_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t {
+
+#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t secs ;
+
+#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t nano ;
+
+#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   bool finite ;
+}
+;
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 99 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_get_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
 
 #line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-#line 237 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+#line 107 "/home/aep/proj/devguard/carrier/src/vault.zz"
+uintptr_t carrier_vault_broker_count (carrier_vault_Vault const *  const  self);
 
-#line 104 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-void toml_close (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et);
+#line 222 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk);
 
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
+#include <stdarg.h>
 
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
-#line 29 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_close (carrier_vault_Vault*  const  self);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
 
-#line 70 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-void toml_parser (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
 
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t {
-   uint8_t k[    32] ;
-}
-;
+#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
 
 #line 84 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 void toml_next (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
 
-#line 99 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_get_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 56 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+
+#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_seconds (time_Time const *  const  self);
+
+#line 155 "/home/aep/proj/devguard/carrier/src/vault.zz"
+bool carrier_vault_authorize_open_stream (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii, char const *  const  path);
+
+#line 68 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+
+#line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_authorize_open_stream_cb_s_t {
+
+#line 129 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_identity_Identity const *  ii ;
+
+#line 130 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   char const *  path ;
+
+#line 133 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   bool accepted ;
+
+#line 134 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   bool has_any ;
+}
+;
+
+#line 94 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t {
@@ -1924,157 +2089,35 @@ struct err_Err_200_t {
 }
 ;
 
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 183 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
-
-#line 80 "/home/aep/proj/devguard/carrier/src/vault.zz"
-uint64_t carrier_vault_vector_time (carrier_vault_Vault const *  const  self);
-
-#line 1 "/home/aep/proj/zz/modules/symbols/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 50 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t {
-   uint8_t k[    32] ;
-}
-;
-
-#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Secret_t {
-   uint8_t k[    32] ;
-}
-;
-
-#line 14 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-struct carrier_vault_esp32_Authorize_t {
-
-#line 15 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   bool used ;
-
-#line 16 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   carrier_identity_Identity identity ;
-
-#line 17 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   string_String_300 path ;
-}
-;
-
-#line 20 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-struct carrier_vault_esp32_Mem_t {
-
-#line 21 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   carrier_identity_Secret secret ;
-
-#line 22 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   carrier_identity_Address network ;
-
-#line 23 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   carrier_identity_Secret network_secret ;
-
-#line 25 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   carrier_vault_esp32_Authorize auth[    32] ;
-
-#line 26 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-   string_String_2000 file_name ;
-}
-;
-
-#line 222 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk);
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 8 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-#define toml_MAX_DEPTH ((uintptr_t )    64)
-
-#line 27 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-typedef enum {
-    toml_ParserState_Document = 0,
-    toml_ParserState_SectionKey = 1,
-    toml_ParserState_Object = 2,
-    toml_ParserState_Key = 3,
-    toml_ParserState_PostKey = 4,
-    toml_ParserState_PreVal = 5,
-    toml_ParserState_StringVal = 6,
-    toml_ParserState_IntVal = 7,
-    toml_ParserState_PostVal = 8,
-
-} toml_ParserState;
-
-#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_ParserStack_t {
-
-#line 51 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_ParserState state ;
-
-#line 52 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_U user ;
-
-#line 53 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   bool in_array ;
-
-#line 54 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t index ;
-}
-;
+#line 70 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+void toml_parser (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
 
 #line 123 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 void toml_push (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
 
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
+#line 47 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static uint64_t carrier_vault_esp32_i_advance_clock (carrier_vault_Vault const *  const  self);
 
-#line 94 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+#line 29 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_close (carrier_vault_Vault*  const  self);
 
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
+#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
 
-#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
-#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
+#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
 
-#line 147 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+#line 118 "/home/aep/proj/devguard/carrier/src/vault.zz"
+bool carrier_vault_authorize_connect (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii);
 
-#line 86 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_sign (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 
-#line 107 "/home/aep/proj/devguard/carrier/src/vault.zz"
-uintptr_t carrier_vault_broker_count (carrier_vault_Vault const *  const  self);
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
 #line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 struct toml_Parser_t {
@@ -2105,265 +2148,20 @@ struct toml_Parser_t {
 }
 ;
 
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t {
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
 
-#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t secs ;
+#line 80 "/home/aep/proj/devguard/carrier/src/vault.zz"
+uint64_t carrier_vault_vector_time (carrier_vault_Vault const *  const  self);
 
-#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t nano ;
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
 
-#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   bool finite ;
-}
-;
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
 
-#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_seconds (time_Time const *  const  self);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_authorize_open_stream_cb_s_t {
-
-#line 129 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_identity_Identity const *  ii ;
-
-#line 130 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   char const *  path ;
-
-#line 133 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   bool accepted ;
-
-#line 134 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   bool has_any ;
-}
-;
-
-#line 63 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_get_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Signature_t {
-   uint8_t k[    64] ;
-}
-;
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 47 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static uint64_t carrier_vault_esp32_i_advance_clock (carrier_vault_Vault const *  const  self)
-{
-
-#line 49 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  nvs_handle_t handle  =     0;
-
-#line 50 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
-
-#line 52 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  uint64_t val  =     0;
-
-#line 53 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_get_u64(    handle,    "clock",( &    val)    );
-
-#line 54 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val +=     1;
-
-#line 56 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_set_u64(    handle,    "clock",(    val +    1  )    );
-
-#line 58 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_close(    handle    );
-
-#line 59 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  return     val;
-
-}
-
-
-#line 32 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-void __attribute__ ((visibility ("default"))) carrier_vault_esp32_open (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et)
-{
-
-#line 35 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    memset(    self,    0,    sizeof(    carrier_vault_Vault    )    );
-
-#line 37 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_get_secret =     carrier_vault_esp32_i_get_secret;
-
-#line 38 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_get_network =     carrier_vault_esp32_i_get_network;
-
-#line 39 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_advance_clock =     carrier_vault_esp32_i_advance_clock;
-
-#line 40 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_set_network =     carrier_vault_esp32_i_set_network;
-
-#line 41 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_list_authorizations =     carrier_vault_esp32_i_list_authorizations;
-
-#line 42 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_del_authorization =     carrier_vault_esp32_i_del_authorization;
-
-#line 43 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_add_authorization =     carrier_vault_esp32_i_add_authorization;
-
-#line 44 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    self ->i_close =     carrier_vault_esp32_close;
-
-}
-
-
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource)
-{
-
-#line 192 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  nvs_handle_t handle  =     0;
-
-#line 193 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
-  for (
-
-#line 195 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  uintptr_t i  =     0;(    i <    24  );
-(    i ++)){
-
-#line 196 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  char key  [     8 ]  = {    'a',    'u',    't',    'h',    '_',    '_',    '_',    0,};
-
-#line 197 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    key [     5] = (    65 +    (char)(    i)  );
-
-#line 199 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  char val  [     255 ]  = {    0,};
-
-#line 200 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  uintptr_t val_l  =     255;
-
-#line 202 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    key [     6] =     'i';
-
-#line 203 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  esp_err_t ee  =     nvs_get_str(    handle,    key,    val,( &    val_l)    );
-if ((
-#line 204 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ee !=    ESP_OK  )){
-
-#line 205 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-continue;
-
-}
-
-
-#line 208 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  carrier_identity_Identity id  = {    0,};
-    carrier_identity_identity_from_str(( &    id),    (err_Err* )(    e),
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    et,
-#line 208 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val,(    val_l -    1  )    );
-if (
-#line 209 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    err_check(    (err_Err* )(    e),
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    et,
-#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
-#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::vault_esp32::i_del_authorization",
-#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    209    )){
-
-#line 210 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    err_elog(    (err_Err* )(    e),
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    et    );
-
-#line 211 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    err_make(    (err_Err* )(    e),
-#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    et    );
-
-#line 212 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-continue;
-
-}
-
-
-#line 216 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    memset(    val,    0,    255    );
-
-#line 217 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val_l =     255;
-
-#line 218 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    key [     6] =     'p';
-
-#line 219 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ee =     nvs_get_str(    handle,    key,    val,( &    val_l)    );
-if ((
-#line 220 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ee !=    ESP_OK  )){
-
-#line 221 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-continue;
-
-}
-
-
-#line 223 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-;
-if ((
-#line 225 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    carrier_identity_eq(    delme,( &    id)    ) &&    string_cstr_eq(    resource,    val    )  )){
-
-#line 226 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    key [     6] =     'i';
-
-#line 227 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_erase_key(    handle,    key    );
-
-#line 228 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    key [     6] =     'p';
-
-#line 229 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_erase_key(    handle,    key    );
-
-#line 230 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-break;
-
-}
-
-
-}
-
-
-#line 234 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_close(    handle    );
-
-}
-
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
 #line 237 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
 static void carrier_vault_esp32_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource)
@@ -2558,163 +2356,6 @@ break;
 }
 
 
-#line 29 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_close (carrier_vault_Vault*  const  self)
-{
-
-}
-
-
-#line 94 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr)
-{
-
-#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  err_Err_200 e  = {    0,};
-    err_make(    (err_Err* )(( &    e)),    200    );
-
-#line 98 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  nvs_handle_t handle  =     0;
-
-#line 99 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
-
-#line 101 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  char val  [     100 ]  = {    0,};
-
-#line 102 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  uintptr_t val_l  =     100;
-
-#line 103 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  esp_err_t const  ee  =     nvs_get_str(    handle,    "network",    val,( &    val_l)    );
-if ((
-#line 104 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ee !=    ESP_OK  )){
-
-#line 105 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  carrier_identity_Secret nu  = {    0,};
-
-#line 106 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    esp_fill_random(    nu .k,    32    );
-
-#line 108 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val_l =     carrier_identity_secret_to_str(    (err_Err* )(( &    e)),
-#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    200,
-#line 108 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val,    val_l,( &    nu)    );
-
-#line 109 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    err_abort(    (err_Err* )(( &    e)),
-#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    200,
-#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
-#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::vault_esp32::i_get_network",
-#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    109    );
-
-#line 111 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_set_str(    handle,    "network",    val    );
-
-#line 112 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_commit(    handle    );
-
-#line 114 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    memset(    val,    0,    100    );
-
-#line 115 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val_l =     100;
-
-#line 116 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ESP_ERROR_CHECK(    nvs_get_str(    handle,    "network",    val,( &    val_l)    )    );
-
-}
-
-
-#line 119 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_close(    handle    );
-
-#line 121 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  carrier_identity_Secret secret  = {    0,};
-
-#line 122 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    carrier_identity_secret_from_str(( &    secret),    (err_Err* )(( &    e)),
-#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    200,
-#line 122 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val,(    val_l -    1  )    );
-
-#line 123 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    err_abort(    (err_Err* )(( &    e)),
-#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    200,
-#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
-#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::vault_esp32::i_get_network",
-#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    123    );
-
-#line 125 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    carrier_identity_address_from_secret(    addr,( &    secret)    );
-
-}
-
-
-#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-static void carrier_vault_esp32_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret)
-{
-
-#line 131 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  nvs_handle_t handle  =     0;
-
-#line 132 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
-
-#line 134 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  char val  [     100 ]  = {    0,};
-
-#line 135 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  uintptr_t val_l  =     100;
-
-#line 137 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val_l =     carrier_identity_secret_to_str(    (err_Err* )(    e),
-#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    et,
-#line 137 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    val,    val_l,    secret    );
-if (
-#line 138 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    err_check(    (err_Err* )(    e),
-#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    et,
-#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
-#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::vault_esp32::i_set_network",
-#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    138    )){
-
-#line 138 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-  return ;
-
-}
-
-
-#line 140 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_set_str(    handle,    "network",    val    );
-
-#line 141 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_commit(    handle    );
-
-#line 143 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
-    nvs_close(    handle    );
-
-}
-
-
 #line 147 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
 static void carrier_vault_esp32_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user)
 {
@@ -2822,6 +2463,92 @@ continue;
 }
 
 
+#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret)
+{
+
+#line 131 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  nvs_handle_t handle  =     0;
+
+#line 132 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
+
+#line 134 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  char val  [     100 ]  = {    0,};
+
+#line 135 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  uintptr_t val_l  =     100;
+
+#line 137 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val_l =     carrier_identity_secret_to_str(    (err_Err* )(    e),
+#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    et,
+#line 137 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val,    val_l,    secret    );
+if (
+#line 138 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    err_check(    (err_Err* )(    e),
+#line 128 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    et,
+#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
+#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::vault_esp32::i_set_network",
+#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    138    )){
+
+#line 138 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  return ;
+
+}
+
+
+#line 140 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_set_str(    handle,    "network",    val    );
+
+#line 141 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_commit(    handle    );
+
+#line 143 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_close(    handle    );
+
+}
+
+
+#line 32 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+void __attribute__ ((visibility ("default"))) carrier_vault_esp32_open (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et)
+{
+
+#line 35 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    memset(    self,    0,    sizeof(    carrier_vault_Vault    )    );
+
+#line 37 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_get_secret =     carrier_vault_esp32_i_get_secret;
+
+#line 38 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_get_network =     carrier_vault_esp32_i_get_network;
+
+#line 39 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_advance_clock =     carrier_vault_esp32_i_advance_clock;
+
+#line 40 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_set_network =     carrier_vault_esp32_i_set_network;
+
+#line 41 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_list_authorizations =     carrier_vault_esp32_i_list_authorizations;
+
+#line 42 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_del_authorization =     carrier_vault_esp32_i_del_authorization;
+
+#line 43 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_add_authorization =     carrier_vault_esp32_i_add_authorization;
+
+#line 44 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    self ->i_close =     carrier_vault_esp32_close;
+
+}
+
+
 #line 63 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
 static void carrier_vault_esp32_i_get_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret)
 {
@@ -2910,6 +2637,273 @@ if ((
     "::carrier::vault_esp32::i_get_secret",
 #line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
     91    );
+
+}
+
+
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource)
+{
+
+#line 192 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  nvs_handle_t handle  =     0;
+
+#line 193 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
+  for (
+
+#line 195 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  uintptr_t i  =     0;(    i <    24  );
+(    i ++)){
+
+#line 196 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  char key  [     8 ]  = {    'a',    'u',    't',    'h',    '_',    '_',    '_',    0,};
+
+#line 197 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    key [     5] = (    65 +    (char)(    i)  );
+
+#line 199 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  char val  [     255 ]  = {    0,};
+
+#line 200 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  uintptr_t val_l  =     255;
+
+#line 202 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    key [     6] =     'i';
+
+#line 203 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  esp_err_t ee  =     nvs_get_str(    handle,    key,    val,( &    val_l)    );
+if ((
+#line 204 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ee !=    ESP_OK  )){
+
+#line 205 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+continue;
+
+}
+
+
+#line 208 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  carrier_identity_Identity id  = {    0,};
+    carrier_identity_identity_from_str(( &    id),    (err_Err* )(    e),
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    et,
+#line 208 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val,(    val_l -    1  )    );
+if (
+#line 209 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    err_check(    (err_Err* )(    e),
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    et,
+#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
+#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::vault_esp32::i_del_authorization",
+#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    209    )){
+
+#line 210 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    err_elog(    (err_Err* )(    e),
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    et    );
+
+#line 211 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    err_make(    (err_Err* )(    e),
+#line 188 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    et    );
+
+#line 212 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+continue;
+
+}
+
+
+#line 216 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    memset(    val,    0,    255    );
+
+#line 217 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val_l =     255;
+
+#line 218 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    key [     6] =     'p';
+
+#line 219 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ee =     nvs_get_str(    handle,    key,    val,( &    val_l)    );
+if ((
+#line 220 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ee !=    ESP_OK  )){
+
+#line 221 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+continue;
+
+}
+
+
+#line 223 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+;
+if ((
+#line 225 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    carrier_identity_eq(    delme,( &    id)    ) &&    string_cstr_eq(    resource,    val    )  )){
+
+#line 226 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    key [     6] =     'i';
+
+#line 227 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_erase_key(    handle,    key    );
+
+#line 228 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    key [     6] =     'p';
+
+#line 229 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_erase_key(    handle,    key    );
+
+#line 230 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+break;
+
+}
+
+
+}
+
+
+#line 234 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_close(    handle    );
+
+}
+
+
+#line 94 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr)
+{
+
+#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  err_Err_200 e  = {    0,};
+    err_make(    (err_Err* )(( &    e)),    200    );
+
+#line 98 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  nvs_handle_t handle  =     0;
+
+#line 99 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
+
+#line 101 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  char val  [     100 ]  = {    0,};
+
+#line 102 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  uintptr_t val_l  =     100;
+
+#line 103 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  esp_err_t const  ee  =     nvs_get_str(    handle,    "network",    val,( &    val_l)    );
+if ((
+#line 104 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ee !=    ESP_OK  )){
+
+#line 105 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  carrier_identity_Secret nu  = {    0,};
+
+#line 106 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    esp_fill_random(    nu .k,    32    );
+
+#line 108 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val_l =     carrier_identity_secret_to_str(    (err_Err* )(( &    e)),
+#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    200,
+#line 108 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val,    val_l,( &    nu)    );
+
+#line 109 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    err_abort(    (err_Err* )(( &    e)),
+#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    200,
+#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
+#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::vault_esp32::i_get_network",
+#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    109    );
+
+#line 111 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_set_str(    handle,    "network",    val    );
+
+#line 112 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_commit(    handle    );
+
+#line 114 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    memset(    val,    0,    100    );
+
+#line 115 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val_l =     100;
+
+#line 116 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ESP_ERROR_CHECK(    nvs_get_str(    handle,    "network",    val,( &    val_l)    )    );
+
+}
+
+
+#line 119 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_close(    handle    );
+
+#line 121 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  carrier_identity_Secret secret  = {    0,};
+
+#line 122 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    carrier_identity_secret_from_str(( &    secret),    (err_Err* )(( &    e)),
+#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    200,
+#line 122 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val,(    val_l -    1  )    );
+
+#line 123 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    err_abort(    (err_Err* )(( &    e)),
+#line 96 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    200,
+#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/src/vault_esp32.zz",
+#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::vault_esp32::i_get_network",
+#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    123    );
+
+#line 125 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    carrier_identity_address_from_secret(    addr,( &    secret)    );
+
+}
+
+
+#line 47 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static uint64_t carrier_vault_esp32_i_advance_clock (carrier_vault_Vault const *  const  self)
+{
+
+#line 49 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  nvs_handle_t handle  =     0;
+
+#line 50 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    ESP_ERROR_CHECK(    nvs_open(    "carrier",    NVS_READWRITE,( &    handle)    )    );
+
+#line 52 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  uint64_t val  =     0;
+
+#line 53 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_get_u64(    handle,    "clock",( &    val)    );
+
+#line 54 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    val +=     1;
+
+#line 56 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_set_u64(    handle,    "clock",(    val +    1  )    );
+
+#line 58 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+    nvs_close(    handle    );
+
+#line 59 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+  return     val;
+
+}
+
+
+#line 29 "/home/aep/proj/devguard/carrier/src/vault_esp32.zz"
+static void carrier_vault_esp32_close (carrier_vault_Vault*  const  self)
+{
 
 }
 

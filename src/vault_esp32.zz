@@ -151,9 +151,9 @@ fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_auth
     esp::nvs_handle_t mut handle = 0;
     esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
 
-    for (usize mut i = 0; i < 25;  i++) {
+    for (usize mut i = 0; i < 24;  i++) {
         char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
-        key[5] = 64 + (char)i;
+        key[5] = 65 + (char)i;
 
         char mut val[255] = {0};
         usize mut val_l = 255;
@@ -192,9 +192,9 @@ fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
     esp::nvs_handle_t mut handle = 0;
     esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
 
-    for (usize mut i = 0; i < 25;  i++) {
+    for (usize mut i = 0; i < 24;  i++) {
         char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
-        key[5] = 64 + (char)i;
+        key[5] = 65 + (char)i;
 
         char mut val[255] = {0};
         usize mut val_l = 255;
@@ -241,9 +241,9 @@ fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
     esp::nvs_handle_t mut handle = 0;
     esp::ESP_ERROR_CHECK(esp::nvs_open("carrier", esp::NVS_READWRITE , &handle));
 
-    for (usize mut i = 0; i < 25;  i++) {
+    for (usize mut i = 0; i < 24;  i++) {
         char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
-        key[5] = 64 + (char)i;
+        key[5] = 65 + (char)i;
 
         char mut val[255] = {0};
         usize mut val_l = 255;
@@ -276,14 +276,14 @@ fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
         }
     }
 
-    for (usize mut i = 0; i < 25;  i++) {
+    for (usize mut i = 0; i < 24;  i++) {
         char mut key[8] = {'a','u','t','h', '_', '_', '_', 0};
-        key[5] = 64 + (char)i;
+        key[5] = 65 + (char)i;
 
         usize mut val_l = 0;
         key[6] = 'i';
         let mut ee = unsafe<esp::esp_err_t>(esp::nvs_get_str(handle, key, 0, &val_l));
-        if (unsafe<bool>(ee != ESP_OK)) {
+        if (unsafe<bool>(ee == ESP_OK)) {
             continue;
         };
 
@@ -294,9 +294,7 @@ fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
             return;
         }
 
-
         esp::nvs_set_str(handle, key, val);
-
 
         key[6] = 'p';
         esp::nvs_set_str(handle, key, resource);

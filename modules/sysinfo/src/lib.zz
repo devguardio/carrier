@@ -20,6 +20,7 @@ inline using (needs
     proto::Sensor,
     proto::Sensors,
     proto::Sensor__ValueType,
+    proto::Bootloader,
     slice::mut_slice::MutSlice,
     slice::slice::Slice,
     err::fail_with_errno,
@@ -38,15 +39,16 @@ fn uname(slice::MutSlice mut*sl)
     new+1000 buf = string::make();
     let mut sl2 = buf.append_slice();
 
-    os_sysinfo_uname((err::Err mut*)&e, 300, &sl2);
-    if err::check(&e) {
-        e.elog();
-        return;
-    }
-    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Uname, sl2.mem(), sl2.at);
-    if err::check(&e) {
-        e.elog();
-        return;
+    if unsafe<bool>(os_sysinfo_uname((err::Err mut*)&e, 300, &sl2)) {
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
+        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Uname, sl2.mem(), sl2.at);
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
     }
 }
 
@@ -56,15 +58,16 @@ fn mem(slice::MutSlice mut*sl)
     new+1000 buf = string::make();
     let mut sl2 = buf.append_slice();
 
-    os_sysinfo_mem((err::Err mut*)&e, 300, &sl2);
-    if err::check(&e) {
-        e.elog();
-        return;
-    }
-    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Mem, sl2.mem(), sl2.at);
-    if err::check(&e) {
-        e.elog();
-        return;
+    if unsafe<bool>(os_sysinfo_mem((err::Err mut*)&e, 300, &sl2)) {
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
+        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Mem, sl2.mem(), sl2.at);
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
     }
 }
 
@@ -74,15 +77,16 @@ fn load(slice::MutSlice mut*sl)
     new+1000 buf = string::make();
     let mut sl2 = buf.append_slice();
 
-    os_sysinfo_load((err::Err mut*)&e, 300, &sl2);
-    if err::check(&e) {
-        e.elog();
-        return;
-    }
-    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Load, sl2.mem(), sl2.at);
-    if err::check(&e) {
-        e.elog();
-        return;
+    if unsafe<bool>(os_sysinfo_load((err::Err mut*)&e, 300, &sl2)) {
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
+        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Load, sl2.mem(), sl2.at);
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
     }
 }
 
@@ -92,15 +96,35 @@ fn firmware(slice::MutSlice mut*sl)
     new+1000 buf = string::make();
     let mut sl2 = buf.append_slice();
 
-    os_sysinfo_firmware((err::Err mut*)&e, 300, &sl2);
-    if err::check(&e) {
-        e.elog();
-        return;
+    if unsafe<bool>(os_sysinfo_firmware((err::Err mut*)&e, 300, &sl2)) {
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
+        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Firmware, sl2.mem(), sl2.at);
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
     }
-    protonerf::encode_bytes(sl, &e, proto::Sysinfo::Firmware, sl2.mem(), sl2.at);
-    if err::check(&e) {
-        e.elog();
-        return;
+}
+
+fn bootloader(slice::MutSlice mut*sl)
+{
+    new+300 e   = err::make();
+    new+1000 buf = string::make();
+    let mut sl2 = buf.append_slice();
+
+    if unsafe<bool>(os_sysinfo_bootloader((err::Err mut*)&e, 300, &sl2)) {
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
+        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Bootloader, sl2.mem(), sl2.at);
+        if err::check(&e) {
+            e.elog();
+            return;
+        }
     }
 }
 
@@ -109,6 +133,7 @@ export fn sysinfo(slice::MutSlice mut*sl) {
     mem(sl);
     load(sl);
     firmware(sl);
+    bootloader(sl);
 }
 
 export fn sensors(err::Err+et mut*e, slice::MutSlice mut*sl)

@@ -1106,13 +1106,17 @@ export fn SwitchTypes (usize index) -> protonerf::FieldType {
 }
 
 
-export enum Dualboot {
+export enum Bootloader {
   ActiveSide = 1,
+  BootReason = 2,
 }
 
-export fn DualbootTypes (usize index) -> protonerf::FieldType {
+export fn BootloaderTypes (usize index) -> protonerf::FieldType {
     switch index {
-        Dualboot::ActiveSide => {
+        Bootloader::ActiveSide => {
+            return protonerf::FieldType::Message;
+        }
+        Bootloader::BootReason => {
             return protonerf::FieldType::Message;
         }
     }
@@ -1149,7 +1153,7 @@ export enum Sysinfo {
   BoardId = 8,
   CarrierBuildId = 9,
   Belltower = 10,
-  Dualboot = 11,
+  Bootloader = 11,
 }
 
 export fn SysinfoTypes (usize index) -> protonerf::FieldType {
@@ -1184,7 +1188,7 @@ export fn SysinfoTypes (usize index) -> protonerf::FieldType {
         Sysinfo::Belltower => {
             return protonerf::FieldType::Message;
         }
-        Sysinfo::Dualboot => {
+        Sysinfo::Bootloader => {
             return protonerf::FieldType::Message;
         }
     }

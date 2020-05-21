@@ -95,8 +95,9 @@ message Switch {
 
 
 
-message Dualboot {
+message Bootloader {
     string active_side = 1;
+    string boot_reason = 2;
 }
 
 message Belltower {
@@ -115,7 +116,7 @@ message Sysinfo {
     string      board_id    = 8;
     string carrier_build_id = 9;
     Belltower   belltower   = 10;
-    Dualboot    dualboot    = 11;
+    Bootloader  bootloader = 11;
 }
 
 

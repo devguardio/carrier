@@ -13,6 +13,7 @@ using sft;
 using config;
 using pub_sysinfo;
 
+//using vault_esp32;
 
 //TODO
 pub const u32 REVISION = 0x1111;

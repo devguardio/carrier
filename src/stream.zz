@@ -176,7 +176,12 @@ pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
         static_attest(safe(self->config->poll));
         self->config->poll(self, e, async);
         if err::check(e) {
-            return;
+            if self->errors_are_fatal {
+                return;
+            } else {
+                e->elog();
+                e->make();
+            }
         }
     }
 }

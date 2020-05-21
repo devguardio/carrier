@@ -38,13 +38,29 @@ sysinfo     = "1"
 default = []
 
 [[artifacts]]
-name = "xarrier"
-type = "lib"
-main = "carrier::xarrier"
+type     = "esp32"
+name     = "carrier"
+main     = "carrier::esp32"
+requires = ["spi_flash", "bootloader_support", "app_update"]
 
 [[artifacts]]
+type = "lib"
 name = "carrier"
+main = "carrier"
+
+[[artifacts]]
+type = "cmake"
+name = "carrier"
+main = "carrier"
+
+[[artifacts]]
+type = "staticlib"
+name = "carrier"
+main = "carrier"
+
+[[artifacts]]
 type = "exe"
+name = "carrier"
 main = "carrier::main"
 
 [repos]

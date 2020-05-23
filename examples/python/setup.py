@@ -71,7 +71,7 @@ module = Extension('devguard_carrier',
                        '/Users/simon/Sites/carrier/target/release/gen/zz_builtins_carrier_carrier_CMake.c',
                        '/Users/simon/Sites/carrier/target/release/python/pycarrier.c',
                    ],
-                   include_dirs=['release/include/python'],
+                   include_dirs=['release/include'],
                    libraries=['carrier'],
                    library_dirs=['release/lib/'])
 

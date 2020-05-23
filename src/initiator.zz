@@ -12,7 +12,7 @@ using cipher;
 using router;
 using symmetric;
 using vault;
-using carrier;
+using revision;
 using crc8;
 using channel;
 using log;
@@ -96,7 +96,7 @@ pub fn initiate(
     memcpy(plaintext + plaintext_len, &network_time_be, 8);
     plaintext_len += 8;
 
-    u32 revision_be = byteorder::to_be32(carrier::REVISION);
+    u32 revision_be = byteorder::to_be32(revision::REVISION);
     memcpy(plaintext + plaintext_len, &revision_be, 4);
     plaintext_len += 4;
 
@@ -209,7 +209,7 @@ pub fn complete (
     Initiator       mut* self,
     err::Err+et     mut* e,
 
-    channel::Channel    mut* chan,
+    channel::Transfer mut* chan,
     vault::Broker   mut* unsafe redirect,
 
     string::String+st   mut* pkt,
@@ -356,7 +356,7 @@ pub fn complete (
         }
     }
 
-    *chan = channel::from_symmetric(
+    *chan = channel::transfer_from_symmetric(
         &self->noise.symm,
         version,
         route,
@@ -364,6 +364,6 @@ pub fn complete (
     );
 
     let now = time::tick();
-    chan->q.rtt = (now.to_millis() - self->tick_time_start);
-    log::debug("channel to %s via route %d rtt %ums", r_identity_str, route, chan->q.rtt);
+    chan->rtt = (now.to_millis() - self->tick_time_start);
+    log::debug("channel to %s via route %d rtt %ums", r_identity_str, route, chan->rtt);
 }

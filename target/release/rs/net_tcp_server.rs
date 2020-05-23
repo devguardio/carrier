@@ -63,17 +63,17 @@ impl rsServer {
     }
 }
 extern {
-    #[link_name = "net_tcp_server_close"]
-    pub fn r#close( Zself: *mut u8);
-
 
     #[link_name = "sizeof_net_tcp_server_Server"]
     pub static sizeof_Server: libc::size_t;
 
-    #[link_name = "net_tcp_server_accept"]
-    pub fn r#accept( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zclient: *mut u8)  -> super::io::Result;
-
     #[link_name = "net_tcp_server_os_new"]
     pub fn r#os_new( Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zaddr: *const u8,  Zasync: *mut u8)  -> super::net_tcp_server::Server;
+
+    #[link_name = "net_tcp_server_close"]
+    pub fn r#close( Zself: *mut u8);
+
+    #[link_name = "net_tcp_server_accept"]
+    pub fn r#accept( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zclient: *mut u8)  -> super::io::Result;
 
 }

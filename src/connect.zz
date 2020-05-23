@@ -207,10 +207,13 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             }
             static_attest(safe(nuchan));
 
-            this->initiator.complete(e, nuchan, 0, &this->initiator_pkt, &this->target);
+            channel::Transfer mut chan_trans = {0};
+            this->initiator.complete(e, &chan_trans, 0, &this->initiator_pkt, &this->target);
             if err::check(e) {
                 return true;
             }
+
+            channel::from_transfer(nuchan, chan_trans);
 
             if nuchan->route != route {
                 err::fail(e, err::InvalidArgument, "broker and peer disagree on route");

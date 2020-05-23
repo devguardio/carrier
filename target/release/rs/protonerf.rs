@@ -208,6 +208,12 @@ pub enum FieldType {
 }
 
 extern {
+    #[link_name = "protonerf_encode_bytes"]
+    pub fn r#encode_bytes( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zb: *const u8,  Zl: usize);
+
+    #[link_name = "protonerf_encode_f64"]
+    pub fn r#encode_f64( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: f64);
+
     #[link_name = "protonerf_write_varint"]
     pub fn r#write_varint( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zlow: u32,  Zhigh: u32);
 
@@ -217,28 +223,22 @@ extern {
     #[link_name = "sizeof_protonerf_Field"]
     pub static sizeof_Field: libc::size_t;
 
+
     #[link_name = "sizeof_protonerf_Decoder"]
     pub static sizeof_Decoder: libc::size_t;
 
     #[link_name = "protonerf_decode"]
     pub fn r#decode( Zmem: *const u8,  Zsize: usize)  -> super::protonerf::Decoder;
 
-    #[link_name = "protonerf_encode_bytes"]
-    pub fn r#encode_bytes( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zb: *const u8,  Zl: usize);
-
-    #[link_name = "protonerf_encode_f64"]
-    pub fn r#encode_f64( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: f64);
-
-
-    #[link_name = "protonerf_next"]
-    pub fn r#next( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> super::protonerf::Field;
-
-
     #[link_name = "protonerf_encode_varint"]
     pub fn r#encode_varint( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: u64);
 
     #[link_name = "protonerf_read_varint"]
     pub fn r#read_varint( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> u64;
+
+
+    #[link_name = "protonerf_next"]
+    pub fn r#next( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> super::protonerf::Field;
 
     #[link_name = "protonerf_encode_bytes_start"]
     pub fn r#encode_bytes_start( Zstr: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zl: usize);

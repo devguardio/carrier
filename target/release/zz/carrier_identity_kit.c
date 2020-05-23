@@ -2,9 +2,47 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_Vault_t;
-typedef struct carrier_vault_Vault_t carrier_vault_Vault;
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+struct net_tcp_server_Server_t;
+typedef struct net_tcp_server_Server_t net_tcp_server_Server;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+struct string_String_200_t;
+typedef struct string_String_200_t string_String_200;
+struct string_String_1000_t;
+typedef struct string_String_1000_t string_String_1000;
+struct string_String_100_t;
+typedef struct string_String_100_t string_String_100;
+struct string_String_20_t;
+typedef struct string_String_20_t string_String_20;
+struct string_String_256_t;
+typedef struct string_String_256_t string_String_256;
+struct string_String_300_t;
+typedef struct string_String_300_t string_String_300;
+struct string_String_10_t;
+typedef struct string_String_10_t string_String_10;
+struct string_String_8_t;
+typedef struct string_String_8_t string_String_8;
+struct string_String_1500_t;
+typedef struct string_String_1500_t string_String_1500;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
@@ -12,51 +50,39 @@ typedef struct err_Err_t err_Err;
 struct err_Err_200_t;
 typedef struct err_Err_200_t err_Err_200;
 
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-struct string_String_256_t;
-typedef struct string_String_256_t string_String_256;
-struct string_String_1500_t;
-typedef struct string_String_1500_t string_String_1500;
-struct string_String_300_t;
-typedef struct string_String_300_t string_String_300;
-struct string_String_20_t;
-typedef struct string_String_20_t string_String_20;
-struct string_String_1000_t;
-typedef struct string_String_1000_t string_String_1000;
-struct string_String_100_t;
-typedef struct string_String_100_t string_String_100;
-struct string_String_10_t;
-typedef struct string_String_10_t string_String_10;
-struct string_String_200_t;
-typedef struct string_String_200_t string_String_200;
-struct string_String_8_t;
-typedef struct string_String_8_t string_String_8;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Io_t;
-typedef struct io_Io_t io_Io;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 struct io_Context_t;
 typedef struct io_Context_t io_Context;
 
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 struct io_Io_t;
 typedef struct io_Io_t io_Io;
+
+#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Signature_t;
+typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
+
+#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Address_t;
+typedef struct carrier_identity_Address_t carrier_identity_Address;
+
+#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_Vault_t;
+typedef struct carrier_vault_Vault_t carrier_vault_Vault;
+
+#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Identity_t;
+typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+struct carrier_identity_Identity_t;
+typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+
+#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+struct net_tcp_Socket_t;
+typedef struct net_tcp_Socket_t net_tcp_Socket;
 
 #line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
 struct time_Time_t;
@@ -66,10 +92,6 @@ typedef struct time_Time_t time_Time;
 struct carrier_identity_Secret_t;
 typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 
-#line 6 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
-struct carrier_identity_kit_IdentityKit_t;
-typedef struct carrier_identity_kit_IdentityKit_t carrier_identity_kit_IdentityKit;
-
 #line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
 struct net_udp_Socket_t;
 typedef struct net_udp_Socket_t net_udp_Socket;
@@ -78,37 +100,21 @@ typedef struct net_udp_Socket_t net_udp_Socket;
 struct net_Engine_t;
 typedef struct net_Engine_t net_Engine;
 
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Context_t;
+typedef struct io_Context_t io_Context;
 
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
+#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+struct net_udp_Socket_t;
+typedef struct net_udp_Socket_t net_udp_Socket;
 
-#line 158 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-struct carrier_bootstrap_DnsPacket_t;
-typedef struct carrier_bootstrap_DnsPacket_t carrier_bootstrap_DnsPacket;
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-struct net_tcp_server_Server_t;
-typedef struct net_tcp_server_Server_t net_tcp_server_Server;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t;
+typedef struct io_Io_t io_Io;
 
 #line 39 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
 struct carrier_bootstrap_Bootstrap_t;
 typedef struct carrier_bootstrap_Bootstrap_t carrier_bootstrap_Bootstrap;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
 
 #line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
 struct net_tcp_Socket_t;
@@ -118,71 +124,71 @@ typedef struct net_tcp_Socket_t net_tcp_Socket;
 struct net_tcp_server_Server_t;
 typedef struct net_tcp_server_Server_t net_tcp_server_Server;
 
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 22 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_Broker_t;
-typedef struct carrier_vault_Broker_t carrier_vault_Broker;
-
-#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_Vault_t;
-typedef struct carrier_vault_Vault_t carrier_vault_Vault;
-
-#line 39 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-struct carrier_bootstrap_Bootstrap_t;
-typedef struct carrier_bootstrap_Bootstrap_t carrier_bootstrap_Bootstrap;
-
-#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Secret_t;
-typedef struct carrier_identity_Secret_t carrier_identity_Secret;
+#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+struct net_Engine_t;
+typedef struct net_Engine_t net_Engine;
 
 #line 6 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
 struct carrier_identity_kit_IdentityKit_t;
 typedef struct carrier_identity_kit_IdentityKit_t carrier_identity_kit_IdentityKit;
 
-#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Signature_t;
-typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t;
+typedef struct time_Time_t time_Time;
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
+
+#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Secret_t;
+typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 
 #line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
 struct carrier_vault_authorize_open_stream_cb_s_t;
 typedef struct carrier_vault_authorize_open_stream_cb_s_t carrier_vault_authorize_open_stream_cb_s;
 
-#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-struct net_Engine_t;
-typedef struct net_Engine_t net_Engine;
+#line 158 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+struct carrier_bootstrap_DnsPacket_t;
+typedef struct carrier_bootstrap_DnsPacket_t carrier_bootstrap_DnsPacket;
+
+#line 22 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_Broker_t;
+typedef struct carrier_vault_Broker_t carrier_vault_Broker;
+
+#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Address_t;
+typedef struct carrier_identity_Address_t carrier_identity_Address;
+
+#line 6 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
+struct carrier_identity_kit_IdentityKit_t;
+typedef struct carrier_identity_kit_IdentityKit_t carrier_identity_kit_IdentityKit;
+
+#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_Vault_t;
+typedef struct carrier_vault_Vault_t carrier_vault_Vault;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-struct string_String_256_t;
-typedef struct string_String_256_t string_String_256;
-struct string_String_1500_t;
-typedef struct string_String_1500_t string_String_1500;
-struct string_String_300_t;
-typedef struct string_String_300_t string_String_300;
-struct string_String_20_t;
-typedef struct string_String_20_t string_String_20;
+struct string_String_200_t;
+typedef struct string_String_200_t string_String_200;
 struct string_String_1000_t;
 typedef struct string_String_1000_t string_String_1000;
 struct string_String_100_t;
 typedef struct string_String_100_t string_String_100;
+struct string_String_20_t;
+typedef struct string_String_20_t string_String_20;
+struct string_String_256_t;
+typedef struct string_String_256_t string_String_256;
+struct string_String_300_t;
+typedef struct string_String_300_t string_String_300;
 struct string_String_10_t;
 typedef struct string_String_10_t string_String_10;
-struct string_String_200_t;
-typedef struct string_String_200_t string_String_200;
 struct string_String_8_t;
 typedef struct string_String_8_t string_String_8;
+struct string_String_1500_t;
+typedef struct string_String_1500_t string_String_1500;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
@@ -190,352 +196,14 @@ typedef struct err_Err_t err_Err;
 struct err_Err_200_t;
 typedef struct err_Err_200_t err_Err_200;
 
-#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-struct net_tcp_Socket_t;
-typedef struct net_tcp_Socket_t net_tcp_Socket;
+#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
 
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
+#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint16_t net_address_get_port (net_address_Address const *  const  self);
 
-#line 1 ""
-#include <stddef.h>
-
-#line 17 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_list_authorizations_cb) (void*  const  user, carrier_identity_Identity const *  const  id, char const *  const  resource);
-
-#line 18 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_list_authorizations_fn) (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 62 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_list_authorizations (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-typedef enum {
-    net_address_Type_Invalid = 0,
-    net_address_Type_Ipv4 = 1,
-    net_address_Type_Ipv6 = 2,
-
-} net_address_Type;
-
-#line 32 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef enum {
-    io_Result_Ready = 0,
-    io_Result_Later = 1,
-    io_Result_Error = 2,
-    io_Result_Eof = 3,
-
-} io_Result;
-
-#line 175 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Context_t {
-
-#line 45 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   bool isvalid ;
-
-#line 46 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_Async*  async ;
-
-#line 49 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   uint64_t time ;
-
-#line 50 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   int fd ;
-
-#line 51 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   void*  handle ;
-}
-;
-
-#line 39 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Result (*io_read_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  len);
-
-#line 40 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Result (*io_write_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  len);
-
-#line 41 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_close_fn) (io_Context*  const  ctx);
-
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Io_t {
-
-#line 55 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_Context ctx ;
-
-#line 56 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_read_fn read_impl ;
-
-#line 57 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_write_fn write_impl ;
-
-#line 58 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_close_fn close_impl ;
-}
-;
-
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t {
-
-#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t secs ;
-
-#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t nano ;
-
-#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   bool finite ;
-}
-;
-
-#line 10 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Io (*io_make_timeout_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
-
-#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 13 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
-void carrier_identity_kit_ephemeral (carrier_identity_kit_IdentityKit*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-struct net_udp_Socket_t {
-
-#line 45 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   io_Context ctx ;
-
-#line 46 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   void const *  impl_sendto ;
-
-#line 47 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   void const *  impl_recvfrom ;
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   io_close_fn impl_close ;
-}
-;
-
-#line 9 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-typedef net_udp_Socket (*net_new_udp_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 11 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#line 27 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef enum {
-    io_Ready_Read = 0,
-    io_Ready_Write = 1,
-
-} io_Ready;
-
-#line 12 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_select_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 13 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_wake_fn) (io_Async*  const  async);
-
-#line 14 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_wait_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
-
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t {
-
-#line 17 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   void const *  upper ;
-
-#line 19 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_make_timeout_fn impl_make_timeout ;
-
-#line 20 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_make_channel_fn impl_make_channel ;
-
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_select_fn impl_select ;
-
-#line 22 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_wake_fn impl_wake ;
-
-#line 23 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_wait_fn impl_wait ;
-}
-;
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
-
-#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 98 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-io_Result net_udp_sendto (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st, net_address_Address const *  const  to);
-
-#line 158 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-struct carrier_bootstrap_DnsPacket_t {
-
-#line 159 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uint16_t id ;
-
-#line 160 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uint16_t flags ;
-
-#line 161 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uint16_t queries ;
-
-#line 162 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uint16_t answers ;
-
-#line 163 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uint16_t authorities ;
-
-#line 164 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uint16_t additionals ;
-}
- __attribute__((__packed__)) ;
-
-#line 60 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-void net_tcp_server (net_tcp_server_Server*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t {
-
-#line 17 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-   net_address_Type typ ;
-
-#line 18 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-   uint8_t os[    24] ;
-}
-;
-
-#line 74 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-void carrier_bootstrap_close (carrier_bootstrap_Bootstrap*  const  self);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t {
-   uint8_t k[    32] ;
-}
-;
-
-#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 16 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_add_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 155 "/home/aep/proj/devguard/carrier/src/vault.zz"
-bool carrier_vault_authorize_open_stream (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii, char const *  const  path);
-
-#line 230 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_none (net_address_Address*  const  self);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#line 28 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-typedef io_Result (*net_tcp_server_accept_fn) (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-struct net_tcp_server_Server_t {
-
-#line 35 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-   io_Context ctx ;
-
-#line 36 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-   io_close_fn impl_close ;
-
-#line 37 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-   net_tcp_server_accept_fn impl_accept ;
-}
-;
-
-#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
-
-#line 73 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-io_Result net_tcp_send (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st);
-
-#line 8 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_close_fn) (carrier_vault_Vault*  const  self);
-
-#line 26 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-typedef io_Result (*net_tcp_send_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  mem, uintptr_t*  const  memlen);
-
-#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 15 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_del_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-typedef net_tcp_server_Server (*net_new_tcp_server_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
-
-#line 13 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_set_network_fn) (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
-
-#line 79 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-io_Result carrier_bootstrap_poll (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t {
-   uint8_t k[    32] ;
-}
-;
-
-#line 241 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
-
-#line 11 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_get_network_fn) (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  address);
+#line 81 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+void net_tcp_server_close (net_tcp_server_Server*  const  self);
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t {
@@ -547,6 +215,9 @@ struct slice_slice_Slice_t {
    uint8_t const *  mem ;
 }
 ;
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t {
@@ -562,191 +233,21 @@ struct slice_mut_slice_MutSlice_t {
 #line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
 slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 
-#line 65 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+#line 28 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef enum {
+    io_Ready_Read = 0,
+    io_Ready_Write = 1,
 
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
+} io_Ready;
 
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+#line 13 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_select_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
 
-#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#line 221 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_close (io_Io*  const  self);
-
-#line 21 "/home/aep/proj/devguard/carrier/src/vault.zz"
-#define carrier_vault_MAX_BROKERS ((uintptr_t )    16)
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 118 "/home/aep/proj/devguard/carrier/src/vault.zz"
-bool carrier_vault_authorize_connect (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii);
-
-#line 53 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-io_Result net_tcp_recv (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 10 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef void (*carrier_vault_get_secret_fn) (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
-
-#line 12 "/home/aep/proj/devguard/carrier/src/vault.zz"
-typedef uint64_t (*carrier_vault_advance_clock_fn) (carrier_vault_Vault const *  const  self);
-
-#line 22 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_Broker_t {
-
-#line 23 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   uint8_t protocol ;
-
-#line 24 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   uint8_t reserved[    3] ;
-
-#line 26 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   uint8_t xaddr[    32] ;
-
-#line 27 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   uint8_t ip4addr[    4] ;
-
-#line 28 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   uint8_t ip6addr[    16] ;
-}
- __attribute__((__packed__)) ;
-
-#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_Vault_t {
-
-#line 33 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_close_fn i_close ;
-
-#line 35 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_get_secret_fn i_get_secret ;
-
-#line 36 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_get_network_fn i_get_network ;
-
-#line 37 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_advance_clock_fn i_advance_clock ;
-
-#line 38 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_set_network_fn i_set_network ;
-
-#line 40 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_list_authorizations_fn i_list_authorizations ;
-
-#line 41 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_del_authorization_fn i_del_authorization ;
-
-#line 42 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_add_authorization_fn i_add_authorization ;
-
-#line 43 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   void*  user ;
-
-#line 46 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_vault_Broker broker[    carrier_vault_MAX_BROKERS] ;
-}
-;
-
-#line 48 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-void carrier_bootstrap_bootstrap (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_Vault*  const  store, net_Engine const *  const  netengine, io_Async*  const  async);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_seconds (time_Time const *  const  self);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 253 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 254 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint16_t net_address_get_port (net_address_Address const *  const  self);
-
-#line 61 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-bool io_valid (io_Context const *  const  self);
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 39 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-struct carrier_bootstrap_Bootstrap_t {
-
-#line 40 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   net_address_Address dns_servers[    16] ;
-
-#line 41 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   uintptr_t dns_servers_count ;
-
-#line 42 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   net_udp_Socket sock4 ;
-
-#line 43 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   net_udp_Socket sock6 ;
-
-#line 44 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   io_Io retry_timer ;
-
-#line 45 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
-   carrier_vault_Vault*  store ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 280 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
-
-#line 121 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
-
-#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Secret_t {
-   uint8_t k[    32] ;
-}
-;
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 6 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
-struct carrier_identity_kit_IdentityKit_t {
-
-#line 8 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
-   carrier_identity_Secret principal ;
-
-#line 9 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
-   carrier_identity_Secret network ;
-}
-;
-const size_t sizeof_carrier_identity_kit_IdentityKit = sizeof(carrier_identity_kit_IdentityKit);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 80 "/home/aep/proj/devguard/carrier/src/vault.zz"
-uint64_t carrier_vault_vector_time (carrier_vault_Vault const *  const  self);
 
 #line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
 struct carrier_identity_Signature_t {
@@ -754,73 +255,60 @@ struct carrier_identity_Signature_t {
 }
 ;
 
-#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
+#line 1 ""
+#include <stddef.h>
 
-#line 270 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
+#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
 
-#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_millis (time_Time const *  const  self);
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
 
-#line 81 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-void net_tcp_server_close (net_tcp_server_Server*  const  self);
+#line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+typedef enum {
+    net_address_Type_Invalid = 0,
+    net_address_Type_Ipv4 = 1,
+    net_address_Type_Ipv6 = 2,
 
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
+} net_address_Type;
 
-#line 140 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t {
 
-#line 42 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-void net_udp (net_udp_Socket*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+#line 17 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+   net_address_Type typ ;
 
-#line 51 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-void net_udp_close (net_udp_Socket*  const  self);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
-struct carrier_vault_authorize_open_stream_cb_s_t {
-
-#line 129 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   carrier_identity_Identity const *  ii ;
-
-#line 130 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   char const *  path ;
-
-#line 133 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   bool accepted ;
-
-#line 134 "/home/aep/proj/devguard/carrier/src/vault.zz"
-   bool has_any ;
+#line 18 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+   uint8_t os[    24] ;
 }
 ;
 
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
 
-#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
+#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
 
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+#line 8 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_close_fn) (carrier_vault_Vault*  const  self);
 
-#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
-#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
 
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+#line 15 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_del_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
 
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -837,16 +325,16 @@ char  const * string_cstr (string_String const *  const  self);
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -2182,6 +1670,207 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Identity_t {
+   uint8_t k[    32] ;
+}
+;
+
+#line 99 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_get_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 16 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_add_authorization_fn) (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+
+#line 33 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef enum {
+    io_Result_Ready = 0,
+    io_Result_Later = 1,
+    io_Result_Error = 2,
+    io_Result_Eof = 3,
+
+} io_Result;
+
+#line 53 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+io_Result net_tcp_recv (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st);
+
+#line 91 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+void net_tcp_close (net_tcp_Socket*  const  self);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_seconds (time_Time const *  const  self);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
+
+#line 17 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_list_authorizations_cb) (void*  const  user, carrier_identity_Identity const *  const  id, char const *  const  resource);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 42 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+void net_udp (net_udp_Socket*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 62 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+bool io_valid (io_Context const *  const  self);
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Context_t {
+
+#line 46 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   bool isvalid ;
+
+#line 47 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_Async*  async ;
+
+#line 50 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   uint64_t time ;
+
+#line 51 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   int fd ;
+
+#line 52 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   void*  handle ;
+}
+;
+
+#line 42 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_close_fn) (io_Context*  const  ctx);
+
+#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+struct net_udp_Socket_t {
+
+#line 45 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   io_Context ctx ;
+
+#line 46 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   void const *  impl_sendto ;
+
+#line 47 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   void const *  impl_recvfrom ;
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   io_close_fn impl_close ;
+}
+;
+
+#line 40 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Result (*io_read_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  len);
+
+#line 41 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Result (*io_write_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  len);
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t {
+
+#line 56 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_Context ctx ;
+
+#line 57 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_read_fn read_impl ;
+
+#line 58 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_write_fn write_impl ;
+
+#line 59 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_close_fn close_impl ;
+}
+;
+
+#line 39 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+struct carrier_bootstrap_Bootstrap_t {
+
+#line 40 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   net_address_Address dns_servers[    16] ;
+
+#line 41 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uintptr_t dns_servers_count ;
+
+#line 42 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   net_udp_Socket sock4 ;
+
+#line 43 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   net_udp_Socket sock6 ;
+
+#line 44 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   io_Io retry_timer ;
+
+#line 45 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   carrier_vault_Vault*  store ;
+}
+;
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 26 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+typedef io_Result (*net_tcp_send_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  mem, uintptr_t*  const  memlen);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+typedef io_Result (*net_tcp_recv_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+
+#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+struct net_tcp_Socket_t {
+
+#line 43 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   io_Context ctx ;
+
+#line 44 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   io_close_fn impl_close ;
+
+#line 46 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   net_address_Address remote_addr ;
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   net_tcp_send_fn impl_send ;
+
+#line 49 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   net_tcp_recv_fn impl_recv ;
+}
+;
+
+#line 9 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+typedef net_udp_Socket (*net_new_udp_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
+#line 28 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+typedef io_Result (*net_tcp_server_accept_fn) (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+struct net_tcp_server_Server_t {
+
+#line 35 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+   io_Context ctx ;
+
+#line 36 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+   io_close_fn impl_close ;
+
+#line 37 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+   net_tcp_server_accept_fn impl_accept ;
+}
+;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+typedef net_tcp_server_Server (*net_new_tcp_server_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
 #line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
 struct net_Engine_t {
 
@@ -2202,14 +1891,410 @@ struct net_Engine_t {
 }
 ;
 
+#line 60 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+void net_tcp_server (net_tcp_server_Server*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
+
+#line 73 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+io_Result net_tcp_send (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st);
+
+#line 13 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
+void carrier_identity_kit_ephemeral (carrier_identity_kit_IdentityKit*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t {
+
+#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t secs ;
+
+#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t nano ;
+
+#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   bool finite ;
+}
+;
+
+#line 11 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Io (*io_make_timeout_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#line 12 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+
+#line 14 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_wake_fn) (io_Async*  const  async);
+
+#line 15 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_wait_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t {
+
+#line 18 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   void const *  upper ;
+
+#line 20 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_make_timeout_fn impl_make_timeout ;
+
+#line 21 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_make_channel_fn impl_make_channel ;
+
+#line 22 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_select_fn impl_select ;
+
+#line 23 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_wake_fn impl_wake ;
+
+#line 24 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_wait_fn impl_wait ;
+}
+;
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef uint64_t (*carrier_vault_advance_clock_fn) (carrier_vault_Vault const *  const  self);
+
+#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
+
+#line 78 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+io_Result net_udp_recvfrom (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st, net_address_Address*  const  from);
+
+#line 155 "/home/aep/proj/devguard/carrier/src/vault.zz"
+bool carrier_vault_authorize_open_stream (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii, char const *  const  path);
+
+#line 17 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_list_authorizations_cb) (void*  const  user, carrier_identity_Identity const *  const  id, char const *  const  resource);
+
+#line 18 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_list_authorizations_fn) (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 66 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 59 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+io_Result net_tcp_server_accept (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 281 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
+
+#line 264 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_wake (io_Async*  const  self);
+
+#line 86 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_sign (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#line 202 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
+
+#line 48 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+void carrier_bootstrap_bootstrap (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_Vault*  const  store, net_Engine const *  const  netengine, io_Async*  const  async);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 98 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+io_Result net_udp_sendto (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st, net_address_Address const *  const  to);
+
+#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Secret_t {
+   uint8_t k[    32] ;
+}
+;
+
+#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 141 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
 #line 68 "/home/aep/proj/devguard/carrier/src/vault.zz"
 void carrier_vault_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+
+#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_none (net_address_Address*  const  self);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 128 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_authorize_open_stream_cb_s_t {
+
+#line 129 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_identity_Identity const *  ii ;
+
+#line 130 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   char const *  path ;
+
+#line 133 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   bool accepted ;
+
+#line 134 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   bool has_any ;
+}
+;
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 242 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#line 74 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+void carrier_bootstrap_close (carrier_bootstrap_Bootstrap*  const  self);
+
+#line 158 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+struct carrier_bootstrap_DnsPacket_t {
+
+#line 159 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uint16_t id ;
+
+#line 160 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uint16_t flags ;
+
+#line 161 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uint16_t queries ;
+
+#line 162 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uint16_t answers ;
+
+#line 163 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uint16_t authorities ;
+
+#line 164 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+   uint16_t additionals ;
+}
+ __attribute__((__packed__)) ;
+
+#line 80 "/home/aep/proj/devguard/carrier/src/vault.zz"
+uint64_t carrier_vault_vector_time (carrier_vault_Vault const *  const  self);
+
+#line 176 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 185 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 10 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_get_secret_fn) (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
+
+#line 51 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+void net_udp_close (net_udp_Socket*  const  self);
+
+#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
+
+#line 22 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_Broker_t {
+
+#line 23 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   uint8_t protocol ;
+
+#line 24 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   uint8_t reserved[    3] ;
+
+#line 26 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   uint8_t xaddr[    32] ;
+
+#line 27 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   uint8_t ip4addr[    4] ;
+
+#line 28 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   uint8_t ip6addr[    16] ;
+}
+ __attribute__((__packed__)) ;
+
+#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Address_t {
+   uint8_t k[    32] ;
+}
+;
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 21 "/home/aep/proj/devguard/carrier/src/vault.zz"
+#define carrier_vault_MAX_BROKERS ((uintptr_t )    16)
+
+#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 74 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_set_network (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  network);
+
+#line 6 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
+struct carrier_identity_kit_IdentityKit_t {
+
+#line 8 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
+   carrier_identity_Secret principal ;
+
+#line 9 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
+   carrier_identity_Secret network ;
+}
+;
+const size_t sizeof_carrier_identity_kit_IdentityKit = sizeof(carrier_identity_kit_IdentityKit);
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 13 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_set_network_fn) (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
+
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 62 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_list_authorizations (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 271 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-typedef io_Result (*net_tcp_recv_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+#line 11 "/home/aep/proj/devguard/carrier/src/vault.zz"
+typedef void (*carrier_vault_get_network_fn) (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  address);
+
+#line 231 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#line 107 "/home/aep/proj/devguard/carrier/src/vault.zz"
+uintptr_t carrier_vault_broker_count (carrier_vault_Vault const *  const  self);
+
+#line 79 "/home/aep/proj/devguard/carrier/src/bootstrap.zz"
+io_Result carrier_bootstrap_poll (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 56 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+
+#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 31 "/home/aep/proj/devguard/carrier/src/vault.zz"
+struct carrier_vault_Vault_t {
+
+#line 33 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_close_fn i_close ;
+
+#line 35 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_get_secret_fn i_get_secret ;
+
+#line 36 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_get_network_fn i_get_network ;
+
+#line 37 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_advance_clock_fn i_advance_clock ;
+
+#line 38 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_set_network_fn i_set_network ;
+
+#line 40 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_list_authorizations_fn i_list_authorizations ;
+
+#line 41 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_del_authorization_fn i_del_authorization ;
+
+#line 42 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_add_authorization_fn i_add_authorization ;
+
+#line 43 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   void*  user ;
+
+#line 46 "/home/aep/proj/devguard/carrier/src/vault.zz"
+   carrier_vault_Broker broker[    carrier_vault_MAX_BROKERS] ;
+}
+;
+
+#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
+
+#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_millis (time_Time const *  const  self);
+
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+
+#line 122 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+
+#line 222 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_close (io_Io*  const  self);
+
+#line 92 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t {
@@ -2223,46 +2308,13 @@ struct string_String_t {
 ;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_256_t {
+struct string_String_200_t {
 
 #line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
    uintptr_t len ;
 
 #line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[256] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_1500_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[1500] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_300_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[300] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_20_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[20] ;
+   char mem[200] ;
 }
 ;
 
@@ -2289,6 +2341,39 @@ struct string_String_100_t {
 ;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_20_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[20] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_256_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[256] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_300_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[300] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_10_t {
 
 #line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
@@ -2300,17 +2385,6 @@ struct string_String_10_t {
 ;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_200_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[200] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_8_t {
 
 #line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
@@ -2318,6 +2392,17 @@ struct string_String_8_t {
 
 #line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
    char mem[8] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_1500_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[1500] ;
 }
 ;
 
@@ -2350,112 +2435,32 @@ struct err_Err_200_t {
 }
 ;
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 59 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-io_Result net_tcp_server_accept (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
-
-#line 86 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_sign (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#line 78 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-io_Result net_udp_recvfrom (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st, net_address_Address*  const  from);
-
-#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
-
-#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 50 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#line 56 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 99 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_get_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
-
-#line 201 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
-
-#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-struct net_tcp_Socket_t {
-
-#line 43 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   io_Context ctx ;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   io_close_fn impl_close ;
-
-#line 46 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   net_address_Address remote_addr ;
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   net_tcp_send_fn impl_send ;
-
-#line 49 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   net_tcp_recv_fn impl_recv ;
-}
-;
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
 #line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 bool net_address_valid (net_address_Address const *  const  self);
 
-#line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 107 "/home/aep/proj/devguard/carrier/src/vault.zz"
-uintptr_t carrier_vault_broker_count (carrier_vault_Vault const *  const  self);
-
-#line 91 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
-
-#line 263 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_wake (io_Async*  const  self);
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
-#line 74 "/home/aep/proj/devguard/carrier/src/vault.zz"
-void carrier_vault_set_network (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  network);
+#line 50 "/home/aep/proj/devguard/carrier/src/vault.zz"
+void carrier_vault_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
 
-#line 91 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-void net_tcp_close (net_tcp_Socket*  const  self);
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 118 "/home/aep/proj/devguard/carrier/src/vault.zz"
+bool carrier_vault_authorize_connect (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii);
+
+#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 
 #line 13 "/home/aep/proj/devguard/carrier/src/identity_kit.zz"
 void __attribute__ ((visibility ("default"))) carrier_identity_kit_ephemeral (carrier_identity_kit_IdentityKit*  const  self, err_Err*  const  e, uintptr_t const  et)

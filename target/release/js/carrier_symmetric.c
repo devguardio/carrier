@@ -6,65 +6,65 @@
 #include <string.h>
 #include "zz/carrier/carrier_symmetric.h"
 
+napi_value js_slice_mut_slice_mem(napi_env env, napi_callback_info info);
+napi_value js_string_substr(napi_env env, napi_callback_info info);
+napi_value js_err_to_str(napi_env env, napi_callback_info info);
 napi_value js_carrier_cipher_encrypt_ad(napi_env env, napi_callback_info info);
 napi_value js_err_check(napi_env env, napi_callback_info info);
 napi_value js_carrier_symmetric_mix_hash(napi_env env, napi_callback_info info);
 napi_value js_carrier_symmetric_encrypt_and_mix_hash(napi_env env, napi_callback_info info);
-napi_value js_carrier_sha256_update(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_append_cstr(napi_env env, napi_callback_info info);
+napi_value js_string_pop(napi_env env, napi_callback_info info);
+napi_value js_err_fail(napi_env env, napi_callback_info info);
+napi_value js_carrier_cipher_encrypt(napi_env env, napi_callback_info info);
 napi_value js_string_format(napi_env env, napi_callback_info info);
 napi_value js_slice_mut_slice_push32(napi_env env, napi_callback_info info);
-napi_value js_carrier_cipher_decrypt(napi_env env, napi_callback_info info);
-napi_value js_carrier_cipher_encrypt(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_mem(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq(napi_env env, napi_callback_info info);
-napi_value js_string_cstr(napi_env env, napi_callback_info info);
-napi_value js_carrier_sha256_hkdf(napi_env env, napi_callback_info info);
-napi_value js_carrier_sha256_finish(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push64(napi_env env, napi_callback_info info);
-napi_value js_string_starts_with_cstr(napi_env env, napi_callback_info info);
+napi_value js_err_make(napi_env env, napi_callback_info info);
 napi_value js_string_clear(napi_env env, napi_callback_info info);
-napi_value js_string_split(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_append_cstr(napi_env env, napi_callback_info info);
+napi_value js_string_slice(napi_env env, napi_callback_info info);
 napi_value js_string_space(napi_env env, napi_callback_info info);
-napi_value js_string_pop(napi_env env, napi_callback_info info);
+napi_value js_carrier_cipher_decrypt(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
+napi_value js_err_fail_with_errno(napi_env env, napi_callback_info info);
+napi_value js_string_slen(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push64(napi_env env, napi_callback_info info);
+napi_value js_string_push(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_init(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_update(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_finish(napi_env env, napi_callback_info info);
+napi_value js_carrier_symmetric_mix_hash(napi_env env, napi_callback_info info);
 napi_value js_err_eprintf(napi_env env, napi_callback_info info);
-napi_value js_err_to_str(napi_env env, napi_callback_info info);
-napi_value js_string_make(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_borrow(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_hkdf(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_append_bytes(napi_env env, napi_callback_info info);
+napi_value js_err_abort(napi_env env, napi_callback_info info);
 napi_value js_slice_mut_slice_push16(napi_env env, napi_callback_info info);
-napi_value js_string_vformat(napi_env env, napi_callback_info info);
+napi_value js_string_append_slice(napi_env env, napi_callback_info info);
+napi_value js_string_append_cstr(napi_env env, napi_callback_info info);
+napi_value js_err_backtrace(napi_env env, napi_callback_info info);
 napi_value js_carrier_cipher_init(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_make(napi_env env, napi_callback_info info);
+napi_value js_string_append_bytes(napi_env env, napi_callback_info info);
+napi_value js_string_starts_with_cstr(napi_env env, napi_callback_info info);
 napi_value js_carrier_symmetric_mix_key(napi_env env, napi_callback_info info);
 napi_value js_carrier_cipher_decrypt_ad(napi_env env, napi_callback_info info);
-napi_value js_string_eq_cstr(napi_env env, napi_callback_info info);
 napi_value js_carrier_symmetric_decrypt_and_mix_hash(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_make(napi_env env, napi_callback_info info);
-napi_value js_err_abort(napi_env env, napi_callback_info info);
-napi_value js_err_fail(napi_env env, napi_callback_info info);
-napi_value js_string_append_cstr(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info);
-napi_value js_carrier_symmetric_init(napi_env env, napi_callback_info info);
-napi_value js_string_push(napi_env env, napi_callback_info info);
-napi_value js_err_fail_with_errno(napi_env env, napi_callback_info info);
-napi_value js_err_backtrace(napi_env env, napi_callback_info info);
-napi_value js_carrier_sha256_init(napi_env env, napi_callback_info info);
-napi_value js_string_ends_with_cstr(napi_env env, napi_callback_info info);
-napi_value js_err_elog(napi_env env, napi_callback_info info);
-napi_value js_string_fgets(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_append_bytes(napi_env env, napi_callback_info info);
-napi_value js_carrier_symmetric_mix_hash(napi_env env, napi_callback_info info);
-napi_value js_string_slen(napi_env env, napi_callback_info info);
-napi_value js_string_slice(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_make(napi_env env, napi_callback_info info);
-napi_value js_string_append_slice(napi_env env, napi_callback_info info);
+napi_value js_string_cstr(napi_env env, napi_callback_info info);
 napi_value js_string_append(napi_env env, napi_callback_info info);
-napi_value js_string_append_bytes(napi_env env, napi_callback_info info);
-napi_value js_carrier_symmetric_split(napi_env env, napi_callback_info info);
-napi_value js_err_make(napi_env env, napi_callback_info info);
+napi_value js_err_elog(napi_env env, napi_callback_info info);
+napi_value js_carrier_symmetric_init(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info);
 napi_value js_slice_mut_slice_push(napi_env env, napi_callback_info info);
-napi_value js_string_substr(napi_env env, napi_callback_info info);
+napi_value js_carrier_symmetric_split(napi_env env, napi_callback_info info);
+napi_value js_string_eq_cstr(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_borrow(napi_env env, napi_callback_info info);
+napi_value js_string_ends_with_cstr(napi_env env, napi_callback_info info);
+napi_value js_string_split(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_make(napi_env env, napi_callback_info info);
+napi_value js_string_vformat(napi_env env, napi_callback_info info);
+napi_value js_string_fgets(napi_env env, napi_callback_info info);
+napi_value js_string_make(napi_env env, napi_callback_info info);
 
 
 napi_value js_carrier_symmetric_encrypt_and_mix_hash(napi_env env, napi_callback_info info) {
@@ -194,6 +194,65 @@ napi_value js_carrier_symmetric_encrypt_and_mix_hash(napi_env env, napi_callback
     uintptr_t  frrr = carrier_symmetric_encrypt_and_mix_hash( local_0, local_1, local_1_tail, local_3, local_4, local_5, local_6, local_7);
     status = napi_create_uint32(env, frrr, &jsreturn);
     assert(status == napi_ok);
+    return jsreturn;
+}
+
+
+napi_value js_carrier_symmetric_mix_hash(napi_env env, napi_callback_info info) {
+    napi_status status;
+
+    size_t argc = 16;
+    napi_value argv[16];
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
+    assert(argc < 16);
+    assert(status == napi_ok);
+
+
+
+                    void * thismem;
+                    status = napi_unwrap(env, jsthis, &thismem);
+                    assert(status == napi_ok);
+                    size_t local_0_tail = (*(size_t*)thismem);
+                    void * local_0 = thismem + sizeof(size_t);
+
+                
+                    if (0 >= argc) {
+                        napi_throw_error(env, 0, "call argument count mismatch");
+                        return 0;
+                    }
+                
+    uint8_t * local_1;
+
+    void * tttt_local_1 = 0;
+    size_t local_1_tail = 0;
+    status = napi_unwrap(env, argv[0], &tttt_local_1);
+    if (tttt_local_1 == 0 || status != napi_ok) {
+        local_1 = 0;
+    } else {
+        local_1_tail = *((size_t*)tttt_local_1);
+        local_1 = tttt_local_1 + sizeof(size_t*);
+    }
+    
+                    if (status != napi_ok) {
+                        napi_throw_type_error(env, 0, "1'th arg requires type u8*");
+                        return 0;
+                    }
+                
+                    if (1 >= argc) {
+                        napi_throw_error(env, 0, "call argument count mismatch");
+                        return 0;
+                    }
+                
+    uintptr_t  local_2;
+    status = napi_get_value_uint32(env, argv[1], (uint32_t*)&local_2);
+
+                    if (status != napi_ok) {
+                        napi_throw_type_error(env, 0, "2'th arg requires type usize");
+                        return 0;
+                    }
+                    napi_value jsreturn = 0;
+    carrier_symmetric_mix_hash( local_0, local_1, local_2);
     return jsreturn;
 }
 
@@ -328,12 +387,12 @@ napi_value js_new_carrier_symmetric_SymmetricState(napi_env env, napi_callback_i
 
 void js_register_carrier_symmetric_SymmetricState (napi_env env, napi_value exports) {
     napi_property_descriptor properties[] = {
+        { "decrypt_and_mix_hash", 0, js_carrier_symmetric_decrypt_and_mix_hash, 0, 0, 0, napi_default, 0 },
         { "split", 0, js_carrier_symmetric_split, 0, 0, 0, napi_default, 0 },
         { "init", 0, js_carrier_symmetric_init, 0, 0, 0, napi_default, 0 },
+        { "mix_hash", 0, js_carrier_symmetric_mix_hash, 0, 0, 0, napi_default, 0 },
         { "encrypt_and_mix_hash", 0, js_carrier_symmetric_encrypt_and_mix_hash, 0, 0, 0, napi_default, 0 },
         { "mix_key", 0, js_carrier_symmetric_mix_key, 0, 0, 0, napi_default, 0 },
-        { "decrypt_and_mix_hash", 0, js_carrier_symmetric_decrypt_and_mix_hash, 0, 0, 0, napi_default, 0 },
-        { "mix_hash", 0, js_carrier_symmetric_mix_hash, 0, 0, 0, napi_default, 0 },
         { "ck", 0, 0, jsGet_carrier_symmetric_SymmetricState_ck, 0, 0, napi_default, 0},
         { "h", 0, 0, jsGet_carrier_symmetric_SymmetricState_h, 0, 0, napi_default, 0},
         { "cipher", 0, 0, jsGet_carrier_symmetric_SymmetricState_cipher, jsSet_carrier_symmetric_SymmetricState_cipher, 0, napi_default, 0},
@@ -581,65 +640,6 @@ napi_value js_carrier_symmetric_init(napi_env env, napi_callback_info info) {
 }
 
 
-napi_value js_carrier_symmetric_mix_hash(napi_env env, napi_callback_info info) {
-    napi_status status;
-
-    size_t argc = 16;
-    napi_value argv[16];
-    napi_value jsthis;
-    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
-    assert(argc < 16);
-    assert(status == napi_ok);
-
-
-
-                    void * thismem;
-                    status = napi_unwrap(env, jsthis, &thismem);
-                    assert(status == napi_ok);
-                    size_t local_0_tail = (*(size_t*)thismem);
-                    void * local_0 = thismem + sizeof(size_t);
-
-                
-                    if (0 >= argc) {
-                        napi_throw_error(env, 0, "call argument count mismatch");
-                        return 0;
-                    }
-                
-    uint8_t * local_1;
-
-    void * tttt_local_1 = 0;
-    size_t local_1_tail = 0;
-    status = napi_unwrap(env, argv[0], &tttt_local_1);
-    if (tttt_local_1 == 0 || status != napi_ok) {
-        local_1 = 0;
-    } else {
-        local_1_tail = *((size_t*)tttt_local_1);
-        local_1 = tttt_local_1 + sizeof(size_t*);
-    }
-    
-                    if (status != napi_ok) {
-                        napi_throw_type_error(env, 0, "1'th arg requires type u8*");
-                        return 0;
-                    }
-                
-                    if (1 >= argc) {
-                        napi_throw_error(env, 0, "call argument count mismatch");
-                        return 0;
-                    }
-                
-    uintptr_t  local_2;
-    status = napi_get_value_uint32(env, argv[1], (uint32_t*)&local_2);
-
-                    if (status != napi_ok) {
-                        napi_throw_type_error(env, 0, "2'th arg requires type usize");
-                        return 0;
-                    }
-                    napi_value jsreturn = 0;
-    carrier_symmetric_mix_hash( local_0, local_1, local_2);
-    return jsreturn;
-}
-
-
 napi_value js_carrier_symmetric_split(napi_env env, napi_callback_info info) {
     napi_status status;
 
@@ -717,6 +717,10 @@ napi_value js_carrier_symmetric_Init(napi_env env, napi_value exports)
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "encrypt_and_mix_hash", ff);
     assert(status == napi_ok);
+    status = napi_create_function(env, "mix_hash", NAPI_AUTO_LENGTH, js_carrier_symmetric_mix_hash, 0, &ff);
+    assert(status == napi_ok);
+    status = napi_set_named_property(env, exports, "mix_hash", ff);
+    assert(status == napi_ok);
     status = napi_create_function(env, "mix_key", NAPI_AUTO_LENGTH, js_carrier_symmetric_mix_key, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "mix_key", ff);
@@ -728,10 +732,6 @@ napi_value js_carrier_symmetric_Init(napi_env env, napi_value exports)
     status = napi_create_function(env, "init", NAPI_AUTO_LENGTH, js_carrier_symmetric_init, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "init", ff);
-    assert(status == napi_ok);
-    status = napi_create_function(env, "mix_hash", NAPI_AUTO_LENGTH, js_carrier_symmetric_mix_hash, 0, &ff);
-    assert(status == napi_ok);
-    status = napi_set_named_property(env, exports, "mix_hash", ff);
     assert(status == napi_ok);
     status = napi_create_function(env, "split", NAPI_AUTO_LENGTH, js_carrier_symmetric_split, 0, &ff);
     assert(status == napi_ok);

@@ -1,0 +1,237 @@
+
+<h1> module carrier::vault </h1>
+<h4> fn del_authorization (
+
+    ::carrier::vault::Vault*
+    self,
+
+    usize
+    et,
+
+    ::carrier::identity::Identity*
+    delme,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    resource,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn list_authorizations (
+
+    ::ext::&lt;stddef.h&gt;::void*
+    user,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::vault::list_authorizations_cb
+    cb,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn get_identity (
+
+    ::carrier::identity::Identity*
+    id,
+
+    ::carrier::vault::Vault*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sign (
+
+    ::carrier::identity::Signature*
+    s,
+
+    u8*
+    subject,
+
+    ::carrier::vault::Vault*
+    self,
+
+    usize
+    subject_len,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn broker_count (
+
+    ::carrier::vault::Vault*
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn authorize_connect (
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Identity*
+    ii,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn add_authorization (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    resource,
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Identity*
+    delme,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn authorize_open_stream (
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    path,
+
+    ::carrier::identity::Identity*
+    ii,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn get_network (
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Address*
+    addr,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn set_network (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Secret*
+    network,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn vector_time (
+
+    ::carrier::vault::Vault*
+    self,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

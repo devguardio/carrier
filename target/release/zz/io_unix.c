@@ -2,17 +2,19 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-struct string_String_8_t;
-typedef struct string_String_8_t string_String_8;
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
+#line 17 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+struct io_unix_Async_t;
+typedef struct io_unix_Async_t io_unix_Async;
 
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t;
+typedef struct time_Time_t time_Time;
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 struct io_Context_t;
 typedef struct io_Context_t io_Context;
 
@@ -20,13 +22,9 @@ typedef struct io_Context_t io_Context;
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 struct io_Io_t;
 typedef struct io_Io_t io_Io;
-
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t;
-typedef struct time_Time_t time_Time;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
@@ -34,68 +32,70 @@ typedef struct string_String_t string_String;
 struct string_String_8_t;
 typedef struct string_String_8_t string_String_8;
 
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Context_t;
+typedef struct io_Context_t io_Context;
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t;
+typedef struct io_Io_t io_Io;
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+struct string_String_8_t;
+typedef struct string_String_8_t string_String_8;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+struct io_unix_Async_t;
+typedef struct io_unix_Async_t io_unix_Async;
+
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
+#line 183 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+#include <unistd.h>
 
-#line 17 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-struct io_unix_Async_t;
-typedef struct io_unix_Async_t io_unix_Async;
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
 
-#line 17 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-struct io_unix_Async_t;
-typedef struct io_unix_Async_t io_unix_Async;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 9 "/home/aep/proj/devguard/carrier/src/symmetric.zz"
-#include <errno.h>
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
 
 #line 1 ""
 #include <stddef.h>
 
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Context_t {
+#line 8 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+#include <poll.h>
 
-#line 45 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   bool isvalid ;
+#line 40 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_reset (io_unix_Async*  const  self);
 
-#line 46 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_Async*  async ;
-
-#line 49 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   uint64_t time ;
-
-#line 50 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   int fd ;
-
-#line 51 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   void*  handle ;
-}
-;
-
-#line 32 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 33 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 typedef enum {
     io_Result_Ready = 0,
     io_Result_Later = 1,
@@ -103,35 +103,6 @@ typedef enum {
     io_Result_Eof = 3,
 
 } io_Result;
-
-#line 39 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Result (*io_read_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  len);
-
-#line 40 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Result (*io_write_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  len);
-
-#line 41 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_close_fn) (io_Context*  const  ctx);
-
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Io_t {
-
-#line 55 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_Context ctx ;
-
-#line 56 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_read_fn read_impl ;
-
-#line 57 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_write_fn write_impl ;
-
-#line 58 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_close_fn close_impl ;
-}
-;
-
-#line 249 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_never (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
 
 #line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
 struct time_Time_t {
@@ -150,32 +121,397 @@ struct time_Time_t {
 #line 83 "/home/aep/proj/zz/modules/time/src/lib.zz"
 time_Time time_tick ();
 
-#line 254 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 254 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 static io_Result io_unix_impl_timeout_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
 
-#line 279 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_timer_close (io_Context*  const  ctx);
+#line 141 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
 
-#line 223 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_millis (time_Time const *  const  self);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 15 "/home/aep/proj/zz/modules/err/src/lib.zz"
+extern const __attribute__ ((unused)) size_t err_InvalidArgument;
+
+#line 47 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+extern bool io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events);
+
+#line 14 "/home/aep/proj/zz/modules/err/src/lib.zz"
+extern const __attribute__ ((unused)) size_t err_OutOfTail;
+
+#line 28 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef enum {
+    io_Ready_Read = 0,
+    io_Ready_Write = 1,
+
+} io_Ready;
+
+#line 69 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_unix_select (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#line 281 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 222 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_close (io_Io*  const  self);
+
+#line 254 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+
+#line 12 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Context_t {
+
+#line 46 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   bool isvalid ;
+
+#line 47 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_Async*  async ;
+
+#line 50 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   uint64_t time ;
+
+#line 51 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   int fd ;
+
+#line 52 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   void*  handle ;
+}
+;
+
+#line 40 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Result (*io_read_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  len);
+
+#line 41 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Result (*io_write_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  len);
+
+#line 42 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_close_fn) (io_Context*  const  ctx);
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t {
+
+#line 56 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_Context ctx ;
+
+#line 57 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_read_fn read_impl ;
+
+#line 58 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_write_fn write_impl ;
+
+#line 59 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_close_fn close_impl ;
+}
+;
+
+#line 152 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_unix_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
+
+#line 184 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_unix_write (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  l);
+
+#line 205 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_unix_close (io_Context*  const  ctx);
+
+#line 113 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+io_Io io_unix_unix (int const  fd);
+
+#line 9 "/home/aep/proj/devguard/carrier/src/symmetric.zz"
+#include <errno.h>
+
+#line 11 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Io (*io_make_timeout_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#line 13 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_select_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#line 14 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_wake_fn) (io_Async*  const  async);
+
+#line 15 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_wait_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t {
+
+#line 18 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   void const *  upper ;
+
+#line 20 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_make_timeout_fn impl_make_timeout ;
+
+#line 21 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_make_channel_fn impl_make_channel ;
+
+#line 22 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_select_fn impl_select ;
+
+#line 23 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_wake_fn impl_wake ;
+
+#line 24 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_wait_fn impl_wait ;
+}
+;
+
+#line 205 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_unix_close (io_Context*  const  ctx);
+
+#line 223 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 static io_Io io_unix_impl_make_timeout (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
 
-#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_seconds (time_Time const *  const  self);
+#line 324 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_make_channel (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
 
-#line 241 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+#line 215 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_wake (io_Async*  const  async);
 
-#line 270 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
+#line 98 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_wait (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
+
+#line 25 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+void io_unix_make (io_unix_Async*  const  self, uintptr_t const  tail);
+
+#line 176 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 129 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+io_Io io_unix_stdin ();
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 271 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
 void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
 
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
+#line 324 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_make_channel (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_8_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[8] ;
+}
+;
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 135 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+#include <fcntl.h>
+
+#line 92 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 47 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+extern bool io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 184 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_unix_write (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  l);
+
+#line 66 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
 
 #line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
 
-#line 11 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 98 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_wait (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+struct io_unix_Async_t {
+
+#line 18 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+   io_Async base ;
+
+#line 19 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+   int timeout ;
+
+#line 20 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+   uintptr_t count ;
+
+#line 21 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+   uintptr_t tail ;
+
+#line 22 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+   struct pollfd fds[] ;
+}
+;
+size_t sizeof_io_unix_Async(size_t tail) { return sizeof(io_unix_Async) + (tail * sizeof(struct pollfd)); }
+
+#line 231 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 202 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
+
+#line 62 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+bool io_valid (io_Context const *  const  self);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 242 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 152 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_unix_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
+
+#line 264 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_wake (io_Async*  const  self);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 185 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
+
+#line 249 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_never (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -192,16 +528,16 @@ typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e,
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1537,1032 +1873,511 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 10 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Io (*io_make_timeout_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_8_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[8] ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 47 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-extern bool io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events);
-
-#line 8 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-#include <poll.h>
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 14 "/home/aep/proj/zz/modules/err/src/lib.zz"
-extern const __attribute__ ((unused)) size_t err_OutOfTail;
-
-#line 15 "/home/aep/proj/zz/modules/err/src/lib.zz"
-extern const __attribute__ ((unused)) size_t err_InvalidArgument;
-
-#line 15 "/home/aep/proj/devguard/carrier/src/shell.zz"
-#include <unistd.h>
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 152 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_unix_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
-
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_unix_write (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  l);
-
-#line 205 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_unix_close (io_Context*  const  ctx);
-
-#line 113 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-io_Io io_unix_unix (int const  fd);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 205 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_unix_close (io_Context*  const  ctx);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_millis (time_Time const *  const  self);
-
-#line 254 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_timeout_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
-
-#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-
-#line 121 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
-
-#line 27 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef enum {
-    io_Ready_Read = 0,
-    io_Ready_Write = 1,
-
-} io_Ready;
-
-#line 12 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_select_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 13 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_wake_fn) (io_Async*  const  async);
-
-#line 14 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_wait_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
-
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t {
-
-#line 17 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   void const *  upper ;
-
-#line 19 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_make_timeout_fn impl_make_timeout ;
-
-#line 20 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_make_channel_fn impl_make_channel ;
-
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_select_fn impl_select ;
-
-#line 22 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_wake_fn impl_wake ;
-
-#line 23 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_wait_fn impl_wait ;
-}
-;
-
-#line 17 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-struct io_unix_Async_t {
-
-#line 18 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-   io_Async base ;
-
-#line 19 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-   int timeout ;
-
-#line 20 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-   uintptr_t count ;
-
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-   uintptr_t tail ;
-
-#line 22 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-   struct pollfd fds[] ;
-}
-;
-size_t sizeof_io_unix_Async(size_t tail) { return sizeof(io_unix_Async) + (tail * sizeof(struct pollfd)); }
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 175 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 253 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#line 324 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_make_channel (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 215 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_wake (io_Async*  const  async);
-
-#line 69 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_unix_select (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 279 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_timer_close (io_Context*  const  ctx);
-
-#line 280 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
-
-#line 201 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
 #line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 140 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 47 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-extern bool io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 129 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-io_Io io_unix_stdin ();
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_unix_write (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  l);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 135 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-#include <fcntl.h>
-
-#line 249 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_never (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 98 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_wait (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
-
-#line 25 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-void io_unix_make (io_unix_Async*  const  self, uintptr_t const  tail);
-
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
+#line 122 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
 
 #line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 91 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
 #line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 221 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_close (io_Io*  const  self);
-
-#line 263 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_wake (io_Async*  const  self);
-
-#line 230 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 65 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
 #line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
 uintptr_t string_slen (string_String const *  const  self);
 
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+#line 215 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_wake (io_Async*  const  async);
 
-#line 40 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_reset (io_unix_Async*  const  self);
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
-#line 98 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_wait (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 137 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 279 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_timer_close (io_Context*  const  ctx);
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 137 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 bool io_unix_make_read_async (io_Io*  const  i, io_Async*  const  async);
 
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+#line 223 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Io io_unix_impl_make_timeout (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
 
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
+#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_seconds (time_Time const *  const  self);
 
-#line 61 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-bool io_valid (io_Context const *  const  self);
-
-#line 223 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Io io_unix_impl_make_timeout (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2)
-{
-if ((
-#line 226 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
- !    t2 .finite)){
-
-#line 227 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     (io_Io){.read_impl = 
-#line 228 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_impl_never,};
-
-}
-
-
-#line 232 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  time_Time const  now  =     time_tick(    );
-
-#line 233 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uint64_t expires  =     time_to_millis(( &    now)    );
-
-#line 234 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    expires +=     time_to_millis(( &    t2)    );
-
-#line 236 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  io_Context const  ctx  =     (io_Context){.time = 
-#line 237 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    expires,.async =     (io_Async* )(
-#line 238 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    async),.isvalid = 
-#line 239 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    true,};
-
-#line 242 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     (io_Io){.read_impl = 
-#line 243 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_impl_timeout_read,.close_impl = 
-#line 244 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_impl_timer_close,.ctx = 
-#line 245 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx,};
-
-}
-
-
-#line 152 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_unix_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l)
-{
-if ((
-#line 155 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->async !=    0  )){
-
-#line 156 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-;
-if ((
-#line 157 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
- !    io_unix_select_fd(    (io_unix_Async* )(    ctx ->async),    ctx ->fd,    (int)(    POLLIN)    ))){
-
-#line 158 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail(    (err_Err* )(    e),
-#line 152 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 158 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_OutOfTail,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_read",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    158,
-#line 158 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "too many fds"    );
-
-#line 159 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Error;
-
-}
-
-
-}
-
-if (((
-#line 163 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
- *    l) ==    0  )){
-
-#line 164 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail(    (err_Err* )(    e),
-#line 152 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 164 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_InvalidArgument,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_read",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    164,
-#line 164 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "buffer is 0 long"    );
-
-#line 165 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Error;
-
-}
-
-
-#line 168 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  intptr_t const  rr  =     (intptr_t)(    read(    ctx ->fd,    to,( *    l)    ));
-if ((
-#line 169 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    rr <    0  )){
-if ((    (int)(
-#line 170 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    errno) ==    (int)(    EAGAIN)  )){
-
-#line 171 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Later;
-
-}
-
-
-#line 173 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail_with_errno(    (err_Err* )(    e),
-#line 152 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_read",
-#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    173,
-#line 173 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "read"    );
-
-#line 174 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Error;
-
-}
- else if ((
-#line 175 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    rr ==    0  )){
-
-#line 176 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Eof;
-
-}
-
-
-#line 178 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-( *    l) =     (uintptr_t)(    rr);
-
-#line 179 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Ready;
-
-}
-
-
-#line 113 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-io_Io __attribute__ ((visibility ("default"))) io_unix_unix (int const  fd)
-{
-
-#line 116 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  io_Context const  ctx  =     (io_Context){.fd = 
-#line 117 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    fd,.isvalid = 
-#line 118 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    true,};
-
-#line 121 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     (io_Io){.read_impl = 
-#line 122 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_impl_unix_read,.write_impl = 
-#line 123 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_impl_unix_write,.close_impl = 
-#line 124 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_impl_unix_close,.ctx = 
-#line 125 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx,};
-
-}
-
-
-#line 205 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_unix_close (io_Context*  const  ctx)
-{
-if ((
-#line 207 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
- !    ctx ->isvalid)){
-
-#line 208 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return ;
-
-}
-
-
-#line 210 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    close(    ctx ->fd    );
-
-#line 211 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->isvalid =     false;
-
-}
-
-
-#line 254 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_timeout_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l)
-{
-
-#line 258 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-( *    l) =     0;
-if ((
-#line 260 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->time ==    0  )){
-
-#line 261 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Eof;
-
-}
-
-
-#line 264 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  time_Time const  now  =     time_tick(    );
-
-#line 265 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uint64_t now_m  =     time_to_millis(( &    now)    );
-if ((
-#line 266 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    now_m >=    ctx ->time  )){
-
-#line 267 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Ready;
-
-}
- else {
-
-#line 269 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  io_unix_Async*  const  self  =     (io_unix_Async* )(    ctx ->async);
-
-#line 270 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-;
-
-#line 271 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uint64_t const  remains  = (    ctx ->time -    now_m  );
-if (((
-#line 272 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->timeout <    0  ) ||(    (uint64_t)(    self ->timeout) >    remains  )  )){
-
-#line 273 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->timeout =     (int)(    remains);
-
-}
-
-
-}
-
-
-#line 276 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Later;
-
-}
-
-
-#line 324 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_make_channel (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write)
-{
-
-#line 327 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  int fd  [     2 ] ;
-if ((
-#line 328 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    pipe(    fd    ) !=    0  )){
-
-#line 329 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail_with_errno(    (err_Err* )(    e),
-#line 324 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_make_channel",
-#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    329,
-#line 329 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "pipe"    );
-
-#line 330 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return ;
-
-}
-
-
-#line 333 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-( *    read) =     io_unix_unix(    fd [     0]    );
-
-#line 334 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-( *    write) =     io_unix_unix(    fd [     1]    );
-
-}
-
-
-#line 215 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_wake (io_Async*  const  async)
-{
-
-#line 217 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  io_unix_Async*  const  self  =     (io_unix_Async* )(    async ->upper);
-
-#line 218 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-;
-
-#line 220 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->timeout =     0;
-
-}
-
-
-#line 69 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_unix_select (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w)
-{
-
-#line 72 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  io_unix_Async*  const  self  =     (io_unix_Async* )(    async ->upper);
-
-#line 73 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-;
-if ((
-#line 75 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->async ==    0  )){
-
-#line 76 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail(    (err_Err* )(    e),
-#line 69 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 76 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_InvalidArgument,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_select",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    76,
-#line 76 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "not an async io"    );
-
-#line 77 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return ;
-
-}
-
-if ((
-#line 80 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->fd !=    0  )){
-if ((
-#line 81 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
- !    io_unix_select_fd(    self,    ctx ->fd,    (int)(    POLLIN)    ))){
-
-#line 82 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail(    (err_Err* )(    e),
-#line 69 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 82 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_OutOfTail,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_select",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    82,
-#line 82 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "too many fds"    );
-
-#line 83 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return ;
-
-}
-
-
-}
-
-if ((
-#line 87 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->time !=    0  )){
-
-#line 88 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  time_Time const  now  =     time_tick(    );
-
-#line 89 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uint64_t now_m  =     time_to_millis(( &    now)    );
-
-#line 90 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uint64_t const  remains  = (    ctx ->time -    now_m  );
-if (((
-#line 91 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->timeout <    0  ) ||(    (uint64_t)(    self ->timeout) >    remains  )  )){
-
-#line 92 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->timeout =     (int)(    remains);
-
-}
-
-
-}
-
-
-}
-
-
-#line 279 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static void io_unix_impl_timer_close (io_Context*  const  ctx)
-{
-
-#line 280 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->time =     0;
-
-#line 281 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    ctx ->isvalid =     false;
-
-}
-
-
-#line 47 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-bool __attribute__ ((visibility ("hidden"))) io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events)
-{
-  for (
-
-#line 49 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uintptr_t i  =     0;(    i <    self ->count  );
-(    i ++)){
-
-#line 50 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-;
-{
-if (((
-#line 52 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->fds [     i] .fd ==    fd  ) &&(    self ->fds [     i] .events ==    events  )  )){
-
-#line 53 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     true;
-
-}
-
-
-}
-
-
-}
-
-if (((
-#line 58 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->count +    1  ) >=    self ->tail  )){
-
-#line 59 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     false;
-
-}
-
-{
-
-#line 62 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->fds [     self ->count] .fd =     fd;
-
-#line 63 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->fds [     self ->count] .events =     events;
-
-}
-
-
-#line 65 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->count +=     1;
-
-#line 66 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     true;
-
-}
-
-
-#line 129 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-io_Io __attribute__ ((visibility ("default"))) io_unix_stdin ()
-{
-
-#line 132 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_unix_unix(    (int)(    STDIN_FILENO)    );
-
-}
-
-
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_unix_write (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  l)
-{
-  for (
-
-#line 187 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  uintptr_t attempt  =     0;(    attempt <    100  );
-(    attempt ++)){
-
-#line 188 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  intptr_t const  rr  =     (intptr_t)(    write(    ctx ->fd,    to,( *    l)    ));
-if ((
-#line 189 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    rr <    0  )){
-if ((    (int)(
-#line 190 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    errno) ==    (int)(    EAGAIN)  )){
-
-#line 191 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    usleep(    1000    );
-
-#line 192 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-continue;
-
-}
-
-
-#line 194 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail_with_errno(    (err_Err* )(    e),
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_write",
-#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    194,
-#line 194 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "read"    );
-
-#line 195 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Error;
-
-}
-
-
-#line 197 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-( *    l) =     (uintptr_t)(    rr);
-
-#line 198 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Ready;
-
-}
-
-
-#line 200 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-;
-
-#line 201 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    err_fail_with_errno(    (err_Err* )(    e),
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    et,
-#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
-#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::io::unix::impl_unix_write",
-#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    201,
-#line 201 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    "read"    );
-
-#line 202 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Error;
-
-}
-
-
-#line 249 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-static io_Result io_unix_impl_never (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l)
-{
-
-#line 251 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-  return     io_Result_Later;
-
-}
-
-
-#line 25 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-void __attribute__ ((visibility ("default"))) io_unix_make (io_unix_Async*  const  self, uintptr_t const  tail)
-{
-
-#line 26 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    memset(    self,    0,    (uintptr_t)(    sizeof(    io_unix_Async    ))    );
-
-#line 28 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->base .impl_make_timeout =     io_unix_impl_make_timeout;
-
-#line 29 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->base .impl_make_channel =     io_unix_impl_make_channel;
-
-#line 30 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->base .impl_select =     io_unix_impl_unix_select;
-
-#line 31 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->base .impl_wake =     io_unix_impl_wake;
-
-#line 32 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->base .impl_wait =     io_unix_impl_wait;
-
-#line 33 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->base .upper =     self;
-
-#line 35 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    self ->tail =     tail;
-
-#line 37 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
-    io_unix_reset(    (io_unix_Async* )(    self)    );
-
-}
-
-
-#line 40 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 40 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 static void io_unix_reset (io_unix_Async*  const  self)
 {
 
-#line 42 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 42 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     self ->count =     0;
 
-#line 43 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 43 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     self ->timeout =     -1;
 
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 44 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     memset(    self ->fds,    0,(    (uintptr_t)(    sizeof(    struct pollfd    )) *    self ->tail  )    );
 
 }
 
 
-#line 98 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 254 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_timeout_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l)
+{
+
+#line 258 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+( *    l) =     0;
+if ((
+#line 260 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->time ==    0  )){
+
+#line 261 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Eof;
+
+}
+
+
+#line 264 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  time_Time const  now  =     time_tick(    );
+
+#line 265 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uint64_t now_m  =     time_to_millis(( &    now)    );
+if ((
+#line 266 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    now_m >=    ctx ->time  )){
+
+#line 267 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Ready;
+
+}
+ else {
+
+#line 269 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  io_unix_Async*  const  self  =     (io_unix_Async* )(    ctx ->async);
+
+#line 270 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+;
+
+#line 271 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uint64_t const  remains  = (    ctx ->time -    now_m  );
+if (((
+#line 272 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->timeout <    0  ) ||(    (uint64_t)(    self ->timeout) >    remains  )  )){
+
+#line 273 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->timeout =     (int)(    remains);
+
+}
+
+
+}
+
+
+#line 276 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Later;
+
+}
+
+
+#line 69 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_unix_select (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w)
+{
+
+#line 72 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  io_unix_Async*  const  self  =     (io_unix_Async* )(    async ->upper);
+
+#line 73 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+;
+if ((
+#line 75 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->async ==    0  )){
+
+#line 76 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail(    (err_Err* )(    e),
+#line 69 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 76 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_InvalidArgument,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_select",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    76,
+#line 76 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "not an async io"    );
+
+#line 77 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return ;
+
+}
+
+if ((
+#line 80 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->fd !=    0  )){
+if ((
+#line 81 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+ !    io_unix_select_fd(    self,    ctx ->fd,    (int)(    POLLIN)    ))){
+
+#line 82 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail(    (err_Err* )(    e),
+#line 69 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 82 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_OutOfTail,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_select",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    82,
+#line 82 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "too many fds"    );
+
+#line 83 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return ;
+
+}
+
+
+}
+
+if ((
+#line 87 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->time !=    0  )){
+
+#line 88 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  time_Time const  now  =     time_tick(    );
+
+#line 89 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uint64_t now_m  =     time_to_millis(( &    now)    );
+
+#line 90 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uint64_t const  remains  = (    ctx ->time -    now_m  );
+if (((
+#line 91 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->timeout <    0  ) ||(    (uint64_t)(    self ->timeout) >    remains  )  )){
+
+#line 92 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->timeout =     (int)(    remains);
+
+}
+
+
+}
+
+
+}
+
+
+#line 113 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+io_Io __attribute__ ((visibility ("default"))) io_unix_unix (int const  fd)
+{
+
+#line 116 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  io_Context const  ctx  =     (io_Context){.fd = 
+#line 117 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    fd,.isvalid = 
+#line 118 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    true,};
+
+#line 121 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     (io_Io){.read_impl = 
+#line 122 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_impl_unix_read,.write_impl = 
+#line 123 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_impl_unix_write,.close_impl = 
+#line 124 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_impl_unix_close,.ctx = 
+#line 125 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx,};
+
+}
+
+
+#line 205 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_unix_close (io_Context*  const  ctx)
+{
+if ((
+#line 207 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+ !    ctx ->isvalid)){
+
+#line 208 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return ;
+
+}
+
+
+#line 210 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    close(    ctx ->fd    );
+
+#line 211 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->isvalid =     false;
+
+}
+
+
+#line 25 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+void __attribute__ ((visibility ("default"))) io_unix_make (io_unix_Async*  const  self, uintptr_t const  tail)
+{
+
+#line 26 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    memset(    self,    0,    (uintptr_t)(    sizeof(    io_unix_Async    ))    );
+
+#line 28 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->base .impl_make_timeout =     io_unix_impl_make_timeout;
+
+#line 29 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->base .impl_make_channel =     io_unix_impl_make_channel;
+
+#line 30 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->base .impl_select =     io_unix_impl_unix_select;
+
+#line 31 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->base .impl_wake =     io_unix_impl_wake;
+
+#line 32 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->base .impl_wait =     io_unix_impl_wait;
+
+#line 33 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->base .upper =     self;
+
+#line 35 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->tail =     tail;
+
+#line 37 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_reset(    (io_unix_Async* )(    self)    );
+
+}
+
+
+#line 129 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+io_Io __attribute__ ((visibility ("default"))) io_unix_stdin ()
+{
+
+#line 132 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_unix_unix(    (int)(    STDIN_FILENO)    );
+
+}
+
+
+#line 324 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_make_channel (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write)
+{
+
+#line 327 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  int fd  [     2 ] ;
+if ((
+#line 328 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    pipe(    fd    ) !=    0  )){
+
+#line 329 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail_with_errno(    (err_Err* )(    e),
+#line 324 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_make_channel",
+#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    329,
+#line 329 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "pipe"    );
+
+#line 330 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return ;
+
+}
+
+
+#line 333 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+( *    read) =     io_unix_unix(    fd [     0]    );
+
+#line 334 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+( *    write) =     io_unix_unix(    fd [     1]    );
+
+}
+
+
+#line 47 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+bool __attribute__ ((visibility ("hidden"))) io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events)
+{
+  for (
+
+#line 49 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uintptr_t i  =     0;(    i <    self ->count  );
+(    i ++)){
+
+#line 50 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+;
+{
+if (((
+#line 52 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->fds [     i] .fd ==    fd  ) &&(    self ->fds [     i] .events ==    events  )  )){
+
+#line 53 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     true;
+
+}
+
+
+}
+
+
+}
+
+if (((
+#line 58 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->count +    1  ) >=    self ->tail  )){
+
+#line 59 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     false;
+
+}
+
+{
+
+#line 62 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->fds [     self ->count] .fd =     fd;
+
+#line 63 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->fds [     self ->count] .events =     events;
+
+}
+
+
+#line 65 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->count +=     1;
+
+#line 66 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     true;
+
+}
+
+
+#line 184 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_unix_write (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  l)
+{
+  for (
+
+#line 187 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uintptr_t attempt  =     0;(    attempt <    100  );
+(    attempt ++)){
+
+#line 188 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  intptr_t const  rr  =     (intptr_t)(    write(    ctx ->fd,    to,( *    l)    ));
+if ((
+#line 189 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    rr <    0  )){
+if ((    (int)(
+#line 190 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    errno) ==    (int)(    EAGAIN)  )){
+
+#line 191 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    usleep(    1000    );
+
+#line 192 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+continue;
+
+}
+
+
+#line 194 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail_with_errno(    (err_Err* )(    e),
+#line 184 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_write",
+#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    194,
+#line 194 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "read"    );
+
+#line 195 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Error;
+
+}
+
+
+#line 197 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+( *    l) =     (uintptr_t)(    rr);
+
+#line 198 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Ready;
+
+}
+
+
+#line 200 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+;
+
+#line 201 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail_with_errno(    (err_Err* )(    e),
+#line 184 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_write",
+#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    201,
+#line 201 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "read"    );
+
+#line 202 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Error;
+
+}
+
+
+#line 98 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 static void io_unix_impl_wait (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et)
 {
 
-#line 101 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 101 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
   io_unix_Async*  const  self  =     (io_unix_Async* )(    async ->upper);
 
-#line 102 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 102 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 ;
 
-#line 105 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 105 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
   int const  rr  =     (int)(    poll(    self ->fds,    self ->count,    self ->timeout    ));
 
-#line 106 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 106 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     io_unix_reset(    self    );
 if ((
-#line 107 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 107 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     rr <    0  )){
 
-#line 108 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 108 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     err_fail_with_errno(    (err_Err* )(    e),
-#line 98 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 98 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     et,
 #line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz",
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
 #line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
     "::io::unix::impl_wait",
 #line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
     108,
-#line 108 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 108 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     "poll"    );
 
-#line 109 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 109 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
   return ;
 
 }
@@ -2571,30 +2386,226 @@ if ((
 }
 
 
-#line 137 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 152 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_unix_read (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l)
+{
+if ((
+#line 155 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->async !=    0  )){
+
+#line 156 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+;
+if ((
+#line 157 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+ !    io_unix_select_fd(    (io_unix_Async* )(    ctx ->async),    ctx ->fd,    (int)(    POLLIN)    ))){
+
+#line 158 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail(    (err_Err* )(    e),
+#line 152 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 158 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_OutOfTail,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_read",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    158,
+#line 158 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "too many fds"    );
+
+#line 159 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Error;
+
+}
+
+
+}
+
+if (((
+#line 163 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+ *    l) ==    0  )){
+
+#line 164 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail(    (err_Err* )(    e),
+#line 152 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 164 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_InvalidArgument,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_read",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    164,
+#line 164 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "buffer is 0 long"    );
+
+#line 165 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Error;
+
+}
+
+
+#line 168 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  intptr_t const  rr  =     (intptr_t)(    read(    ctx ->fd,    to,( *    l)    ));
+if ((
+#line 169 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    rr <    0  )){
+if ((    (int)(
+#line 170 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    errno) ==    (int)(    EAGAIN)  )){
+
+#line 171 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Later;
+
+}
+
+
+#line 173 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    err_fail_with_errno(    (err_Err* )(    e),
+#line 152 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    et,
+#line 57 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/io/src/unix.zz",
+#line 58 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::io::unix::impl_unix_read",
+#line 59 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    173,
+#line 173 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    "read"    );
+
+#line 174 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Error;
+
+}
+ else if ((
+#line 175 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    rr ==    0  )){
+
+#line 176 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Eof;
+
+}
+
+
+#line 178 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+( *    l) =     (uintptr_t)(    rr);
+
+#line 179 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Ready;
+
+}
+
+
+#line 249 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Result io_unix_impl_never (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  l)
+{
+
+#line 251 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     io_Result_Later;
+
+}
+
+
+#line 215 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_wake (io_Async*  const  async)
+{
+
+#line 217 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  io_unix_Async*  const  self  =     (io_unix_Async* )(    async ->upper);
+
+#line 218 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+;
+
+#line 220 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    self ->timeout =     0;
+
+}
+
+
+#line 279 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static void io_unix_impl_timer_close (io_Context*  const  ctx)
+{
+
+#line 280 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->time =     0;
+
+#line 281 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx ->isvalid =     false;
+
+}
+
+
+#line 137 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
 bool __attribute__ ((visibility ("default"))) io_unix_make_read_async (io_Io*  const  i, io_Async*  const  async)
 {
 
-#line 139 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 139 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     i ->ctx .async =     async;
 
-#line 141 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 141 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
   int flags  =     (int)(    fcntl(    i ->ctx .fd,    F_GETFL,    0    ));
 if ((
-#line 142 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 142 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     flags ==    -1  )){
 
-#line 143 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 143 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
   return     false;
 
 }
 
 
-#line 145 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 145 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
     flags = (    flags |    (int)(    O_NONBLOCK)  );
 
-#line 147 "/home/aep/proj/zznursery/modules/net/modules/io/src/unix.zz"
+#line 147 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
   return (    (int)(    fcntl(    i ->ctx .fd,    F_SETFL,    flags    )) ==    0  );
+
+}
+
+
+#line 223 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+static io_Io io_unix_impl_make_timeout (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2)
+{
+if ((
+#line 226 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+ !    t2 .finite)){
+
+#line 227 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     (io_Io){.read_impl = 
+#line 228 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_impl_never,};
+
+}
+
+
+#line 232 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  time_Time const  now  =     time_tick(    );
+
+#line 233 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  uint64_t expires  =     time_to_millis(( &    now)    );
+
+#line 234 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    expires +=     time_to_millis(( &    t2)    );
+
+#line 236 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  io_Context const  ctx  =     (io_Context){.time = 
+#line 237 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    expires,.async =     (io_Async* )(
+#line 238 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    async),.isvalid = 
+#line 239 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    true,};
+
+#line 242 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+  return     (io_Io){.read_impl = 
+#line 243 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_impl_timeout_read,.close_impl = 
+#line 244 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    io_unix_impl_timer_close,.ctx = 
+#line 245 "/home/aep/proj/zznursery/modules/io/src/unix.zz"
+    ctx,};
 
 }
 

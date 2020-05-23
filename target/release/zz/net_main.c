@@ -2,6 +2,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t;
+typedef struct io_Io_t io_Io;
+
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
@@ -11,20 +23,44 @@ typedef struct err_Err_1000_t err_Err_1000;
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-struct string_String_8_t;
-typedef struct string_String_8_t string_String_8;
-struct string_String_100_t;
-typedef struct string_String_100_t string_String_100;
 struct string_String_1000_t;
 typedef struct string_String_1000_t string_String_1000;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
+struct string_String_100_t;
+typedef struct string_String_100_t string_String_100;
+struct string_String_8_t;
+typedef struct string_String_8_t string_String_8;
 
 #line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 struct net_address_Address_t;
 typedef struct net_address_Address_t net_address_Address;
+
+#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+struct net_tcp_Socket_t;
+typedef struct net_tcp_Socket_t net_tcp_Socket;
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Context_t;
+typedef struct io_Context_t io_Context;
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t;
+typedef struct io_Io_t io_Io;
+
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t;
+typedef struct time_Time_t time_Time;
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+struct net_tcp_server_Server_t;
+typedef struct net_tcp_server_Server_t net_tcp_server_Server;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
 
 #line 21 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 struct pool_Pool_t;
@@ -36,67 +72,35 @@ typedef struct pool_Pool_t pool_Pool;
 struct pool_Pool_1000_t;
 typedef struct pool_Pool_1000_t pool_Pool_1000;
 
+#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+struct net_udp_Socket_t;
+typedef struct net_udp_Socket_t net_udp_Socket;
+
+#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+struct net_Engine_t;
+typedef struct net_Engine_t net_Engine;
+
+#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+struct net_udp_Socket_t;
+typedef struct net_udp_Socket_t net_udp_Socket;
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
+
 #line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
 struct net_tcp_Socket_t;
 typedef struct net_tcp_Socket_t net_tcp_Socket;
 
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-struct io_select_Async_t;
-typedef struct io_select_Async_t io_select_Async;
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-struct net_tcp_server_Server_t;
-typedef struct net_tcp_server_Server_t net_tcp_server_Server;
-
-#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-struct net_Engine_t;
-typedef struct net_Engine_t net_Engine;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Context_t;
-typedef struct io_Context_t io_Context;
-
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t;
-typedef struct time_Time_t time_Time;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-struct net_udp_Socket_t;
-typedef struct net_udp_Socket_t net_udp_Socket;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Context_t;
-typedef struct io_Context_t io_Context;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-struct net_udp_Socket_t;
-typedef struct net_udp_Socket_t net_udp_Socket;
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-struct net_tcp_server_Server_t;
-typedef struct net_tcp_server_Server_t net_tcp_server_Server;
-
-#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-struct net_Engine_t;
-typedef struct net_Engine_t net_Engine;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-struct string_String_8_t;
-typedef struct string_String_8_t string_String_8;
-struct string_String_100_t;
-typedef struct string_String_100_t string_String_100;
 struct string_String_1000_t;
 typedef struct string_String_1000_t string_String_1000;
+struct string_String_100_t;
+typedef struct string_String_100_t string_String_100;
+struct string_String_8_t;
+typedef struct string_String_8_t string_String_8;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
@@ -104,55 +108,152 @@ typedef struct err_Err_t err_Err;
 struct err_Err_1000_t;
 typedef struct err_Err_1000_t err_Err_1000;
 
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Io_t;
-typedef struct io_Io_t io_Io;
+#line 22 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+struct io_select_Async_t;
+typedef struct io_select_Async_t io_select_Async;
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+struct net_tcp_server_Server_t;
+typedef struct net_tcp_server_Server_t net_tcp_server_Server;
+
+#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+struct net_Engine_t;
+typedef struct net_Engine_t net_Engine;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
 
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Io_t;
-typedef struct io_Io_t io_Io;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
-
-#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-struct net_tcp_Socket_t;
-typedef struct net_tcp_Socket_t net_tcp_Socket;
-
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-struct io_select_Async_t;
-typedef struct io_select_Async_t io_select_Async;
-
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
 #line 1 ""
 #include <stddef.h>
 
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
 
-#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 33 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef enum {
+    io_Result_Ready = 0,
+    io_Result_Later = 1,
+    io_Result_Error = 2,
+    io_Result_Eof = 3,
+
+} io_Result;
+
+#line 176 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+typedef enum {
+    net_address_Type_Invalid = 0,
+    net_address_Type_Ipv4 = 1,
+    net_address_Type_Ipv6 = 2,
+
+} net_address_Type;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t {
+
+#line 17 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+   net_address_Type typ ;
+
+#line 18 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+   uint8_t os[    24] ;
+}
+;
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+typedef io_Result (*net_tcp_recv_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+
+#line 53 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+io_Result net_tcp_recv (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st);
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Context_t {
+
+#line 46 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   bool isvalid ;
+
+#line 47 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_Async*  async ;
+
+#line 50 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   uint64_t time ;
+
+#line 51 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   int fd ;
+
+#line 52 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   void*  handle ;
+}
+;
+
+#line 40 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Result (*io_read_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  len);
+
+#line 41 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Result (*io_write_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  len);
+
+#line 42 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_close_fn) (io_Context*  const  ctx);
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Io_t {
+
+#line 56 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_Context ctx ;
+
+#line 57 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_read_fn read_impl ;
+
+#line 58 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_write_fn write_impl ;
+
+#line 59 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_close_fn close_impl ;
+}
+;
+
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t {
+
+#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t secs ;
+
+#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t nano ;
+
+#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   bool finite ;
+}
+;
+
+#line 242 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#line 81 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+void net_tcp_server_close (net_tcp_server_Server*  const  self);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 15 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_wait_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
 
 #line 21 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 struct pool_Pool_t {
@@ -194,463 +295,14 @@ struct pool_Pool_1000_t {
 }
 ;
 
-#line 38 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 31 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-void io_select_make (io_select_Async*  const  self);
-
-#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
-
-#line 60 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-void net_tcp_server (net_tcp_server_Server*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 35 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-net_Engine  const * net_os ();
-
-#line 223 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_assert_safe (void const *  const  a, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 32 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef enum {
-    io_Result_Ready = 0,
-    io_Result_Later = 1,
-    io_Result_Error = 2,
-    io_Result_Eof = 3,
-
-} io_Result;
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 45 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-static void net_main_process_client (pool_Pool*  const  p, void*  const  item, void*  const  user);
-
-#line 270 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 13 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-int net_main_main ();
-
-#line 27 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef enum {
-    io_Ready_Read = 0,
-    io_Ready_Write = 1,
-
-} io_Ready;
-
-#line 230 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t {
-
-#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t secs ;
-
-#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t nano ;
-
-#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   bool finite ;
-}
-;
-
-#line 98 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-io_Result net_udp_sendto (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st, net_address_Address const *  const  to);
-
-#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-
-#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
-
-#line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-typedef enum {
-    net_address_Type_Invalid = 0,
-    net_address_Type_Ipv4 = 1,
-    net_address_Type_Ipv6 = 2,
-
-} net_address_Type;
-
-#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
-
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Context_t {
-
-#line 45 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   bool isvalid ;
-
-#line 46 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_Async*  async ;
-
-#line 49 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   uint64_t time ;
-
-#line 50 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   int fd ;
-
-#line 51 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   void*  handle ;
-}
-;
-
-#line 72 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-uintptr_t pool_free_bytes (pool_Pool const *  const  self);
-
-#line 41 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_close_fn) (io_Context*  const  ctx);
-
-#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-struct net_udp_Socket_t {
-
-#line 45 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   io_Context ctx ;
-
-#line 46 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   void const *  impl_sendto ;
-
-#line 47 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   void const *  impl_recvfrom ;
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-   io_close_fn impl_close ;
-}
-;
-
-#line 9 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-typedef net_udp_Socket (*net_new_udp_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 28 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-typedef io_Result (*net_tcp_server_accept_fn) (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-struct net_tcp_server_Server_t {
-
-#line 35 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-   io_Context ctx ;
-
-#line 36 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-   io_close_fn impl_close ;
-
-#line 37 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-   net_tcp_server_accept_fn impl_accept ;
-}
-;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-typedef net_tcp_server_Server (*net_new_tcp_server_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-struct net_Engine_t {
-
-#line 24 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-   void const *  handle1 ;
-
-#line 25 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-   int handle2 ;
-
-#line 26 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-   int handle3 ;
-
-#line 27 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-   net_new_udp_fn impl_new_udp ;
-
-#line 28 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-   net_new_tcp_server_fn impl_new_tcp_server ;
-}
-;
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_millis (time_Time const *  const  self);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_8_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[8] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_100_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[100] ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_1000_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[1000] ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_1000_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-   char _____tail [1000];
-}
-;
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 175 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 14 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_wait_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et);
-
-#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
-
-#line 91 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-void net_tcp_close (net_tcp_Socket*  const  self);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 45 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-static void net_main_process_client (pool_Pool*  const  p, void*  const  item, void*  const  user);
-
-#line 201 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
-
-#line 11 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 26 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-typedef io_Result (*net_tcp_send_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  mem, uintptr_t*  const  memlen);
-
-#line 39 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Result (*io_read_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, uintptr_t*  const  len);
-
-#line 40 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Result (*io_write_fn) (io_Context*  const  ctx, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  to, uintptr_t*  const  len);
-
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Io_t {
-
-#line 55 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_Context ctx ;
-
-#line 56 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_read_fn read_impl ;
-
-#line 57 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_write_fn write_impl ;
-
-#line 58 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_close_fn close_impl ;
-}
-;
-
-#line 10 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef io_Io (*io_make_timeout_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
-
-#line 12 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_select_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
-
-#line 13 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-typedef void (*io_wake_fn) (io_Async*  const  async);
-
-#line 16 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-struct io_Async_t {
-
-#line 17 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   void const *  upper ;
-
-#line 19 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_make_timeout_fn impl_make_timeout ;
-
-#line 20 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_make_channel_fn impl_make_channel ;
-
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_select_fn impl_select ;
-
-#line 22 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_wake_fn impl_wake ;
-
-#line 23 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-   io_wait_fn impl_wait ;
-}
-;
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t {
-
-#line 17 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-   net_address_Type typ ;
-
-#line 18 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-   uint8_t os[    24] ;
-}
-;
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-typedef io_Result (*net_tcp_recv_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
-
-#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-struct net_tcp_Socket_t {
-
-#line 43 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   io_Context ctx ;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   io_close_fn impl_close ;
-
-#line 46 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   net_address_Address remote_addr ;
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   net_tcp_send_fn impl_send ;
-
-#line 49 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-   net_tcp_recv_fn impl_recv ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 184 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
-
-#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_none (net_address_Address*  const  self);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
+#line 103 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void * pool_alloc (pool_Pool*  const  self);
+
+#line 42 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+void net_udp (net_udp_Socket*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
 
 #line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
 uint64_t time_to_seconds (time_Time const *  const  self);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 140 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -667,16 +319,16 @@ bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice c
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -2012,157 +1664,491 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 91 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 8 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-#include <sys/select.h>
-
-#line 61 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-bool io_valid (io_Context const *  const  self);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
-
-#line 51 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
-void net_udp_close (net_udp_Socket*  const  self);
-
-#line 241 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
-
-#line 53 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
-io_Result net_tcp_recv (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st);
-
-#line 280 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 65 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
-
 #line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint16_t net_address_get_port (net_address_Address const *  const  self);
-
-#line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
-
-#line 103 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void * pool_alloc (pool_Pool*  const  self);
-
-#line 253 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#line 263 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_wake (io_Async*  const  self);
-
-#line 62 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-extern bool io_select_select_write_fd (io_select_Async*  const  self, int const  fd);
-
-#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_valid (net_address_Address const *  const  self);
+#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
 
 #line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 81 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
-void net_tcp_server_close (net_tcp_server_Server*  const  self);
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 271 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
 #line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 120 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-void * pool_malloc (pool_Pool*  const  self, uintptr_t size);
+#line 66 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
 
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_valid (net_address_Address const *  const  self);
 
 #line 78 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
 io_Result net_udp_recvfrom (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  buf, uintptr_t const  st, net_address_Address*  const  from);
 
-#line 21 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-struct io_select_Async_t {
-
-#line 22 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-   io_Async base ;
-
-#line 23 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-   int timeout ;
-
-#line 24 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-   uintptr_t count ;
-
-#line 26 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-   fd_set read_fds ;
-
-#line 27 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-   fd_set write_fds ;
-
-#line 28 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-   int maxfd ;
-}
-;
-
-#line 44 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-static void io_select_reset (io_select_Async*  const  self);
-
-#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 42 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
-void net_udp (net_udp_Socket*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
-
-#line 54 "/home/aep/proj/zznursery/modules/net/modules/io/src/select.zz"
-extern bool io_select_select_read_fd (io_select_Async*  const  self, int const  fd);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
 #line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_elog (err_Err*  const  self, uintptr_t const  tail);
 
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 44 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+struct net_udp_Socket_t {
+
+#line 45 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   io_Context ctx ;
+
+#line 46 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   void const *  impl_sendto ;
+
+#line 47 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   void const *  impl_recvfrom ;
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+   io_close_fn impl_close ;
+}
+;
+
+#line 9 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+typedef net_udp_Socket (*net_new_udp_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
+#line 11 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef io_Io (*io_make_timeout_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#line 12 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_make_channel_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+
+#line 28 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef enum {
+    io_Ready_Read = 0,
+    io_Ready_Write = 1,
+
+} io_Ready;
+
+#line 13 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_select_fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#line 14 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+typedef void (*io_wake_fn) (io_Async*  const  async);
+
+#line 17 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+struct io_Async_t {
+
+#line 18 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   void const *  upper ;
+
+#line 20 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_make_timeout_fn impl_make_timeout ;
+
+#line 21 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_make_channel_fn impl_make_channel ;
+
+#line 22 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_select_fn impl_select ;
+
+#line 23 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_wake_fn impl_wake ;
+
+#line 24 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+   io_wait_fn impl_wait ;
+}
+;
+
+#line 264 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_wake (io_Async*  const  self);
+
+#line 26 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+typedef io_Result (*net_tcp_send_fn) (net_tcp_Socket*  const  sock, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  mem, uintptr_t*  const  memlen);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
 #line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
 
-#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 91 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+void net_tcp_close (net_tcp_Socket*  const  self);
+
+#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_none (net_address_Address*  const  self);
+
+#line 42 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+struct net_tcp_Socket_t {
+
+#line 43 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   io_Context ctx ;
+
+#line 44 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   io_close_fn impl_close ;
+
+#line 46 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   net_address_Address remote_addr ;
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   net_tcp_send_fn impl_send ;
+
+#line 49 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
+   net_tcp_recv_fn impl_recv ;
+}
+;
+
+#line 281 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
 
 #line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
 char  const * string_cstr (string_String const *  const  self);
 
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
 #line 59 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
 io_Result net_tcp_server_accept (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
 
-#line 121 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+#line 51 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+void net_udp_close (net_udp_Socket*  const  self);
 
-#line 221 "/home/aep/proj/zznursery/modules/net/modules/io/src/lib.zz"
-void io_close (io_Io*  const  self);
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 92 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #line 73 "/home/aep/proj/zznursery/modules/net/src/tcp.zz"
 io_Result net_tcp_send (net_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st);
 
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_1000_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[1000] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_100_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[100] ;
+}
+;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_8_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[8] ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_1000_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+   char _____tail [1000];
+}
+;
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_millis (time_Time const *  const  self);
+
+#line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 8 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+#include <sys/select.h>
+
+#line 22 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+struct io_select_Async_t {
+
+#line 23 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+   io_Async base ;
+
+#line 24 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+   int timeout ;
+
+#line 25 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+   uintptr_t count ;
+
+#line 27 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+   fd_set read_fds ;
+
+#line 28 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+   fd_set write_fds ;
+
+#line 29 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+   int maxfd ;
+}
+;
+
+#line 28 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+typedef io_Result (*net_tcp_server_accept_fn) (net_tcp_server_Server*  const  self, err_Err*  const  e, uintptr_t const  et, net_tcp_Socket*  const  client);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+struct net_tcp_server_Server_t {
+
+#line 35 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+   io_Context ctx ;
+
+#line 36 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+   io_close_fn impl_close ;
+
+#line 37 "/home/aep/proj/zznursery/modules/net/src/tcp_server.zz"
+   net_tcp_server_accept_fn impl_accept ;
+}
+;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+typedef net_tcp_server_Server (*net_new_tcp_server_fn) (net_Engine const *  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 63 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+extern bool io_select_select_write_fd (io_select_Async*  const  self, int const  fd);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
+
+#line 23 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+struct net_Engine_t {
+
+#line 24 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+   void const *  handle1 ;
+
+#line 25 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+   int handle2 ;
+
+#line 26 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+   int handle3 ;
+
+#line 27 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+   net_new_udp_fn impl_new_udp ;
+
+#line 28 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+   net_new_tcp_server_fn impl_new_tcp_server ;
+}
+;
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 141 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 62 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+bool io_valid (io_Context const *  const  self);
+
+#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
+
+#line 32 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+void io_select_make (io_select_Async*  const  self);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 222 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_close (io_Io*  const  self);
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
+
+#line 60 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+void net_tcp_server (net_tcp_server_Server*  const  self, net_Engine const *  const  engine, err_Err*  const  e, uintptr_t const  et, net_address_Address const *  const  local_addr, io_Async*  const  async);
+
+#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
+
+#line 55 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+extern bool io_select_select_read_fd (io_select_Async*  const  self, int const  fd);
+
+#line 38 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize);
+
 #line 203 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 void pool_free (pool_Pool*  const  self, void const *  ptr_);
+
+#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 263 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+typedef void (*pool_iterator) (pool_Pool*  const  self, void*  const  block, void*  const  user);
+
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 72 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+uintptr_t pool_free_bytes (pool_Pool const *  const  self);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 45 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+static void net_main_process_client (pool_Pool*  const  p, void*  const  item, void*  const  user);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 120 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+void * pool_malloc (pool_Pool*  const  self, uintptr_t size);
+
+#line 223 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_assert_safe (void const *  const  a, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 45 "/home/aep/proj/zznursery/modules/io/src/select.zz"
+static void io_select_reset (io_select_Async*  const  self);
+
+#line 254 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 35 "/home/aep/proj/zznursery/modules/net/src/lib.zz"
+net_Engine  const * net_os ();
+
+#line 98 "/home/aep/proj/zznursery/modules/net/src/udp.zz"
+io_Result net_udp_sendto (net_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, string_String const *  const  buf, uintptr_t const  st, net_address_Address const *  const  to);
+
+#line 231 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
 
 #line 263 "/home/aep/proj/zz/modules/pool/src/lib.zz"
 typedef void (*pool_iterator) (pool_Pool*  const  self, void*  const  block, void*  const  user);
@@ -2173,20 +2159,130 @@ void pool_each (pool_Pool*  const  self, pool_iterator const  it, void*  const  
 #line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
 uintptr_t string_slen (string_String const *  const  self);
 
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
+#line 202 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
 
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint16_t net_address_get_port (net_address_Address const *  const  self);
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+#line 13 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+int net_main_main ();
 
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+#line 122 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
 
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
+
+#line 185 "/home/aep/proj/zznursery/modules/io/src/lib.zz"
+io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 45 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+static void net_main_process_client (pool_Pool*  const  p, void*  const  item, void*  const  user)
+{
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+  net_tcp_Socket*  const  client  =     (net_tcp_Socket* )(    item);
+
+#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+  err_Err_1000 e  = {    0,};
+    err_make(    (err_Err* )(( &    e)),    1000    );
+
+#line 50 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+  string_String_100 sbuf  = {    0,};
+    string_make(    (string_String* )(( &    sbuf)),    100    );
+if ((
+#line 52 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    net_tcp_recv(    client,    (err_Err* )(( &    e)),
+#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,    (string_String* )((
+#line 52 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+ &    sbuf)),
+#line 50 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    100    )
+#line 52 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+ ==    io_Result_Ready  )){
+
+#line 53 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    err_abort(    (err_Err* )(( &    e)),
+#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,
+#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/net/src/main.zz",
+#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::net::main::process_client",
+#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    53    );
+
+#line 54 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    printf(    "%s\n",    string_cstr(    (string_String* )(( &    sbuf))    )    );
+
+#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+  string_String_1000 msg  = {    0,};
+    string_make(    (string_String* )(( &    msg)),    1000    );
+
+#line 57 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    string_append_cstr(    (string_String* )(( &    msg)),
+#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,
+#line 57 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    "HTTP/1.1 200 OK\n"    );
+
+#line 58 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    string_append_cstr(    (string_String* )(( &    msg)),
+#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,
+#line 58 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    "Connection: close\n"    );
+
+#line 59 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    string_append_cstr(    (string_String* )(( &    msg)),
+#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,
+#line 59 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    "\n"    );
+
+#line 60 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    string_append_cstr(    (string_String* )(( &    msg)),
+#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,
+#line 60 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    "ok cool\n"    );
+
+#line 61 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    net_tcp_send(    client,    (err_Err* )(( &    e)),
+#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,    (string_String* )((
+#line 61 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+ &    msg)),
+#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000    );
+
+#line 62 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    net_tcp_close(    client    );
+
+#line 63 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    pool_free(    p,    item    );
+
+}
+
+
+#line 65 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    err_abort(    (err_Err* )(( &    e)),
+#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
+    1000,
+#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zznursery/modules/net/src/main.zz",
+#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::net::main::process_client",
+#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    65    );
+
+}
+
 
 #line 13 "/home/aep/proj/zznursery/modules/net/src/main.zz"
 int main ()
@@ -2317,110 +2413,6 @@ if ((
 
 #line 42 "/home/aep/proj/zznursery/modules/net/src/main.zz"
   return     0;
-
-}
-
-
-#line 45 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-static void net_main_process_client (pool_Pool*  const  p, void*  const  item, void*  const  user)
-{
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-  net_tcp_Socket*  const  client  =     (net_tcp_Socket* )(    item);
-
-#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-  err_Err_1000 e  = {    0,};
-    err_make(    (err_Err* )(( &    e)),    1000    );
-
-#line 50 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-  string_String_100 sbuf  = {    0,};
-    string_make(    (string_String* )(( &    sbuf)),    100    );
-if ((
-#line 52 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    net_tcp_recv(    client,    (err_Err* )(( &    e)),
-#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,    (string_String* )((
-#line 52 "/home/aep/proj/zznursery/modules/net/src/main.zz"
- &    sbuf)),
-#line 50 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    100    )
-#line 52 "/home/aep/proj/zznursery/modules/net/src/main.zz"
- ==    io_Result_Ready  )){
-
-#line 53 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    err_abort(    (err_Err* )(( &    e)),
-#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,
-#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/src/main.zz",
-#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::net::main::process_client",
-#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    53    );
-
-#line 54 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    printf(    "%s\n",    string_cstr(    (string_String* )(( &    sbuf))    )    );
-
-#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-  string_String_1000 msg  = {    0,};
-    string_make(    (string_String* )(( &    msg)),    1000    );
-
-#line 57 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    string_append_cstr(    (string_String* )(( &    msg)),
-#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,
-#line 57 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    "HTTP/1.1 200 OK\n"    );
-
-#line 58 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    string_append_cstr(    (string_String* )(( &    msg)),
-#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,
-#line 58 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    "Connection: close\n"    );
-
-#line 59 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    string_append_cstr(    (string_String* )(( &    msg)),
-#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,
-#line 59 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    "\n"    );
-
-#line 60 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    string_append_cstr(    (string_String* )(( &    msg)),
-#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,
-#line 60 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    "ok cool\n"    );
-
-#line 61 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    net_tcp_send(    client,    (err_Err* )(( &    e)),
-#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,    (string_String* )((
-#line 61 "/home/aep/proj/zznursery/modules/net/src/main.zz"
- &    msg)),
-#line 56 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000    );
-
-#line 62 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    net_tcp_close(    client    );
-
-#line 63 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    pool_free(    p,    item    );
-
-}
-
-
-#line 65 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    err_abort(    (err_Err* )(( &    e)),
-#line 49 "/home/aep/proj/zznursery/modules/net/src/main.zz"
-    1000,
-#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zznursery/modules/net/src/main.zz",
-#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::net::main::process_client",
-#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    65    );
 
 }
 

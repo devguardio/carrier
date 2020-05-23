@@ -2,9 +2,29 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
 
 #line 49 "/home/aep/proj/zz/modules/json/src/lib.zz"
 struct json_Parser_t;
@@ -14,42 +34,61 @@ typedef struct json_Parser_t json_Parser;
 struct json_Value_t;
 typedef struct json_Value_t json_Value;
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 41 "/home/aep/proj/zz/modules/json/src/lib.zz"
 struct json_ParserStack_t;
 typedef struct json_ParserStack_t json_ParserStack;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
+struct json_ParserStack_t;
+typedef struct json_ParserStack_t json_ParserStack;
 
 #line 49 "/home/aep/proj/zz/modules/json/src/lib.zz"
 struct json_Parser_t;
 typedef struct json_Parser_t json_Parser;
 
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
 #line 1 ""
 #include <stddef.h>
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
 
 #line 16 "/home/aep/proj/zz/modules/json/src/lib.zz"
 typedef enum {
@@ -59,6 +98,20 @@ typedef enum {
     json_ValueType_Array = 3,
 
 } json_ValueType;
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
 
 #line 23 "/home/aep/proj/zz/modules/json/src/lib.zz"
 struct json_Value_t {
@@ -81,6 +134,15 @@ const size_t sizeof_json_Value = sizeof(json_Value);
 #line 11 "/home/aep/proj/zz/modules/json/src/lib.zz"
 typedef void (*json_deserialize_t) (err_Err*  const  e, uintptr_t const  et, json_Parser*  const  p, uintptr_t const  pt, void*  const  user, char const *  const  k, json_Value const  v);
 
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 8 "/home/aep/proj/zz/modules/json/src/lib.zz"
+#define json_MAX_DEPTH ((uintptr_t )    64)
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
 #line 14 "/home/aep/proj/zz/modules/err/src/lib.zz"
 extern const __attribute__ ((unused)) size_t err_OutOfTail;
 
@@ -97,183 +159,17 @@ typedef enum {
 
 } json_ParserState;
 
-#line 205 "/home/aep/proj/zz/modules/json/src/lib.zz"
-static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const  token);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
 #line 14 "/home/aep/proj/zz/modules/json/src/lib.zz"
 extern const __attribute__ ((unused)) size_t json_ParseError;
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 97 "/home/aep/proj/zz/modules/json/src/lib.zz"
-void json_push (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
 #line 12 "/home/aep/proj/zz/modules/json/src/lib.zz"
 typedef void (*json_deserialize_i) (err_Err*  const  e, uintptr_t const  et, void*  const  p, void*  const  user, char const *  const  k, json_Value const  v);
 
-#line 41 "/home/aep/proj/zz/modules/json/src/lib.zz"
-struct json_ParserStack_t {
+#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
+void json_next (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user);
 
-#line 42 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   json_ParserState state ;
-
-#line 43 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   json_deserialize_i de ;
-
-#line 44 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   void*  user ;
-
-#line 45 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   bool in_array ;
-
-#line 46 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   uintptr_t index ;
-}
-;
-
-#line 8 "/home/aep/proj/zz/modules/json/src/lib.zz"
-#define json_MAX_DEPTH ((uintptr_t )    64)
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 49 "/home/aep/proj/zz/modules/json/src/lib.zz"
-struct json_Parser_t {
-
-#line 50 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   uintptr_t col ;
-
-#line 51 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   uintptr_t line ;
-
-#line 52 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   bool esc ;
-
-#line 54 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   json_ParserStack state[    json_MAX_DEPTH] ;
-
-#line 55 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   uintptr_t depth ;
-
-#line 57 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   uintptr_t keylen ;
-
-#line 58 "/home/aep/proj/zz/modules/json/src/lib.zz"
-   string_String capture ;
-}
-;
-size_t sizeof_json_Parser(size_t tail) { return sizeof(json_Parser) + (tail * sizeof(char)); }
-
-#line 2 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-#include <stdlib.h>
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
-#line 61 "/home/aep/proj/zz/modules/json/src/lib.zz"
-void json_parser (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 205 "/home/aep/proj/zz/modules/json/src/lib.zz"
-static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const  token);
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -290,16 +186,16 @@ static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1635,86 +1531,282 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 41 "/home/aep/proj/zz/modules/json/src/lib.zz"
+struct json_ParserStack_t {
 
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#line 42 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   json_ParserState state ;
 
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
+#line 43 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   json_deserialize_i de ;
 
-#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
-void json_next (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user);
+#line 44 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   void*  user ;
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+#line 45 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   bool in_array ;
 
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+#line 46 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   uintptr_t index ;
+}
+;
 
 #line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
 uintptr_t string_slen (string_String const *  const  self);
 
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
 
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 10 "/home/aep/proj/devguard/carrier/src/sft.zz"
+#include <stdlib.h>
 
 #line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_make (string_String*  const  self, uintptr_t const  tail);
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
 #line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 49 "/home/aep/proj/zz/modules/json/src/lib.zz"
+struct json_Parser_t {
+
+#line 50 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   uintptr_t col ;
+
+#line 51 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   uintptr_t line ;
+
+#line 52 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   bool esc ;
+
+#line 54 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   json_ParserStack state[    json_MAX_DEPTH] ;
+
+#line 55 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   uintptr_t depth ;
+
+#line 57 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   uintptr_t keylen ;
+
+#line 58 "/home/aep/proj/zz/modules/json/src/lib.zz"
+   string_String capture ;
+}
+;
+size_t sizeof_json_Parser(size_t tail) { return sizeof(json_Parser) + (tail * sizeof(char)); }
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 61 "/home/aep/proj/zz/modules/json/src/lib.zz"
+void json_parser (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 205 "/home/aep/proj/zz/modules/json/src/lib.zz"
+static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const  token);
+
+#line 97 "/home/aep/proj/zz/modules/json/src/lib.zz"
+void json_push (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 205 "/home/aep/proj/zz/modules/json/src/lib.zz"
+static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const  token);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
+void __attribute__ ((visibility ("default"))) json_next (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user)
+{
+if ((
+#line 81 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    self ->depth >=    json_MAX_DEPTH  )){
+
+#line 82 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    err_fail(    (err_Err* )(    e),
+#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    et,
+#line 82 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    err_OutOfTail,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/json/src/lib.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::json::next",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    82,
+#line 82 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    "json structure too deep"    );
+
+#line 83 "/home/aep/proj/zz/modules/json/src/lib.zz"
+  return ;
+
+}
+
+
+#line 86 "/home/aep/proj/zz/modules/json/src/lib.zz"
+;
+
+#line 87 "/home/aep/proj/zz/modules/json/src/lib.zz"
+  json_ParserStack*  stack  = ( &    self ->state [     self ->depth]);
+if (((
+#line 89 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    stack ->state !=    json_ParserState_Object  ) &&((    stack ->state !=    json_ParserState_PreVal  ) ||( !    stack ->in_array)  )  )){
+
+#line 90 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    err_fail(    (err_Err* )(    e),
+#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    et,
+#line 90 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    json_ParseError,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/json/src/lib.zz",
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::json::next",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    90,
+#line 90 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    "invalid parser state for next(), can only call when value is object or array"    );
+
+}
+
+
+#line 93 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    self ->state [     self ->depth] .de =     (json_deserialize_i)(    de);
+
+#line 94 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    self ->state [     self ->depth] .user =     user;
+
+}
+
+
+#line 61 "/home/aep/proj/zz/modules/json/src/lib.zz"
+void __attribute__ ((visibility ("default"))) json_parser (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user)
+{
+
+#line 67 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    memset(    self,    0,    sizeof(    json_Parser    )    );
+
+#line 68 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    string_clear(    (string_String* )(( &    self ->capture)),
+#line 61 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    tail    );
+
+#line 70 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    self ->line =     1;
+
+#line 72 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    self ->state [     0] .de =     (json_deserialize_i)(    de);
+
+#line 73 "/home/aep/proj/zz/modules/json/src/lib.zz"
+    self ->state [     0] .user =     user;
+
+}
+
 
 #line 97 "/home/aep/proj/zz/modules/json/src/lib.zz"
 void __attribute__ ((visibility ("default"))) json_push (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen)
@@ -2132,30 +2224,6 @@ break;}
 
 }
 
-
-}
-
-
-#line 61 "/home/aep/proj/zz/modules/json/src/lib.zz"
-void __attribute__ ((visibility ("default"))) json_parser (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user)
-{
-
-#line 67 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    memset(    self,    0,    sizeof(    json_Parser    )    );
-
-#line 68 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    string_clear(    (string_String* )(( &    self ->capture)),
-#line 61 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    tail    );
-
-#line 70 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    self ->line =     1;
-
-#line 72 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    self ->state [     0] .de =     (json_deserialize_i)(    de);
-
-#line 73 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    self ->state [     0] .user =     user;
 
 }
 
@@ -2955,70 +3023,6 @@ if ((
 break;}
 }
 
-
-}
-
-
-#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
-void __attribute__ ((visibility ("default"))) json_next (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_deserialize_t const  de, void*  const  user)
-{
-if ((
-#line 81 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    self ->depth >=    json_MAX_DEPTH  )){
-
-#line 82 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    err_fail(    (err_Err* )(    e),
-#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    et,
-#line 82 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    err_OutOfTail,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/json/src/lib.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::json::next",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    82,
-#line 82 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    "json structure too deep"    );
-
-#line 83 "/home/aep/proj/zz/modules/json/src/lib.zz"
-  return ;
-
-}
-
-
-#line 86 "/home/aep/proj/zz/modules/json/src/lib.zz"
-;
-
-#line 87 "/home/aep/proj/zz/modules/json/src/lib.zz"
-  json_ParserStack*  stack  = ( &    self ->state [     self ->depth]);
-if (((
-#line 89 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    stack ->state !=    json_ParserState_Object  ) &&((    stack ->state !=    json_ParserState_PreVal  ) ||( !    stack ->in_array)  )  )){
-
-#line 90 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    err_fail(    (err_Err* )(    e),
-#line 76 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    et,
-#line 90 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    json_ParseError,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/json/src/lib.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::json::next",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    90,
-#line 90 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    "invalid parser state for next(), can only call when value is object or array"    );
-
-}
-
-
-#line 93 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    self ->state [     self ->depth] .de =     (json_deserialize_i)(    de);
-
-#line 94 "/home/aep/proj/zz/modules/json/src/lib.zz"
-    self ->state [     self ->depth] .user =     user;
 
 }
 

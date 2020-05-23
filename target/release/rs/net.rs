@@ -75,10 +75,10 @@ extern {
     #[link_name = "net_os"]
     pub fn r#os()  -> *const u8;
 
-    #[link_name = "net_tcp_server"]
-    pub fn r#tcp_server( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
-
     #[link_name = "net_udp"]
     pub fn r#udp( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
+
+    #[link_name = "net_tcp_server"]
+    pub fn r#tcp_server( Zself: *mut u8,  Zengine: *const u8,  Ze: *mut u8,  Zet: usize,  Zlocal_addr: *const u8,  Zasync: *mut u8);
 
 }

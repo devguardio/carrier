@@ -33,14 +33,6 @@ export struct Router {
     channel::Channel        mut channels[MAX_CHANNELS];
 }
 
-pub fn make(channel::Channel brk, udp::Socket udp4, udp::Socket udp6) -> Router {
-    return Router {
-        channels:   {brk},
-        udp4:       udp4,
-        udp6:       udp6,
-    };
-}
-
 pub fn close(Router mut* self)
 {
     self->udp4.close();

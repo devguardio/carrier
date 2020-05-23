@@ -12,58 +12,58 @@ set(carrier_SOURCES
      ${CMAKE_CURRENT_LIST_DIR}/../../../3rdparty/hacl-star/snapshots/hacl-c/AEAD_Poly1305_64.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Policies.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/symbols.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_config.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/pool.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_pub_sysinfo.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_sha256.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_udp.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_tcp.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_identity.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_pq.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hex.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/sysinfo_proto.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/toml.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_bootstrap.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_router.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/slice_mut_slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_peering.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/byteorder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_symmetric.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/err.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_endpoint.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_proto.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_initiator.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_connect.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_tcp_server.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_vault.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/log.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/io.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_cipher.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/time.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/mem.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/string.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_sync.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/sysinfo.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_crc8.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_channel.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_stream.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/fs.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_rand.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_address.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/slice_slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hpack_decoder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_vault_toml.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_noise.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/io_unix.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hpack_encoder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_sft.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_stream.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_revision.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_endpoint.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_crc8.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/err.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_address.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/fs.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/protonerf.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hpack.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/io_unix.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_identity.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_proto.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_sha256.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_initiator.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/log.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_vault_toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_tcp.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_pq.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/sysinfo_proto.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_udp.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_pub_sysinfo.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/string.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hex.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_bootstrap.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_config.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_sync.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_vault.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_symmetric.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_cipher.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/slice_slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_rand.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/time.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_channel.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/sysinfo.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/symbols.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_sft.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_connect.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hpack_decoder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hpack_encoder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/pool.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_router.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/byteorder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/mem.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_peering.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/slice_mut_slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/io.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/net_tcp_server.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_publish.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_responder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../.././src/base58.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/hpack.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/zz/carrier_publish.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/release/gen/zz_builtins_carrier_carrier_CMake.c
 )

@@ -1,7 +1,11 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
-pub const REORDER_THRESHOLD : u64 = 3;
+pub const DEAD_TLPS : u64 = 20;
+pub const BACKOFF : u64 = 50;
+pub const MIN_TLP : u64 = 5;
+pub const KEEPALIVE : u64 = 5000;
+pub const DEAD_PINGS : u64 = 5;
 
 pub struct rsFrame {
     pub inner:  Box<Frame>,
@@ -64,11 +68,6 @@ impl rsFrame {
         }
     }
 }
-pub const DEAD_TLPS : u64 = 20;
-pub const BACKOFF : u64 = 50;
-pub const MIN_TLP : u64 = 5;
-pub const KEEPALIVE : u64 = 5000;
-pub const DEAD_PINGS : u64 = 5;
 
 pub struct rsQ {
     pub inner:  Box<Q>,
@@ -202,16 +201,13 @@ impl rsQ_64 {
         }
     }
 }
+pub const REORDER_THRESHOLD : u64 = 3;
 extern {
+    #[link_name = "carrier_pq_cancel"]
+    pub fn r#cancel( Zself: *mut u8,  Zqt: usize);
 
-    #[link_name = "sizeof_carrier_pq_Frame"]
-    pub static sizeof_Frame: libc::size_t;
-
-    #[link_name = "carrier_pq_ack"]
-    pub fn r#ack( Zself: *mut u8,  Zqt: usize,  Ztime: u64,  Zcounter: u64);
-
-    #[link_name = "carrier_pq_send"]
-    pub fn r#send( Zself: *mut u8,  Zqt: usize,  Ztime: u64,  Zbuf: *mut u8,  Zbuflen: u16,  Zcounter: u64)  -> usize;
+    #[link_name = "carrier_pq_wrapinc"]
+    pub fn r#wrapinc( Zself: *const u8,  Zqt: usize,  Zi: *mut usize)  -> usize;
 
 
 
@@ -221,28 +217,32 @@ extern {
     #[link_name = "carrier_pq_keepalive"]
     pub fn r#keepalive( Zself: *mut u8,  Zqt: usize,  Znow: u64)  -> u64;
 
+    #[link_name = "sizeof_carrier_pq_Frame"]
+    pub static sizeof_Frame: libc::size_t;
+
     #[link_name = "sizeof_carrier_pq_Q"]
     pub fn sizeof_Q(tail: libc::size_t) -> libc::size_t;
     #[link_name = "sizeof_carrier_pq_Q_64"]
     pub static sizeof_Q_64: libc::size_t;
 
-    #[link_name = "carrier_pq_alloc"]
-    pub fn r#alloc( Zself: *mut u8,  Zqt: usize,  Ze: *mut u8,  Zet: usize,  Ztyp: super::carrier_channel::FrameType,  Zsize: usize)  -> *mut u8;
-
-    #[link_name = "carrier_pq_wrapinc"]
-    pub fn r#wrapinc( Zself: *const u8,  Zqt: usize,  Zi: *mut usize)  -> usize;
+    #[link_name = "carrier_pq_clear"]
+    pub fn r#clear( Zself: *mut u8,  Zqt: usize);
 
     #[link_name = "carrier_pq_wrapdec"]
     pub fn r#wrapdec( Zself: *const u8,  Zqt: usize,  Zi: *mut usize)  -> usize;
 
+    #[link_name = "carrier_pq_send"]
+    pub fn r#send( Zself: *mut u8,  Zqt: usize,  Ztime: u64,  Zbuf: *mut u8,  Zbuflen: u16,  Zcounter: u64)  -> usize;
+
     #[link_name = "carrier_pq_window"]
     pub fn r#window( Zself: *const u8,  Zqt: usize)  -> usize;
 
-    #[link_name = "carrier_pq_clear"]
-    pub fn r#clear( Zself: *mut u8,  Zqt: usize);
 
-    #[link_name = "carrier_pq_cancel"]
-    pub fn r#cancel( Zself: *mut u8,  Zqt: usize);
+    #[link_name = "carrier_pq_ack"]
+    pub fn r#ack( Zself: *mut u8,  Zqt: usize,  Ztime: u64,  Zcounter: u64);
+
+    #[link_name = "carrier_pq_alloc"]
+    pub fn r#alloc( Zself: *mut u8,  Zqt: usize,  Ze: *mut u8,  Zet: usize,  Ztyp: super::carrier_channel::FrameType,  Zsize: usize)  -> *mut u8;
 
     #[link_name = "carrier_pq_make_frame_size"]
     pub fn r#make_frame_size( Zframe: *mut u8);

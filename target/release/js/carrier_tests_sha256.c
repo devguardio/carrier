@@ -6,19 +6,24 @@
 #include <string.h>
 #include "zz/carrier/carrier_tests_sha256.h"
 
-napi_value js_carrier_sha256_init(napi_env env, napi_callback_info info);
-napi_value js_carrier_sha256_update(napi_env env, napi_callback_info info);
-napi_value js_carrier_sha256_finish(napi_env env, napi_callback_info info);
-napi_value js_carrier_tests_sha256_r2(napi_env env, napi_callback_info info);
 napi_value js_carrier_tests_sha256_r1(napi_env env, napi_callback_info info);
+napi_value js_carrier_tests_sha256_r2(napi_env env, napi_callback_info info);
 napi_value js_carrier_tests_sha256_r3(napi_env env, napi_callback_info info);
 napi_value js_carrier_tests_sha256_r4(napi_env env, napi_callback_info info);
 napi_value js_carrier_tests_sha256_r5(napi_env env, napi_callback_info info);
 napi_value js_carrier_tests_sha256_main(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_init(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_update(napi_env env, napi_callback_info info);
+napi_value js_carrier_sha256_finish(napi_env env, napi_callback_info info);
+napi_value js_carrier_tests_sha256_r3(napi_env env, napi_callback_info info);
+napi_value js_carrier_tests_sha256_r1(napi_env env, napi_callback_info info);
+napi_value js_carrier_tests_sha256_r2(napi_env env, napi_callback_info info);
+napi_value js_carrier_tests_sha256_r4(napi_env env, napi_callback_info info);
 napi_value js_carrier_tests_sha256_r5(napi_env env, napi_callback_info info);
 
 
-napi_value js_carrier_tests_sha256_r2(napi_env env, napi_callback_info info) {
+
+napi_value js_carrier_tests_sha256_r3(napi_env env, napi_callback_info info) {
     napi_status status;
 
     size_t argc = 16;
@@ -30,7 +35,7 @@ napi_value js_carrier_tests_sha256_r2(napi_env env, napi_callback_info info) {
 
 
     napi_value jsreturn = 0;
-    int  frrr = carrier_tests_sha256_r2();
+    int  frrr = carrier_tests_sha256_r3();
     status = napi_create_int32(env, frrr, &jsreturn);
     assert(status == napi_ok);
     return jsreturn;
@@ -56,7 +61,7 @@ napi_value js_carrier_tests_sha256_r1(napi_env env, napi_callback_info info) {
 }
 
 
-napi_value js_carrier_tests_sha256_r3(napi_env env, napi_callback_info info) {
+napi_value js_carrier_tests_sha256_r2(napi_env env, napi_callback_info info) {
     napi_status status;
 
     size_t argc = 16;
@@ -68,7 +73,7 @@ napi_value js_carrier_tests_sha256_r3(napi_env env, napi_callback_info info) {
 
 
     napi_value jsreturn = 0;
-    int  frrr = carrier_tests_sha256_r3();
+    int  frrr = carrier_tests_sha256_r2();
     status = napi_create_int32(env, frrr, &jsreturn);
     assert(status == napi_ok);
     return jsreturn;
@@ -94,7 +99,6 @@ napi_value js_carrier_tests_sha256_r4(napi_env env, napi_callback_info info) {
 }
 
 
-
 napi_value js_carrier_tests_sha256_r5(napi_env env, napi_callback_info info) {
     napi_status status;
 
@@ -118,17 +122,17 @@ napi_value js_carrier_tests_sha256_Init(napi_env env, napi_value exports)
 {
     napi_value ff;
     napi_status status;
-    status = napi_create_function(env, "r2", NAPI_AUTO_LENGTH, js_carrier_tests_sha256_r2, 0, &ff);
+    status = napi_create_function(env, "r3", NAPI_AUTO_LENGTH, js_carrier_tests_sha256_r3, 0, &ff);
     assert(status == napi_ok);
-    status = napi_set_named_property(env, exports, "r2", ff);
+    status = napi_set_named_property(env, exports, "r3", ff);
     assert(status == napi_ok);
     status = napi_create_function(env, "r1", NAPI_AUTO_LENGTH, js_carrier_tests_sha256_r1, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "r1", ff);
     assert(status == napi_ok);
-    status = napi_create_function(env, "r3", NAPI_AUTO_LENGTH, js_carrier_tests_sha256_r3, 0, &ff);
+    status = napi_create_function(env, "r2", NAPI_AUTO_LENGTH, js_carrier_tests_sha256_r2, 0, &ff);
     assert(status == napi_ok);
-    status = napi_set_named_property(env, exports, "r3", ff);
+    status = napi_set_named_property(env, exports, "r2", ff);
     assert(status == napi_ok);
     status = napi_create_function(env, "r4", NAPI_AUTO_LENGTH, js_carrier_tests_sha256_r4, 0, &ff);
     assert(status == napi_ok);

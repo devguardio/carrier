@@ -61,12 +61,6 @@ impl rsSlice {
     }
 }
 extern {
-    #[link_name = "slice_slice_eq"]
-    pub fn r#eq( Zself: *const u8,  Zother: *const u8)  -> bool;
-
-    #[link_name = "slice_slice_eq_bytes"]
-    pub fn r#eq_bytes( Zself: *const u8,  Zother: *const u8,  Zothersize: usize)  -> bool;
-
     #[link_name = "sizeof_slice_slice_Slice"]
     pub static sizeof_Slice: libc::size_t;
 
@@ -75,6 +69,12 @@ extern {
 
     #[link_name = "slice_slice_eq_cstr"]
     pub fn r#eq_cstr( Zself: *const u8,  Zother: *const u8)  -> bool;
+
+    #[link_name = "slice_slice_eq"]
+    pub fn r#eq( Zself: *const u8,  Zother: *const u8)  -> bool;
+
+    #[link_name = "slice_slice_eq_bytes"]
+    pub fn r#eq_bytes( Zself: *const u8,  Zother: *const u8,  Zothersize: usize)  -> bool;
 
     #[link_name = "slice_slice_borrow"]
     pub fn r#borrow( Zself: *const u8)  -> *const u8;

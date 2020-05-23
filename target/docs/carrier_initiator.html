@@ -1,0 +1,122 @@
+
+<h1> module carrier::initiator </h1>
+<h4> fn to_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn complete (
+
+    ::carrier::identity::Identity*
+    expect_identity,
+
+    usize
+    st,
+
+    ::string::String*+st
+    pkt,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::channel::Transfer*
+    chan,
+
+    usize
+    et,
+
+    ::carrier::vault::Broker*
+    redirect,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    usize
+    et,
+
+    ::carrier::initiator::Move
+    move,
+
+    ::carrier::identity::Identity*
+    cluster_target,
+
+    ::carrier::identity::Address*
+    xaddr,
+
+    ::carrier::vault::Vault*
+    vault,
+
+    u64
+    vector_time,
+
+    ::string::String*+st
+    pkt,
+
+    bool
+    secure,
+
+    usize
+    st,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+

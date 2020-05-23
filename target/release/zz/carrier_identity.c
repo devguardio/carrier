@@ -2,44 +2,14 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Signature_t;
-typedef struct carrier_identity_Signature_t carrier_identity_Signature;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-struct err_Err_200_t;
-typedef struct err_Err_200_t err_Err_200;
-
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
-
-#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Secret_t;
-typedef struct carrier_identity_Secret_t carrier_identity_Secret;
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
-
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
@@ -58,36 +28,487 @@ typedef struct carrier_identity_Identity_t carrier_identity_Identity;
 struct carrier_identity_Secret_t;
 typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Address_t;
+typedef struct carrier_identity_Address_t carrier_identity_Address;
+struct carrier_identity_Address_t;
+typedef struct carrier_identity_Address_t carrier_identity_Address;
+
+#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Secret_t;
+typedef struct carrier_identity_Secret_t carrier_identity_Secret;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Identity_t;
+typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
 #line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Signature_t {
-   uint8_t k[    64] ;
-}
-;
-const size_t sizeof_carrier_identity_Signature = sizeof(carrier_identity_Signature);
+struct carrier_identity_Signature_t;
+typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
 
 #line 1 ""
 #include <stddef.h>
 
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
 
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
-#line 46 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-uint8_t carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l);
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
 #line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_200_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+   char _____tail [200];
+}
+;
+
+#line 261 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  k);
+
+#line 7 "/home/aep/proj/devguard/carrier/src/identity.zz"
+#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h"
+
+#line 5 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdint.h>
+
+#line 211 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_secret (carrier_identity_Identity*  const  pk, carrier_identity_Secret const *  const  sk);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 6 "/home/aep/proj/devguard/carrier/src/identity.zz"
+#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h"
+
+#line 220 "/home/aep/proj/devguard/carrier/src/identity.zz"
+static const  __attribute__ ((unused)) uint8_t carrier_identity_BASEPOINT  [     32 ] ={    9,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,};
+
+#line 222 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk);
 
 #line 23 "/home/aep/proj/devguard/carrier/src/identity.zz"
 static void carrier_identity_from_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
 
 #line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 91 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+uint8_t carrier_crc8_broken_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  length);
+
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 72 "/home/aep/proj/devguard/carrier/src/identity.zz"
+static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
+
+#line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
+
+#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Address_t {
+   uint8_t k[    32] ;
+}
+;
+const size_t sizeof_carrier_identity_Address = sizeof(carrier_identity_Address);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 9 "/home/aep/proj/devguard/carrier/src/identity.zz"
+
+#line 1 "/home/aep/proj/devguard/carrier/src/base58.h"
+#ifndef LIBBASE58_H
+#define LIBBASE58_H
+
+#include <stdbool.h>
+#include <stddef.h>
+
+static bool b58tobin(void *bin, size_t *binsz, const char *b58, size_t b58sz);
+static bool b58enc(char *b58, size_t *b58sz, const void *bin, size_t binsz);
+//static bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *data, size_t datasz);
+//static int b58check(const void *bin, size_t binsz, const char *b58, size_t b58sz);
+//static bool (*b58_sha256_impl)(void *, const void *, size_t);
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <string.h>
+
+
+static const int8_t b58digits_map[] = {
+	-1,-1,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1,-1,-1,-1,
+	-1,-1,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1,-1,-1,-1,
+	-1,-1,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1,-1,-1,-1,
+	-1, 0, 1, 2, 3, 4, 5, 6,  7, 8,-1,-1,-1,-1,-1,-1,
+	-1, 9,10,11,12,13,14,15, 16,-1,17,18,19,20,21,-1,
+	22,23,24,25,26,27,28,29, 30,31,32,-1,-1,-1,-1,-1,
+	-1,33,34,35,36,37,38,39, 40,41,42,43,-1,44,45,46,
+	47,48,49,50,51,52,53,54, 55,56,57,-1,-1,-1,-1,-1,
+};
+
+typedef uint64_t b58_maxint_t;
+typedef uint32_t b58_almostmaxint_t;
+#define b58_almostmaxint_bits (sizeof(b58_almostmaxint_t) * 8)
+static const b58_almostmaxint_t b58_almostmaxint_mask = ((((b58_maxint_t)1) << b58_almostmaxint_bits) - 1);
+
+static bool b58tobin(void *bin, size_t *binszp, const char *b58, size_t b58sz)
+{
+	size_t binsz = *binszp;
+	const unsigned char *b58u = (void*)b58;
+	unsigned char *binu = bin;
+	size_t outisz = (binsz + sizeof(b58_almostmaxint_t) - 1) / sizeof(b58_almostmaxint_t);
+	b58_almostmaxint_t outi[outisz];
+	b58_maxint_t t;
+	b58_almostmaxint_t c;
+	size_t i, j;
+	uint8_t bytesleft = binsz % sizeof(b58_almostmaxint_t);
+	b58_almostmaxint_t zeromask = bytesleft ? (b58_almostmaxint_mask << (bytesleft * 8)) : 0;
+	unsigned zerocount = 0;
+	
+	if (!b58sz)
+		b58sz = strlen(b58);
+	
+	for (i = 0; i < outisz; ++i) {
+		outi[i] = 0;
+	}
+	
+	// Leading zeros, just count
+	for (i = 0; i < b58sz && b58u[i] == '1'; ++i)
+		++zerocount;
+	
+	for ( ; i < b58sz; ++i)
+	{
+		if (b58u[i] & 0x80)
+			// High-bit set on invalid digit
+			return false;
+		if (b58digits_map[b58u[i]] == -1)
+			// Invalid base58 digit
+			return false;
+		c = (unsigned)b58digits_map[b58u[i]];
+		for (j = outisz; j--; )
+		{
+			t = ((b58_maxint_t)outi[j]) * 58 + c;
+			c = t >> b58_almostmaxint_bits;
+			outi[j] = t & b58_almostmaxint_mask;
+		}
+		if (c)
+			// Output number too big (carry to the next int32)
+			return false;
+		if (outi[0] & zeromask)
+			// Output number too big (last int32 filled too far)
+			return false;
+	}
+	
+	j = 0;
+	if (bytesleft) {
+		for (i = bytesleft; i > 0; --i) {
+			*(binu++) = (outi[0] >> (8 * (i - 1))) & 0xff;
+		}
+		++j;
+	}
+	
+	for (; j < outisz; ++j)
+	{
+		for (i = sizeof(*outi); i > 0; --i) {
+			*(binu++) = (outi[j] >> (8 * (i - 1))) & 0xff;
+		}
+	}
+	
+	// Count canonical base58 byte count
+	binu = bin;
+	for (i = 0; i < binsz; ++i)
+	{
+		if (binu[i])
+			break;
+		--*binszp;
+	}
+	*binszp += zerocount;
+	
+	return true;
+}
+
+#if 0
+static bool (*b58_sha256_impl)(void *, const void *, size_t) = NULL;
+
+static bool my_dblsha256(void *hash, const void *data, size_t datasz)
+{
+	uint8_t buf[0x20];
+	return b58_sha256_impl(buf, data, datasz) && b58_sha256_impl(hash, buf, sizeof(buf));
+}
+
+static int b58check(const void *bin, size_t binsz, const char *base58str, size_t b58sz)
+{
+	unsigned char buf[32];
+	const uint8_t *binc = bin;
+	unsigned i;
+	if (binsz < 4)
+		return -4;
+	if (!my_dblsha256(buf, bin, binsz - 4))
+		return -2;
+	if (memcmp(&binc[binsz - 4], buf, 4))
+		return -1;
+	
+	// Check number of zeros is correct AFTER verifying checksum (to avoid possibility of accessing base58str beyond the end)
+	for (i = 0; binc[i] == '\0' && base58str[i] == '1'; ++i)
+	{}  // Just finding the end of zeros, nothing to do in loop
+	if (binc[i] == '\0' || base58str[i] == '1')
+		return -3;
+	
+	return binc[0];
+}
+#endif
+
+static const char b58digits_ordered[] = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+static bool b58enc(char *b58, size_t *b58sz, const void *data, size_t binsz)
+{
+	const uint8_t *bin = data;
+	int carry;
+	size_t i, j, high, zcount = 0;
+	size_t size;
+	
+	while (zcount < binsz && !bin[zcount])
+		++zcount;
+	
+	size = (binsz - zcount) * 138 / 100 + 1;
+	uint8_t buf[size];
+	memset(buf, 0, size);
+	
+	for (i = zcount, high = size - 1; i < binsz; ++i, high = j)
+	{
+		for (carry = bin[i], j = size - 1; (j > high) || carry; --j)
+		{
+			carry += 256 * buf[j];
+			buf[j] = carry % 58;
+			carry /= 58;
+			if (!j) {
+				// Otherwise j wraps to maxint which is > high
+				break;
+			}
+		}
+	}
+	
+	for (j = 0; j < size && !buf[j]; ++j);
+	
+	if (*b58sz <= zcount + size - j)
+	{
+		*b58sz = zcount + size - j + 1;
+		return false;
+	}
+	
+	if (zcount)
+		memset(b58, '1', zcount);
+	for (i = zcount; j < size; ++i, ++j)
+		b58[i] = b58digits_ordered[buf[j]];
+	b58[i] = '\0';
+	*b58sz = i + 1;
+	
+	return true;
+}
+
+
+#if 0
+static bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *data, size_t datasz)
+{
+	uint8_t buf[1 + datasz + 0x20];
+	uint8_t *hash = &buf[1 + datasz];
+	
+	buf[0] = ver;
+	memcpy(&buf[1], data, datasz);
+	if (!my_dblsha256(hash, buf, datasz + 1))
+	{
+		*b58c_sz = 0;
+		return false;
+	}
+	
+	return b58enc(b58c, b58c_sz, buf, 1 + datasz + 4);
+}
+#endif
+
+#endif
+
+#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Secret_t {
+   uint8_t k[    32] ;
+}
+;
+const size_t sizeof_carrier_identity_Secret = sizeof(carrier_identity_Secret);
+
+#line 183 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Identity_t {
+   uint8_t k[    32] ;
+}
+;
+const size_t sizeof_carrier_identity_Identity = sizeof(carrier_identity_Identity);
+
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
+
+#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 46 "/home/aep/proj/devguard/carrier/src/crc8.zz"
+uint8_t carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l);
+
+#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 231 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_dh (carrier_identity_Address*  const  out, carrier_identity_Secret const *  const  me, carrier_identity_Address const *  const  them);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
 #line 249 "/home/aep/proj/devguard/carrier/src/identity.zz"
 bool carrier_identity_isnull (uint8_t const *  const  k);
@@ -100,6 +521,46 @@ extern const __attribute__ ((unused)) size_t carrier_identity_Invalid;
 
 #line 261 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  k);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 249 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool carrier_identity_isnull (uint8_t const *  const  k);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 21 "/home/aep/proj/devguard/carrier/src/identity.zz"
+struct carrier_identity_Signature_t {
+   uint8_t k[    64] ;
+}
+;
+const size_t sizeof_carrier_identity_Signature = sizeof(carrier_identity_Signature);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 72 "/home/aep/proj/devguard/carrier/src/identity.zz"
+static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
+
+#line 203 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from);
+
+#line 235 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_sign (carrier_identity_Secret const *  const  key, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -116,16 +577,16 @@ void carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1461,79 +1922,8 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 72 "/home/aep/proj/devguard/carrier/src/identity.zz"
-static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
-
-#line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 5 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdint.h>
-
-#line 9 "/home/aep/proj/devguard/carrier/src/identity.zz"
-#include "/home/aep/proj/devguard/carrier/src/libbase58.h"
-
-#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 91 "/home/aep/proj/devguard/carrier/src/crc8.zz"
-uint8_t carrier_crc8_broken_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  length);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 19 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Address_t {
-   uint8_t k[    32] ;
-}
-;
-const size_t sizeof_carrier_identity_Address = sizeof(carrier_identity_Address);
-
-#line 220 "/home/aep/proj/devguard/carrier/src/identity.zz"
-static const  __attribute__ ((unused)) uint8_t carrier_identity_BASEPOINT  [     32 ] ={    9,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,};
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
 #line 4 "/home/aep/proj/devguard/carrier/src/rand.zz"
 extern void carrier_rand_rand (err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, uintptr_t size);
@@ -1541,422 +1931,44 @@ extern void carrier_rand_rand (err_Err*  const  e, uintptr_t const  et, uint8_t*
 #line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
-#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+#line 175 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t carrier_identity_address_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from);
 
 #line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
 
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 249 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool carrier_identity_isnull (uint8_t const *  const  k);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 203 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 7 "/home/aep/proj/devguard/carrier/src/identity.zz"
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h"
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_200_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-   char _____tail [200];
-}
-;
-
-#line 211 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_secret (carrier_identity_Identity*  const  pk, carrier_identity_Secret const *  const  sk);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 175 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t carrier_identity_address_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 244 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool carrier_identity_verify (carrier_identity_Identity const *  const  pk, carrier_identity_Signature const *  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#line 20 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Identity_t {
-   uint8_t k[    32] ;
-}
-;
-const size_t sizeof_carrier_identity_Identity = sizeof(carrier_identity_Identity);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 183 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 6 "/home/aep/proj/devguard/carrier/src/identity.zz"
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h"
-
-#line 231 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_dh (carrier_identity_Address*  const  out, carrier_identity_Secret const *  const  me, carrier_identity_Address const *  const  them);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 235 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_sign (carrier_identity_Secret const *  const  key, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#line 18 "/home/aep/proj/devguard/carrier/src/identity.zz"
-struct carrier_identity_Secret_t {
-   uint8_t k[    32] ;
-}
-;
-const size_t sizeof_carrier_identity_Secret = sizeof(carrier_identity_Secret);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 72 "/home/aep/proj/devguard/carrier/src/identity.zz"
-static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
-
-#line 23 "/home/aep/proj/devguard/carrier/src/identity.zz"
-static void carrier_identity_from_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 222 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk);
-
-#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
 
-#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st);
+#line 244 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool carrier_identity_verify (carrier_identity_Identity const *  const  pk, carrier_identity_Signature const *  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
 
-#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
-{
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
-#line 131 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_from_str(    32,    (err_Err* )(    e),
-#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 131 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    self ->k,    from,    l,    6    );
-
-}
-
-
-#line 261 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  k)
-{
-if (
-#line 265 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_isnull(    k    )){
-
-#line 266 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    err_fail(    (err_Err* )(    e),
-#line 261 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 266 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_Invalid,
-#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/src/identity.zz",
-#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::identity::nullcheck",
-#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    266,
-#line 266 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    "invalid ed25519: 32 identical bytes"    );
-
-}
-
-
-}
-
-
-#line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from)
-{
-
-#line 164 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return     carrier_identity_to_str(    32,    (err_Err* )(    e),
-#line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 164 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    to,    l,    8,    9,    from ->k    );
-
-}
-
-
-#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from)
-{
-
-#line 154 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uintptr_t const  l  =     (uintptr_t)(    strlen(    from    ));
-
-#line 155 "/home/aep/proj/devguard/carrier/src/identity.zz"
-;
-
-#line 156 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_secret_from_str(    self,    (err_Err* )(    e),
-#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 156 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    from,    l    );
-
-}
-
-
-#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from)
-{
-
-#line 122 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uintptr_t const  l  =     (uintptr_t)(    strlen(    from    ));
-
-#line 123 "/home/aep/proj/devguard/carrier/src/identity.zz"
-;
-
-#line 124 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_identity_from_str(    self,    (err_Err* )(    e),
-#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 124 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    from,    l    );
-
-}
-
-
-#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et)
-{
-
-#line 194 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_rand_rand(    (err_Err* )(    e),
-#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 194 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    self ->k,    32    );
-
-}
-
-
-#line 249 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool __attribute__ ((visibility ("default"))) carrier_identity_isnull (uint8_t const *  const  k)
-{
-
-#line 252 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uint8_t const  first  =     k [     0];
-  for (
-
-#line 253 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uintptr_t i  =     1;(    i <    32  );
-(    i ++)){
-if ((
-#line 254 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    first !=    k [     i]  )){
-
-#line 255 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return     false;
-
-}
-
-
-}
-
-
-#line 258 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return     true;
-
-}
-
-
-#line 203 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from)
-{
-
-#line 207 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return     carrier_identity_to_str(    64,    (err_Err* )(    e),
-#line 203 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 207 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    to,    l,    8,    3,    from ->k    );
-
-}
-
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
 
 #line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from)
-{
+void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 
-#line 138 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uintptr_t const  l  =     (uintptr_t)(    strlen(    from    ));
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
 
-#line 139 "/home/aep/proj/devguard/carrier/src/identity.zz"
-;
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
-#line 140 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_address_from_str(    self,    (err_Err* )(    e),
-#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 140 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    from,    l    );
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
 
-}
-
-
-#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool __attribute__ ((visibility ("default"))) carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other)
-{
-
-#line 274 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uint8_t diff  =     0;
-  for (
-
-#line 275 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uintptr_t i  =     0;(    i <    32  );
-(    i ++)){
-
-#line 276 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    diff |= (    self ->k [     i] ^    other ->k [     i]  );
-
-}
-
-
-#line 278 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return (    diff ==    0  );
-
-}
-
+#line 23 "/home/aep/proj/devguard/carrier/src/identity.zz"
+static void carrier_identity_from_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
 
 #line 211 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void __attribute__ ((visibility ("default"))) carrier_identity_identity_from_secret (carrier_identity_Identity*  const  pk, carrier_identity_Secret const *  const  sk)
@@ -1994,6 +2006,94 @@ void __attribute__ ((visibility ("default"))) carrier_identity_identity_from_sec
 }
 
 
+#line 222 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk)
+{
+
+#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  err_Err_200 e ;
+
+#line 224 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    err_make(    (err_Err* )(( &    e)),
+#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    200    );
+
+#line 225 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_nullcheck(    (err_Err* )(( &    e)),
+#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    200,
+#line 225 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    sk ->k    );
+
+#line 226 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    err_abort(    (err_Err* )(( &    e)),
+#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    200,
+#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/src/identity.zz",
+#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::identity::address_from_secret",
+#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    226    );
+
+#line 228 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    Hacl_Curve25519_crypto_scalarmult(    pk ->k,    (uint8_t* )(    sk ->k),    (uint8_t* )(    carrier_identity_BASEPOINT)    );
+
+}
+
+
+#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
+{
+
+#line 131 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_from_str(    32,    (err_Err* )(    e),
+#line 127 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 131 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    self ->k,    from,    l,    6    );
+
+}
+
+
+#line 272 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool __attribute__ ((visibility ("default"))) carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other)
+{
+
+#line 274 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uint8_t diff  =     0;
+  for (
+
+#line 275 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uintptr_t i  =     0;(    i <    32  );
+(    i ++)){
+
+#line 276 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    diff |= (    self ->k [     i] ^    other ->k [     i]  );
+
+}
+
+
+#line 278 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return (    diff ==    0  );
+
+}
+
+
+#line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from)
+{
+
+#line 164 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return     carrier_identity_to_str(    32,    (err_Err* )(    e),
+#line 159 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 164 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    to,    l,    8,    9,    from ->k    );
+
+}
+
+
 #line 143 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void __attribute__ ((visibility ("default"))) carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
 {
@@ -2004,30 +2104,6 @@ void __attribute__ ((visibility ("default"))) carrier_identity_secret_from_str (
     et,
 #line 147 "/home/aep/proj/devguard/carrier/src/identity.zz"
     self ->k,    from,    l,    3    );
-
-}
-
-
-#line 175 "/home/aep/proj/devguard/carrier/src/identity.zz"
-uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_address_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from)
-{
-
-#line 180 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return     carrier_identity_to_str(    32,    (err_Err* )(    e),
-#line 175 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 180 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    to,    l,    8,    6,    from ->k    );
-
-}
-
-
-#line 244 "/home/aep/proj/devguard/carrier/src/identity.zz"
-bool __attribute__ ((visibility ("default"))) carrier_identity_verify (carrier_identity_Identity const *  const  pk, carrier_identity_Signature const *  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len)
-{
-
-#line 245 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  return     (bool)(    Hacl_Ed25519_verify(    (uint8_t* )(    pk ->k),    (uint8_t* )(    subject),    subject_len,    (uint8_t* )(    s ->k)    ));
 
 }
 
@@ -2046,6 +2122,46 @@ uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_secret_to_st
 }
 
 
+#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from)
+{
+
+#line 154 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uintptr_t const  l  =     (uintptr_t)(    strlen(    from    ));
+
+#line 155 "/home/aep/proj/devguard/carrier/src/identity.zz"
+;
+
+#line 156 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_secret_from_str(    self,    (err_Err* )(    e),
+#line 150 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 156 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    from,    l    );
+
+}
+
+
+#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st)
+{
+
+#line 170 "/home/aep/proj/devguard/carrier/src/identity.zz"
+;
+
+#line 171 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uintptr_t const  ur  =     carrier_identity_to_str(    32,    (err_Err* )(    e),
+#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,(
+#line 171 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    str ->mem +    str ->len  ),(    st -    str ->len  ),    8,    9,    self ->k    );
+
+#line 172 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    str ->len +=     ur;
+
+}
+
+
 #line 231 "/home/aep/proj/devguard/carrier/src/identity.zz"
 void __attribute__ ((visibility ("default"))) carrier_identity_dh (carrier_identity_Address*  const  out, carrier_identity_Secret const *  const  me, carrier_identity_Address const *  const  them)
 {
@@ -2056,52 +2172,60 @@ void __attribute__ ((visibility ("default"))) carrier_identity_dh (carrier_ident
 }
 
 
-#line 235 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_sign (carrier_identity_Secret const *  const  key, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len)
+#line 261 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  k)
 {
+if (
+#line 265 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_isnull(    k    )){
 
-#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  err_Err_200 e ;
-
-#line 237 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    err_make(    (err_Err* )(( &    e)),
-#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    200    );
-
-#line 238 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_nullcheck(    (err_Err* )(( &    e)),
-#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    200,
-#line 238 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    key ->k    );
-
-#line 239 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    err_abort(    (err_Err* )(( &    e)),
-#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    200,
-#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#line 266 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    err_fail(    (err_Err* )(    e),
+#line 261 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 266 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_Invalid,
+#line 87 "/home/aep/proj/zz/modules/err/src/lib.zz"
     "/home/aep/proj/devguard/carrier/src/identity.zz",
-#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::identity::sign",
-#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    239    );
-
-#line 241 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    Hacl_Ed25519_sign(    s ->k,    (uint8_t* )(    key ->k),    (uint8_t* )(    subject),    subject_len    );
+#line 88 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::identity::nullcheck",
+#line 89 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    266,
+#line 266 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    "invalid ed25519: 32 identical bytes"    );
 
 }
 
 
-#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
+}
+
+
+#line 249 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool __attribute__ ((visibility ("default"))) carrier_identity_isnull (uint8_t const *  const  k)
 {
 
-#line 115 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_from_str(    32,    (err_Err* )(    e),
-#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 115 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    self ->k,    from,    l,    9    );
+#line 252 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uint8_t const  first  =     k [     0];
+  for (
+
+#line 253 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uintptr_t i  =     1;(    i <    32  );
+(    i ++)){
+if ((
+#line 254 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    first !=    k [     i]  )){
+
+#line 255 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return     false;
+
+}
+
+
+}
+
+
+#line 258 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return     true;
 
 }
 
@@ -2202,6 +2326,162 @@ if ((
 
 #line 108 "/home/aep/proj/devguard/carrier/src/identity.zz"
   return     l;
+
+}
+
+
+#line 203 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from)
+{
+
+#line 207 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return     carrier_identity_to_str(    64,    (err_Err* )(    e),
+#line 203 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 207 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    to,    l,    8,    3,    from ->k    );
+
+}
+
+
+#line 235 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_sign (carrier_identity_Secret const *  const  key, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len)
+{
+
+#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  err_Err_200 e ;
+
+#line 237 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    err_make(    (err_Err* )(( &    e)),
+#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    200    );
+
+#line 238 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_nullcheck(    (err_Err* )(( &    e)),
+#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    200,
+#line 238 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    key ->k    );
+
+#line 239 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    err_abort(    (err_Err* )(( &    e)),
+#line 236 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    200,
+#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/devguard/carrier/src/identity.zz",
+#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::carrier::identity::sign",
+#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    239    );
+
+#line 241 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    Hacl_Ed25519_sign(    s ->k,    (uint8_t* )(    key ->k),    (uint8_t* )(    subject),    subject_len    );
+
+}
+
+
+#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
+{
+
+#line 201 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_from_str(    64,    (err_Err* )(    e),
+#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 201 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    self ->k,    from,    l,    9    );
+
+}
+
+
+#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from)
+{
+
+#line 122 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uintptr_t const  l  =     (uintptr_t)(    strlen(    from    ));
+
+#line 123 "/home/aep/proj/devguard/carrier/src/identity.zz"
+;
+
+#line 124 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_identity_from_str(    self,    (err_Err* )(    e),
+#line 118 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 124 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    from,    l    );
+
+}
+
+
+#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
+{
+
+#line 115 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_from_str(    32,    (err_Err* )(    e),
+#line 111 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 115 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    self ->k,    from,    l,    9    );
+
+}
+
+
+#line 175 "/home/aep/proj/devguard/carrier/src/identity.zz"
+uintptr_t __attribute__ ((visibility ("default"))) carrier_identity_address_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from)
+{
+
+#line 180 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return     carrier_identity_to_str(    32,    (err_Err* )(    e),
+#line 175 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 180 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    to,    l,    8,    6,    from ->k    );
+
+}
+
+
+#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et)
+{
+
+#line 194 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_rand_rand(    (err_Err* )(    e),
+#line 191 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 194 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    self ->k,    32    );
+
+}
+
+
+#line 244 "/home/aep/proj/devguard/carrier/src/identity.zz"
+bool __attribute__ ((visibility ("default"))) carrier_identity_verify (carrier_identity_Identity const *  const  pk, carrier_identity_Signature const *  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len)
+{
+
+#line 245 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  return     (bool)(    Hacl_Ed25519_verify(    (uint8_t* )(    pk ->k),    (uint8_t* )(    subject),    subject_len,    (uint8_t* )(    s ->k)    ));
+
+}
+
+
+#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
+void __attribute__ ((visibility ("default"))) carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from)
+{
+
+#line 138 "/home/aep/proj/devguard/carrier/src/identity.zz"
+  uintptr_t const  l  =     (uintptr_t)(    strlen(    from    ));
+
+#line 139 "/home/aep/proj/devguard/carrier/src/identity.zz"
+;
+
+#line 140 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    carrier_identity_address_from_str(    self,    (err_Err* )(    e),
+#line 134 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    et,
+#line 140 "/home/aep/proj/devguard/carrier/src/identity.zz"
+    from,    l    );
 
 }
 
@@ -2376,76 +2656,6 @@ if ((
     et,
 #line 69 "/home/aep/proj/devguard/carrier/src/identity.zz"
     to    );
-
-}
-
-
-#line 222 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk)
-{
-
-#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  err_Err_200 e ;
-
-#line 224 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    err_make(    (err_Err* )(( &    e)),
-#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    200    );
-
-#line 225 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_nullcheck(    (err_Err* )(( &    e)),
-#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    200,
-#line 225 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    sk ->k    );
-
-#line 226 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    err_abort(    (err_Err* )(( &    e)),
-#line 223 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    200,
-#line 121 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/devguard/carrier/src/identity.zz",
-#line 122 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::carrier::identity::address_from_secret",
-#line 123 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    226    );
-
-#line 228 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    Hacl_Curve25519_crypto_scalarmult(    pk ->k,    (uint8_t* )(    sk ->k),    (uint8_t* )(    carrier_identity_BASEPOINT)    );
-
-}
-
-
-#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l)
-{
-
-#line 201 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    carrier_identity_from_str(    64,    (err_Err* )(    e),
-#line 197 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,
-#line 201 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    self ->k,    from,    l,    9    );
-
-}
-
-
-#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
-void __attribute__ ((visibility ("default"))) carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, string_String*  const  str, uintptr_t const  st)
-{
-
-#line 170 "/home/aep/proj/devguard/carrier/src/identity.zz"
-;
-
-#line 171 "/home/aep/proj/devguard/carrier/src/identity.zz"
-  uintptr_t const  ur  =     carrier_identity_to_str(    32,    (err_Err* )(    e),
-#line 167 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    et,(
-#line 171 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    str ->mem +    str ->len  ),(    st -    str ->len  ),    8,    9,    self ->k    );
-
-#line 172 "/home/aep/proj/devguard/carrier/src/identity.zz"
-    str ->len +=     ur;
 
 }
 

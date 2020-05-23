@@ -352,7 +352,8 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
 
         log::info("accepted %zu %lu\n", frame->at, route);
 
-        *nuchan = channel::from_symmetric(&rsp.symm, 0x08, route, true);
+
+        channel::from_transfer(nuchan, channel::transfer_from_symmetric(&rsp.symm, 0x08, route, true));
         nuchan->q.allocator = self->chan->q.allocator;
         nuchan->store       = self->chan->store;
         nuchan->endpoint    = self->chan->endpoint;

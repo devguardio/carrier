@@ -2,27 +2,27 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
-
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
@@ -30,8 +30,296 @@ typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 struct string_String_t;
 typedef struct string_String_t string_String;
 
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
+
 #line 1 ""
 #include <stddef.h>
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+typedef enum {
+    net_address_Type_Invalid = 0,
+    net_address_Type_Ipv4 = 1,
+    net_address_Type_Ipv6 = 2,
+
+} net_address_Type;
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
+
+#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+
+#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.h"
+#if !defined(BYTE_ORDER)
+    #if defined(__BYTE_ORDER__)
+        #define BYTE_ORDER __BYTE_ORDER__
+    #elif defined(__BYTE_ORDER)
+        #define BYTE_ORDER __BYTE_ORDER
+    #else
+        #error cannot find a definition of BYTE_ORDER
+    #endif
+#endif
+
+#if !defined(LITTLE_ENDIAN)
+    #if defined(__LITTLE_ENDIAN)
+        #define LITTLE_ENDIAN __LITTLE_ENDIAN
+    #elif defined(__ORDER_LITTLE_ENDIAN__)
+        #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+    #else
+        #error cannot find a definition of LITTLE_ENDIAN
+    #endif
+#endif
+
+#if !defined(BIG_ENDIAN)
+    #if defined(__BIG_ENDIAN)
+        #define BIG_ENDIAN __BIG_ENDIAN
+    #elif defined(__ORDER_BIG_ENDIAN__)
+        #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
+    #else
+        #error cannot find a definition of BIG_ENDIAN
+    #endif
+#endif
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+    #if BYTE_ORDER == BIG_ENDIAN
+        #error "compiler claims byte order is both little and big endian"
+    #endif
+#else
+    #if BYTE_ORDER == BIG_ENDIAN
+
+    #else
+        #error "compiler claims byte order is neither little nor big endian"
+    #endif
+#endif
+
+inline static uint16_t bswap_16(uint16_t x)
+{
+    return x<<8 | x>>8;
+}
+
+inline static uint32_t bswap_32(uint32_t x)
+{
+    return x>>24 | ( (x >> 8) & 0xff00) | ((x<<8) & 0xff0000) | x<<24;
+}
+
+inline static uint64_t bswap_64(uint64_t x)
+{
+    return (bswap_32(x) + ((uint64_t)0)) <<32 | bswap_32(x>>32);
+}
+
+#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint16_t  static inline byteorder_to_be16 (uint16_t const  x);
+
+#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_none (net_address_Address*  const  self);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 382 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+static const  __attribute__ ((unused)) uint8_t net_address_hexmap  [  ] ={
+#line 383 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    0x00,    0x01,    0x02,    0x03,    0x04,    0x05,    0x06,    0x07,
+#line 384 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    0x08,    0x09,    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,
+#line 385 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    0x00,    0x0a,    0x0b,    0x0c,    0x0d,    0x0e,    0x0f,    0x00,
+#line 386 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,};
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 8 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+
+#line 1 "/home/aep/proj/zznursery/modules/net/src/os_address.h"
+
+
+#if defined(__unix__) || defined(__APPLE__) || defined(ESP_PLATFORM)
+#include <netinet/in.h>
+#include <stdint.h>
+#include <string.h>
+
+#if defined(ESP_PLATFORM)
+#include "lwip/err.h"
+#include "lwip/sockets.h"
+#include "lwip/sys.h"
+#include <lwip/netdb.h>
+#endif
+
+
+typedef union {
+    char             raw[32];
+    struct sockaddr_in  ipv4;
+    struct sockaddr_in6 ipv6;
+} Address;
+
+static inline void os_net_address_ipv4_set_port(uint8_t *raw, short port_be16) {
+    Address *self = (Address*)raw;
+    self->ipv4.sin_port = port_be16;
+}
+
+static inline void os_net_address_ipv6_set_port(uint8_t *raw, short port_be16) {
+    Address *self = (Address*)raw;
+    self->ipv6.sin6_port = port_be16;
+}
+
+static inline short os_net_address_ipv4_get_port(uint8_t const *raw) {
+    Address const *self = (Address const*)raw;
+    return self->ipv4.sin_port;
+}
+
+static inline short os_net_address_ipv6_get_port(uint8_t const *raw) {
+    Address const *self = (Address const*)raw;
+    return self->ipv6.sin6_port;
+}
+
+static inline void os_net_address_ipv4_set_ip(uint8_t *raw, uint8_t const *ip) {
+    Address *self = (Address*)raw;
+    self->ipv4.sin_family = AF_INET;
+    memcpy(&(self->ipv4.sin_addr.s_addr), ip, 4);
+}
+
+static inline void os_net_address_ipv6_set_ip(uint8_t *raw, uint8_t const *ip) {
+    Address *self = (Address*)raw;
+    self->ipv6.sin6_family = AF_INET6;
+    memcpy(&(self->ipv6.sin6_addr.s6_addr), ip, 16);
+}
+
+static inline uint8_t const* os_net_address_ipv6_get_ip(uint8_t const *raw) {
+    Address const *self = (Address const*)raw;
+    return self->ipv6.sin6_addr.s6_addr;
+}
+
+static inline uint8_t const* os_net_address_ipv4_get_ip(uint8_t const *raw) {
+    Address const *self = (Address const*)raw;
+    return (uint8_t const*)&(self->ipv4.sin_addr.s_addr);
+}
+
+#else
+#error "no os implementation for net::address"
+#endif
+
+#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
+
+#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_valid (net_address_Address const *  const  self);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint16_t  static inline byteorder_from_be16 (uint16_t const  x);
+
+#line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
 
 #line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
 uintptr_t string_strlen (char const *  s);
@@ -41,6 +329,21 @@ void net_address_from_str (net_address_Address*  const  self, char const *  s, u
 
 #line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
+
+#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
+
+#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint16_t net_address_get_port (net_address_Address const *  const  self);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -57,16 +360,16 @@ void net_address_from_cstr (net_address_Address*  const  self, char const *  con
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1405,178 +1708,29 @@ mypow10(int exponent)
 #line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
-#line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-typedef enum {
-    net_address_Type_Invalid = 0,
-    net_address_Type_Ipv4 = 1,
-    net_address_Type_Ipv6 = 2,
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
-} net_address_Type;
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 8 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
 
-#line 1 "/home/aep/proj/zznursery/modules/net/src/os_address.h"
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#if defined(__unix__) || defined(__APPLE__) || defined(ESP_PLATFORM)
-#include <netinet/in.h>
-#include <stdint.h>
-#include <string.h>
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
-#if defined(ESP_PLATFORM)
-#include "lwip/err.h"
-#include "lwip/sockets.h"
-#include "lwip/sys.h"
-#include <lwip/netdb.h>
-#endif
-
-
-typedef union {
-    char             raw[32];
-    struct sockaddr_in  ipv4;
-    struct sockaddr_in6 ipv6;
-} Address;
-
-static inline void os_net_address_ipv4_set_port(uint8_t *raw, short port_be16) {
-    Address *self = (Address*)raw;
-    self->ipv4.sin_port = port_be16;
-}
-
-static inline void os_net_address_ipv6_set_port(uint8_t *raw, short port_be16) {
-    Address *self = (Address*)raw;
-    self->ipv6.sin6_port = port_be16;
-}
-
-static inline short os_net_address_ipv4_get_port(uint8_t const *raw) {
-    Address const *self = (Address const*)raw;
-    return self->ipv4.sin_port;
-}
-
-static inline short os_net_address_ipv6_get_port(uint8_t const *raw) {
-    Address const *self = (Address const*)raw;
-    return self->ipv6.sin6_port;
-}
-
-static inline void os_net_address_ipv4_set_ip(uint8_t *raw, uint8_t const *ip) {
-    Address *self = (Address*)raw;
-    self->ipv4.sin_family = AF_INET;
-    memcpy(&(self->ipv4.sin_addr.s_addr), ip, 4);
-}
-
-static inline void os_net_address_ipv6_set_ip(uint8_t *raw, uint8_t const *ip) {
-    Address *self = (Address*)raw;
-    self->ipv6.sin6_family = AF_INET6;
-    memcpy(&(self->ipv6.sin6_addr.s6_addr), ip, 16);
-}
-
-static inline uint8_t const* os_net_address_ipv6_get_ip(uint8_t const *raw) {
-    Address const *self = (Address const*)raw;
-    return self->ipv6.sin6_addr.s6_addr;
-}
-
-static inline uint8_t const* os_net_address_ipv4_get_ip(uint8_t const *raw) {
-    Address const *self = (Address const*)raw;
-    return (uint8_t const*)&(self->ipv4.sin_addr.s_addr);
-}
-
-#else
-#error "no os implementation for net::address"
-#endif
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-
-#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.h"
-#if !defined(BYTE_ORDER)
-    #if defined(__BYTE_ORDER__)
-        #define BYTE_ORDER __BYTE_ORDER__
-    #elif defined(__BYTE_ORDER)
-        #define BYTE_ORDER __BYTE_ORDER
-    #else
-        #error cannot find a definition of BYTE_ORDER
-    #endif
-#endif
-
-#if !defined(LITTLE_ENDIAN)
-    #if defined(__LITTLE_ENDIAN)
-        #define LITTLE_ENDIAN __LITTLE_ENDIAN
-    #elif defined(__ORDER_LITTLE_ENDIAN__)
-        #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
-    #else
-        #error cannot find a definition of LITTLE_ENDIAN
-    #endif
-#endif
-
-#if !defined(BIG_ENDIAN)
-    #if defined(__BIG_ENDIAN)
-        #define BIG_ENDIAN __BIG_ENDIAN
-    #elif defined(__ORDER_BIG_ENDIAN__)
-        #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
-    #else
-        #error cannot find a definition of BIG_ENDIAN
-    #endif
-#endif
-
-#if BYTE_ORDER == LITTLE_ENDIAN
-    #if BYTE_ORDER == BIG_ENDIAN
-        #error "compiler claims byte order is both little and big endian"
-    #endif
-#else
-    #if BYTE_ORDER == BIG_ENDIAN
-
-    #else
-        #error "compiler claims byte order is neither little nor big endian"
-    #endif
-#endif
-
-inline static uint16_t bswap_16(uint16_t x)
-{
-    return x<<8 | x>>8;
-}
-
-inline static uint32_t bswap_32(uint32_t x)
-{
-    return x>>24 | ( (x >> 8) & 0xff00) | ((x<<8) & 0xff0000) | x<<24;
-}
-
-inline static uint64_t bswap_64(uint64_t x)
-{
-    return (bswap_32(x) + ((uint64_t)0)) <<32 | bswap_32(x>>32);
-}
-
-#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint16_t  static inline byteorder_to_be16 (uint16_t const  x);
-
-#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint16_t  static inline byteorder_from_be16 (uint16_t const  x);
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
 
 #line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 struct net_address_Address_t {
@@ -1590,183 +1744,84 @@ struct net_address_Address_t {
 ;
 const size_t sizeof_net_address_Address = sizeof(net_address_Address);
 
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
 
 #line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
 uintptr_t string_slen (string_String const *  const  self);
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
 
 #line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
-
-#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint16_t net_address_get_port (net_address_Address const *  const  self);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_none (net_address_Address*  const  self);
-
-#line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_valid (net_address_Address const *  const  self);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 382 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-static const  __attribute__ ((unused)) uint8_t net_address_hexmap  [  ] ={
-#line 383 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    0x00,    0x01,    0x02,    0x03,    0x04,    0x05,    0x06,    0x07,
-#line 384 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    0x08,    0x09,    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,
-#line 385 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    0x00,    0x0a,    0x0b,    0x0c,    0x0d,    0x0e,    0x0f,    0x00,
-#line 386 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,    0x00,};
-
-#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void __attribute__ ((visibility ("default"))) net_address_from_cstr (net_address_Address*  const  self, char const *  const  s)
+bool __attribute__ ((visibility ("default"))) net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other)
 {
 
-#line 42 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  uintptr_t const  slen  =     string_strlen(    s    );
+#line 27 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return (    memcmp(    self,    other,    sizeof(    net_address_Address    )    ) ==    0  );
 
-#line 43 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-;
+}
 
-#line 45 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_from_str(    self,    s,    slen    );
+
+#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint16_t byteorder_to_be16 (uint16_t const  x)
+{
+
+#line 6 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  int const  __workaround  =     BYTE_ORDER;
+
+#line 8 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+(void)__workaround;
+        #if BYTE_ORDER == LITTLE_ENDIAN
+            return bswap_16(x);
+        #else
+            return x;
+        #endif
+
+}
+
+
+#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void __attribute__ ((visibility ("default"))) net_address_none (net_address_Address*  const  self)
+{
+
+#line 22 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    self ->typ =     net_address_Type_Invalid;
+
+}
+
+
+#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint8_t  const * __attribute__ ((visibility ("default"))) net_address_get_ip (net_address_Address const *  const  self)
+{
+
+#line 351 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+switch (
+    self ->typ) {
+case 
+#line 352 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_Type_Ipv6:
+{
+{
+
+#line 353 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     (uint8_t const * )(    os_net_address_ipv4_get_ip(    self ->os    ));
+
+}
+break;}
+default: {
+{
+
+#line 356 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     (uint8_t const * )(    os_net_address_ipv4_get_ip(    self ->os    ));
+
+}
+break;}
+}
+
+
+#line 362 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     0;
 
 }
 
@@ -1992,106 +2047,6 @@ break;}
 }
 
 
-#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void __attribute__ ((visibility ("default"))) net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st)
-{
-
-#line 36 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-;
-
-#line 37 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_from_str(    self,    s ->mem,    s ->len    );
-
-}
-
-
-#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint16_t byteorder_to_be16 (uint16_t const  x)
-{
-
-#line 6 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  int const  __workaround  =     BYTE_ORDER;
-
-#line 8 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-(void)__workaround;
-        #if BYTE_ORDER == LITTLE_ENDIAN
-            return bswap_16(x);
-        #else
-            return x;
-        #endif
-
-}
-
-
-#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint16_t byteorder_from_be16 (uint16_t const  x)
-{
-
-#line 17 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  return     byteorder_to_be16(    x    );
-
-}
-
-
-#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void __attribute__ ((visibility ("default"))) net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen)
-{
-if ((
-#line 51 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    slen <    2  )){
-
-#line 52 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return ;
-
-}
-
-if ((
-#line 55 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    s [     0] ==    '['  )){
-
-#line 56 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    s = (    s +    1  );
-
-#line 57 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    slen -=     1;
-
-#line 58 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-;
-
-#line 59 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-;
-
-#line 60 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_from_str_ipv6(    self,    s,    slen    );
-
-#line 61 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return ;
-
-}
-
-
-#line 64 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  bool const  unused  = (    net_address_from_str_ipv4(    self,    s,    slen    ) ||    net_address_from_str_ipv6(    self,    s,    slen    )  );
-
-#line 66 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    (void)(    unused);
-
-#line 67 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return ;
-
-}
-
-
-#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool __attribute__ ((visibility ("default"))) net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other)
-{
-
-#line 27 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return (    memcmp(    self,    other,    sizeof(    net_address_Address    )    ) ==    0  );
-
-}
-
-
 #line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 void __attribute__ ((visibility ("default"))) net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b)
 {
@@ -2138,61 +2093,162 @@ break;}
 }
 
 
-#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint16_t __attribute__ ((visibility ("default"))) net_address_get_port (net_address_Address const *  const  self)
+#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool __attribute__ ((visibility ("default"))) net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen)
 {
 
-#line 332 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-switch (
-    self ->typ) {
-case 
-#line 333 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_Type_Ipv4:
-{
-{
+#line 167 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    memset(    self,    0,    sizeof(    net_address_Address    )    );
 
-#line 334 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     (uint16_t)(    byteorder_from_be16(    os_net_address_ipv4_get_port(    self ->os    )    ));
+#line 169 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  uint8_t ip  [     4 ]  = {    0,};
 
-}
-break;}
-case 
-#line 336 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_Type_Ipv6:
-{
-{
+#line 170 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  uint16_t port  =     0;
 
-#line 337 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     (uint16_t)(    byteorder_from_be16(    os_net_address_ipv6_get_port(    self ->os    )    ));
+#line 171 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  uintptr_t at  =     0;
+  for (
 
-}
-break;}
-case 
-#line 339 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_Type_Invalid:
-{
-{
+#line 173 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  uintptr_t i  =     0;(    i <    slen  );
+(    i ++)){
 
-#line 340 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     0;
+#line 174 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  char const  ch  =     s [     i];
+if (((
+#line 175 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    ch >=    '0'  ) &&(    ch <=    '9'  )  )){
 
-}
-break;}
-}
+#line 176 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  unsigned int const  nv  = (    (unsigned int)((    ip [     at] *    10  )) +    (unsigned int)((    ch -    '0'  ))  );
+if ((
+#line 177 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    nv >    255  )){
 
-
-#line 346 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     0;
+#line 178 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     false;
 
 }
 
 
-#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void __attribute__ ((visibility ("default"))) net_address_none (net_address_Address*  const  self)
+#line 180 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    ip [     at] =     (uint8_t)(    nv);
+
+}
+ else if ((
+#line 181 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    ch ==    '.'  )){
+
+#line 182 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    at +=     1;
+if ((
+#line 183 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    at ==    4  )){
+
+#line 184 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     false;
+
+}
+
+
+}
+ else if ((
+#line 186 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    ch ==    ':'  )){
+
+#line 187 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    i +=     1;
+  for (;(
+#line 188 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    i <    slen  );
+(    i ++)){
+
+#line 189 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  char const  ch  =     s [     i];
+if (((
+#line 190 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    ch >=    '0'  ) &&(    ch <=    '9'  )  )){
+
+#line 191 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  unsigned int const  nv  = (    (unsigned int)((    port *    10  )) +    (unsigned int)((    ch -    '0'  ))  );
+if ((
+#line 192 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    nv >    65535  )){
+
+#line 193 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     false;
+
+}
+
+
+#line 195 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    port =     (uint16_t)(    nv);
+
+}
+ else {
+
+#line 197 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     false;
+
+}
+
+
+}
+
+
+}
+ else {
+
+#line 201 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     false;
+
+}
+
+
+}
+
+if ((
+#line 204 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    at !=    3  )){
+
+#line 205 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     false;
+
+}
+
+
+#line 208 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_set_ip(    self,    net_address_Type_Ipv4,    ip    );
+
+#line 209 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_set_port(    self,    port    );
+
+#line 211 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    self ->typ =     net_address_Type_Ipv4;
+
+#line 212 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     true;
+
+}
+
+
+#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool __attribute__ ((visibility ("default"))) net_address_valid (net_address_Address const *  const  self)
 {
 
-#line 22 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    self ->typ =     net_address_Type_Invalid;
+#line 31 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return (    self ->typ !=    net_address_Type_Invalid  );
+
+}
+
+
+#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint16_t byteorder_from_be16 (uint16_t const  x)
+{
+
+#line 17 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  return     byteorder_to_be16(    x    );
 
 }
 
@@ -2283,47 +2339,18 @@ break;}
 }
 
 
-#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool __attribute__ ((visibility ("default"))) net_address_valid (net_address_Address const *  const  self)
+#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void __attribute__ ((visibility ("default"))) net_address_from_cstr (net_address_Address*  const  self, char const *  const  s)
 {
 
-#line 31 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return (    self ->typ !=    net_address_Type_Invalid  );
+#line 42 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  uintptr_t const  slen  =     string_strlen(    s    );
 
-}
+#line 43 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+;
 
-
-#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint8_t  const * __attribute__ ((visibility ("default"))) net_address_get_ip (net_address_Address const *  const  self)
-{
-
-#line 351 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-switch (
-    self ->typ) {
-case 
-#line 352 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_Type_Ipv6:
-{
-{
-
-#line 353 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     (uint8_t const * )(    os_net_address_ipv4_get_ip(    self ->os    ));
-
-}
-break;}
-default: {
-{
-
-#line 356 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     (uint8_t const * )(    os_net_address_ipv4_get_ip(    self ->os    ));
-
-}
-break;}
-}
-
-
-#line 362 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     0;
+#line 45 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_from_str(    self,    s,    slen    );
 
 }
 
@@ -2367,6 +2394,68 @@ case
 break;}
 }
 
+
+}
+
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void __attribute__ ((visibility ("default"))) net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st)
+{
+
+#line 36 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+;
+
+#line 37 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_from_str(    self,    s ->mem,    s ->len    );
+
+}
+
+
+#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint16_t __attribute__ ((visibility ("default"))) net_address_get_port (net_address_Address const *  const  self)
+{
+
+#line 332 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+switch (
+    self ->typ) {
+case 
+#line 333 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_Type_Ipv4:
+{
+{
+
+#line 334 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     (uint16_t)(    byteorder_from_be16(    os_net_address_ipv4_get_port(    self ->os    )    ));
+
+}
+break;}
+case 
+#line 336 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_Type_Ipv6:
+{
+{
+
+#line 337 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     (uint16_t)(    byteorder_from_be16(    os_net_address_ipv6_get_port(    self ->os    )    ));
+
+}
+break;}
+case 
+#line 339 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_Type_Invalid:
+{
+{
+
+#line 340 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     0;
+
+}
+break;}
+}
+
+
+#line 346 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return     0;
 
 }
 
@@ -2628,142 +2717,51 @@ if (((
 }
 
 
-#line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool __attribute__ ((visibility ("default"))) net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen)
+#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void __attribute__ ((visibility ("default"))) net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen)
 {
-
-#line 167 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    memset(    self,    0,    sizeof(    net_address_Address    )    );
-
-#line 169 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  uint8_t ip  [     4 ]  = {    0,};
-
-#line 170 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  uint16_t port  =     0;
-
-#line 171 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  uintptr_t at  =     0;
-  for (
-
-#line 173 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  uintptr_t i  =     0;(    i <    slen  );
-(    i ++)){
-
-#line 174 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  char const  ch  =     s [     i];
-if (((
-#line 175 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    ch >=    '0'  ) &&(    ch <=    '9'  )  )){
-
-#line 176 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  unsigned int const  nv  = (    (unsigned int)((    ip [     at] *    10  )) +    (unsigned int)((    ch -    '0'  ))  );
 if ((
-#line 177 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    nv >    255  )){
+#line 51 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    slen <    2  )){
 
-#line 178 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     false;
-
-}
-
-
-#line 180 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    ip [     at] =     (uint8_t)(    nv);
-
-}
- else if ((
-#line 181 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    ch ==    '.'  )){
-
-#line 182 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    at +=     1;
-if ((
-#line 183 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    at ==    4  )){
-
-#line 184 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     false;
-
-}
-
-
-}
- else if ((
-#line 186 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    ch ==    ':'  )){
-
-#line 187 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    i +=     1;
-  for (;(
-#line 188 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    i <    slen  );
-(    i ++)){
-
-#line 189 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  char const  ch  =     s [     i];
-if (((
-#line 190 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    ch >=    '0'  ) &&(    ch <=    '9'  )  )){
-
-#line 191 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  unsigned int const  nv  = (    (unsigned int)((    port *    10  )) +    (unsigned int)((    ch -    '0'  ))  );
-if ((
-#line 192 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    nv >    65535  )){
-
-#line 193 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     false;
-
-}
-
-
-#line 195 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    port =     (uint16_t)(    nv);
-
-}
- else {
-
-#line 197 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     false;
-
-}
-
-
-}
-
-
-}
- else {
-
-#line 201 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     false;
-
-}
-
+#line 52 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return ;
 
 }
 
 if ((
-#line 204 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    at !=    3  )){
+#line 55 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    s [     0] ==    '['  )){
 
-#line 205 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     false;
+#line 56 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    s = (    s +    1  );
+
+#line 57 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    slen -=     1;
+
+#line 58 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+;
+
+#line 59 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+;
+
+#line 60 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    net_address_from_str_ipv6(    self,    s,    slen    );
+
+#line 61 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return ;
 
 }
 
 
-#line 208 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_set_ip(    self,    net_address_Type_Ipv4,    ip    );
+#line 64 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  bool const  unused  = (    net_address_from_str_ipv4(    self,    s,    slen    ) ||    net_address_from_str_ipv6(    self,    s,    slen    )  );
 
-#line 209 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    net_address_set_port(    self,    port    );
+#line 66 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+    (void)(    unused);
 
-#line 211 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-    self ->typ =     net_address_Type_Ipv4;
-
-#line 212 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-  return     true;
+#line 67 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+  return ;
 
 }
 

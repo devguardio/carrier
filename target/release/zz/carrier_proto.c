@@ -6,10 +6,6 @@
 struct string_String_t;
 typedef struct string_String_t string_String;
 
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
@@ -17,6 +13,10 @@ typedef struct slice_slice_Slice_t slice_slice_Slice;
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
 
 #line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 union protonerf_Value_t;
@@ -42,17 +42,27 @@ typedef struct err_Err_t err_Err;
 struct protonerf_Decoder_t;
 typedef struct protonerf_Decoder_t protonerf_Decoder;
 
-#line 204 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 739 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_ConnectRequest_Target = 1,
-    carrier_proto_ConnectRequest_Timestamp = 2,
-    carrier_proto_ConnectRequest_Handshake = 3,
-    carrier_proto_ConnectRequest_Paths = 4,
-    carrier_proto_ConnectRequest_Principal = 5,
-    carrier_proto_ConnectRequest_Timeout = 6,
-    carrier_proto_ConnectRequest_Shortcut = 7,
+    carrier_proto_Authorization_Identity = 1,
+    carrier_proto_Authorization_Resource = 2,
 
-} carrier_proto_ConnectRequest;
+} carrier_proto_Authorization;
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 1573 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Location_Latitude = 1,
+    carrier_proto_Location_Longitude = 2,
+    carrier_proto_Location_Altitude = 3,
+    carrier_proto_Location_Fix = 4,
+    carrier_proto_Location_Accuracity = 5,
+    carrier_proto_Location_Satellites = 6,
+    carrier_proto_Location_Velocity = 7,
+
+} carrier_proto_Location;
 
 #line 1199 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -89,108 +99,100 @@ typedef enum {
 
 } carrier_proto_WifiStation;
 
-#line 1367 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 995 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_DhcpLease_Ts = 1,
-    carrier_proto_DhcpLease_Mac = 2,
-    carrier_proto_DhcpLease_Ip = 3,
-    carrier_proto_DhcpLease_Name = 4,
+    carrier_proto_Netdev_Name = 1,
+    carrier_proto_Netdev_RxPkt = 2,
+    carrier_proto_Netdev_RxErr = 3,
+    carrier_proto_Netdev_TxPkt = 4,
+    carrier_proto_Netdev_TxErr = 5,
+    carrier_proto_Netdev_Up = 6,
+    carrier_proto_Netdev_Macaddr = 7,
+    carrier_proto_Netdev_Mtu = 8,
+    carrier_proto_Netdev_Addrs = 9,
+    carrier_proto_Netdev_Link = 10,
+    carrier_proto_Netdev_LinkChanges = 11,
+    carrier_proto_Netdev_LinkSpeed = 12,
+    carrier_proto_Netdev_LinkDuplex = 13,
 
-} carrier_proto_DhcpLease;
+} carrier_proto_Netdev;
 
-#line 103 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 557 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Unpublish_Identity = 1,
+    carrier_proto_MoveInstruction_Ipaddr = 1,
+    carrier_proto_MoveInstruction_Xaddr = 2,
 
-} carrier_proto_Unpublish;
+} carrier_proto_MoveInstruction;
 
-#line 1666 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1502 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_AuthorizationAdd_Identity = 1,
-    carrier_proto_AuthorizationAdd_Path = 2,
+    carrier_proto_Satellite__Constellation_Unknown = 0,
+    carrier_proto_Satellite__Constellation_Galileo = 1,
+    carrier_proto_Satellite__Constellation_Gps = 2,
+    carrier_proto_Satellite__Constellation_Glonass = 3,
 
-} carrier_proto_AuthorizationAdd;
+} carrier_proto_Satellite__Constellation;
 
-#line 629 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 408 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_ClaimAll_Shadow = 1,
-    carrier_proto_ClaimAll_Resources = 2,
+    carrier_proto_TraceResponse_Publishing = 1,
+    carrier_proto_TraceResponse_Epoch = 2,
+    carrier_proto_TraceResponse_RxBytes32 = 3,
+    carrier_proto_TraceResponse_TxBytes32 = 4,
+    carrier_proto_TraceResponse_LastSeen = 5,
+    carrier_proto_TraceResponse_FirstSeen = 6,
+    carrier_proto_TraceResponse_Allocation = 7,
+    carrier_proto_TraceResponse_Brokerip = 8,
+    carrier_proto_TraceResponse_PktsSent = 9,
+    carrier_proto_TraceResponse_PktsLost = 10,
+    carrier_proto_TraceResponse_Rtt = 11,
 
-} carrier_proto_ClaimAll;
+} carrier_proto_TraceResponse;
 
-#line 967 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 374 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_NetAddress_Addr = 1,
-    carrier_proto_NetAddress_Mask = 2,
-    carrier_proto_NetAddress_Broadcast = 3,
+    carrier_proto_TraceShadow_Xaddress = 1,
+    carrier_proto_TraceShadow_PublisherCount = 2,
+    carrier_proto_TraceShadow_PublisherSoftLimit = 3,
+    carrier_proto_TraceShadow_PublisherHardLimit = 4,
+    carrier_proto_TraceShadow_TrafficEpoch64 = 5,
+    carrier_proto_TraceShadow_TrafficLimit64 = 6,
 
-} carrier_proto_NetAddress;
+} carrier_proto_TraceShadow;
 
-#line 1 ""
-#include <stddef.h>
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 242 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 360 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_ConnectResponse_Ok = 1,
-    carrier_proto_ConnectResponse_Handshake = 2,
-    carrier_proto_ConnectResponse_Route = 3,
-    carrier_proto_ConnectResponse_Paths = 4,
-    carrier_proto_ConnectResponse_Error = 5,
+    carrier_proto_TraceRequest_Target = 1,
 
-} carrier_proto_ConnectResponse;
-
-#line 168 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Shortcut_Shortcut = 1,
-    carrier_proto_Shortcut_Expires = 2,
-
-} carrier_proto_Shortcut;
-
-#line 1329 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_WifiInterface_Name = 1,
-    carrier_proto_WifiInterface_Typ = 2,
-    carrier_proto_WifiInterface_Phy = 3,
-    carrier_proto_WifiInterface_Ssid = 4,
-    carrier_proto_WifiInterface_Channel = 5,
-    carrier_proto_WifiInterface_Txpower = 6,
-    carrier_proto_WifiInterface_Stations = 7,
-
-} carrier_proto_WifiInterface;
-
-#line 903 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_FileSystem_Path = 1,
-    carrier_proto_FileSystem_Blocksize = 2,
-    carrier_proto_FileSystem_Total = 3,
-    carrier_proto_FileSystem_Free = 4,
-
-} carrier_proto_FileSystem;
-
-#line 1091 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Switch_Name = 1,
-    carrier_proto_Switch_Ports = 2,
-
-} carrier_proto_Switch;
-
-#line 831 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Load_Avg1 = 1,
-    carrier_proto_Load_Avg5 = 2,
-    carrier_proto_Load_Avg15 = 3,
-    carrier_proto_Load_Clock = 4,
-    carrier_proto_Load_Uptime = 5,
-    carrier_proto_Load_Idletime = 6,
-    carrier_proto_Load_ProcActive = 7,
-    carrier_proto_Load_ProcTotal = 8,
-    carrier_proto_Load_Cores = 9,
-    carrier_proto_Load_Threads = 10,
-
-} carrier_proto_Load;
+} carrier_proto_TraceRequest;
 
 #line 8 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 typedef enum {
@@ -216,77 +218,14 @@ typedef enum {
 
 } protonerf_FieldType;
 
-#line 844 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_LoadTypes (uintptr_t const  index);
+#line 364 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_TraceRequestTypes (uintptr_t const  index);
 
-#line 687 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1712 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Certificate_LastValidEpoch = 1,
-    carrier_proto_Certificate_Identity = 2,
-    carrier_proto_Certificate_Authority = 3,
-    carrier_proto_Certificate_Serial = 4,
-    carrier_proto_Certificate_Claims = 5,
+    carrier_proto_NetworkJoin_Secret = 1,
 
-} carrier_proto_Certificate;
-
-#line 290 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_ExceptionalRoute_Identity = 1,
-    carrier_proto_ExceptionalRoute_This = 2,
-    carrier_proto_ExceptionalRoute_Other = 3,
-    carrier_proto_ExceptionalRoute_Blocked = 4,
-
-} carrier_proto_ExceptionalRoute;
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 1109 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Bootloader_ActiveSide = 1,
-    carrier_proto_Bootloader_BootReason = 2,
-
-} carrier_proto_Bootloader;
-
-#line 1638 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Sensors_Sensors = 1,
-
-} carrier_proto_Sensors;
-
-#line 1573 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Location_Latitude = 1,
-    carrier_proto_Location_Longitude = 2,
-    carrier_proto_Location_Altitude = 3,
-    carrier_proto_Location_Fix = 4,
-    carrier_proto_Location_Accuracity = 5,
-    carrier_proto_Location_Satellites = 6,
-    carrier_proto_Location_Velocity = 7,
-
-} carrier_proto_Location;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
+} carrier_proto_NetworkJoin;
 
 #line 1398 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -299,12 +238,109 @@ typedef enum {
 
 } carrier_proto_Arp;
 
-#line 539 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 85 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Confirmation_Ok = 1,
-    carrier_proto_Confirmation_Error = 2,
+    carrier_proto_Publish_Identity = 1,
+    carrier_proto_Publish_Xaddr = 2,
 
-} carrier_proto_Confirmation;
+} carrier_proto_Publish;
+
+#line 903 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_FileSystem_Path = 1,
+    carrier_proto_FileSystem_Blocksize = 2,
+    carrier_proto_FileSystem_Total = 3,
+    carrier_proto_FileSystem_Free = 4,
+
+} carrier_proto_FileSystem;
+
+#line 910 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_FileSystemTypes (uintptr_t const  index);
+
+#line 204 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ConnectRequest_Target = 1,
+    carrier_proto_ConnectRequest_Timestamp = 2,
+    carrier_proto_ConnectRequest_Handshake = 3,
+    carrier_proto_ConnectRequest_Paths = 4,
+    carrier_proto_ConnectRequest_Principal = 5,
+    carrier_proto_ConnectRequest_Timeout = 6,
+    carrier_proto_ConnectRequest_Shortcut = 7,
+
+} carrier_proto_ConnectRequest;
+
+#line 661 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Claim_Opt = 1,
+    carrier_proto_Claim_One = 2,
+    carrier_proto_Claim_All = 3,
+    carrier_proto_Claim_Revoker = 4,
+
+} carrier_proto_Claim;
+
+#line 668 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ClaimTypes (uintptr_t const  index);
+
+#line 1432 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_NetRoute_Destination = 1,
+    carrier_proto_NetRoute_Gateway = 2,
+    carrier_proto_NetRoute_Source = 3,
+
+} carrier_proto_NetRoute;
+
+#line 1616 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Sensor_Name = 1,
+    carrier_proto_Sensor_Vtype = 2,
+    carrier_proto_Sensor_Value = 3,
+
+} carrier_proto_Sensor;
+
+#line 771 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_DiscoveryResponse_CarrierRevision = 1,
+    carrier_proto_DiscoveryResponse_CarrierBuildId = 2,
+    carrier_proto_DiscoveryResponse_Application = 3,
+    carrier_proto_DiscoveryResponse_ApplicationVersion = 4,
+    carrier_proto_DiscoveryResponse_Paths = 5,
+
+} carrier_proto_DiscoveryResponse;
+
+#line 1109 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Bootloader_ActiveSide = 1,
+    carrier_proto_Bootloader_BootReason = 2,
+
+} carrier_proto_Bootloader;
+
+#line 316 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ClusterConfig_Shards = 1,
+    carrier_proto_ClusterConfig_ExceptionalRoutes = 2,
+    carrier_proto_ClusterConfig_Epoch = 3,
+    carrier_proto_ClusterConfig_DefaultShadowPublisherLimit = 4,
+    carrier_proto_ClusterConfig_DefaultShadowTrafficLimit32 = 5,
+
+} carrier_proto_ClusterConfig;
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 518 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ProtoHeader_Len = 1,
+
+} carrier_proto_ProtoHeader;
+
+#line 1779 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_GenesisCurrent_Sha256 = 1,
+    carrier_proto_GenesisCurrent_Commit = 2,
+    carrier_proto_GenesisCurrent_Data = 3,
+    carrier_proto_GenesisCurrent_Stable = 4,
+
+} carrier_proto_GenesisCurrent;
 
 #line 1145 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -322,12 +358,128 @@ typedef enum {
 
 } carrier_proto_Sysinfo;
 
-#line 1393 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1367 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Arp__HwType_Unknown = 0,
-    carrier_proto_Arp__HwType_Ethernet = 1,
+    carrier_proto_DhcpLease_Ts = 1,
+    carrier_proto_DhcpLease_Mac = 2,
+    carrier_proto_DhcpLease_Ip = 3,
+    carrier_proto_DhcpLease_Name = 4,
 
-} carrier_proto_Arp__HwType;
+} carrier_proto_DhcpLease;
+
+#line 462 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_PeerConnectRequest_Identity = 1,
+    carrier_proto_PeerConnectRequest_Timestamp = 2,
+    carrier_proto_PeerConnectRequest_Handshake = 3,
+    carrier_proto_PeerConnectRequest_Route = 4,
+    carrier_proto_PeerConnectRequest_Paths = 5,
+
+} carrier_proto_PeerConnectRequest;
+
+#line 1733 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ConfigResult_Ok = 1,
+    carrier_proto_ConfigResult_Error = 2,
+
+} carrier_proto_ConfigResult;
+
+#line 1738 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ConfigResultTypes (uintptr_t const  index);
+
+#line 687 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Certificate_LastValidEpoch = 1,
+    carrier_proto_Certificate_Identity = 2,
+    carrier_proto_Certificate_Authority = 3,
+    carrier_proto_Certificate_Serial = 4,
+    carrier_proto_Certificate_Claims = 5,
+
+} carrier_proto_Certificate;
+
+#line 744 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_AuthorizationTypes (uintptr_t const  index);
+
+#line 1454 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_NetSurvey_Wifi = 1,
+    carrier_proto_NetSurvey_Dhcp = 2,
+    carrier_proto_NetSurvey_Arp = 3,
+    carrier_proto_NetSurvey_Routes = 4,
+
+} carrier_proto_NetSurvey;
+
+#line 1461 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NetSurveyTypes (uintptr_t const  index);
+
+#line 831 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Load_Avg1 = 1,
+    carrier_proto_Load_Avg5 = 2,
+    carrier_proto_Load_Avg15 = 3,
+    carrier_proto_Load_Clock = 4,
+    carrier_proto_Load_Uptime = 5,
+    carrier_proto_Load_Idletime = 6,
+    carrier_proto_Load_ProcActive = 7,
+    carrier_proto_Load_ProcTotal = 8,
+    carrier_proto_Load_Cores = 9,
+    carrier_proto_Load_Threads = 10,
+
+} carrier_proto_Load;
+
+#line 103 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Unpublish_Identity = 1,
+
+} carrier_proto_Unpublish;
+
+#line 107 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_UnpublishTypes (uintptr_t const  index);
+
+#line 539 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Confirmation_Ok = 1,
+    carrier_proto_Confirmation_Error = 2,
+
+} carrier_proto_Confirmation;
+
+#line 544 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ConfirmationTypes (uintptr_t const  index);
+
+#line 1805 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_GenesisUpdate_Sha256 = 1,
+    carrier_proto_GenesisUpdate_PreviousSha256 = 2,
+    carrier_proto_GenesisUpdate_Commit = 3,
+    carrier_proto_GenesisUpdate_Data = 4,
+
+} carrier_proto_GenesisUpdate;
+
+#line 929 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Firmware_Board = 1,
+    carrier_proto_Firmware_Distro = 2,
+    carrier_proto_Firmware_Release = 3,
+    carrier_proto_Firmware_Revision = 4,
+    carrier_proto_Firmware_Builder = 5,
+    carrier_proto_Firmware_Finger = 6,
+    carrier_proto_Firmware_AndroidApiLevel = 7,
+
+} carrier_proto_Firmware;
+
+#line 1 ""
+#include <stddef.h>
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 881 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Mem_Total = 1,
+    carrier_proto_Mem_Free = 2,
+    carrier_proto_Mem_Available = 3,
+
+} carrier_proto_Mem;
 
 #line 124 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -337,8 +489,64 @@ typedef enum {
 
 } carrier_proto_SubscribeChange;
 
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+#line 130 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SubscribeChangeTypes (uintptr_t const  index);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 242 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ConnectResponse_Ok = 1,
+    carrier_proto_ConnectResponse_Handshake = 2,
+    carrier_proto_ConnectResponse_Route = 3,
+    carrier_proto_ConnectResponse_Paths = 4,
+    carrier_proto_ConnectResponse_Error = 5,
+
+} carrier_proto_ConnectResponse;
+
+#line 9 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Path_Ipaddr = 1,
+    carrier_proto_Path_Category = 2,
+
+} carrier_proto_Path;
+
+#line 1765 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_NetworkGetResult_Address = 2,
+
+} carrier_proto_NetworkGetResult;
+
+#line 1666 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_AuthorizationAdd_Identity = 1,
+    carrier_proto_AuthorizationAdd_Path = 2,
+
+} carrier_proto_AuthorizationAdd;
+
+#line 1671 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_AuthorizationAddTypes (uintptr_t const  index);
+
+#line 1509 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Satellite_Constellation = 1,
+    carrier_proto_Satellite_Prn = 2,
+    carrier_proto_Satellite_Elevation = 3,
+    carrier_proto_Satellite_Azimuth = 4,
+    carrier_proto_Satellite_Snr = 5,
+    carrier_proto_Satellite_Fix = 6,
+
+} carrier_proto_Satellite;
+
+#line 1159 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SysinfoTypes (uintptr_t const  index);
 
 #line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 union protonerf_Value_t {
@@ -377,85 +585,118 @@ struct protonerf_Field_t {
 #line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
 
-#line 173 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ShortcutTypes (uintptr_t const  index);
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
 
-#line 593 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 647 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_InnerTraceResponse_Invalid = 1,
-    carrier_proto_InnerTraceResponse_Pong = 2,
+    carrier_proto_Revoker_Identity = 1,
 
-} carrier_proto_InnerTraceResponse;
+} carrier_proto_Revoker;
 
-#line 1642 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SensorsTypes (uintptr_t const  index);
+#line 651 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_RevokerTypes (uintptr_t const  index);
 
-#line 374 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1438 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NetRouteTypes (uintptr_t const  index);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 1611 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_TraceShadow_Xaddress = 1,
-    carrier_proto_TraceShadow_PublisherCount = 2,
-    carrier_proto_TraceShadow_PublisherSoftLimit = 3,
-    carrier_proto_TraceShadow_PublisherHardLimit = 4,
-    carrier_proto_TraceShadow_TrafficEpoch64 = 5,
-    carrier_proto_TraceShadow_TrafficLimit64 = 6,
+    carrier_proto_Sensor__ValueType_None = 0,
+    carrier_proto_Sensor__ValueType_MilliCelsius = 1,
 
-} carrier_proto_TraceShadow;
+} carrier_proto_Sensor__ValueType;
 
-#line 316 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 27 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_ClusterConfig_Shards = 1,
-    carrier_proto_ClusterConfig_ExceptionalRoutes = 2,
-    carrier_proto_ClusterConfig_Epoch = 3,
-    carrier_proto_ClusterConfig_DefaultShadowPublisherLimit = 4,
-    carrier_proto_ClusterConfig_DefaultShadowTrafficLimit32 = 5,
+    carrier_proto_FilterByRole_Roles = 1,
 
-} carrier_proto_ClusterConfig;
+} carrier_proto_FilterByRole;
 
-#line 1616 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 629 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Sensor_Name = 1,
-    carrier_proto_Sensor_Vtype = 2,
-    carrier_proto_Sensor_Value = 3,
+    carrier_proto_ClaimAll_Shadow = 1,
+    carrier_proto_ClaimAll_Resources = 2,
 
-} carrier_proto_Sensor;
+} carrier_proto_ClaimAll;
 
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+#line 634 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ClaimAllTypes (uintptr_t const  index);
 
-#line 146 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1329 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_PublishRequest_Xaddr = 1,
-    carrier_proto_PublishRequest_Shadow = 2,
-    carrier_proto_PublishRequest_Shortcut = 3,
+    carrier_proto_WifiInterface_Name = 1,
+    carrier_proto_WifiInterface_Typ = 2,
+    carrier_proto_WifiInterface_Phy = 3,
+    carrier_proto_WifiInterface_Ssid = 4,
+    carrier_proto_WifiInterface_Channel = 5,
+    carrier_proto_WifiInterface_Txpower = 6,
+    carrier_proto_WifiInterface_Stations = 7,
 
-} carrier_proto_PublishRequest;
+} carrier_proto_WifiInterface;
 
-#line 152 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_PublishRequestTypes (uintptr_t const  index);
+#line 1339 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_WifiInterfaceTypes (uintptr_t const  index);
 
-#line 995 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1011 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NetdevTypes (uintptr_t const  index);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 55 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Netdev_Name = 1,
-    carrier_proto_Netdev_RxPkt = 2,
-    carrier_proto_Netdev_RxErr = 3,
-    carrier_proto_Netdev_TxPkt = 4,
-    carrier_proto_Netdev_TxErr = 5,
-    carrier_proto_Netdev_Up = 6,
-    carrier_proto_Netdev_Macaddr = 7,
-    carrier_proto_Netdev_Mtu = 8,
-    carrier_proto_Netdev_Addrs = 9,
-    carrier_proto_Netdev_Link = 10,
-    carrier_proto_Netdev_LinkChanges = 11,
-    carrier_proto_Netdev_LinkSpeed = 12,
-    carrier_proto_Netdev_LinkDuplex = 13,
+    carrier_proto_SubscribeRequest_Shadow = 1,
+    carrier_proto_SubscribeRequest_Filter = 2,
+    carrier_proto_SubscribeRequest_GroupKey = 3,
+    carrier_proto_SubscribeRequest_GroupShard = 4,
+    carrier_proto_SubscribeRequest_ShardWeight = 5,
 
-} carrier_proto_Netdev;
+} carrier_proto_SubscribeRequest;
 
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+#line 1716 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NetworkJoinTypes (uintptr_t const  index);
 
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 1726 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NetworkGetTypes (uintptr_t const  index);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 290 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ExceptionalRoute_Identity = 1,
+    carrier_proto_ExceptionalRoute_This = 2,
+    carrier_proto_ExceptionalRoute_Other = 3,
+    carrier_proto_ExceptionalRoute_Blocked = 4,
+
+} carrier_proto_ExceptionalRoute;
+
+#line 2 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Path__Category_Invalid = 0,
+    carrier_proto_Path__Category_Local = 1,
+    carrier_proto_Path__Category_Internet = 2,
+    carrier_proto_Path__Category_BrokerOrigin = 3,
+
+} carrier_proto_Path__Category;
 
 #line 346 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -463,63 +704,14 @@ typedef enum {
 
 } carrier_proto_ClusterState;
 
-#line 1127 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1698 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Belltower_Current = 1,
-    carrier_proto_Belltower_Previous = 2,
+    carrier_proto_InteractiveAuth_Otp = 1,
 
-} carrier_proto_Belltower;
+} carrier_proto_InteractiveAuth;
 
-#line 1132 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_BelltowerTypes (uintptr_t const  index);
-
-#line 757 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_AuthorizationList_A = 1,
-
-} carrier_proto_AuthorizationList;
-
-#line 717 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_CertificateRequest_LastValidEpoch = 1,
-    carrier_proto_CertificateRequest_Identity = 2,
-    carrier_proto_CertificateRequest_Claims = 3,
-
-} carrier_proto_CertificateRequest;
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 771 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_DiscoveryResponse_CarrierRevision = 1,
-    carrier_proto_DiscoveryResponse_CarrierBuildId = 2,
-    carrier_proto_DiscoveryResponse_Application = 3,
-    carrier_proto_DiscoveryResponse_ApplicationVersion = 4,
-    carrier_proto_DiscoveryResponse_Paths = 5,
-
-} carrier_proto_DiscoveryResponse;
-
-#line 462 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_PeerConnectRequest_Identity = 1,
-    carrier_proto_PeerConnectRequest_Timestamp = 2,
-    carrier_proto_PeerConnectRequest_Handshake = 3,
-    carrier_proto_PeerConnectRequest_Route = 4,
-    carrier_proto_PeerConnectRequest_Paths = 5,
-
-} carrier_proto_PeerConnectRequest;
-
-#line 1432 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_NetRoute_Destination = 1,
-    carrier_proto_NetRoute_Gateway = 2,
-    carrier_proto_NetRoute_Source = 3,
-
-} carrier_proto_NetRoute;
-
-#line 1438 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NetRouteTypes (uintptr_t const  index);
+#line 1407 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ArpTypes (uintptr_t const  index);
 
 #line 801 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -531,75 +723,30 @@ typedef enum {
 
 } carrier_proto_Uname;
 
-#line 1684 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 809 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_UnameTypes (uintptr_t const  index);
+
+#line 168 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_AuthorizationDel_Identity = 1,
+    carrier_proto_Shortcut_Shortcut = 1,
+    carrier_proto_Shortcut_Expires = 2,
 
-} carrier_proto_AuthorizationDel;
+} carrier_proto_Shortcut;
 
-#line 739 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1751 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Authorization_Identity = 1,
-    carrier_proto_Authorization_Resource = 2,
+    carrier_proto_AuthListResult_Auth = 1,
 
-} carrier_proto_Authorization;
+} carrier_proto_AuthListResult;
 
-#line 1480 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_LocationAccuracity_Hdop = 1,
-    carrier_proto_LocationAccuracity_Vdop = 2,
-    carrier_proto_LocationAccuracity_Pdop = 3,
+#line 383 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_TraceShadowTypes (uintptr_t const  index);
 
-} carrier_proto_LocationAccuracity;
+#line 1659 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_AuthorizationGetTypes (uintptr_t const  index);
 
-#line 929 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Firmware_Board = 1,
-    carrier_proto_Firmware_Distro = 2,
-    carrier_proto_Firmware_Release = 3,
-    carrier_proto_Firmware_Revision = 4,
-    carrier_proto_Firmware_Builder = 5,
-    carrier_proto_Firmware_Finger = 6,
-    carrier_proto_Firmware_AndroidApiLevel = 7,
-
-} carrier_proto_Firmware;
-
-#line 272 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_ClusterShard_This = 1,
-    carrier_proto_ClusterShard_Other = 2,
-
-} carrier_proto_ClusterShard;
-
-#line 277 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ClusterShardTypes (uintptr_t const  index);
-
-#line 85 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Publish_Identity = 1,
-    carrier_proto_Publish_Xaddr = 2,
-
-} carrier_proto_Publish;
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 186 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_PublishChange_Supersede = 1,
-    carrier_proto_PublishChange_Shortcut = 2,
-
-} carrier_proto_PublishChange;
-
-#line 130 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SubscribeChangeTypes (uintptr_t const  index);
-
-#line 1543 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_LocationVelocity_Course = 1,
-    carrier_proto_LocationVelocity_Speed = 2,
-
-} carrier_proto_LocationVelocity;
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
 #line 492 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -610,8 +757,17 @@ typedef enum {
 
 } carrier_proto_PeerConnectResponse;
 
-#line 499 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_PeerConnectResponseTypes (uintptr_t const  index);
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 695 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_CertificateTypes (uintptr_t const  index);
+
+#line 532 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_EmptyTypes (uintptr_t const  index);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #line 1057 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -624,70 +780,60 @@ typedef enum {
 
 } carrier_proto_SwitchPort;
 
-#line 1765 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1127 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_NetworkGetResult_Address = 2,
+    carrier_proto_Belltower_Current = 1,
+    carrier_proto_Belltower_Previous = 2,
 
-} carrier_proto_NetworkGetResult;
+} carrier_proto_Belltower;
 
-#line 1509 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 41 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Satellite_Constellation = 1,
-    carrier_proto_Satellite_Prn = 2,
-    carrier_proto_Satellite_Elevation = 3,
-    carrier_proto_Satellite_Azimuth = 4,
-    carrier_proto_Satellite_Snr = 5,
-    carrier_proto_Satellite_Fix = 6,
+    carrier_proto_Filter_Role = 1,
 
-} carrier_proto_Satellite;
+} carrier_proto_Filter;
 
-#line 408 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1543 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_TraceResponse_Publishing = 1,
-    carrier_proto_TraceResponse_Epoch = 2,
-    carrier_proto_TraceResponse_RxBytes32 = 3,
-    carrier_proto_TraceResponse_TxBytes32 = 4,
-    carrier_proto_TraceResponse_LastSeen = 5,
-    carrier_proto_TraceResponse_FirstSeen = 6,
-    carrier_proto_TraceResponse_Allocation = 7,
-    carrier_proto_TraceResponse_Brokerip = 8,
-    carrier_proto_TraceResponse_PktsSent = 9,
-    carrier_proto_TraceResponse_PktsLost = 10,
-    carrier_proto_TraceResponse_Rtt = 11,
+    carrier_proto_LocationVelocity_Course = 1,
+    carrier_proto_LocationVelocity_Speed = 2,
 
-} carrier_proto_TraceResponse;
+} carrier_proto_LocationVelocity;
 
-#line 1622 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SensorTypes (uintptr_t const  index);
-
-#line 250 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ConnectResponseTypes (uintptr_t const  index);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 575 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1393 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_InnerTraceRequest_Invalid = 1,
-    carrier_proto_InnerTraceRequest_Ping = 2,
+    carrier_proto_Arp__HwType_Unknown = 0,
+    carrier_proto_Arp__HwType_Ethernet = 1,
 
-} carrier_proto_InnerTraceRequest;
+} carrier_proto_Arp__HwType;
 
-#line 744 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_AuthorizationTypes (uintptr_t const  index);
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
 
-#line 55 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 844 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_LoadTypes (uintptr_t const  index);
+
+#line 146 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_SubscribeRequest_Shadow = 1,
-    carrier_proto_SubscribeRequest_Filter = 2,
-    carrier_proto_SubscribeRequest_GroupKey = 3,
-    carrier_proto_SubscribeRequest_GroupShard = 4,
-    carrier_proto_SubscribeRequest_ShardWeight = 5,
+    carrier_proto_PublishRequest_Xaddr = 1,
+    carrier_proto_PublishRequest_Shadow = 2,
+    carrier_proto_PublishRequest_Shortcut = 3,
 
-} carrier_proto_SubscribeRequest;
+} carrier_proto_PublishRequest;
+
+#line 1480 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_LocationAccuracity_Hdop = 1,
+    carrier_proto_LocationAccuracity_Vdop = 2,
+    carrier_proto_LocationAccuracity_Pdop = 3,
+
+} carrier_proto_LocationAccuracity;
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
 #line 1561 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
@@ -703,227 +849,104 @@ typedef enum {
 
 } carrier_proto_Location__Fix;
 
-#line 881 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 575 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Mem_Total = 1,
-    carrier_proto_Mem_Free = 2,
-    carrier_proto_Mem_Available = 3,
+    carrier_proto_InnerTraceRequest_Invalid = 1,
+    carrier_proto_InnerTraceRequest_Ping = 2,
 
-} carrier_proto_Mem;
+} carrier_proto_InnerTraceRequest;
 
-#line 1374 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_DhcpLeaseTypes (uintptr_t const  index);
+#line 214 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ConnectRequestTypes (uintptr_t const  index);
 
-#line 1805 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1755 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_AuthListResultTypes (uintptr_t const  index);
+
+#line 186 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_GenesisUpdate_Sha256 = 1,
-    carrier_proto_GenesisUpdate_PreviousSha256 = 2,
-    carrier_proto_GenesisUpdate_Commit = 3,
-    carrier_proto_GenesisUpdate_Data = 4,
+    carrier_proto_PublishChange_Supersede = 1,
+    carrier_proto_PublishChange_Shortcut = 2,
 
-} carrier_proto_GenesisUpdate;
+} carrier_proto_PublishChange;
 
-#line 41 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1638 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Filter_Role = 1,
+    carrier_proto_Sensors_Sensors = 1,
 
-} carrier_proto_Filter;
+} carrier_proto_Sensors;
 
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
+#line 1642 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SensorsTypes (uintptr_t const  index);
 
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 557 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1091 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_MoveInstruction_Ipaddr = 1,
-    carrier_proto_MoveInstruction_Xaddr = 2,
+    carrier_proto_Switch_Name = 1,
+    carrier_proto_Switch_Ports = 2,
 
-} carrier_proto_MoveInstruction;
-
-#line 598 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_InnerTraceResponseTypes (uintptr_t const  index);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 1066 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SwitchPortTypes (uintptr_t const  index);
-
-#line 107 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_UnpublishTypes (uintptr_t const  index);
-
-#line 723 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_CertificateRequestTypes (uintptr_t const  index);
-
-#line 2 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Path__Category_Invalid = 0,
-    carrier_proto_Path__Category_Local = 1,
-    carrier_proto_Path__Category_Internet = 2,
-    carrier_proto_Path__Category_BrokerOrigin = 3,
-
-} carrier_proto_Path__Category;
-
-#line 518 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_ProtoHeader_Len = 1,
-
-} carrier_proto_ProtoHeader;
-
-#line 522 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ProtoHeaderTypes (uintptr_t const  index);
-
-#line 532 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_EmptyTypes (uintptr_t const  index);
-
-#line 324 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ClusterConfigTypes (uintptr_t const  index);
-
-#line 1779 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_GenesisCurrent_Sha256 = 1,
-    carrier_proto_GenesisCurrent_Commit = 2,
-    carrier_proto_GenesisCurrent_Data = 3,
-    carrier_proto_GenesisCurrent_Stable = 4,
-
-} carrier_proto_GenesisCurrent;
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 9 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Path_Ipaddr = 1,
-    carrier_proto_Path_Category = 2,
-
-} carrier_proto_Path;
-
-#line 611 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_ClaimOne_Target = 1,
-    carrier_proto_ClaimOne_Resources = 2,
-
-} carrier_proto_ClaimOne;
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 1751 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_AuthListResult_Auth = 1,
-
-} carrier_proto_AuthListResult;
-
-#line 1712 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_NetworkJoin_Secret = 1,
-
-} carrier_proto_NetworkJoin;
-
-#line 1733 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_ConfigResult_Ok = 1,
-    carrier_proto_ConfigResult_Error = 2,
-
-} carrier_proto_ConfigResult;
-
-#line 1407 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ArpTypes (uintptr_t const  index);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 360 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_TraceRequest_Target = 1,
-
-} carrier_proto_TraceRequest;
-
-#line 1698 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_InteractiveAuth_Otp = 1,
-
-} carrier_proto_InteractiveAuth;
-
-#line 1702 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_InteractiveAuthTypes (uintptr_t const  index);
-
-#line 887 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_MemTypes (uintptr_t const  index);
-
-#line 1716 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NetworkJoinTypes (uintptr_t const  index);
-
-#line 422 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_TraceResponseTypes (uintptr_t const  index);
-
-#line 647 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Revoker_Identity = 1,
-
-} carrier_proto_Revoker;
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 1688 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_AuthorizationDelTypes (uintptr_t const  index);
-
-#line 1659 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_AuthorizationGetTypes (uintptr_t const  index);
-
-#line 1726 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NetworkGetTypes (uintptr_t const  index);
-
-#line 661 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Claim_Opt = 1,
-    carrier_proto_Claim_One = 2,
-    carrier_proto_Claim_All = 3,
-    carrier_proto_Claim_Revoker = 4,
-
-} carrier_proto_Claim;
-
-#line 668 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ClaimTypes (uintptr_t const  index);
-
-#line 695 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_CertificateTypes (uintptr_t const  index);
+} carrier_proto_Switch;
 
 #line 1096 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType carrier_proto_SwitchTypes (uintptr_t const  index);
 
-#line 1502 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 272 "/home/aep/proj/devguard/carrier/src/proto.zz"
 typedef enum {
-    carrier_proto_Satellite__Constellation_Unknown = 0,
-    carrier_proto_Satellite__Constellation_Galileo = 1,
-    carrier_proto_Satellite__Constellation_Gps = 2,
-    carrier_proto_Satellite__Constellation_Glonass = 3,
+    carrier_proto_ClusterShard_This = 1,
+    carrier_proto_ClusterShard_Other = 2,
 
-} carrier_proto_Satellite__Constellation;
+} carrier_proto_ClusterShard;
 
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#line 277 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ClusterShardTypes (uintptr_t const  index);
 
-#line 1114 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_BootloaderTypes (uintptr_t const  index);
+#line 350 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ClusterStateTypes (uintptr_t const  index);
 
-#line 1786 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_GenesisCurrentTypes (uintptr_t const  index);
+#line 1583 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_LocationTypes (uintptr_t const  index);
 
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+#line 779 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_DiscoveryResponseTypes (uintptr_t const  index);
 
-#line 45 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_FilterTypes (uintptr_t const  index);
+#line 1684 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_AuthorizationDel_Identity = 1,
+
+} carrier_proto_AuthorizationDel;
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 757 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_AuthorizationList_A = 1,
+
+} carrier_proto_AuthorizationList;
+
+#line 761 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_AuthorizationListTypes (uintptr_t const  index);
+
+#line 1232 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_WifiStationTypes (uintptr_t const  index);
+
+#line 967 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_NetAddress_Addr = 1,
+    carrier_proto_NetAddress_Mask = 2,
+    carrier_proto_NetAddress_Broadcast = 3,
+
+} carrier_proto_NetAddress;
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -940,16 +963,16 @@ protonerf_FieldType carrier_proto_FilterTypes (uintptr_t const  index);
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -2288,50 +2311,6 @@ mypow10(int exponent)
 #line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 14 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_PathTypes (uintptr_t const  index);
-
-#line 1011 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NetdevTypes (uintptr_t const  index);
-
-#line 1454 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_NetSurvey_Wifi = 1,
-    carrier_proto_NetSurvey_Dhcp = 2,
-    carrier_proto_NetSurvey_Arp = 3,
-    carrier_proto_NetSurvey_Routes = 4,
-
-} carrier_proto_NetSurvey;
-
-#line 809 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_UnameTypes (uintptr_t const  index);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 63 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SubscribeRequestTypes (uintptr_t const  index);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 90 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_PublishTypes (uintptr_t const  index);
-
-#line 544 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ConfirmationTypes (uintptr_t const  index);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t {
 
@@ -2346,41 +2325,155 @@ struct err_Err_t {
 }
 ;
 
-#line 779 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_DiscoveryResponseTypes (uintptr_t const  index);
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-#line 651 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_RevokerTypes (uintptr_t const  index);
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-#line 1232 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_WifiStationTypes (uintptr_t const  index);
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 1518 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SatelliteTypes (uintptr_t const  index);
 
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+#line 717 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_CertificateRequest_LastValidEpoch = 1,
+    carrier_proto_CertificateRequest_Identity = 2,
+    carrier_proto_CertificateRequest_Claims = 3,
 
-#line 761 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_AuthorizationListTypes (uintptr_t const  index);
+} carrier_proto_CertificateRequest;
+
+#line 63 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SubscribeRequestTypes (uintptr_t const  index);
+
+#line 117 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SupersedeTypes (uintptr_t const  index);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 250 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ConnectResponseTypes (uintptr_t const  index);
+
+#line 152 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_PublishRequestTypes (uintptr_t const  index);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 1786 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_GenesisCurrentTypes (uintptr_t const  index);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
 
 #line 191 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType carrier_proto_PublishChangeTypes (uintptr_t const  index);
 
-#line 910 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_FileSystemTypes (uintptr_t const  index);
+#line 1688 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_AuthorizationDelTypes (uintptr_t const  index);
 
-#line 1159 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SysinfoTypes (uintptr_t const  index);
+#line 1066 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SwitchPortTypes (uintptr_t const  index);
 
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 611 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_ClaimOne_Target = 1,
+    carrier_proto_ClaimOne_Resources = 2,
 
-#line 616 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ClaimOneTypes (uintptr_t const  index);
+} carrier_proto_ClaimOne;
 
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 522 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ProtoHeaderTypes (uintptr_t const  index);
+
+#line 593 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_InnerTraceResponse_Invalid = 1,
+    carrier_proto_InnerTraceResponse_Pong = 2,
+
+} carrier_proto_InnerTraceResponse;
+
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 1548 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_LocationVelocityTypes (uintptr_t const  index);
+
+#line 989 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Netdev__Duplex_Invalid = 0,
+    carrier_proto_Netdev__Duplex_Half = 1,
+    carrier_proto_Netdev__Duplex_Full = 2,
+
+} carrier_proto_Netdev__Duplex;
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 1702 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_InteractiveAuthTypes (uintptr_t const  index);
+
+#line 297 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ExceptionalRouteTypes (uintptr_t const  index);
+
+#line 598 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_InnerTraceResponseTypes (uintptr_t const  index);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 562 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_MoveInstructionTypes (uintptr_t const  index);
+
+#line 1652 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NoneTypes (uintptr_t const  index);
+
+#line 1486 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_LocationAccuracityTypes (uintptr_t const  index);
+
+#line 14 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_PathTypes (uintptr_t const  index);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 422 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_TraceResponseTypes (uintptr_t const  index);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 1622 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_SensorTypes (uintptr_t const  index);
+
+#line 499 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_PeerConnectResponseTypes (uintptr_t const  index);
+
+#line 973 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_NetAddressTypes (uintptr_t const  index);
+
+#line 1812 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_GenesisUpdateTypes (uintptr_t const  index);
+
+#line 31 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_FilterByRoleTypes (uintptr_t const  index);
+
+#line 939 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_FirmwareTypes (uintptr_t const  index);
 
 #line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 struct protonerf_Decoder_t {
@@ -2396,269 +2489,77 @@ struct protonerf_Decoder_t {
 }
 ;
 
-#line 350 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ClusterStateTypes (uintptr_t const  index);
-
-#line 634 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ClaimAllTypes (uintptr_t const  index);
-
-#line 1339 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_WifiInterfaceTypes (uintptr_t const  index);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 1548 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_LocationVelocityTypes (uintptr_t const  index);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 1738 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ConfigResultTypes (uintptr_t const  index);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 214 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ConnectRequestTypes (uintptr_t const  index);
-
-#line 1518 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SatelliteTypes (uintptr_t const  index);
-
-#line 562 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_MoveInstructionTypes (uintptr_t const  index);
-
-#line 27 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_FilterByRole_Roles = 1,
-
-} carrier_proto_FilterByRole;
-
-#line 470 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_PeerConnectRequestTypes (uintptr_t const  index);
+#line 887 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_MemTypes (uintptr_t const  index);
 
 #line 1769 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType carrier_proto_NetworkGetResultTypes (uintptr_t const  index);
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+#line 324 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ClusterConfigTypes (uintptr_t const  index);
 
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+#line 1114 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_BootloaderTypes (uintptr_t const  index);
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+#line 616 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ClaimOneTypes (uintptr_t const  index);
 
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#line 989 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Netdev__Duplex_Invalid = 0,
-    carrier_proto_Netdev__Duplex_Half = 1,
-    carrier_proto_Netdev__Duplex_Full = 2,
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
 
-} carrier_proto_Netdev__Duplex;
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
 
-#line 1583 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_LocationTypes (uintptr_t const  index);
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+#line 1132 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_BelltowerTypes (uintptr_t const  index);
 
-#line 1671 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_AuthorizationAddTypes (uintptr_t const  index);
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+#line 173 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_ShortcutTypes (uintptr_t const  index);
 
-#line 364 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_TraceRequestTypes (uintptr_t const  index);
+#line 470 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_PeerConnectRequestTypes (uintptr_t const  index);
 
-#line 383 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_TraceShadowTypes (uintptr_t const  index);
+#line 723 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_CertificateRequestTypes (uintptr_t const  index);
 
-#line 1652 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NoneTypes (uintptr_t const  index);
+#line 90 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_PublishTypes (uintptr_t const  index);
 
-#line 1461 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NetSurveyTypes (uintptr_t const  index);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 297 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_ExceptionalRouteTypes (uintptr_t const  index);
-
-#line 1812 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_GenesisUpdateTypes (uintptr_t const  index);
+#line 1374 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_DhcpLeaseTypes (uintptr_t const  index);
 
 #line 580 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType carrier_proto_InnerTraceRequestTypes (uintptr_t const  index);
 
-#line 939 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_FirmwareTypes (uintptr_t const  index);
+#line 45 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType carrier_proto_FilterTypes (uintptr_t const  index);
 
-#line 1611 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Sensor__ValueType_None = 0,
-    carrier_proto_Sensor__ValueType_MilliCelsius = 1,
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
-} carrier_proto_Sensor__ValueType;
-
-#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 31 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_FilterByRoleTypes (uintptr_t const  index);
-
-#line 1486 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_LocationAccuracityTypes (uintptr_t const  index);
-
-#line 1755 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_AuthListResultTypes (uintptr_t const  index);
-
-#line 973 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_NetAddressTypes (uintptr_t const  index);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 117 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType carrier_proto_SupersedeTypes (uintptr_t const  index);
-
-#line 844 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LoadTypes (uintptr_t const  index)
+#line 364 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_TraceRequestTypes (uintptr_t const  index)
 {
 
-#line 845 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 365 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 846 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Avg1:
+#line 366 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceRequest_Target:
 {
 {
 
-#line 847 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 849 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Avg5:
-{
-{
-
-#line 850 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 852 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Avg15:
-{
-{
-
-#line 853 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 855 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Clock:
-{
-{
-
-#line 856 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 858 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Uptime:
-{
-{
-
-#line 859 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 861 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Idletime:
-{
-{
-
-#line 862 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 864 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_ProcActive:
-{
-{
-
-#line 865 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 867 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_ProcTotal:
-{
-{
-
-#line 868 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 870 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Cores:
-{
-{
-
-#line 871 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 873 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Load_Threads:
-{
-{
-
-#line 874 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 367 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -2666,1264 +2567,67 @@ break;}
 }
 
 
-#line 877 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 370 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 173 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ShortcutTypes (uintptr_t const  index)
+#line 910 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_FileSystemTypes (uintptr_t const  index)
 {
 
-#line 174 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 911 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 175 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Shortcut_Shortcut:
+#line 912 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_FileSystem_Path:
 {
 {
 
-#line 176 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 913 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 178 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Shortcut_Expires:
+#line 915 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_FileSystem_Blocksize:
 {
 {
 
-#line 179 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 916 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
-}
-
-
-#line 182 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1642 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SensorsTypes (uintptr_t const  index)
-{
-
-#line 1643 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1644 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sensors_Sensors:
-{
-{
-
-#line 1645 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1648 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 152 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PublishRequestTypes (uintptr_t const  index)
-{
-
-#line 153 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 154 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PublishRequest_Xaddr:
-{
-{
-
-#line 155 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 157 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PublishRequest_Shadow:
-{
-{
-
-#line 158 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 160 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PublishRequest_Shortcut:
-{
-{
-
-#line 161 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 164 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1132 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_BelltowerTypes (uintptr_t const  index)
-{
-
-#line 1133 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1134 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Belltower_Current:
-{
-{
-
-#line 1135 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1137 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Belltower_Previous:
-{
-{
-
-#line 1138 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1141 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1438 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetRouteTypes (uintptr_t const  index)
-{
-
-#line 1439 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1440 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetRoute_Destination:
-{
-{
-
-#line 1441 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1443 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetRoute_Gateway:
-{
-{
-
-#line 1444 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1446 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetRoute_Source:
-{
-{
-
-#line 1447 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1450 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 277 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClusterShardTypes (uintptr_t const  index)
-{
-
-#line 278 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 279 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterShard_This:
-{
-{
-
-#line 280 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 282 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterShard_Other:
-{
-{
-
-#line 283 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 286 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 130 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SubscribeChangeTypes (uintptr_t const  index)
-{
-
-#line 131 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 132 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeChange_Publish:
-{
-{
-
-#line 133 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 135 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeChange_Unpublish:
-{
-{
-
-#line 136 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 138 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeChange_Supersede:
-{
-{
-
-#line 139 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 142 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 499 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PeerConnectResponseTypes (uintptr_t const  index)
-{
-
-#line 500 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 501 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectResponse_Ok:
-{
-{
-
-#line 502 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 504 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectResponse_Handshake:
-{
-{
-
-#line 505 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 507 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectResponse_Paths:
-{
-{
-
-#line 508 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 510 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectResponse_Error:
-{
-{
-
-#line 511 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 514 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1622 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SensorTypes (uintptr_t const  index)
-{
-
-#line 1623 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1624 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sensor_Name:
-{
-{
-
-#line 1625 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1627 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sensor_Vtype:
-{
-{
-
-#line 1628 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1630 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sensor_Value:
-{
-{
-
-#line 1631 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1634 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 250 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConnectResponseTypes (uintptr_t const  index)
-{
-
-#line 251 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 252 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectResponse_Ok:
-{
-{
-
-#line 253 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 255 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectResponse_Handshake:
-{
-{
-
-#line 256 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 258 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectResponse_Route:
-{
-{
-
-#line 259 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 261 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectResponse_Paths:
-{
-{
-
-#line 262 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 264 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectResponse_Error:
-{
-{
-
-#line 265 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 268 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 744 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationTypes (uintptr_t const  index)
-{
-
-#line 745 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 746 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Authorization_Identity:
-{
-{
-
-#line 747 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 749 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Authorization_Resource:
-{
-{
-
-#line 750 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 753 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1374 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_DhcpLeaseTypes (uintptr_t const  index)
-{
-
-#line 1375 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1376 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_DhcpLease_Ts:
-{
-{
-
-#line 1377 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1379 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_DhcpLease_Mac:
-{
-{
-
-#line 1380 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1382 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_DhcpLease_Ip:
-{
-{
-
-#line 1383 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1385 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_DhcpLease_Name:
-{
-{
-
-#line 1386 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1389 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 598 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_InnerTraceResponseTypes (uintptr_t const  index)
-{
-
-#line 599 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 600 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_InnerTraceResponse_Invalid:
-{
-{
-
-#line 601 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 603 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_InnerTraceResponse_Pong:
-{
-{
-
-#line 604 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 607 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1066 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SwitchPortTypes (uintptr_t const  index)
-{
-
-#line 1067 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1068 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SwitchPort_Port:
-{
-{
-
-#line 1069 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1071 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SwitchPort_Link:
-{
-{
-
-#line 1072 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1074 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SwitchPort_Speed:
-{
-{
-
-#line 1075 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1077 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SwitchPort_Network:
-{
-{
-
-#line 1078 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1080 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SwitchPort_Device:
-{
-{
-
-#line 1081 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1083 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SwitchPort_None:
-{
-{
-
-#line 1084 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1087 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 107 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_UnpublishTypes (uintptr_t const  index)
-{
-
-#line 108 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 109 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Unpublish_Identity:
-{
-{
-
-#line 110 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 113 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 723 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_CertificateRequestTypes (uintptr_t const  index)
-{
-
-#line 724 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 725 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_CertificateRequest_LastValidEpoch:
-{
-{
-
-#line 726 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 728 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_CertificateRequest_Identity:
-{
-{
-
-#line 729 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 731 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_CertificateRequest_Claims:
-{
-{
-
-#line 732 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 735 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 522 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ProtoHeaderTypes (uintptr_t const  index)
-{
-
-#line 523 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 524 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ProtoHeader_Len:
-{
-{
-
-#line 525 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 528 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 532 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_EmptyTypes (uintptr_t const  index)
-{
-
-#line 533 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-}
-
-
-#line 535 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 324 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClusterConfigTypes (uintptr_t const  index)
-{
-
-#line 325 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 326 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterConfig_Shards:
-{
-{
-
-#line 327 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 329 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterConfig_ExceptionalRoutes:
-{
-{
-
-#line 330 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 332 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterConfig_Epoch:
-{
-{
-
-#line 333 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 335 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterConfig_DefaultShadowPublisherLimit:
-{
-{
-
-#line 336 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 338 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterConfig_DefaultShadowTrafficLimit32:
-{
-{
-
-#line 339 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 342 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1407 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ArpTypes (uintptr_t const  index)
-{
-
-#line 1408 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1409 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Arp_Ip:
-{
-{
-
-#line 1410 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1412 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Arp_Hw:
-{
-{
-
-#line 1413 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1415 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Arp_Mac:
-{
-{
-
-#line 1416 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1418 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Arp_Dev:
-{
-{
-
-#line 1419 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1421 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Arp_Value:
-{
-{
-
-#line 1422 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1424 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Arp_Null:
-{
-{
-
-#line 1425 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1428 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1702 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_InteractiveAuthTypes (uintptr_t const  index)
-{
-
-#line 1703 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1704 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_InteractiveAuth_Otp:
-{
-{
-
-#line 1705 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1708 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 887 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_MemTypes (uintptr_t const  index)
-{
-
-#line 888 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 889 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Mem_Total:
-{
-{
-
-#line 890 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 892 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Mem_Free:
-{
-{
-
-#line 893 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 895 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Mem_Available:
-{
-{
-
-#line 896 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 899 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1716 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetworkJoinTypes (uintptr_t const  index)
-{
-
-#line 1717 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1718 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetworkJoin_Secret:
-{
-{
-
-#line 1719 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1722 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 422 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_TraceResponseTypes (uintptr_t const  index)
-{
-
-#line 423 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 424 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_Publishing:
-{
-{
-
-#line 425 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 427 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_Epoch:
-{
-{
-
-#line 428 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 430 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_RxBytes32:
-{
-{
-
-#line 431 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 433 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_TxBytes32:
-{
-{
-
-#line 434 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 436 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_LastSeen:
-{
-{
-
-#line 437 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 439 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_FirstSeen:
-{
-{
-
-#line 440 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 442 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_Allocation:
-{
-{
-
-#line 443 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 445 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_Brokerip:
-{
-{
-
-#line 446 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 448 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_PktsSent:
-{
-{
-
-#line 449 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 451 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_PktsLost:
-{
-{
-
-#line 452 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
 case 
-#line 454 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceResponse_Rtt:
+#line 918 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_FileSystem_Total:
 {
 {
 
-#line 455 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 919 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
-}
-
-
-#line 458 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1688 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationDelTypes (uintptr_t const  index)
-{
-
-#line 1689 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
 case 
-#line 1690 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_AuthorizationDel_Identity:
+#line 921 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_FileSystem_Free:
 {
 {
 
-#line 1691 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 922 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
-}
-
-
-#line 1694 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1659 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationGetTypes (uintptr_t const  index)
-{
-
-#line 1660 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-}
-
-
-#line 1662 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1726 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetworkGetTypes (uintptr_t const  index)
-{
-
-#line 1727 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
 }
 
 
-#line 1729 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 925 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -3989,64 +2693,31 @@ break;}
 }
 
 
-#line 695 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_CertificateTypes (uintptr_t const  index)
+#line 1738 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConfigResultTypes (uintptr_t const  index)
 {
 
-#line 696 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1739 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 697 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Certificate_LastValidEpoch:
+#line 1740 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConfigResult_Ok:
 {
 {
 
-#line 698 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1741 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 700 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Certificate_Identity:
+#line 1743 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConfigResult_Error:
 {
 {
 
-#line 701 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 703 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Certificate_Authority:
-{
-{
-
-#line 704 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 706 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Certificate_Serial:
-{
-{
-
-#line 707 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 709 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Certificate_Claims:
-{
-{
-
-#line 710 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1744 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4054,37 +2725,37 @@ break;}
 }
 
 
-#line 713 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1747 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1096 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SwitchTypes (uintptr_t const  index)
+#line 744 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationTypes (uintptr_t const  index)
 {
 
-#line 1097 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 745 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1098 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Switch_Name:
+#line 746 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Authorization_Identity:
 {
 {
 
-#line 1099 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 747 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1101 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Switch_Ports:
+#line 749 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Authorization_Resource:
 {
 {
 
-#line 1102 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 750 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4092,37 +2763,59 @@ break;}
 }
 
 
-#line 1105 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 753 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1114 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_BootloaderTypes (uintptr_t const  index)
+#line 1461 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetSurveyTypes (uintptr_t const  index)
 {
 
-#line 1115 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1462 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1116 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Bootloader_ActiveSide:
+#line 1463 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetSurvey_Wifi:
 {
 {
 
-#line 1117 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1464 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1119 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Bootloader_BootReason:
+#line 1466 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetSurvey_Dhcp:
 {
 {
 
-#line 1120 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1467 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1469 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetSurvey_Arp:
+{
+{
+
+#line 1470 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1472 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetSurvey_Routes:
+{
+{
+
+#line 1473 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4130,59 +2823,26 @@ break;}
 }
 
 
-#line 1123 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1476 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1786 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_GenesisCurrentTypes (uintptr_t const  index)
+#line 107 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_UnpublishTypes (uintptr_t const  index)
 {
 
-#line 1787 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 108 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1788 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_GenesisCurrent_Sha256:
+#line 109 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Unpublish_Identity:
 {
 {
 
-#line 1789 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1791 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_GenesisCurrent_Commit:
-{
-{
-
-#line 1792 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1794 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_GenesisCurrent_Data:
-{
-{
-
-#line 1795 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1797 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_GenesisCurrent_Stable:
-{
-{
-
-#line 1798 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 110 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4190,26 +2850,37 @@ break;}
 }
 
 
-#line 1801 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 113 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 45 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_FilterTypes (uintptr_t const  index)
+#line 544 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConfirmationTypes (uintptr_t const  index)
 {
 
-#line 46 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 545 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 47 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Filter_Role:
+#line 546 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Confirmation_Ok:
 {
 {
 
-#line 48 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 547 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 549 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Confirmation_Error:
+{
+{
+
+#line 550 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4217,37 +2888,48 @@ break;}
 }
 
 
-#line 51 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 553 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 14 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PathTypes (uintptr_t const  index)
+#line 130 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SubscribeChangeTypes (uintptr_t const  index)
 {
 
-#line 15 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 131 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 16 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Path_Ipaddr:
+#line 132 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeChange_Publish:
 {
 {
 
-#line 17 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 133 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 19 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Path_Category:
+#line 135 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeChange_Unpublish:
 {
 {
 
-#line 20 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 136 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 138 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeChange_Supersede:
+{
+{
+
+#line 139 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4255,7 +2937,389 @@ break;}
 }
 
 
-#line 23 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 142 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1671 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationAddTypes (uintptr_t const  index)
+{
+
+#line 1672 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1673 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_AuthorizationAdd_Identity:
+{
+{
+
+#line 1674 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1676 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_AuthorizationAdd_Path:
+{
+{
+
+#line 1677 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1680 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1159 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SysinfoTypes (uintptr_t const  index)
+{
+
+#line 1160 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1161 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Uname:
+{
+{
+
+#line 1162 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1164 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Mem:
+{
+{
+
+#line 1165 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1167 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Load:
+{
+{
+
+#line 1168 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1170 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Firmware:
+{
+{
+
+#line 1171 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1173 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Fs:
+{
+{
+
+#line 1174 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1176 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Net:
+{
+{
+
+#line 1177 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1179 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Switch:
+{
+{
+
+#line 1180 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1182 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_BoardId:
+{
+{
+
+#line 1183 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1185 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_CarrierBuildId:
+{
+{
+
+#line 1186 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1188 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Belltower:
+{
+{
+
+#line 1189 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1191 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sysinfo_Bootloader:
+{
+{
+
+#line 1192 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1195 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 651 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_RevokerTypes (uintptr_t const  index)
+{
+
+#line 652 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 653 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Revoker_Identity:
+{
+{
+
+#line 654 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 657 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1438 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetRouteTypes (uintptr_t const  index)
+{
+
+#line 1439 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1440 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetRoute_Destination:
+{
+{
+
+#line 1441 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1443 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetRoute_Gateway:
+{
+{
+
+#line 1444 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1446 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetRoute_Source:
+{
+{
+
+#line 1447 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1450 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 634 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClaimAllTypes (uintptr_t const  index)
+{
+
+#line 635 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 636 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClaimAll_Shadow:
+{
+{
+
+#line 637 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 639 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClaimAll_Resources:
+{
+{
+
+#line 640 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 643 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1339 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_WifiInterfaceTypes (uintptr_t const  index)
+{
+
+#line 1340 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1341 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Name:
+{
+{
+
+#line 1342 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1344 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Typ:
+{
+{
+
+#line 1345 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1347 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Phy:
+{
+{
+
+#line 1348 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1350 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Ssid:
+{
+{
+
+#line 1351 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1353 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Channel:
+{
+{
+
+#line 1354 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1356 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Txpower:
+{
+{
+
+#line 1357 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1359 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_WifiInterface_Stations:
+{
+{
+
+#line 1360 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1363 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -4420,6 +3484,131 @@ break;}
 }
 
 
+#line 1716 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetworkJoinTypes (uintptr_t const  index)
+{
+
+#line 1717 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1718 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetworkJoin_Secret:
+{
+{
+
+#line 1719 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1722 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1726 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetworkGetTypes (uintptr_t const  index)
+{
+
+#line 1727 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 1729 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1407 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ArpTypes (uintptr_t const  index)
+{
+
+#line 1408 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1409 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Arp_Ip:
+{
+{
+
+#line 1410 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1412 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Arp_Hw:
+{
+{
+
+#line 1413 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1415 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Arp_Mac:
+{
+{
+
+#line 1416 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1418 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Arp_Dev:
+{
+{
+
+#line 1419 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1421 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Arp_Value:
+{
+{
+
+#line 1422 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1424 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Arp_Null:
+{
+{
+
+#line 1425 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1428 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
 #line 809 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_UnameTypes (uintptr_t const  index)
 {
@@ -4491,64 +3680,75 @@ break;}
 }
 
 
-#line 63 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SubscribeRequestTypes (uintptr_t const  index)
+#line 383 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_TraceShadowTypes (uintptr_t const  index)
 {
 
-#line 64 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 384 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 65 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeRequest_Shadow:
+#line 385 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceShadow_Xaddress:
 {
 {
 
-#line 66 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 386 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 68 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeRequest_Filter:
+#line 388 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceShadow_PublisherCount:
 {
 {
 
-#line 69 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 389 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 71 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeRequest_GroupKey:
+#line 391 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceShadow_PublisherSoftLimit:
 {
 {
 
-#line 72 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 392 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 74 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeRequest_GroupShard:
+#line 394 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceShadow_PublisherHardLimit:
 {
 {
 
-#line 75 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 395 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 77 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_SubscribeRequest_ShardWeight:
+#line 397 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceShadow_TrafficEpoch64:
 {
 {
 
-#line 78 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 398 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 400 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceShadow_TrafficLimit64:
+{
+{
+
+#line 401 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4556,75 +3756,86 @@ break;}
 }
 
 
-#line 81 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 404 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 90 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PublishTypes (uintptr_t const  index)
+#line 1659 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationGetTypes (uintptr_t const  index)
 {
 
-#line 91 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1660 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
-case 
-#line 92 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Publish_Identity:
-{
-{
-
-#line 93 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 95 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Publish_Xaddr:
-{
-{
-
-#line 96 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
 }
 
 
-#line 99 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1662 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 544 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConfirmationTypes (uintptr_t const  index)
+#line 695 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_CertificateTypes (uintptr_t const  index)
 {
 
-#line 545 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 696 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 546 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Confirmation_Ok:
+#line 697 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Certificate_LastValidEpoch:
 {
 {
 
-#line 547 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 698 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 549 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Confirmation_Error:
+#line 700 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Certificate_Identity:
 {
 {
 
-#line 550 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 701 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 703 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Certificate_Authority:
+{
+{
+
+#line 704 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 706 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Certificate_Serial:
+{
+{
+
+#line 707 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 709 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Certificate_Claims:
+{
+{
+
+#line 710 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4632,7 +3843,492 @@ break;}
 }
 
 
-#line 553 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 713 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 532 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_EmptyTypes (uintptr_t const  index)
+{
+
+#line 533 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 535 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 844 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LoadTypes (uintptr_t const  index)
+{
+
+#line 845 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 846 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Avg1:
+{
+{
+
+#line 847 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 849 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Avg5:
+{
+{
+
+#line 850 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 852 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Avg15:
+{
+{
+
+#line 853 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 855 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Clock:
+{
+{
+
+#line 856 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 858 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Uptime:
+{
+{
+
+#line 859 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 861 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Idletime:
+{
+{
+
+#line 862 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 864 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_ProcActive:
+{
+{
+
+#line 865 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 867 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_ProcTotal:
+{
+{
+
+#line 868 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 870 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Cores:
+{
+{
+
+#line 871 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 873 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Load_Threads:
+{
+{
+
+#line 874 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 877 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 214 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConnectRequestTypes (uintptr_t const  index)
+{
+
+#line 215 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 216 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Target:
+{
+{
+
+#line 217 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 219 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Timestamp:
+{
+{
+
+#line 220 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 222 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Handshake:
+{
+{
+
+#line 223 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 225 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Paths:
+{
+{
+
+#line 226 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 228 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Principal:
+{
+{
+
+#line 229 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 231 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Timeout:
+{
+{
+
+#line 232 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 234 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectRequest_Shortcut:
+{
+{
+
+#line 235 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 238 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1755 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthListResultTypes (uintptr_t const  index)
+{
+
+#line 1756 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1757 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_AuthListResult_Auth:
+{
+{
+
+#line 1758 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1761 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1642 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SensorsTypes (uintptr_t const  index)
+{
+
+#line 1643 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1644 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sensors_Sensors:
+{
+{
+
+#line 1645 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1648 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1096 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SwitchTypes (uintptr_t const  index)
+{
+
+#line 1097 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1098 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Switch_Name:
+{
+{
+
+#line 1099 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1101 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Switch_Ports:
+{
+{
+
+#line 1102 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1105 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 277 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClusterShardTypes (uintptr_t const  index)
+{
+
+#line 278 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 279 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterShard_This:
+{
+{
+
+#line 280 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 282 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterShard_Other:
+{
+{
+
+#line 283 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 286 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 350 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClusterStateTypes (uintptr_t const  index)
+{
+
+#line 351 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 352 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterState_Config:
+{
+{
+
+#line 353 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 356 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1583 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LocationTypes (uintptr_t const  index)
+{
+
+#line 1584 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1585 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Latitude:
+{
+{
+
+#line 1586 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1588 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Longitude:
+{
+{
+
+#line 1589 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1591 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Altitude:
+{
+{
+
+#line 1592 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1594 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Fix:
+{
+{
+
+#line 1595 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1597 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Accuracity:
+{
+{
+
+#line 1598 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1600 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Satellites:
+{
+{
+
+#line 1601 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1603 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Location_Velocity:
+{
+{
+
+#line 1604 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1607 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -4709,20 +4405,20 @@ break;}
 }
 
 
-#line 651 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_RevokerTypes (uintptr_t const  index)
+#line 761 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationListTypes (uintptr_t const  index)
 {
 
-#line 652 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 762 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 653 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Revoker_Identity:
+#line 763 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_AuthorizationList_A:
 {
 {
 
-#line 654 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 764 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -4730,7 +4426,7 @@ break;}
 }
 
 
-#line 657 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 767 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -5082,633 +4778,6 @@ break;}
 }
 
 
-#line 761 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationListTypes (uintptr_t const  index)
-{
-
-#line 762 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 763 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_AuthorizationList_A:
-{
-{
-
-#line 764 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 767 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 191 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PublishChangeTypes (uintptr_t const  index)
-{
-
-#line 192 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 193 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PublishChange_Supersede:
-{
-{
-
-#line 194 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 196 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PublishChange_Shortcut:
-{
-{
-
-#line 197 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 200 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 910 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_FileSystemTypes (uintptr_t const  index)
-{
-
-#line 911 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 912 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_FileSystem_Path:
-{
-{
-
-#line 913 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 915 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_FileSystem_Blocksize:
-{
-{
-
-#line 916 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 918 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_FileSystem_Total:
-{
-{
-
-#line 919 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 921 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_FileSystem_Free:
-{
-{
-
-#line 922 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 925 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1159 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SysinfoTypes (uintptr_t const  index)
-{
-
-#line 1160 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1161 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Uname:
-{
-{
-
-#line 1162 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1164 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Mem:
-{
-{
-
-#line 1165 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1167 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Load:
-{
-{
-
-#line 1168 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1170 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Firmware:
-{
-{
-
-#line 1171 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1173 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Fs:
-{
-{
-
-#line 1174 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1176 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Net:
-{
-{
-
-#line 1177 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1179 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Switch:
-{
-{
-
-#line 1180 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1182 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_BoardId:
-{
-{
-
-#line 1183 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1185 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_CarrierBuildId:
-{
-{
-
-#line 1186 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1188 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Belltower:
-{
-{
-
-#line 1189 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1191 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Sysinfo_Bootloader:
-{
-{
-
-#line 1192 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1195 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 616 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClaimOneTypes (uintptr_t const  index)
-{
-
-#line 617 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 618 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClaimOne_Target:
-{
-{
-
-#line 619 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 621 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClaimOne_Resources:
-{
-{
-
-#line 622 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 625 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 350 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClusterStateTypes (uintptr_t const  index)
-{
-
-#line 351 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 352 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClusterState_Config:
-{
-{
-
-#line 353 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 356 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 634 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClaimAllTypes (uintptr_t const  index)
-{
-
-#line 635 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 636 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClaimAll_Shadow:
-{
-{
-
-#line 637 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 639 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ClaimAll_Resources:
-{
-{
-
-#line 640 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 643 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1339 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_WifiInterfaceTypes (uintptr_t const  index)
-{
-
-#line 1340 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1341 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Name:
-{
-{
-
-#line 1342 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1344 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Typ:
-{
-{
-
-#line 1345 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1347 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Phy:
-{
-{
-
-#line 1348 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1350 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Ssid:
-{
-{
-
-#line 1351 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1353 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Channel:
-{
-{
-
-#line 1354 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1356 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Txpower:
-{
-{
-
-#line 1357 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1359 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_WifiInterface_Stations:
-{
-{
-
-#line 1360 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1363 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1548 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LocationVelocityTypes (uintptr_t const  index)
-{
-
-#line 1549 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1550 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_LocationVelocity_Course:
-{
-{
-
-#line 1551 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1553 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_LocationVelocity_Speed:
-{
-{
-
-#line 1554 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1557 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1738 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConfigResultTypes (uintptr_t const  index)
-{
-
-#line 1739 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1740 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConfigResult_Ok:
-{
-{
-
-#line 1741 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1743 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConfigResult_Error:
-{
-{
-
-#line 1744 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1747 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 214 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConnectRequestTypes (uintptr_t const  index)
-{
-
-#line 215 "/home/aep/proj/devguard/carrier/src/proto.zz"
-switch (
-    index) {
-case 
-#line 216 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Target:
-{
-{
-
-#line 217 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 219 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Timestamp:
-{
-{
-
-#line 220 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 222 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Handshake:
-{
-{
-
-#line 223 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 225 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Paths:
-{
-{
-
-#line 226 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 228 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Principal:
-{
-{
-
-#line 229 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 231 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Timeout:
-{
-{
-
-#line 232 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 234 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_ConnectRequest_Shortcut:
-{
-{
-
-#line 235 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 238 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
 #line 1518 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SatelliteTypes (uintptr_t const  index)
 {
@@ -5791,31 +4860,64 @@ break;}
 }
 
 
-#line 562 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_MoveInstructionTypes (uintptr_t const  index)
+#line 63 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SubscribeRequestTypes (uintptr_t const  index)
 {
 
-#line 563 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 64 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 564 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_MoveInstruction_Ipaddr:
+#line 65 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeRequest_Shadow:
 {
 {
 
-#line 565 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 66 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 567 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_MoveInstruction_Xaddr:
+#line 68 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeRequest_Filter:
 {
 {
 
-#line 568 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 69 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 71 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeRequest_GroupKey:
+{
+{
+
+#line 72 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 74 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeRequest_GroupShard:
+{
+{
+
+#line 75 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 77 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SubscribeRequest_ShardWeight:
+{
+{
+
+#line 78 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -5823,97 +4925,86 @@ break;}
 }
 
 
-#line 571 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 81 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 470 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PeerConnectRequestTypes (uintptr_t const  index)
+#line 117 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SupersedeTypes (uintptr_t const  index)
 {
 
-#line 471 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 118 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
-case 
-#line 472 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectRequest_Identity:
-{
-{
-
-#line 473 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 475 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectRequest_Timestamp:
-{
-{
-
-#line 476 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 478 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectRequest_Handshake:
-{
-{
-
-#line 479 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 481 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectRequest_Route:
-{
-{
-
-#line 482 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 484 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_PeerConnectRequest_Paths:
-{
-{
-
-#line 485 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
 }
 
 
-#line 488 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 120 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1769 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetworkGetResultTypes (uintptr_t const  index)
+#line 250 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ConnectResponseTypes (uintptr_t const  index)
 {
 
-#line 1770 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 251 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1771 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetworkGetResult_Address:
+#line 252 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectResponse_Ok:
 {
 {
 
-#line 1772 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 253 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 255 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectResponse_Handshake:
+{
+{
+
+#line 256 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 258 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectResponse_Route:
+{
+{
+
+#line 259 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 261 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectResponse_Paths:
+{
+{
+
+#line 262 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 264 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ConnectResponse_Error:
+{
+{
+
+#line 265 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -5921,92 +5012,48 @@ break;}
 }
 
 
-#line 1775 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 268 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1583 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LocationTypes (uintptr_t const  index)
+#line 152 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PublishRequestTypes (uintptr_t const  index)
 {
 
-#line 1584 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 153 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1585 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Latitude:
+#line 154 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PublishRequest_Xaddr:
 {
 {
 
-#line 1586 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 155 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1588 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Longitude:
+#line 157 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PublishRequest_Shadow:
 {
 {
 
-#line 1589 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 158 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1591 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Altitude:
+#line 160 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PublishRequest_Shortcut:
 {
 {
 
-#line 1592 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1594 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Fix:
-{
-{
-
-#line 1595 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1597 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Accuracity:
-{
-{
-
-#line 1598 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1600 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Satellites:
-{
-{
-
-#line 1601 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1603 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_Location_Velocity:
-{
-{
-
-#line 1604 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 161 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6014,37 +5061,59 @@ break;}
 }
 
 
-#line 1607 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 164 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1671 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationAddTypes (uintptr_t const  index)
+#line 1786 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_GenesisCurrentTypes (uintptr_t const  index)
 {
 
-#line 1672 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1787 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1673 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_AuthorizationAdd_Identity:
+#line 1788 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_GenesisCurrent_Sha256:
 {
 {
 
-#line 1674 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1789 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1676 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_AuthorizationAdd_Path:
+#line 1791 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_GenesisCurrent_Commit:
 {
 {
 
-#line 1677 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1792 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1794 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_GenesisCurrent_Data:
+{
+{
+
+#line 1795 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1797 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_GenesisCurrent_Stable:
+{
+{
+
+#line 1798 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6052,26 +5121,37 @@ break;}
 }
 
 
-#line 1680 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1801 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 364 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_TraceRequestTypes (uintptr_t const  index)
+#line 191 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PublishChangeTypes (uintptr_t const  index)
 {
 
-#line 365 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 192 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 366 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceRequest_Target:
+#line 193 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PublishChange_Supersede:
 {
 {
 
-#line 367 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 194 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 196 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PublishChange_Shortcut:
+{
+{
+
+#line 197 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6079,81 +5159,26 @@ break;}
 }
 
 
-#line 370 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 200 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 383 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_TraceShadowTypes (uintptr_t const  index)
+#line 1688 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthorizationDelTypes (uintptr_t const  index)
 {
 
-#line 384 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1689 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 385 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceShadow_Xaddress:
+#line 1690 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_AuthorizationDel_Identity:
 {
 {
 
-#line 386 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 388 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceShadow_PublisherCount:
-{
-{
-
-#line 389 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 391 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceShadow_PublisherSoftLimit:
-{
-{
-
-#line 392 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 394 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceShadow_PublisherHardLimit:
-{
-{
-
-#line 395 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 397 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceShadow_TrafficEpoch64:
-{
-{
-
-#line 398 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 400 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_TraceShadow_TrafficLimit64:
-{
-{
-
-#line 401 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1691 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6161,75 +5186,173 @@ break;}
 }
 
 
-#line 404 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1694 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1652 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NoneTypes (uintptr_t const  index)
+#line 1066 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SwitchPortTypes (uintptr_t const  index)
 {
 
-#line 1653 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1067 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
+case 
+#line 1068 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SwitchPort_Port:
+{
+{
+
+#line 1069 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1071 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SwitchPort_Link:
+{
+{
+
+#line 1072 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1074 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SwitchPort_Speed:
+{
+{
+
+#line 1075 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1077 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SwitchPort_Network:
+{
+{
+
+#line 1078 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1080 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SwitchPort_Device:
+{
+{
+
+#line 1081 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1083 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_SwitchPort_None:
+{
+{
+
+#line 1084 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
 }
 
 
-#line 1655 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1087 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1461 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetSurveyTypes (uintptr_t const  index)
+#line 522 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ProtoHeaderTypes (uintptr_t const  index)
 {
 
-#line 1462 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 523 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1463 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetSurvey_Wifi:
+#line 524 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ProtoHeader_Len:
 {
 {
 
-#line 1464 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 525 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 528 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1548 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LocationVelocityTypes (uintptr_t const  index)
+{
+
+#line 1549 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1550 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_LocationVelocity_Course:
+{
+{
+
+#line 1551 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1466 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetSurvey_Dhcp:
+#line 1553 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_LocationVelocity_Speed:
 {
 {
 
-#line 1467 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1554 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
+}
+
+
+#line 1557 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1702 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_InteractiveAuthTypes (uintptr_t const  index)
+{
+
+#line 1703 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
 case 
-#line 1469 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetSurvey_Arp:
+#line 1704 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_InteractiveAuth_Otp:
 {
 {
 
-#line 1470 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1472 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetSurvey_Routes:
-{
-{
-
-#line 1473 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1705 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6237,7 +5360,7 @@ break;}
 }
 
 
-#line 1476 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1708 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -6303,6 +5426,480 @@ break;}
 }
 
 
+#line 598 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_InnerTraceResponseTypes (uintptr_t const  index)
+{
+
+#line 599 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 600 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_InnerTraceResponse_Invalid:
+{
+{
+
+#line 601 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 603 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_InnerTraceResponse_Pong:
+{
+{
+
+#line 604 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 607 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 562 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_MoveInstructionTypes (uintptr_t const  index)
+{
+
+#line 563 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 564 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_MoveInstruction_Ipaddr:
+{
+{
+
+#line 565 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 567 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_MoveInstruction_Xaddr:
+{
+{
+
+#line 568 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 571 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1652 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NoneTypes (uintptr_t const  index)
+{
+
+#line 1653 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 1655 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1486 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LocationAccuracityTypes (uintptr_t const  index)
+{
+
+#line 1487 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1488 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_LocationAccuracity_Hdop:
+{
+{
+
+#line 1489 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1491 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_LocationAccuracity_Vdop:
+{
+{
+
+#line 1492 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1494 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_LocationAccuracity_Pdop:
+{
+{
+
+#line 1495 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1498 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 14 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PathTypes (uintptr_t const  index)
+{
+
+#line 15 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 16 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Path_Ipaddr:
+{
+{
+
+#line 17 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 19 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Path_Category:
+{
+{
+
+#line 20 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 23 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 422 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_TraceResponseTypes (uintptr_t const  index)
+{
+
+#line 423 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 424 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_Publishing:
+{
+{
+
+#line 425 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 427 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_Epoch:
+{
+{
+
+#line 428 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 430 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_RxBytes32:
+{
+{
+
+#line 431 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 433 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_TxBytes32:
+{
+{
+
+#line 434 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 436 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_LastSeen:
+{
+{
+
+#line 437 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 439 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_FirstSeen:
+{
+{
+
+#line 440 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 442 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_Allocation:
+{
+{
+
+#line 443 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 445 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_Brokerip:
+{
+{
+
+#line 446 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 448 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_PktsSent:
+{
+{
+
+#line 449 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 451 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_PktsLost:
+{
+{
+
+#line 452 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 454 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_TraceResponse_Rtt:
+{
+{
+
+#line 455 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 458 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1622 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SensorTypes (uintptr_t const  index)
+{
+
+#line 1623 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1624 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sensor_Name:
+{
+{
+
+#line 1625 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1627 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sensor_Vtype:
+{
+{
+
+#line 1628 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1630 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Sensor_Value:
+{
+{
+
+#line 1631 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1634 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 499 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PeerConnectResponseTypes (uintptr_t const  index)
+{
+
+#line 500 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 501 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectResponse_Ok:
+{
+{
+
+#line 502 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 504 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectResponse_Handshake:
+{
+{
+
+#line 505 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 507 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectResponse_Paths:
+{
+{
+
+#line 508 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 510 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectResponse_Error:
+{
+{
+
+#line 511 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 514 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 973 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetAddressTypes (uintptr_t const  index)
+{
+
+#line 974 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 975 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetAddress_Addr:
+{
+{
+
+#line 976 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 978 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetAddress_Mask:
+{
+{
+
+#line 979 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 981 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetAddress_Broadcast:
+{
+{
+
+#line 982 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 985 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
 #line 1812 "/home/aep/proj/devguard/carrier/src/proto.zz"
 protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_GenesisUpdateTypes (uintptr_t const  index)
 {
@@ -6363,31 +5960,20 @@ break;}
 }
 
 
-#line 580 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_InnerTraceRequestTypes (uintptr_t const  index)
+#line 31 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_FilterByRoleTypes (uintptr_t const  index)
 {
 
-#line 581 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 32 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 582 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_InnerTraceRequest_Invalid:
+#line 33 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_FilterByRole_Roles:
 {
 {
 
-#line 583 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 585 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_InnerTraceRequest_Ping:
-{
-{
-
-#line 586 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 34 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6395,7 +5981,7 @@ break;}
 }
 
 
-#line 589 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 37 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -6494,20 +6080,42 @@ break;}
 }
 
 
-#line 31 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_FilterByRoleTypes (uintptr_t const  index)
+#line 887 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_MemTypes (uintptr_t const  index)
 {
 
-#line 32 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 888 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 33 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_FilterByRole_Roles:
+#line 889 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Mem_Total:
 {
 {
 
-#line 34 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 890 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 892 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Mem_Free:
+{
+{
+
+#line 893 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 895 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Mem_Available:
+{
+{
+
+#line 896 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6515,48 +6123,26 @@ break;}
 }
 
 
-#line 37 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 899 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1486 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_LocationAccuracityTypes (uintptr_t const  index)
+#line 1769 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetworkGetResultTypes (uintptr_t const  index)
 {
 
-#line 1487 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1770 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1488 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_LocationAccuracity_Hdop:
+#line 1771 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_NetworkGetResult_Address:
 {
 {
 
-#line 1489 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1491 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_LocationAccuracity_Vdop:
-{
-{
-
-#line 1492 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1494 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_LocationAccuracity_Pdop:
-{
-{
-
-#line 1495 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1772 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6564,26 +6150,70 @@ break;}
 }
 
 
-#line 1498 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1775 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1755 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_AuthListResultTypes (uintptr_t const  index)
+#line 324 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClusterConfigTypes (uintptr_t const  index)
 {
 
-#line 1756 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 325 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 1757 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_AuthListResult_Auth:
+#line 326 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterConfig_Shards:
 {
 {
 
-#line 1758 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 327 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 329 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterConfig_ExceptionalRoutes:
+{
+{
+
+#line 330 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 332 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterConfig_Epoch:
+{
+{
+
+#line 333 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 335 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterConfig_DefaultShadowPublisherLimit:
+{
+{
+
+#line 336 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 338 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClusterConfig_DefaultShadowTrafficLimit32:
+{
+{
+
+#line 339 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6591,48 +6221,37 @@ break;}
 }
 
 
-#line 1761 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 342 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 973 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_NetAddressTypes (uintptr_t const  index)
+#line 1114 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_BootloaderTypes (uintptr_t const  index)
 {
 
-#line 974 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1115 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
 case 
-#line 975 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetAddress_Addr:
+#line 1116 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Bootloader_ActiveSide:
 {
 {
 
-#line 976 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1117 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 978 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetAddress_Mask:
+#line 1119 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Bootloader_BootReason:
 {
 {
 
-#line 979 "/home/aep/proj/devguard/carrier/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 981 "/home/aep/proj/devguard/carrier/src/proto.zz"
-    carrier_proto_NetAddress_Broadcast:
-{
-{
-
-#line 982 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1120 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6640,23 +6259,404 @@ break;}
 }
 
 
-#line 985 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 1123 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 117 "/home/aep/proj/devguard/carrier/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_SupersedeTypes (uintptr_t const  index)
+#line 616 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ClaimOneTypes (uintptr_t const  index)
 {
 
-#line 118 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 617 "/home/aep/proj/devguard/carrier/src/proto.zz"
 switch (
     index) {
+case 
+#line 618 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClaimOne_Target:
+{
+{
+
+#line 619 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 621 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_ClaimOne_Resources:
+{
+{
+
+#line 622 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
 }
 
 
-#line 120 "/home/aep/proj/devguard/carrier/src/proto.zz"
+#line 625 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1132 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_BelltowerTypes (uintptr_t const  index)
+{
+
+#line 1133 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1134 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Belltower_Current:
+{
+{
+
+#line 1135 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1137 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Belltower_Previous:
+{
+{
+
+#line 1138 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1141 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 173 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_ShortcutTypes (uintptr_t const  index)
+{
+
+#line 174 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 175 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Shortcut_Shortcut:
+{
+{
+
+#line 176 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 178 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Shortcut_Expires:
+{
+{
+
+#line 179 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 182 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 470 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PeerConnectRequestTypes (uintptr_t const  index)
+{
+
+#line 471 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 472 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectRequest_Identity:
+{
+{
+
+#line 473 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 475 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectRequest_Timestamp:
+{
+{
+
+#line 476 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 478 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectRequest_Handshake:
+{
+{
+
+#line 479 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 481 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectRequest_Route:
+{
+{
+
+#line 482 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 484 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_PeerConnectRequest_Paths:
+{
+{
+
+#line 485 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 488 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 723 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_CertificateRequestTypes (uintptr_t const  index)
+{
+
+#line 724 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 725 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_CertificateRequest_LastValidEpoch:
+{
+{
+
+#line 726 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 728 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_CertificateRequest_Identity:
+{
+{
+
+#line 729 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 731 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_CertificateRequest_Claims:
+{
+{
+
+#line 732 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 735 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 90 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_PublishTypes (uintptr_t const  index)
+{
+
+#line 91 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 92 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Publish_Identity:
+{
+{
+
+#line 93 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 95 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Publish_Xaddr:
+{
+{
+
+#line 96 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 99 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1374 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_DhcpLeaseTypes (uintptr_t const  index)
+{
+
+#line 1375 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1376 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_DhcpLease_Ts:
+{
+{
+
+#line 1377 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1379 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_DhcpLease_Mac:
+{
+{
+
+#line 1380 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1382 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_DhcpLease_Ip:
+{
+{
+
+#line 1383 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1385 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_DhcpLease_Name:
+{
+{
+
+#line 1386 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1389 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 580 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_InnerTraceRequestTypes (uintptr_t const  index)
+{
+
+#line 581 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 582 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_InnerTraceRequest_Invalid:
+{
+{
+
+#line 583 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 585 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_InnerTraceRequest_Ping:
+{
+{
+
+#line 586 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 589 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 45 "/home/aep/proj/devguard/carrier/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) carrier_proto_FilterTypes (uintptr_t const  index)
+{
+
+#line 46 "/home/aep/proj/devguard/carrier/src/proto.zz"
+switch (
+    index) {
+case 
+#line 47 "/home/aep/proj/devguard/carrier/src/proto.zz"
+    carrier_proto_Filter_Role:
+{
+{
+
+#line 48 "/home/aep/proj/devguard/carrier/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 51 "/home/aep/proj/devguard/carrier/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }

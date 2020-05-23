@@ -2,6 +2,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
+
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
@@ -9,89 +21,76 @@ typedef struct string_String_t string_String;
 #line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 struct net_address_Address_t;
 typedef struct net_address_Address_t net_address_Address;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-
-#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Decoder_t;
-typedef struct protonerf_Decoder_t protonerf_Decoder;
-
-#line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
-
-#line 31 "/home/aep/proj/devguard/carrier/src/peering.zz"
-struct carrier_peering_Peering_t;
-typedef struct carrier_peering_Peering_t carrier_peering_Peering;
-
-#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-union protonerf_Value_t;
-typedef union protonerf_Value_t protonerf_Value;
-
-#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Field_t;
-typedef struct protonerf_Field_t protonerf_Field;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
 
 #line 23 "/home/aep/proj/devguard/carrier/src/peering.zz"
 struct carrier_peering_Path_t;
 typedef struct carrier_peering_Path_t carrier_peering_Path;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
+
+#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+union protonerf_Value_t;
+typedef union protonerf_Value_t protonerf_Value;
+
+#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Decoder_t;
+typedef struct protonerf_Decoder_t protonerf_Decoder;
+
+#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Field_t;
+typedef struct protonerf_Field_t protonerf_Field;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
 
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-
 #line 31 "/home/aep/proj/devguard/carrier/src/peering.zz"
 struct carrier_peering_Peering_t;
 typedef struct carrier_peering_Peering_t carrier_peering_Peering;
 
-#line 1 ""
-#include <stddef.h>
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
 
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
 
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
 
-#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
 
-#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
 
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
 
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
 
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 11 "/home/aep/proj/devguard/carrier/src/peering.zz"
+typedef enum {
+    carrier_peering_Transport_Tcp = 0,
+    carrier_peering_Transport_Udp = 1,
+
+} carrier_peering_Transport;
 
 #line 10 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 typedef enum {
@@ -100,53 +99,6 @@ typedef enum {
     net_address_Type_Ipv6 = 2,
 
 } net_address_Type;
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 16 "/home/aep/proj/devguard/carrier/src/peering.zz"
-typedef enum {
-    carrier_peering_Class_Invalid = 0,
-    carrier_peering_Class_Local = 1,
-    carrier_peering_Class_Internet = 2,
-    carrier_peering_Class_BrokerOrigin = 3,
-
-} carrier_peering_Class;
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Decoder_t {
-
-#line 106 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint8_t const *  mem ;
-
-#line 107 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t size ;
-
-#line 108 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t at ;
-}
-;
-
-#line 112 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-protonerf_Decoder protonerf_decode (uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 76 "/home/aep/proj/zz/modules/log/src/lib.zz"
-void log_debug (char const *  const  module, char const *  const  fmt, ...);
-
-#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
-
-#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_valid (net_address_Address const *  const  self);
-
-#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-uint16_t net_address_get_port (net_address_Address const *  const  self);
 
 #line 16 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 struct net_address_Address_t {
@@ -159,22 +111,65 @@ struct net_address_Address_t {
 }
 ;
 
+#line 16 "/home/aep/proj/devguard/carrier/src/peering.zz"
+typedef enum {
+    carrier_peering_Class_Invalid = 0,
+    carrier_peering_Class_Local = 1,
+    carrier_peering_Class_Internet = 2,
+    carrier_peering_Class_BrokerOrigin = 3,
+
+} carrier_peering_Class;
+
+#line 23 "/home/aep/proj/devguard/carrier/src/peering.zz"
+struct carrier_peering_Path_t {
+
+#line 24 "/home/aep/proj/devguard/carrier/src/peering.zz"
+   carrier_peering_Transport transport ;
+
+#line 25 "/home/aep/proj/devguard/carrier/src/peering.zz"
+   net_address_Address addr ;
+
+#line 26 "/home/aep/proj/devguard/carrier/src/peering.zz"
+   carrier_peering_Class klass ;
+
+#line 27 "/home/aep/proj/devguard/carrier/src/peering.zz"
+   bool active ;
+
+#line 28 "/home/aep/proj/devguard/carrier/src/peering.zz"
+   bool used ;
+}
+;
+const size_t sizeof_carrier_peering_Path = sizeof(carrier_peering_Path);
+
+#line 26 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 1 ""
+#include <stddef.h>
+
 #line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
 bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 9 "/home/aep/proj/devguard/carrier/src/proto.zz"
-typedef enum {
-    carrier_proto_Path_Ipaddr = 1,
-    carrier_proto_Path_Category = 2,
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
 
-} carrier_proto_Path;
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-#line 11 "/home/aep/proj/devguard/carrier/src/peering.zz"
-typedef enum {
-    carrier_peering_Transport_Tcp = 0,
-    carrier_peering_Transport_Udp = 1,
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
 
-} carrier_peering_Transport;
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
 
 #line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 union protonerf_Value_t {
@@ -193,37 +188,17 @@ union protonerf_Value_t {
 }
 ;
 
-#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Field_t {
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
 
-#line 127 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   bool valid ;
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
-#line 128 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint64_t index ;
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
 
-#line 130 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   protonerf_Value value ;
-
-#line 131 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint8_t const *  a ;
-}
-;
-
-#line 51 "/home/aep/proj/devguard/carrier/src/peering.zz"
-void carrier_peering_from_proto (carrier_peering_Peering*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field const  field);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -240,16 +215,16 @@ void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  ou
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1585,75 +1560,81 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
 #line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Decoder_t {
 
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+#line 106 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint8_t const *  mem ;
 
-#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+#line 107 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t size ;
 
-#line 23 "/home/aep/proj/devguard/carrier/src/peering.zz"
-struct carrier_peering_Path_t {
-
-#line 24 "/home/aep/proj/devguard/carrier/src/peering.zz"
-   carrier_peering_Transport transport ;
-
-#line 25 "/home/aep/proj/devguard/carrier/src/peering.zz"
-   net_address_Address addr ;
-
-#line 26 "/home/aep/proj/devguard/carrier/src/peering.zz"
-   carrier_peering_Class klass ;
-
-#line 27 "/home/aep/proj/devguard/carrier/src/peering.zz"
-   bool active ;
-
-#line 28 "/home/aep/proj/devguard/carrier/src/peering.zz"
-   bool used ;
-}
-;
-const size_t sizeof_carrier_peering_Path = sizeof(carrier_peering_Path);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+#line 108 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
    uintptr_t at ;
 }
 ;
 
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+#line 112 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+protonerf_Decoder protonerf_decode (uint8_t const *  const  mem, uintptr_t const  size);
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+#line 349 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
 
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+#line 76 "/home/aep/proj/zz/modules/log/src/lib.zz"
+void log_debug (char const *  const  module, char const *  const  fmt, ...);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Field_t {
+
+#line 127 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   bool valid ;
+
+#line 128 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint64_t index ;
+
+#line 130 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   protonerf_Value value ;
+
+#line 131 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint8_t const *  a ;
+}
+;
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t {
@@ -1665,6 +1646,18 @@ struct string_String_t {
    char mem[] ;
 }
 ;
+
+#line 31 "/home/aep/proj/devguard/carrier/src/peering.zz"
+struct carrier_peering_Peering_t {
+
+#line 32 "/home/aep/proj/devguard/carrier/src/peering.zz"
+   carrier_peering_Path paths[    16] ;
+}
+;
+const size_t sizeof_carrier_peering_Peering = sizeof(carrier_peering_Peering);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t {
@@ -1680,116 +1673,159 @@ struct err_Err_t {
 }
 ;
 
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
-
-#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_none (net_address_Address*  const  self);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 35 "/home/aep/proj/devguard/carrier/src/peering.zz"
-void carrier_peering_received (carrier_peering_Peering*  const  self, carrier_peering_Transport const  transport, net_address_Address const  addr, carrier_peering_Class const  klass);
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
 #line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 31 "/home/aep/proj/devguard/carrier/src/peering.zz"
-struct carrier_peering_Peering_t {
-
-#line 32 "/home/aep/proj/devguard/carrier/src/peering.zz"
-   carrier_peering_Path paths[    16] ;
-}
-;
-const size_t sizeof_carrier_peering_Peering = sizeof(carrier_peering_Peering);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
-
-#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
 
 #line 164 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
 
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 9 "/home/aep/proj/devguard/carrier/src/proto.zz"
+typedef enum {
+    carrier_proto_Path_Ipaddr = 1,
+    carrier_proto_Path_Category = 2,
 
-#line 318 "/home/aep/proj/zznursery/modules/net/src/address.zz"
-void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
+} carrier_proto_Path;
 
 #line 289 "/home/aep/proj/zznursery/modules/net/src/address.zz"
 void net_address_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 30 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_valid (net_address_Address const *  const  self);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
+
+#line 48 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
+
+#line 39 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
+
+#line 34 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_from_string (net_address_Address*  const  self, string_String const *  const  s, uintptr_t const  st);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 331 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+uint16_t net_address_get_port (net_address_Address const *  const  self);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 35 "/home/aep/proj/devguard/carrier/src/peering.zz"
+void carrier_peering_received (carrier_peering_Peering*  const  self, carrier_peering_Transport const  transport, net_address_Address const  addr, carrier_peering_Class const  klass);
+
+#line 51 "/home/aep/proj/devguard/carrier/src/peering.zz"
+void carrier_peering_from_proto (carrier_peering_Peering*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field const  field);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 21 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_none (net_address_Address*  const  self);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 70 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 216 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_ip_to_string (net_address_Address const *  const  self, string_String*  const  to, uintptr_t const  st);
+
+#line 365 "/home/aep/proj/zznursery/modules/net/src/address.zz"
+void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
+
+#line 35 "/home/aep/proj/devguard/carrier/src/peering.zz"
+void __attribute__ ((visibility ("default"))) carrier_peering_received (carrier_peering_Peering*  const  self, carrier_peering_Transport const  transport, net_address_Address const  addr, carrier_peering_Class const  klass)
+{
+  for (
+
+#line 36 "/home/aep/proj/devguard/carrier/src/peering.zz"
+  uintptr_t i  =     0;(    i <    16  );
+(    i ++)){
+if (
+#line 37 "/home/aep/proj/devguard/carrier/src/peering.zz"
+    net_address_eq(( &    self ->paths [     i] .addr),( &    addr)    )){
+
+#line 38 "/home/aep/proj/devguard/carrier/src/peering.zz"
+  return ;
+
+}
+
+if ((
+#line 40 "/home/aep/proj/devguard/carrier/src/peering.zz"
+ !    self ->paths [     i] .used)){
+
+#line 41 "/home/aep/proj/devguard/carrier/src/peering.zz"
+    self ->paths [     i] .transport =     transport;
+
+#line 42 "/home/aep/proj/devguard/carrier/src/peering.zz"
+    self ->paths [     i] .addr =     addr;
+
+#line 43 "/home/aep/proj/devguard/carrier/src/peering.zz"
+    self ->paths [     i] .klass =     klass;
+
+#line 44 "/home/aep/proj/devguard/carrier/src/peering.zz"
+    self ->paths [     i] .used =     true;
+
+#line 45 "/home/aep/proj/devguard/carrier/src/peering.zz"
+    self ->paths [     i] .active =     true;
+
+#line 46 "/home/aep/proj/devguard/carrier/src/peering.zz"
+  return ;
+
+}
+
+
+}
+
+
+}
+
 
 #line 51 "/home/aep/proj/devguard/carrier/src/peering.zz"
 void __attribute__ ((visibility ("default"))) carrier_peering_from_proto (carrier_peering_Peering*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field const  field)
@@ -1963,54 +1999,6 @@ if (
 
 #line 103 "/home/aep/proj/devguard/carrier/src/peering.zz"
     carrier_peering_received(    self,    carrier_peering_Transport_Udp,    ip,    cat    );
-
-}
-
-
-}
-
-
-#line 35 "/home/aep/proj/devguard/carrier/src/peering.zz"
-void __attribute__ ((visibility ("default"))) carrier_peering_received (carrier_peering_Peering*  const  self, carrier_peering_Transport const  transport, net_address_Address const  addr, carrier_peering_Class const  klass)
-{
-  for (
-
-#line 36 "/home/aep/proj/devguard/carrier/src/peering.zz"
-  uintptr_t i  =     0;(    i <    16  );
-(    i ++)){
-if (
-#line 37 "/home/aep/proj/devguard/carrier/src/peering.zz"
-    net_address_eq(( &    self ->paths [     i] .addr),( &    addr)    )){
-
-#line 38 "/home/aep/proj/devguard/carrier/src/peering.zz"
-  return ;
-
-}
-
-if ((
-#line 40 "/home/aep/proj/devguard/carrier/src/peering.zz"
- !    self ->paths [     i] .used)){
-
-#line 41 "/home/aep/proj/devguard/carrier/src/peering.zz"
-    self ->paths [     i] .transport =     transport;
-
-#line 42 "/home/aep/proj/devguard/carrier/src/peering.zz"
-    self ->paths [     i] .addr =     addr;
-
-#line 43 "/home/aep/proj/devguard/carrier/src/peering.zz"
-    self ->paths [     i] .klass =     klass;
-
-#line 44 "/home/aep/proj/devguard/carrier/src/peering.zz"
-    self ->paths [     i] .used =     true;
-
-#line 45 "/home/aep/proj/devguard/carrier/src/peering.zz"
-    self ->paths [     i] .active =     true;
-
-#line 46 "/home/aep/proj/devguard/carrier/src/peering.zz"
-  return ;
-
-}
-
 
 }
 

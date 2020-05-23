@@ -15,33 +15,214 @@ using sha256;
 using <stdio.h>::{printf};
 using time;
 using vault_esp32;
+using log;
 
-export fn run() {
-    new+1000 e = err::make();
-    new async  = io::select::make();
-
-    new+40000 ep = endpoint::native(&e);
-    e.abort();
-
-    cmd_common::print_identity(&ep);
+inline using "esp.h" as esp;
 
 
-    bootstrap::sync(&e, &ep.vault, net::os(), &async, time::from_seconds(10));
-    e.abort();
-
-    ep.start(&e, net::os(), &async);
-    e.abort();
-
-    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
-    e.abort();
-
-    publish::publish(&ep, &e);
-    e.abort();
-
-    config::register(&ep);
-    pub_sysinfo::register(&ep);
-
-    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
-    e.abort();
-
+export fn register_reboot(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&RebootConfig);
 }
+export fn register_ota(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&OtaConfig);
+}
+
+
+// err
+
+using <esp_err.h>::{
+    ESP_OK,
+    esp_err_t,
+    esp_err_to_name,
+};
+
+export  fn check_err (
+        err::Err+tail mut* self,
+        esp_err_t ec,
+        char* callsite_source<file>      unsafe file,
+        char* callsite_source<function>  unsafe scope,
+        usize callsite_source<line>      line,
+) -> bool
+model return == true || err::checked(*self)
+{
+    if (ec != unsafe<esp_err_t>(ESP_OK)) {
+        self->fail(err::SystemError, "%d: %s", ec, unsafe<char*>(esp_err_to_name(ec)));
+        err::backtrace(self, file, scope, line);
+        static_attest(err::checked(*self));
+        return true;
+    }
+    return false;
+}
+
+
+// ----- reboot
+
+using stream;
+using hpack;
+using slice;
+
+static stream::Config RebootConfig = stream::Config{
+    path:   "/v0/reboot",
+    open:   reboot_stream_open,
+};
+
+fn reboot_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * headers)
+    where err::checked(*e)
+{
+    let frame = self->stream(e, 20);
+    if err::check(e) { return; }
+
+    esp::TaskHandle_t mut xHandle = 0;
+    static_attest(safe(self->chan));
+    esp::xTaskCreate(close_later, "close_later", 1000, self->chan->endpoint, esp::tskIDLE_PRIORITY, &xHandle);
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    self->close();
+}
+
+fn close_later(endpoint::Endpoint mut *ep) {
+    esp::sleep(3);
+    ep->close();
+    esp::sleep(2);
+    esp::esp_restart();
+}
+
+
+
+
+// ---- ota
+
+using sha256;
+using mem;
+using string;
+
+static esp::esp_partition_t * mut ota_partition = 0;
+static esp::esp_ota_handle_t mut ota_handle     = 0;
+static sha256::Sha256 mut ota_sha256 = {0};
+static u8 mut expected_hash[32] = {0};
+
+static stream::Config OtaConfig = stream::Config{
+    path:   "/v0/ota",
+    open:   ota_stream_open,
+    close:  ota_stream_close,
+    stream: ota_stream_stream
+};
+
+fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * headers)
+    where err::checked(*e)
+{
+    let frame = self->stream(e, 100);
+    if err::check(e) { return; }
+
+    if ota_handle != 0 {
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"409", 3);
+        if err::check(e) { return; }
+        char * estr = "ota in progress";
+        hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, string::strlen(estr));
+        if err::check(e) { return; }
+        self->close();
+        return;
+    }
+
+    new it = hpack::decoder::decode(headers);
+    while (it.next(e)) {
+        if err::check(e) { return; }
+        if it.key.eq_cstr("sha256") {
+            if it.val.size != 32 {
+                hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+                if err::check(e) { return; }
+                char *estr = "invalid sha256 header size";
+                hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, string::strlen(estr));
+                if err::check(e) { return; }
+                self->close();
+                return;
+            }
+            static_attest(safe(it.val.mem));
+            static_attest(safe(expected_hash));
+            mem::copy(it.val.mem, expected_hash, 32);
+        }
+    }
+
+
+    ota_partition = unsafe<esp::esp_partition_t*>(esp::esp_ota_get_next_update_partition(0));
+    if check_err(e, unsafe<esp_err_t>(esp_ota_begin(ota_partition, esp::OTA_SIZE_UNKNOWN, &ota_handle))) {
+        char *estr = e->trace.cstr();
+        usize el   = e->trace.slen();
+        static_attest(err::checked(*e));
+        static_attest(el <= len(estr));
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
+        static_attest(err::checked(*e));
+        hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, el);
+        self->close();
+        return;
+    }
+
+
+    sha256::init(&ota_sha256);
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"100", 3);
+    if err::check(e) { return; }
+}
+
+
+
+fn ota_stream_close (stream::Stream mut* self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    if ota_handle != 0 {
+        esp::esp_ota_end(ota_handle);
+        ota_handle = 0;
+    }
+}
+
+
+
+fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    let frame = self->stream(e, 100);
+    if err::check(e) { return false; }
+
+    if msg->size == 0 {
+        u8 mut hash[32] = {0};
+        sha256::finish (&ota_sha256, hash);
+
+        static_attest(safe(expected_hash));
+
+        if !mem::eq(hash, expected_hash, 32) {
+
+            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+            if err::check(e) { return false; }
+
+            char *estr = "sha256 mismatch";
+            hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, string::strlen(estr));
+            if err::check(e) { return true; }
+
+            self->close();
+            return true;
+        }
+    }
+
+    esp_err_t mut ee = unsafe<esp_err_t>(esp_ota_end(ota_handle));
+    if (unsafe<bool>(ee == ESP_OK)) { ee = unsafe<esp_err_t>(esp_ota_set_boot_partition(ota_partition)); }
+
+    if check_err(e, ee) {
+        char *estr = e->trace.cstr();
+        usize el   = e->trace.slen();
+        static_attest(err::checked(*e));
+        static_attest(el <= len(estr));
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
+        static_attest(err::checked(*e));
+        hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, el);
+        self->close();
+        return true;
+    }
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    if err::check(e) { return true; }
+    self->close();
+    return true;
+}
+

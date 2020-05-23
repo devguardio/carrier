@@ -1,17 +1,20 @@
-/*
- * Copyright 2012-2014 Luke Dashjr
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the standard MIT license.  See COPYING for more details.
- */
+#ifndef LIBBASE58_H
+#define LIBBASE58_H
+
+#include <stdbool.h>
+#include <stddef.h>
+
+static bool b58tobin(void *bin, size_t *binsz, const char *b58, size_t b58sz);
+static bool b58enc(char *b58, size_t *b58sz, const void *bin, size_t binsz);
+//static bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *data, size_t datasz);
+//static int b58check(const void *bin, size_t binsz, const char *b58, size_t b58sz);
+//static bool (*b58_sha256_impl)(void *, const void *, size_t);
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
-#include "libbase58.h"
-
-bool (*b58_sha256_impl)(void *, const void *, size_t) = NULL;
 
 static const int8_t b58digits_map[] = {
 	-1,-1,-1,-1,-1,-1,-1,-1, -1,-1,-1,-1,-1,-1,-1,-1,
@@ -29,7 +32,7 @@ typedef uint32_t b58_almostmaxint_t;
 #define b58_almostmaxint_bits (sizeof(b58_almostmaxint_t) * 8)
 static const b58_almostmaxint_t b58_almostmaxint_mask = ((((b58_maxint_t)1) << b58_almostmaxint_bits) - 1);
 
-bool b58tobin(void *bin, size_t *binszp, const char *b58, size_t b58sz)
+static bool b58tobin(void *bin, size_t *binszp, const char *b58, size_t b58sz)
 {
 	size_t binsz = *binszp;
 	const unsigned char *b58u = (void*)b58;
@@ -105,14 +108,16 @@ bool b58tobin(void *bin, size_t *binszp, const char *b58, size_t b58sz)
 	return true;
 }
 
-static
-bool my_dblsha256(void *hash, const void *data, size_t datasz)
+#if 0
+static bool (*b58_sha256_impl)(void *, const void *, size_t) = NULL;
+
+static bool my_dblsha256(void *hash, const void *data, size_t datasz)
 {
 	uint8_t buf[0x20];
 	return b58_sha256_impl(buf, data, datasz) && b58_sha256_impl(hash, buf, sizeof(buf));
 }
 
-int b58check(const void *bin, size_t binsz, const char *base58str, size_t b58sz)
+static int b58check(const void *bin, size_t binsz, const char *base58str, size_t b58sz)
 {
 	unsigned char buf[32];
 	const uint8_t *binc = bin;
@@ -132,10 +137,11 @@ int b58check(const void *bin, size_t binsz, const char *base58str, size_t b58sz)
 	
 	return binc[0];
 }
+#endif
 
 static const char b58digits_ordered[] = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-bool b58enc(char *b58, size_t *b58sz, const void *data, size_t binsz)
+static bool b58enc(char *b58, size_t *b58sz, const void *data, size_t binsz)
 {
 	const uint8_t *bin = data;
 	int carry;
@@ -181,7 +187,9 @@ bool b58enc(char *b58, size_t *b58sz, const void *data, size_t binsz)
 	return true;
 }
 
-bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *data, size_t datasz)
+
+#if 0
+static bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *data, size_t datasz)
 {
 	uint8_t buf[1 + datasz + 0x20];
 	uint8_t *hash = &buf[1 + datasz];
@@ -196,3 +204,6 @@ bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *data, si
 	
 	return b58enc(b58c, b58c_sz, buf, 1 + datasz + 4);
 }
+#endif
+
+#endif

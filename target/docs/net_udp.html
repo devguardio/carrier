@@ -1,0 +1,187 @@
+
+<h1> module net::udp </h1>
+<h4> fn close (
+
+    ::net::udp::Socket*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sendto (
+
+    ::net::address::Address*
+    to,
+
+    ::net::udp::Socket*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::string::String*+st
+    buf,
+
+    usize
+    st,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn recvfrom (
+
+    ::net::address::Address*
+    from,
+
+    usize
+    et,
+
+    ::string::String*+st
+    buf,
+
+    ::net::udp::Socket*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    st,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn fail_with_errno (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    line,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    usize
+    tail,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn fail (
+
+    usize
+    line,
+
+    usize
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::io::Ready
+    w,
+
+    ::io::Async*
+    self,
+
+    ::io::Context*
+    ctx,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn os_new (
+
+    ::io::Async*
+    async,
+
+    ::net::address::Address*
+    addr,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::net::Engine*
+    _engine,
+
+)
+
+-&gt ::net::udp::Socket
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+
+
+
+

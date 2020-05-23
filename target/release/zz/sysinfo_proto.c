@@ -2,6 +2,22 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Decoder_t;
+typedef struct protonerf_Decoder_t protonerf_Decoder;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+
+#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+union protonerf_Value_t;
+typedef union protonerf_Value_t protonerf_Value;
+
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
@@ -9,18 +25,6 @@ typedef struct err_Err_t err_Err;
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
-#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-union protonerf_Value_t;
-typedef union protonerf_Value_t protonerf_Value;
-
-#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Field_t;
-typedef struct protonerf_Field_t protonerf_Field;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
@@ -30,69 +34,23 @@ typedef struct slice_slice_Slice_t slice_slice_Slice;
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
-#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Decoder_t;
-typedef struct protonerf_Decoder_t protonerf_Decoder;
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
+#line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Field_t;
+typedef struct protonerf_Field_t protonerf_Field;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Decoder_t;
-typedef struct protonerf_Decoder_t protonerf_Decoder;
-
-#line 124 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 462 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 typedef enum {
-    sysinfo_proto_SubscribeChange_Publish = 1,
-    sysinfo_proto_SubscribeChange_Unpublish = 2,
-    sysinfo_proto_SubscribeChange_Supersede = 3,
+    sysinfo_proto_PeerConnectRequest_Identity = 1,
+    sysinfo_proto_PeerConnectRequest_Timestamp = 2,
+    sysinfo_proto_PeerConnectRequest_Handshake = 3,
+    sysinfo_proto_PeerConnectRequest_Route = 4,
+    sysinfo_proto_PeerConnectRequest_Paths = 5,
 
-} sysinfo_proto_SubscribeChange;
-
-#line 739 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Authorization_Identity = 1,
-    sysinfo_proto_Authorization_Resource = 2,
-
-} sysinfo_proto_Authorization;
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 661 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Claim_Opt = 1,
-    sysinfo_proto_Claim_One = 2,
-    sysinfo_proto_Claim_All = 3,
-    sysinfo_proto_Claim_Revoker = 4,
-
-} sysinfo_proto_Claim;
-
-#line 1454 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_NetSurvey_Wifi = 1,
-    sysinfo_proto_NetSurvey_Dhcp = 2,
-    sysinfo_proto_NetSurvey_Arp = 3,
-    sysinfo_proto_NetSurvey_Routes = 4,
-
-} sysinfo_proto_NetSurvey;
-
-#line 1573 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Location_Latitude = 1,
-    sysinfo_proto_Location_Longitude = 2,
-    sysinfo_proto_Location_Altitude = 3,
-    sysinfo_proto_Location_Fix = 4,
-    sysinfo_proto_Location_Accuracity = 5,
-    sysinfo_proto_Location_Satellites = 6,
-    sysinfo_proto_Location_Velocity = 7,
-
-} sysinfo_proto_Location;
+} sysinfo_proto_PeerConnectRequest;
 
 #line 1329 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 typedef enum {
@@ -106,6 +64,571 @@ typedef enum {
 
 } sysinfo_proto_WifiInterface;
 
+#line 1543 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_LocationVelocity_Course = 1,
+    sysinfo_proto_LocationVelocity_Speed = 2,
+
+} sysinfo_proto_LocationVelocity;
+
+#line 9 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Path_Ipaddr = 1,
+    sysinfo_proto_Path_Category = 2,
+
+} sysinfo_proto_Path;
+
+#line 103 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Unpublish_Identity = 1,
+
+} sysinfo_proto_Unpublish;
+
+#line 374 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_TraceShadow_Xaddress = 1,
+    sysinfo_proto_TraceShadow_PublisherCount = 2,
+    sysinfo_proto_TraceShadow_PublisherSoftLimit = 3,
+    sysinfo_proto_TraceShadow_PublisherHardLimit = 4,
+    sysinfo_proto_TraceShadow_TrafficEpoch64 = 5,
+    sysinfo_proto_TraceShadow_TrafficLimit64 = 6,
+
+} sysinfo_proto_TraceShadow;
+
+#line 1733 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ConfigResult_Ok = 1,
+    sysinfo_proto_ConfigResult_Error = 2,
+
+} sysinfo_proto_ConfigResult;
+
+#line 995 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Netdev_Name = 1,
+    sysinfo_proto_Netdev_RxPkt = 2,
+    sysinfo_proto_Netdev_RxErr = 3,
+    sysinfo_proto_Netdev_TxPkt = 4,
+    sysinfo_proto_Netdev_TxErr = 5,
+    sysinfo_proto_Netdev_Up = 6,
+    sysinfo_proto_Netdev_Macaddr = 7,
+    sysinfo_proto_Netdev_Mtu = 8,
+    sysinfo_proto_Netdev_Addrs = 9,
+    sysinfo_proto_Netdev_Link = 10,
+    sysinfo_proto_Netdev_LinkChanges = 11,
+    sysinfo_proto_Netdev_LinkSpeed = 12,
+    sysinfo_proto_Netdev_LinkDuplex = 13,
+
+} sysinfo_proto_Netdev;
+
+#line 8 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+typedef enum {
+    protonerf_FieldType_Skip = 0,
+    protonerf_FieldType_Int32 = 1,
+    protonerf_FieldType_Int64 = 2,
+    protonerf_FieldType_Uint32 = 3,
+    protonerf_FieldType_Uint64 = 4,
+    protonerf_FieldType_Sint32 = 5,
+    protonerf_FieldType_Sint64 = 6,
+    protonerf_FieldType_Bool = 7,
+    protonerf_FieldType_Enum = 8,
+    protonerf_FieldType_Fixed64 = 9,
+    protonerf_FieldType_Sfixed64 = 10,
+    protonerf_FieldType_Double = 11,
+    protonerf_FieldType_String = 12,
+    protonerf_FieldType_Bytes = 13,
+    protonerf_FieldType_Message = 14,
+    protonerf_FieldType_Repeated = 15,
+    protonerf_FieldType_Fixed32 = 16,
+    protonerf_FieldType_Sfixed32 = 17,
+    protonerf_FieldType_Float = 18,
+
+} protonerf_FieldType;
+
+#line 1127 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Belltower_Current = 1,
+    sysinfo_proto_Belltower_Previous = 2,
+
+} sysinfo_proto_Belltower;
+
+#line 1145 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Sysinfo_Uname = 1,
+    sysinfo_proto_Sysinfo_Mem = 2,
+    sysinfo_proto_Sysinfo_Load = 3,
+    sysinfo_proto_Sysinfo_Firmware = 4,
+    sysinfo_proto_Sysinfo_Fs = 5,
+    sysinfo_proto_Sysinfo_Net = 6,
+    sysinfo_proto_Sysinfo_Switch = 7,
+    sysinfo_proto_Sysinfo_BoardId = 8,
+    sysinfo_proto_Sysinfo_CarrierBuildId = 9,
+    sysinfo_proto_Sysinfo_Belltower = 10,
+    sysinfo_proto_Sysinfo_Bootloader = 11,
+
+} sysinfo_proto_Sysinfo;
+
+#line 1509 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Satellite_Constellation = 1,
+    sysinfo_proto_Satellite_Prn = 2,
+    sysinfo_proto_Satellite_Elevation = 3,
+    sysinfo_proto_Satellite_Azimuth = 4,
+    sysinfo_proto_Satellite_Snr = 5,
+    sysinfo_proto_Satellite_Fix = 6,
+
+} sysinfo_proto_Satellite;
+
+#line 1518 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SatelliteTypes (uintptr_t const  index);
+
+#line 611 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ClaimOne_Target = 1,
+    sysinfo_proto_ClaimOne_Resources = 2,
+
+} sysinfo_proto_ClaimOne;
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 629 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ClaimAll_Shadow = 1,
+    sysinfo_proto_ClaimAll_Resources = 2,
+
+} sysinfo_proto_ClaimAll;
+
+#line 881 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Mem_Total = 1,
+    sysinfo_proto_Mem_Free = 2,
+    sysinfo_proto_Mem_Available = 3,
+
+} sysinfo_proto_Mem;
+
+#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+struct protonerf_Decoder_t {
+
+#line 106 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint8_t const *  mem ;
+
+#line 107 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t size ;
+
+#line 108 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t at ;
+}
+;
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 1666 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_AuthorizationAdd_Identity = 1,
+    sysinfo_proto_AuthorizationAdd_Path = 2,
+
+} sysinfo_proto_AuthorizationAdd;
+
+#line 687 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Certificate_LastValidEpoch = 1,
+    sysinfo_proto_Certificate_Identity = 2,
+    sysinfo_proto_Certificate_Authority = 3,
+    sysinfo_proto_Certificate_Serial = 4,
+    sysinfo_proto_Certificate_Claims = 5,
+
+} sysinfo_proto_Certificate;
+
+#line 695 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_CertificateTypes (uintptr_t const  index);
+
+#line 1573 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Location_Latitude = 1,
+    sysinfo_proto_Location_Longitude = 2,
+    sysinfo_proto_Location_Altitude = 3,
+    sysinfo_proto_Location_Fix = 4,
+    sysinfo_proto_Location_Accuracity = 5,
+    sysinfo_proto_Location_Satellites = 6,
+    sysinfo_proto_Location_Velocity = 7,
+
+} sysinfo_proto_Location;
+
+#line 831 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Load_Avg1 = 1,
+    sysinfo_proto_Load_Avg5 = 2,
+    sysinfo_proto_Load_Avg15 = 3,
+    sysinfo_proto_Load_Clock = 4,
+    sysinfo_proto_Load_Uptime = 5,
+    sysinfo_proto_Load_Idletime = 6,
+    sysinfo_proto_Load_ProcActive = 7,
+    sysinfo_proto_Load_ProcTotal = 8,
+    sysinfo_proto_Load_Cores = 9,
+    sysinfo_proto_Load_Threads = 10,
+
+} sysinfo_proto_Load;
+
+#line 844 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_LoadTypes (uintptr_t const  index);
+
+#line 1398 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Arp_Ip = 1,
+    sysinfo_proto_Arp_Hw = 2,
+    sysinfo_proto_Arp_Mac = 3,
+    sysinfo_proto_Arp_Dev = 4,
+    sysinfo_proto_Arp_Value = 5,
+    sysinfo_proto_Arp_Null = 6,
+
+} sysinfo_proto_Arp;
+
+#line 1199 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_WifiStation_Address = 1,
+    sysinfo_proto_WifiStation_Inactive = 2,
+    sysinfo_proto_WifiStation_RxBytes = 3,
+    sysinfo_proto_WifiStation_RxPackets = 4,
+    sysinfo_proto_WifiStation_TxBytes = 5,
+    sysinfo_proto_WifiStation_TxPackets = 6,
+    sysinfo_proto_WifiStation_TxRetries = 7,
+    sysinfo_proto_WifiStation_TxFailed = 8,
+    sysinfo_proto_WifiStation_BeaconLoss = 9,
+    sysinfo_proto_WifiStation_BeaconRx = 10,
+    sysinfo_proto_WifiStation_RxDropMisc = 11,
+    sysinfo_proto_WifiStation_Signal = 12,
+    sysinfo_proto_WifiStation_SignalAvg = 13,
+    sysinfo_proto_WifiStation_BeaconSignalAvg = 14,
+    sysinfo_proto_WifiStation_TxBitrate = 15,
+    sysinfo_proto_WifiStation_RxBitrate = 16,
+    sysinfo_proto_WifiStation_RxDuration = 17,
+    sysinfo_proto_WifiStation_Expected = 18,
+    sysinfo_proto_WifiStation_Authorized = 19,
+    sysinfo_proto_WifiStation_Authenticated = 20,
+    sysinfo_proto_WifiStation_Associated = 21,
+    sysinfo_proto_WifiStation_Preamble = 22,
+    sysinfo_proto_WifiStation_Wmm = 23,
+    sysinfo_proto_WifiStation_Mfp = 24,
+    sysinfo_proto_WifiStation_Tdls = 25,
+    sysinfo_proto_WifiStation_Dtim = 26,
+    sysinfo_proto_WifiStation_BeaconInterval = 27,
+    sysinfo_proto_WifiStation_ShortPreamble = 28,
+    sysinfo_proto_WifiStation_ShortSlotTime = 29,
+    sysinfo_proto_WifiStation_ConnectedTime = 30,
+
+} sysinfo_proto_WifiStation;
+
+#line 1232 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_WifiStationTypes (uintptr_t const  index);
+
+#line 1751 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_AuthListResult_Auth = 1,
+
+} sysinfo_proto_AuthListResult;
+
+#line 272 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ClusterShard_This = 1,
+    sysinfo_proto_ClusterShard_Other = 2,
+
+} sysinfo_proto_ClusterShard;
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 1057 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_SwitchPort_Port = 1,
+    sysinfo_proto_SwitchPort_Link = 2,
+    sysinfo_proto_SwitchPort_Speed = 3,
+    sysinfo_proto_SwitchPort_Network = 4,
+    sysinfo_proto_SwitchPort_Device = 5,
+    sysinfo_proto_SwitchPort_None = 6,
+
+} sysinfo_proto_SwitchPort;
+
+#line 1066 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SwitchPortTypes (uintptr_t const  index);
+
+#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+union protonerf_Value_t {
+
+#line 120 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uintptr_t v_len ;
+
+#line 121 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   uint64_t v_u64 ;
+
+#line 122 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   int64_t v_i64 ;
+
+#line 123 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+   bool v_bool ;
+}
+;
+
+#line 41 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Filter_Role = 1,
+
+} sysinfo_proto_Filter;
+
+#line 1367 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_DhcpLease_Ts = 1,
+    sysinfo_proto_DhcpLease_Mac = 2,
+    sysinfo_proto_DhcpLease_Ip = 3,
+    sysinfo_proto_DhcpLease_Name = 4,
+
+} sysinfo_proto_DhcpLease;
+
+#line 85 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Publish_Identity = 1,
+    sysinfo_proto_Publish_Xaddr = 2,
+
+} sysinfo_proto_Publish;
+
+#line 1638 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Sensors_Sensors = 1,
+
+} sysinfo_proto_Sensors;
+
+#line 45 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_FilterTypes (uintptr_t const  index);
+
+#line 1712 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_NetworkJoin_Secret = 1,
+
+} sysinfo_proto_NetworkJoin;
+
+#line 1716 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetworkJoinTypes (uintptr_t const  index);
+
+#line 27 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_FilterByRole_Roles = 1,
+
+} sysinfo_proto_FilterByRole;
+
+#line 1779 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_GenesisCurrent_Sha256 = 1,
+    sysinfo_proto_GenesisCurrent_Commit = 2,
+    sysinfo_proto_GenesisCurrent_Data = 3,
+    sysinfo_proto_GenesisCurrent_Stable = 4,
+
+} sysinfo_proto_GenesisCurrent;
+
+#line 575 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_InnerTraceRequest_Invalid = 1,
+    sysinfo_proto_InnerTraceRequest_Ping = 2,
+
+} sysinfo_proto_InnerTraceRequest;
+
+#line 383 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_TraceShadowTypes (uintptr_t const  index);
+
+#line 316 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ClusterConfig_Shards = 1,
+    sysinfo_proto_ClusterConfig_ExceptionalRoutes = 2,
+    sysinfo_proto_ClusterConfig_Epoch = 3,
+    sysinfo_proto_ClusterConfig_DefaultShadowPublisherLimit = 4,
+    sysinfo_proto_ClusterConfig_DefaultShadowTrafficLimit32 = 5,
+
+} sysinfo_proto_ClusterConfig;
+
+#line 324 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ClusterConfigTypes (uintptr_t const  index);
+
+#line 801 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Uname_Sysname = 1,
+    sysinfo_proto_Uname_Nodename = 2,
+    sysinfo_proto_Uname_Release = 3,
+    sysinfo_proto_Uname_Version = 4,
+    sysinfo_proto_Uname_Machine = 5,
+
+} sysinfo_proto_Uname;
+
+#line 55 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_SubscribeRequest_Shadow = 1,
+    sysinfo_proto_SubscribeRequest_Filter = 2,
+    sysinfo_proto_SubscribeRequest_GroupKey = 3,
+    sysinfo_proto_SubscribeRequest_GroupShard = 4,
+    sysinfo_proto_SubscribeRequest_ShardWeight = 5,
+
+} sysinfo_proto_SubscribeRequest;
+
+#line 1454 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_NetSurvey_Wifi = 1,
+    sysinfo_proto_NetSurvey_Dhcp = 2,
+    sysinfo_proto_NetSurvey_Arp = 3,
+    sysinfo_proto_NetSurvey_Routes = 4,
+
+} sysinfo_proto_NetSurvey;
+
+#line 1461 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetSurveyTypes (uintptr_t const  index);
+
+#line 168 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Shortcut_Shortcut = 1,
+    sysinfo_proto_Shortcut_Expires = 2,
+
+} sysinfo_proto_Shortcut;
+
+#line 557 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_MoveInstruction_Ipaddr = 1,
+    sysinfo_proto_MoveInstruction_Xaddr = 2,
+
+} sysinfo_proto_MoveInstruction;
+
+#line 593 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_InnerTraceResponse_Invalid = 1,
+    sysinfo_proto_InnerTraceResponse_Pong = 2,
+
+} sysinfo_proto_InnerTraceResponse;
+
+#line 598 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_InnerTraceResponseTypes (uintptr_t const  index);
+
+#line 204 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ConnectRequest_Target = 1,
+    sysinfo_proto_ConnectRequest_Timestamp = 2,
+    sysinfo_proto_ConnectRequest_Handshake = 3,
+    sysinfo_proto_ConnectRequest_Paths = 4,
+    sysinfo_proto_ConnectRequest_Principal = 5,
+    sysinfo_proto_ConnectRequest_Timeout = 6,
+    sysinfo_proto_ConnectRequest_Shortcut = 7,
+
+} sysinfo_proto_ConnectRequest;
+
+#line 1 ""
+#include <stddef.h>
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 360 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_TraceRequest_Target = 1,
+
+} sysinfo_proto_TraceRequest;
+
+#line 146 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_PublishRequest_Xaddr = 1,
+    sysinfo_proto_PublishRequest_Shadow = 2,
+    sysinfo_proto_PublishRequest_Shortcut = 3,
+
+} sysinfo_proto_PublishRequest;
+
+#line 152 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_PublishRequestTypes (uintptr_t const  index);
+
+#line 757 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_AuthorizationList_A = 1,
+
+} sysinfo_proto_AuthorizationList;
+
+#line 761 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_AuthorizationListTypes (uintptr_t const  index);
+
+#line 1786 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_GenesisCurrentTypes (uintptr_t const  index);
+
+#line 647 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Revoker_Identity = 1,
+
+} sysinfo_proto_Revoker;
+
+#line 518 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ProtoHeader_Len = 1,
+
+} sysinfo_proto_ProtoHeader;
+
+#line 522 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ProtoHeaderTypes (uintptr_t const  index);
+
+#line 1805 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_GenesisUpdate_Sha256 = 1,
+    sysinfo_proto_GenesisUpdate_PreviousSha256 = 2,
+    sysinfo_proto_GenesisUpdate_Commit = 3,
+    sysinfo_proto_GenesisUpdate_Data = 4,
+
+} sysinfo_proto_GenesisUpdate;
+
+#line 408 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_TraceResponse_Publishing = 1,
+    sysinfo_proto_TraceResponse_Epoch = 2,
+    sysinfo_proto_TraceResponse_RxBytes32 = 3,
+    sysinfo_proto_TraceResponse_TxBytes32 = 4,
+    sysinfo_proto_TraceResponse_LastSeen = 5,
+    sysinfo_proto_TraceResponse_FirstSeen = 6,
+    sysinfo_proto_TraceResponse_Allocation = 7,
+    sysinfo_proto_TraceResponse_Brokerip = 8,
+    sysinfo_proto_TraceResponse_PktsSent = 9,
+    sysinfo_proto_TraceResponse_PktsLost = 10,
+    sysinfo_proto_TraceResponse_Rtt = 11,
+
+} sysinfo_proto_TraceResponse;
+
+#line 616 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ClaimOneTypes (uintptr_t const  index);
+
+#line 186 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_PublishChange_Supersede = 1,
+    sysinfo_proto_PublishChange_Shortcut = 2,
+
+} sysinfo_proto_PublishChange;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 290 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ExceptionalRoute_Identity = 1,
+    sysinfo_proto_ExceptionalRoute_This = 2,
+    sysinfo_proto_ExceptionalRoute_Other = 3,
+    sysinfo_proto_ExceptionalRoute_Blocked = 4,
+
+} sysinfo_proto_ExceptionalRoute;
+
 #line 771 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 typedef enum {
     sysinfo_proto_DiscoveryResponse_CarrierRevision = 1,
@@ -115,6 +638,253 @@ typedef enum {
     sysinfo_proto_DiscoveryResponse_Paths = 5,
 
 } sysinfo_proto_DiscoveryResponse;
+
+#line 779 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_DiscoveryResponseTypes (uintptr_t const  index);
+
+#line 492 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_PeerConnectResponse_Ok = 1,
+    sysinfo_proto_PeerConnectResponse_Handshake = 2,
+    sysinfo_proto_PeerConnectResponse_Paths = 3,
+    sysinfo_proto_PeerConnectResponse_Error = 4,
+
+} sysinfo_proto_PeerConnectResponse;
+
+#line 929 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Firmware_Board = 1,
+    sysinfo_proto_Firmware_Distro = 2,
+    sysinfo_proto_Firmware_Release = 3,
+    sysinfo_proto_Firmware_Revision = 4,
+    sysinfo_proto_Firmware_Builder = 5,
+    sysinfo_proto_Firmware_Finger = 6,
+    sysinfo_proto_Firmware_AndroidApiLevel = 7,
+
+} sysinfo_proto_Firmware;
+
+#line 1684 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_AuthorizationDel_Identity = 1,
+
+} sysinfo_proto_AuthorizationDel;
+
+#line 1688 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_AuthorizationDelTypes (uintptr_t const  index);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 499 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_PeerConnectResponseTypes (uintptr_t const  index);
+
+#line 967 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_NetAddress_Addr = 1,
+    sysinfo_proto_NetAddress_Mask = 2,
+    sysinfo_proto_NetAddress_Broadcast = 3,
+
+} sysinfo_proto_NetAddress;
+
+#line 242 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ConnectResponse_Ok = 1,
+    sysinfo_proto_ConnectResponse_Handshake = 2,
+    sysinfo_proto_ConnectResponse_Route = 3,
+    sysinfo_proto_ConnectResponse_Paths = 4,
+    sysinfo_proto_ConnectResponse_Error = 5,
+
+} sysinfo_proto_ConnectResponse;
+
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 1091 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Switch_Name = 1,
+    sysinfo_proto_Switch_Ports = 2,
+
+} sysinfo_proto_Switch;
+
+#line 124 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_SubscribeChange_Publish = 1,
+    sysinfo_proto_SubscribeChange_Unpublish = 2,
+    sysinfo_proto_SubscribeChange_Supersede = 3,
+
+} sysinfo_proto_SubscribeChange;
+
+#line 1432 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_NetRoute_Destination = 1,
+    sysinfo_proto_NetRoute_Gateway = 2,
+    sysinfo_proto_NetRoute_Source = 3,
+
+} sysinfo_proto_NetRoute;
+
+#line 1339 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_WifiInterfaceTypes (uintptr_t const  index);
+
+#line 1407 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ArpTypes (uintptr_t const  index);
+
+#line 973 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetAddressTypes (uintptr_t const  index);
+
+#line 717 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_CertificateRequest_LastValidEpoch = 1,
+    sysinfo_proto_CertificateRequest_Identity = 2,
+    sysinfo_proto_CertificateRequest_Claims = 3,
+
+} sysinfo_proto_CertificateRequest;
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 539 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Confirmation_Ok = 1,
+    sysinfo_proto_Confirmation_Error = 2,
+
+} sysinfo_proto_Confirmation;
+
+#line 544 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ConfirmationTypes (uintptr_t const  index);
+
+#line 277 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ClusterShardTypes (uintptr_t const  index);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 1738 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ConfigResultTypes (uintptr_t const  index);
+
+#line 809 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_UnameTypes (uintptr_t const  index);
+
+#line 661 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Claim_Opt = 1,
+    sysinfo_proto_Claim_One = 2,
+    sysinfo_proto_Claim_All = 3,
+    sysinfo_proto_Claim_Revoker = 4,
+
+} sysinfo_proto_Claim;
+
+#line 668 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ClaimTypes (uintptr_t const  index);
+
+#line 1765 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_NetworkGetResult_Address = 2,
+
+} sysinfo_proto_NetworkGetResult;
+
+#line 250 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ConnectResponseTypes (uintptr_t const  index);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 297 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ExceptionalRouteTypes (uintptr_t const  index);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 107 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_UnpublishTypes (uintptr_t const  index);
+
+#line 1652 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NoneTypes (uintptr_t const  index);
+
+#line 173 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ShortcutTypes (uintptr_t const  index);
+
+#line 739 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Authorization_Identity = 1,
+    sysinfo_proto_Authorization_Resource = 2,
+
+} sysinfo_proto_Authorization;
+
+#line 903 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_FileSystem_Path = 1,
+    sysinfo_proto_FileSystem_Blocksize = 2,
+    sysinfo_proto_FileSystem_Total = 3,
+    sysinfo_proto_FileSystem_Free = 4,
+
+} sysinfo_proto_FileSystem;
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 346 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_ClusterState_Config = 1,
+
+} sysinfo_proto_ClusterState;
+
+#line 1109 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Bootloader_ActiveSide = 1,
+    sysinfo_proto_Bootloader_BootReason = 2,
+
+} sysinfo_proto_Bootloader;
+
+#line 1096 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SwitchTypes (uintptr_t const  index);
+
+#line 130 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SubscribeChangeTypes (uintptr_t const  index);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 989 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Netdev__Duplex_Invalid = 0,
+    sysinfo_proto_Netdev__Duplex_Half = 1,
+    sysinfo_proto_Netdev__Duplex_Full = 2,
+
+} sysinfo_proto_Netdev__Duplex;
+
+#line 31 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_FilterByRoleTypes (uintptr_t const  index);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -131,16 +901,16 @@ typedef enum {
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1476,123 +2246,14 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 27 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_FilterByRole_Roles = 1,
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 
-} sysinfo_proto_FilterByRole;
+#line 117 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SupersedeTypes (uintptr_t const  index);
 
-#line 1616 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Sensor_Name = 1,
-    sysinfo_proto_Sensor_Vtype = 2,
-    sysinfo_proto_Sensor_Value = 3,
-
-} sysinfo_proto_Sensor;
-
-#line 8 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-typedef enum {
-    protonerf_FieldType_Skip = 0,
-    protonerf_FieldType_Int32 = 1,
-    protonerf_FieldType_Int64 = 2,
-    protonerf_FieldType_Uint32 = 3,
-    protonerf_FieldType_Uint64 = 4,
-    protonerf_FieldType_Sint32 = 5,
-    protonerf_FieldType_Sint64 = 6,
-    protonerf_FieldType_Bool = 7,
-    protonerf_FieldType_Enum = 8,
-    protonerf_FieldType_Fixed64 = 9,
-    protonerf_FieldType_Sfixed64 = 10,
-    protonerf_FieldType_Double = 11,
-    protonerf_FieldType_String = 12,
-    protonerf_FieldType_Bytes = 13,
-    protonerf_FieldType_Message = 14,
-    protonerf_FieldType_Repeated = 15,
-    protonerf_FieldType_Fixed32 = 16,
-    protonerf_FieldType_Sfixed32 = 17,
-    protonerf_FieldType_Float = 18,
-
-} protonerf_FieldType;
-
-#line 1622 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SensorTypes (uintptr_t const  index);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 1509 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Satellite_Constellation = 1,
-    sysinfo_proto_Satellite_Prn = 2,
-    sysinfo_proto_Satellite_Elevation = 3,
-    sysinfo_proto_Satellite_Azimuth = 4,
-    sysinfo_proto_Satellite_Snr = 5,
-    sysinfo_proto_Satellite_Fix = 6,
-
-} sysinfo_proto_Satellite;
-
-#line 1 ""
-#include <stddef.h>
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 492 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_PeerConnectResponse_Ok = 1,
-    sysinfo_proto_PeerConnectResponse_Handshake = 2,
-    sysinfo_proto_PeerConnectResponse_Paths = 3,
-    sysinfo_proto_PeerConnectResponse_Error = 4,
-
-} sysinfo_proto_PeerConnectResponse;
-
-#line 575 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_InnerTraceRequest_Invalid = 1,
-    sysinfo_proto_InnerTraceRequest_Ping = 2,
-
-} sysinfo_proto_InnerTraceRequest;
-
-#line 831 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Load_Avg1 = 1,
-    sysinfo_proto_Load_Avg5 = 2,
-    sysinfo_proto_Load_Avg15 = 3,
-    sysinfo_proto_Load_Clock = 4,
-    sysinfo_proto_Load_Uptime = 5,
-    sysinfo_proto_Load_Idletime = 6,
-    sysinfo_proto_Load_ProcActive = 7,
-    sysinfo_proto_Load_ProcTotal = 8,
-    sysinfo_proto_Load_Cores = 9,
-    sysinfo_proto_Load_Threads = 10,
-
-} sysinfo_proto_Load;
-
-#line 2 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Path__Category_Invalid = 0,
-    sysinfo_proto_Path__Category_Local = 1,
-    sysinfo_proto_Path__Category_Internet = 2,
-    sysinfo_proto_Path__Category_BrokerOrigin = 3,
-
-} sysinfo_proto_Path__Category;
-
-#line 119 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-union protonerf_Value_t {
-
-#line 120 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t v_len ;
-
-#line 121 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint64_t v_u64 ;
-
-#line 122 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   int64_t v_i64 ;
-
-#line 123 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   bool v_bool ;
-}
-;
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
 
 #line 126 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
 struct protonerf_Field_t {
@@ -1611,25 +2272,6 @@ struct protonerf_Field_t {
 }
 ;
 
-#line 1805 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_GenesisUpdate_Sha256 = 1,
-    sysinfo_proto_GenesisUpdate_PreviousSha256 = 2,
-    sysinfo_proto_GenesisUpdate_Commit = 3,
-    sysinfo_proto_GenesisUpdate_Data = 4,
-
-} sysinfo_proto_GenesisUpdate;
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 1127 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Belltower_Current = 1,
-    sysinfo_proto_Belltower_Previous = 2,
-
-} sysinfo_proto_Belltower;
-
 #line 1480 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 typedef enum {
     sysinfo_proto_LocationAccuracity_Hdop = 1,
@@ -1638,747 +2280,68 @@ typedef enum {
 
 } sysinfo_proto_LocationAccuracity;
 
-#line 9 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Path_Ipaddr = 1,
-    sysinfo_proto_Path_Category = 2,
-
-} sysinfo_proto_Path;
-
-#line 995 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Netdev_Name = 1,
-    sysinfo_proto_Netdev_RxPkt = 2,
-    sysinfo_proto_Netdev_RxErr = 3,
-    sysinfo_proto_Netdev_TxPkt = 4,
-    sysinfo_proto_Netdev_TxErr = 5,
-    sysinfo_proto_Netdev_Up = 6,
-    sysinfo_proto_Netdev_Macaddr = 7,
-    sysinfo_proto_Netdev_Mtu = 8,
-    sysinfo_proto_Netdev_Addrs = 9,
-    sysinfo_proto_Netdev_Link = 10,
-    sysinfo_proto_Netdev_LinkChanges = 11,
-    sysinfo_proto_Netdev_LinkSpeed = 12,
-    sysinfo_proto_Netdev_LinkDuplex = 13,
-
-} sysinfo_proto_Netdev;
-
-#line 1109 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Bootloader_ActiveSide = 1,
-    sysinfo_proto_Bootloader_BootReason = 2,
-
-} sysinfo_proto_Bootloader;
-
-#line 1114 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_BootloaderTypes (uintptr_t const  index);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 929 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Firmware_Board = 1,
-    sysinfo_proto_Firmware_Distro = 2,
-    sysinfo_proto_Firmware_Release = 3,
-    sysinfo_proto_Firmware_Revision = 4,
-    sysinfo_proto_Firmware_Builder = 5,
-    sysinfo_proto_Firmware_Finger = 6,
-    sysinfo_proto_Firmware_AndroidApiLevel = 7,
-
-} sysinfo_proto_Firmware;
-
-#line 1199 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_WifiStation_Address = 1,
-    sysinfo_proto_WifiStation_Inactive = 2,
-    sysinfo_proto_WifiStation_RxBytes = 3,
-    sysinfo_proto_WifiStation_RxPackets = 4,
-    sysinfo_proto_WifiStation_TxBytes = 5,
-    sysinfo_proto_WifiStation_TxPackets = 6,
-    sysinfo_proto_WifiStation_TxRetries = 7,
-    sysinfo_proto_WifiStation_TxFailed = 8,
-    sysinfo_proto_WifiStation_BeaconLoss = 9,
-    sysinfo_proto_WifiStation_BeaconRx = 10,
-    sysinfo_proto_WifiStation_RxDropMisc = 11,
-    sysinfo_proto_WifiStation_Signal = 12,
-    sysinfo_proto_WifiStation_SignalAvg = 13,
-    sysinfo_proto_WifiStation_BeaconSignalAvg = 14,
-    sysinfo_proto_WifiStation_TxBitrate = 15,
-    sysinfo_proto_WifiStation_RxBitrate = 16,
-    sysinfo_proto_WifiStation_RxDuration = 17,
-    sysinfo_proto_WifiStation_Expected = 18,
-    sysinfo_proto_WifiStation_Authorized = 19,
-    sysinfo_proto_WifiStation_Authenticated = 20,
-    sysinfo_proto_WifiStation_Associated = 21,
-    sysinfo_proto_WifiStation_Preamble = 22,
-    sysinfo_proto_WifiStation_Wmm = 23,
-    sysinfo_proto_WifiStation_Mfp = 24,
-    sysinfo_proto_WifiStation_Tdls = 25,
-    sysinfo_proto_WifiStation_Dtim = 26,
-    sysinfo_proto_WifiStation_BeaconInterval = 27,
-    sysinfo_proto_WifiStation_ShortPreamble = 28,
-    sysinfo_proto_WifiStation_ShortSlotTime = 29,
-    sysinfo_proto_WifiStation_ConnectedTime = 30,
-
-} sysinfo_proto_WifiStation;
-
-#line 117 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SupersedeTypes (uintptr_t const  index);
-
-#line 168 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Shortcut_Shortcut = 1,
-    sysinfo_proto_Shortcut_Expires = 2,
-
-} sysinfo_proto_Shortcut;
-
-#line 1432 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_NetRoute_Destination = 1,
-    sysinfo_proto_NetRoute_Gateway = 2,
-    sysinfo_proto_NetRoute_Source = 3,
-
-} sysinfo_proto_NetRoute;
-
-#line 1779 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_GenesisCurrent_Sha256 = 1,
-    sysinfo_proto_GenesisCurrent_Commit = 2,
-    sysinfo_proto_GenesisCurrent_Data = 3,
-    sysinfo_proto_GenesisCurrent_Stable = 4,
-
-} sysinfo_proto_GenesisCurrent;
-
-#line 1786 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_GenesisCurrentTypes (uintptr_t const  index);
-
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#line 1057 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_SwitchPort_Port = 1,
-    sysinfo_proto_SwitchPort_Link = 2,
-    sysinfo_proto_SwitchPort_Speed = 3,
-    sysinfo_proto_SwitchPort_Network = 4,
-    sysinfo_proto_SwitchPort_Device = 5,
-    sysinfo_proto_SwitchPort_None = 6,
-
-} sysinfo_proto_SwitchPort;
-
-#line 629 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ClaimAll_Shadow = 1,
-    sysinfo_proto_ClaimAll_Resources = 2,
-
-} sysinfo_proto_ClaimAll;
-
-#line 374 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_TraceShadow_Xaddress = 1,
-    sysinfo_proto_TraceShadow_PublisherCount = 2,
-    sysinfo_proto_TraceShadow_PublisherSoftLimit = 3,
-    sysinfo_proto_TraceShadow_PublisherHardLimit = 4,
-    sysinfo_proto_TraceShadow_TrafficEpoch64 = 5,
-    sysinfo_proto_TraceShadow_TrafficLimit64 = 6,
-
-} sysinfo_proto_TraceShadow;
-
-#line 1398 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Arp_Ip = 1,
-    sysinfo_proto_Arp_Hw = 2,
-    sysinfo_proto_Arp_Mac = 3,
-    sysinfo_proto_Arp_Dev = 4,
-    sysinfo_proto_Arp_Value = 5,
-    sysinfo_proto_Arp_Null = 6,
-
-} sysinfo_proto_Arp;
-
-#line 1712 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_NetworkJoin_Secret = 1,
-
-} sysinfo_proto_NetworkJoin;
-
-#line 316 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ClusterConfig_Shards = 1,
-    sysinfo_proto_ClusterConfig_ExceptionalRoutes = 2,
-    sysinfo_proto_ClusterConfig_Epoch = 3,
-    sysinfo_proto_ClusterConfig_DefaultShadowPublisherLimit = 4,
-    sysinfo_proto_ClusterConfig_DefaultShadowTrafficLimit32 = 5,
-
-} sysinfo_proto_ClusterConfig;
-
-#line 408 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_TraceResponse_Publishing = 1,
-    sysinfo_proto_TraceResponse_Epoch = 2,
-    sysinfo_proto_TraceResponse_RxBytes32 = 3,
-    sysinfo_proto_TraceResponse_TxBytes32 = 4,
-    sysinfo_proto_TraceResponse_LastSeen = 5,
-    sysinfo_proto_TraceResponse_FirstSeen = 6,
-    sysinfo_proto_TraceResponse_Allocation = 7,
-    sysinfo_proto_TraceResponse_Brokerip = 8,
-    sysinfo_proto_TraceResponse_PktsSent = 9,
-    sysinfo_proto_TraceResponse_PktsLost = 10,
-    sysinfo_proto_TraceResponse_Rtt = 11,
-
-} sysinfo_proto_TraceResponse;
-
-#line 717 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_CertificateRequest_LastValidEpoch = 1,
-    sysinfo_proto_CertificateRequest_Identity = 2,
-    sysinfo_proto_CertificateRequest_Claims = 3,
-
-} sysinfo_proto_CertificateRequest;
-
-#line 462 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_PeerConnectRequest_Identity = 1,
-    sysinfo_proto_PeerConnectRequest_Timestamp = 2,
-    sysinfo_proto_PeerConnectRequest_Handshake = 3,
-    sysinfo_proto_PeerConnectRequest_Route = 4,
-    sysinfo_proto_PeerConnectRequest_Paths = 5,
-
-} sysinfo_proto_PeerConnectRequest;
-
-#line 593 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_InnerTraceResponse_Invalid = 1,
-    sysinfo_proto_InnerTraceResponse_Pong = 2,
-
-} sysinfo_proto_InnerTraceResponse;
-
-#line 1765 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_NetworkGetResult_Address = 2,
-
-} sysinfo_proto_NetworkGetResult;
-
-#line 1091 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Switch_Name = 1,
-    sysinfo_proto_Switch_Ports = 2,
-
-} sysinfo_proto_Switch;
-
-#line 1145 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Sysinfo_Uname = 1,
-    sysinfo_proto_Sysinfo_Mem = 2,
-    sysinfo_proto_Sysinfo_Load = 3,
-    sysinfo_proto_Sysinfo_Firmware = 4,
-    sysinfo_proto_Sysinfo_Fs = 5,
-    sysinfo_proto_Sysinfo_Net = 6,
-    sysinfo_proto_Sysinfo_Switch = 7,
-    sysinfo_proto_Sysinfo_BoardId = 8,
-    sysinfo_proto_Sysinfo_CarrierBuildId = 9,
-    sysinfo_proto_Sysinfo_Belltower = 10,
-    sysinfo_proto_Sysinfo_Bootloader = 11,
-
-} sysinfo_proto_Sysinfo;
-
-#line 1159 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SysinfoTypes (uintptr_t const  index);
-
-#line 346 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ClusterState_Config = 1,
-
-} sysinfo_proto_ClusterState;
-
-#line 350 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ClusterStateTypes (uintptr_t const  index);
-
-#line 360 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_TraceRequest_Target = 1,
-
-} sysinfo_proto_TraceRequest;
-
-#line 1543 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_LocationVelocity_Course = 1,
-    sysinfo_proto_LocationVelocity_Speed = 2,
-
-} sysinfo_proto_LocationVelocity;
-
-#line 801 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Uname_Sysname = 1,
-    sysinfo_proto_Uname_Nodename = 2,
-    sysinfo_proto_Uname_Release = 3,
-    sysinfo_proto_Uname_Version = 4,
-    sysinfo_proto_Uname_Machine = 5,
-
-} sysinfo_proto_Uname;
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 881 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Mem_Total = 1,
-    sysinfo_proto_Mem_Free = 2,
-    sysinfo_proto_Mem_Available = 3,
-
-} sysinfo_proto_Mem;
-
-#line 1733 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ConfigResult_Ok = 1,
-    sysinfo_proto_ConfigResult_Error = 2,
-
-} sysinfo_proto_ConfigResult;
-
-#line 647 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Revoker_Identity = 1,
-
-} sysinfo_proto_Revoker;
-
-#line 651 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_RevokerTypes (uintptr_t const  index);
-
-#line 611 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ClaimOne_Target = 1,
-    sysinfo_proto_ClaimOne_Resources = 2,
-
-} sysinfo_proto_ClaimOne;
-
-#line 1684 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_AuthorizationDel_Identity = 1,
-
-} sysinfo_proto_AuthorizationDel;
-
-#line 31 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_FilterByRoleTypes (uintptr_t const  index);
-
-#line 1518 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SatelliteTypes (uintptr_t const  index);
-
-#line 55 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_SubscribeRequest_Shadow = 1,
-    sysinfo_proto_SubscribeRequest_Filter = 2,
-    sysinfo_proto_SubscribeRequest_GroupKey = 3,
-    sysinfo_proto_SubscribeRequest_GroupShard = 4,
-    sysinfo_proto_SubscribeRequest_ShardWeight = 5,
-
-} sysinfo_proto_SubscribeRequest;
-
-#line 63 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SubscribeRequestTypes (uintptr_t const  index);
-
-#line 41 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Filter_Role = 1,
-
-} sysinfo_proto_Filter;
-
-#line 272 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ClusterShard_This = 1,
-    sysinfo_proto_ClusterShard_Other = 2,
-
-} sysinfo_proto_ClusterShard;
-
-#line 277 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ClusterShardTypes (uintptr_t const  index);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 539 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Confirmation_Ok = 1,
-    sysinfo_proto_Confirmation_Error = 2,
-
-} sysinfo_proto_Confirmation;
-
 #line 1486 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType sysinfo_proto_LocationAccuracityTypes (uintptr_t const  index);
-
-#line 103 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Unpublish_Identity = 1,
-
-} sysinfo_proto_Unpublish;
-
-#line 1716 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetworkJoinTypes (uintptr_t const  index);
-
-#line 1066 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SwitchPortTypes (uintptr_t const  index);
-
-#line 687 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Certificate_LastValidEpoch = 1,
-    sysinfo_proto_Certificate_Identity = 2,
-    sysinfo_proto_Certificate_Authority = 3,
-    sysinfo_proto_Certificate_Serial = 4,
-    sysinfo_proto_Certificate_Claims = 5,
-
-} sysinfo_proto_Certificate;
-
-#line 499 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_PeerConnectResponseTypes (uintptr_t const  index);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 186 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_PublishChange_Supersede = 1,
-    sysinfo_proto_PublishChange_Shortcut = 2,
-
-} sysinfo_proto_PublishChange;
-
-#line 45 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_FilterTypes (uintptr_t const  index);
-
-#line 146 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_PublishRequest_Xaddr = 1,
-    sysinfo_proto_PublishRequest_Shadow = 2,
-    sysinfo_proto_PublishRequest_Shortcut = 3,
-
-} sysinfo_proto_PublishRequest;
-
-#line 152 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_PublishRequestTypes (uintptr_t const  index);
-
-#line 903 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_FileSystem_Path = 1,
-    sysinfo_proto_FileSystem_Blocksize = 2,
-    sysinfo_proto_FileSystem_Total = 3,
-    sysinfo_proto_FileSystem_Free = 4,
-
-} sysinfo_proto_FileSystem;
-
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 364 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_TraceRequestTypes (uintptr_t const  index);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 290 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ExceptionalRoute_Identity = 1,
-    sysinfo_proto_ExceptionalRoute_This = 2,
-    sysinfo_proto_ExceptionalRoute_Other = 3,
-    sysinfo_proto_ExceptionalRoute_Blocked = 4,
-
-} sysinfo_proto_ExceptionalRoute;
-
-#line 1393 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Arp__HwType_Unknown = 0,
-    sysinfo_proto_Arp__HwType_Ethernet = 1,
-
-} sysinfo_proto_Arp__HwType;
-
-#line 470 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_PeerConnectRequestTypes (uintptr_t const  index);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 939 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_FirmwareTypes (uintptr_t const  index);
-
-#line 204 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ConnectRequest_Target = 1,
-    sysinfo_proto_ConnectRequest_Timestamp = 2,
-    sysinfo_proto_ConnectRequest_Handshake = 3,
-    sysinfo_proto_ConnectRequest_Paths = 4,
-    sysinfo_proto_ConnectRequest_Principal = 5,
-    sysinfo_proto_ConnectRequest_Timeout = 6,
-    sysinfo_proto_ConnectRequest_Shortcut = 7,
-
-} sysinfo_proto_ConnectRequest;
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 1726 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetworkGetTypes (uintptr_t const  index);
-
-#line 723 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_CertificateRequestTypes (uintptr_t const  index);
-
-#line 1611 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Sensor__ValueType_None = 0,
-    sysinfo_proto_Sensor__ValueType_MilliCelsius = 1,
-
-} sysinfo_proto_Sensor__ValueType;
-
-#line 695 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_CertificateTypes (uintptr_t const  index);
-
-#line 1011 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetdevTypes (uintptr_t const  index);
-
-#line 1738 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ConfigResultTypes (uintptr_t const  index);
-
-#line 544 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ConfirmationTypes (uintptr_t const  index);
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 557 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_MoveInstruction_Ipaddr = 1,
-    sysinfo_proto_MoveInstruction_Xaddr = 2,
-
-} sysinfo_proto_MoveInstruction;
-
-#line 1666 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_AuthorizationAdd_Identity = 1,
-    sysinfo_proto_AuthorizationAdd_Path = 2,
-
-} sysinfo_proto_AuthorizationAdd;
-
-#line 1769 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetworkGetResultTypes (uintptr_t const  index);
-
-#line 1698 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_InteractiveAuth_Otp = 1,
-
-} sysinfo_proto_InteractiveAuth;
-
-#line 242 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ConnectResponse_Ok = 1,
-    sysinfo_proto_ConnectResponse_Handshake = 2,
-    sysinfo_proto_ConnectResponse_Route = 3,
-    sysinfo_proto_ConnectResponse_Paths = 4,
-    sysinfo_proto_ConnectResponse_Error = 5,
-
-} sysinfo_proto_ConnectResponse;
-
-#line 250 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ConnectResponseTypes (uintptr_t const  index);
-
-#line 1751 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_AuthListResult_Auth = 1,
-
-} sysinfo_proto_AuthListResult;
-
-#line 1461 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetSurveyTypes (uintptr_t const  index);
-
-#line 757 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_AuthorizationList_A = 1,
-
-} sysinfo_proto_AuthorizationList;
-
-#line 761 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_AuthorizationListTypes (uintptr_t const  index);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 1096 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SwitchTypes (uintptr_t const  index);
-
-#line 779 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_DiscoveryResponseTypes (uintptr_t const  index);
-
-#line 214 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ConnectRequestTypes (uintptr_t const  index);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 1438 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetRouteTypes (uintptr_t const  index);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 1548 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_LocationVelocityTypes (uintptr_t const  index);
-
-#line 1132 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_BelltowerTypes (uintptr_t const  index);
-
-#line 634 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ClaimAllTypes (uintptr_t const  index);
-
-#line 967 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_NetAddress_Addr = 1,
-    sysinfo_proto_NetAddress_Mask = 2,
-    sysinfo_proto_NetAddress_Broadcast = 3,
-
-} sysinfo_proto_NetAddress;
-
-#line 973 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NetAddressTypes (uintptr_t const  index);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 130 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SubscribeChangeTypes (uintptr_t const  index);
-
-#line 107 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_UnpublishTypes (uintptr_t const  index);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 324 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ClusterConfigTypes (uintptr_t const  index);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 518 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_ProtoHeader_Len = 1,
-
-} sysinfo_proto_ProtoHeader;
-
-#line 532 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_EmptyTypes (uintptr_t const  index);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 1407 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ArpTypes (uintptr_t const  index);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 1583 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_LocationTypes (uintptr_t const  index);
-
-#line 1652 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_NoneTypes (uintptr_t const  index);
-
-#line 422 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_TraceResponseTypes (uintptr_t const  index);
-
-#line 85 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Publish_Identity = 1,
-    sysinfo_proto_Publish_Xaddr = 2,
-
-} sysinfo_proto_Publish;
-
-#line 90 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_PublishTypes (uintptr_t const  index);
 
 #line 744 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType sysinfo_proto_AuthorizationTypes (uintptr_t const  index);
 
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
 
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+#line 1659 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_AuthorizationGetTypes (uintptr_t const  index);
 
-#line 580 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_InnerTraceRequestTypes (uintptr_t const  index);
+#line 1114 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_BootloaderTypes (uintptr_t const  index);
 
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
 
-#line 1688 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_AuthorizationDelTypes (uintptr_t const  index);
+#line 887 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_MemTypes (uintptr_t const  index);
 
-#line 173 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ShortcutTypes (uintptr_t const  index);
+#line 651 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_RevokerTypes (uintptr_t const  index);
 
-#line 522 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ProtoHeaderTypes (uintptr_t const  index);
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
 
-#line 14 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_PathTypes (uintptr_t const  index);
+#line 1671 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_AuthorizationAddTypes (uintptr_t const  index);
 
-#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
-#line 989 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Netdev__Duplex_Invalid = 0,
-    sysinfo_proto_Netdev__Duplex_Half = 1,
-    sysinfo_proto_Netdev__Duplex_Full = 2,
+#line 532 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_EmptyTypes (uintptr_t const  index);
 
-} sysinfo_proto_Netdev__Duplex;
+#line 214 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ConnectRequestTypes (uintptr_t const  index);
+
+#line 1132 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_BelltowerTypes (uintptr_t const  index);
+
+#line 1769 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetworkGetResultTypes (uintptr_t const  index);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 634 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ClaimAllTypes (uintptr_t const  index);
+
+#line 1374 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_DhcpLeaseTypes (uintptr_t const  index);
+
+#line 1726 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetworkGetTypes (uintptr_t const  index);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 
 #line 1812 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType sysinfo_proto_GenesisUpdateTypes (uintptr_t const  index);
@@ -2386,111 +2349,14 @@ protonerf_FieldType sysinfo_proto_GenesisUpdateTypes (uintptr_t const  index);
 #line 191 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType sysinfo_proto_PublishChangeTypes (uintptr_t const  index);
 
-#line 297 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ExceptionalRouteTypes (uintptr_t const  index);
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+#line 63 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SubscribeRequestTypes (uintptr_t const  index);
 
-#line 1367 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_DhcpLease_Ts = 1,
-    sysinfo_proto_DhcpLease_Mac = 2,
-    sysinfo_proto_DhcpLease_Ip = 3,
-    sysinfo_proto_DhcpLease_Name = 4,
-
-} sysinfo_proto_DhcpLease;
-
-#line 1374 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_DhcpLeaseTypes (uintptr_t const  index);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 1659 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_AuthorizationGetTypes (uintptr_t const  index);
-
-#line 1232 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_WifiStationTypes (uintptr_t const  index);
-
-#line 616 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ClaimOneTypes (uintptr_t const  index);
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 383 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_TraceShadowTypes (uintptr_t const  index);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 809 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_UnameTypes (uintptr_t const  index);
-
-#line 668 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_ClaimTypes (uintptr_t const  index);
-
-#line 562 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_MoveInstructionTypes (uintptr_t const  index);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#line 1638 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Sensors_Sensors = 1,
-
-} sysinfo_proto_Sensors;
-
-#line 1642 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_SensorsTypes (uintptr_t const  index);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 1502 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-typedef enum {
-    sysinfo_proto_Satellite__Constellation_Unknown = 0,
-    sysinfo_proto_Satellite__Constellation_Galileo = 1,
-    sysinfo_proto_Satellite__Constellation_Gps = 2,
-    sysinfo_proto_Satellite__Constellation_Glonass = 3,
-
-} sysinfo_proto_Satellite__Constellation;
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
 #line 1561 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 typedef enum {
@@ -2506,430 +2372,179 @@ typedef enum {
 
 } sysinfo_proto_Location__Fix;
 
-#line 887 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_MemTypes (uintptr_t const  index);
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
 
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
 
-#line 910 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_FileSystemTypes (uintptr_t const  index);
+#line 939 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_FirmwareTypes (uintptr_t const  index);
 
-#line 1339 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_WifiInterfaceTypes (uintptr_t const  index);
+#line 350 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_ClusterStateTypes (uintptr_t const  index);
+
+#line 181 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 1438 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetRouteTypes (uintptr_t const  index);
+
+#line 1616 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Sensor_Name = 1,
+    sysinfo_proto_Sensor_Vtype = 2,
+    sysinfo_proto_Sensor_Value = 3,
+
+} sysinfo_proto_Sensor;
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
 
 #line 1755 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType sysinfo_proto_AuthListResultTypes (uintptr_t const  index);
 
-#line 598 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_InnerTraceResponseTypes (uintptr_t const  index);
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 1642 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SensorsTypes (uintptr_t const  index);
+
+#line 14 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_PathTypes (uintptr_t const  index);
+
+#line 1548 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_LocationVelocityTypes (uintptr_t const  index);
+
+#line 1583 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_LocationTypes (uintptr_t const  index);
+
+#line 1698 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_InteractiveAuth_Otp = 1,
+
+} sysinfo_proto_InteractiveAuth;
+
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+
+#line 1611 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Sensor__ValueType_None = 0,
+    sysinfo_proto_Sensor__ValueType_MilliCelsius = 1,
+
+} sysinfo_proto_Sensor__ValueType;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 1159 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_SysinfoTypes (uintptr_t const  index);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
 
 #line 1702 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType sysinfo_proto_InteractiveAuthTypes (uintptr_t const  index);
 
-#line 844 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_LoadTypes (uintptr_t const  index);
+#line 1011 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_NetdevTypes (uintptr_t const  index);
 
-#line 105 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-struct protonerf_Decoder_t {
+#line 364 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_TraceRequestTypes (uintptr_t const  index);
 
-#line 106 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uint8_t const *  mem ;
+#line 1393 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Arp__HwType_Unknown = 0,
+    sysinfo_proto_Arp__HwType_Ethernet = 1,
 
-#line 107 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t size ;
-
-#line 108 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
-   uintptr_t at ;
-}
-;
-
-#line 1671 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType sysinfo_proto_AuthorizationAddTypes (uintptr_t const  index);
+} sysinfo_proto_Arp__HwType;
 
 #line 1622 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SensorTypes (uintptr_t const  index)
-{
+protonerf_FieldType sysinfo_proto_SensorTypes (uintptr_t const  index);
 
-#line 1623 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1624 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sensor_Name:
-{
-{
+#line 723 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_CertificateRequestTypes (uintptr_t const  index);
 
-#line 1625 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
-}
-break;}
-case 
-#line 1627 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sensor_Vtype:
-{
-{
+#line 470 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_PeerConnectRequestTypes (uintptr_t const  index);
 
-#line 1628 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1630 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sensor_Value:
-{
-{
-
-#line 1631 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
-
-#line 1634 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1114 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_BootloaderTypes (uintptr_t const  index)
-{
-
-#line 1115 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1116 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Bootloader_ActiveSide:
-{
-{
+#line 910 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_FileSystemTypes (uintptr_t const  index);
 
-#line 1117 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
+#line 90 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_PublishTypes (uintptr_t const  index);
 
-}
-break;}
-case 
-#line 1119 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Bootloader_BootReason:
-{
-{
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
-#line 1120 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
+#line 562 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_MoveInstructionTypes (uintptr_t const  index);
 
+#line 2 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Path__Category_Invalid = 0,
+    sysinfo_proto_Path__Category_Local = 1,
+    sysinfo_proto_Path__Category_Internet = 2,
+    sysinfo_proto_Path__Category_BrokerOrigin = 3,
 
-#line 1123 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 117 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SupersedeTypes (uintptr_t const  index)
-{
-
-#line 118 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-}
-
-
-#line 120 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
+} sysinfo_proto_Path__Category;
 
-#line 1786 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_GenesisCurrentTypes (uintptr_t const  index)
-{
-
-#line 1787 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1788 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisCurrent_Sha256:
-{
-{
-
-#line 1789 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1791 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisCurrent_Commit:
-{
-{
-
-#line 1792 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1794 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisCurrent_Data:
-{
-{
-
-#line 1795 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1797 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisCurrent_Stable:
-{
-{
-
-#line 1798 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1801 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1159 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SysinfoTypes (uintptr_t const  index)
-{
-
-#line 1160 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1161 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Uname:
-{
-{
-
-#line 1162 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1164 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Mem:
-{
-{
-
-#line 1165 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1167 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Load:
-{
-{
-
-#line 1168 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1170 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Firmware:
-{
-{
-
-#line 1171 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1173 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Fs:
-{
-{
-
-#line 1174 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1176 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Net:
-{
-{
-
-#line 1177 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1179 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Switch:
-{
-{
-
-#line 1180 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1182 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_BoardId:
-{
-{
-
-#line 1183 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1185 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_CarrierBuildId:
-{
-{
-
-#line 1186 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1188 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Belltower:
-{
-{
-
-#line 1189 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1191 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sysinfo_Bootloader:
-{
-{
-
-#line 1192 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1195 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 350 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClusterStateTypes (uintptr_t const  index)
-{
-
-#line 351 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 352 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterState_Config:
-{
-{
-
-#line 353 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 356 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 651 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_RevokerTypes (uintptr_t const  index)
-{
-
-#line 652 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 653 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Revoker_Identity:
-{
-{
-
-#line 654 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 657 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 31 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_FilterByRoleTypes (uintptr_t const  index)
-{
-
-#line 32 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 33 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_FilterByRole_Roles:
-{
-{
-
-#line 34 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 37 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
 
+#line 1502 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+typedef enum {
+    sysinfo_proto_Satellite__Constellation_Unknown = 0,
+    sysinfo_proto_Satellite__Constellation_Galileo = 1,
+    sysinfo_proto_Satellite__Constellation_Gps = 2,
+    sysinfo_proto_Satellite__Constellation_Glonass = 3,
+
+} sysinfo_proto_Satellite__Constellation;
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 580 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_InnerTraceRequestTypes (uintptr_t const  index);
+
+#line 422 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType sysinfo_proto_TraceResponseTypes (uintptr_t const  index);
+
+#line 204 "/home/aep/proj/devguard/carrier/modules/protonerf/src/lib.zz"
+protonerf_Field protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #line 1518 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SatelliteTypes (uintptr_t const  index)
@@ -3013,665 +2628,6 @@ break;}
 }
 
 
-#line 63 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SubscribeRequestTypes (uintptr_t const  index)
-{
-
-#line 64 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 65 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeRequest_Shadow:
-{
-{
-
-#line 66 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 68 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeRequest_Filter:
-{
-{
-
-#line 69 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 71 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeRequest_GroupKey:
-{
-{
-
-#line 72 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 74 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeRequest_GroupShard:
-{
-{
-
-#line 75 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 77 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeRequest_ShardWeight:
-{
-{
-
-#line 78 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 81 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 277 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClusterShardTypes (uintptr_t const  index)
-{
-
-#line 278 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 279 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterShard_This:
-{
-{
-
-#line 280 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 282 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterShard_Other:
-{
-{
-
-#line 283 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 286 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1486 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LocationAccuracityTypes (uintptr_t const  index)
-{
-
-#line 1487 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1488 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_LocationAccuracity_Hdop:
-{
-{
-
-#line 1489 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1491 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_LocationAccuracity_Vdop:
-{
-{
-
-#line 1492 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1494 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_LocationAccuracity_Pdop:
-{
-{
-
-#line 1495 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1498 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1716 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetworkJoinTypes (uintptr_t const  index)
-{
-
-#line 1717 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1718 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetworkJoin_Secret:
-{
-{
-
-#line 1719 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1722 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1066 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SwitchPortTypes (uintptr_t const  index)
-{
-
-#line 1067 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1068 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SwitchPort_Port:
-{
-{
-
-#line 1069 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1071 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SwitchPort_Link:
-{
-{
-
-#line 1072 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1074 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SwitchPort_Speed:
-{
-{
-
-#line 1075 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1077 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SwitchPort_Network:
-{
-{
-
-#line 1078 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1080 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SwitchPort_Device:
-{
-{
-
-#line 1081 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1083 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SwitchPort_None:
-{
-{
-
-#line 1084 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1087 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 499 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PeerConnectResponseTypes (uintptr_t const  index)
-{
-
-#line 500 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 501 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectResponse_Ok:
-{
-{
-
-#line 502 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 504 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectResponse_Handshake:
-{
-{
-
-#line 505 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 507 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectResponse_Paths:
-{
-{
-
-#line 508 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 510 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectResponse_Error:
-{
-{
-
-#line 511 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 514 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 45 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_FilterTypes (uintptr_t const  index)
-{
-
-#line 46 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 47 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Filter_Role:
-{
-{
-
-#line 48 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 51 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 152 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PublishRequestTypes (uintptr_t const  index)
-{
-
-#line 153 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 154 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PublishRequest_Xaddr:
-{
-{
-
-#line 155 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 157 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PublishRequest_Shadow:
-{
-{
-
-#line 158 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 160 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PublishRequest_Shortcut:
-{
-{
-
-#line 161 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 164 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 364 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_TraceRequestTypes (uintptr_t const  index)
-{
-
-#line 365 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 366 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceRequest_Target:
-{
-{
-
-#line 367 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 370 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 470 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PeerConnectRequestTypes (uintptr_t const  index)
-{
-
-#line 471 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 472 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectRequest_Identity:
-{
-{
-
-#line 473 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 475 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectRequest_Timestamp:
-{
-{
-
-#line 476 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 478 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectRequest_Handshake:
-{
-{
-
-#line 479 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 481 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectRequest_Route:
-{
-{
-
-#line 482 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 484 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PeerConnectRequest_Paths:
-{
-{
-
-#line 485 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 488 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 939 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_FirmwareTypes (uintptr_t const  index)
-{
-
-#line 940 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 941 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_Board:
-{
-{
-
-#line 942 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 944 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_Distro:
-{
-{
-
-#line 945 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 947 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_Release:
-{
-{
-
-#line 948 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 950 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_Revision:
-{
-{
-
-#line 951 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 953 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_Builder:
-{
-{
-
-#line 954 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 956 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_Finger:
-{
-{
-
-#line 957 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 959 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Firmware_AndroidApiLevel:
-{
-{
-
-#line 960 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 963 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1726 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetworkGetTypes (uintptr_t const  index)
-{
-
-#line 1727 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-}
-
-
-#line 1729 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 723 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_CertificateRequestTypes (uintptr_t const  index)
-{
-
-#line 724 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 725 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_CertificateRequest_LastValidEpoch:
-{
-{
-
-#line 726 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 728 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_CertificateRequest_Identity:
-{
-{
-
-#line 729 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 731 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_CertificateRequest_Claims:
-{
-{
-
-#line 732 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 735 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
 #line 695 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_CertificateTypes (uintptr_t const  index)
 {
@@ -3743,1804 +2699,127 @@ break;}
 }
 
 
-#line 1011 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetdevTypes (uintptr_t const  index)
+#line 844 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LoadTypes (uintptr_t const  index)
 {
 
-#line 1012 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 845 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 1013 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_Name:
+#line 846 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Avg1:
 {
 {
 
-#line 1014 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 847 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1016 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_RxPkt:
+#line 849 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Avg5:
 {
 {
 
-#line 1017 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 850 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1019 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_RxErr:
+#line 852 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Avg15:
 {
 {
 
-#line 1020 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 853 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1022 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_TxPkt:
+#line 855 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Clock:
 {
 {
 
-#line 1023 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 856 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1025 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_TxErr:
+#line 858 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Uptime:
 {
 {
 
-#line 1026 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 859 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1028 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_Up:
+#line 861 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Idletime:
 {
 {
 
-#line 1029 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 862 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1031 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_Macaddr:
+#line 864 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_ProcActive:
 {
 {
 
-#line 1032 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 865 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1034 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_Mtu:
+#line 867 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_ProcTotal:
 {
 {
 
-#line 1035 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 868 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1037 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_Addrs:
+#line 870 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Cores:
 {
 {
 
-#line 1038 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 871 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1040 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_Link:
+#line 873 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Load_Threads:
 {
 {
 
-#line 1041 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 874 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
-case 
-#line 1043 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_LinkChanges:
-{
-{
-
-#line 1044 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1046 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_LinkSpeed:
-{
-{
-
-#line 1047 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1049 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Netdev_LinkDuplex:
-{
-{
-
-#line 1050 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1053 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1738 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConfigResultTypes (uintptr_t const  index)
-{
-
-#line 1739 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1740 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConfigResult_Ok:
-{
-{
-
-#line 1741 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1743 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConfigResult_Error:
-{
-{
-
-#line 1744 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1747 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 544 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConfirmationTypes (uintptr_t const  index)
-{
-
-#line 545 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 546 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Confirmation_Ok:
-{
-{
-
-#line 547 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 549 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Confirmation_Error:
-{
-{
-
-#line 550 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 553 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1769 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetworkGetResultTypes (uintptr_t const  index)
-{
-
-#line 1770 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1771 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetworkGetResult_Address:
-{
-{
-
-#line 1772 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1775 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 250 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConnectResponseTypes (uintptr_t const  index)
-{
-
-#line 251 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 252 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectResponse_Ok:
-{
-{
-
-#line 253 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 255 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectResponse_Handshake:
-{
-{
-
-#line 256 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 258 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectResponse_Route:
-{
-{
-
-#line 259 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 261 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectResponse_Paths:
-{
-{
-
-#line 262 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 264 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectResponse_Error:
-{
-{
-
-#line 265 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 268 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1461 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetSurveyTypes (uintptr_t const  index)
-{
-
-#line 1462 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1463 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetSurvey_Wifi:
-{
-{
-
-#line 1464 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1466 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetSurvey_Dhcp:
-{
-{
-
-#line 1467 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1469 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetSurvey_Arp:
-{
-{
-
-#line 1470 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1472 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetSurvey_Routes:
-{
-{
-
-#line 1473 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1476 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 761 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationListTypes (uintptr_t const  index)
-{
-
-#line 762 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 763 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_AuthorizationList_A:
-{
-{
-
-#line 764 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 767 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1096 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SwitchTypes (uintptr_t const  index)
-{
-
-#line 1097 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1098 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Switch_Name:
-{
-{
-
-#line 1099 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1101 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Switch_Ports:
-{
-{
-
-#line 1102 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1105 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 779 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_DiscoveryResponseTypes (uintptr_t const  index)
-{
-
-#line 780 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 781 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DiscoveryResponse_CarrierRevision:
-{
-{
-
-#line 782 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 784 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DiscoveryResponse_CarrierBuildId:
-{
-{
-
-#line 785 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 787 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DiscoveryResponse_Application:
-{
-{
-
-#line 788 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 790 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DiscoveryResponse_ApplicationVersion:
-{
-{
-
-#line 791 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 793 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DiscoveryResponse_Paths:
-{
-{
-
-#line 794 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 797 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 214 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConnectRequestTypes (uintptr_t const  index)
-{
-
-#line 215 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 216 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Target:
-{
-{
-
-#line 217 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 219 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Timestamp:
-{
-{
-
-#line 220 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 222 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Handshake:
-{
-{
-
-#line 223 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 225 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Paths:
-{
-{
-
-#line 226 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 228 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Principal:
-{
-{
-
-#line 229 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 231 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Timeout:
-{
-{
-
-#line 232 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 234 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ConnectRequest_Shortcut:
-{
-{
-
-#line 235 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 238 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1438 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetRouteTypes (uintptr_t const  index)
-{
-
-#line 1439 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1440 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetRoute_Destination:
-{
-{
-
-#line 1441 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1443 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetRoute_Gateway:
-{
-{
-
-#line 1444 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1446 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetRoute_Source:
-{
-{
-
-#line 1447 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1450 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1548 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LocationVelocityTypes (uintptr_t const  index)
-{
-
-#line 1549 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1550 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_LocationVelocity_Course:
-{
-{
-
-#line 1551 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1553 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_LocationVelocity_Speed:
-{
-{
-
-#line 1554 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1557 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1132 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_BelltowerTypes (uintptr_t const  index)
-{
-
-#line 1133 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1134 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Belltower_Current:
-{
-{
-
-#line 1135 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1137 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Belltower_Previous:
-{
-{
-
-#line 1138 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1141 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 634 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClaimAllTypes (uintptr_t const  index)
-{
-
-#line 635 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 636 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClaimAll_Shadow:
-{
-{
-
-#line 637 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 639 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClaimAll_Resources:
-{
-{
-
-#line 640 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 643 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 973 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetAddressTypes (uintptr_t const  index)
-{
-
-#line 974 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 975 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetAddress_Addr:
-{
-{
-
-#line 976 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 978 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetAddress_Mask:
-{
-{
-
-#line 979 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 981 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_NetAddress_Broadcast:
-{
-{
-
-#line 982 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 985 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 130 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SubscribeChangeTypes (uintptr_t const  index)
-{
-
-#line 131 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 132 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeChange_Publish:
-{
-{
-
-#line 133 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 135 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeChange_Unpublish:
-{
-{
-
-#line 136 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 138 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_SubscribeChange_Supersede:
-{
-{
-
-#line 139 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 142 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 107 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_UnpublishTypes (uintptr_t const  index)
-{
-
-#line 108 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 109 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Unpublish_Identity:
-{
-{
-
-#line 110 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 113 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 324 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClusterConfigTypes (uintptr_t const  index)
-{
-
-#line 325 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 326 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterConfig_Shards:
-{
-{
-
-#line 327 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 329 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterConfig_ExceptionalRoutes:
-{
-{
-
-#line 330 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 332 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterConfig_Epoch:
-{
-{
-
-#line 333 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 335 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterConfig_DefaultShadowPublisherLimit:
-{
-{
-
-#line 336 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 338 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClusterConfig_DefaultShadowTrafficLimit32:
-{
-{
-
-#line 339 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 342 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 532 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_EmptyTypes (uintptr_t const  index)
-{
-
-#line 533 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-}
-
-
-#line 535 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1407 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ArpTypes (uintptr_t const  index)
-{
-
-#line 1408 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1409 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Arp_Ip:
-{
-{
-
-#line 1410 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1412 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Arp_Hw:
-{
-{
-
-#line 1413 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1415 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Arp_Mac:
-{
-{
-
-#line 1416 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1418 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Arp_Dev:
-{
-{
-
-#line 1419 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1421 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Arp_Value:
-{
-{
-
-#line 1422 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1424 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Arp_Null:
-{
-{
-
-#line 1425 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1428 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1583 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LocationTypes (uintptr_t const  index)
-{
-
-#line 1584 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1585 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Latitude:
-{
-{
-
-#line 1586 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1588 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Longitude:
-{
-{
-
-#line 1589 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1591 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Altitude:
-{
-{
-
-#line 1592 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1594 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Fix:
-{
-{
-
-#line 1595 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1597 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Accuracity:
-{
-{
-
-#line 1598 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1600 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Satellites:
-{
-{
-
-#line 1601 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1603 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Location_Velocity:
-{
-{
-
-#line 1604 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1607 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1652 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NoneTypes (uintptr_t const  index)
-{
-
-#line 1653 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-}
-
-
-#line 1655 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 422 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_TraceResponseTypes (uintptr_t const  index)
-{
-
-#line 423 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 424 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_Publishing:
-{
-{
-
-#line 425 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 427 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_Epoch:
-{
-{
-
-#line 428 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 430 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_RxBytes32:
-{
-{
-
-#line 431 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 433 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_TxBytes32:
-{
-{
-
-#line 434 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 436 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_LastSeen:
-{
-{
-
-#line 437 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 439 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_FirstSeen:
-{
-{
-
-#line 440 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 442 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_Allocation:
-{
-{
-
-#line 443 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 445 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_Brokerip:
-{
-{
-
-#line 446 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 448 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_PktsSent:
-{
-{
-
-#line 449 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 451 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_PktsLost:
-{
-{
-
-#line 452 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 454 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_TraceResponse_Rtt:
-{
-{
-
-#line 455 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 458 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 90 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PublishTypes (uintptr_t const  index)
-{
-
-#line 91 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 92 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Publish_Identity:
-{
-{
-
-#line 93 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 95 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Publish_Xaddr:
-{
-{
-
-#line 96 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 99 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 744 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationTypes (uintptr_t const  index)
-{
-
-#line 745 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 746 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Authorization_Identity:
-{
-{
-
-#line 747 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 749 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Authorization_Resource:
-{
-{
-
-#line 750 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 753 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 580 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_InnerTraceRequestTypes (uintptr_t const  index)
-{
-
-#line 581 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 582 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_InnerTraceRequest_Invalid:
-{
-{
-
-#line 583 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 585 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_InnerTraceRequest_Ping:
-{
-{
-
-#line 586 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 589 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1688 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationDelTypes (uintptr_t const  index)
-{
-
-#line 1689 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1690 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_AuthorizationDel_Identity:
-{
-{
-
-#line 1691 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1694 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 173 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ShortcutTypes (uintptr_t const  index)
-{
-
-#line 174 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 175 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Shortcut_Shortcut:
-{
-{
-
-#line 176 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 178 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Shortcut_Expires:
-{
-{
-
-#line 179 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 182 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 522 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ProtoHeaderTypes (uintptr_t const  index)
-{
-
-#line 523 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 524 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ProtoHeader_Len:
-{
-{
-
-#line 525 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 528 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 14 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PathTypes (uintptr_t const  index)
-{
-
-#line 15 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 16 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Path_Ipaddr:
-{
-{
-
-#line 17 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 19 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Path_Category:
-{
-{
-
-#line 20 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 23 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1812 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_GenesisUpdateTypes (uintptr_t const  index)
-{
-
-#line 1813 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1814 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisUpdate_Sha256:
-{
-{
-
-#line 1815 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1817 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisUpdate_PreviousSha256:
-{
-{
-
-#line 1818 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1820 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisUpdate_Commit:
-{
-{
-
-#line 1821 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1823 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_GenesisUpdate_Data:
-{
-{
-
-#line 1824 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1827 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 191 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PublishChangeTypes (uintptr_t const  index)
-{
-
-#line 192 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 193 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PublishChange_Supersede:
-{
-{
-
-#line 194 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 196 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_PublishChange_Shortcut:
-{
-{
-
-#line 197 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 200 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 297 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ExceptionalRouteTypes (uintptr_t const  index)
-{
-
-#line 298 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 299 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ExceptionalRoute_Identity:
-{
-{
-
-#line 300 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 302 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ExceptionalRoute_This:
-{
-{
-
-#line 303 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 305 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ExceptionalRoute_Other:
-{
-{
-
-#line 306 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 308 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ExceptionalRoute_Blocked:
-{
-{
-
-#line 309 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 312 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1374 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_DhcpLeaseTypes (uintptr_t const  index)
-{
-
-#line 1375 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1376 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DhcpLease_Ts:
-{
-{
-
-#line 1377 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1379 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DhcpLease_Mac:
-{
-{
-
-#line 1380 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1382 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DhcpLease_Ip:
-{
-{
-
-#line 1383 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1385 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_DhcpLease_Name:
-{
-{
-
-#line 1386 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1389 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1659 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationGetTypes (uintptr_t const  index)
-{
-
-#line 1660 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
 }
 
 
-#line 1662 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 877 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -5892,31 +3171,75 @@ break;}
 }
 
 
-#line 616 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClaimOneTypes (uintptr_t const  index)
+#line 1066 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SwitchPortTypes (uintptr_t const  index)
 {
 
-#line 617 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 1067 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 618 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClaimOne_Target:
+#line 1068 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SwitchPort_Port:
 {
 {
 
-#line 619 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 1069 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 621 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_ClaimOne_Resources:
+#line 1071 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SwitchPort_Link:
 {
 {
 
-#line 622 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 1072 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1074 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SwitchPort_Speed:
+{
+{
+
+#line 1075 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1077 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SwitchPort_Network:
+{
+{
+
+#line 1078 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1080 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SwitchPort_Device:
+{
+{
+
+#line 1081 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1083 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SwitchPort_None:
+{
+{
+
+#line 1084 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -5924,7 +3247,61 @@ break;}
 }
 
 
-#line 625 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 1087 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 45 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_FilterTypes (uintptr_t const  index)
+{
+
+#line 46 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 47 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Filter_Role:
+{
+{
+
+#line 48 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 51 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1716 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetworkJoinTypes (uintptr_t const  index)
+{
+
+#line 1717 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1718 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetworkJoin_Secret:
+{
+{
+
+#line 1719 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1722 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -6007,6 +3384,872 @@ break;}
 
 
 #line 404 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 324 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClusterConfigTypes (uintptr_t const  index)
+{
+
+#line 325 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 326 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterConfig_Shards:
+{
+{
+
+#line 327 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 329 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterConfig_ExceptionalRoutes:
+{
+{
+
+#line 330 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 332 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterConfig_Epoch:
+{
+{
+
+#line 333 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 335 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterConfig_DefaultShadowPublisherLimit:
+{
+{
+
+#line 336 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 338 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterConfig_DefaultShadowTrafficLimit32:
+{
+{
+
+#line 339 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 342 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1461 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetSurveyTypes (uintptr_t const  index)
+{
+
+#line 1462 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1463 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetSurvey_Wifi:
+{
+{
+
+#line 1464 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1466 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetSurvey_Dhcp:
+{
+{
+
+#line 1467 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1469 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetSurvey_Arp:
+{
+{
+
+#line 1470 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1472 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetSurvey_Routes:
+{
+{
+
+#line 1473 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1476 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 598 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_InnerTraceResponseTypes (uintptr_t const  index)
+{
+
+#line 599 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 600 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_InnerTraceResponse_Invalid:
+{
+{
+
+#line 601 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 603 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_InnerTraceResponse_Pong:
+{
+{
+
+#line 604 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 607 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 152 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PublishRequestTypes (uintptr_t const  index)
+{
+
+#line 153 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 154 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PublishRequest_Xaddr:
+{
+{
+
+#line 155 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 157 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PublishRequest_Shadow:
+{
+{
+
+#line 158 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 160 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PublishRequest_Shortcut:
+{
+{
+
+#line 161 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 164 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 761 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationListTypes (uintptr_t const  index)
+{
+
+#line 762 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 763 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_AuthorizationList_A:
+{
+{
+
+#line 764 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 767 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1786 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_GenesisCurrentTypes (uintptr_t const  index)
+{
+
+#line 1787 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1788 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisCurrent_Sha256:
+{
+{
+
+#line 1789 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1791 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisCurrent_Commit:
+{
+{
+
+#line 1792 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1794 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisCurrent_Data:
+{
+{
+
+#line 1795 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1797 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisCurrent_Stable:
+{
+{
+
+#line 1798 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1801 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 522 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ProtoHeaderTypes (uintptr_t const  index)
+{
+
+#line 523 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 524 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ProtoHeader_Len:
+{
+{
+
+#line 525 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 528 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 616 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClaimOneTypes (uintptr_t const  index)
+{
+
+#line 617 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 618 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClaimOne_Target:
+{
+{
+
+#line 619 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 621 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClaimOne_Resources:
+{
+{
+
+#line 622 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 625 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 779 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_DiscoveryResponseTypes (uintptr_t const  index)
+{
+
+#line 780 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 781 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DiscoveryResponse_CarrierRevision:
+{
+{
+
+#line 782 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 784 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DiscoveryResponse_CarrierBuildId:
+{
+{
+
+#line 785 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 787 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DiscoveryResponse_Application:
+{
+{
+
+#line 788 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 790 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DiscoveryResponse_ApplicationVersion:
+{
+{
+
+#line 791 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 793 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DiscoveryResponse_Paths:
+{
+{
+
+#line 794 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 797 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1688 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationDelTypes (uintptr_t const  index)
+{
+
+#line 1689 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1690 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_AuthorizationDel_Identity:
+{
+{
+
+#line 1691 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1694 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 499 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PeerConnectResponseTypes (uintptr_t const  index)
+{
+
+#line 500 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 501 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectResponse_Ok:
+{
+{
+
+#line 502 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 504 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectResponse_Handshake:
+{
+{
+
+#line 505 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 507 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectResponse_Paths:
+{
+{
+
+#line 508 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 510 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectResponse_Error:
+{
+{
+
+#line 511 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 514 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1339 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_WifiInterfaceTypes (uintptr_t const  index)
+{
+
+#line 1340 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1341 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Name:
+{
+{
+
+#line 1342 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1344 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Typ:
+{
+{
+
+#line 1345 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1347 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Phy:
+{
+{
+
+#line 1348 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1350 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Ssid:
+{
+{
+
+#line 1351 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1353 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Channel:
+{
+{
+
+#line 1354 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1356 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Txpower:
+{
+{
+
+#line 1357 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1359 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_WifiInterface_Stations:
+{
+{
+
+#line 1360 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1363 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1407 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ArpTypes (uintptr_t const  index)
+{
+
+#line 1408 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1409 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Arp_Ip:
+{
+{
+
+#line 1410 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1412 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Arp_Hw:
+{
+{
+
+#line 1413 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1415 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Arp_Mac:
+{
+{
+
+#line 1416 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1418 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Arp_Dev:
+{
+{
+
+#line 1419 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1421 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Arp_Value:
+{
+{
+
+#line 1422 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1424 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Arp_Null:
+{
+{
+
+#line 1425 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1428 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 973 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetAddressTypes (uintptr_t const  index)
+{
+
+#line 974 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 975 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetAddress_Addr:
+{
+{
+
+#line 976 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 978 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetAddress_Mask:
+{
+{
+
+#line 979 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 981 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetAddress_Broadcast:
+{
+{
+
+#line 982 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 985 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 544 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConfirmationTypes (uintptr_t const  index)
+{
+
+#line 545 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 546 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Confirmation_Ok:
+{
+{
+
+#line 547 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 549 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Confirmation_Error:
+{
+{
+
+#line 550 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 553 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 277 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClusterShardTypes (uintptr_t const  index)
+{
+
+#line 278 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 279 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterShard_This:
+{
+{
+
+#line 280 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 282 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterShard_Other:
+{
+{
+
+#line 283 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 286 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1738 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConfigResultTypes (uintptr_t const  index)
+{
+
+#line 1739 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1740 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConfigResult_Ok:
+{
+{
+
+#line 1741 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1743 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConfigResult_Error:
+{
+{
+
+#line 1744 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1747 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -6143,31 +4386,64 @@ break;}
 }
 
 
-#line 562 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_MoveInstructionTypes (uintptr_t const  index)
+#line 250 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConnectResponseTypes (uintptr_t const  index)
 {
 
-#line 563 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 251 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 564 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_MoveInstruction_Ipaddr:
+#line 252 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectResponse_Ok:
 {
 {
 
-#line 565 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 253 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 567 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_MoveInstruction_Xaddr:
+#line 255 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectResponse_Handshake:
 {
 {
 
-#line 568 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 256 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 258 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectResponse_Route:
+{
+{
+
+#line 259 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 261 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectResponse_Paths:
+{
+{
+
+#line 262 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 264 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectResponse_Error:
+{
+{
+
+#line 265 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6175,26 +4451,59 @@ break;}
 }
 
 
-#line 571 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 268 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1642 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SensorsTypes (uintptr_t const  index)
+#line 297 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ExceptionalRouteTypes (uintptr_t const  index)
 {
 
-#line 1643 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 298 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 1644 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Sensors_Sensors:
+#line 299 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ExceptionalRoute_Identity:
 {
 {
 
-#line 1645 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 300 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 302 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ExceptionalRoute_This:
+{
+{
+
+#line 303 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 305 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ExceptionalRoute_Other:
+{
+{
+
+#line 306 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 308 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ExceptionalRoute_Blocked:
+{
+{
+
+#line 309 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6202,7 +4511,359 @@ break;}
 }
 
 
-#line 1648 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 312 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 107 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_UnpublishTypes (uintptr_t const  index)
+{
+
+#line 108 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 109 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Unpublish_Identity:
+{
+{
+
+#line 110 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 113 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1652 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NoneTypes (uintptr_t const  index)
+{
+
+#line 1653 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 1655 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 173 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ShortcutTypes (uintptr_t const  index)
+{
+
+#line 174 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 175 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Shortcut_Shortcut:
+{
+{
+
+#line 176 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 178 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Shortcut_Expires:
+{
+{
+
+#line 179 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 182 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1096 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SwitchTypes (uintptr_t const  index)
+{
+
+#line 1097 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1098 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Switch_Name:
+{
+{
+
+#line 1099 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1101 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Switch_Ports:
+{
+{
+
+#line 1102 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1105 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 130 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SubscribeChangeTypes (uintptr_t const  index)
+{
+
+#line 131 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 132 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeChange_Publish:
+{
+{
+
+#line 133 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 135 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeChange_Unpublish:
+{
+{
+
+#line 136 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 138 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeChange_Supersede:
+{
+{
+
+#line 139 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 142 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 31 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_FilterByRoleTypes (uintptr_t const  index)
+{
+
+#line 32 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 33 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_FilterByRole_Roles:
+{
+{
+
+#line 34 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 37 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 117 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SupersedeTypes (uintptr_t const  index)
+{
+
+#line 118 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 120 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1486 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LocationAccuracityTypes (uintptr_t const  index)
+{
+
+#line 1487 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1488 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_LocationAccuracity_Hdop:
+{
+{
+
+#line 1489 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1491 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_LocationAccuracity_Vdop:
+{
+{
+
+#line 1492 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1494 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_LocationAccuracity_Pdop:
+{
+{
+
+#line 1495 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1498 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 744 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationTypes (uintptr_t const  index)
+{
+
+#line 745 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 746 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Authorization_Identity:
+{
+{
+
+#line 747 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 749 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Authorization_Resource:
+{
+{
+
+#line 750 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 753 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1659 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationGetTypes (uintptr_t const  index)
+{
+
+#line 1660 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 1662 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1114 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_BootloaderTypes (uintptr_t const  index)
+{
+
+#line 1115 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1116 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Bootloader_ActiveSide:
+{
+{
+
+#line 1117 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1119 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Bootloader_BootReason:
+{
+{
+
+#line 1120 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1123 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -6252,6 +4913,1439 @@ break;}
 
 
 #line 899 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 651 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_RevokerTypes (uintptr_t const  index)
+{
+
+#line 652 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 653 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Revoker_Identity:
+{
+{
+
+#line 654 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 657 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1671 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationAddTypes (uintptr_t const  index)
+{
+
+#line 1672 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1673 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_AuthorizationAdd_Identity:
+{
+{
+
+#line 1674 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1676 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_AuthorizationAdd_Path:
+{
+{
+
+#line 1677 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1680 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 532 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_EmptyTypes (uintptr_t const  index)
+{
+
+#line 533 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 535 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 214 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ConnectRequestTypes (uintptr_t const  index)
+{
+
+#line 215 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 216 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Target:
+{
+{
+
+#line 217 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 219 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Timestamp:
+{
+{
+
+#line 220 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 222 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Handshake:
+{
+{
+
+#line 223 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 225 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Paths:
+{
+{
+
+#line 226 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 228 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Principal:
+{
+{
+
+#line 229 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 231 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Timeout:
+{
+{
+
+#line 232 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 234 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ConnectRequest_Shortcut:
+{
+{
+
+#line 235 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 238 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1132 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_BelltowerTypes (uintptr_t const  index)
+{
+
+#line 1133 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1134 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Belltower_Current:
+{
+{
+
+#line 1135 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1137 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Belltower_Previous:
+{
+{
+
+#line 1138 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1141 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1769 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetworkGetResultTypes (uintptr_t const  index)
+{
+
+#line 1770 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1771 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetworkGetResult_Address:
+{
+{
+
+#line 1772 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1775 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 634 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClaimAllTypes (uintptr_t const  index)
+{
+
+#line 635 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 636 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClaimAll_Shadow:
+{
+{
+
+#line 637 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 639 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClaimAll_Resources:
+{
+{
+
+#line 640 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 643 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1374 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_DhcpLeaseTypes (uintptr_t const  index)
+{
+
+#line 1375 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1376 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DhcpLease_Ts:
+{
+{
+
+#line 1377 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1379 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DhcpLease_Mac:
+{
+{
+
+#line 1380 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1382 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DhcpLease_Ip:
+{
+{
+
+#line 1383 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1385 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_DhcpLease_Name:
+{
+{
+
+#line 1386 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1389 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1726 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetworkGetTypes (uintptr_t const  index)
+{
+
+#line 1727 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+}
+
+
+#line 1729 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1812 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_GenesisUpdateTypes (uintptr_t const  index)
+{
+
+#line 1813 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1814 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisUpdate_Sha256:
+{
+{
+
+#line 1815 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1817 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisUpdate_PreviousSha256:
+{
+{
+
+#line 1818 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1820 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisUpdate_Commit:
+{
+{
+
+#line 1821 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1823 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_GenesisUpdate_Data:
+{
+{
+
+#line 1824 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1827 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 191 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PublishChangeTypes (uintptr_t const  index)
+{
+
+#line 192 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 193 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PublishChange_Supersede:
+{
+{
+
+#line 194 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 196 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PublishChange_Shortcut:
+{
+{
+
+#line 197 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 200 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 63 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SubscribeRequestTypes (uintptr_t const  index)
+{
+
+#line 64 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 65 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeRequest_Shadow:
+{
+{
+
+#line 66 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 68 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeRequest_Filter:
+{
+{
+
+#line 69 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 71 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeRequest_GroupKey:
+{
+{
+
+#line 72 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 74 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeRequest_GroupShard:
+{
+{
+
+#line 75 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 77 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_SubscribeRequest_ShardWeight:
+{
+{
+
+#line 78 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 81 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 939 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_FirmwareTypes (uintptr_t const  index)
+{
+
+#line 940 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 941 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_Board:
+{
+{
+
+#line 942 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 944 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_Distro:
+{
+{
+
+#line 945 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 947 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_Release:
+{
+{
+
+#line 948 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 950 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_Revision:
+{
+{
+
+#line 951 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 953 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_Builder:
+{
+{
+
+#line 954 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 956 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_Finger:
+{
+{
+
+#line 957 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 959 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Firmware_AndroidApiLevel:
+{
+{
+
+#line 960 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 963 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 350 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_ClusterStateTypes (uintptr_t const  index)
+{
+
+#line 351 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 352 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_ClusterState_Config:
+{
+{
+
+#line 353 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 356 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1438 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetRouteTypes (uintptr_t const  index)
+{
+
+#line 1439 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1440 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetRoute_Destination:
+{
+{
+
+#line 1441 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1443 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetRoute_Gateway:
+{
+{
+
+#line 1444 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1446 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_NetRoute_Source:
+{
+{
+
+#line 1447 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1450 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1755 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthListResultTypes (uintptr_t const  index)
+{
+
+#line 1756 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1757 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_AuthListResult_Auth:
+{
+{
+
+#line 1758 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1761 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1642 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SensorsTypes (uintptr_t const  index)
+{
+
+#line 1643 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1644 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sensors_Sensors:
+{
+{
+
+#line 1645 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1648 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 14 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PathTypes (uintptr_t const  index)
+{
+
+#line 15 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 16 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Path_Ipaddr:
+{
+{
+
+#line 17 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 19 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Path_Category:
+{
+{
+
+#line 20 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 23 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1548 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LocationVelocityTypes (uintptr_t const  index)
+{
+
+#line 1549 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1550 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_LocationVelocity_Course:
+{
+{
+
+#line 1551 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1553 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_LocationVelocity_Speed:
+{
+{
+
+#line 1554 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1557 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1583 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LocationTypes (uintptr_t const  index)
+{
+
+#line 1584 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1585 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Latitude:
+{
+{
+
+#line 1586 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1588 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Longitude:
+{
+{
+
+#line 1589 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1591 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Altitude:
+{
+{
+
+#line 1592 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1594 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Fix:
+{
+{
+
+#line 1595 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1597 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Accuracity:
+{
+{
+
+#line 1598 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1600 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Satellites:
+{
+{
+
+#line 1601 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1603 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Location_Velocity:
+{
+{
+
+#line 1604 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1607 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1159 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SysinfoTypes (uintptr_t const  index)
+{
+
+#line 1160 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1161 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Uname:
+{
+{
+
+#line 1162 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1164 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Mem:
+{
+{
+
+#line 1165 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1167 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Load:
+{
+{
+
+#line 1168 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1170 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Firmware:
+{
+{
+
+#line 1171 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1173 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Fs:
+{
+{
+
+#line 1174 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1176 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Net:
+{
+{
+
+#line 1177 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1179 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Switch:
+{
+{
+
+#line 1180 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1182 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_BoardId:
+{
+{
+
+#line 1183 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1185 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_CarrierBuildId:
+{
+{
+
+#line 1186 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1188 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Belltower:
+{
+{
+
+#line 1189 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1191 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sysinfo_Bootloader:
+{
+{
+
+#line 1192 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1195 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1702 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_InteractiveAuthTypes (uintptr_t const  index)
+{
+
+#line 1703 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1704 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_InteractiveAuth_Otp:
+{
+{
+
+#line 1705 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1708 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1011 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_NetdevTypes (uintptr_t const  index)
+{
+
+#line 1012 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1013 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_Name:
+{
+{
+
+#line 1014 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1016 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_RxPkt:
+{
+{
+
+#line 1017 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1019 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_RxErr:
+{
+{
+
+#line 1020 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1022 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_TxPkt:
+{
+{
+
+#line 1023 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1025 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_TxErr:
+{
+{
+
+#line 1026 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1028 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_Up:
+{
+{
+
+#line 1029 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1031 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_Macaddr:
+{
+{
+
+#line 1032 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1034 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_Mtu:
+{
+{
+
+#line 1035 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1037 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_Addrs:
+{
+{
+
+#line 1038 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1040 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_Link:
+{
+{
+
+#line 1041 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1043 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_LinkChanges:
+{
+{
+
+#line 1044 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1046 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_LinkSpeed:
+{
+{
+
+#line 1047 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1049 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Netdev_LinkDuplex:
+{
+{
+
+#line 1050 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1053 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 364 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_TraceRequestTypes (uintptr_t const  index)
+{
+
+#line 365 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 366 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceRequest_Target:
+{
+{
+
+#line 367 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 370 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 1622 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_SensorTypes (uintptr_t const  index)
+{
+
+#line 1623 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 1624 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sensor_Name:
+{
+{
+
+#line 1625 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1627 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sensor_Vtype:
+{
+{
+
+#line 1628 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 1630 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Sensor_Value:
+{
+{
+
+#line 1631 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 1634 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 723 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_CertificateRequestTypes (uintptr_t const  index)
+{
+
+#line 724 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 725 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_CertificateRequest_LastValidEpoch:
+{
+{
+
+#line 726 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 728 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_CertificateRequest_Identity:
+{
+{
+
+#line 729 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 731 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_CertificateRequest_Claims:
+{
+{
+
+#line 732 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 735 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Skip;
+
+}
+
+
+#line 470 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PeerConnectRequestTypes (uintptr_t const  index)
+{
+
+#line 471 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+switch (
+    index) {
+case 
+#line 472 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectRequest_Identity:
+{
+{
+
+#line 473 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 475 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectRequest_Timestamp:
+{
+{
+
+#line 476 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 478 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectRequest_Handshake:
+{
+{
+
+#line 479 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 481 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectRequest_Route:
+{
+{
+
+#line 482 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 484 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_PeerConnectRequest_Paths:
+{
+{
+
+#line 485 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+}
+
+
+#line 488 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
@@ -6317,86 +6411,31 @@ break;}
 }
 
 
-#line 1339 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_WifiInterfaceTypes (uintptr_t const  index)
+#line 90 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_PublishTypes (uintptr_t const  index)
 {
 
-#line 1340 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 91 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 1341 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Name:
+#line 92 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Publish_Identity:
 {
 {
 
-#line 1342 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 93 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1344 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Typ:
+#line 95 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_Publish_Xaddr:
 {
 {
 
-#line 1345 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1347 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Phy:
-{
-{
-
-#line 1348 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1350 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Ssid:
-{
-{
-
-#line 1351 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1353 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Channel:
-{
-{
-
-#line 1354 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1356 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Txpower:
-{
-{
-
-#line 1357 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-case 
-#line 1359 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_WifiInterface_Stations:
-{
-{
-
-#line 1360 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 96 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6404,26 +6443,37 @@ break;}
 }
 
 
-#line 1363 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 99 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1755 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthListResultTypes (uintptr_t const  index)
+#line 562 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_MoveInstructionTypes (uintptr_t const  index)
 {
 
-#line 1756 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 563 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 1757 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_AuthListResult_Auth:
+#line 564 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_MoveInstruction_Ipaddr:
 {
 {
 
-#line 1758 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 565 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+  return     protonerf_FieldType_Message;
+
+}
+break;}
+case 
+#line 567 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_MoveInstruction_Xaddr:
+{
+{
+
+#line 568 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6431,37 +6481,37 @@ break;}
 }
 
 
-#line 1761 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 571 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 598 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_InnerTraceResponseTypes (uintptr_t const  index)
+#line 580 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_InnerTraceRequestTypes (uintptr_t const  index)
 {
 
-#line 599 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 581 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 600 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_InnerTraceResponse_Invalid:
+#line 582 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_InnerTraceRequest_Invalid:
 {
 {
 
-#line 601 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 583 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 603 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_InnerTraceResponse_Pong:
+#line 585 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_InnerTraceRequest_Ping:
 {
 {
 
-#line 604 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 586 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6469,190 +6519,136 @@ break;}
 }
 
 
-#line 607 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 589 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }
 
 
-#line 1702 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_InteractiveAuthTypes (uintptr_t const  index)
+#line 422 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_TraceResponseTypes (uintptr_t const  index)
 {
 
-#line 1703 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 423 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
 switch (
     index) {
 case 
-#line 1704 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_InteractiveAuth_Otp:
+#line 424 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_Publishing:
 {
 {
 
-#line 1705 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 1708 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 844 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_LoadTypes (uintptr_t const  index)
-{
-
-#line 845 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 846 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Avg1:
-{
-{
-
-#line 847 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 425 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 849 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Avg5:
+#line 427 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_Epoch:
 {
 {
 
-#line 850 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 428 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 852 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Avg15:
+#line 430 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_RxBytes32:
 {
 {
 
-#line 853 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 431 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 855 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Clock:
+#line 433 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_TxBytes32:
 {
 {
 
-#line 856 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 434 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 858 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Uptime:
+#line 436 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_LastSeen:
 {
 {
 
-#line 859 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 437 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 861 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Idletime:
+#line 439 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_FirstSeen:
 {
 {
 
-#line 862 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 440 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 864 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_ProcActive:
+#line 442 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_Allocation:
 {
 {
 
-#line 865 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 443 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 867 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_ProcTotal:
+#line 445 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_Brokerip:
 {
 {
 
-#line 868 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 446 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 870 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Cores:
+#line 448 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_PktsSent:
 {
 {
 
-#line 871 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 449 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 873 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_Load_Threads:
+#line 451 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_PktsLost:
 {
 {
 
-#line 874 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Message;
-
-}
-break;}
-}
-
-
-#line 877 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-  return     protonerf_FieldType_Skip;
-
-}
-
-
-#line 1671 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-protonerf_FieldType __attribute__ ((visibility ("default"))) sysinfo_proto_AuthorizationAddTypes (uintptr_t const  index)
-{
-
-#line 1672 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-switch (
-    index) {
-case 
-#line 1673 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_AuthorizationAdd_Identity:
-{
-{
-
-#line 1674 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 452 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
 break;}
 case 
-#line 1676 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
-    sysinfo_proto_AuthorizationAdd_Path:
+#line 454 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+    sysinfo_proto_TraceResponse_Rtt:
 {
 {
 
-#line 1677 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 455 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Message;
 
 }
@@ -6660,7 +6656,7 @@ break;}
 }
 
 
-#line 1680 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
+#line 458 "/home/aep/proj/devguard/carrier/modules/sysinfo/src/proto.zz"
   return     protonerf_FieldType_Skip;
 
 }

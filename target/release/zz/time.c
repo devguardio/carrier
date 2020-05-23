@@ -8,6 +8,30 @@ typedef struct time_Time_t time_Time;
 struct time_Time_t;
 typedef struct time_Time_t time_Time;
 
+#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
+
+#line 5 "/home/aep/proj/zz/modules/pool/src/lib.zz"
+#include <stdint.h>
+
+#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_millis (time_Time const *  const  self);
+
+#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
+struct time_Time_t {
+
+#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t secs ;
+
+#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   uint64_t nano ;
+
+#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
+   bool finite ;
+}
+;
+const size_t sizeof_time_Time = sizeof(time_Time);
+
 #line 80 "/home/aep/proj/zz/modules/time/src/lib.zz"
 
 #line 1 "/home/aep/proj/zz/modules/time/src/native.h"
@@ -138,47 +162,23 @@ typedef struct time_Time_t time_Time;
     int os_time_real(uint64_t *secs, uint64_t* nanos);
 #endif
 
-#line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-
-#line 13 "/home/aep/proj/zz/modules/time/src/lib.zz"
-struct time_Time_t {
-
-#line 14 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t secs ;
-
-#line 15 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   uint64_t nano ;
-
-#line 16 "/home/aep/proj/zz/modules/time/src/lib.zz"
-   bool finite ;
-}
-;
-const size_t sizeof_time_Time = sizeof(time_Time);
+#line 83 "/home/aep/proj/zz/modules/time/src/lib.zz"
+time_Time time_tick ();
 
 #line 25 "/home/aep/proj/zz/modules/time/src/lib.zz"
 time_Time time_from_seconds (uint64_t const  secs);
 
-#line 83 "/home/aep/proj/zz/modules/time/src/lib.zz"
-time_Time time_tick ();
-
 #line 50 "/home/aep/proj/zz/modules/time/src/lib.zz"
 time_Time time_from_millis (uint64_t const  millis);
+
+#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
+uint64_t time_to_seconds (time_Time const *  const  self);
 
 #line 19 "/home/aep/proj/zz/modules/time/src/lib.zz"
 time_Time time_infinite ();
 
 #line 91 "/home/aep/proj/zz/modules/time/src/lib.zz"
 time_Time time_real ();
-
-#line 5 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdint.h>
-
-#line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_millis (time_Time const *  const  self);
-
-#line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
-uint64_t time_to_seconds (time_Time const *  const  self);
 
 #line 59 "/home/aep/proj/zz/modules/time/src/lib.zz"
 bool __attribute__ ((visibility ("default"))) time_more_than (time_Time const *  const  self, time_Time const *  const  other)
@@ -237,80 +237,6 @@ if ((
 }
 
 
-#line 25 "/home/aep/proj/zz/modules/time/src/lib.zz"
-time_Time __attribute__ ((visibility ("default"))) time_from_seconds (uint64_t const  secs)
-{
-
-#line 26 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  return     (time_Time){.secs = 
-#line 27 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    secs,.finite = 
-#line 28 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    true,};
-
-}
-
-
-#line 83 "/home/aep/proj/zz/modules/time/src/lib.zz"
-time_Time __attribute__ ((visibility ("default"))) time_tick ()
-{
-
-#line 84 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  time_Time tr  = {    0,};
-
-#line 85 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    tr .finite = (    os_time_tick(( &    tr .secs),( &    tr .nano)    ) ==    0  );
-
-#line 86 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  return     tr;
-
-}
-
-
-#line 50 "/home/aep/proj/zz/modules/time/src/lib.zz"
-time_Time __attribute__ ((visibility ("default"))) time_from_millis (uint64_t const  millis)
-{
-
-#line 51 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  return     (time_Time){.secs = (
-#line 52 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    millis /    1000  ),.nano = ((
-#line 53 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    millis %    1000  ) *    1000000  ),.finite = 
-#line 54 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    true,};
-
-}
-
-
-#line 19 "/home/aep/proj/zz/modules/time/src/lib.zz"
-time_Time __attribute__ ((visibility ("default"))) time_infinite ()
-{
-
-#line 20 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  return     (time_Time){.finite = 
-#line 21 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    false,};
-
-}
-
-
-#line 91 "/home/aep/proj/zz/modules/time/src/lib.zz"
-time_Time __attribute__ ((visibility ("default"))) time_real ()
-{
-
-#line 92 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  time_Time tr  = {    0,};
-
-#line 93 "/home/aep/proj/zz/modules/time/src/lib.zz"
-    tr .finite = (    os_time_real(( &    tr .secs),( &    tr .nano)    ) ==    0  );
-
-#line 94 "/home/aep/proj/zz/modules/time/src/lib.zz"
-  return     tr;
-
-}
-
-
 #line 36 "/home/aep/proj/zz/modules/time/src/lib.zz"
 uint64_t __attribute__ ((visibility ("default"))) time_to_millis (time_Time const *  const  self)
 {
@@ -345,12 +271,86 @@ if (((
 }
 
 
+#line 83 "/home/aep/proj/zz/modules/time/src/lib.zz"
+time_Time __attribute__ ((visibility ("default"))) time_tick ()
+{
+
+#line 84 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  time_Time tr  = {    0,};
+
+#line 85 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    tr .finite = (    os_time_tick(( &    tr .secs),( &    tr .nano)    ) ==    0  );
+
+#line 86 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  return     tr;
+
+}
+
+
+#line 25 "/home/aep/proj/zz/modules/time/src/lib.zz"
+time_Time __attribute__ ((visibility ("default"))) time_from_seconds (uint64_t const  secs)
+{
+
+#line 26 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  return     (time_Time){.secs = 
+#line 27 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    secs,.finite = 
+#line 28 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    true,};
+
+}
+
+
+#line 50 "/home/aep/proj/zz/modules/time/src/lib.zz"
+time_Time __attribute__ ((visibility ("default"))) time_from_millis (uint64_t const  millis)
+{
+
+#line 51 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  return     (time_Time){.secs = (
+#line 52 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    millis /    1000  ),.nano = ((
+#line 53 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    millis %    1000  ) *    1000000  ),.finite = 
+#line 54 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    true,};
+
+}
+
+
 #line 32 "/home/aep/proj/zz/modules/time/src/lib.zz"
 uint64_t __attribute__ ((visibility ("default"))) time_to_seconds (time_Time const *  const  self)
 {
 
 #line 33 "/home/aep/proj/zz/modules/time/src/lib.zz"
   return     self ->secs;
+
+}
+
+
+#line 19 "/home/aep/proj/zz/modules/time/src/lib.zz"
+time_Time __attribute__ ((visibility ("default"))) time_infinite ()
+{
+
+#line 20 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  return     (time_Time){.finite = 
+#line 21 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    false,};
+
+}
+
+
+#line 91 "/home/aep/proj/zz/modules/time/src/lib.zz"
+time_Time __attribute__ ((visibility ("default"))) time_real ()
+{
+
+#line 92 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  time_Time tr  = {    0,};
+
+#line 93 "/home/aep/proj/zz/modules/time/src/lib.zz"
+    tr .finite = (    os_time_real(( &    tr .secs),( &    tr .nano)    ) ==    0  );
+
+#line 94 "/home/aep/proj/zz/modules/time/src/lib.zz"
+  return     tr;
 
 }
 

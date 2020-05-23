@@ -1,0 +1,151 @@
+
+<h1> module net::tcp_server </h1>
+<h4> fn fail_with_errno (
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    usize
+    line,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::err::Err*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn fail (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    usize
+    line,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    e,
+
+    usize
+    tail,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select (
+
+    ::err::Err*+et
+    e,
+
+    ::io::Context*
+    ctx,
+
+    ::io::Ready
+    w,
+
+    usize
+    et,
+
+    ::io::Async*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn os_new (
+
+    ::net::Engine*
+    engine,
+
+    ::io::Async*
+    async,
+
+    ::net::address::Address*
+    addr,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+-&gt ::net::tcp_server::Server
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::net::tcp_server::Server*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn accept (
+
+    ::net::tcp_server::Server*
+    self,
+
+    ::net::tcp::Socket*
+    client,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+
+

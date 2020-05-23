@@ -237,6 +237,7 @@ fn do_state_connect(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
 export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> io::Result
     where err::checked(*e)
 {
+
     switch self->state {
         // TODO retry timeout
         State::Connecting => {
@@ -257,6 +258,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
 
             // receive
             address::Address    mut fromaddr = {0};
+
             self->statem.connecting.pkt_in.clear();
             if self->udp4.recvfrom(e, &self->statem.connecting.pkt_in, &fromaddr) == io::Result::Ready {
                 err::make(e);
@@ -265,7 +267,8 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                 fromaddr.to_string(&bufx);
                 log::debug("receiving %zu bytes from %s", self->statem.connecting.pkt_in.len, bufx.mem);
 
-                channel::Channel  mut broker_chan = {0};
+                channel::Transfer mut broker_chan = {0};
+
                 vault::Broker mut redir = {0};
                 self->statem.connecting.initiator.complete(e, &broker_chan, &redir, &self->statem.connecting.pkt_in, 0);
                 if err::check(e) {
@@ -283,13 +286,18 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                     self->state = State::Connected;
                     memset(&self->statem , 0, sizeof(StateM));
 
-                    broker_chan.peering.received(peering::Transport::Udp, fromaddr, peering::Class::Internet);
-                    broker_chan.q.allocator = &self->framebuffer;
-                    broker_chan.store  = &self->vault;
-                    broker_chan.this_is_the_broker_channel = true;
-                    broker_chan.errors_are_fatal = true;
+                    self->statem.connected.udp4 = self->udp4;
+                    self->statem.connected.udp6 = self->udp6;
 
-                    self->statem.connected  = router::make(broker_chan, self->udp4, self->udp6);
+                    channel::Channel mut* broker_chan_c = self->statem.connected.channels;
+                    static_attest(safe(broker_chan_c));
+                    channel::from_transfer(broker_chan_c, broker_chan);
+                    broker_chan_c->peering.received(peering::Transport::Udp, fromaddr, peering::Class::Internet);
+                    broker_chan_c->q.allocator = &self->framebuffer;
+                    broker_chan_c->store  = &self->vault;
+                    broker_chan_c->this_is_the_broker_channel = true;
+                    broker_chan_c->errors_are_fatal = true;
+
                     self->statem.connected.channels[0].endpoint = self;
 
                     return io::Result::Ready;

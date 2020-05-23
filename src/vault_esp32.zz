@@ -17,15 +17,6 @@ struct Authorize {
     string::String+300 mut path;
 }
 
-struct Mem {
-    identity::Secret secret;
-    identity::Address network;
-    identity::Secret network_secret;
-
-    Authorize auth[32];
-    string::String+2000 mut file_name;
-}
-
 fn close(vault::Vault mut*self) {
 }
 
@@ -64,12 +55,34 @@ fn i_get_secret  (vault::Vault *self, identity::Secret mut * secret)
 {
     new+200 e = err::make();
 
+
+    esp::esp_partition_t * part = unsafe<esp::esp_partition_t*>(esp_partition_find_first(
+        esp::ESP_PARTITION_TYPE_DATA,
+        esp::ESP_PARTITION_SUBTYPE_ANY,
+        "identity"
+    ));
+    if part != 0 {
+        char head_r[8] = {0};
+        esp::ESP_ERROR_CHECK(esp::esp_partition_read(part, 0, head_r, 8));
+        esp::ESP_ERROR_CHECK(esp::esp_partition_read(part, 8, secret->k, 32));
+
+        if head_r[0] != 'I' || head_r[1] != 'D' || identity::isnull(secret->k) {
+            esp::esp_fill_random(secret->k, 32);
+            char head[] = {'I','D',1,0,0,0,0,0};
+            esp::ESP_ERROR_CHECK(esp::esp_partition_write(part, 0, head, 8));
+            esp::ESP_ERROR_CHECK(esp::esp_partition_write(part, 8, secret->k, 32));
+        }
+        return;
+    }
+
+
+
     esp::nvs_handle_t mut handle = 0;
     esp::ESP_ERROR_CHECK(esp::nvs_open("identity", esp::NVS_READWRITE , &handle));
 
     char mut val[100] = {0};
     usize mut val_l = 100;
-    esp::esp_err_t ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, "secret", val, &val_l));
+    esp::esp_err_t mut ee = unsafe<esp::esp_err_t>(nvs_get_str(handle, "secret", val, &val_l));
     if (unsafe<bool>(ee != esp::ESP_OK)) {
         identity::Secret mut nu = {0};
         esp::esp_fill_random(nu.k, 32);

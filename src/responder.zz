@@ -6,7 +6,7 @@ using identity;
 using byteorder;
 using crc8;
 using mem;
-using carrier;
+using revision;
 using endpoint;
 using string;
 using symmetric;
@@ -63,7 +63,7 @@ pub fn accept_insecure(
     frame->push64(byteorder::to_be64(timestamp));
 
     // revision
-    frame->push32(byteorder::to_be32(carrier::REVISION));
+    frame->push32(byteorder::to_be32(revision::REVISION));
 
 
     frame->at += 16;

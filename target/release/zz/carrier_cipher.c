@@ -2,21 +2,21 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#line 12 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-struct carrier_cipher_CipherState_t;
-typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
 
 #line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
+
+#line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+struct carrier_sha256_Sha256_t;
+typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
@@ -26,6 +26,12 @@ typedef struct slice_slice_Slice_t slice_slice_Slice;
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
+#line 12 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+struct carrier_cipher_CipherState_t;
+typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
+struct carrier_cipher_CipherState_t;
+typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
+
 #line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 struct carrier_sha256_Sha256_t;
 typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
@@ -38,243 +44,17 @@ typedef struct string_String_t string_String;
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
 
-#line 12 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-struct carrier_cipher_CipherState_t;
-typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
-
-#line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-struct carrier_sha256_Sha256_t;
-typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
-
-#line 71 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-uintptr_t carrier_cipher_decrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
-
-#line 135 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-uintptr_t carrier_cipher_decrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
 #line 1 ""
 #include <stddef.h>
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 8 "/home/aep/proj/devguard/carrier/src/symmetric.zz"
-#include <assert.h>
-
-#line 179 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_assert (bool const  a, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-
-#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.h"
-#if !defined(BYTE_ORDER)
-    #if defined(__BYTE_ORDER__)
-        #define BYTE_ORDER __BYTE_ORDER__
-    #elif defined(__BYTE_ORDER)
-        #define BYTE_ORDER __BYTE_ORDER
-    #else
-        #error cannot find a definition of BYTE_ORDER
-    #endif
-#endif
-
-#if !defined(LITTLE_ENDIAN)
-    #if defined(__LITTLE_ENDIAN)
-        #define LITTLE_ENDIAN __LITTLE_ENDIAN
-    #elif defined(__ORDER_LITTLE_ENDIAN__)
-        #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
-    #else
-        #error cannot find a definition of LITTLE_ENDIAN
-    #endif
-#endif
-
-#if !defined(BIG_ENDIAN)
-    #if defined(__BIG_ENDIAN)
-        #define BIG_ENDIAN __BIG_ENDIAN
-    #elif defined(__ORDER_BIG_ENDIAN__)
-        #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
-    #else
-        #error cannot find a definition of BIG_ENDIAN
-    #endif
-#endif
-
-#if BYTE_ORDER == LITTLE_ENDIAN
-    #if BYTE_ORDER == BIG_ENDIAN
-        #error "compiler claims byte order is both little and big endian"
-    #endif
-#else
-    #if BYTE_ORDER == BIG_ENDIAN
-
-    #else
-        #error "compiler claims byte order is neither little nor big endian"
-    #endif
-#endif
-
-inline static uint16_t bswap_16(uint16_t x)
-{
-    return x<<8 | x>>8;
-}
-
-inline static uint32_t bswap_32(uint32_t x)
-{
-    return x>>24 | ( (x >> 8) & 0xff00) | ((x<<8) & 0xff0000) | x<<24;
-}
-
-inline static uint64_t bswap_64(uint64_t x)
-{
-    return (bswap_32(x) + ((uint64_t)0)) <<32 | bswap_32(x>>32);
-}
-
-#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
-#line 5 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.h"
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 23 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-extern const __attribute__ ((unused)) size_t carrier_cipher_EncryptionError;
-
-#line 71 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-uintptr_t carrier_cipher_decrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
 #line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
 
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
 #line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
-
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -291,16 +71,16 @@ slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  ta
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1636,26 +1416,108 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
+#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
 #line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
 
 #line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
+
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
+
+#line 71 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t carrier_cipher_decrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
+
+#line 135 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t carrier_cipher_decrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
+
+#line 25 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t carrier_cipher_encrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
+
+#line 116 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t carrier_cipher_encrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 23 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+extern const __attribute__ ((unused)) size_t carrier_cipher_EncryptionError;
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
+
+#line 17 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+void carrier_cipher_init (carrier_cipher_CipherState*  const  self, uint8_t const *  const  k);
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
 #line 12 "/home/aep/proj/devguard/carrier/src/cipher.zz"
 struct carrier_cipher_CipherState_t {
@@ -1669,14 +1531,11 @@ struct carrier_cipher_CipherState_t {
 ;
 const size_t sizeof_carrier_cipher_CipherState = sizeof(carrier_cipher_CipherState);
 
-#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
 
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+#line 5 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.h"
 
 #line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 struct carrier_sha256_Sha256_t {
@@ -1692,35 +1551,177 @@ struct carrier_sha256_Sha256_t {
 }
 ;
 
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 17 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-void carrier_cipher_init (carrier_cipher_CipherState*  const  self, uint8_t const *  const  k);
-
-#line 25 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-uintptr_t carrier_cipher_encrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 116 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-uintptr_t carrier_cipher_encrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
 #line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+
+#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.h"
+#if !defined(BYTE_ORDER)
+    #if defined(__BYTE_ORDER__)
+        #define BYTE_ORDER __BYTE_ORDER__
+    #elif defined(__BYTE_ORDER)
+        #define BYTE_ORDER __BYTE_ORDER
+    #else
+        #error cannot find a definition of BYTE_ORDER
+    #endif
+#endif
+
+#if !defined(LITTLE_ENDIAN)
+    #if defined(__LITTLE_ENDIAN)
+        #define LITTLE_ENDIAN __LITTLE_ENDIAN
+    #elif defined(__ORDER_LITTLE_ENDIAN__)
+        #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+    #else
+        #error cannot find a definition of LITTLE_ENDIAN
+    #endif
+#endif
+
+#if !defined(BIG_ENDIAN)
+    #if defined(__BIG_ENDIAN)
+        #define BIG_ENDIAN __BIG_ENDIAN
+    #elif defined(__ORDER_BIG_ENDIAN__)
+        #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
+    #else
+        #error cannot find a definition of BIG_ENDIAN
+    #endif
+#endif
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+    #if BYTE_ORDER == BIG_ENDIAN
+        #error "compiler claims byte order is both little and big endian"
+    #endif
+#else
+    #if BYTE_ORDER == BIG_ENDIAN
+
+    #else
+        #error "compiler claims byte order is neither little nor big endian"
+    #endif
+#endif
+
+inline static uint16_t bswap_16(uint16_t x)
+{
+    return x<<8 | x>>8;
+}
+
+inline static uint32_t bswap_32(uint32_t x)
+{
+    return x>>24 | ( (x >> 8) & 0xff00) | ((x<<8) & 0xff0000) | x<<24;
+}
+
+inline static uint64_t bswap_64(uint64_t x)
+{
+    return (bswap_32(x) + ((uint64_t)0)) <<32 | bswap_32(x>>32);
+}
+
+#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 4 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <assert.h>
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
 #line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 179 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_assert (bool const  a, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 71 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t carrier_cipher_decrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 25 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t carrier_cipher_encrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
+
 #line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
 
 #line 135 "/home/aep/proj/devguard/carrier/src/cipher.zz"
 uintptr_t __attribute__ ((visibility ("default"))) carrier_cipher_decrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max)
@@ -1732,6 +1733,33 @@ uintptr_t __attribute__ ((visibility ("default"))) carrier_cipher_decrypt (carri
     et,
 #line 148 "/home/aep/proj/devguard/carrier/src/cipher.zz"
     0,    0,    ciphertext,    cipherlen,    nonce,    plain,    plainlen_max    );
+
+}
+
+
+#line 116 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+uintptr_t __attribute__ ((visibility ("default"))) carrier_cipher_encrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max)
+{
+
+#line 131 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+  return     carrier_cipher_encrypt_ad(    self,    (err_Err* )(    e),
+#line 118 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+    et,
+#line 131 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+    0,    0,    plain,    plainlen,    nonce,    ciphertext,    cipherlen_max    );
+
+}
+
+
+#line 17 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+void __attribute__ ((visibility ("default"))) carrier_cipher_init (carrier_cipher_CipherState*  const  self, uint8_t const *  const  k)
+{
+
+#line 18 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+    memcpy(    self ->key,    k,    32    );
+
+#line 19 "/home/aep/proj/devguard/carrier/src/cipher.zz"
+    self ->has_key =     true;
 
 }
 
@@ -1847,19 +1875,6 @@ if ((
 }
 
 
-#line 17 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-void __attribute__ ((visibility ("default"))) carrier_cipher_init (carrier_cipher_CipherState*  const  self, uint8_t const *  const  k)
-{
-
-#line 18 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-    memcpy(    self ->key,    k,    32    );
-
-#line 19 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-    self ->has_key =     true;
-
-}
-
-
 #line 25 "/home/aep/proj/devguard/carrier/src/cipher.zz"
 uintptr_t __attribute__ ((visibility ("default"))) carrier_cipher_encrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max)
 {
@@ -1940,20 +1955,6 @@ if ((
 
 #line 68 "/home/aep/proj/devguard/carrier/src/cipher.zz"
   return     cipherlen;
-
-}
-
-
-#line 116 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-uintptr_t __attribute__ ((visibility ("default"))) carrier_cipher_encrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max)
-{
-
-#line 131 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-  return     carrier_cipher_encrypt_ad(    self,    (err_Err* )(    e),
-#line 118 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-    et,
-#line 131 "/home/aep/proj/devguard/carrier/src/cipher.zz"
-    0,    0,    plain,    plainlen,    nonce,    ciphertext,    cipherlen_max    );
 
 }
 

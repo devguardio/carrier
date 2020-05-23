@@ -20,7 +20,7 @@ using time;
 using hpack;
 using protonerf;
 using proto;
-using carrier;
+using revision;
 using vault;
 using identity;
 using pool;
@@ -38,6 +38,55 @@ export enum FrameType {
     Configure   = 7,
     Fragmented  = 8,
 }
+
+
+// move around pre-initialized channel without the whole memory bag
+pub struct Transfer {
+    u8      version;
+    u64     route;
+    bool    responder;
+
+    cipher::CipherState mut c_mine;
+    cipher::CipherState mut c_them;
+
+    u64 rtt;
+    u64 counter_out;
+    u8  outgoing_acks_at;
+}
+
+pub fn from_transfer (Channel mut new*self, Transfer tr)
+{
+    self->version   = tr.version;
+    self->route     = tr.route;
+    self->responder = tr.responder;
+    self->c_mine    = tr.c_mine;
+    self->c_them    = tr.c_them;
+    self->q.rtt     = tr.rtt;
+    self->counter_out  = tr.counter_out;
+    self->outgoing_acks_at = tr.outgoing_acks_at;
+}
+
+pub fn transfer_from_symmetric(symmetric::SymmetricState * symm, u8 version, u64 route, bool responder) -> Transfer {
+    Transfer mut c = Transfer {
+        route:      route,
+        responder:  responder,
+        version:    version,
+    };
+
+    if responder {
+        symmetric::split(symm, &c.c_them, &c.c_mine);
+    } else {
+        symmetric::split(symm, &c.c_mine, &c.c_them);
+    }
+
+    c.counter_out = 1;
+
+    // why was this 1?!
+    c.outgoing_acks_at = 0;
+
+    return c;
+}
+
 
 export struct Channel {
     identity::Identity peer;
@@ -236,26 +285,7 @@ fn clean_closed(Channel mut* self, err::Err+et mut *e)
     }
 }
 
-pub fn from_symmetric(symmetric::SymmetricState * symm, u8 version, u64 route, bool responder) -> Channel {
-    Channel mut c = Channel{
-        route:      route,
-        responder:  responder,
-        version:    version,
-    };
 
-    if responder {
-        symmetric::split(symm, &c.c_them, &c.c_mine);
-    } else {
-        symmetric::split(symm, &c.c_mine, &c.c_them);
-    }
-
-    c.counter_out = 1;
-
-    // why was this 1?!
-    c.outgoing_acks_at = 0;
-
-    return c;
-}
 
 fn disconnect(Channel mut* this, err::Err+et mut* e)
     where err::checked(*e)
@@ -931,7 +961,7 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
         err::assert(frame2->push64(byteorder::to_be64(2)));
         err::assert(frame2->push16(1));
 
-        protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, carrier::REVISION);
+        protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, revision::REVISION);
         e->abort();
         protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,           (u8*)"??", 2);
         e->abort();

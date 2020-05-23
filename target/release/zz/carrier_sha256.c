@@ -12,18 +12,6 @@ typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
 #line 13 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 uintptr_t carrier_sha256_blocklen ();
 
-#line 6 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-#define carrier_sha256_HASHLEN ((uintptr_t )    32)
-
-#line 1 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h"
-
-#line 8 "/home/aep/proj/devguard/carrier/src/symmetric.zz"
-#include <assert.h>
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
 #line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 struct carrier_sha256_Sha256_t {
 
@@ -39,11 +27,29 @@ struct carrier_sha256_Sha256_t {
 ;
 const size_t sizeof_carrier_sha256_Sha256 = sizeof(carrier_sha256_Sha256);
 
-#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
+#line 1 ""
+#include <stddef.h>
+
+#line 3 "/home/aep/proj/zz/modules/mem/src/lib.zz"
+extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
+
+#line 1 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h"
 
 #line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
+
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
+
+#line 4 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <assert.h>
+
+#line 6 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+#define carrier_sha256_HASHLEN ((uintptr_t )    32)
+
+#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
 
 #line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
@@ -51,26 +57,17 @@ void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const
 #line 111 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 extern void carrier_sha256_hmac (uint8_t const *  const  key, uintptr_t const  keylen, uint8_t const *  const  data, uintptr_t const  datalen, uint8_t*  const  out);
 
-#line 1 ""
-#include <stddef.h>
-
-#line 3 "/home/aep/proj/zz/modules/mem/src/lib.zz"
-extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
+#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
 
 #line 62 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 extern void carrier_sha256_hkdf (uint8_t const *  const  chaining_key, uint8_t const *  const  input_key_material, uintptr_t const  input_key_material_len, uint8_t*  const  out1, uint8_t*  const  out2, uint8_t*  const  out3);
 
-#line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
-
 #line 9 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 uintptr_t carrier_sha256_hashlen ();
 
-#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
-
-#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
+#line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
 
 #line 13 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 uintptr_t __attribute__ ((visibility ("default"))) carrier_sha256_blocklen ()
@@ -78,6 +75,77 @@ uintptr_t __attribute__ ((visibility ("default"))) carrier_sha256_blocklen ()
 
 #line 14 "/home/aep/proj/devguard/carrier/src/sha256.zz"
   return     carrier_sha256_BLOCKLEN;
+
+}
+
+
+#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void __attribute__ ((visibility ("default"))) carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l)
+{
+
+#line 31 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+
+#line 32 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+  for (;;){
+
+#line 35 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+  uintptr_t const  fill  =     (uintptr_t)((    64 -    self ->at  ));
+if ((
+#line 36 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    l >=    fill  )){
+
+#line 37 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+
+#line 38 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    mem_copy(    data,(    self ->block +    self ->at  ),    fill    );
+
+#line 39 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    Hacl_SHA2_256_update(    self ->state,    self ->block    );
+
+#line 40 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    l -=     fill;
+
+#line 41 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    data = (    data +    fill  );
+
+#line 42 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    self ->at =     0;
+
+}
+ else {
+
+#line 45 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+
+#line 46 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+  uint8_t*  const  dst  = (    self ->block +    self ->at  );
+
+#line 47 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+
+#line 48 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+
+#line 49 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+;
+
+#line 50 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    mem_copy(    data,    dst,    l    );
+
+#line 51 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    self ->at +=     (uint8_t)(    l);
+
+#line 52 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+break;
+
+}
+
+
+}
+
 
 }
 
@@ -147,6 +215,19 @@ void __attribute__ ((visibility ("hidden"))) carrier_sha256_hmac (uint8_t const 
 
 #line 139 "/home/aep/proj/devguard/carrier/src/sha256.zz"
     carrier_sha256_finish(( &    s2),    out    );
+
+}
+
+
+#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void __attribute__ ((visibility ("default"))) carrier_sha256_init (carrier_sha256_Sha256*  const  self)
+{
+
+#line 24 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    Hacl_SHA2_256_init(    self ->state    );
+
+#line 25 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    self ->at =     0;
 
 }
 
@@ -227,19 +308,6 @@ if ((
 }
 
 
-#line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void __attribute__ ((visibility ("default"))) carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out)
-{
-
-#line 58 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    Hacl_SHA2_256_update_last(    self ->state,    self ->block,    self ->at    );
-
-#line 59 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    Hacl_SHA2_256_finish(    self ->state,    out    );
-
-}
-
-
 #line 9 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 uintptr_t __attribute__ ((visibility ("default"))) carrier_sha256_hashlen ()
 {
@@ -250,86 +318,15 @@ uintptr_t __attribute__ ((visibility ("default"))) carrier_sha256_hashlen ()
 }
 
 
-#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void __attribute__ ((visibility ("default"))) carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l)
+#line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void __attribute__ ((visibility ("default"))) carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out)
 {
 
-#line 31 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
+#line 58 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    Hacl_SHA2_256_update_last(    self ->state,    self ->block,    self ->at    );
 
-#line 32 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
-  for (;;){
-
-#line 35 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-  uintptr_t const  fill  =     (uintptr_t)((    64 -    self ->at  ));
-if ((
-#line 36 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    l >=    fill  )){
-
-#line 37 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
-
-#line 38 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    mem_copy(    data,(    self ->block +    self ->at  ),    fill    );
-
-#line 39 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    Hacl_SHA2_256_update(    self ->state,    self ->block    );
-
-#line 40 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    l -=     fill;
-
-#line 41 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    data = (    data +    fill  );
-
-#line 42 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    self ->at =     0;
-
-}
- else {
-
-#line 45 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
-
-#line 46 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-  uint8_t*  const  dst  = (    self ->block +    self ->at  );
-
-#line 47 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
-
-#line 48 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
-
-#line 49 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-;
-
-#line 50 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    mem_copy(    data,    dst,    l    );
-
-#line 51 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    self ->at +=     (uint8_t)(    l);
-
-#line 52 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-break;
-
-}
-
-
-}
-
-
-}
-
-
-#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void __attribute__ ((visibility ("default"))) carrier_sha256_init (carrier_sha256_Sha256*  const  self)
-{
-
-#line 24 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    Hacl_SHA2_256_init(    self ->state    );
-
-#line 25 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-    self ->at =     0;
+#line 59 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+    Hacl_SHA2_256_finish(    self ->state,    out    );
 
 }
 

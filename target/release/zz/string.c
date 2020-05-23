@@ -2,79 +2,23 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
+
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
-struct string_String_t;
-typedef struct string_String_t string_String;
-
-#line 1 ""
-#include <stddef.h>
-
-#line 17 "/home/aep/proj/zz/modules/mem/src/lib.zz"
-extern void mem_set (void*  const  dst, uint8_t const  c, uintptr_t const  n);
-
-#line 3 "/home/aep/proj/zz/modules/mem/src/lib.zz"
-extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
-
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_strlen (char const *  s);
-
-#line 23 "/home/aep/proj/zz/modules/mem/src/lib.zz"
-extern bool mem_eq (void const *  const  a, void const *  const  b, uintptr_t const  n);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_strlen (char const *  s);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -91,16 +35,16 @@ uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1436,6 +1380,121 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
+#line 1 ""
+#include <stddef.h>
+
+#line 3 "/home/aep/proj/zz/modules/mem/src/lib.zz"
+extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_strlen (char const *  s);
+
+#line 23 "/home/aep/proj/zz/modules/mem/src/lib.zz"
+extern bool mem_eq (void const *  const  a, void const *  const  b, uintptr_t const  n);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_cstr_eq (char const *  const  a, char const *  const  b);
+
+#line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_strlen (char const *  s);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 17 "/home/aep/proj/zz/modules/mem/src/lib.zz"
+extern void mem_set (void*  const  dst, uint8_t const  c, uintptr_t const  n);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
+
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t {
 
@@ -1448,50 +1507,29 @@ struct string_String_t {
 ;
 size_t sizeof_string_String(size_t tail) { return sizeof(string_String) + (tail * sizeof(char)); }
 
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
 #line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
-#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_cstr_eq (char const *  const  a, char const *  const  b);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
 
 #line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
 bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
 
-#line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
 #line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
 char  const * string_cstr (string_String const *  const  self);
@@ -1499,639 +1537,11 @@ char  const * string_cstr (string_String const *  const  self);
 #line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
 
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
 #line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
 slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b)
-{
-
-#line 236 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-if ((
-#line 237 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    b ==    0  )){
-
-#line 238 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return (    self ->len ==    0  );
-
-}
-
-
-#line 240 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 241 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  l2  =     string_strlen(    b    );
-if ((
-#line 242 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    l2 !=    self ->len  )){
-
-#line 243 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-
-#line 245 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     mem_eq(    self ->mem,    b,    l2    );
-
-}
-
-
-#line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t __attribute__ ((visibility ("default"))) string_strlen (char const *  s)
-{
-if ((
-#line 410 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    s ==    0  )){
-
-#line 411 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 412 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     0;
-
-}
-
-
-#line 414 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t l  =     0;
-while ((
-#line 415 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    s [     l] !=    0  )){
-
-#line 416 "/home/aep/proj/zz/modules/string/src/lib.zz"
-(    l ++);
-
-}
-
-
-#line 419 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 420 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     l;
-
-}
-
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t __attribute__ ((visibility ("default"))) string_slen (string_String const *  const  self)
-{
-
-#line 29 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     self ->len;
-
-}
-
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void __attribute__ ((visibility ("default"))) string_clear (string_String*  const  self, uintptr_t const  tail)
-{
-
-#line 83 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    mem_set(    self ->mem,    0,    tail    );
-
-#line 84 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len =     0;
-
-#line 86 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-}
-
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void __attribute__ ((visibility ("default"))) string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr)
-{
-
-#line 134 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 136 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t inlen  =     string_strlen(    cstr    );
-if (((
-#line 138 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    inlen +    self ->len  ) >(    t -    1  )  )){
-
-#line 139 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    inlen = ((    t -    1  ) -    self ->len  );
-
-}
-
-{
-
-#line 142 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    mem_copy(    cstr,(    self ->mem +    self ->len  ),    inlen    );
-
-}
-
-
-#line 143 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len +=     inlen;
-
-#line 145 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem [     self ->len] =     0;
-
-#line 146 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-}
-
-
 #line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void __attribute__ ((visibility ("default"))) string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen)
-{
-
-#line 177 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-if (((
-#line 179 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    inlen +    self ->len  ) >(    t -    1  )  )){
-
-#line 180 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    inlen = ((    t -    1  ) -    self ->len  );
-
-}
-
-{
-
-#line 183 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    mem_copy(    bytes,(    self ->mem +    self ->len  ),    inlen    );
-
-}
-
-
-#line 184 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len +=     inlen;
-
-#line 186 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-}
-
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void __attribute__ ((visibility ("default"))) string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2)
-{
-
-#line 155 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 157 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t inlen  =     other ->len;
-if (((
-#line 159 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    inlen +    self ->len  ) >(    t -    1  )  )){
-
-#line 160 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    inlen = ((    t -    1  ) -    self ->len  );
-
-}
-
-{
-
-#line 163 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    mem_copy(    other ->mem,(    self ->mem +    self ->len  ),    inlen    );
-
-}
-
-
-#line 164 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len +=     inlen;
-
-#line 166 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-}
-
-
-#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_cstr_eq (char const *  const  a, char const *  const  b)
-{
-if (((
-#line 253 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    a ==    0  ) ||(    b ==    0  )  )){
-
-#line 254 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return (    a ==    b  );
-
-}
-
-
-#line 256 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 257 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 258 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  l1  =     string_strlen(    a    );
-
-#line 259 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  l2  =     string_strlen(    b    );
-if ((
-#line 260 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    l1 !=    l2  )){
-
-#line 261 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-
-#line 263 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     mem_eq(    a,    b,    l2    );
-
-}
-
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a)
-{
-
-#line 270 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-if ((
-#line 271 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    a ==    0  )){
-
-#line 272 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return (    self ->len ==    0  );
-
-}
-
-
-#line 274 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 275 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  alen  =     string_strlen(    a    );
-if ((
-#line 276 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    alen >    self ->len  )){
-
-#line 277 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-
-#line 279 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     mem_eq(    self ->mem,    a,    alen    );
-
-}
-
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_push (string_String*  const  self, uintptr_t const  t, char const  cstr)
-{
-
-#line 96 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 97 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-if ((
-#line 99 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len >(    t -    2  )  )){
-
-#line 100 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-
-#line 103 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 104 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem [     self ->len] =     cstr;
-
-#line 105 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len +=     1;
-
-#line 107 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     true;
-
-}
-
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_pop (string_String*  const  self, uintptr_t const  t)
-{
-
-#line 117 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-if ((
-#line 119 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len ==    0  )){
-
-#line 120 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-
-#line 122 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len -=     1;
-
-#line 123 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem [     self ->len] =     0;
-
-#line 124 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     true;
-
-}
-
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2)
-{
-
-#line 373 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 375 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  start  = ( *    iterator);
-if (((
-#line 377 "/home/aep/proj/zz/modules/string/src/lib.zz"
- *    iterator) >=    self ->len  )){
-
-#line 378 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-  for (;((
-#line 381 "/home/aep/proj/zz/modules/string/src/lib.zz"
- *    iterator) <    self ->len  );
-(( *    iterator) ++)){
-if ((
-#line 382 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem [ ( *    iterator)] ==    token  )){
-
-#line 383 "/home/aep/proj/zz/modules/string/src/lib.zz"
-break;
-
-}
-
-
-}
-
-
-#line 387 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  size  = (( *    iterator) -    start  );
-
-#line 388 "/home/aep/proj/zz/modules/string/src/lib.zz"
-( *    iterator) +=     1;
-if ((
-#line 389 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    size ==    0  )){
-
-#line 390 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     true;
-
-}
-
-
-#line 393 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    string_substr(    (string_String const * )(    self),
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    tail,
-#line 393 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    start,    size,    (string_String* )(    other),
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    tail2    );
-
-#line 394 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     true;
-
-}
-
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * __attribute__ ((visibility ("default"))) string_cstr (string_String const *  const  self)
-{
-
-#line 37 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 38 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     self ->mem;
-
-}
-
-
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int __attribute__ ((visibility ("default"))) string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...)
-{
-
-#line 194 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  va_list args ;
-
-#line 195 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    va_start(    args,    fmt    );
-
-#line 196 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  int const  r  =     string_vformat(    (string_String* )(    self),
-#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    tail,
-#line 196 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    fmt,    args    );
-
-#line 197 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    va_end(    args    );
-
-#line 199 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     r;
-
-}
-
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int __attribute__ ((visibility ("default"))) string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args)
-{
-
-#line 206 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 208 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  isfree  = (    tail -    self ->len  );
-
-#line 210 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  int const  r  =     (int)(
-#line 211 "/home/aep/proj/zz/modules/string/src/lib.zz"
-
-#line 210 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    xN_vsnprintf((
-#line 211 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem +    self ->len  ),
-#line 212 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    isfree,
-#line 213 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    fmt,
-#line 214 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    args    ));
-if ((
-#line 217 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    r >    0  )){
-if ((    (uintptr_t)(
-#line 218 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    r) >=    isfree  )){
-
-#line 219 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len += (    isfree -    1  );
-
-}
- else {
-
-#line 221 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len +=     (uintptr_t)(    r);
-
-}
-
-
-}
-
-
-#line 225 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 226 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem [     self ->len] =     0;
-
-#line 228 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     r;
-
-}
-
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice __attribute__ ((visibility ("default"))) string_append_slice (string_String*  const  self, uintptr_t const  tail)
-{
-
-#line 59 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 61 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     (slice_mut_slice_MutSlice){.slice = 
-#line 62 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    (slice_slice_Slice){.size = 
-#line 63 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    tail,.mem =     (uint8_t* )(
-#line 64 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem),},.at = 
-#line 66 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len,};
-
-}
-
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t __attribute__ ((visibility ("default"))) string_space (string_String const *  const  self, uintptr_t const  tail)
-{
-
-#line 402 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return (    tail -    self ->len  );
-
-}
-
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void __attribute__ ((visibility ("default"))) string_make (string_String*  const  self, uintptr_t const  tail)
-{
-
-#line 75 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    string_clear(    (string_String* )(    self),
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    tail    );
-
-}
-
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool __attribute__ ((visibility ("default"))) string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a)
-{
-
-#line 286 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-if ((
-#line 288 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    a ==    0  )){
-
-#line 289 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return (    self ->len ==    0  );
-
-}
-
-
-#line 291 "/home/aep/proj/zz/modules/string/src/lib.zz"
-;
-
-#line 292 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  alen  =     string_strlen(    a    );
-if ((
-#line 293 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    alen >    self ->len  )){
-
-#line 294 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     false;
-
-}
-
-
-#line 297 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  uintptr_t const  start  = (    self ->len -    alen  );
-
-#line 298 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     mem_eq((    self ->mem +    start  ),    a,    alen    );
-
-}
-
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
 
 #line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
 void __attribute__ ((visibility ("default"))) string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2)
@@ -2225,19 +1635,399 @@ if ((
 }
 
 
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice __attribute__ ((visibility ("default"))) string_slice (string_String*  const  self, uintptr_t const  tail)
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t __attribute__ ((visibility ("default"))) string_space (string_String const *  const  self, uintptr_t const  tail)
 {
 
-#line 45 "/home/aep/proj/zz/modules/string/src/lib.zz"
+#line 402 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return (    tail -    self ->len  );
+
+}
+
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t __attribute__ ((visibility ("default"))) string_slen (string_String const *  const  self)
+{
+
+#line 29 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     self ->len;
+
+}
+
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a)
+{
+
+#line 286 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+if ((
+#line 288 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    a ==    0  )){
+
+#line 289 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return (    self ->len ==    0  );
+
+}
+
+
+#line 291 "/home/aep/proj/zz/modules/string/src/lib.zz"
 ;
 
-#line 46 "/home/aep/proj/zz/modules/string/src/lib.zz"
-  return     (slice_slice_Slice){.size = 
-#line 47 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->len,.mem =     (uint8_t* )(
-#line 48 "/home/aep/proj/zz/modules/string/src/lib.zz"
-    self ->mem),};
+#line 292 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  alen  =     string_strlen(    a    );
+if ((
+#line 293 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    alen >    self ->len  )){
+
+#line 294 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+
+#line 297 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  start  = (    self ->len -    alen  );
+
+#line 298 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     mem_eq((    self ->mem +    start  ),    a,    alen    );
+
+}
+
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_pop (string_String*  const  self, uintptr_t const  t)
+{
+
+#line 117 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+if ((
+#line 119 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len ==    0  )){
+
+#line 120 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+
+#line 122 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len -=     1;
+
+#line 123 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem [     self ->len] =     0;
+
+#line 124 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     true;
+
+}
+
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_push (string_String*  const  self, uintptr_t const  t, char const  cstr)
+{
+
+#line 96 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 97 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+if ((
+#line 99 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len >(    t -    2  )  )){
+
+#line 100 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+
+#line 103 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 104 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem [     self ->len] =     cstr;
+
+#line 105 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len +=     1;
+
+#line 107 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     true;
+
+}
+
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void __attribute__ ((visibility ("default"))) string_make (string_String*  const  self, uintptr_t const  tail)
+{
+
+#line 75 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    string_clear(    (string_String* )(    self),
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    tail    );
+
+}
+
+
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b)
+{
+
+#line 236 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+if ((
+#line 237 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    b ==    0  )){
+
+#line 238 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return (    self ->len ==    0  );
+
+}
+
+
+#line 240 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 241 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  l2  =     string_strlen(    b    );
+if ((
+#line 242 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    l2 !=    self ->len  )){
+
+#line 243 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+
+#line 245 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     mem_eq(    self ->mem,    b,    l2    );
+
+}
+
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a)
+{
+
+#line 270 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+if ((
+#line 271 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    a ==    0  )){
+
+#line 272 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return (    self ->len ==    0  );
+
+}
+
+
+#line 274 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 275 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  alen  =     string_strlen(    a    );
+if ((
+#line 276 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    alen >    self ->len  )){
+
+#line 277 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+
+#line 279 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     mem_eq(    self ->mem,    a,    alen    );
+
+}
+
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int __attribute__ ((visibility ("default"))) string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args)
+{
+
+#line 206 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 208 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  isfree  = (    tail -    self ->len  );
+
+#line 210 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  int const  r  =     (int)(
+#line 211 "/home/aep/proj/zz/modules/string/src/lib.zz"
+
+#line 210 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    xN_vsnprintf((
+#line 211 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem +    self ->len  ),
+#line 212 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    isfree,
+#line 213 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    fmt,
+#line 214 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    args    ));
+if ((
+#line 217 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    r >    0  )){
+if ((    (uintptr_t)(
+#line 218 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    r) >=    isfree  )){
+
+#line 219 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len += (    isfree -    1  );
+
+}
+ else {
+
+#line 221 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len +=     (uintptr_t)(    r);
+
+}
+
+
+}
+
+
+#line 225 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 226 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem [     self ->len] =     0;
+
+#line 228 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     r;
+
+}
+
+
+#line 249 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_cstr_eq (char const *  const  a, char const *  const  b)
+{
+if (((
+#line 253 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    a ==    0  ) ||(    b ==    0  )  )){
+
+#line 254 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return (    a ==    b  );
+
+}
+
+
+#line 256 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 257 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 258 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  l1  =     string_strlen(    a    );
+
+#line 259 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  l2  =     string_strlen(    b    );
+if ((
+#line 260 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    l1 !=    l2  )){
+
+#line 261 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+
+#line 263 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     mem_eq(    a,    b,    l2    );
+
+}
+
+
+#line 406 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t __attribute__ ((visibility ("default"))) string_strlen (char const *  s)
+{
+if ((
+#line 410 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    s ==    0  )){
+
+#line 411 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 412 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     0;
+
+}
+
+
+#line 414 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t l  =     0;
+while ((
+#line 415 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    s [     l] !=    0  )){
+
+#line 416 "/home/aep/proj/zz/modules/string/src/lib.zz"
+(    l ++);
+
+}
+
+
+#line 419 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 420 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     l;
+
+}
+
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void __attribute__ ((visibility ("default"))) string_clear (string_String*  const  self, uintptr_t const  tail)
+{
+
+#line 83 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    mem_set(    self ->mem,    0,    tail    );
+
+#line 84 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len =     0;
+
+#line 86 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+}
+
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void __attribute__ ((visibility ("default"))) string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr)
+{
+
+#line 134 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 136 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t inlen  =     string_strlen(    cstr    );
+if (((
+#line 138 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    inlen +    self ->len  ) >(    t -    1  )  )){
+
+#line 139 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    inlen = ((    t -    1  ) -    self ->len  );
+
+}
+
+{
+
+#line 142 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    mem_copy(    cstr,(    self ->mem +    self ->len  ),    inlen    );
+
+}
+
+
+#line 143 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len +=     inlen;
+
+#line 145 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem [     self ->len] =     0;
+
+#line 146 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
 
 }
 
@@ -2275,6 +2065,215 @@ if ((
 
 #line 315 "/home/aep/proj/zz/modules/string/src/lib.zz"
   return     true;
+
+}
+
+
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void __attribute__ ((visibility ("default"))) string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2)
+{
+
+#line 155 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 157 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t inlen  =     other ->len;
+if (((
+#line 159 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    inlen +    self ->len  ) >(    t -    1  )  )){
+
+#line 160 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    inlen = ((    t -    1  ) -    self ->len  );
+
+}
+
+{
+
+#line 163 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    mem_copy(    other ->mem,(    self ->mem +    self ->len  ),    inlen    );
+
+}
+
+
+#line 164 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len +=     inlen;
+
+#line 166 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+}
+
+
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool __attribute__ ((visibility ("default"))) string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2)
+{
+
+#line 373 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 375 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  start  = ( *    iterator);
+if (((
+#line 377 "/home/aep/proj/zz/modules/string/src/lib.zz"
+ *    iterator) >=    self ->len  )){
+
+#line 378 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     false;
+
+}
+
+  for (;((
+#line 381 "/home/aep/proj/zz/modules/string/src/lib.zz"
+ *    iterator) <    self ->len  );
+(( *    iterator) ++)){
+if ((
+#line 382 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem [ ( *    iterator)] ==    token  )){
+
+#line 383 "/home/aep/proj/zz/modules/string/src/lib.zz"
+break;
+
+}
+
+
+}
+
+
+#line 387 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  uintptr_t const  size  = (( *    iterator) -    start  );
+
+#line 388 "/home/aep/proj/zz/modules/string/src/lib.zz"
+( *    iterator) +=     1;
+if ((
+#line 389 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    size ==    0  )){
+
+#line 390 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     true;
+
+}
+
+
+#line 393 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    string_substr(    (string_String const * )(    self),
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    tail,
+#line 393 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    start,    size,    (string_String* )(    other),
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    tail2    );
+
+#line 394 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     true;
+
+}
+
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice __attribute__ ((visibility ("default"))) string_slice (string_String*  const  self, uintptr_t const  tail)
+{
+
+#line 45 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 46 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     (slice_slice_Slice){.size = 
+#line 47 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len,.mem =     (uint8_t* )(
+#line 48 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem),};
+
+}
+
+
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int __attribute__ ((visibility ("default"))) string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...)
+{
+
+#line 194 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  va_list args ;
+
+#line 195 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    va_start(    args,    fmt    );
+
+#line 196 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  int const  r  =     string_vformat(    (string_String* )(    self),
+#line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    tail,
+#line 196 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    fmt,    args    );
+
+#line 197 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    va_end(    args    );
+
+#line 199 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     r;
+
+}
+
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * __attribute__ ((visibility ("default"))) string_cstr (string_String const *  const  self)
+{
+
+#line 37 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 38 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     self ->mem;
+
+}
+
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice __attribute__ ((visibility ("default"))) string_append_slice (string_String*  const  self, uintptr_t const  tail)
+{
+
+#line 59 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+
+#line 61 "/home/aep/proj/zz/modules/string/src/lib.zz"
+  return     (slice_mut_slice_MutSlice){.slice = 
+#line 62 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    (slice_slice_Slice){.size = 
+#line 63 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    tail,.mem =     (uint8_t* )(
+#line 64 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->mem),},.at = 
+#line 66 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len,};
+
+}
+
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void __attribute__ ((visibility ("default"))) string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen)
+{
+
+#line 177 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
+if (((
+#line 179 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    inlen +    self ->len  ) >(    t -    1  )  )){
+
+#line 180 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    inlen = ((    t -    1  ) -    self ->len  );
+
+}
+
+{
+
+#line 183 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    mem_copy(    bytes,(    self ->mem +    self ->len  ),    inlen    );
+
+}
+
+
+#line 184 "/home/aep/proj/zz/modules/string/src/lib.zz"
+    self ->len +=     inlen;
+
+#line 186 "/home/aep/proj/zz/modules/string/src/lib.zz"
+;
 
 }
 

@@ -5,22 +5,6 @@
 #line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 struct carrier_sha256_Sha256_t;
 typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
-struct carrier_sha256_Sha256_t;
-typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
-
-#line 1 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <string.h>
-
-#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
-
-#line 6 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-#define carrier_sha256_HASHLEN ((uintptr_t )    32)
-
-#line 62 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-extern void carrier_sha256_hkdf (uint8_t const *  const  chaining_key, uint8_t const *  const  input_key_material, uintptr_t const  input_key_material_len, uint8_t*  const  out1, uint8_t*  const  out2, uint8_t*  const  out3);
-
-#line 17 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 struct carrier_sha256_Sha256_t {
 
 #line 18 "/home/aep/proj/devguard/carrier/src/sha256.zz"
@@ -34,14 +18,26 @@ struct carrier_sha256_Sha256_t {
 }
 ;
 
-#line 4 "/home/aep/proj/devguard/carrier/tests/hkdf.zz"
-extern int carrier_tests_hkdf_main ();
+#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
 
 #line 57 "/home/aep/proj/devguard/carrier/src/sha256.zz"
 void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
 
-#line 28 "/home/aep/proj/devguard/carrier/src/sha256.zz"
-void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
+#line 6 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+#define carrier_sha256_HASHLEN ((uintptr_t )    32)
+
+#line 62 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+extern void carrier_sha256_hkdf (uint8_t const *  const  chaining_key, uint8_t const *  const  input_key_material, uintptr_t const  input_key_material_len, uint8_t*  const  out1, uint8_t*  const  out2, uint8_t*  const  out3);
+
+#line 2 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <string.h>
+
+#line 4 "/home/aep/proj/devguard/carrier/tests/hkdf.zz"
+extern int carrier_tests_hkdf_main ();
+
+#line 23 "/home/aep/proj/devguard/carrier/src/sha256.zz"
+void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
 
 #line 4 "/home/aep/proj/devguard/carrier/tests/hkdf.zz"
 int main ()

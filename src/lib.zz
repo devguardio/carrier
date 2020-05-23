@@ -14,11 +14,6 @@ using config;
 using pub_sysinfo;
 using sync;
 
-//using vault_esp32;
-
-//TODO
-pub const u32 REVISION = 0x1111;
-
 export fn hellozz() -> int {
     printf("hello carrier\n");
     return 0;

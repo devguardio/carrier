@@ -68,20 +68,11 @@ uint32_t  static inline byteorder_to_le32 (uint32_t const  x);
 #line 80 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 uint32_t  static inline byteorder_from_le32 (uint32_t const  x);
 
-#line 54 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint16_t  static inline byteorder_to_le16 (uint16_t const  x);
+#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
 
-#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint16_t  static inline byteorder_to_be16 (uint16_t const  x);
-
-#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint16_t  static inline byteorder_from_be16 (uint16_t const  x);
-
-#line 65 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint16_t  static inline byteorder_from_le16 (uint16_t const  x);
-
-#line 35 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint64_t  static inline byteorder_to_be64 (uint64_t const  x);
+#line 95 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint64_t  static inline byteorder_from_le64 (uint64_t const  x);
 
 #line 20 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 uint32_t  static inline byteorder_to_be32 (uint32_t const  x);
@@ -89,11 +80,20 @@ uint32_t  static inline byteorder_to_be32 (uint32_t const  x);
 #line 31 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 uint32_t  static inline byteorder_from_be32 (uint32_t const  x);
 
-#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
+#line 54 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint16_t  static inline byteorder_to_le16 (uint16_t const  x);
 
-#line 95 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-uint64_t  static inline byteorder_from_le64 (uint64_t const  x);
+#line 65 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint16_t  static inline byteorder_from_le16 (uint16_t const  x);
+
+#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint16_t  static inline byteorder_to_be16 (uint16_t const  x);
+
+#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint16_t  static inline byteorder_from_be16 (uint16_t const  x);
+
+#line 35 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+uint64_t  static inline byteorder_to_be64 (uint64_t const  x);
 
 #line 46 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 uint64_t  static inline byteorder_from_be64 (uint64_t const  x);
@@ -126,76 +126,30 @@ uint64_t  static inline byteorder_from_be64 (uint64_t const  x);
 }
 
 
-#line 54 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint16_t byteorder_to_le16 (uint16_t const  x)
+#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint64_t byteorder_to_le64 (uint64_t const  x)
 {
 
-#line 55 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+#line 85 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
   int const  __workaround  =     BYTE_ORDER;
 
-#line 57 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+#line 87 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 (void)__workaround;
         #if BYTE_ORDER == BIG_ENDIAN
-            return bswap_16(x);
-        #else
-            return x;
-        #endif
-
-}
-
-
-#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint16_t byteorder_to_be16 (uint16_t const  x)
-{
-
-#line 6 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  int const  __workaround  =     BYTE_ORDER;
-
-#line 8 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-(void)__workaround;
-        #if BYTE_ORDER == LITTLE_ENDIAN
-            return bswap_16(x);
-        #else
-            return x;
-        #endif
-
-}
-
-
-#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint16_t byteorder_from_be16 (uint16_t const  x)
-{
-
-#line 17 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  return     byteorder_to_be16(    x    );
-
-}
-
-
-#line 65 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint16_t byteorder_from_le16 (uint16_t const  x)
-{
-
-#line 66 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  return     byteorder_to_le16(    x    );
-
-}
-
-
-#line 35 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint64_t byteorder_to_be64 (uint64_t const  x)
-{
-
-#line 36 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  int const  __workaround  =     BYTE_ORDER;
-
-#line 38 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-(void)__workaround;
-        #if BYTE_ORDER == LITTLE_ENDIAN
             return bswap_64(x);
         #else
             return x;
         #endif
+
+}
+
+
+#line 95 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint64_t byteorder_from_le64 (uint64_t const  x)
+{
+
+#line 96 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  return     byteorder_to_le64(    x    );
 
 }
 
@@ -228,17 +182,17 @@ uint64_t  static inline byteorder_from_be64 (uint64_t const  x);
 }
 
 
-#line 84 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint64_t byteorder_to_le64 (uint64_t const  x)
+#line 54 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint16_t byteorder_to_le16 (uint16_t const  x)
 {
 
-#line 85 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+#line 55 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
   int const  __workaround  =     BYTE_ORDER;
 
-#line 87 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+#line 57 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
 (void)__workaround;
         #if BYTE_ORDER == BIG_ENDIAN
-            return bswap_64(x);
+            return bswap_16(x);
         #else
             return x;
         #endif
@@ -246,12 +200,58 @@ uint64_t  static inline byteorder_from_be64 (uint64_t const  x);
 }
 
 
-#line 95 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
- static inline uint64_t byteorder_from_le64 (uint64_t const  x)
+#line 65 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint16_t byteorder_from_le16 (uint16_t const  x)
 {
 
-#line 96 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
-  return     byteorder_to_le64(    x    );
+#line 66 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  return     byteorder_to_le16(    x    );
+
+}
+
+
+#line 5 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint16_t byteorder_to_be16 (uint16_t const  x)
+{
+
+#line 6 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  int const  __workaround  =     BYTE_ORDER;
+
+#line 8 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+(void)__workaround;
+        #if BYTE_ORDER == LITTLE_ENDIAN
+            return bswap_16(x);
+        #else
+            return x;
+        #endif
+
+}
+
+
+#line 16 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint16_t byteorder_from_be16 (uint16_t const  x)
+{
+
+#line 17 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  return     byteorder_to_be16(    x    );
+
+}
+
+
+#line 35 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+ static inline uint64_t byteorder_to_be64 (uint64_t const  x)
+{
+
+#line 36 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+  int const  __workaround  =     BYTE_ORDER;
+
+#line 38 "/home/aep/proj/zz/modules/byteorder/src/lib.zz"
+(void)__workaround;
+        #if BYTE_ORDER == LITTLE_ENDIAN
+            return bswap_64(x);
+        #else
+            return x;
+        #endif
 
 }
 

@@ -6,129 +6,21 @@
 #include <string.h>
 #include "zz/carrier/slice_slice.h"
 
-napi_value js_slice_mut_slice_borrow(napi_env env, napi_callback_info info);
 napi_value js_slice_mut_slice_append_bytes(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_append_cstr(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_mem(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push(napi_env env, napi_callback_info info);
 napi_value js_slice_slice_make(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_push32(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info);
-napi_value js_slice_mut_slice_make(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_mem(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_borrow(napi_env env, napi_callback_info info);
 napi_value js_slice_mut_slice_push16(napi_env env, napi_callback_info info);
-napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_make(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push32(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_push(napi_env env, napi_callback_info info);
+napi_value js_slice_mut_slice_append_cstr(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq(napi_env env, napi_callback_info info);
+napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info);
 napi_value js_slice_mut_slice_push64(napi_env env, napi_callback_info info);
-
-
-napi_value js_slice_slice_eq(napi_env env, napi_callback_info info) {
-    napi_status status;
-
-    size_t argc = 16;
-    napi_value argv[16];
-    napi_value jsthis;
-    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
-    assert(argc < 16);
-    assert(status == napi_ok);
-
-
-
-                    void * thismem;
-                    status = napi_unwrap(env, jsthis, &thismem);
-                    assert(status == napi_ok);
-                    size_t local_0_tail = (*(size_t*)thismem);
-                    void * local_0 = thismem + sizeof(size_t);
-
-                
-                    if (0 >= argc) {
-                        napi_throw_error(env, 0, "call argument count mismatch");
-                        return 0;
-                    }
-                
-    slice_slice_Slice * local_1;
-
-    void * tttt_local_1 = 0;
-    size_t local_1_tail = 0;
-    status = napi_unwrap(env, argv[0], &tttt_local_1);
-    if (tttt_local_1 == 0 || status != napi_ok) {
-        local_1 = 0;
-    } else {
-        local_1_tail = *((size_t*)tttt_local_1);
-        local_1 = tttt_local_1 + sizeof(size_t*);
-    }
-    
-                    if (status != napi_ok) {
-                        napi_throw_type_error(env, 0, "1'th arg requires type ::slice::slice::Slice*");
-                        return 0;
-                    }
-                    napi_value jsreturn = 0;
-    bool  frrr = slice_slice_eq( local_0, local_1);
-    status = napi_create_uint32(env, frrr, &jsreturn);
-    assert(status == napi_ok);
-    return jsreturn;
-}
-
-
-napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info) {
-    napi_status status;
-
-    size_t argc = 16;
-    napi_value argv[16];
-    napi_value jsthis;
-    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
-    assert(argc < 16);
-    assert(status == napi_ok);
-
-
-
-                    void * thismem;
-                    status = napi_unwrap(env, jsthis, &thismem);
-                    assert(status == napi_ok);
-                    size_t local_0_tail = (*(size_t*)thismem);
-                    void * local_0 = thismem + sizeof(size_t);
-
-                
-                    if (0 >= argc) {
-                        napi_throw_error(env, 0, "call argument count mismatch");
-                        return 0;
-                    }
-                
-    uint8_t * local_1;
-
-    void * tttt_local_1 = 0;
-    size_t local_1_tail = 0;
-    status = napi_unwrap(env, argv[0], &tttt_local_1);
-    if (tttt_local_1 == 0 || status != napi_ok) {
-        local_1 = 0;
-    } else {
-        local_1_tail = *((size_t*)tttt_local_1);
-        local_1 = tttt_local_1 + sizeof(size_t*);
-    }
-    
-                    if (status != napi_ok) {
-                        napi_throw_type_error(env, 0, "1'th arg requires type u8*");
-                        return 0;
-                    }
-                
-                    if (1 >= argc) {
-                        napi_throw_error(env, 0, "call argument count mismatch");
-                        return 0;
-                    }
-                
-    uintptr_t  local_2;
-    status = napi_get_value_uint32(env, argv[1], (uint32_t*)&local_2);
-
-                    if (status != napi_ok) {
-                        napi_throw_type_error(env, 0, "2'th arg requires type usize");
-                        return 0;
-                    }
-                    napi_value jsreturn = 0;
-    bool  frrr = slice_slice_eq_bytes( local_0, local_1, local_2);
-    status = napi_create_uint32(env, frrr, &jsreturn);
-    assert(status == napi_ok);
-    return jsreturn;
-}
+napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info);
 
 napi_value jsGet_slice_slice_Slice_size(napi_env env, napi_callback_info info) {
   napi_status status;
@@ -219,11 +111,11 @@ napi_value js_new_slice_slice_Slice(napi_env env, napi_callback_info info) {
 
 void js_register_slice_slice_Slice (napi_env env, napi_value exports) {
     napi_property_descriptor properties[] = {
-        { "borrow", 0, js_slice_slice_borrow, 0, 0, 0, napi_default, 0 },
-        { "eq_cstr", 0, js_slice_slice_eq_cstr, 0, 0, 0, napi_default, 0 },
-        { "make", 0, js_slice_slice_make, 0, 0, 0, napi_default, 0 },
-        { "eq_bytes", 0, js_slice_slice_eq_bytes, 0, 0, 0, napi_default, 0 },
         { "eq", 0, js_slice_slice_eq, 0, 0, 0, napi_default, 0 },
+        { "make", 0, js_slice_slice_make, 0, 0, 0, napi_default, 0 },
+        { "borrow", 0, js_slice_slice_borrow, 0, 0, 0, napi_default, 0 },
+        { "eq_bytes", 0, js_slice_slice_eq_bytes, 0, 0, 0, napi_default, 0 },
+        { "eq_cstr", 0, js_slice_slice_eq_cstr, 0, 0, 0, napi_default, 0 },
         { "size", 0, 0, jsGet_slice_slice_Slice_size, 0, 0, napi_default, 0},
         { "mem", 0, 0, jsGet_slice_slice_Slice_mem, 0, 0, napi_default, 0},
     };
@@ -341,6 +233,115 @@ napi_value js_slice_slice_eq_cstr(napi_env env, napi_callback_info info) {
 }
 
 
+napi_value js_slice_slice_eq(napi_env env, napi_callback_info info) {
+    napi_status status;
+
+    size_t argc = 16;
+    napi_value argv[16];
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
+    assert(argc < 16);
+    assert(status == napi_ok);
+
+
+
+                    void * thismem;
+                    status = napi_unwrap(env, jsthis, &thismem);
+                    assert(status == napi_ok);
+                    size_t local_0_tail = (*(size_t*)thismem);
+                    void * local_0 = thismem + sizeof(size_t);
+
+                
+                    if (0 >= argc) {
+                        napi_throw_error(env, 0, "call argument count mismatch");
+                        return 0;
+                    }
+                
+    slice_slice_Slice * local_1;
+
+    void * tttt_local_1 = 0;
+    size_t local_1_tail = 0;
+    status = napi_unwrap(env, argv[0], &tttt_local_1);
+    if (tttt_local_1 == 0 || status != napi_ok) {
+        local_1 = 0;
+    } else {
+        local_1_tail = *((size_t*)tttt_local_1);
+        local_1 = tttt_local_1 + sizeof(size_t*);
+    }
+    
+                    if (status != napi_ok) {
+                        napi_throw_type_error(env, 0, "1'th arg requires type ::slice::slice::Slice*");
+                        return 0;
+                    }
+                    napi_value jsreturn = 0;
+    bool  frrr = slice_slice_eq( local_0, local_1);
+    status = napi_create_uint32(env, frrr, &jsreturn);
+    assert(status == napi_ok);
+    return jsreturn;
+}
+
+
+napi_value js_slice_slice_eq_bytes(napi_env env, napi_callback_info info) {
+    napi_status status;
+
+    size_t argc = 16;
+    napi_value argv[16];
+    napi_value jsthis;
+    status = napi_get_cb_info(env, info, &argc, argv, &jsthis, 0);
+    assert(argc < 16);
+    assert(status == napi_ok);
+
+
+
+                    void * thismem;
+                    status = napi_unwrap(env, jsthis, &thismem);
+                    assert(status == napi_ok);
+                    size_t local_0_tail = (*(size_t*)thismem);
+                    void * local_0 = thismem + sizeof(size_t);
+
+                
+                    if (0 >= argc) {
+                        napi_throw_error(env, 0, "call argument count mismatch");
+                        return 0;
+                    }
+                
+    uint8_t * local_1;
+
+    void * tttt_local_1 = 0;
+    size_t local_1_tail = 0;
+    status = napi_unwrap(env, argv[0], &tttt_local_1);
+    if (tttt_local_1 == 0 || status != napi_ok) {
+        local_1 = 0;
+    } else {
+        local_1_tail = *((size_t*)tttt_local_1);
+        local_1 = tttt_local_1 + sizeof(size_t*);
+    }
+    
+                    if (status != napi_ok) {
+                        napi_throw_type_error(env, 0, "1'th arg requires type u8*");
+                        return 0;
+                    }
+                
+                    if (1 >= argc) {
+                        napi_throw_error(env, 0, "call argument count mismatch");
+                        return 0;
+                    }
+                
+    uintptr_t  local_2;
+    status = napi_get_value_uint32(env, argv[1], (uint32_t*)&local_2);
+
+                    if (status != napi_ok) {
+                        napi_throw_type_error(env, 0, "2'th arg requires type usize");
+                        return 0;
+                    }
+                    napi_value jsreturn = 0;
+    bool  frrr = slice_slice_eq_bytes( local_0, local_1, local_2);
+    status = napi_create_uint32(env, frrr, &jsreturn);
+    assert(status == napi_ok);
+    return jsreturn;
+}
+
+
 napi_value js_slice_slice_borrow(napi_env env, napi_callback_info info) {
     napi_status status;
 
@@ -371,14 +372,6 @@ napi_value js_slice_slice_Init(napi_env env, napi_value exports)
     js_register_slice_slice_Slice(env, exports);
     napi_value ff;
     napi_status status;
-    status = napi_create_function(env, "eq", NAPI_AUTO_LENGTH, js_slice_slice_eq, 0, &ff);
-    assert(status == napi_ok);
-    status = napi_set_named_property(env, exports, "eq", ff);
-    assert(status == napi_ok);
-    status = napi_create_function(env, "eq_bytes", NAPI_AUTO_LENGTH, js_slice_slice_eq_bytes, 0, &ff);
-    assert(status == napi_ok);
-    status = napi_set_named_property(env, exports, "eq_bytes", ff);
-    assert(status == napi_ok);
     status = napi_create_function(env, "make", NAPI_AUTO_LENGTH, js_slice_slice_make, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "make", ff);
@@ -386,6 +379,14 @@ napi_value js_slice_slice_Init(napi_env env, napi_value exports)
     status = napi_create_function(env, "eq_cstr", NAPI_AUTO_LENGTH, js_slice_slice_eq_cstr, 0, &ff);
     assert(status == napi_ok);
     status = napi_set_named_property(env, exports, "eq_cstr", ff);
+    assert(status == napi_ok);
+    status = napi_create_function(env, "eq", NAPI_AUTO_LENGTH, js_slice_slice_eq, 0, &ff);
+    assert(status == napi_ok);
+    status = napi_set_named_property(env, exports, "eq", ff);
+    assert(status == napi_ok);
+    status = napi_create_function(env, "eq_bytes", NAPI_AUTO_LENGTH, js_slice_slice_eq_bytes, 0, &ff);
+    assert(status == napi_ok);
+    status = napi_set_named_property(env, exports, "eq_bytes", ff);
     assert(status == napi_ok);
     status = napi_create_function(env, "borrow", NAPI_AUTO_LENGTH, js_slice_slice_borrow, 0, &ff);
     assert(status == napi_ok);

@@ -61,26 +61,20 @@ impl rsMutSlice {
     }
 }
 extern {
-    #[link_name = "slice_mut_slice_push16"]
-    pub fn r#push16( Zself: *mut u8,  Zb: u16)  -> bool;
-
-    #[link_name = "slice_mut_slice_append_bytes"]
-    pub fn r#append_bytes( Zself: *mut u8,  Zb: *const u8,  Zl: usize)  -> bool;
-
-    #[link_name = "sizeof_slice_mut_slice_MutSlice"]
-    pub static sizeof_MutSlice: libc::size_t;
-
     #[link_name = "slice_mut_slice_append_cstr"]
     pub fn r#append_cstr( Zself: *mut u8,  Zb: *const u8)  -> bool;
-
-    #[link_name = "slice_mut_slice_push"]
-    pub fn r#push( Zself: *mut u8,  Zb: u8)  -> bool;
 
     #[link_name = "slice_mut_slice_mem"]
     pub fn r#mem( Zself: *mut u8)  -> *mut u8;
 
     #[link_name = "slice_mut_slice_make"]
     pub fn r#make( Zself: *mut u8,  Zmem: *mut u8,  Zsize: usize);
+
+    #[link_name = "slice_mut_slice_push16"]
+    pub fn r#push16( Zself: *mut u8,  Zb: u16)  -> bool;
+
+    #[link_name = "slice_mut_slice_push"]
+    pub fn r#push( Zself: *mut u8,  Zb: u8)  -> bool;
 
     #[link_name = "slice_mut_slice_push32"]
     pub fn r#push32( Zself: *mut u8,  Zb: u32)  -> bool;
@@ -90,5 +84,11 @@ extern {
 
     #[link_name = "slice_mut_slice_push64"]
     pub fn r#push64( Zself: *mut u8,  Zb: u64)  -> bool;
+
+    #[link_name = "slice_mut_slice_append_bytes"]
+    pub fn r#append_bytes( Zself: *mut u8,  Zb: *const u8,  Zl: usize)  -> bool;
+
+    #[link_name = "sizeof_slice_mut_slice_MutSlice"]
+    pub static sizeof_MutSlice: libc::size_t;
 
 }

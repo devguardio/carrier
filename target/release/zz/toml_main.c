@@ -22,35 +22,29 @@ typedef struct toml_Value_t toml_Value;
 struct toml_U_t;
 typedef struct toml_U_t toml_U;
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_ParserStack_t;
+typedef struct toml_ParserStack_t toml_ParserStack;
 
 #line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
 struct string_String_t;
 typedef struct string_String_t string_String;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 
 #line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
 struct slice_slice_Slice_t;
 typedef struct slice_slice_Slice_t slice_slice_Slice;
 
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t;
-typedef struct string_String_t string_String;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-struct err_Err_1000_t;
-typedef struct err_Err_1000_t err_Err_1000;
-
-#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_ParserStack_t;
-typedef struct toml_ParserStack_t toml_ParserStack;
-
 #line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t;
+typedef struct string_String_t string_String;
 
 #line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 struct toml_Parser_t;
@@ -58,8 +52,11 @@ typedef struct toml_Parser_t toml_Parser;
 struct toml_Parser_100_t;
 typedef struct toml_Parser_100_t toml_Parser_100;
 
-#line 1 ""
-#include <stddef.h>
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
+struct err_Err_1000_t;
+typedef struct err_Err_1000_t err_Err_1000;
 
 #line 13 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 typedef enum {
@@ -69,6 +66,23 @@ typedef enum {
     toml_ValueType_Array = 3,
 
 } toml_ValueType;
+
+#line 27 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+typedef enum {
+    toml_ParserState_Document = 0,
+    toml_ParserState_SectionKey = 1,
+    toml_ParserState_Object = 2,
+    toml_ParserState_Key = 3,
+    toml_ParserState_PostKey = 4,
+    toml_ParserState_PreVal = 5,
+    toml_ParserState_StringVal = 6,
+    toml_ParserState_IntVal = 7,
+    toml_ParserState_PostVal = 8,
+
+} toml_ParserState;
+
+#line 1 ""
+#include <stddef.h>
 
 #line 20 "/home/aep/proj/zz/modules/toml/src/lib.zz"
 struct toml_Value_t {
@@ -110,17 +124,263 @@ struct toml_U_t {
 }
 ;
 
-#line 2 "/home/aep/proj/zz/modules/pool/src/lib.zz"
-#include <stdio.h>
+#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_ParserStack_t {
 
-#line 121 "/home/aep/proj/zz/modules/toml/src/main.zz"
-static void toml_main_pop_object (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
+#line 51 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_ParserState state ;
+
+#line 52 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_U user ;
+
+#line 53 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   bool in_array ;
+
+#line 54 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t index ;
+}
+;
+
+#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_make (string_String*  const  self, uintptr_t const  tail);
+
+#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
 
 #line 9 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 
+#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+struct slice_slice_Slice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uintptr_t size ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+   uint8_t const *  mem ;
+}
+;
+
+#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+struct slice_mut_slice_MutSlice_t {
+
+#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   slice_slice_Slice slice ;
+
+#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+   uintptr_t at ;
+}
+;
+
+#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 8 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+#define toml_MAX_DEPTH ((uintptr_t )    64)
+
+#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
+struct string_String_t {
+
+#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   uintptr_t len ;
+
+#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
+   char mem[] ;
+}
+;
+
+#line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_Parser_t {
+
+#line 58 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t col ;
+
+#line 59 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t line ;
+
+#line 60 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   bool esc ;
+
+#line 61 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   bool comment ;
+
+#line 63 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_ParserStack state[    toml_MAX_DEPTH] ;
+
+#line 64 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t depth ;
+
+#line 66 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t keylen ;
+
+#line 67 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   string_String capture ;
+}
+;
+
+#line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+struct toml_Parser_100_t {
+
+#line 58 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t col ;
+
+#line 59 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t line ;
+
+#line 60 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   bool esc ;
+
+#line 61 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   bool comment ;
+
+#line 63 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   toml_ParserStack state[    toml_MAX_DEPTH] ;
+
+#line 64 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t depth ;
+
+#line 66 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   uintptr_t keylen ;
+
+#line 67 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+   string_String capture ;
+   char _____tail [100];
+}
+;
+
+#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
+
+#line 70 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+void toml_parser (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
+
+#line 12 "/home/aep/proj/devguard/carrier/src/pq.zz"
+#include <stdio.h>
+
+#line 84 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+void toml_next (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
+
+#line 121 "/home/aep/proj/zz/modules/toml/src/main.zz"
+static void toml_main_pop_object (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
+
+#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 113 "/home/aep/proj/zz/modules/toml/src/main.zz"
+static void toml_main_pop_array (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
+
+#line 74 "/home/aep/proj/zz/modules/toml/src/main.zz"
+static void toml_main_pretty (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
+
+#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
+
+#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_clear (string_String*  const  self, uintptr_t const  tail);
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+}
+;
+
+#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
+struct err_Err_1000_t {
+
+#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   uintptr_t error ;
+
+#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   int system ;
+
+#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
+   string_String trace ;
+   char _____tail [1000];
+}
+;
+
+#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
+char  const * string_cstr (string_String const *  const  self);
+
+#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#line 123 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+void toml_push (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
+
+#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_pop (string_String*  const  self, uintptr_t const  t);
+
+#line 113 "/home/aep/proj/zz/modules/toml/src/main.zz"
+static void toml_main_pop_array (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
+
+#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
+
 #line 190 "/home/aep/proj/zz/modules/string/src/lib.zz"
 int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
+slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
+
+#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
+uintptr_t string_slen (string_String const *  const  self);
+
+#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
+
+#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#line 5 "/home/aep/proj/zz/modules/err/src/lib.zz"
+#include <stdarg.h>
+
+#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
+int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#line 129 "/home/aep/proj/zz/modules/toml/src/main.zz"
+int toml_main_main ();
+
+#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
 
 #line 5 "/home/aep/proj/zz/modules/string/src/lib.zz"
 
@@ -137,16 +397,16 @@ int string_format (string_String*  const  self, uintptr_t const  tail, char cons
     #define xN_vsnprintf    rpl_vsnprintf
 	#define DO_RPL_IMPL 1
 
-#elif defined(__XTENSA__)
-
-    #define HAVE_STDARG_H 1
-    #define HAVE_STDDEF_H 1
-    #define HAVE_STDINT_H 1
-    #define HAVE_FLOAT_H  1
-    #define HAVE_INTTYPES_H 1
-    #define xN_fgets(a,b,c) 0
-    #define xN_vsnprintf rpl_vsnprintf
-	#define DO_RPL_IMPL 1
+//#elif defined(__XTENSA__)
+//
+//    #define HAVE_STDARG_H 1
+//    #define HAVE_STDDEF_H 1
+//    #define HAVE_STDINT_H 1
+//    #define HAVE_FLOAT_H  1
+//    #define HAVE_INTTYPES_H 1
+//    #define xN_fgets(a,b,c) 0
+//    #define xN_vsnprintf rpl_vsnprintf
+//	#define DO_RPL_IMPL 1
 
 #else
 
@@ -1482,477 +1742,53 @@ mypow10(int exponent)
 
 #endif // DO_REPL_IMPL
 
-#line 24 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#line 70 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-void toml_parser (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
-
-#line 74 "/home/aep/proj/zz/modules/toml/src/main.zz"
-static void toml_main_pretty (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
-
-#line 32 "/home/aep/proj/zz/modules/err/src/lib.zz"
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 143 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_eprintf (err_Err*  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#line 129 "/home/aep/proj/zz/modules/toml/src/main.zz"
-int toml_main_main ();
-
-#line 71 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_make (string_String*  const  self, uintptr_t const  tail);
-
 #line 148 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_to_str (err_Err const *  const  self, char*  const  dest, uintptr_t const  dest_len);
-
-#line 319 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
-
-#line 118 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#line 399 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_space (string_String const *  const  self, uintptr_t const  tail);
-
-#line 267 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_starts_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 24 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
-
-#line 4 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-struct slice_slice_Slice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uintptr_t size ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-   uint8_t const *  mem ;
-}
-;
-
-#line 42 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_slice_Slice string_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 33 "/home/aep/proj/zz/modules/string/src/lib.zz"
-char  const * string_cstr (string_String const *  const  self);
-
-#line 17 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
-
-#line 7 "/home/aep/proj/zz/modules/string/src/lib.zz"
-struct string_String_t {
-
-#line 8 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   uintptr_t len ;
-
-#line 9 "/home/aep/proj/zz/modules/string/src/lib.zz"
-   char mem[] ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-}
-;
-
-#line 18 "/home/aep/proj/zz/modules/err/src/lib.zz"
-struct err_Err_1000_t {
-
-#line 19 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   uintptr_t error ;
-
-#line 20 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   int system ;
-
-#line 21 "/home/aep/proj/zz/modules/err/src/lib.zz"
-   string_String trace ;
-   char _____tail [1000];
-}
-;
-
-#line 33 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
-
-#line 88 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#line 79 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_clear (string_String*  const  self, uintptr_t const  tail);
-
-#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#line 27 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-typedef enum {
-    toml_ParserState_Document = 0,
-    toml_ParserState_SectionKey = 1,
-    toml_ParserState_Object = 2,
-    toml_ParserState_Key = 3,
-    toml_ParserState_PostKey = 4,
-    toml_ParserState_PreVal = 5,
-    toml_ParserState_StringVal = 6,
-    toml_ParserState_IntVal = 7,
-    toml_ParserState_PostVal = 8,
-
-} toml_ParserState;
-
-#line 50 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_ParserStack_t {
-
-#line 51 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_ParserState state ;
-
-#line 52 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_U user ;
-
-#line 53 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   bool in_array ;
-
-#line 54 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t index ;
-}
-;
-
-#line 283 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_ends_with_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#line 28 "/home/aep/proj/zz/modules/string/src/lib.zz"
-uintptr_t string_slen (string_String const *  const  self);
-
-#line 73 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#line 1 "/home/aep/proj/zz/modules/string/src/lib.zz"
-#include <stdarg.h>
-
-#line 202 "/home/aep/proj/zz/modules/string/src/lib.zz"
-int string_vformat (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
 #line 49 "/home/aep/proj/zz/modules/err/src/lib.zz"
 void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
-#line 4 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-struct slice_mut_slice_MutSlice_t {
-
-#line 5 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   slice_slice_Slice slice ;
-
-#line 6 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-   uintptr_t at ;
-}
-;
-
-#line 53 "/home/aep/proj/zz/modules/string/src/lib.zz"
-slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
-
-#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
-
-#line 103 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
-
-#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#line 8 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-#define toml_MAX_DEPTH ((uintptr_t )    64)
-
-#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#line 38 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-uint8_t * slice_mut_slice_mem (slice_mut_slice_MutSlice*  const  self);
-
-#line 84 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-void toml_next (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
-
-#line 113 "/home/aep/proj/zz/modules/toml/src/main.zz"
-static void toml_main_pop_array (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
-
-#line 74 "/home/aep/proj/zz/modules/toml/src/main.zz"
-static void toml_main_pretty (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
-
-#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
-
-#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_elog (err_Err*  const  self, uintptr_t const  tail);
-
-#line 113 "/home/aep/proj/zz/modules/toml/src/main.zz"
-static void toml_main_pop_array (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
-
-#line 25 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_Parser_t {
-
-#line 58 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t col ;
-
-#line 59 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t line ;
-
-#line 60 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   bool esc ;
-
-#line 61 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   bool comment ;
-
-#line 63 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_ParserStack state[    toml_MAX_DEPTH] ;
-
-#line 64 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t depth ;
-
-#line 66 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t keylen ;
-
-#line 67 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   string_String capture ;
-}
-;
-
-#line 57 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-struct toml_Parser_100_t {
-
-#line 58 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t col ;
-
-#line 59 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t line ;
-
-#line 60 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   bool esc ;
-
-#line 61 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   bool comment ;
-
-#line 63 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   toml_ParserStack state[    toml_MAX_DEPTH] ;
-
-#line 64 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t depth ;
-
-#line 66 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   uintptr_t keylen ;
-
-#line 67 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-   string_String capture ;
-   char _____tail [100];
-}
-;
-
-#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#line 171 "/home/aep/proj/zz/modules/string/src/lib.zz"
-void string_append_bytes (string_String*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#line 123 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-void toml_push (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
-
-#line 104 "/home/aep/proj/zz/modules/toml/src/lib.zz"
-void toml_close (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et);
-
-#line 64 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#line 114 "/home/aep/proj/zz/modules/string/src/lib.zz"
-bool string_pop (string_String*  const  self, uintptr_t const  t);
+#line 233 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_eq_cstr (string_String const *  const  self, uintptr_t const  tail, char const *  const  b);
 
 #line 50 "/home/aep/proj/zz/modules/slice/src/mut_slice.zz"
 bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
 
-#line 42 "/home/aep/proj/zz/modules/slice/src/slice.zz"
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#line 55 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#line 90 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
+
+#line 128 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append_cstr (string_String*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#line 119 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#line 138 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_elog (err_Err*  const  self, uintptr_t const  tail);
 
 #line 121 "/home/aep/proj/zz/modules/toml/src/main.zz"
-static void toml_main_pop_object (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt)
-{
-  for (
+static void toml_main_pop_object (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt);
 
-#line 123 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  uintptr_t i  =     0;(    i <((    self ->user2 -    1  ) *    2  )  );
-(    i ++)){
+#line 104 "/home/aep/proj/zz/modules/toml/src/lib.zz"
+void toml_close (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et);
 
-#line 124 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    printf(    " "    );
+#line 84 "/home/aep/proj/zz/modules/err/src/lib.zz"
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
-}
+#line 9 "/home/aep/proj/zz/modules/slice/src/slice.zz"
+slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
 
+#line 302 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_fgets (string_String*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
-#line 126 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    printf(    "}\n"    );
+#line 368 "/home/aep/proj/zz/modules/string/src/lib.zz"
+bool string_split (string_String const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, string_String*  const  other, uintptr_t const  tail2);
 
-}
-
-
-#line 129 "/home/aep/proj/zz/modules/toml/src/main.zz"
-int main ()
-{
-
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  err_Err_1000 e  = {    0,};
-    err_make(    (err_Err* )(( &    e)),    1000    );
-
-#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  toml_Parser_100 parser  = {    0,};
-    toml_parser(    (toml_Parser* )(( &    parser)),    100,    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    (toml_U){.it = 
-#line 134 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    toml_main_pretty,.user2 = 
-#line 135 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    0,}    );
-if (
-#line 138 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    err_check(    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/toml/src/main.zz",
-#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::toml::main::main",
-#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    138    )){
-
-#line 139 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    err_eprintf(    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 139 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    stderr    );
-
-#line 140 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  return     2;
-
-}
-
-
-#line 142 "/home/aep/proj/zz/modules/toml/src/main.zz"
-;
-
-#line 145 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  char buf  [     10 ] ;
-  for (;;){
-
-#line 148 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  uintptr_t const  bin  =     (uintptr_t)(    fread(    buf,    sizeof(    char    ),    10,    stdin    ));
-if ((
-#line 149 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    bin ==    0  )){
-
-#line 150 "/home/aep/proj/zz/modules/toml/src/main.zz"
-break;
-
-}
-
-
-#line 152 "/home/aep/proj/zz/modules/toml/src/main.zz"
-;
-
-#line 153 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    toml_push(    (toml_Parser* )(( &    parser)),
-#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    100,    (err_Err* )((
-#line 153 "/home/aep/proj/zz/modules/toml/src/main.zz"
- &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 153 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    buf,    bin    );
-if (
-#line 154 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    err_check(    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/toml/src/main.zz",
-#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::toml::main::main",
-#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    154    )){
-
-#line 155 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    err_eprintf(    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 155 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    stderr    );
-
-#line 156 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  return     2;
-
-}
-
-
-}
-
-
-#line 160 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    toml_close(    (toml_Parser* )(( &    parser)),
-#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    100,    (err_Err* )((
-#line 160 "/home/aep/proj/zz/modules/toml/src/main.zz"
- &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000    );
-if (
-#line 161 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    err_check(    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "/home/aep/proj/zz/modules/toml/src/main.zz",
-#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    "::toml::main::main",
-#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
-    161    )){
-
-#line 162 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    err_eprintf(    (err_Err* )(( &    e)),
-#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    1000,
-#line 162 "/home/aep/proj/zz/modules/toml/src/main.zz"
-    stderr    );
-
-#line 163 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  return     2;
-
-}
-
-
-#line 167 "/home/aep/proj/zz/modules/toml/src/main.zz"
-  return     0;
-
-}
-
+#line 150 "/home/aep/proj/zz/modules/string/src/lib.zz"
+void string_append (string_String*  const  self, uintptr_t const  t, string_String const *  const  other, uintptr_t const  t2);
 
 #line 74 "/home/aep/proj/zz/modules/toml/src/main.zz"
 static void toml_main_pretty (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v)
@@ -2107,6 +1943,170 @@ static void toml_main_pop_array (toml_U const *  const  self, err_Err*  const  e
 
 #line 118 "/home/aep/proj/zz/modules/toml/src/main.zz"
     printf(    "]\n"    );
+
+}
+
+
+#line 129 "/home/aep/proj/zz/modules/toml/src/main.zz"
+int main ()
+{
+
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  err_Err_1000 e  = {    0,};
+    err_make(    (err_Err* )(( &    e)),    1000    );
+
+#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  toml_Parser_100 parser  = {    0,};
+    toml_parser(    (toml_Parser* )(( &    parser)),    100,    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    (toml_U){.it = 
+#line 134 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    toml_main_pretty,.user2 = 
+#line 135 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    0,}    );
+if (
+#line 138 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    err_check(    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/toml/src/main.zz",
+#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::toml::main::main",
+#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    138    )){
+
+#line 139 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    err_eprintf(    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 139 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    stderr    );
+
+#line 140 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  return     2;
+
+}
+
+
+#line 142 "/home/aep/proj/zz/modules/toml/src/main.zz"
+;
+
+#line 145 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  char buf  [     10 ] ;
+  for (;;){
+
+#line 148 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  uintptr_t const  bin  =     (uintptr_t)(    fread(    buf,    sizeof(    char    ),    10,    stdin    ));
+if ((
+#line 149 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    bin ==    0  )){
+
+#line 150 "/home/aep/proj/zz/modules/toml/src/main.zz"
+break;
+
+}
+
+
+#line 152 "/home/aep/proj/zz/modules/toml/src/main.zz"
+;
+
+#line 153 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    toml_push(    (toml_Parser* )(( &    parser)),
+#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    100,    (err_Err* )((
+#line 153 "/home/aep/proj/zz/modules/toml/src/main.zz"
+ &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 153 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    buf,    bin    );
+if (
+#line 154 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    err_check(    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/toml/src/main.zz",
+#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::toml::main::main",
+#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    154    )){
+
+#line 155 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    err_eprintf(    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 155 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    stderr    );
+
+#line 156 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  return     2;
+
+}
+
+
+}
+
+
+#line 160 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    toml_close(    (toml_Parser* )(( &    parser)),
+#line 133 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    100,    (err_Err* )((
+#line 160 "/home/aep/proj/zz/modules/toml/src/main.zz"
+ &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000    );
+if (
+#line 161 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    err_check(    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 34 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "/home/aep/proj/zz/modules/toml/src/main.zz",
+#line 35 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    "::toml::main::main",
+#line 36 "/home/aep/proj/zz/modules/err/src/lib.zz"
+    161    )){
+
+#line 162 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    err_eprintf(    (err_Err* )(( &    e)),
+#line 131 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    1000,
+#line 162 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    stderr    );
+
+#line 163 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  return     2;
+
+}
+
+
+#line 167 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  return     0;
+
+}
+
+
+#line 121 "/home/aep/proj/zz/modules/toml/src/main.zz"
+static void toml_main_pop_object (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt)
+{
+  for (
+
+#line 123 "/home/aep/proj/zz/modules/toml/src/main.zz"
+  uintptr_t i  =     0;(    i <((    self ->user2 -    1  ) *    2  )  );
+(    i ++)){
+
+#line 124 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    printf(    " "    );
+
+}
+
+
+#line 126 "/home/aep/proj/zz/modules/toml/src/main.zz"
+    printf(    "}\n"    );
 
 }
 

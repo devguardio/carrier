@@ -1,0 +1,186 @@
+
+<h1> module carrier::cipher </h1>
+<h4> fn decrypt (
+
+    usize
+    plainlen_max,
+
+    u8*
+    ciphertext,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    usize
+    cipherlen,
+
+    ::err::Err*+et
+    e,
+
+    u64
+    nonce,
+
+    usize
+    et,
+
+    u8*
+    plain,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_le64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt_ad (
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    u8*
+    authtext,
+
+    u8*
+    plain,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    authtext_len,
+
+    u8*
+    ciphertext,
+
+    usize
+    plainlen,
+
+    u64
+    nonce,
+
+    usize
+    et,
+
+    usize
+    cipherlen_max,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn init (
+
+    u8*
+    k,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt (
+
+    usize
+    plainlen,
+
+    u64
+    nonce,
+
+    usize
+    et,
+
+    u8*
+    plain,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    ciphertext,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    usize
+    cipherlen_max,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt_ad (
+
+    usize
+    et,
+
+    u64
+    nonce,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    usize
+    authtext_len,
+
+    u8*
+    authtext,
+
+    u8*
+    plain,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    plainlen_max,
+
+    usize
+    cipherlen,
+
+    u8*
+    ciphertext,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+
+
+
+

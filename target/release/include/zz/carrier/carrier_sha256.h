@@ -18,7 +18,7 @@ uintptr_t carrier_sha256_blocklen ();
 #define carrier_sha256_HASHLEN ((uintptr_t )    32)
 
 #endif
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h"
+#include "/Users/simon/Sites/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h"
 #include <assert.h>
 #include <string.h>
 

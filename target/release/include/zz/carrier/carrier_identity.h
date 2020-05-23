@@ -86,7 +86,7 @@ static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const
 uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
 void string_substr (string_String const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, string_String*  const  other, uintptr_t const  tail2);
 #include <stdint.h>
-#include "/home/aep/proj/devguard/carrier/src/libbase58.h"
+#include "/Users/simon/Sites/carrier/src/libbase58.h"
 void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
@@ -118,7 +118,7 @@ bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8
 slice_slice_Slice  const * slice_slice_borrow (slice_slice_Slice const *  const  self);
 uintptr_t carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from);
 bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h"
+#include "/Users/simon/Sites/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h"
 bool string_push (string_String*  const  self, uintptr_t const  t, char const  cstr);
 bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
 void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size);
@@ -188,7 +188,7 @@ bool string_split (string_String const *  const  self, uintptr_t const  tail, ch
 uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
 slice_mut_slice_MutSlice string_append_slice (string_String*  const  self, uintptr_t const  tail);
 int string_format (string_String*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-#include "/home/aep/proj/devguard/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h"
+#include "/Users/simon/Sites/carrier/3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h"
 void carrier_identity_dh (carrier_identity_Address*  const  out, carrier_identity_Secret const *  const  me, carrier_identity_Address const *  const  them);
 slice_mut_slice_MutSlice  const * slice_mut_slice_borrow (slice_mut_slice_MutSlice*  const  self);
 void carrier_identity_sign (carrier_identity_Secret const *  const  key, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);

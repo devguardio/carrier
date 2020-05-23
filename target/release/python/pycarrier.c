@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <Python.h>
 
-#include "../include/python/carrier/err.h"
-#include "../include/python/carrier/io_unix.h"
-#include "../include/python/carrier/carrier_endpoint.h"
-#include "../include/python/carrier/carrier_stream.h"
-#include "../include/python/carrier/carrier_identity.h"
-#include "../include/python/carrier/carrier_sync.h"
-#include "../include/python/carrier/slice_slice.h"
-#include "../include/python/carrier/hpack_decoder.h"
+// #include "../include/zz/carrier/err.h"
+// #include "../include/zz/carrier/io_unix.h"
+// #include "../include/zz/carrier/carrier_endpoint.h"
+// #include "../include/zz/carrier/carrier_stream.h"
+// #include "../include/zz/carrier/carrier_identity.h"
+// #include "../include/zz/carrier/carrier_sync.h"
+// #include "../include/zz/carrier/slice_slice.h"
+// #include "../include/zz/carrier/hpack_decoder.h"
 
 // Method definition object for this extension, these argumens mean:
 // ml_name: The name of the method
@@ -18,7 +18,7 @@
 //          class method, or being a static method of a class.
 // ml_doc:  Contents of this method's docstring
 static PyMethodDef carrier_methods[] = {
-    {"carrier_endpoint_from_home_carriertoml", carrier_endpoint_from_home_carriertoml, METH_VARARGS, ""},
+    // {"carrier_endpoint_from_home_carriertoml", carrier_endpoint_from_home_carriertoml, METH_VARARGS, ""},
 	// {"carrier_identity_identity_from_str", carrier_identity_identity_from_str, METH_VARARGS, ""},
 	// {"carrier_sync_start", carrier_sync_start, METH_VARARGS, ""},
 	// {"carrier_sync_connect", carrier_sync_connect, METH_VARARGS, ""},

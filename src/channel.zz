@@ -161,7 +161,7 @@ pub fn cleanup(Channel mut* self, err::Err+et mut*e)
             static_attest(safe(strx));
             let config = strx->config;
             static_attest(safe(config));
-            if config->close != 0 {
+            if config->close.fn != 0 {
                 static_attest(safe(config->close));
                 config->close(strx, e);
                 if err::check(e) {
@@ -252,7 +252,7 @@ fn clean_closed(Channel mut* self, err::Err+et mut *e)
             if strx->config != 0 {
                 static_attest(safe(strx->config));
                 stream::close_fn cb = strx->config->close;
-                if cb != 0 {
+                if cb.fn != 0 {
                     static_attest(safe(cb));
                     cb(strx, e);
                 }
@@ -669,7 +669,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                                     static_attest(safe(streami));
                                     streami->order_incomming = 1;
                                     streami->order_outgoing = 1;
-                                    err::assert_safe(conf->open);
+                                    err::assert_safe(conf->open.fn);
+                                    static_attest(safe(conf->open));
                                     conf->open(streami, e, &header_slice);
 
 

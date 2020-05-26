@@ -15,14 +15,14 @@
     ::net::Engine*
     engine,
 
-    usize
-    et,
-
     ::io::Async*
     async,
 
     ::net::address::Address*
     local_addr,
+
+    usize
+    et,
 
     ::net::udp::Socket*
     self,
@@ -40,23 +40,23 @@
 
 </p><h4> fn tcp_server (
 
+    ::io::Async*
+    async,
+
+    ::err::Err*+et
+    e,
+
+    ::net::tcp_server::Server*
+    self,
+
+    ::net::address::Address*
+    local_addr,
+
     ::net::Engine*
     engine,
 
     usize
     et,
-
-    ::io::Async*
-    async,
-
-    ::net::address::Address*
-    local_addr,
-
-    ::net::tcp_server::Server*
-    self,
-
-    ::err::Err*+et
-    e,
 
 )
 

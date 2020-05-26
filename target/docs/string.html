@@ -1,6 +1,15 @@
 
 <h1> module string </h1>
-<h4> fn eq_cstr (
+<h4> fn substr (
+
+    usize
+    size,
+
+    ::string::String*+tail2
+    other,
+
+    usize
+    tail2,
 
     usize
     tail,
@@ -8,24 +17,110 @@
     ::string::String*+tail
     self,
 
+    usize
+    from,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ copy parts of this string to other string&lt;br&gt;
+</p><h4> fn cstr (
+
+    ::string::String*
+    self,
+
+)
+
+-&gt ::ext::&lt;stddef.h&gt;::char*
+
+</h4>
+
+<p class='doc_comments'>
+ string as null terminated c string&lt;br&gt;
+</p><h4> fn append (
+
+    usize
+    t,
+
+    ::string::String*+t2
+    other,
+
+    ::string::String*+t
+    self,
+
+    usize
+    t2,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ append another string&lt;br&gt;
+</p><h4> fn clear (
+
+    usize
+    tail,
+
+    ::string::String*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ clear the string&lt;br&gt;
+</p><h4> fn starts_with_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+    ::string::String*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if this string begings with some c string&lt;br&gt;
+</p><h4> fn space (
+
+    usize
+    tail,
+
+    ::string::String*+tail
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ returns the amount of bytes still left in the tail&lt;br&gt;
+</p><h4> fn cstr_eq (
+
     ::ext::&lt;stddef.h&gt;::char*
     b,
 
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- test if this string is equal with a c string&lt;br&gt;
-</p><h4> fn pop (
-
-    usize
-    t,
-
-    ::string::String*+t
-    self,
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
 
 )
 
@@ -34,26 +129,7 @@
 </h4>
 
 <p class='doc_comments'>
- remove the last character&lt;br&gt;&lt;br&gt; returns false if string was empty&lt;br&gt;
-</p><h4> fn push (
-
-    usize
-    t,
-
-    ::ext::&lt;stddef.h&gt;::char
-    cstr,
-
-    ::string::String*+t
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- push a single character&lt;br&gt;
+ test if some c string is equal another c string&lt;br&gt;
 </p><h4> fn strlen (
 
     ::ext::&lt;stddef.h&gt;::char*
@@ -67,47 +143,6 @@
 
 <p class='doc_comments'>
  length of a null terminated c string&lt;br&gt;
-</p><h4> fn format (
-
-    ::string::String*+tail
-    self,
-
-    usize
-    tail,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
-
-)
-
--&gt int
-
-</h4>
-
-<p class='doc_comments'>
- append formated string with vsnprintf&lt;br&gt;
-</p><h4> fn vformat (
-
-    ::string::String*+tail
-    self,
-
-    usize
-    tail,
-
-    ::ext::&lt;stdarg.h&gt;::va_list
-    args,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
-
-)
-
--&gt int
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn append_bytes (
 
     u8*
@@ -130,19 +165,28 @@
 
 <p class='doc_comments'>
  append raw bytes with given len&lt;br&gt;
-</p><h4> fn cstr (
+</p><h4> fn vformat (
 
-    ::string::String*
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::string::String*+tail
     self,
+
+    ::ext::&lt;stdarg.h&gt;::va_list
+    args,
+
+    usize
+    tail,
 
 )
 
--&gt ::ext::&lt;stddef.h&gt;::char*
+-&gt int
 
 </h4>
 
 <p class='doc_comments'>
- string as null terminated c string&lt;br&gt;
+
 </p><h4> fn fgets (
 
     usize
@@ -162,29 +206,13 @@
 
 <p class='doc_comments'>
  append to this string by reading from a FILE&lt;br&gt;
-</p><h4> fn slice (
-
-    ::string::String*+tail
-    self,
-
-    usize
-    tail,
-
-)
-
--&gt ::slice::slice::Slice
-
-</h4>
-
-<p class='doc_comments'>
- string as slice&lt;br&gt;
 </p><h4> fn append_cstr (
-
-    ::string::String*+t
-    self,
 
     usize
     t,
+
+    ::string::String*+t
+    self,
 
     ::ext::&lt;stddef.h&gt;::char*
     cstr,
@@ -197,38 +225,16 @@
 
 <p class='doc_comments'>
  append a null terminated c string&lt;br&gt;
-</p><h4> fn append (
-
-    ::string::String*+t2
-    other,
-
-    usize
-    t,
-
-    ::string::String*+t
-    self,
-
-    usize
-    t2,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- append another string&lt;br&gt;
 </p><h4> fn split (
 
-    usize*
-    iterator,
-
-    ::string::String*+tail
-    self,
+    usize
+    tail,
 
     ::string::String*+tail2
     other,
+
+    usize*
+    iterator,
 
     usize
     tail2,
@@ -236,8 +242,8 @@
     ::ext::&lt;stddef.h&gt;::char
     token,
 
-    usize
-    tail,
+    ::string::String*+tail
+    self,
 
 )
 
@@ -247,7 +253,7 @@
 
 <p class='doc_comments'>
  split this string by token and copy the substring into other&lt;br&gt;
-</p><h4> fn ends_with_cstr (
+</p><h4> fn slice (
 
     usize
     tail,
@@ -255,8 +261,34 @@
     ::string::String*+tail
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    a,
+)
+
+-&gt ::slice::slice::Slice
+
+</h4>
+
+<p class='doc_comments'>
+ string as slice&lt;br&gt;
+</p><h4> fn slen (
+
+    ::string::String*
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ length of string (excluding null terminator)&lt;br&gt;
+</p><h4> fn pop (
+
+    ::string::String*+t
+    self,
+
+    usize
+    t,
 
 )
 
@@ -265,7 +297,7 @@
 </h4>
 
 <p class='doc_comments'>
- test if self ends with other string&lt;br&gt;
+ remove the last character&lt;br&gt;&lt;br&gt; returns false if string was empty&lt;br&gt;
 </p><h4> fn append_slice (
 
     usize
@@ -282,26 +314,35 @@
 
 <p class='doc_comments'>
  append a slice to this string&lt;br&gt;
-</p><h4> fn slen (
+</p><h4> fn format (
 
-    ::string::String*
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::string::String*+tail
     self,
+
+    usize
+    tail,
 
 )
 
--&gt usize
+-&gt int
 
 </h4>
 
 <p class='doc_comments'>
- length of string (excluding null terminator)&lt;br&gt;
-</p><h4> fn cstr_eq (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    a,
+ append formated string with vsnprintf&lt;br&gt;
+</p><h4> fn eq_cstr (
 
     ::ext::&lt;stddef.h&gt;::char*
     b,
+
+    ::string::String*+tail
+    self,
+
+    usize
+    tail,
 
 )
 
@@ -310,7 +351,45 @@
 </h4>
 
 <p class='doc_comments'>
- test if some c string is equal another c string&lt;br&gt;
+ test if this string is equal with a c string&lt;br&gt;
+</p><h4> fn push (
+
+    ::string::String*+t
+    self,
+
+    usize
+    t,
+
+    ::ext::&lt;stddef.h&gt;::char
+    cstr,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ push a single character&lt;br&gt;
+</p><h4> fn ends_with_cstr (
+
+    ::string::String*+tail
+    self,
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if self ends with other string&lt;br&gt;
 </p><h4> fn make (
 
     ::string::String*+tail
@@ -327,85 +406,6 @@
 
 <p class='doc_comments'>
  make an empty string&lt;br&gt;
-</p><h4> fn space (
-
-    usize
-    tail,
-
-    ::string::String*+tail
-    self,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
- returns the amount of bytes still left in the tail&lt;br&gt;
-</p><h4> fn clear (
-
-    ::string::String*+tail
-    self,
-
-    usize
-    tail,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- clear the string&lt;br&gt;
-</p><h4> fn starts_with_cstr (
-
-    ::string::String*+tail
-    self,
-
-    usize
-    tail,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    a,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- test if this string begings with some c string&lt;br&gt;
-</p><h4> fn substr (
-
-    ::string::String*+tail
-    self,
-
-    usize
-    size,
-
-    ::string::String*+tail2
-    other,
-
-    usize
-    from,
-
-    usize
-    tail2,
-
-    usize
-    tail,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- copy parts of this string to other string&lt;br&gt;
 </p>
 
 

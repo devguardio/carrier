@@ -1,19 +1,6 @@
 
 <h1> module carrier::responder </h1>
-<h4> fn to_be64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be32 (
+<h4> fn to_be32 (
 
     u32
     x,
@@ -26,28 +13,41 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn accept_insecure (
+</p><h4> fn to_be64 (
 
     u64
-    route,
+    x,
 
-    usize
-    et,
+)
 
-    ::err::Err*+et
-    e,
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn accept_insecure (
 
     ::carrier::noise::Responder*
     self,
 
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
     ::carrier::vault::Vault*
     store,
 
-    u64
-    timestamp,
-
     ::slice::mut_slice::MutSlice*
     frame,
+
+    u64
+    route,
+
+    u64
+    timestamp,
 
 )
 

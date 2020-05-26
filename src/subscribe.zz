@@ -43,7 +43,9 @@ export fn start(endpoint::Endpoint mut*self, err::Err+et mut*e)
     static_attest(safe(streami));
 }
 
-fn on_close(stream::Stream mut *self) {
+fn on_close(stream::Stream mut *self, err::Err+et mut*e)
+    where err::checked(*e)
+{
     log::error("subscribe closed\n");
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));

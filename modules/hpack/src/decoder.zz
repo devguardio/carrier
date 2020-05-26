@@ -22,7 +22,7 @@ enum Repr {
     LiteralWithoutIndexing,
 }
 
-fntype callback(err::Err+et mut*e, void mut*user, Slice *key, Slice *val);
+closure callback(err::Err+et mut*e, void mut*user, Slice *key, Slice *val);
 
 
 fn get_repr(u8 b) -> Repr {

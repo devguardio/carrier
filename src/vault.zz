@@ -5,17 +5,17 @@ using mem;
 using string;
 using <string.h>::{memcpy};
 
-export fntype close_fn (Vault mut*self);
+export closure close_fn (Vault mut*self);
 
-export fntype get_secret_fn         (Vault *self, identity::Secret  mut * secret);
-export fntype get_network_fn        (Vault *self, identity::Address mut * address);
-export fntype advance_clock_fn      (Vault *self) -> u64;
-export fntype set_network_fn        (Vault *self, err::Err+et mut *e, identity::Secret * secret);
+export closure get_secret_fn         (Vault *self, identity::Secret  mut * secret);
+export closure get_network_fn        (Vault *self, identity::Address mut * address);
+export closure advance_clock_fn      (Vault *self) -> u64;
+export closure set_network_fn        (Vault *self, err::Err+et mut *e, identity::Secret * secret);
 
-export fntype del_authorization_fn(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource);
-export fntype add_authorization_fn(Vault mut * self,err::Err+et mut *e, identity::Identity *addme, char *resource);
-export fntype list_authorizations_cb(void mut * unsafe user, identity::Identity *id, char *resource);
-export fntype list_authorizations_fn(Vault * self, err::Err+et mut *e, list_authorizations_cb cb, void mut * unsafe user);
+export closure del_authorization_fn(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource);
+export closure add_authorization_fn(Vault mut * self,err::Err+et mut *e, identity::Identity *addme, char *resource);
+export closure list_authorizations_cb(void mut * unsafe user, identity::Identity *id, char *resource);
+export closure list_authorizations_fn(Vault * self, err::Err+et mut *e, list_authorizations_cb cb, void mut * unsafe user);
 
 
 export const usize MAX_BROKERS = 16;

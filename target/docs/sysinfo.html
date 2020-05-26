@@ -2,23 +2,23 @@
 <h1> module sysinfo </h1>
 <h4> fn encode_bytes (
 
+    usize
+    et,
+
     u8
     index,
 
     u8*
     b,
 
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
     usize
     l,
 
     ::slice::mut_slice::MutSlice*
     str,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -30,20 +30,20 @@
 
 </p><h4> fn encode_varint (
 
+    ::slice::mut_slice::MutSlice*
+    str,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
     u64
     value,
 
     u8
     index,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::slice::mut_slice::MutSlice*
-    str,
 
 )
 
@@ -68,20 +68,20 @@
 
 </p><h4> fn encode_f64 (
 
-    usize
-    et,
-
     u8
     index,
+
+    usize
+    et,
 
     ::slice::mut_slice::MutSlice*
     str,
 
-    ::err::Err*+et
-    e,
-
     f64
     value,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -93,23 +93,23 @@
 
 </p><h4> fn fail_with_errno (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-    usize
-    tail,
-
-    usize
-    line,
-
     ::err::Err*+tail
     self,
 
     ::ext::&lt;stddef.h&gt;::char*
-    scope,
+    fmt,
+
+    usize
+    line,
+
+    usize
+    tail,
 
     ::ext::&lt;stddef.h&gt;::char*
-    fmt,
+    file,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
 )
 
@@ -134,14 +134,14 @@
 
 </p><h4> fn sensors (
 
-    usize
-    et,
+    ::err::Err*+et
+    e,
 
     ::slice::mut_slice::MutSlice*
     sl,
 
-    ::err::Err*+et
-    e,
+    usize
+    et,
 
 )
 

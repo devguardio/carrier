@@ -2,23 +2,23 @@
 <h1> module net::tcp_server </h1>
 <h4> fn fail_with_errno (
 
-    usize
-    tail,
-
     ::ext::&lt;stddef.h&gt;::char*
     scope,
-
-    usize
-    line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
+    usize
+    line,
+
+    usize
+    tail,
+
     ::err::Err*+tail
     self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
 
 )
 
@@ -30,8 +30,11 @@
 
 </p><h4> fn fail (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
+    usize
+    line,
+
+    ::err::Err*+tail
+    self,
 
     ::ext::&lt;stddef.h&gt;::char*
     scope,
@@ -40,13 +43,10 @@
     fmt,
 
     usize
-    line,
-
-    ::err::Err*+tail
-    self,
-
-    usize
     e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
 
     usize
     tail,
@@ -61,8 +61,8 @@
 
 </p><h4> fn select (
 
-    ::err::Err*+et
-    e,
+    ::io::Async*
+    self,
 
     ::io::Context*
     ctx,
@@ -70,11 +70,11 @@
     ::io::Ready
     w,
 
+    ::err::Err*+et
+    e,
+
     usize
     et,
-
-    ::io::Async*
-    self,
 
 )
 
@@ -86,20 +86,20 @@
 
 </p><h4> fn os_new (
 
-    ::net::Engine*
-    engine,
-
     ::io::Async*
     async,
-
-    ::net::address::Address*
-    addr,
 
     ::err::Err*+et
     e,
 
+    ::net::Engine*
+    engine,
+
     usize
     et,
+
+    ::net::address::Address*
+    addr,
 
 )
 
@@ -127,14 +127,14 @@
     ::net::tcp_server::Server*
     self,
 
-    ::net::tcp::Socket*
-    client,
+    usize
+    et,
 
     ::err::Err*+et
     e,
 
-    usize
-    et,
+    ::net::tcp::Socket*
+    client,
 
 )
 

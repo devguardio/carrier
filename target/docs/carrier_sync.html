@@ -19,10 +19,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn start (
+</p><h4> fn open (
 
-    ::carrier::endpoint::Endpoint*
-    ep,
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -30,8 +30,30 @@
     ::carrier::sync::Sync*
     self,
 
+    ::carrier::stream::Config*
+    sc,
+
+)
+
+-&gt ::carrier::stream::Stream*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn connect (
+
     usize
     et,
+
+    ::carrier::identity::Identity*
+    target,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::sync::Sync*
+    self,
 
 )
 
@@ -57,45 +79,23 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn connect (
-
-    usize
-    et,
-
-    ::carrier::identity::Identity*
-    target,
-
-    ::carrier::sync::Sync*
-    self,
+</p><h4> fn start (
 
     ::err::Err*+et
     e,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn open (
+    ::carrier::endpoint::Endpoint*
+    ep,
 
     usize
     et,
-
-    ::carrier::stream::Config*
-    sc,
-
-    ::err::Err*+et
-    e,
 
     ::carrier::sync::Sync*
     self,
 
 )
 
--&gt ::carrier::stream::Stream*
+
 
 </h4>
 

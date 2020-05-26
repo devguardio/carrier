@@ -1,41 +1,6 @@
 
 <h1> module carrier::router </h1>
-<h4> fn poll (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::router::Router*
-    self,
-
-    ::io::Async*
-    async,
-
-    usize
-    et,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn next_channel (
-
-    ::carrier::router::Router*
-    self,
-
-)
-
--&gt ::carrier::channel::Channel*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be64 (
+<h4> fn to_be64 (
 
     u64
     x,
@@ -63,18 +28,34 @@
 
 </p><h4> fn push (
 
+    usize
+    et,
+
     ::carrier::router::Router*
     self,
 
     ::err::Err*+et
     e,
 
-    usize
-    et,
-
 )
 
 -&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn read_routing_key (
+
+    u8*
+    i,
+
+    ::carrier::router::Direction*
+    direction,
+
+)
+
+-&gt u64
 
 </h4>
 
@@ -95,14 +76,14 @@
 
 </p><h4> fn disconnect (
 
-    ::err::Err*+et
-    e,
-
     u64
     route,
 
     usize
     et,
+
+    ::err::Err*+et
+    e,
 
     ::carrier::router::Router*
     self,
@@ -115,17 +96,36 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn read_routing_key (
+</p><h4> fn poll (
 
-    ::carrier::router::Direction*
-    direction,
+    ::io::Async*
+    async,
 
-    u8*
-    i,
+    usize
+    et,
+
+    ::carrier::router::Router*
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 
--&gt u64
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn next_channel (
+
+    ::carrier::router::Router*
+    self,
+
+)
+
+-&gt ::carrier::channel::Channel*
 
 </h4>
 

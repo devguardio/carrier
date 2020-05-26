@@ -7,10 +7,10 @@ using io;
 using time;
 using string;
 
-export fntype open_fn   (Stream mut* self, err::Err+et mut *e, Slice *headers);
-export fntype close_fn  (Stream mut* self, err::Err+et mut *e);
-export fntype stream_fn (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
-export fntype poll_fn   (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
+export closure open_fn   (Stream mut* self, err::Err+et mut *e, Slice *headers);
+export closure close_fn  (Stream mut* self, err::Err+et mut *e);
+export closure stream_fn (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
+export closure poll_fn   (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
 
 export struct Config {
     char *      path;
@@ -104,7 +104,7 @@ pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b
     }
     static_attest(safe(self->config));
 
-    if self->config->stream == 0 {
+    if self->config->stream.fn == 0 {
         self->order_incomming += 1;
         return true;
     }
@@ -132,7 +132,7 @@ pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     self->order_incomming += 1;
 
     static_attest(safe(self->config));
-    if self->config->close == 0 {
+    if self->config->close.fn == 0 {
         return true;
     }
     static_attest(safe(self->config->close));
@@ -172,7 +172,7 @@ pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
         return;
     }
     static_attest(safe(self->config));
-    if self->config->poll != 0 {
+    if self->config->poll.fn != 0 {
         static_attest(safe(self->config->poll));
         self->config->poll(self, e, async);
         if err::check(e) {

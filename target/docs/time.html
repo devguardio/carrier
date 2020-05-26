@@ -1,6 +1,6 @@
 
 <h1> module time </h1>
-<h4> fn real (
+<h4> fn tick (
 
 )
 
@@ -9,31 +9,8 @@
 </h4>
 
 <p class='doc_comments'>
- real world time&lt;br&gt;
-</p><h4> fn from_millis (
-
-    u64
-    millis,
-
-)
-
--&gt ::time::Time
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn infinite (
-
-)
-
--&gt ::time::Time
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_seconds (
+ monotonic system clock&lt;br&gt;
+</p><h4> fn to_millis (
 
     ::time::Time*
     self,
@@ -62,10 +39,10 @@
 </p><h4> fn more_than (
 
     ::time::Time*
-    other,
+    self,
 
     ::time::Time*
-    self,
+    other,
 
 )
 
@@ -75,7 +52,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn tick (
+</p><h4> fn infinite (
 
 )
 
@@ -84,8 +61,8 @@
 </h4>
 
 <p class='doc_comments'>
- monotonic system clock&lt;br&gt;
-</p><h4> fn to_millis (
+
+</p><h4> fn to_seconds (
 
     ::time::Time*
     self,
@@ -93,6 +70,29 @@
 )
 
 -&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn real (
+
+)
+
+-&gt ::time::Time
+
+</h4>
+
+<p class='doc_comments'>
+ real world time&lt;br&gt;
+</p><h4> fn from_millis (
+
+    u64
+    millis,
+
+)
+
+-&gt ::time::Time
 
 </h4>
 

@@ -16,8 +16,8 @@ using <string.h>::{memcpy};
 using hex;
 using string;
 
-export fntype disconnect_t  (Connect mut *con, endpoint::Endpoint mut *ep);
-export fntype connect_t     (Connect mut *con, channel::Channel mut *chan);
+export closure disconnect_t  (Connect mut *con, endpoint::Endpoint mut *ep);
+export closure connect_t     (Connect mut *con, channel::Channel mut *chan);
 
 export struct Connect {
     identity::Identity      target;
@@ -76,7 +76,7 @@ fn on_close(stream::Stream mut *self, err::Err+et mut*e) {
     static_attest(safe(self->user2));
     Connect mut *this = self->user2;
 
-    if this->on_disconnect != 0 {
+    if this->on_disconnect.fn != 0 {
         static_attest(safe(this->on_disconnect));
         this->on_disconnect(this, self->chan->endpoint);
     }
@@ -229,7 +229,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             memcpy(&nuchan->peer,  &this->target, sizeof(identity::Identity));
             memcpy(&nuchan->peering, &peerings, sizeof(peering::Peering));
 
-            if this->on_connect != 0 {
+            if this->on_connect.fn != 0 {
                 static_attest(safe(this->on_connect));
                 this->on_connect(this, nuchan);
             }

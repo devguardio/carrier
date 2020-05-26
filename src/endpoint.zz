@@ -164,7 +164,7 @@ export fn close(Endpoint mut* self)
         }
     }
     self->state = State::Closed;
-    if self->vault.i_close != 0 {
+    if self->vault.i_close.fn != 0 {
         static_attest(safe(self->vault.i_close));
         self->vault.i_close(&self->vault);
     }

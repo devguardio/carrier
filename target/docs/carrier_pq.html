@@ -1,34 +1,18 @@
 
 <h1> module carrier::pq </h1>
-<h4> fn window (
+<h4> fn ack (
 
     usize
     qt,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn ack (
-
-    usize
-    qt,
-
-    u64
-    counter,
 
     u64
     time,
 
     ::carrier::pq::Q*+qt
     self,
+
+    u64
+    counter,
 
 )
 
@@ -38,34 +22,35 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn send (
-
-    u64
-    counter,
+</p><h4> fn cancel (
 
     usize
     qt,
 
-    u8*
-    buf,
-
     ::carrier::pq::Q*+qt
     self,
 
-    u64
-    time,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ undo last allocation without sending anything&lt;br&gt;
+</p><h4> fn to_be16 (
 
     u16
-    buflen,
+    x,
 
 )
 
--&gt usize
+-&gt u16
 
 </h4>
 
 <p class='doc_comments'>
- send frames out of the queue&lt;br&gt;
+
 </p><h4> fn keepalive (
 
     usize
@@ -85,58 +70,35 @@
 
 <p class='doc_comments'>
  tail loss probe or ping and return the time when we need to call this function again&lt;br&gt;
-</p><h4> fn clear (
+</p><h4> fn send (
 
-    usize
-    qt,
+    u64
+    counter,
+
+    u8*
+    buf,
 
     ::carrier::pq::Q*+qt
     self,
 
-)
+    u64
+    time,
 
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be16 (
+    usize
+    qt,
 
     u16
-    x,
+    buflen,
 
 )
 
--&gt u16
+-&gt usize
 
 </h4>
 
 <p class='doc_comments'>
-
-</p><h4> fn cancel (
-
-    ::carrier::pq::Q*+qt
-    self,
-
-    usize
-    qt,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- undo last allocation without sending anything&lt;br&gt;
+ send frames out of the queue&lt;br&gt;
 </p><h4> fn alloc (
-
-    usize
-    size,
-
-    usize
-    qt,
 
     ::carrier::pq::Q*+qt
     self,
@@ -144,11 +106,17 @@
     ::err::Err*+et
     e,
 
+    ::carrier::channel::FrameType
+    typ,
+
     usize
     et,
 
-    ::carrier::channel::FrameType
-    typ,
+    usize
+    qt,
+
+    usize
+    size,
 
 )
 
@@ -158,6 +126,38 @@
 
 <p class='doc_comments'>
  allocate the next frame in the queue&lt;br&gt;
+</p><h4> fn clear (
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn window (
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
 </p>
 
 

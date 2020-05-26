@@ -49,6 +49,11 @@ name = "carrier"
 main = "carrier"
 
 [[artifacts]]
+type = "python"
+name = "carrier"
+main = "carrier"
+
+[[artifacts]]
 type = "cmake"
 name = "carrier"
 main = "carrier"

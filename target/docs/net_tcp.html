@@ -1,21 +1,34 @@
 
 <h1> module net::tcp </h1>
-<h4> fn recv (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    st,
-
-    usize
-    et,
+<h4> fn close (
 
     ::net::tcp::Socket*
     self,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn recv (
+
+    ::net::tcp::Socket*
+    self,
+
+    usize
+    et,
+
     ::string::String*+st
     buf,
+
+    usize
+    st,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -25,35 +38,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
-
-    ::net::tcp::Socket*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn send (
 
-    usize
-    st,
-
-    ::net::tcp::Socket*
-    self,
+    ::err::Err*+et
+    e,
 
     ::string::String*+st
     buf,
 
     usize
+    st,
+
+    usize
     et,
 
-    ::err::Err*+et
-    e,
+    ::net::tcp::Socket*
+    self,
 
 )
 

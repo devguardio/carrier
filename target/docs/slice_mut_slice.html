@@ -1,6 +1,57 @@
 
 <h1> module slice::mut_slice </h1>
-<h4> fn borrow (
+<h4> fn append_cstr (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn make (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    u8*
+    mem,
+
+    usize
+    size,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push16 (
+
+    u16
+    b,
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn borrow (
 
     ::slice::mut_slice::MutSlice*
     self,
@@ -13,20 +64,46 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn make (
-
-    usize
-    size,
+</p><h4> fn mem (
 
     ::slice::mut_slice::MutSlice*
     self,
 
-    u8*
-    mem,
+)
+
+-&gt u8*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push32 (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    u32
+    b,
 
 )
 
+-&gt bool
 
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push (
+
+    u8
+    b,
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+)
+
+-&gt bool
 
 </h4>
 
@@ -58,83 +135,6 @@
 
     ::slice::mut_slice::MutSlice*
     self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn append_cstr (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push16 (
-
-    u16
-    b,
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn mem (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-)
-
--&gt u8*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    u8
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push32 (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    u32
-    b,
 
 )
 

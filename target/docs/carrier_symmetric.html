@@ -1,46 +1,15 @@
 
 <h1> module carrier::symmetric </h1>
-<h4> fn encrypt_and_mix_hash (
-
-    usize
-    et,
+<h4> fn mix_hash (
 
     u8*
-    ciphertext,
-
-    usize
-    cipher_len_max,
-
-    u8*
-    plain,
-
-    ::err::Err*+et
-    e,
-
-    u64
-    nonce,
-
-    usize
-    plain_len,
+    data,
 
     ::carrier::symmetric::SymmetricState*
     self,
 
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn init (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    protocolname,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
+    usize
+    l,
 
 )
 
@@ -52,20 +21,20 @@
 
 </p><h4> fn decrypt_and_mix_hash (
 
+    usize
+    cipher_len,
+
     u64
     nonce,
 
-    usize
-    plain_len_max,
-
-    ::err::Err*+et
-    e,
+    ::carrier::symmetric::SymmetricState*
+    self,
 
     usize
     et,
 
-    usize
-    cipher_len,
+    ::err::Err*+et
+    e,
 
     u8*
     plain,
@@ -73,8 +42,42 @@
     u8*
     ciphertext,
 
+    usize
+    plain_len_max,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt_and_mix_hash (
+
+    u8*
+    plain,
+
+    usize
+    cipher_len_max,
+
+    ::err::Err*+et
+    e,
+
     ::carrier::symmetric::SymmetricState*
     self,
+
+    u64
+    nonce,
+
+    usize
+    et,
+
+    u8*
+    ciphertext,
+
+    usize
+    plain_len,
 
 )
 
@@ -87,13 +90,13 @@
 </p><h4> fn split (
 
     ::carrier::cipher::CipherState*
-    ini,
-
-    ::carrier::cipher::CipherState*
     resp,
 
     ::carrier::symmetric::SymmetricState*
     self,
+
+    ::carrier::cipher::CipherState*
+    ini,
 
 )
 
@@ -105,14 +108,14 @@
 
 </p><h4> fn mix_key (
 
-    usize
-    l,
-
     ::carrier::symmetric::SymmetricState*
     self,
 
     u8*
     data,
+
+    usize
+    l,
 
 )
 
@@ -122,13 +125,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn mix_hash (
+</p><h4> fn init (
 
-    u8*
-    data,
-
-    usize
-    l,
+    ::ext::&lt;stddef.h&gt;::char*
+    protocolname,
 
     ::carrier::symmetric::SymmetricState*
     self,

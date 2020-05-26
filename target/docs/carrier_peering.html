@@ -1,18 +1,18 @@
 
 <h1> module carrier::peering </h1>
-<h4> fn from_proto (
+<h4> fn received (
 
-    usize
-    et,
+    ::carrier::peering::Class
+    klass,
 
-    ::protonerf::Field
-    field,
+    ::carrier::peering::Transport
+    transport,
+
+    ::net::address::Address
+    addr,
 
     ::carrier::peering::Peering*
     self,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -22,16 +22,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn received (
+</p><h4> fn from_proto (
 
-    ::carrier::peering::Transport
-    transport,
+    ::err::Err*+et
+    e,
 
-    ::net::address::Address
-    addr,
+    ::protonerf::Field
+    field,
 
-    ::carrier::peering::Class
-    klass,
+    usize
+    et,
 
     ::carrier::peering::Peering*
     self,

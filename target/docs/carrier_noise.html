@@ -1,157 +1,27 @@
 
 <h1> module carrier::noise </h1>
-<h4> fn complete (
-
-    ::err::Err*+et
-    e,
-
-    u8*
-    packet,
-
-    usize
-    packet_len,
-
-    ::carrier::noise::Initiator*
-    self,
-
-    usize
-    et,
-
-    u8*
-    payload,
-
-    usize
-    payload_len,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn receive_insecure (
-
-    u8*
-    packet,
-
-    usize
-    packet_len,
-
-    usize
-    prologue_len,
-
-    ::carrier::noise::Responder*
-    self,
-
-    u8*
-    prologue,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn initiate (
-
-    u8*
-    prologue,
-
-    u8*
-    pkt,
-
-    usize
-    pktlen,
-
-    ::carrier::noise::Initiator*
-    self,
-
-    usize
-    prologue_len,
+<h4> fn accept (
 
     ::err::Err*+et
     e,
 
     u8*
     payload,
-
-    usize
-    et,
-
-    usize
-    payload_len,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn initiate_insecure (
-
-    u8*
-    payload,
-
-    usize
-    payload_len,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    usize
-    pktlen,
-
-    u8*
-    prologue,
-
-    usize
-    prologue_len,
-
-    ::carrier::noise::Initiator*
-    self,
-
-    u8*
-    pkt,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn accept (
-
-    usize
-    pktlen,
-
-    usize
-    et,
-
-    u8*
-    pkt,
-
-    u8*
-    payload,
-
-    ::err::Err*+et
-    e,
 
     usize
     payload_len,
 
     ::carrier::noise::Responder*
     self,
+
+    u8*
+    pkt,
+
+    usize
+    pktlen,
+
+    usize
+    et,
 
 )
 
@@ -163,14 +33,11 @@
 
 </p><h4> fn receive (
 
-    usize
-    et,
-
     u8*
-    prologue,
+    packet,
 
-    ::err::Err*+et
-    e,
+    usize
+    packet_len,
 
     usize
     payload_len,
@@ -178,17 +45,150 @@
     ::carrier::noise::Responder*
     self,
 
+    ::err::Err*+et
+    e,
+
+    u8*
+    payload,
+
+    usize
+    et,
+
+    u8*
+    prologue,
+
     usize
     prologue_len,
 
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate_insecure (
+
+    usize
+    pktlen,
+
+    usize
+    et,
+
+    usize
+    prologue_len,
+
+    u8*
+    payload,
+
+    usize
+    payload_len,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    pkt,
+
+    u8*
+    prologue,
+
+    ::carrier::noise::Initiator*
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn receive_insecure (
+
     usize
     packet_len,
+
+    u8*
+    prologue,
+
+    ::carrier::noise::Responder*
+    self,
+
+    usize
+    prologue_len,
+
+    u8*
+    packet,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn complete (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    packet_len,
+
+    ::carrier::noise::Initiator*
+    self,
+
+    usize
+    et,
 
     u8*
     payload,
 
     u8*
     packet,
+
+    usize
+    payload_len,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
+
+    u8*
+    payload,
+
+    usize
+    payload_len,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    pkt,
+
+    usize
+    pktlen,
+
+    usize
+    et,
+
+    usize
+    prologue_len,
+
+    ::carrier::noise::Initiator*
+    self,
+
+    u8*
+    prologue,
 
 )
 

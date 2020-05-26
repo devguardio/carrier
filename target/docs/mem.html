@@ -1,53 +1,15 @@
 
 <h1> module mem </h1>
-<h4> fn move (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    src,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
-
-    usize
-    n,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn set (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
-
-    usize
-    n,
+<h4> fn set (
 
     u8
     c,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn copy (
+    ::ext::&lt;stddef.h&gt;::void*
+    dst,
 
     usize
     n,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    src,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
 
 )
 
@@ -59,18 +21,56 @@
 
 </p><h4> fn eq (
 
-    ::ext::&lt;stddef.h&gt;::void*
-    b,
+    usize
+    n,
 
     ::ext::&lt;stddef.h&gt;::void*
     a,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn copy (
+
+    ::ext::&lt;stddef.h&gt;::void*
+    src,
+
+    usize
+    n,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    dst,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn move (
+
+    ::ext::&lt;stddef.h&gt;::void*
+    src,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    dst,
 
     usize
     n,
 
 )
 
--&gt bool
+
 
 </h4>
 

@@ -7,16 +7,18 @@ using io;
 using time;
 using string;
 
-export closure open_fn   (Stream mut* self, err::Err+et mut *e, Slice *headers);
-export closure close_fn  (Stream mut* self, err::Err+et mut *e);
-export closure stream_fn (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
-export closure poll_fn   (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
+export closure open_fn       (Stream mut* self, err::Err+et mut *e, Slice *headers);
+export closure close_fn      (Stream mut* self, err::Err+et mut *e);
+export closure stream_fn     (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
+export closure fragmented_fn (Stream mut* self, err::Err+et mut *e, u32 fragments) -> bool;
+export closure poll_fn       (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
 
 export struct Config {
     char *      path;
     open_fn     open;
     close_fn    close;
     stream_fn   stream;
+    fragmented_fn   fragmented;
     poll_fn     poll;
 }
 
@@ -89,6 +91,7 @@ pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b
     where err::checked(*e)
 {
     if order <= self->order_incomming {
+        log::debug("ignoring dup %d", order);
         // already seen, dont resend
         return true;
     }
@@ -116,6 +119,40 @@ pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b
     }
     return accepted;
 }
+
+pub fn incomming_fragmented(Stream mut*self, err::Err+et mut *e, u64 order, u32 fragments) -> bool
+    where err::checked(*e)
+{
+    if order <= self->order_incomming {
+        log::debug("ignoring dup %d", order);
+        // already seen, dont resend
+        return true;
+    }
+    if order != self->order_incomming + 1 {
+        // TODO buffer
+        // cannot accept, resend later
+        return false;
+    }
+
+    if self->config == 0 {
+        self->order_incomming += 1;
+        return true;
+    }
+    static_attest(safe(self->config));
+
+    if self->config->fragmented.fn == 0 {
+        self->order_incomming += 1;
+        return true;
+    }
+    static_attest(safe(self->config->fragmented));
+
+    bool accepted = self->config->fragmented(self, e, fragments);
+    if accepted {
+        self->order_incomming += 1;
+    }
+    return accepted;
+}
+
 
 pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     where err::checked(*e)

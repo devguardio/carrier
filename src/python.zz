@@ -1,0 +1,21 @@
+using <stdio.h>::{printf};
+using crc8;
+using err;
+using identity;
+using cipher;
+using sha256;
+using hpack::encoder;
+using hpack::decoder;
+using bootstrap;
+using endpoint;
+//using shell;
+using sft;
+using config;
+using pub_sysinfo;
+using sync;
+using slice::python;
+
+export fn hellozz() -> int {
+    printf("hello carrier\n");
+    return 0;
+}

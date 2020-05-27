@@ -26,7 +26,6 @@ using identity;
 using pool;
 
 export symbol InvalidFrame;
-export symbol Backpressure;
 
 export enum FrameType {
     Ack         = 1,
@@ -778,8 +777,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                             }
                         } else if !accepted {
                             //TODO send backpressure signal
-                            err::fail(e, Backpressure, "stream %u ordering is backpressured at position %u, unable to accept %u",
-                                    streamid, strx->order_incomming, order);
+                            log::warn("stream %u ordering is backpressured at position %u, unable to accept %u",
+                                streamid, strx->order_incomming, order);
                             please_resend = true;
                         }
                     }
@@ -843,7 +842,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                             return;
                         }
                         if !accepted {
-                            err::fail(e, Backpressure, "stream %u ordering is backpressured at position %u, unable to accept %u",
+                            log::warn("stream %u ordering is backpressured at position %u, unable to accept %u",
                                 streamid, strx->order_incomming, order);
                             please_resend = true;
                         }
@@ -891,7 +890,50 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 i += 4;
                 static_attest(i < len(frames));
 
-                log::debug("[%lu] received fragemented for stream=%u, order=%u", self->route, streamid, order);
+                log::debug("[%lu] received fragmented for stream=%u, order=%u", self->route, streamid, order);
+
+
+                let mut found_channel = false;
+                for (usize mut j =0 ; j < static(len(self->streams)); j++) {
+                    if self->streams[j] == 0 {
+                        continue;
+                    }
+                    stream::Stream mut*strx = self->streams[j];
+                    static_attest(safe(strx));
+
+                    if strx->id == streamid {
+                        found_channel = true;
+                        let accepted = strx->incomming_fragmented(
+                            e,
+                            order,
+                            fragments
+                        );
+                        if err::check(e) {
+                            if strx->errors_are_fatal {
+                                please_resend = true;
+                                return;
+                            } else {
+                                e->elog();
+                                e->make();
+                                please_resend = true;
+                            }
+                        } else if !accepted {
+                            //TODO send backpressure signal
+                            log::warn("stream %u ordering is backpressured at position %u, unable to accept %u",
+                                streamid, strx->order_incomming, order);
+                            please_resend = true;
+                        }
+                    }
+                }
+                if !found_channel {
+                    log::warn("fragmented for unknown stream %zu",streamid);
+                    self->send_close_frame(e, streamid, 2);
+                    if err::check(e) {
+                        e->make();
+                    }
+                }
+
+
             }
             default => {
                 err::fail(e, InvalidFrame, "invalid frame %u", body[i]);

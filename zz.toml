@@ -49,6 +49,11 @@ name = "carrier"
 main = "carrier"
 
 [[artifacts]]
+type = "rust"
+name = "carrier"
+main = "carrier"
+
+[[artifacts]]
 type = "python"
 name = "carrier"
 main = "carrier::python"
@@ -64,6 +69,6 @@ name = "carrier"
 main = "carrier::main"
 
 [repos]
-#extra = "git://github.com/zetzit/nursery.git"
-nursery = "/home/aep/proj/zznursery"
+nursery = "git://github.com/zetzit/nursery.git"
+#nursery = "/home/aep/proj/zznursery"
 

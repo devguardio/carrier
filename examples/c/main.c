@@ -30,10 +30,6 @@ void main(int argc, char **argv) {
     err_Err * e = alloca(sizeof_err_Err(TAIL_ERR));
     err_make(e, TAIL_ERR);
 
-    // init async
-    io_unix_Async * async = alloca(sizeof_io_unix_Async(TAIL_ASYNC));
-    io_unix_make (async, TAIL_ASYNC);
-
     // init endpoint from ~/.devguard/carrier.toml
     carrier_endpoint_Endpoint *ep = alloca(sizeof_carrier_endpoint_Endpoint(TAIL_EP));
     carrier_endpoint_from_home_carriertoml(ep, TAIL_EP, e, TAIL_ERR);

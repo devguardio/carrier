@@ -487,10 +487,10 @@ static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlic
 }
 
 #else
-bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl);
-bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl);
-bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl);
-bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl);
-bool os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl);
-bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl);
+bool __attribute__((weak)) os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
 #endif

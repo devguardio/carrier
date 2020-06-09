@@ -144,20 +144,20 @@ export fn SubscribeChangeTypes (usize index) -> protonerf::FieldType {
 
 
 export enum PublishRequest {
-  Xaddr = 1,
-  Shadow = 2,
-  Shortcut = 3,
+  Unused = 1,
+  Network = 2,
+  ReceiveAlias = 3,
 }
 
 export fn PublishRequestTypes (usize index) -> protonerf::FieldType {
     switch index {
-        PublishRequest::Xaddr => {
+        PublishRequest::Unused => {
             return protonerf::FieldType::Message;
         }
-        PublishRequest::Shadow => {
+        PublishRequest::Network => {
             return protonerf::FieldType::Message;
         }
-        PublishRequest::Shortcut => {
+        PublishRequest::ReceiveAlias => {
             return protonerf::FieldType::Message;
         }
     }
@@ -165,17 +165,13 @@ export fn PublishRequestTypes (usize index) -> protonerf::FieldType {
 }
 
 
-export enum Shortcut {
-  Shortcut = 1,
-  Expires = 2,
+export enum Alias {
+  Alias = 1,
 }
 
-export fn ShortcutTypes (usize index) -> protonerf::FieldType {
+export fn AliasTypes (usize index) -> protonerf::FieldType {
     switch index {
-        Shortcut::Shortcut => {
-            return protonerf::FieldType::Message;
-        }
-        Shortcut::Expires => {
+        Alias::Alias => {
             return protonerf::FieldType::Message;
         }
     }
@@ -185,7 +181,7 @@ export fn ShortcutTypes (usize index) -> protonerf::FieldType {
 
 export enum PublishChange {
   Supersede = 1,
-  Shortcut = 2,
+  Alias = 2,
 }
 
 export fn PublishChangeTypes (usize index) -> protonerf::FieldType {
@@ -193,7 +189,7 @@ export fn PublishChangeTypes (usize index) -> protonerf::FieldType {
         PublishChange::Supersede => {
             return protonerf::FieldType::Message;
         }
-        PublishChange::Shortcut => {
+        PublishChange::Alias => {
             return protonerf::FieldType::Message;
         }
     }
@@ -208,7 +204,7 @@ export enum ConnectRequest {
   Paths = 4,
   Principal = 5,
   Timeout = 6,
-  Shortcut = 7,
+  Alias = 7,
 }
 
 export fn ConnectRequestTypes (usize index) -> protonerf::FieldType {
@@ -231,7 +227,7 @@ export fn ConnectRequestTypes (usize index) -> protonerf::FieldType {
         ConnectRequest::Timeout => {
             return protonerf::FieldType::Message;
         }
-        ConnectRequest::Shortcut => {
+        ConnectRequest::Alias => {
             return protonerf::FieldType::Message;
         }
     }
@@ -417,6 +413,7 @@ export enum TraceResponse {
   PktsSent = 9,
   PktsLost = 10,
   Rtt = 11,
+  Alias = 12,
 }
 
 export fn TraceResponseTypes (usize index) -> protonerf::FieldType {
@@ -452,6 +449,9 @@ export fn TraceResponseTypes (usize index) -> protonerf::FieldType {
             return protonerf::FieldType::Message;
         }
         TraceResponse::Rtt => {
+            return protonerf::FieldType::Message;
+        }
+        TraceResponse::Alias => {
             return protonerf::FieldType::Message;
         }
     }

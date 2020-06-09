@@ -59,10 +59,10 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
 {
     static_attest(safe(self->chan));
     if self->state == 0 {
-        log::debug("publish response headers:");
+        log::info("publish response headers:");
         new it = hpack::decoder::decode(bs);
         while it.next(e) {
-            log::debug("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+            log::info("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
         }
         if err::check(e) {
             return false;
@@ -85,18 +85,38 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
 
         identity::Address mut network = {0};
         self->chan->endpoint->vault.get_network(&network);
-        protonerf::encode_bytes(frame, e, 1, network.k, 32);
+        protonerf::encode_bytes(frame, e, proto::PublishRequest::Network, network.k, 32);
         if err::check(e) {
             return false;
         }
-        protonerf::encode_bytes(frame, e, 2, network.k, 32);
+
+        protonerf::encode_varint(frame, e, proto::PublishRequest::ReceiveAlias, 1);
         if err::check(e) {
             return false;
         }
 
     } else if self->state == 1 {
-        // the only message after headers is supersede
-        // TODO stop endpoint
+        new mut dec = protonerf::decode_slice(bs);
+        for (protonerf::Field mut field; dec.next(e,&field);) {
+            if err::check(e) {
+                return true;
+            }
+            switch field.index {
+                proto::PublishChange::Alias => {
+                    static_attest(safe(field.a));
+                    new mut dec2 = protonerf::decode(field.a, field.value.v_len);
+                    for (protonerf::Field mut field; dec2.next(e,&field);) {
+                        switch field.index {
+                            proto::Alias::Alias => {
+                                if field.a != 0 {
+                                    log::info("alias %.*s", field.value.v_len, field.a);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return true;
@@ -137,14 +157,10 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
 
 
-        let mut dec = protonerf::decode(msg->mem, msg->size);
-        for (;;) {
-            let field = dec.next(e);
+        new mut dec = protonerf::decode(msg->mem, msg->size);
+        for (protonerf::Field mut field;dec.next(e, &field);) {
             if err::check(e) {
                 return true;
-            }
-            if !field.valid {
-                break;
             }
             switch field.index {
                 proto::PeerConnectRequest::Identity => {

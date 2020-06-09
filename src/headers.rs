@@ -1,7 +1,7 @@
 use std::fmt;
 use std::iter::Iterator;
 use error;
-use super::zz::{
+use carrier::{
     slice_mut_slice as mut_slice,
     slice_slice as slice,
     hpack_encoder,
@@ -101,7 +101,7 @@ impl Headers {
         let mut err = error::ZZError::new();
 
         let mut mem     = vec![0;2000];
-        let mut slice   = mut_slice::rsMutSlice::new();
+        let mut slice   = mut_slice::heap::MutSlice::new();
         unsafe {
             mut_slice::make(slice._self_mut(), mem.as_mut_ptr(), mem.len());
         }
@@ -134,12 +134,12 @@ impl Headers {
         let mut nu = Self::default();
         let mut err = error::ZZError::new();
 
-        let mut slice = slice::rsSlice::new();
+        let mut slice = slice::heap::Slice::new();
         unsafe {
             slice::make(slice._self_mut(), b.as_ptr(), b.len());
         }
 
-        let mut decoder = hpack_decoder::rsIterator::new();
+        let mut decoder = hpack_decoder::heap::Iterator::new();
         unsafe {
             hpack_decoder::decode(decoder._self_mut(), slice._self());
         }

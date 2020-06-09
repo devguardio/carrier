@@ -3,7 +3,7 @@ use snow::params::{DHChoice, HashChoice, CipherChoice};
 use snow::types::{Random, Dh, Hash, Cipher};
 use identity;
 use error;
-use super::zz::{
+use carrier::{
     carrier_sha256 as sha256,
     carrier_cipher as cipher,
 };
@@ -62,7 +62,7 @@ struct HashSHA256(Vec<u8>);
 impl Default for HashSHA256 {
     fn default() -> Self {
         unsafe {
-            let mut state = vec![0; sha256::sizeof_Sha256];
+            let mut state = vec![0; sha256::sizeof_Sha256()];
             sha256::init(state.as_mut_ptr());
             Self(state)
         }
@@ -126,7 +126,7 @@ impl Cipher for CipherChaChaPoly {
     fn encrypt(&self, nonce: u64, authtext: &[u8], plaintext: &[u8], out: &mut [u8]) -> usize {
         unsafe {
             let mut err = error::ZZError::new();
-            let mut state = vec![0u8;cipher::sizeof_CipherState];
+            let mut state = vec![0u8;cipher::sizeof_CipherState()];
             cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
             let r = cipher::encrypt_ad(
@@ -150,7 +150,7 @@ impl Cipher for CipherChaChaPoly {
     fn decrypt(&self, nonce: u64, authtext: &[u8], ciphertext: &[u8], out: &mut [u8]) -> Result<usize, ()> {
         unsafe {
             let mut err = error::ZZError::new();
-            let mut state = vec![0u8;cipher::sizeof_CipherState];
+            let mut state = vec![0u8;cipher::sizeof_CipherState()];
             cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
             let s = cipher::decrypt_ad(

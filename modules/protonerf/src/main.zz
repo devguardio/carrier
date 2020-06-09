@@ -60,13 +60,9 @@ export fn main() -> int {
     };
 
 
-    for (protonerf::Decoder mut dec = protonerf::decode(msg, static(len(msg)));;) {
-        protonerf::Field v = dec.next(&e);
+    new dec = protonerf::decode(msg, static(len(msg)));
+    for (protonerf::Field mut v; dec.next(&e, &v);) {
         e.abort();
-        if !v.valid {
-            break;
-        }
-
         printf("index: %u , val: %d\n", v.index, v.value.v_i64);
     }
 

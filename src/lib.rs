@@ -25,6 +25,8 @@ extern crate smbios;
 #[cfg(feature = "uefi")]
 extern crate cluproccmdline;
 
+extern crate carrier;
+
 #[macro_use]
 #[cfg(target_arch = "wasm32")]
 extern crate wasm_bindgen;
@@ -62,7 +64,3 @@ pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/carrier.discovery.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/genesis.v1.rs"));
 }
-
-#[path = "../target/release/rs/lib.rs"]
-mod zz;
-

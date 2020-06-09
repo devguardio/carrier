@@ -51,20 +51,23 @@ message SubscribeChange{
 }
 
 message PublishRequest {
-    bytes   xaddr       = 1;
-    bytes   shadow      = 2;
-    bool    shortcut    = 3;
+    // this used to be xaddr, but that never made sense.
+    // because the p2p buildup uses an unencrypted initiator without DH
+    bytes   unused      = 1;
+
+    bytes   network     = 2;
+    // backwards compat. dont send alias into publish stream unless flag is set
+    bool    receive_alias       = 3;
 }
 
-message Shortcut {
-    string  shortcut = 1;
-    uint64  expires  = 2;
+message Alias   {
+    string  alias       = 1;
 }
 
-message PublishChange{
+message PublishChange {
     oneof m {
-        Supersede   supersede = 1;
-        Shortcut    shortcut  = 2;
+        Supersede   supersede   = 1;
+        Alias       alias       = 2;
     }
 }
 
@@ -75,7 +78,7 @@ message ConnectRequest {
     repeated Path paths     = 4;
     bytes   principal       = 5;
     uint32  timeout         = 6;
-    string  shortcut        = 7;
+    string  alias           = 7;
 }
 
 message ConnectResponse {
@@ -142,6 +145,7 @@ message TraceResponse {
     uint64  pkts_sent           = 9;
     uint64  pkts_lost           = 10;
     uint64  rtt                 = 11;
+    string  alias               = 12;
 }
 
 service Broker {

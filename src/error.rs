@@ -5,7 +5,7 @@ use snow::SnowError;
 use std::fmt;
 use std::io;
 
-use super::zz::err;
+use carrier::err;
 
 pub struct ZZError  (pub Vec<u8>);
 

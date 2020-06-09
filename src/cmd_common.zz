@@ -62,11 +62,9 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Sli
 
         log::warn("%s.proto unavailable, printing unlabeled data. see documentation for CARRIER_PROTO_PATHS", self->user2);
 
-        let mut decoder = protonerf::decode(msg->mem, msg->size);
-        for (;;) {
-             let field = decoder.next(e);
+        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (protonerf::Field mut field;decoder.next(e, &field);) {
              if err::check(e) { return true; }
-             if !field.valid {break;}
 
              if field.a != 0 {
                  log::warn("field %u:\n", field.index);

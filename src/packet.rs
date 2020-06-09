@@ -2,7 +2,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
-use super::zz::carrier_crc8 as crc8;
+use carrier::carrier_crc8 as crc8;
 
 pub const LATEST_VERSION: u8 = 0x9;
 

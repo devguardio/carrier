@@ -145,18 +145,14 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
 
         static_attest(safe(bs->mem));
-        let mut dec = protonerf::decode(bs->mem, bs->size);
+        new mut dec = protonerf::decode(bs->mem, bs->size);
         bool mut ok = false;
         slice::slice::Slice mut handshake = {0};
         u64 mut route = 0;
-        for(;;) {
-            let field = dec.next(e);
+        for(protonerf::Field mut field;dec.next(e,&field);) {
             if err::check(e) {
                 e->elog();
                 return true;
-            }
-            if !field.valid {
-                break;
             }
             switch field.index {
                 proto::ConnectResponse::Error => {

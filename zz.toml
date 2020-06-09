@@ -33,6 +33,7 @@ pool        = "1"
 toml        = "1"
 fs          = "1"
 sysinfo     = "1"
+base32      = "1"
 
 [variants]
 default = []

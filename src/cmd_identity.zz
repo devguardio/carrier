@@ -18,5 +18,8 @@ pub fn cmd (int mut argc, char ** argv) -> int
     identity::identity_to_str(&e, buf, 64, &id);
     e.abort();
     printf("%s\n", buf);
+
+
+    ep.close();
     return 0;
 }

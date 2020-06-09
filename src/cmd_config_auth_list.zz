@@ -77,28 +77,24 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) ->
         static_attest(safe(msg->mem));
 
         printf("IDENTITY                                       \tPATH\n");
-        let mut decoder = protonerf::decode(msg->mem, msg->size);
-        for (;;) {
-            let field = decoder.next(e);
+        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (protonerf::Field mut field;decoder.next(e,&field);) {
             if err::check(e) { return true; }
-            if !field.valid {break;}
 
             switch field.index {
                 proto::AuthListResult::Auth => {
                     if field.a != 0 {
                         static_attest(safe(field.a));
                         static_attest(len(field.a) > field.value.v_len);
-                        let mut decoder = protonerf::decode(field.a, field.value.v_len);
+                        new mut decoder = protonerf::decode(field.a, field.value.v_len);
 
                         char * mut id = 0;
                         usize  mut id_l = 0;
                         char * mut path       = 0;
                         usize  mut path_l     = 0;
 
-                        for (;;) {
-                            let field = decoder.next(e);
+                        for (protonerf::Field mut field;decoder.next(e,&field);) {
                             if err::check(e) { return true; }
-                            if !field.valid {break;}
 
                             switch field.index {
                                 proto::AuthorizationAdd::Identity => {

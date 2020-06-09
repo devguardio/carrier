@@ -19,7 +19,7 @@ pub struct SignedAddress(Address, Signature);
 // --- Secret
 
 
-use super::zz::carrier_identity;
+use carrier::carrier_identity;
 
 
 impl Secret {

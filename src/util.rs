@@ -1,6 +1,6 @@
 use std::mem;
 use error::Error;
-use super::zz::carrier_sha256 as sha256;
+use carrier::carrier_sha256 as sha256;
 
 pub struct Defer<F: FnOnce()> {
     f: Option<F>,
@@ -19,7 +19,7 @@ pub fn defer<F: FnOnce()>(f: F) -> Defer<F> {
 }
 
 pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, Error> {
-    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256}];
+    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256()}];
     unsafe { sha256::init(state.as_mut_ptr()); }
 
     let mut file = std::fs::File::open(p)?;

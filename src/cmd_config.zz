@@ -233,12 +233,9 @@ pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slic
         char * mut remote_error = 0;
         usize  mut remote_error_len = 0;
 
-        let mut decoder = protonerf::decode(msg->mem, msg->size);
-        for (;;) {
-            let field = decoder.next(e);
+        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        for (protonerf::Field mut field;decoder.next(e,&field);) {
             if err::check(e) { return true; }
-            if !field.valid {break;}
-
             switch field.index {
                 proto::ConfigResult::Ok => {
                     ok = field.value.v_bool;

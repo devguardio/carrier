@@ -105,10 +105,12 @@ struct Testcase {
     Message messages[10];
 }
 
-fn deser_message(err::Err+et mut *e, json::Parser+pt mut* p, Message mut* tc, char *k, json::Value v)
+fn deser_message(err::Err+et mut *e, json::Parser+pt mut* p, void mut* user, char *k, json::Value v)
     where err::checked(*e)
     where nullterm(k)
 {
+    let tc = (Message mut*)user;
+
     static_attest(safe(v.string));
     static_attest(nullterm(v.string));
     tc->set = true;
@@ -135,10 +137,12 @@ fn deser_message(err::Err+et mut *e, json::Parser+pt mut* p, Message mut* tc, ch
     }
 }
 
-fn deser_messages(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *k, json::Value v)
+fn deser_messages(err::Err+et mut *e, json::Parser+pt mut* p, void mut* user, char *k, json::Value v)
     where err::checked(*e)
     where nullterm(k)
 {
+    let tc = (Testcase mut*)user;
+
     if v.index > 9 {
         err::fail(e, err::InvalidArgument, "too many messages");
         return;
@@ -147,13 +151,14 @@ fn deser_messages(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, 
         err::fail(e, err::InvalidArgument, "expected object");
         return;
     }
-    json::next(p,  e, (json::deserialize_t)deser_message, &tc->messages[v.index]);
+    json::next(p,  e, deser_message, &tc->messages[v.index]);
 }
 
-fn deser_tc(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *k, json::Value v)
+fn deser_tc(err::Err+et mut *e, json::Parser+pt mut* p,  void mut* user, char *k, json::Value v)
     where err::checked(*e)
     where nullterm(k)
 {
+    let tc = (Testcase mut*)user;
     static_attest(safe(v.string));
     static_attest(nullterm(v.string));
 
@@ -212,7 +217,7 @@ fn deser_tc(err::Err+et mut *e, json::Parser+pt mut* p, Testcase mut* tc, char *
             err::fail(e, err::InvalidArgument, "expected string");
             return;
         }
-        json::next(p,  e, (json::deserialize_t)deser_messages, tc);
+        json::next(p,  e, deser_messages, tc);
         if err::check(e) {
             return;
         }
@@ -228,7 +233,7 @@ pub fn main() -> int {
     e.make();
 
     Testcase mut tc = {0};
-    new+1000 parser = json::parser(&e, (json::deserialize_t)deser_tc, &tc);
+    new+1000 parser = json::parser(&e, deser_tc, &tc);
     if err::check(&e) {
         e.eprintf(stderr);
         return (int)e.error;

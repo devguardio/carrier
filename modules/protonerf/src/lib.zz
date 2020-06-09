@@ -109,10 +109,17 @@ export struct Decoder {
 }
 
 
-export fn decode(u8 *mem, usize size) -> Decoder {
-    return Decoder {
+export fn decode(Decoder mut new*self, u8 *mem, usize size) {
+    *self = Decoder {
         mem:    mem,
         size:   size,
+    };
+}
+
+export fn decode_slice(Decoder mut new*self, slice::Slice * slice) {
+    *self = Decoder {
+        mem:    slice->mem,
+        size:   slice->size,
     };
 }
 
@@ -201,7 +208,7 @@ fn read_varint(Decoder mut*self, err::Err+et mut*e) -> u64
 
 
 
-export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
+export fn next(Decoder mut*self, err::Err+et mut*e, Field mut*v) -> bool
     where err::checked(*e)
 {
 
@@ -217,50 +224,52 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
             // Varint
             0 => {
                 u64 val = self->read_varint(e);
-                if err::check(e) {return Field{valid: false}; }
+                if err::check(e) {return false;};
                 (self->at)++;
 
-                return Field {
+                *v = Field {
                     valid:      true,
                     index:      index,
                     value:      Value {
                         v_u64: val,
                     }
                 };
+                return true;
             }
 
             // Fixed64
             1 => {
                 if (self->at + 8) >= self->size {
                     err::fail(e, Invalid, "short read");
-                    if err::check(e) {return Field{valid: false}; }
+                    if err::check(e) {return false;}
                 }
                 static_attest(self->at < len(self->mem));
                 u64 val = *(u64*)(self->mem + self->at);
                 self->at += 8;
 
-                return Field {
+                *v = Field {
                     valid:      true,
                     index:      index,
                     value:      Value {
                         v_u64: val,
                     }
                 };
+                return true;
             }
 
             // Bytes
             2 => {
                 u64 l = self->read_varint(e);
-                if err::check(e) {return Field{valid: false};}
+                if err::check(e) {return false;};
                 if ((u64)(self->at) + l) >= (u64)self->size {
                     err::fail(e, Invalid, "short read");
-                    if err::check(e) {return Field{valid: false}; }
+                    if err::check(e) {return false;}
                 }
                 static_attest(self->at + 1 < len(self->mem));
                 u8*a = self->mem + (self->at + 1);
                 self->at += 1 + (usize)l;
 
-                return Field {
+                *v = Field {
                     valid:      true,
                     index:      index,
                     value:      Value {
@@ -268,25 +277,27 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
                     },
                     a:          a,
                 };
+                return true;
             }
 
             // Fixed32
             5 => {
                 if (self->at + 4) >= self->size {
                     err::fail(e, Invalid, "short read");
-                    if err::check(e) {return Field{valid: false}; }
+                    if err::check(e) {return false;};
                 }
                 static_attest(self->at < len(self->mem));
                 u64 val = *(u64*)(self->mem + self->at);
                 self->at += 4;
 
-                return Field {
+                *v = Field {
                     valid:      true,
                     index:      index,
                     value:      Value {
                         v_u64: val,
                     }
                 };
+                return true;
             }
             default => {
                 err::fail(e, Invalid, "invalid wire type %u", b & 7);
@@ -294,7 +305,7 @@ export fn next(Decoder mut*self, err::Err+et mut*e) -> Field
         }
     }
 
-    return Field{valid: false};
+    return false;
 }
 
 

@@ -56,18 +56,13 @@ export fn from_proto(Peering mut *self, err::Err+et mut*e, protonerf::Field fiel
     }
     static_attest(len(field.a) == field.value.v_len);
     static_attest(safe(field.a));
-    let mut dec2 = protonerf::decode(field.a, field.value.v_len);
-
+    new mut dec2 = protonerf::decode(field.a, field.value.v_len);
 
     address::Address mut ip = {0};
     Class mut cat = Class::Invalid;
-    for (;;) {
-        let field = dec2.next(e);
+    for (protonerf::Field mut field;dec2.next(e, &field);) {
         if err::check(e) {
             return;
-        }
-        if !field.valid {
-            break;
         }
         switch field.index {
             proto::Path::Category => {

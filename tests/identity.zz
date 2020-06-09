@@ -1,5 +1,6 @@
 using carrier;
 using carrier::identity::{
+    Alias,
     Address,
     Identity,
     Secret,
@@ -7,6 +8,7 @@ using carrier::identity::{
     identity_from_cstr,
     identity_from_secret,
     identity_to_str,
+    alias_to_str,
     secret_from_str,
     secret_from_cstr,
     secret_to_str,
@@ -14,6 +16,7 @@ using carrier::identity::{
     address_to_str,
     address_from_str,
     address_from_cstr,
+    alias_from_str,
     secret_generate,
 };
 using err;
@@ -31,7 +34,7 @@ fn test_identity(err::Err+et mut* e)
     Identity mut pk = {0};
     identity_from_secret(&pk, &sk);
 
-    char mut buf[50] = {0};
+    char mut buf[200] = {0};
     identity_to_str(e, buf, static(len(buf)), &pk);
     if err::check(e) { return; }
 
@@ -51,8 +54,6 @@ fn test_identity(err::Err+et mut* e)
     if err::check(e) { return; }
 
     assert(memcmp(sk.k, sk2.k, sizeof(sk.k)) == 0);
-exit:
-    return;
 }
 
 fn test_corrupt_identity(err::Err+et mut* e)
@@ -85,7 +86,7 @@ fn test_address(err::Err+et mut* e)
     Address mut pk = {0};
     address_from_secret(&pk, &sk);
 
-    char mut buf[50] = {0};
+    char mut buf[100] = {0};
     address_to_str(e, buf, static(len(buf)), &pk);
     if err::check(e) { return; }
 
@@ -94,6 +95,74 @@ fn test_address(err::Err+et mut* e)
     new pk2 = address_from_cstr(e,buf);
     if err::check(e) { return; }
 
+    assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
+}
+
+fn test_short(err::Err+et mut* e)
+    where err::checked(*e)
+{
+    new sk = secret_generate(e);
+    if err::check(e) { return; }
+
+    Identity mut pk = {0};
+    identity_from_secret(&pk, &sk);
+
+    pk.k[0] = 0x00;
+    pk.k[1] = 0x00;
+    pk.k[2] = 0x00;
+    pk.k[3] = 0x00;
+    pk.k[4] = 0x00;
+    pk.k[6] = 0x00;
+
+    char mut buf[200] = {0};
+    identity_to_str(e, buf, static(len(buf)), &pk);
+    if err::check(e) { return; }
+
+    printf("%s\n", buf);
+
+    new pk2 = identity_from_cstr(e, buf);
+    if err::check(e) { return; }
+
+    assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
+
+    secret_to_str(e, buf, static(len(buf)), &sk);
+    if err::check(e) { return; }
+
+    printf("%s\n", buf);
+
+    new sk2 = secret_from_cstr(e, buf);
+    if err::check(e) { return; }
+
+    assert(memcmp(sk.k, sk2.k, sizeof(sk.k)) == 0);
+}
+
+fn test_alias(err::Err+et mut* e)
+    where err::checked(*e)
+{
+    new sk = secret_generate(e);
+    if err::check(e) { return; }
+
+    Alias mut pk = {0};
+    pk.k[4] = sk.k[0];
+    pk.k[5] = sk.k[1];
+    pk.k[6] = sk.k[2];
+    pk.k[7] = sk.k[3];
+
+    char mut buf[100] = {0};
+    usize ll = alias_to_str(e, buf, static(len(buf)), &pk);
+    static_attest(ll < len(buf));
+    if err::check(e) { return; }
+
+    for (usize mut i = 0; i < ll; i++) {
+        printf("%c", buf[i]);
+        if i % 4 == 0 {
+            printf(" ");
+        }
+    }
+    printf("\n", buf);
+
+    new pk2 = alias_from_str(e, buf, ll);
+    if err::check(e) { return; }
     assert(memcmp(pk.k, pk2.k, sizeof(pk.k)) == 0);
 }
 
@@ -107,6 +176,12 @@ export fn main() -> int {
     err::abort(&e);
 
     test_address(&e);
+    err::abort(&e);
+
+    test_short(&e);
+    err::abort(&e);
+
+    test_alias(&e);
     err::abort(&e);
 
     return 0;

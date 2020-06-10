@@ -151,6 +151,45 @@ pub fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> strea
     return r;
 }
 
+pub fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config *conf, slice::Slice * extraheaders) -> stream::Stream mut *
+    where err::checked(*e)
+    where safe(conf->path)
+    where nullterm(conf->path)
+    model (return == 0) ||  safe(return)
+{
+    let r = self->alloc_stream(1 + self->streamidcounter * 2, conf);
+    if r == 0 {
+        err::fail(e, err::OutOfTail, "oom");
+        return 0;
+    }
+    static_attest(safe(r));
+
+    err::assert(extraheaders->size < 10000);
+    let framesize = 100 + extraheaders->size;
+
+    let mut *frame = self->q.alloc(e, FrameType::Open, framesize);
+    if err::check(e) {
+        r->id = 0;
+        return 0;
+    }
+
+    frame->push32(byteorder::to_be32(r->id)); // stream
+    frame->push16(0); // size placeholder
+
+    static_attest(nullterm(conf->path));
+    static_attest(safe(conf->path));
+    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, string::strlen(conf->path));
+    if err::check(e) {
+        r->id = 0;
+        return 0;
+    }
+
+    frame->append_slice(extraheaders);
+
+    self->streamidcounter += 1;
+    return r;
+}
+
 pub fn cleanup(Channel mut* self, err::Err+et mut*e)
     where err::checked(*e)
 {

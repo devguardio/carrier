@@ -61,7 +61,7 @@ message PublishRequest {
 }
 
 message Alias   {
-    string  alias       = 1;
+    uint64  alias  = 1;
 }
 
 message PublishChange {
@@ -71,6 +71,7 @@ message PublishChange {
     }
 }
 
+
 message ConnectRequest {
     bytes   target          = 1;
     uint64  timestamp       = 2;
@@ -78,7 +79,11 @@ message ConnectRequest {
     repeated Path paths     = 4;
     bytes   principal       = 5;
     uint32  timeout         = 6;
-    string  alias           = 7;
+    enum TargetType {
+        Identity = 0;
+        Alias    = 1;
+    }
+    TargetType  target_type = 7;
 }
 
 message ConnectResponse {
@@ -145,7 +150,7 @@ message TraceResponse {
     uint64  pkts_sent           = 9;
     uint64  pkts_lost           = 10;
     uint64  rtt                 = 11;
-    string  alias               = 12;
+    uint64  alias               = 12;
 }
 
 service Broker {

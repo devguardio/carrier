@@ -197,6 +197,11 @@ export fn PublishChangeTypes (usize index) -> protonerf::FieldType {
 }
 
 
+export enum ConnectRequest__TargetType {
+  Identity = 0,
+  Alias = 1,
+}
+
 export enum ConnectRequest {
   Target = 1,
   Timestamp = 2,
@@ -204,7 +209,7 @@ export enum ConnectRequest {
   Paths = 4,
   Principal = 5,
   Timeout = 6,
-  Alias = 7,
+  TargetType = 7,
 }
 
 export fn ConnectRequestTypes (usize index) -> protonerf::FieldType {
@@ -227,7 +232,7 @@ export fn ConnectRequestTypes (usize index) -> protonerf::FieldType {
         ConnectRequest::Timeout => {
             return protonerf::FieldType::Message;
         }
-        ConnectRequest::Alias => {
+        ConnectRequest::TargetType => {
             return protonerf::FieldType::Message;
         }
     }

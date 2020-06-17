@@ -1,0 +1,105 @@
+using err;
+using endpoint;
+using identity;
+using string;
+using vault;
+using <stdio.h>::{printf, fprintf, stderr};
+
+static char * USAGE = "
+Usage:
+    carrier vault <subcommand>
+
+Subcommands:
+    identity        print your public identity
+    secretkit       export your secretkit
+    bc58            print legacy bc58 identities
+";
+
+pub fn print_identity (vault::Vault mut * va, int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+1000 e = err::make();
+
+    identity::Identity mut id= {0};
+    va->get_identity(&id);
+
+    char mut buf[100] = {0};
+    identity::identity_to_str(&e, buf, static(len(buf)), &id);
+    e.abort();
+    printf("%s\n", buf);
+
+
+    va->close();
+    return 0;
+}
+
+pub fn print_secretkit(vault::Vault mut *va, int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+1000 e = err::make();
+
+    identity::SecretKit  mut sk = {0};
+
+    static_attest(safe(va->i_get_secret));
+    static_attest(safe(va->i_get_network_secret));
+    va->i_get_secret           (va, &sk.identity);
+    va->i_get_network_secret   (va, &sk.network);
+
+    char mut buf[200] = {0};
+    identity::secretkit_to_str(&e, buf, static(len(buf)), &sk);
+    e.abort();
+    printf("%s\n", buf);
+
+
+    va->close();
+    return 0;
+}
+
+pub fn cmd(vault::Vault mut *va, usize mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    for (usize mut i = 2; i < argc; i++) {
+        char * arg = argv[i];
+        static_attest(safe(arg));
+        static_attest(nullterm(arg));
+        if string::cstr_eq(arg, "identity") {
+            return print_identity(va, argc, argv);
+        } else if string::cstr_eq(arg, "secretkit") {
+            return print_secretkit(va, argc, argv);
+        } else if string::cstr_eq(arg, "bc58") {
+            return print_bc58(va, argc, argv);
+        }
+    }
+
+    fprintf(stderr, "%s", USAGE);
+    return 1;
+}
+
+pub fn print_bc58(vault::Vault mut *va, int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+10000 e = err::make();
+
+    identity::Identity mut id= {0};
+    va->get_identity(&id);
+
+    char mut buf[100] = {0};
+    identity::identity_to_str_bc58(&e, buf, static(len(buf)), &id);
+    e.abort();
+    printf("identity:        %s\n", buf);
+
+    identity::Address mut xa= {0};
+    va->get_network(&xa);
+    identity::address_to_str_bc58(&e, buf, static(len(buf)), &xa);
+    e.abort();
+    printf("network address: %s\n", buf);
+
+    identity::Secret mut ns = {0};
+    va->get_network_secret(&ns);
+    identity::secret_to_str_bc58(&e, buf, static(len(buf)), &ns);
+    e.abort();
+    printf("network secret:  %s\n", buf);
+
+    va->close();
+    return 0;
+}

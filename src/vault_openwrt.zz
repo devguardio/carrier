@@ -1,0 +1,330 @@
+using toml;
+using err;
+using vault;
+using fs;
+using string;
+using identity;
+using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF, fprintf, stderr, fputc, SEEK_SET};
+using <string.h>::{memcpy, memset};
+using <stdlib.h>::{malloc, free};
+using log;
+using time;
+using <uci.h>::{
+    uci_alloc_context,
+    uci_free_context,
+    uci_load,
+    (struct uci_context) as uci_context,
+    (struct uci_package) as uci_package,
+    (struct uci_element) as uci_element,
+    (struct uci_section) as uci_section,
+    (struct uci_option) as uci_option,
+    UCI_TYPE_SECTION,
+    UCI_TYPE_OPTION,
+    uci_foreach_element,
+    uci_to_section,
+    uci_to_option,
+}
+using hex;
+
+struct Mem {
+    uci_context mut * ctx;
+    uci_package mut * pkg;
+
+    identity::Secret    secret;
+    identity::Address   network_address;
+    identity::Secret    network_secret;
+}
+
+export symbol Uci;
+
+export fn open(vault::Vault mut new *self, err::Err+et mut *e)
+    where err::checked(*e)
+{
+    memset(self, 0, sizeof(vault::Vault));
+
+    self->user = malloc(sizeof(Mem));
+    Mem mut * this = (Mem mut *)self->user;
+    err::assert_safe(this);
+    memset(this, 0, sizeof(Mem));
+
+
+    this->ctx = uci_alloc_context();
+    if this->ctx == 0 {
+        e->fail(Uci, "uci_alloc_context failed");
+        return;
+    }
+
+    uci_load(this->ctx, "devguard", &this->pkg);
+    if this->pkg == 0 {
+        e->fail(Uci, "failed to load /etc/config/devguard");
+        return;
+    }
+
+
+    char * mut mtdblock = 0;
+    i64 mut mtdoffset = 0;
+
+
+    uci_element * mut el = 0;
+    @{{ uci_foreach_element(&this->pkg->sections, el) }}@
+
+    {
+        if unsafe<bool>(el->type != UCI_TYPE_SECTION) {
+            continue;
+        }
+        uci_section *section = uci_to_section(el);
+        if unsafe<int>(strcmp(section->type, "vault")) == 0 {
+            uci_element * mut el2 = 0;
+            @{{ uci_foreach_element(&section->options, el2) }}@
+            {
+                if unsafe<bool>(el2->type != UCI_TYPE_OPTION) {
+                    continue;
+                }
+                uci_option *opt = uci_to_option(el2);
+
+                if (unsafe<int>(strcmp(el2->name, "mtdblock")) == 0) {
+                    mtdblock = unsafe<char*>(opt->v.string);
+                } else if (unsafe<int>(strcmp(el2->name, "offset")) == 0) {
+                    mtdoffset = unsafe<i64>(atol(opt->v.string));
+                    if mtdoffset ==  0 {
+                        e->fail(Uci, "cannot parse devguard.vault.offset");
+                        return;
+                    }
+                }
+            }
+        } else if unsafe<int>(strcmp(section->type, "network")) == 0 {
+            uci_element * mut el2 = 0;
+            @{{ uci_foreach_element(&section->options, el2) }}@
+            {
+                if unsafe<bool>(el2->type != UCI_TYPE_OPTION) {
+                    continue;
+                }
+                uci_option *opt = uci_to_option(el2);
+                char *strval = unsafe<char*>(opt->v.string);
+                static_attest(nullterm(strval));
+
+                if (unsafe<int>(strcmp(el2->name, "address")) == 0) {
+                    err::assert_safe(strval);
+                    identity::address_from_cstr(&this->network_address, e, strval);
+                    if err::check(e) { e->fail(Uci, "parsing devguard.network.address"); return; }
+                } else if (unsafe<int>(strcmp(el2->name, "secret")) == 0) {
+                    err::assert_safe(strval);
+                    identity::secret_from_cstr(&this->network_secret, e, strval);
+                    if err::check(e) { e->fail(Uci, "parsing devguard.network.secret"); return; }
+                }
+            }
+        }
+    }
+
+    if mtdblock == 0 {
+        e->fail(Uci, "missing devguard.vault.mtdblock");
+        return;
+    }
+    static_attest(safe(mtdblock));
+    static_attest(nullterm(mtdblock));
+
+
+    usize mtdindex = findmtdindex(e, mtdblock);
+    if err::check(e) { return; }
+
+    new+1000 mtdpath = string::make();
+    mtdpath.format("/dev/mtdblock%u", mtdindex);
+
+    log::info("reading secrets from %s:%lld", mtdpath.mem, mtdoffset);
+
+    FILE mut * f = fopen(mtdpath.mem, "rw");
+    if f == 0 {
+        e->fail(Uci, "cannot open %s", mtdpath.mem);
+        return;
+    }
+    if unsafe<int>(fseek(f, mtdoffset, SEEK_SET)) < 0 {
+        e->fail_with_errno("cannot seek %s", mtdpath.mem);
+        fclose(f);
+        return;
+    }
+
+    if unsafe<int>(fread(this->secret.k, 1, 32, f)) != 32 {
+        e->fail_with_errno("cannot read %s", mtdpath.mem);
+        fclose(f);
+        return;
+    }
+
+    if identity::isnull(this->secret.k) {
+        identity::secret_generate(&this->secret, e);
+        if err::check(e) {
+            fclose(f);
+            return;
+        }
+        if unsafe<int>(fseek(f, mtdoffset, SEEK_SET)) < 0 {
+            e->fail_with_errno("cannot seek %s", mtdpath.mem);
+            fclose(f);
+            return;
+        }
+
+        if unsafe<int>(fwrite(this->secret.k, 1, 32, f)) != 32 {
+            e->fail_with_errno("cannot write %s", mtdpath.mem);
+            fclose(f);
+            return;
+        }
+        if unsafe<int>(fseek(f, mtdoffset, SEEK_SET)) < 0 {
+            e->fail_with_errno("cannot seek %s", mtdpath.mem);
+            fclose(f);
+            return;
+        }
+
+        if unsafe<int>(fread(this->secret.k, 1, 32, f)) != 32 {
+            e->fail_with_errno("cannot read %s", mtdpath.mem);
+            fclose(f);
+            return;
+        }
+    }
+
+    fclose(f);
+
+
+    self->i_get_secret           = i_get_secret;
+    self->i_get_network          = i_get_network;
+    self->i_get_network_secret   = i_get_network_secret;
+    self->i_advance_clock        = i_advance_clock;
+    //self->i_set_network          = i_set_network;
+    self->i_list_authorizations  = i_list_authorizations;
+    //self->i_del_authorization    = i_del_authorization;
+    //self->i_add_authorization    = i_add_authorization;
+    self->i_close                = close;
+}
+
+
+fn i_list_authorizations(vault::Vault * self, err::Err+et mut *e, vault::list_authorizations_cb cb, void mut * unsafe user)
+    where err::checked(*e)
+    where safe(cb)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    uci_element * mut el = 0;
+    @{{ uci_foreach_element(&this->pkg->sections, el) }}@
+
+    {
+        if unsafe<bool>(el->type != UCI_TYPE_SECTION) {
+            continue;
+        }
+        uci_section *section = uci_to_section(el);
+        if unsafe<int>(strcmp(section->type, "authorization")) == 0 {
+
+            identity::Identity mut id = {0};
+            char * mut resource = 0;
+
+            uci_element * mut el2 = 0;
+            @{{ uci_foreach_element(&section->options, el2) }}@
+            {
+                if unsafe<bool>(el2->type != UCI_TYPE_OPTION) {
+                    continue;
+                }
+                uci_option *opt = uci_to_option(el2);
+                char *strval = unsafe<char*>(opt->v.string);
+                if strval == 0 {
+                    continue;
+                }
+                static_attest(nullterm(strval));
+                static_attest(safe(strval));
+
+                if (unsafe<int>(strcmp(el2->name, "identity")) == 0) {
+                    identity::identity_from_cstr(&id, e, strval);
+                    if err::check(e) {
+                        e->elog();
+                        e->make();
+                        continue;
+                    }
+                } else if (unsafe<int>(strcmp(el2->name, "resource")) == 0) {
+                    resource = strval;
+                }
+            }
+
+            if !identity::isnull(id.k) && resource != 0 {
+                cb(user, &id, resource);
+            }
+        }
+    }
+}
+
+// TODO real clock is not reliable, but this whole api needs to die
+fn i_advance_clock (vault::Vault *self) -> u64
+{
+    let now = time::real();
+    return now.to_millis();
+}
+
+fn i_get_secret (vault::Vault *self, identity::Secret  mut * secret)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(secret, &this->secret, sizeof(identity::Secret));
+}
+
+fn i_get_network (vault::Vault *self, identity::Address mut * network)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(network, &this->network_address, sizeof(identity::Address));
+}
+
+fn i_get_network_secret (vault::Vault *self, identity::Secret mut * secret)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(secret, &this->network_secret, sizeof(identity::Secret));
+}
+
+fn close(vault::Vault mut*self) {
+    if self->user != 0 {
+
+        let this = (Mem mut*)self->user;
+        static_attest(safe(this));
+
+        uci_free_context(this->ctx);
+        free(this);
+
+        self->user = 0;
+    }
+}
+
+fn findmtdindex(err::Err+et mut *e, char *mtdname) -> usize
+    where err::checked(*e)
+    where nullterm(mtdname)
+{
+    FILE mut * f = fopen("/proc/mtd", "r");
+    new+1000 line = string::make();
+    for (; line.fgets(f); line.clear()) {
+
+        usize mut iterator = 0;
+
+        new+100 dev = string::make();
+        if !line.split(' ', &iterator, &dev) { continue; }
+
+        new+100 size = string::make();
+        if !line.split(' ', &iterator, &size) { continue; }
+
+        new+100 erasesize = string::make();
+        if !line.split(' ', &iterator, &erasesize) { continue; }
+
+        new+100 name = string::make();
+        if !line.split(' ', &iterator, &name) { continue; }
+
+        new+100 name_cleaned = string::make();
+        usize mut iterator2 = 1;
+        if !name.split('"', &iterator2, &name_cleaned) { continue; }
+
+        if name_cleaned.eq_cstr(mtdname) {
+            usize index = unsafe<usize>(atoi(dev.mem + 3));
+            fclose(f);
+            return index;
+        }
+    }
+
+    fclose(f);
+    e->fail(Uci, "cannot find mtdblock %s", mtdname);
+    return 0;
+}

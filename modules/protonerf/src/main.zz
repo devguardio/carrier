@@ -19,7 +19,7 @@ export fn main() -> int {
 
     string::String+1000 mut buf;
     buf.clear();
-    slice::MutSlice mut sl = buf.append_slice();
+    slice::MutSlice mut sl = buf.as_mut_slice();
 
 
 

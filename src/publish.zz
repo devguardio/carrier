@@ -26,6 +26,7 @@ using peering;
 using proto;
 using noise;
 using responder;
+using mem;
 
 static stream::Config PublishStream = stream::Config {
     path:   "/carrier.broker.v1/broker/publish",
@@ -157,6 +158,9 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         memcpy(&peerings, &self->chan->peering, sizeof(peering::Peering));
 
 
+        // -----------
+        // 1. decode the protobuf message sent by the broker
+
         new mut dec = protonerf::decode(msg->mem, msg->size);
         for (protonerf::Field mut field;dec.next(e, &field);) {
             if err::check(e) {
@@ -205,8 +209,12 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         }
         static_attest(len(handshake.mem) >= handshake.size);
 
+
+        // -----------
+        // 2. check the handshake packet
         // unfortunate misdesign of tunneling an entire init packet
         // which actually contains no interesting information
+
         if handshake.size < 1 + 3 + 8 + 8 + 32 + 16 + 3 + 32 + 8 {
             err::fail(e, channel::InvalidFrame, "too small");
             return true;
@@ -227,8 +235,22 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         }
 
 
+        // verify signature over symmetric hash
+        u8 mut signme[static(len(endpoint::SIGN_PURPOSE) + len(rsp.symm.h))] = {0};
+        mem::copy(endpoint::SIGN_PURPOSE, signme, string::strlen(endpoint::SIGN_PURPOSE));
+        u8 mut * m = signme + string::strlen(endpoint::SIGN_PURPOSE);
+        mem::copy(rsp.symm.h, m, static(len(rsp.symm.h)));
 
-        // match the handshake identity with the broker
+        identity::Signature mut signature = {0};
+        mem::copy(handshake.mem + (handshake.size - 64), signature.k, 64);
+
+        if !identity::verify(&ii, &signature, signme, static(len(signme))) {
+            err::fail(e, channel::InvalidFrame, "signature verification failed. THIS IS A HACKING ATTEMPT");
+            return true;
+        }
+
+
+        // match the handshake identity with what the broker thinks is the identity
         let mut id = handshake;
         id.mem  = id.mem  + 32;
         id.size = 32;
@@ -237,11 +259,14 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             return true;
         }
 
-
         self->broker_route = route;
 
 
-        log::error("signature check not implemented, accepting everything");
+
+
+
+
+
         //FIXME compare route
         //FIXME check signature
 
@@ -249,9 +274,11 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         let authorized = self->chan->endpoint->vault.authorize_connect(&ii);
 
         if !authorized {
+            log::error("UNAUTHORIZED");
+
             let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 34);
             if err::check(e) {
-                return false;
+                return true;
             }
             frame->push32(byteorder::to_be32(self->id));
             frame->push64(byteorder::to_be64((self->order_outgoing)++));
@@ -275,8 +302,10 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         }
 
 
-
+        // -----------
+        // 3. check if we can accept this request
         // the packet is ok from here and will be responded to
+
         endpoint::Endpoint mut * ep = self->chan->endpoint;
         err::assert_safe(ep);
         let nuchan = ep->statem.connected.next_channel();
@@ -326,6 +355,9 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             return true;
         }
         static_attest(safe(nuchan));
+
+        // -----------
+        // 4. send connect response header
 
         frame->push32(byteorder::to_be32(self->id));
         frame->push64(byteorder::to_be64((self->order_outgoing)++));

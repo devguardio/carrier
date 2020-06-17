@@ -28,6 +28,9 @@ export struct Connect {
     disconnect_t            on_disconnect;
     connect_t               on_connect;
 
+
+    string::String+1024     mut remoteError;
+
     void mut *user1;
     usize mut user2;
 }
@@ -68,8 +71,8 @@ export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut
 }
 
 fn on_close(stream::Stream mut *self, err::Err+et mut*e) {
-    //TODO
-    log::error("connect closed");
+
+    log::warn("connect closed");
 
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));
@@ -119,7 +122,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
 
         self->state = 1;
 
-        frame->push32(byteorder::to_be32(1)); // stream
+        frame->push32(byteorder::to_be32(self->id)); // stream
         frame->push64(byteorder::to_be64(2)); // order
         frame->push16(0); // size placeholder
 
@@ -132,7 +135,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
         protonerf::encode_varint(frame, e, proto::ConnectRequest::Timestamp, this->initiator_time);
         e->abort();
 
-        protonerf::encode_varint(frame, e, proto::ConnectRequest::Timeout, 1);
+        protonerf::encode_varint(frame, e, proto::ConnectRequest::Timeout, 5);
         e->abort();
 
         static_attest(len(this->initiator_pkt.mem) >= this->initiator_pkt.len);
@@ -156,7 +159,13 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *bs) -> b
             }
             switch field.index {
                 proto::ConnectResponse::Error => {
-                    log::error("error: %.*s", field.value.v_len, field.a);
+                    if field.a != 0 {
+                        static_attest(safe(field.a));
+                        static_attest(len(field.a) >= field.value.v_len);
+                        this->remoteError.clear();
+                        this->remoteError.append_bytes(field.a, field.value.v_len);
+                        log::error("error: %.*s", field.value.v_len, field.a);
+                    }
                 }
                 proto::ConnectResponse::Ok => {
                     ok = field.value.v_bool != 0;

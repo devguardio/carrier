@@ -1,6 +1,6 @@
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
-use identity::{Address, Identity, Secret, Signature};
+use identity::{Address, Identity, Secret, Signature, Alias};
 use packet::{self, Flags, RoutingDirection, RoutingKey};
 use snow::resolvers::{CryptoResolver, FallbackResolver};
 use snow::{self, params::NoiseParams, Builder};
@@ -12,6 +12,7 @@ use hacl_star;
 pub enum MoveRequest {
     MoveToSelf,
     MoveToTarget(Identity),
+    MoveToAlias(Alias),
     DoNotMove,
 }
 
@@ -79,6 +80,10 @@ fn send(
                 MoveRequest::MoveToSelf => {
                 }
                 MoveRequest::MoveToTarget(_) => {
+                    flags.target = true;
+                }
+                MoveRequest::MoveToAlias(_) => {
+                    flags.mov    = true;
                     flags.target = true;
                 }
             }
@@ -149,6 +154,8 @@ fn send(
 
             if let MoveRequest::MoveToTarget(target) = move_req {
                 inbuf.write_all(&target.as_bytes())?;
+            } else if let MoveRequest::MoveToAlias(alias) = move_req {
+                inbuf.write_all(&alias.as_bytes())?;
             }
 
             16 // tag
@@ -371,7 +378,12 @@ fn recv_handshake(
                 Some(b)
             } else if direction == RoutingDirection::Initiator2Responder && flags.target {
                 let _lbrary_version = reader.read_u32::<BigEndian>()?;
-                let mut b = vec![0; 32];
+                let len = if flags.mov {
+                    8
+                } else {
+                    32
+                };
+                let mut b = vec![0; len];
                 reader.read_exact(&mut b)?;
                 Some(b)
             } else {
@@ -509,17 +521,26 @@ pub fn respond(
             version,
             noise,
             timestamp: rcv.timestamp,
-            move_req: if rcv.flags.target {
-                if let Ok(v) = Identity::from_bytes(rcv.move_instruction.unwrap_or(Vec::new())) {
-                    MoveRequest::MoveToTarget(v)
-                } else {
+            move_req:
+                if rcv.flags.target {
+                    if rcv.flags.mov {
+                        if let Ok(v) = Alias::from_bytes(rcv.move_instruction.unwrap_or(Vec::new())) {
+                            MoveRequest::MoveToAlias(v)
+                        } else {
+                            MoveRequest::DoNotMove
+                        }
+                    } else {
+                        if let Ok(v) = Identity::from_bytes(rcv.move_instruction.unwrap_or(Vec::new())) {
+                            MoveRequest::MoveToTarget(v)
+                        } else {
+                            MoveRequest::DoNotMove
+                        }
+                    }
+                } else if rcv.flags.mov {
                     MoveRequest::DoNotMove
-                }
-            } else if rcv.flags.mov {
-                MoveRequest::DoNotMove
-            } else {
-                MoveRequest::MoveToSelf
-            },
+                } else {
+                    MoveRequest::MoveToSelf
+                },
             flags: rcv.flags,
         },
         rcv.identity,

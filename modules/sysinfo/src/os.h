@@ -8,11 +8,11 @@ static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl
         return true;
     }
 
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Sysname,  (uint8_t*)name.sysname, strlen(name.sysname));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Nodename, (uint8_t*)name.sysname, strlen(name.nodename));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Release,  (uint8_t*)name.sysname, strlen(name.release));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Version,  (uint8_t*)name.version, strlen(name.version));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Machine,  (uint8_t*)name.version, strlen(name.machine));
+    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Sysname,  (uint8_t*)name.sysname,     strlen(name.sysname));
+    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Nodename, (uint8_t*)name.nodename,    strlen(name.nodename));
+    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Release,  (uint8_t*)name.release,     strlen(name.release));
+    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Version,  (uint8_t*)name.version,     strlen(name.version));
+    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Machine,  (uint8_t*)name.machine,     strlen(name.machine));
     return true;
 }
 
@@ -98,7 +98,10 @@ static bool lsb_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSl
 {
     FILE *fi = fopen("/etc/lsb-release", "r");
     if (fi == 0) {
-        return false;
+        fi = fopen("/etc/openwrt_release", "r");
+        if (fi == 0) {
+            return false;
+        }
     }
 
     for (;;) {
@@ -117,6 +120,13 @@ static bool lsb_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSl
             if (ll > 0) {
                 ll -= 1;
             }
+            if (ll > 0 && ( tb[0] == '"' || tb[0] == '\'')) {
+                tb += 1;
+                ll -= 1;
+            }
+            if (ll > 0 && ( tb[ll - 1] == '"' || tb[ll - 1] == '\'')) {
+                ll -= 1;
+            }
             protonerf_encode_bytes(sl, e, et, sysinfo_proto_Firmware_Distro,  (uint8_t*)tb, ll);
         } else if (strcmp(ta, "DISTRIB_RELEASE") == 0) {
             char *tb = strtok_r(0, "=", &saveptr);
@@ -124,7 +134,42 @@ static bool lsb_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSl
             if (ll > 0) {
                 ll -= 1;
             }
+            if (ll > 0 && ( tb[0] == '"' || tb[0] == '\'')) {
+                tb += 1;
+                ll -= 1;
+            }
+            if (ll > 0 && ( tb[ll - 1] == '"' || tb[ll - 1] == '\'')) {
+                ll -= 1;
+            }
             protonerf_encode_bytes(sl, e, et, sysinfo_proto_Firmware_Release,  (uint8_t*)tb, ll);
+        } else if (strcmp(ta, "DISTRIB_REVISION") == 0) {
+            char * tb = strtok_r(0, "=", &saveptr);
+            int ll = strlen(tb);
+            if (ll > 0) {
+                ll -= 1;
+            }
+            if (ll > 0 && ( tb[0] == '"' || tb[0] == '\'')) {
+                tb += 1;
+                ll -= 1;
+            }
+            if (ll > 0 && ( tb[ll - 1] == '"' || tb[ll - 1] == '\'')) {
+                ll -= 1;
+            }
+            protonerf_encode_bytes(sl, e, et, sysinfo_proto_Firmware_Revision,  (uint8_t*)tb, ll);
+        } else if (strcmp(ta, "DISTRIB_TARGET") == 0) {
+            char * tb = strtok_r(0, "=", &saveptr);
+            int ll = strlen(tb);
+            if (ll > 0) {
+                ll -= 1;
+            }
+            if (ll > 0 && ( tb[0] == '"' || tb[0] == '\'')) {
+                tb += 1;
+                ll -= 1;
+            }
+            if (ll > 0 && ( tb[ll - 1] == '"' || tb[ll - 1] == '\'')) {
+                ll -= 1;
+            }
+            protonerf_encode_bytes(sl, e, et, sysinfo_proto_Firmware_Board,  (uint8_t*)tb, ll);
         }
     }
     fclose(fi);

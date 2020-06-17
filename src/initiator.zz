@@ -276,7 +276,7 @@ pub fn complete (
     //printf("received cleartext:\n");
     //hex::dump(cleartext, cleartext_len);
 
-    if cleartext_len < 32 + 2 + 8 + 4 {
+    if cleartext_len < 32 + 2 + 8 + 2 {
         err::fail(e, channel::InvalidFrame, "too small");
         return;
     }
@@ -300,9 +300,7 @@ pub fn complete (
 
     // timestamp
     u64 mut timestamp = 0;
-    unsafe {
-        timestamp = *(u64*)pp;
-    }
+    memcpy(&timestamp, pp, 8);
     pp = pp + 8;
 
 
@@ -341,11 +339,18 @@ pub fn complete (
     // move instructions
     if flag_mov  && redirect != 0 {
         static_attest(safe(redirect));
+
         u16 mut instruction_len = 0;
-        unsafe {
-            instruction_len = byteorder::from_be64(*(u64*)pp);
+        memcpy(&instruction_len, pp, 2);
+        instruction_len = byteorder::from_be16(instruction_len);
+        pp = pp + 2;
+
+
+        if cleartext_len < 32 + 2 + 8 + 2 + (usize)instruction_len {
+            err::fail(e, channel::InvalidFrame, "too small");
+            return;
         }
-        pp = pp + 8;
+
 
         string::String+300 mut movinstr = {0};
         string::append_bytes(&movinstr, pp, (usize)instruction_len);

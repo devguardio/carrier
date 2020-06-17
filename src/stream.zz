@@ -14,12 +14,12 @@ export closure fragmented_fn (Stream mut* self, err::Err+et mut *e, u32 fragment
 export closure poll_fn       (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
 
 export struct Config {
-    char *      path;
-    open_fn     open;
-    close_fn    close;
-    stream_fn   stream;
+    char *          path;
+    open_fn         open;
+    close_fn        close;
+    stream_fn       stream;
     fragmented_fn   fragmented;
-    poll_fn     poll;
+    poll_fn         poll;
 }
 
 export struct Stream {
@@ -32,6 +32,8 @@ export struct Stream {
     // don't catch errors. let them bubble to the top
     bool errors_are_fatal;
     bool closing;
+    u64  closed_linger_until;
+
     u64 broker_route;
 
     //user
@@ -84,12 +86,35 @@ export fn cancel(Stream mut * self)
 
 export fn close(Stream mut* self)
 {
-    self->closing = true;
+    if self->closing {
+        return;
+    }
+    new+100 e = err::make();
+    static_attest(safe(self->chan));
+    self->chan->send_close_frame(
+        &e,
+        self->id,
+        self->order_outgoing
+    );
+    if err::check(&e) {
+        e.elog();
+        e.make();
+    }
+
+    self->closing       = true;
+    self->closed_linger_until = 0;
+    if self->memory_pressure_timer_io.valid() {
+        self->memory_pressure_timer_io.close();
+    }
 }
 
 pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b) -> bool
     where err::checked(*e)
 {
+    if self->closing {
+        return true;
+    }
+
     if order <= self->order_incomming {
         log::debug("ignoring dup %d", order);
         // already seen, dont resend
@@ -123,6 +148,10 @@ pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b
 pub fn incomming_fragmented(Stream mut*self, err::Err+et mut *e, u64 order, u32 fragments) -> bool
     where err::checked(*e)
 {
+    if self->closing {
+        return true;
+    }
+
     if order <= self->order_incomming {
         log::debug("ignoring dup %d", order);
         // already seen, dont resend
@@ -157,6 +186,10 @@ pub fn incomming_fragmented(Stream mut*self, err::Err+et mut *e, u64 order, u32 
 pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     where err::checked(*e)
 {
+    if self->closing {
+        return true;
+    }
+
     if order <= self->order_incomming {
         // already seen, dont resend
         return true;
@@ -168,21 +201,7 @@ pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     }
     self->order_incomming += 1;
 
-    static_attest(safe(self->config));
-    if self->config->close.fn == 0 {
-        return true;
-    }
-    static_attest(safe(self->config->close));
-
-    self->config->close(self, e);
-    if err::check(e) {
-        if self->errors_are_fatal {
-            return false;
-        } else {
-            e->elog();
-            e->make();
-        }
-    }
+    self->close();
 
     return true;
 }
@@ -190,6 +209,10 @@ pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
 pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
     where err::checked(*e)
 {
+    if self->closing  || self->config == 0{
+        return;
+    }
+
     if self->memory_pressure{
         self->memory_pressure_timer_io.close();
         self->memory_pressure_timer_io = async->timeout(e, time::from_millis(100));
@@ -205,9 +228,6 @@ pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
         }
     }
 
-    if self->config == 0 {
-        return;
-    }
     static_attest(safe(self->config));
     if self->config->poll.fn != 0 {
         static_attest(safe(self->config->poll));

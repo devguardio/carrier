@@ -5,6 +5,7 @@ using <assert.h>::{assert};
 using symmetric;
 using hex;
 using channel;
+using log;
 
 using <stdio.h>::{printf};
 using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
@@ -44,6 +45,9 @@ pub fn initiate(
     where pktlen -32 > payload_len
     model return < pktlen
 {
+
+    log::info(".1");
+
     usize total_size = 32 + payload_len + 16;
     assert(pktlen >= total_size);
     static_attest(pktlen >= total_size);
@@ -63,23 +67,34 @@ pub fn initiate(
         symmetric::mix_hash(&self->symm, (self->remote_static).k, 32);
     }
 
+    log::info(".2");
     // -> e ,
     identity::Address mut ephemeral_address = {0};
     identity::address_from_secret(&ephemeral_address, &self->ephemeral);
 
+    log::info(".2.1");
+
     symmetric::mix_hash(&self->symm, ephemeral_address.k, 32);
     memcpy(pkt, ephemeral_address.k, 32);
+
+    log::info(".2.2");
 
     // , es
     identity::Address mut dh = {0};
     identity::dh(&dh, &self->ephemeral, &self->remote_static);
+
+    log::info(".2.3");
+
     symmetric::mix_key(&self->symm, dh.k, 32);
+
+    log::info(".3");
 
     // payload
     usize rs = symmetric::encrypt_and_mix_hash(&self->symm, e, payload, payload_len, 0, pkt + 32, pktlen - 32);
     if err::check(e) {
         return 0;
     }
+    log::info(".4");
     assert(rs + 32 == total_size);
     static_attest(total_size < pktlen);
     return total_size;

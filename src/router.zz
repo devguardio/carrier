@@ -4,7 +4,7 @@ using noise;
 using hex;
 using byteorder;
 using <stdio.h>::{printf};
-using <string.h>::{strlen, memset};
+using <string.h>::{strlen, memset, memcpy};
 using channel;
 using string;
 using io;
@@ -13,6 +13,7 @@ using net::udp;
 using log;
 using endpoint;
 using publish;
+using time;
 
 
 export symbol OutOfOptions;
@@ -30,18 +31,80 @@ export struct Router {
     udp::Socket             mut udp4;
     udp::Socket             mut udp6;
 
+    bool                    mut inshutdown;
+    bool                    mut ded;
+    io::Io                  mut shutdown_timeout;
+
     channel::Channel        mut channels[MAX_CHANNELS];
+}
+
+pub fn shutdown(Router mut* self, err::Err+et mut*e)
+    where err::checked(*e)
+{
+    self->inshutdown = true;
+    for (usize mut j = 1; j < static(len(self->channels)); j++) {
+        if self->channels[j].route == 0 {
+            continue;
+        }
+        self->channels[j].shutdown(e);
+        if err::check(e) {
+            e->elog();
+            e->make();
+        }
+    }
 }
 
 pub fn close(Router mut* self)
 {
     self->udp4.close();
     self->udp6.close();
+    self->ded = true;
 }
 
 pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Result
     where err::checked(*e)
 {
+    if self->ded {
+        return io::Result::Ready;
+    }
+    if self->inshutdown {
+        if io::valid(&self->shutdown_timeout) {
+            u8 mut buf[16];
+            usize mut l = 16;
+            io::Result rr = self->shutdown_timeout.read_bytes(e, buf, &l);
+            if err::check(e) {
+                e->elog();
+                e->make();
+            }
+            if rr != io::Result::Later {
+                self->close();
+            }
+        } else {
+            //TODO we never actually send any shutdown packets, so we ALWAYS run into this timeout.
+            // so it is set really low for now
+            self->shutdown_timeout = io::timeout(async, e, time::from_millis(1000));
+            if err::check(e) {
+                e->make();
+                self->close();
+            }
+            async->select(e, &self->shutdown_timeout, io::Ready::Read);
+            if err::check(e) {
+                e->make();
+                self->close();
+            }
+        }
+
+        bool mut all_closed = true;
+        for (usize mut j = 1; j < static(len(self->channels)); j++) {
+            if self->channels[j].route != 0 {
+                all_closed = false;
+            }
+        }
+        if all_closed {
+            self->close();
+        }
+    }
+
     address::Address mut fromaddr = {0};
     self->pkt.clear();
     if self->udp4.recvfrom(e, &self->pkt, &fromaddr) == io::Result::Ready {
@@ -131,7 +194,9 @@ pub fn push(Router mut* self, err::Err+et mut* e) -> bool /*keep going*/
     static_attest(len(rkeymem) > 8);
     u64 routingkey = read_routing_key(rkeymem, 0);
     // counter  8B
-    u64 counter = byteorder::from_be64(*(u64*)&(self->pkt.mem)[12]);
+    u64 mut counter;
+    memcpy(&counter, self->pkt.mem + 12, 8);
+    counter = byteorder::from_be64(counter);
 
 
 
@@ -232,7 +297,7 @@ fn cleanup_dead_broker_route(channel::Channel mut * chan, u64 dead_route)
         let strx = chan->streams[i];
         static_attest(safe(strx));
         if strx->broker_route == dead_route {
-            strx->closing = true;
+            strx->close();
         }
     }
 }

@@ -36,11 +36,20 @@ export fn run_self_net_get(
 export fn run_self_net_join(
     err::Err+et mut *e,
     endpoint::Endpoint mut*endpoint,
-    identity::Secret *net_secret
+    char *net_secret_s
 )
     where err::checked(*e)
+    where nullterm(net_secret_s)
 {
-    endpoint->vault.set_network(e, net_secret);
+    identity::Secret mut net_secret = {0};
+    identity::secret_from_str (&net_secret, e, net_secret_s, string::strlen(net_secret_s));
+    if err::check(e) {
+        e->fail(err::InvalidArgument, "parsing auth add identity from commandline argument");
+        return;
+    }
+
+
+    endpoint->vault.set_network(e, &net_secret);
     if err::check(e) {return;}
 
     run_self_net_get(e, endpoint);
@@ -51,9 +60,10 @@ export fn run_remote_net_join(
     err::Err+et mut *e,
     endpoint::Endpoint mut*endpoint,
     identity::Identity *target,
-    identity::Secret *net_secret,
+    char *net_secret_s
 )
     where err::checked(*e)
+    where nullterm(net_secret_s)
 {
     new mx = sync::start(e, endpoint);
     if err::check(e) { return; }
@@ -69,11 +79,7 @@ export fn run_remote_net_join(
     let frame = stx->stream(e, 64);
     if err::check(e) { return; }
 
-    char mut buf[64] = {0};
-    identity::secret_to_str(e, buf, 64, net_secret);
-    if err::check(e) { return; }
-
-    protonerf::encode_bytes(frame, e, proto::NetworkJoin::Secret, (u8*)buf, string::strlen(buf));
+    protonerf::encode_bytes(frame, e, proto::NetworkJoin::Secret, (u8*)net_secret_s, string::strlen(net_secret_s));
     if err::check(e) { return; }
 
     mx.wait(e);

@@ -1,0 +1,17 @@
+using base32;
+using err;
+using <stdio.h>::{printf};
+
+
+pub fn main() -> int {
+    new+1000 e = err::make();
+
+    char * in = "DHNJJ4Y7C32AXYUNADYIDJCJ3KOOA5RIF4LM6QVY3UBDQB62LO22UHA";
+    u8 mut out[100] = {0};
+    usize outlen = base32::decode(&e, in, static(len(in)), out, static(len(out)));
+    e.abort();
+    printf("%zu\n", outlen);
+
+
+    return 0;
+}

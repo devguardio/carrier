@@ -8,12 +8,20 @@ using hpack;
 using string;
 using time;
 using <stdlib.h>::{exit, calloc, free};
+using <stdio.h>::{FILE, fopen, fclose, fwrite};
+using sha256;
+using mem;
 
 export fn register(endpoint::Endpoint mut*ep)
 {
     ep->register_stream(&StupidFileTransfer);
 }
 
+struct State {
+    FILE mut *f;
+    sha256::Sha256 mut sha;
+    u8 expecthash[32];
+}
 
 static stream::Config StupidFileTransfer = stream::Config {
     path:       "/v0/sft",
@@ -28,13 +36,59 @@ fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     let mut *frame = self->stream(e, 14);
     if err::check(e) { return; }
 
+    new+200 filename    = string::make();
+    u8 mut expecthash[32]   = {0};
+
+    new it = hpack::decoder::decode(headers);
+    for (; it.next(e); ) {
+        if err::check(e) { return; }
+        if it.key.eq_cstr(":method") {
+            if !it.val.eq_cstr("PUT") {
+                hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"404", 3);
+                if err::check(e) { return; }
+                return;
+            }
+        } else if it.key.eq_cstr("file") {
+            filename.append_slice(&it.val);
+        } else if it.key.eq_cstr("sha256") {
+            err::assert_safe(it.val.mem);
+            if it.val.size != 32 {
+                hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+                if err::check(e) { return; }
+                return;
+            }
+            mem::copy(it.val.mem, expecthash, 32);
+        }
+    }
+
+    if filename.slen() == 0 {
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+        if err::check(e) { return; }
+        return;
+    }
+
+    FILE mut* f = fopen(filename.cstr(), "w+");
+    if f == 0 {
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+        if err::check(e) { return; }
+        return;
+    }
+
+    let this = (State mut*)calloc(1, sizeof(State));
+    err::assert_safe(this);
+    this->f = f;
+    mem::copy(expecthash, this->expecthash, 32);
+    self->user2 = this;
+
+    sha256::init(&this->sha);
+
     hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"100", 3);
     if err::check(e) { return; }
 
     log::info("SFT open %u", self->id);
 }
 
-fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+pub fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
     where err::checked(*e)
     where safe(msg->mem)
 {
@@ -42,12 +96,41 @@ fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -
         return false;
     }
 
-    log::info("SFT stream %u", self->id);
+    let this = (State mut*)self->user2;
+    err::assert_safe(this);
+
+    if msg->size  == 0 {
+        let mut *frame = self->stream(e, 50);
+        if err::check(e) { return false; }
+
+        u8 mut h[32] = {0};
+        this->sha.finish(h);
+
+        if !mem::eq(this->expecthash, h, 32) {
+            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+            if err::check(e) { return false; }
+            hpack::encoder::encode(frame, e, (u8*)":error", 6,  (u8*)"hash", 4);
+            if err::check(e) { return false; }
+            return true;
+        }
+
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+        if err::check(e) { return false; }
+        self->close();
+    } else {
+        this->sha.update(msg->mem, msg->size);
+        fwrite(msg->mem, 1, msg->size, this->f);
+    }
 
     return true;
 }
 
 fn sft_close(stream::Stream mut *self, err::Err+et mut*e)
 {
+    let this = (State mut*)self->user2;
+    err::assert_safe(this);
+    fclose(this->f);
+    free(this);
+    self->user2 = 0;
 }
 

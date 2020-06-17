@@ -15,8 +15,8 @@ cobjects = [
     "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Policies.c",
 ]
 pkgconfig = []
-cflags = [ "-D", "KRML_NOUINT128", "-Os"]
-lflags = []
+cflags = [ "-D", "KRML_NOUINT128", "-g"]
+lflags = ["-lpthread", "-g"]
 
 [dependencies]
 err         = "1"
@@ -60,6 +60,11 @@ name = "carrier"
 main = "carrier::python"
 
 [[artifacts]]
+type = "go"
+name = "carrier"
+main = "carrier"
+
+[[artifacts]]
 type = "cmake"
 name = "carrier"
 main = "carrier"
@@ -68,6 +73,11 @@ main = "carrier"
 type = "exe"
 name = "carrier"
 main = "carrier::main"
+
+[[artifacts]]
+type = "make"
+name = "carrier-openwrt"
+main = "carrier::openwrt"
 
 [repos]
 nursery = "git://github.com/zetzit/nursery.git"

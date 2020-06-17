@@ -9,6 +9,7 @@ export closure close_fn (Vault mut*self);
 
 export closure get_secret_fn         (Vault *self, identity::Secret  mut * secret);
 export closure get_network_fn        (Vault *self, identity::Address mut * address);
+export closure get_network_secret_fn (Vault *self, identity::Secret   mut * address);
 export closure advance_clock_fn      (Vault *self) -> u64;
 export closure set_network_fn        (Vault *self, err::Err+et mut *e, identity::Secret * secret);
 
@@ -36,16 +37,27 @@ export struct Vault
     get_network_fn          i_get_network;
     advance_clock_fn        i_advance_clock;
     set_network_fn          i_set_network;
+    get_network_secret_fn   i_get_network_secret;
 
     list_authorizations_fn  i_list_authorizations;
     del_authorization_fn    i_del_authorization;
     add_authorization_fn    i_add_authorization;
     void mut * unsafe       user;
 
+    // in memory store for when loading the vault from an secretkit
+    identity::SecretKit ik;
+
     //TODO isn't stored yet, because we don't actually have the protocol implemented
     Broker broker[MAX_BROKERS];
 }
 
+export fn close(Vault mut * self)
+{
+    if self->i_close.fn != 0 {
+        static_attest(safe(self->i_close));
+        self->i_close(self);
+    }
+}
 
 export fn add_authorization(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource)
 {
@@ -69,6 +81,12 @@ export fn get_network(Vault * self, identity::Address mut *addr)
 {
     static_attest(safe(self->i_get_network));
     self->i_get_network(self, addr);
+}
+
+export fn get_network_secret(Vault * self, identity::Secret mut *addr)
+{
+    static_attest(safe(self->i_get_network_secret));
+    self->i_get_network_secret(self, addr);
 }
 
 export fn set_network(Vault mut * self,err::Err+et mut *e, identity::Secret *network)

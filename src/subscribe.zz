@@ -28,7 +28,6 @@ using proto;
 using noise;
 using responder;
 
-
 static stream::Config Subscribe = stream::Config {
     path:   "/carrier.broker.v1/broker/subscribe",
     stream: on_stream,
@@ -78,14 +77,46 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
         frame->push64(byteorder::to_be64(2)); // order
         frame->push16(0); // size placeholder
 
-        u8 xaddr[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,128,29,30,31,32};
-        protonerf::encode_bytes(frame, e, proto::SubscribeRequest::Shadow, xaddr, 32);
+
+        identity::Address mut network ={0};
+        static_attest(safe(self->chan));
+        static_attest(safe(self->chan->endpoint));
+        self->chan->endpoint->vault.get_network(&network);
+
+        protonerf::encode_bytes(frame, e, proto::SubscribeRequest::Shadow, network.k, 32);
         if err::check(e) {
             return false;
         }
     } else if self->state == 1 {
-        // the only message after headers is supersede
-        // TODO stop endpoint
+        new iter = protonerf::decode_slice(bs);
+        for (protonerf::Field mut field; iter.next(e, &field);) {
+            if err::check(e) { return true; }
+            if field.a != 0  && field.value.v_len >= 32 {
+                static_attest(safe(field.a));
+                static_attest(len(field.a) >= field.value.v_len);
+                new iter2 = protonerf::decode(field.a, field.value.v_len);
+                for (protonerf::Field mut field; iter2.next(e, &field);) {
+                    if err::check(e) { return true; }
+                    let id = (identity::Identity *)field.a;
+                    char mut buf[100] = {0};
+                    static_attest(safe(id));
+                    identity::identity_to_str(e, buf, static(len(buf)), id);
+                    if err::check(e) {
+                        e->elog();
+                        e->make();
+                    }
+                    switch field.index {
+                        proto::SubscribeChange::Publish => {
+                            printf("+ %s\n", buf);
+                        }
+                        proto::SubscribeChange::Unpublish => {
+                            printf("- %s\n", buf);
+                        }
+                        default => {}
+                    }
+                }
+            }
+        }
     }
 
     return true;

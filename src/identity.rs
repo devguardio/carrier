@@ -4,6 +4,7 @@ use rand::RngCore;
 use std::fmt;
 use std::str::FromStr;
 use error;
+use byteorder;
 
 #[derive(Clone, PartialEq, Eq, Hash)]
 pub struct Identity(pub [u8; 32]);
@@ -15,6 +16,8 @@ pub struct Signature(pub [u8; 64]);
 pub struct Address([u8; 32]);
 #[derive(Clone)]
 pub struct SignedAddress(Address, Signature);
+#[derive(Clone)]
+pub struct Alias(pub [u8; 8]);
 
 // --- Secret
 
@@ -392,4 +395,49 @@ fn sign() {
     assert!(client_identity
         .verify(b"goes on postcards", &text_invalid, &signature)
         .is_err());
+}
+
+impl Alias {
+    pub fn from_bytes<B: AsRef<[u8]>>(b: B) -> Result<Self, Error> {
+        let b = b.as_ref();
+        if b.len() != 8 {
+            return Err(Error::InvalidLen.into());
+        }
+        let mut a = [0u8; 8];
+        a.copy_from_slice(b);
+        Ok(Self(a))
+    }
+
+    pub fn as_bytes(&self) -> &[u8] {
+        &self.0
+    }
+
+    pub fn from_u64(v: u64) -> Self {
+        use byteorder::{BigEndian, WriteBytesExt};
+        let mut b = [0;8];
+        (&mut b[..]).write_u64::<BigEndian>(v).unwrap();
+        Self(b)
+    }
+
+    pub fn to_string(&self) -> String {
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new();
+        let len = unsafe {
+            carrier_identity::address_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
+    }
+}
+
+impl fmt::Display for Alias {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        self.to_string().fmt(fmt)
+    }
+}
+
+impl fmt::Debug for Alias {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        self.to_string().fmt(fmt)
+    }
 }

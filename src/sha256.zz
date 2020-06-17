@@ -2,6 +2,7 @@ using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
 using <assert.h>::{assert};
 using <string.h>::{memset};
 using mem;
+using log;
 
 pub const usize HASHLEN   = 32;
 pub const usize BLOCKLEN  = 64;
@@ -54,7 +55,9 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
     }
 }
 
-export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out) {
+export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out)
+    where len(out) >= HASHLEN
+{
     hacl::Hacl_SHA2_256_update_last(self->state, self->block, self->at);
     hacl::Hacl_SHA2_256_finish(self->state, out);
 }
@@ -111,7 +114,9 @@ pub fn hkdf(
 pub fn hmac(u8 *key, usize keylen, u8* data, usize datalen, u8 mut *out)
     where keylen  <= len(key)  && keylen < BLOCKLEN
     where datalen <= len(data) && keylen < BLOCKLEN
+    where len(out) >= HASHLEN
 {
+    log::info("hmac << ");
     assert(keylen <= BLOCKLEN);
 
     u8 mut ipad [BLOCKLEN] = {0};
@@ -137,4 +142,5 @@ pub fn hmac(u8 *key, usize keylen, u8* data, usize datalen, u8 mut *out)
     update(&s2, opad, BLOCKLEN);
     update(&s2, inner_output, HASHLEN);
     finish(&s2, out);
+    log::info("hmac >> ");
 }

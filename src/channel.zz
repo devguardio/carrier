@@ -24,6 +24,8 @@ using revision;
 using vault;
 using identity;
 using pool;
+using <string.h>::{memcpy};
+
 
 export symbol InvalidFrame;
 
@@ -117,7 +119,7 @@ export struct Channel {
     u8  mut outgoing_acks_at;
 }
 
-pub fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> stream::Stream mut *
+export fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> stream::Stream mut *
     where err::checked(*e)
     where safe(conf->path)
     where nullterm(conf->path)
@@ -148,10 +150,27 @@ pub fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> strea
     }
 
     self->streamidcounter += 1;
+
     return r;
 }
 
-pub fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config *conf, slice::Slice * extraheaders) -> stream::Stream mut *
+pub fn shutdown(Channel mut* self, err::Err+et mut*e)
+    where err::checked(*e)
+{
+    for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
+        if self->streams[i] != 0 {
+            stream::Stream mut* strx = self->streams[i];
+            static_attest(safe(strx));
+            strx->close();
+        }
+    }
+
+    self->clean_closed(e);
+    if err::check(e) { e->elog(); e->make(); }
+    //TODO send disconnect frame
+}
+
+export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config *conf, slice::Slice * extraheaders) -> stream::Stream mut *
     where err::checked(*e)
     where safe(conf->path)
     where nullterm(conf->path)
@@ -229,6 +248,7 @@ pub fn alloc_stream(Channel mut* self, u32 streamid, stream::Config * unsafe con
         if self->streams[i] == 0 {
             let strx = (stream::Stream mut*)self->endpoint->streampool.alloc();
             if strx == 0 {
+                log::warn("streampool alloc failed");
                 return 0;
             }
             static_attest(safe(strx));
@@ -242,6 +262,7 @@ pub fn alloc_stream(Channel mut* self, u32 streamid, stream::Config * unsafe con
             return strx;
         }
     }
+    log::warn("too many streams");
     return 0;
 }
 
@@ -259,7 +280,7 @@ pub fn stream_exists(Channel mut* self, u32 streamid) -> bool {
 }
 
 
-fn send_close_frame(Channel mut* self, err::Err+et mut *e, u32 streamid, u64 order)
+pub fn send_close_frame(Channel mut* self, err::Err+et mut *e, u32 streamid, u64 order)
     where err::checked(*e)
 {
     slice::MutSlice mut * frame = self->q.alloc(e, FrameType::Close, 16);
@@ -279,6 +300,8 @@ fn send_close_frame(Channel mut* self, err::Err+et mut *e, u32 streamid, u64 ord
 fn clean_closed(Channel mut* self, err::Err+et mut *e)
     where err::checked(*e)
 {
+    let now = time::tick();
+
     for (usize mut i = 0 ; i < static(len(self->streams)); i++) {
         if self->streams[i] == 0 {
             continue;
@@ -287,42 +310,51 @@ fn clean_closed(Channel mut* self, err::Err+et mut *e)
         static_attest(safe(strx));
 
         if strx->closing {
-            if strx->config != 0 {
-                static_attest(safe(strx->config));
-                stream::close_fn cb = strx->config->close;
-                if cb.fn != 0 {
-                    static_attest(safe(cb));
-                    cb(strx, e);
-                }
-
-                if err::check(e) {
-                    if strx->errors_are_fatal {
-                        return;
-                    } else {
-                        e->elog();
-                        e->make();
-                    }
-                }
-
-                let order = strx->order_outgoing;
+            if strx->closed_linger_until == 0 {
+                strx->closed_linger_until = now.to_seconds() + 1;
 
                 self->send_close_frame(
-                    e,
-                    strx->id,
-                    strx->order_outgoing
-                );
+                        e,
+                        strx->id,
+                        strx->order_outgoing
+                        );
                 if err::check(e) {
-                    return;
+                    e->elog();
+                    e->make();
                 }
+
+                if strx->config != 0 {
+                    static_attest(safe(strx->config));
+                    stream::close_fn cb = strx->config->close;
+                    if cb.fn != 0 {
+                        static_attest(safe(cb));
+
+                        // note that user code is supposed to delete its resources here
+                        // so we may never call any user function on this stream again
+                        // including config actually
+                        cb(strx, e);
+                    }
+
+                    if err::check(e) {
+                        if strx->errors_are_fatal {
+                            // DO NOT RETURN. dealloc must run
+                        } else {
+                            log::error("OH GOD THIS BAD");
+
+                            e->elog();
+                            e->make();
+                        }
+                    }
+                }
+            } else if now.to_seconds() > strx->closed_linger_until {
+                static_attest(safe(self->endpoint));
+                static_attest(pool::member(strx, &self->endpoint->streampool));
+                self->endpoint->streampool.free(strx);
+                self->streams[i] = 0;
             }
-            static_attest(safe(self->endpoint));
-            static_attest(pool::member(strx, &self->endpoint->streampool));
-            self->endpoint->streampool.free(strx);
-            self->streams[i] = 0;
         }
     }
 }
-
 
 
 fn disconnect(Channel mut* this, err::Err+et mut* e)
@@ -579,10 +611,17 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     return;
                 }
                 static_attest(i < len(frames));
-                u16 delay = byteorder::from_be16(*(u16*)(frames + i));
+
+                u16 mut delay = 0;
+                memcpy(&delay,  frames + i, 2);
+                delay = byteorder::from_be16(delay);
+
                 i += 2;
+
                 static_attest(i < len(frames));
-                usize count = (usize)byteorder::from_be16(*(u16*)(frames + i));
+                u16 mut b_count;
+                memcpy(&b_count,  frames + i, 2);
+                usize count = (usize)byteorder::from_be16(b_count);
                 i += 2;
 
                 if i + 8 * count > frames_len {
@@ -593,7 +632,9 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 for (usize mut j = 0; j < count; j++) {
                     static_attest(i < len(frames));
                     static_attest(i < len(frames) - 8);
-                    u64 mut ackorder = byteorder::from_be64(*(u64*)(frames + i));
+                    u64 mut ackorder;
+                    memcpy(&ackorder,  frames + i, 8);
+                    ackorder = byteorder::from_be64(ackorder);
                     i += 8;
 
                     // acks are off by one in original rust impl
@@ -626,11 +667,17 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     err::fail(e, InvalidFrame, "short read");
                     return;
                 }
+
                 static_attest(i < len(frames));
-                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                u32 mut streamid;
+                memcpy(&streamid, frames + i, 4);
+                streamid = byteorder::from_be32(streamid);
                 i += 4;
+
                 static_attest(i < len(frames));
-                usize size    = (usize)byteorder::from_be16(*(u16*)(frames + i));
+                u16   mut size_b;
+                memcpy(&size_b, frames + i, 2);
+                usize size = (usize)byteorder::from_be16(size_b);
                 i += 2;
 
 
@@ -763,14 +810,23 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     err::fail(e, InvalidFrame, "short read. %d > %d", i + 4 + 8 + 2, frames_len);
                     return;
                 }
+
                 static_attest(i < len(frames));
-                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                u32 mut streamid;
+                memcpy(&streamid, frames + i, 4);
+                streamid = byteorder::from_be32(streamid);
                 i += 4;
+
                 static_attest(i < len(frames));
-                u64 order   = byteorder::from_be64(*(u64*)(frames + i));
+                u64 mut order;
+                memcpy(&order, frames + i, 8);
+                order = byteorder::from_be64(order);
                 i += 8;
+
                 static_attest(i < len(frames));
-                usize size    = (usize)byteorder::from_be16(*(u16*)(frames + i));
+                u16 mut size_b;
+                memcpy(&size_b, frames + i, 2);
+                usize size    = (usize)byteorder::from_be16(size_b);
                 i += 2;
 
                 log::debug("[%lu] received stream frame for stream=%u, order=%u, size=%zu",
@@ -849,10 +905,15 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     }
                 }
                 static_attest(i < len(frames));
-                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                u32 mut streamid;
+                memcpy(&streamid, frames + i, 4);
+                streamid = byteorder::from_be32(streamid);
                 i += 4;
+
                 static_attest(i < len(frames));
-                u64 order   = byteorder::from_be64(*(u64*)(frames + i));
+                u64 mut order;
+                memcpy(&order, frames + i, 8);
+                order = byteorder::from_be64(order);
                 i += 8;
                 static_attest(i < len(frames));
 
@@ -917,15 +978,21 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 }
                 static_attest(i < len(frames));
 
-                u32 streamid  = byteorder::from_be32(*(u32*)(frames + i));
+                u32 mut streamid;
+                memcpy(&streamid, frames + i, 4);
+                streamid = byteorder::from_be32(streamid);
                 i += 4;
                 static_attest(i < len(frames));
 
-                u64 order   = byteorder::from_be64(*(u64*)(frames + i));
+                u64 mut order;
+                memcpy(&order, frames + i, 8);
+                order = byteorder::from_be64(order);
                 i += 8;
                 static_attest(i < len(frames));
 
-                u32 fragments = byteorder::from_be32(*(u32*)(frames + i));
+                u32 mut fragments;
+                memcpy(&fragments, frames + i, 4);
+                fragments = byteorder::from_be32(fragments);
                 i += 4;
                 static_attest(i < len(frames));
 

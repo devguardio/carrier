@@ -42,7 +42,37 @@ fn close(vault::Vault mut*self) {
     }
 }
 
+export fn from_carriertoml_and_secret(vault::Vault mut new *self, err::Err+et mut *e, char * file_name, identity::Secret * secret)
+    where err::checked(*e)
+    where nullterm(file_name)
+{
+    i_from_carriertoml(self, e, file_name);
+    if err::check(e) { return; }
+
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(this->secret.k, secret->k, static(len(this->secret.k)));
+
+    identity::nullcheck(e, this->secret.k);
+    if err::check(e) { return; }
+}
+
 export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * file_name)
+    where err::checked(*e)
+    where nullterm(file_name)
+{
+    i_from_carriertoml(self, e, file_name);
+    if err::check(e) { return; }
+
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    identity::nullcheck(e, this->secret.k);
+    if err::check(e) { return; }
+}
+
+fn i_from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * file_name)
     where err::checked(*e)
     where nullterm(file_name)
 {
@@ -50,6 +80,7 @@ export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char 
 
     self->i_get_secret           = i_get_secret;
     self->i_get_network          = i_get_network;
+    self->i_get_network_secret   = i_get_network_secret;
     self->i_advance_clock        = i_advance_clock;
     self->i_set_network          = i_set_network;
     self->i_list_authorizations  = i_list_authorizations;
@@ -107,9 +138,6 @@ export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char 
     fclose(f);
 
     identity::nullcheck(e, this->network.k);
-    if err::check(e) { return; }
-
-    identity::nullcheck(e, this->secret.k);
     if err::check(e) { return; }
 
 }
@@ -230,7 +258,7 @@ fn save_to_toml(Mem *self, err::Err+et mut *e)
             continue;
         }
         identity::identity_to_str(e, buf, static(len(buf)), &self->auth[i].identity);
-        fprintf(out , "\n[[authorize]]\nidentity = \"%s\"\nresource = \"", buf);
+        fprintf(out , "\n[[authorize]]\nidentity = \"%s\"\nresource = ", buf);
         fprintf(out , "\"%.*s\"\n", self->auth[i].path.len, self->auth[i].path.mem);
     }
 
@@ -253,6 +281,14 @@ fn i_get_network (vault::Vault *self, identity::Address mut * network)
     static_attest(safe(this));
 
     memcpy(network, &this->network, sizeof(identity::Address));
+}
+
+fn i_get_network_secret (vault::Vault *self, identity::Secret mut * secret)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    memcpy(secret, &this->network_secret, sizeof(identity::Secret));
 }
 
 fn i_advance_clock (vault::Vault *self) -> u64

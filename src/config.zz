@@ -301,8 +301,11 @@ fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *ms
     if err::check(e) { return true; }
 
 
-    log::warn("network changed. restart endpoint to take effect");
 
     self->close();
+
+    log::warn("network changed. restart endpoint to take effect");
+    self->chan->endpoint->shutdown(e);
+
     return true;
 }

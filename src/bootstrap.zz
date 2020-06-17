@@ -290,21 +290,27 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
         }
         static_attest(at < len(pkt->mem));
 
-        u16 record_type = byteorder::from_be16(*as<u16*>(&(pkt->mem)[at]));
+        u16 mut record_type;
+        memcpy(&record_type, pkt->mem + at, 2);
+        record_type = byteorder::from_be16(record_type);
         at += 2;
 
         if at + 6 >= pkt->len {
             break;
         }
         static_attest(at < len(pkt->mem));
-        u16 record_class = byteorder::from_be16(*as<u16*>(&(pkt->mem)[at]));
+        u16 mut record_class;
+        memcpy(&record_class, pkt->mem + at, 2);
+        record_class = byteorder::from_be16(record_class);
         at += 6;
 
         if at + 2 >= pkt->len {
             break;
         }
         static_attest(at < len(pkt->mem));
-        u16 record_len = byteorder::from_be16(*as<u16*>(&(pkt->mem)[at]));
+        u16 mut record_len;
+        memcpy(&record_len, pkt->mem + at, 2);
+        record_len = byteorder::from_be16(record_len);
         at += 2;
 
         if at + (usize)record_len + 1 >= pkt->len {

@@ -267,7 +267,7 @@ export fn keepalive(Q+qt mut* self, u64 now) -> u64
 
         if now >= tt + ref_time {
             self->time_last_ping_sent = now;
-            log::warn("TLP %u, was expected within %zu ms at rtt current %zu", self->tlp_counter, tt, self->rtt);
+            log::debug("TLP %u, was expected within %zu ms at rtt current %zu", self->tlp_counter, tt, self->rtt);
 
             static_attest(self->front < len(self->q));
 

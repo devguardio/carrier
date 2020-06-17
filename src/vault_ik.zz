@@ -1,0 +1,70 @@
+using err;
+using vault;
+using string;
+using identity;
+using log;
+using time;
+using mem;
+using <memory.h>::{memset};
+
+export fn from_ik(vault::Vault mut new *self, err::Err+et mut *e, identity::SecretKit ik)
+    where err::checked(*e)
+{
+    memset(self, 0, sizeof(vault::Vault));
+
+    self->i_get_secret          = i_get_secret;
+    self->i_get_network         = i_get_network;
+    self->i_advance_clock       = i_advance_clock;
+    self->i_set_network         = i_set_network;
+    self->i_list_authorizations = i_list_authorizations;
+    self->i_del_authorization   = i_del_authorization;
+    self->i_add_authorization   = i_add_authorization;
+    self->i_close               = i_close;
+    self->ik                    = ik;
+}
+
+fn i_close(vault::Vault mut*self)
+{
+}
+
+fn i_advance_clock (vault::Vault *self) -> u64
+{
+    let now = time::real();
+    return now.to_millis();
+}
+
+fn i_get_secret  (vault::Vault *self, identity::Secret mut * secret)
+{
+    mem::copy(self->ik.identity.k, secret->k, 32);
+}
+
+fn i_get_network (vault::Vault *self, identity::Address mut * addr)
+{
+    identity::address_from_secret (addr, &self->ik.network);
+}
+
+fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * secret)
+    where err::checked(*e)
+{
+    err::fail(e, err::NotImplemented, "secretkit is immutable");
+}
+
+fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_authorizations_cb cb, void mut *user)
+    where err::checked(*e)
+    where safe(cb)
+{
+}
+
+fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *delme, char *resource)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    err::fail(e, err::NotImplemented, "secretkit is immutable");
+}
+
+fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *addme, char *resource)
+    where err::checked(*e)
+    where nullterm(resource)
+{
+    err::fail(e, err::NotImplemented, "secretkit is immutable");
+}

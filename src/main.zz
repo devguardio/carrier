@@ -2,11 +2,14 @@ using <stdio.h>::{fprintf, printf, stderr};
 using err;
 using carrier;
 using string;
+using vault_toml;
 
-using cmd_identity;
 using cmd_publish;
 using cmd_shell;
 using cmd_config;
+using cmd_vault;
+using cmd_subscribe;
+using cmd_stream;
 
 static char * USAGE = "
 carrier 0.13 [zz]
@@ -18,25 +21,42 @@ Usage:
 Subcommands:
     config              change carrier configuration
     identity            print out identity
+    vault               vault subcommands
     publish             publish services on carrier
+    subscribe           receive network updates
     shell               open a shell
+    stream              connect a stream to stdio
 ";
 
 export fn main(int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
 {
+
     if argc > 1
     {
         char * arg = argv[1];
         static_attest(nullterm(arg));
+
+        new+1000  e     = err::make();
+        new va = vault_toml::from_home_carriertoml(&e);
+        e.abort();
+
         if string::cstr_eq(arg, "identity") {
-            return cmd_identity::cmd(argc, argv);
+            return cmd_vault::print_identity(&va, argc, argv);
         } else if string::cstr_eq(arg, "publish") {
-            return cmd_publish::cmd(argc, argv);
+            return cmd_publish::cmd(va, argc, argv);
         } else if string::cstr_eq(arg, "shell") {
             return cmd_shell::cmd(argc, argv);
         } else if string::cstr_eq(arg, "config") {
             return cmd_config::cmd(argc, argv);
+        } else if string::cstr_eq(arg, "subscribe") {
+            return cmd_subscribe::cmd(argc, argv);
+        } else if string::cstr_eq(arg, "vault") {
+            return cmd_vault::cmd(&va, argc, argv);
+        } else if string::cstr_eq(arg, "stream") {
+            return cmd_stream::cmd(argc, argv);
+        } else if string::cstr_eq(arg, "get") {
+            return cmd_stream::cmd(argc, argv);
         }
     }
     fprintf(stderr, "%s", USAGE);

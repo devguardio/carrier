@@ -151,7 +151,11 @@ fn iwait(Sync mut*self, err::Err+et mut *e)
     }
 
     if self->error {
-        err::fail(e, Failed, "connection failed");
+        if self->con.remoteError.slen() > 0 {
+            err::fail(e, Failed, "remote rejected: %s", self->con.remoteError.cstr());
+        } else {
+            err::fail(e, Failed, "connection failed");
+        }
     }
 }
 

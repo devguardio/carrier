@@ -37,7 +37,7 @@ fn uname(slice::MutSlice mut*sl)
 {
     new+300 e   = err::make();
     new+1000 buf = string::make();
-    let mut sl2 = buf.append_slice();
+    let mut sl2 = buf.as_mut_slice();
 
     if unsafe<bool>(os_sysinfo_uname((err::Err mut*)&e, 300, &sl2)) {
         if err::check(&e) {
@@ -56,7 +56,7 @@ fn mem(slice::MutSlice mut*sl)
 {
     new+300 e   = err::make();
     new+1000 buf = string::make();
-    let mut sl2 = buf.append_slice();
+    let mut sl2 = buf.as_mut_slice();
 
     if unsafe<bool>(os_sysinfo_mem((err::Err mut*)&e, 300, &sl2)) {
         if err::check(&e) {
@@ -75,7 +75,7 @@ fn load(slice::MutSlice mut*sl)
 {
     new+300 e   = err::make();
     new+1000 buf = string::make();
-    let mut sl2 = buf.append_slice();
+    let mut sl2 = buf.as_mut_slice();
 
     if unsafe<bool>(os_sysinfo_load((err::Err mut*)&e, 300, &sl2)) {
         if err::check(&e) {
@@ -94,7 +94,7 @@ fn firmware(slice::MutSlice mut*sl)
 {
     new+300 e   = err::make();
     new+1000 buf = string::make();
-    let mut sl2 = buf.append_slice();
+    let mut sl2 = buf.as_mut_slice();
 
     if unsafe<bool>(os_sysinfo_firmware((err::Err mut*)&e, 300, &sl2)) {
         if err::check(&e) {
@@ -113,7 +113,7 @@ fn bootloader(slice::MutSlice mut*sl)
 {
     new+300 e   = err::make();
     new+1000 buf = string::make();
-    let mut sl2 = buf.append_slice();
+    let mut sl2 = buf.as_mut_slice();
 
     if unsafe<bool>(os_sysinfo_bootloader((err::Err mut*)&e, 300, &sl2)) {
         if err::check(&e) {

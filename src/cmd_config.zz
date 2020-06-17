@@ -7,6 +7,7 @@ using identity;
 using string;
 using endpoint;
 using <stdio.h>::{fprintf, stderr, printf};
+using <string.h>::{strcpy};
 using cmd_common::{print_identity};
 using mem;
 using stream;
@@ -67,10 +68,11 @@ pub fn cmd(usize mut argc, char ** argv) -> int
     Service mut service = Service::None;
 
     Target  mut authme = Target::None;
-    identity::Identity mut auth_id = {0};
+    char mut auth_id[200] = {0};
     char * mut resource = 0;
 
-    identity::Secret  mut net_secret = {0};
+    char mut net_secret[200] = {0};
+
 
     for (usize mut i = 2; i < argc; i++) {
         char * arg = argv[i];
@@ -159,33 +161,44 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                         ep.close();
                         return 1;
                     }
-                    ep.vault.get_identity(&auth_id);
+
+                    identity::Identity mut me = {0};
+                    ep.vault.get_identity(&me);
+                    identity::identity_to_str(&e, auth_id, static(len(auth_id)), &me);
+                    if err::check(&e) { return 1; }
+
                 } else {
                     authme = Target::Identity;
-                    identity::identity_from_str (&auth_id, &e, arg, string::strlen(arg));
+
+                    identity::Identity mut checkme = {0};
+                    identity::identity_from_str (&checkme, &e, arg, string::strlen(arg));
                     if err::check(&e) {
-                        e.fail(err::InvalidArgument, "parsing auth add identity from commandline argument");
+                        e.fail(err::InvalidArgument, "parsing auth add identity '%s' from commandline argument", arg);
                         e.eprintf(stderr);
                         ep.close();
                         return 1;
                     }
+                    strcpy(auth_id, arg);
                 }
 
             } else if method == Method::Remove || method == Method::Add {
                 if target == Target::Self {
-                    cmd_config_auth_add::run_self(&e, &ep, &auth_id, arg, method);
+                    cmd_config_auth_add::run_self(&e, &ep, auth_id, arg, method);
                     e.abort();
                     ep.close();
                     return 0;
                 } else {
-                    cmd_config_auth_add::run_remote(&e, &ep, &target_id, &auth_id, arg, method);
+                    cmd_config_auth_add::run_remote(&e, &ep, &target_id, auth_id, arg, method);
                     e.abort();
                     ep.close();
                     return 0;
                 }
             }
         } else if service == Service::Net {
-            identity::secret_from_str (&net_secret, &e, arg, string::strlen(arg));
+            strcpy(net_secret, arg);
+
+            identity::Secret mut checkme = {0};
+            identity::secret_from_str (&checkme, &e, arg, string::strlen(arg));
             if err::check(&e) {
                 e.fail(err::InvalidArgument, "parsing network secret from commandline argument");
                 e.eprintf(stderr);
@@ -194,14 +207,14 @@ pub fn cmd(usize mut argc, char ** argv) -> int
             }
             if target == Target::Self {
                 if method == Method::Join {
-                    cmd_config_net::run_self_net_join(&e, &ep, &net_secret);
+                    cmd_config_net::run_self_net_join(&e, &ep, net_secret);
                     e.abort();
                     ep.close();
                     return 0;
                 }
             } else {
                 if method == Method::Join {
-                    cmd_config_net::run_remote_net_join(&e, &ep, &target_id, &net_secret);
+                    cmd_config_net::run_remote_net_join(&e, &ep, &target_id, net_secret);
                     e.abort();
                     ep.close();
                     return 0;

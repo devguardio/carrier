@@ -1,27 +1,7 @@
-[![Build Status](https://travis-ci.org/aep/devguard.svg?branch=master)](https://travis-ci.org/aep/devguard)
-
 carrier is a generic secure message system for IoT
 -----------
 
-
-
-
-building the legacy rust code:
-
-
-zz build --release
-cargo +nightly-2019-11-17 build
-
-
-
-
-
-
-
-
-
 read a intro here: https://devguard.io/intro.html
-------------
 
 
  - based on the NOISE protocol framework

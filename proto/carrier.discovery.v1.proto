@@ -1,4 +1,6 @@
 syntax = "proto3";
+option go_package = ".;protos";
+
 package carrier.discovery.v1;
 
 message DiscoveryResponse {

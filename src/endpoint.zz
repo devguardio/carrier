@@ -28,6 +28,7 @@ using responder;
 using peering;
 using vault;
 using vault_toml;
+using vault_ik;
 
 export const char* PROLOGUE = "carrier has arrived";
 export const char* SIGN_PURPOSE = "carrier handshake hash 1";
@@ -104,6 +105,13 @@ export fn none(Endpoint+xt mut new* self)
     self->framebuffer.make(32);
 }
 
+export fn from_secretkit(Endpoint+xt mut new* self, err::Err+et mut*e, identity::SecretKit ik)
+    where err::checked(*e)
+    where xt > xt/32
+{
+    none(self);
+    vault_ik::from_ik(&self->vault, e, ik);
+}
 export fn from_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e, char *file_name)
     where err::checked(*e)
     where xt > xt/32
@@ -149,7 +157,14 @@ export fn cluster_target(Endpoint mut* self, identity::Identity * target)
     self->cluster_move = initiator::Move::Target;
 }
 
+export fn do_not_move(Endpoint mut* self)
+{
+    self->cluster_move = initiator::Move::Never;
+}
+
+
 //TODO send disconnect packet
+/// close endpoint immediately
 export fn close(Endpoint mut* self)
 {
     switch self->state {
@@ -167,6 +182,21 @@ export fn close(Endpoint mut* self)
     if self->vault.i_close.fn != 0 {
         static_attest(safe(self->vault.i_close));
         self->vault.i_close(&self->vault);
+    }
+}
+
+
+/// gracefully disconnect everything and shutdown
+export fn shutdown(Endpoint mut* self, err::Err+et mut*e)
+    where err::checked(*e)
+{
+    switch self->state {
+        State::Connected => {
+            self->statem.connected.shutdown(e);
+        }
+        default => {
+            self->close();
+        }
     }
 }
 

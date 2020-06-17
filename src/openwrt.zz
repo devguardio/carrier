@@ -1,0 +1,329 @@
+using <stdio.h>::{fprintf, printf, stderr};
+using err;
+using carrier;
+using string;
+using vault_openwrt;
+using vault;
+using log;
+
+using cmd_shell;
+using cmd_config;
+using cmd_vault;
+using cmd_subscribe;
+using cmd_stream;
+
+static char * USAGE = "
+carrier 0.13 [zz]
+devguard carrier is a secure message system for IoT
+
+Usage:
+    carrier <subcommand>
+
+Subcommands:
+    identity            print out identity
+    vault               vault subcommands
+    publish             publish services on carrier
+";
+
+export fn main(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+
+    if argc > 1
+    {
+        char * arg = argv[1];
+        static_attest(nullterm(arg));
+
+        new+1000  e     = err::make();
+        new va = vault_openwrt::open(&e);
+        e.abort();
+
+        if string::cstr_eq(arg, "identity") {
+            return cmd_vault::print_identity(&va, argc, argv);
+        } else if string::cstr_eq(arg, "publish") {
+            return dopublish(va, argc, argv);
+        } else if string::cstr_eq(arg, "vault") {
+            return cmd_vault::cmd(&va, argc, argv);
+        }
+    }
+    fprintf(stderr, "%s", USAGE);
+    return 1;
+}
+
+using cmd_common;
+using shell;
+using sft;
+using config;
+using io;
+using net;
+using bootstrap;
+using time;
+using endpoint;
+using pub_sysinfo;
+using vault;
+using publish;
+using stream;
+using <stdio.h>::{FILE, fopen, fclose, fwrite};
+using sha256;
+using mem;
+using hpack;
+using slice;
+using <stdlib.h>::{calloc, free};
+
+pub fn dopublish(vault::Vault va, int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+
+    new+1000  e     = err::make();
+    new+100   async = io::unix::make();
+
+    new+500000 ep = endpoint::from_vault(&e, va);
+    e.abort();
+
+    cmd_common::print_identity(&ep);
+
+    bootstrap::sync(&e, &ep.vault, net::os(), &async, time::from_seconds(10));
+    e.abort();
+
+    ep.start(&e, net::os(), &async);
+    e.abort();
+
+    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
+    e.abort();
+
+    publish::publish(&ep, &e);
+    e.abort();
+
+    shell::register(&ep);
+    sft::register(&ep);
+    config::register(&ep);
+    pub_sysinfo::register(&ep);
+    ep.register_stream(&OTAConfig);
+
+    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
+    e.abort();
+    return 0;
+}
+
+using <sys/types.h>::{pid_t};
+using <unistd.h>::{close, fork, dup2, execv, write, pipe, usleep};
+using <stdlib.h>::{exit};
+using <signal.h>::{kill, SIGTERM};
+using <sys/wait.h>::{waitpid, WNOHANG};
+
+
+static stream::Config OTAConfig = stream::Config {
+    path:       "/v0/ota",
+    open:       ota_open,
+    close:      ota_close,
+    stream:     ota_stream,
+    poll:       ota_poll,
+};
+
+struct OTAState {
+    FILE mut *f;
+    sha256::Sha256 mut sha;
+    u8 expecthash[32];
+
+    pid_t       pid;
+    io::Io      i_stdout;
+
+    string::String+300 mut inbuf;
+}
+
+fn ota_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+    where err::checked(*e)
+{
+    let mut *frame = self->stream(e, 14);
+    if err::check(e) { return; }
+
+    u8 mut expecthash[32]   = {0};
+
+    new it = hpack::decoder::decode(headers);
+    for (; it.next(e); ) {
+        if err::check(e) { return; }
+        if it.key.eq_cstr(":method") {
+            if !it.val.eq_cstr("PUT") {
+                hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"404", 3);
+                if err::check(e) { return; }
+                return;
+            }
+        } else if it.key.eq_cstr("sha256") {
+            err::assert_safe(it.val.mem);
+            if it.val.size != 32 {
+                hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+                if err::check(e) { return; }
+                return;
+            }
+            mem::copy(it.val.mem, expecthash, 32);
+        }
+    }
+
+    FILE mut* f = fopen("/tmp/sysupgrade.from.carrier", "w+");
+    if f == 0 {
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+        if err::check(e) { return; }
+        return;
+    }
+
+    let this = (OTAState mut*)calloc(1, sizeof(OTAState));
+    err::assert_safe(this);
+    this->f = f;
+    mem::copy(expecthash, this->expecthash, 32);
+    self->user2 = this;
+
+    sha256::init(&this->sha);
+
+    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"100", 3);
+    if err::check(e) { return; }
+
+    log::info("OTA open %u", self->id);
+}
+
+fn ota_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+    where safe(msg->mem)
+{
+    if msg->size >= 10000 {
+        return false;
+    }
+
+    let this = (OTAState mut*)self->user2;
+    err::assert_safe(this);
+
+    if msg->size  == 0 {
+        let mut *frame = self->stream(e, 50);
+        if err::check(e) { return false; }
+
+        u8 mut h[32] = {0};
+        this->sha.finish(h);
+
+        if !mem::eq(this->expecthash, h, 32) {
+            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
+            if err::check(e) { return false; }
+            hpack::encoder::encode(frame, e, (u8*)":error", 6,  (u8*)"hash", 4);
+            if err::check(e) { return false; }
+            return true;
+        }
+
+        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+        if err::check(e) { return false; }
+
+        fclose(this->f);
+        this->f = 0;
+
+        ota_spawn(this, e);
+        if err::check(e) { return false; }
+
+    } else {
+        this->sha.update(msg->mem, msg->size);
+        fwrite(msg->mem, 1, msg->size, this->f);
+    }
+
+    return true;
+}
+
+fn ota_close(stream::Stream mut *self, err::Err+et mut*e)
+{
+    log::warn("ota closing");
+    let this = (OTAState mut*)self->user2;
+    self->user2 = 0;
+    err::assert_safe(this);
+
+    if this->f != 0 {
+        fclose(this->f);
+    }
+
+    if this->pid != 0 {
+        kill(this->pid, SIGTERM);
+        int mut wstatus;
+        waitpid(this->pid, &wstatus, WNOHANG);
+        this->pid = 0;
+
+        this->i_stdout.close();
+    }
+
+    free(this);
+}
+
+fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+    where err::checked(*e)
+{
+    OTAState mut * state = (OTAState mut*)self->user2;
+    static_attest(safe(state));
+
+
+    if state->inbuf.len == 0 {
+        if state->i_stdout.valid() {
+
+            if state->i_stdout.ctx.async == 0 {
+                io::unix::make_read_async(&state->i_stdout, async);
+            }
+
+            log::info(">>>>>");
+            async->select(e, &state->i_stdout, io::Ready::Read);
+            if err::check(e) { return; }
+
+            switch state->i_stdout.read(e, &state->inbuf) {
+                io::Result::Error | io::Result::Eof => {
+                    e->elog();
+                    log::warn("ota command ended");
+                    self->close();
+                }
+                default => {}
+            }
+            log::info("] %d", state->inbuf.len);
+            e->make();
+        }
+    }
+
+    if state->inbuf.len != 0 {
+        static_attest(state->inbuf.len <= static(len(state->inbuf.mem)));
+        let mut *frame = self->stream(e, 1 + state->inbuf.len);
+        if err::check(e) {
+            e->elog();
+            e->make();
+            return;
+        }
+        err::assert(frame->push(1));
+        err::assert(frame->append_bytes((u8*)state->inbuf.mem, state->inbuf.len));
+        state->inbuf.clear();
+    }
+
+
+}
+
+
+
+fn ota_spawn(OTAState mut*self, err::Err+et mut*e)
+    where err::checked(*e)
+{
+    int mut pipe_out[2] = {0};
+    if pipe(pipe_out) != 0 {
+        err::fail_with_errno(e, "pipe");
+        return;
+    }
+
+
+    let pid = (pid_t)fork();
+    if pid == -1 {
+        err::fail_with_errno(e, "fork");
+        return;
+    } else if pid == 0 {
+        close(pipe_out[0]);
+        dup2(pipe_out[1], 1);
+        dup2(pipe_out[1], 2);
+
+        char mut * args[] = {"/bin/sh", "-c", "sysupgrade /tmp/sysupgrade.from.carrier", 0};
+        execv(args[0], args);
+
+        log::error("execv failed");
+        exit(1);
+    }
+
+    //parent
+
+    close(pipe_out[1]);
+    self->i_stdout  = io::unix::unix(pipe_out[0]);
+    self->pid       = pid;
+}

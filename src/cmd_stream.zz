@@ -1,0 +1,197 @@
+using err;
+using carrier;
+using stream;
+using connect;
+using log;
+using channel;
+using endpoint;
+using <stdio.h>::{fprintf, stderr};
+using cmd_common::{print_identity};
+using sync;
+using io::unix;
+using io;
+using slice;
+using <unistd.h>::{write};
+using string;
+using hpack;
+using <stdlib.h>::{atoi};
+
+fn stream_usage() -> int {
+    fprintf(stderr, "USAGE:\n    carrier stream [OPTIONS] <target> <path>\n");
+    return 2;
+}
+
+
+pub fn cmd(usize mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    new+5000 e = err::make();
+
+    char * mut arg_target = 0;
+    char * mut arg_path   = 0;
+
+    for (usize mut i = 2; i < argc; i++) {
+        if arg_target == 0 {
+            arg_target = argv[i];
+        } else if arg_path == 0 {
+            arg_path = argv[i];
+        } else {
+            fprintf(stderr, "error: unexpected argument %s\n", argv[i]);
+            return stream_usage();
+        }
+    }
+    if arg_target == 0 || arg_path == 0 {
+        fprintf(stderr, "error: missing required argument \n");
+        return stream_usage();
+    }
+
+    static_attest(nullterm(arg_target));
+    static_attest(safe(arg_target));
+    static_attest(nullterm(arg_path));
+    static_attest(safe(arg_path));
+
+    new target = carrier::identity::identity_from_cstr (&e, arg_target);
+    if err::check(&e) {
+        static_attest(err::checked(e));
+        err::fail(&e, err::InvalidArgument, "parsing identity: %s", arg_target);
+        e.elog();
+        return 2;
+    }
+    e.abort();
+
+    new+100000 ep = endpoint::from_home_carriertoml(&e);
+    e.abort();
+
+    new mx = sync::start(&e, &ep);
+    e.abort();
+
+    mx.connect(&e, &target);
+    e.abort();
+
+    stream::Config config = stream::Config {
+        path:       arg_path,
+        close:      out_close,
+        stream:     out_stream,
+        poll:       out_poll,
+    };
+
+    stream::Stream mut* streami = mx.chan->open(&e, &config);
+    e.abort();
+
+    mx.wait(&e);
+    e.abort();
+
+    return 0;
+}
+
+
+static char IFS = '\n';
+static io::Io mut stdinio = {0};
+static string::String+500 mut inbuf = {0};
+static bool mut inbufready = false;
+
+fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+    where err::checked(*e)
+{
+    if inbufready {
+        static_attest(inbuf.len < 100000);
+        static_attest(inbuf.len <= len(inbuf.mem));
+        let mut *frame = self->stream(e, inbuf.len);
+        if err::check(e) {
+            e->elog();
+            e->make();
+            return;
+        }
+        frame->append_bytes((u8*)inbuf.mem, inbuf.len);
+        inbufready = false;
+        inbuf.clear();
+    }
+
+    if !stdinio.valid() {
+        stdinio = unix::stdin();
+        unix::make_read_async(&stdinio, async);
+    }
+    async->select(e, &stdinio, io::Ready::Read);
+    if err::check(e) { return; }
+
+    char mut buf[100] = {0};
+    usize mut used = 100;
+    switch stdinio.read_bytes(e, (u8 mut*)buf, &used) {
+        io::Result::Ready => {}
+        io::Result::Eof => {
+            if err::check(e) { return; }
+            log::info("EOF");
+            static_attest(safe(self->chan));
+            static_attest(safe(self->chan->endpoint));
+            self->chan->endpoint->shutdown(e);
+            if err::check(e) { return; }
+        }
+        io::Result::Later => {
+            return;
+        }
+        io::Result::Error => {
+        }
+    }
+    static_attest(len(buf) > used);
+    if err::check(e) { return; }
+
+
+
+    for (usize mut i = 0; i < used; i++) {
+        if buf[i] == IFS {
+            inbufready = true;
+            out_poll(self, e, async);
+            return;
+        } else {
+            inbuf.push(buf[i]);
+        }
+    }
+}
+
+export symbol OpenResponse;
+
+fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+    where err::checked(*e)
+{
+    if self->state == 0 {
+        self->state = 1;
+
+        int mut rcode = 0;
+        new it = hpack::decoder::decode(msg);
+        while it.next(e) {
+            log::info("  %.*s: %.*s", it.key.size, it.key.mem, it.val.size, it.val.mem);
+            if it.key.eq_cstr(":status") {
+                rcode = (int)atoi((char*)it.val.mem);
+            }
+        }
+        if err::check(e) {
+            return false;
+        }
+
+        if rcode != 200 {
+            err::fail(e, OpenResponse, "remote channel not accepted: %d", rcode);
+            e->abort();
+            self->close();
+            return true;
+        }
+        return true;
+    } else {
+        if msg->size < 1 ||  msg->size > 0xffffff {
+            return true;
+        }
+        write(1, msg->mem , msg->size);
+        return true;
+    }
+}
+
+fn out_close(stream::Stream mut *self, err::Err+et mut*e)
+{
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+    self->chan->endpoint->close();
+}
+
+
+
+
+

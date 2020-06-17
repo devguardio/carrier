@@ -1,0 +1,95 @@
+using err;
+using cmd_common;
+using subscribe;
+using config;
+using io;
+using net;
+using bootstrap;
+using time;
+using endpoint;
+using vault;
+using log;
+using vault_toml;
+
+using <pthread.h> as pthread;
+using <stdlib.h>::{calloc, memset, free, exit};
+using <string.h>::{memcpy};
+using <unistd.h>::{sleep};
+
+
+pub fn cmd(int mut argc, char ** argv) -> int
+    where (usize)argc == len(argv)
+{
+    return run();
+}
+
+
+fn spawn(void mut *ptr) -> void mut *
+{
+    new+1000  e     = err::make();
+    new+100   async = io::unix::make();
+
+    new va = vault_toml::from_home_carriertoml(&e);
+    e.abort();
+
+    memcpy(&va.broker[0], ptr, sizeof(vault::Broker));
+    free(ptr);
+
+    new+10000 ep = endpoint::from_vault(&e, va);
+    e.abort();
+
+    ep.do_not_move();
+
+    cmd_common::print_identity(&ep);
+
+    ep.start(&e, net::os(), &async);
+    e.abort();
+
+    io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
+    e.abort();
+
+    subscribe::start(&ep, &e);
+    e.abort();
+
+    io::await(&async, &e, endpoint::poll, &ep, time::infinite());
+    e.abort();
+
+
+    exit(1);
+    return 0;
+}
+
+export fn run() -> int {
+    new+1000  e     = err::make();
+    new+100   async = io::unix::make();
+
+
+    new va = vault_toml::from_home_carriertoml(&e);
+    e.abort();
+
+    bootstrap::sync(&e, &va, net::os(), &async, time::from_seconds(10));
+    e.abort();
+
+    for (usize mut i = 0; i < vault::MAX_BROKERS; i++) {
+        if va.broker[i].protocol == 0 {
+            continue;
+        }
+
+        let va2 = (vault::Broker mut*)calloc(1, sizeof(vault::Broker));
+        err::assert_safe(va2);
+        memcpy(va2, &va.broker[i], sizeof(vault::Broker));
+
+        pthread::pthread_t mut thread;
+        pthread::pthread_create(&thread, 0, spawn, va2);
+    }
+
+
+
+    for (;;) {
+        sleep(1000);
+    }
+
+    return 0;
+}
+
+

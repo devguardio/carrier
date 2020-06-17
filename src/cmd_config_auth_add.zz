@@ -20,17 +20,25 @@ using log;
 export fn run_self(
     err::Err+et mut *e,
     endpoint::Endpoint mut*endpoint,
-    identity::Identity *addme,
+    char *addme_s,
     char *resource,
     cmd_config::Method method,
 )
     where err::checked(*e)
     where nullterm(resource)
+    where nullterm(addme_s)
 {
+    identity::Identity mut addme = {0};
+    identity::identity_from_str (&addme, e, addme_s, string::strlen(addme_s));
+    if err::check(e) {
+        e->fail(err::InvalidArgument, "parsing auth add identity from commandline argument");
+        return;
+    }
+
     if method == cmd_config::Method::Add {
-        endpoint->vault.add_authorization(e, addme, resource);
+        endpoint->vault.add_authorization(e, &addme, resource);
     } else if method == cmd_config::Method::Remove {
-        endpoint->vault.del_authorization(e, addme, resource);
+        endpoint->vault.del_authorization(e, &addme, resource);
     }
     if err::check(e) {
         return;
@@ -43,12 +51,13 @@ export fn run_remote(
     err::Err+et mut *e,
     endpoint::Endpoint mut* ep,
     identity::Identity *target,
-    identity::Identity *addme,
+    char *addme,
     char *resource,
     cmd_config::Method method,
 )
     where err::checked(*e)
     where nullterm(resource)
+    where nullterm(addme)
 {
     new mx = sync::start(e, ep);
     if err::check(e) { return; }
@@ -73,11 +82,7 @@ export fn run_remote(
     let frame = stx->stream(e, 150 + slen);
     if err::check(e) { return; }
 
-    char mut buf[64] = {0};
-    identity::identity_to_str(e, buf, 64, addme);
-    if err::check(e) { return; }
-
-    protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Identity, (u8*)buf, string::strlen(buf));
+    protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Identity, (u8*)addme, string::strlen(addme));
     if err::check(e) { return; }
 
     protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Path, (u8*)resource, slen);

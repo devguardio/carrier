@@ -116,7 +116,6 @@ pub fn hmac(u8 *key, usize keylen, u8* data, usize datalen, u8 mut *out)
     where datalen <= len(data) && keylen < BLOCKLEN
     where len(out) >= HASHLEN
 {
-    log::info("hmac << ");
     assert(keylen <= BLOCKLEN);
 
     u8 mut ipad [BLOCKLEN] = {0};
@@ -142,5 +141,4 @@ pub fn hmac(u8 *key, usize keylen, u8* data, usize datalen, u8 mut *out)
     update(&s2, opad, BLOCKLEN);
     update(&s2, inner_output, HASHLEN);
     finish(&s2, out);
-    log::info("hmac >> ");
 }

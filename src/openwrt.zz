@@ -2,7 +2,7 @@ using <stdio.h>::{fprintf, printf, stderr};
 using err;
 using carrier;
 using string;
-using vault_openwrt;
+using vault_toml;
 using vault;
 using log;
 
@@ -35,7 +35,7 @@ export fn main(int mut argc, char ** argv) -> int
         static_attest(nullterm(arg));
 
         new+1000  e     = err::make();
-        new va = vault_openwrt::open(&e);
+        new va = vault_toml::from_home_carriertoml(&e);
         e.abort();
 
         if string::cstr_eq(arg, "identity") {

@@ -59,10 +59,42 @@ export fn close(Vault mut * self)
     }
 }
 
-export fn add_authorization(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource)
+
+
+struct CheckExistingAuthorizationState {
+    identity::Identity *addme;
+    char * resource;
+    bool found;
+}
+
+fn check_existing_authorizations_cb(void mut * unsafe user, identity::Identity *id, char *resource)
+    where nullterm(resource)
+{
+    let s = (CheckExistingAuthorizationState mut *)user;
+    static_attest(safe(s));
+    static_attest(safe(s->addme));
+    static_attest(safe(s->resource));
+    static_attest(nullterm(s->resource));
+    if identity::eq(id, s->addme) && string::cstr_eq(resource, s->resource) {
+        s->found = true;
+    }
+}
+
+export fn add_authorization(Vault mut * self, err::Err+et mut *e, identity::Identity *addme, char *resource)
 {
     static_attest(safe(self->i_add_authorization));
-    self->i_add_authorization(self, e, delme, resource);
+    static_attest(safe(self->i_list_authorizations));
+
+    let mut s = CheckExistingAuthorizationState{
+        addme,
+        resource,
+    };
+    self->i_list_authorizations(self, e, check_existing_authorizations_cb, &s);
+    if e->check() { return; }
+
+    if s.found {return; }
+
+    self->i_add_authorization(self, e, addme, resource);
 }
 
 export fn del_authorization(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource)

@@ -9,6 +9,7 @@ using <string.h>::{memcpy, memset};
 using <stdlib.h>::{malloc, free};
 using log;
 using time;
+inline using "os.h" as os;
 
 struct Authorize {
     bool used;
@@ -27,6 +28,11 @@ struct Mem {
 
 export fn from_home_carriertoml(vault::Vault mut new *self, err::Err+et mut *e)
     where err::checked(*e)
+    if #(os::defined(os::OPENWRT_BUILD))
+{
+    from_carriertoml(self, e, "/etc/config/devguard/carrier.toml");
+}
+else
 {
     new+200 s = string::make();
     fs::get_homedir(e, &s);
@@ -192,6 +198,140 @@ fn load_from_toml_authorize_iter(toml::U *self, err::Err+et mut *e, toml::Parser
     }
 }
 
+fn load_from_toml_identity_secret(Mem mut *this, err::Err+et mut *e,  toml::Value v)
+    where err::checked(*e)
+
+if #(os::defined(os::OPENWRT_BUILD))
+{
+    static_attest(nullterm(v.string));
+    static_attest(safe(v.string));
+
+    new+400 part = string::make();
+    new+400 vv = string::make();
+    vv.append_cstr(v.string);
+
+    usize mut iterator = 0;
+    if vv.split(':', &iterator, &part) && vv.split(':', &iterator, &part) {
+        if part.eq_cstr("mtdblock") {
+            part.clear();
+            if vv.split(':', &iterator, &part) {
+
+                usize mtdindex = findmtdindex(e, part.cstr());
+                if err::check(e) { return; }
+
+                int mut offset = 0;
+
+                part.clear();
+                if vv.split(':', &iterator, &part) {
+                    offset = unsafe<int>(os::atoi(part.mem));
+                }
+
+                new+1000 mtdpath = string::make();
+                mtdpath.format("/dev/mtdblock%u", mtdindex);
+
+                log::info("reading secrets from %s:%lld", part.cstr(), offset);
+
+                FILE mut * f = fopen(mtdpath.mem, "rw");
+                if f == 0 {
+                    e->fail_with_errno("cannot open %s", mtdpath.cstr());
+                    return;
+                }
+                if unsafe<int>(fseek(f, offset, SEEK_SET)) < 0 {
+                    e->fail_with_errno("cannot seek %s", mtdpath.cstr());
+                    fclose(f);
+                    return;
+                }
+
+                if unsafe<int>(fread(this->secret.k, 1, 32, f)) != 32 {
+                    e->fail_with_errno("cannot read %s", mtdpath.mem);
+                    fclose(f);
+                    return;
+                }
+
+                if identity::isnull(this->secret.k) {
+                    identity::secret_generate(&this->secret, e);
+                    if err::check(e) {
+                        fclose(f);
+                        return;
+                    }
+                    if unsafe<int>(fseek(f, offset, SEEK_SET)) < 0 {
+                        e->fail_with_errno("cannot seek %s", mtdpath.mem);
+                        fclose(f);
+                        return;
+                    }
+
+                    if unsafe<int>(fwrite(this->secret.k, 1, 32, f)) != 32 {
+                        e->fail_with_errno("cannot write %s", mtdpath.mem);
+                        fclose(f);
+                        return;
+                    }
+                    if unsafe<int>(fseek(f, offset, SEEK_SET)) < 0 {
+                        e->fail_with_errno("cannot seek %s", mtdpath.mem);
+                        fclose(f);
+                        return;
+                    }
+
+                    if unsafe<int>(fread(this->secret.k, 1, 32, f)) != 32 {
+                        e->fail_with_errno("cannot read %s", mtdpath.mem);
+                        fclose(f);
+                        return;
+                    }
+                }
+
+                fclose(f);
+                return;
+            }
+        }
+    }
+
+
+    identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
+}
+else
+{
+    static_attest(nullterm(v.string));
+    static_attest(safe(v.string));
+    identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
+}
+
+fn findmtdindex(err::Err+et mut *e, char *mtdname) -> usize
+    where err::checked(*e)
+    where nullterm(mtdname)
+{
+    FILE mut * f = fopen("/proc/mtd", "r");
+    new+1000 line = string::make();
+    for (; line.fgets(f); line.clear()) {
+
+        usize mut iterator = 0;
+
+        new+100 dev = string::make();
+        if !line.split(' ', &iterator, &dev) { continue; }
+
+        new+100 size = string::make();
+        if !line.split(' ', &iterator, &size) { continue; }
+
+        new+100 erasesize = string::make();
+        if !line.split(' ', &iterator, &erasesize) { continue; }
+
+        new+100 name = string::make();
+        if !line.split(' ', &iterator, &name) { continue; }
+
+        new+100 name_cleaned = string::make();
+        usize mut iterator2 = 1;
+        if !name.split('"', &iterator2, &name_cleaned) { continue; }
+
+        if name_cleaned.eq_cstr(mtdname) {
+            usize index = unsafe<usize>(atoi(dev.mem + 3));
+            fclose(f);
+            return index;
+        }
+    }
+
+    fclose(f);
+    e->fail(err::InvalidArgument, "cannot find mtdblock %s", mtdname);
+    return 0;
+}
+
 fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, char *k, toml::Value v)
     where err::checked(*e)
     where nullterm(k)
@@ -219,7 +359,7 @@ fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, cha
             }
         }
     } else if v.t == toml::ValueType::String && string::cstr_eq(k, "secret") {
-        identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
+        load_from_toml_identity_secret(this, e, v);
     }
 }
 
@@ -259,7 +399,7 @@ fn save_to_toml(Mem *self, err::Err+et mut *e)
         }
         identity::identity_to_str(e, buf, static(len(buf)), &self->auth[i].identity);
         fprintf(out , "\n[[authorize]]\nidentity = \"%s\"\nresource = ", buf);
-        fprintf(out , "\"%.*s\"\n", self->auth[i].path.len, self->auth[i].path.mem);
+        fprintf(out , "\"%.*s\"\n", (int)self->auth[i].path.len, self->auth[i].path.mem);
     }
 
     fprintf(out , "\n");

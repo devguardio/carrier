@@ -8,7 +8,6 @@ using channel;
 using log;
 
 using <stdio.h>::{printf};
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.h" as hacl_hmac;
 
 // NKSig
 // <- s

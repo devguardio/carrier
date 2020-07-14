@@ -2,7 +2,7 @@
 ///
 /// ciphertext has 16 bytes hmac at the end
 
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.h" as hacl_chacha;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Chacha20Poly1305_32.h" as hacl_chacha;
 using <assert.h>::{assert};
 using <string.h>::{memcpy, memset};
 using sha256;
@@ -51,20 +51,16 @@ export fn encrypt_ad(
     u64 nonce_le = byteorder::to_le64(nonce);
     memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
 
-    int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_aead_encrypt(
-        ciphertext,
-        mac,
-        (u8 mut*)plain,
-        plainlen,
-        (u8 mut*)authtext,
-        authtext_len,
+    hacl_chacha::Hacl_Chacha20Poly1305_32_aead_encrypt(
         self->key,
-        nonce12
-    ));
-    if xr != 0 {
-        err::fail(e, EncryptionError, "encrypt");
-        return 0;
-    }
+        nonce12,
+        authtext_len,
+        (u8 mut*)authtext,
+        plainlen,
+        (u8 mut*)plain,
+        ciphertext,
+        mac
+    );
     return cipherlen;
 }
 
@@ -95,15 +91,15 @@ export fn decrypt_ad(
     u64 nonce_le = byteorder::to_le64(nonce);
     memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
 
-    int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_aead_decrypt(
+    int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_32_aead_decrypt(
+        self->key,
+        nonce12,
+        authtext_len,
+        (u8 mut*)authtext,
+        plainlen,
         plain,
         (u8 mut*)ciphertext,
-        plainlen,
-        (u8 mut*)mac,
-        (u8 mut*)authtext,
-        authtext_len,
-        self->key,
-        nonce12
+        (u8 mut*)mac
     ));
     if xr != 0 {
         err::fail(e, EncryptionError, "decrypt");

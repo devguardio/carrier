@@ -1,4 +1,4 @@
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Hash.h" as hacl;
 using <assert.h>::{assert};
 using <string.h>::{memset};
 using mem;
@@ -16,13 +16,14 @@ export fn blocklen() -> usize {
 }
 
 export struct Sha256 {
-    u32 mut state[137];
+    u32 mut state[8];
     u8  mut block[64];
     u8  mut at;
+    usize mut blockcounter;
 }
 
 export fn init(Sha256 mut set<isinit> *self) {
-    hacl::Hacl_SHA2_256_init(self->state);
+    hacl::Hacl_Hash_Core_SHA2_init_256(self->state);
     self->at = 0;
 }
 
@@ -37,7 +38,8 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
         if l >= fill {
             static_attest(len(data) > fill);
             mem::copy(data, self->block + self->at, fill);
-            hacl::Hacl_SHA2_256_update(self->state, self->block);
+            hacl::Hacl_Hash_Core_SHA2_update_256(self->state, self->block);
+            self->blockcounter += 1;
             l    -= fill;
             data = data + fill;
             self->at = 0;
@@ -58,8 +60,8 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
 export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out)
     where len(out) >= HASHLEN
 {
-    hacl::Hacl_SHA2_256_update_last(self->state, self->block, self->at);
-    hacl::Hacl_SHA2_256_finish(self->state, out);
+    hacl::Hacl_Hash_SHA2_update_last_256(self->state, self->blockcounter * 64, self->block, self->at);
+    hacl::Hacl_Hash_Core_SHA2_finish_256(self->state, out);
 }
 
 pub fn hkdf(

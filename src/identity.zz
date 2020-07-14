@@ -11,9 +11,8 @@ using <stdint.h>::{uint8_t};
 using <stdint.h>::{size_t};
 using <string.h>::{memcpy, memcmp, strlen};
 using <assert.h>::{assert};
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h" as x25519;
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Ed25519.h"        as ed25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Curve25519_51.h"  as x25519;
 
 inline using (needs size_t) "base58.h" as b58;
 using err;
@@ -448,11 +447,11 @@ export fn address_from_secret (Address mut* pk, Secret* sk) {
     nullcheck(&e, sk->k);
     e.abort();
 
-    x25519::Hacl_Curve25519_crypto_scalarmult(pk->k, (u8 mut*)sk->k, (uint8_t mut*)(BASEPOINT));
+    x25519::Hacl_Curve25519_51_scalarmult(pk->k, (u8 mut*)sk->k, (uint8_t mut*)(BASEPOINT));
 }
 
 export fn dh(Address mut *out, Secret* me, Address * them) {
-    x25519::Hacl_Curve25519_crypto_scalarmult(out->k, (u8 mut *)(me->k), (u8 mut *)(them->k));
+    x25519::Hacl_Curve25519_51_scalarmult(out->k, (u8 mut *)(me->k), (u8 mut *)(them->k));
 }
 
 export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
@@ -461,11 +460,13 @@ export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
     nullcheck(&e, key->k);
     e.abort();
 
-    ed25519::Hacl_Ed25519_sign(s->k, (u8 mut* )key->k, (u8 mut* )subject, subject_len);
+    ed25519::Hacl_Ed25519_sign(s->k, (u8 mut* )key->k, subject_len, (u8 mut* )subject);
 }
 
 export fn verify(Identity *pk, Signature *s, u8 * subject, usize subject_len) -> bool{
-    return (bool)ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, (u8 mut*)subject, subject_len, (u8 mut* )s->k);
+
+    return (bool)ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, subject_len, (u8 mut*)subject, (u8 mut* )s->k);
+
 }
 
 

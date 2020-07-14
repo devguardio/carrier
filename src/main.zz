@@ -37,13 +37,18 @@ export fn main(int mut argc, char ** argv) -> int
         char * arg = argv[1];
         static_attest(nullterm(arg));
 
-        new+1000  e     = err::make();
-        new va = vault_toml::from_home_carriertoml(&e);
-        e.abort();
 
         if string::cstr_eq(arg, "identity") {
+            new+1000  e     = err::make();
+            new va = vault_toml::from_home_carriertoml(&e);
+            e.abort();
+
             return cmd_vault::print_identity(&va, argc, argv);
         } else if string::cstr_eq(arg, "publish") {
+            new+1000  e     = err::make();
+            new va = vault_toml::from_home_carriertoml(&e);
+            e.abort();
+
             return cmd_publish::cmd(va, argc, argv);
         } else if string::cstr_eq(arg, "shell") {
             return cmd_shell::cmd(argc, argv);
@@ -52,6 +57,10 @@ export fn main(int mut argc, char ** argv) -> int
         } else if string::cstr_eq(arg, "subscribe") {
             return cmd_subscribe::cmd(argc, argv);
         } else if string::cstr_eq(arg, "vault") {
+            new+1000  e     = err::make();
+            new va = vault_toml::from_home_carriertoml(&e);
+            e.abort();
+
             return cmd_vault::cmd(&va, argc, argv);
         } else if string::cstr_eq(arg, "stream") {
             return cmd_stream::cmd(argc, argv);

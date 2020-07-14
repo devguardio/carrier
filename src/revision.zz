@@ -1,3 +1,20 @@
 //TODO
-pub const u32 REVISION = 0x1111;
 
+
+using <stdlib.h>::{system};
+using <stdio.h>::{printf, fflush, stdout};
+
+pub macro revision() {
+    system("echo -n $(git rev-list --count HEAD)");
+}
+
+export const u32 REVISION = @revision();
+
+pub macro build_id() {
+    printf("\"");
+    fflush(stdout);
+    system("echo -n $(git describe --tags --always --dirty=-dirty)");
+    printf("\"");
+}
+
+export const char * BUILD_ID = @build_id();

@@ -9,6 +9,9 @@ using string;
 using time;
 using <stdlib.h>::{exit, calloc, free};
 using sysinfo;
+using proto;
+using protonerf;
+using revision;
 
 export fn register(endpoint::Endpoint mut*ep)
 {
@@ -34,7 +37,10 @@ fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *heade
     if err::check(e) { return; }
 
     let mut *frame2 = self->stream(e, 1500);
+    if err::check(e) { return; }
     sysinfo::sysinfo(frame2);
+
+    protonerf::encode_bytes(frame2, e, proto::Sysinfo::CarrierBuildId, (u8*)revision::BUILD_ID, string::strlen(revision::BUILD_ID));
 
     self->close();
 }

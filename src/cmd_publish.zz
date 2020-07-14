@@ -44,6 +44,8 @@ pub fn cmd(vault::Vault va, int mut argc, char ** argv) -> int
 
     io::await(&async, &e, endpoint::poll, &ep, time::infinite());
     e.abort();
+
+    ep.close();
     return 0;
 }
 

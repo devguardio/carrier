@@ -1112,12 +1112,12 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
 
         protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, revision::REVISION);
         e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,           (u8*)"??", 2);
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,  (u8*)revision::BUILD_ID, string::strlen(revision::BUILD_ID));
         e->abort();
         protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Application,              (u8*)"zz", 2);
         e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::ApplicationVersion,      (u8*)"??", 2);
-        e->abort();
+        //protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::ApplicationVersion,      (u8*)"??", 2);
+        //e->abort();
 
         for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
             stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];

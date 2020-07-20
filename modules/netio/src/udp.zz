@@ -1,0 +1,116 @@
+using net::address;
+using buffer;
+using err;
+using io;
+using unix;
+using log;
+using <string.h>::{memset};
+using slice;
+
+inline using "os.h" as os;
+inline using "os.h"::{
+    (struct sockaddr)    as sockaddr,
+};
+
+export struct Socket {
+    io::Context     ctx;
+    uint sockaddrsize;
+}
+
+export fn close(Socket mut*self)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    if !self->ctx.isvalid  {
+        return;
+    }
+    os::close(self->ctx.fd);
+    self->ctx.isvalid = false;
+}
+
+export fn bind(Socket mut new *self,  err::Err+et mut*e, address::Address addr, io::Async mut* unsafe async)
+    where err::checked(*e)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    memset(self, 0, sizeof(Socket));
+    self->ctx.fd = unix::socket(&addr, e, os::SOCK_DGRAM);
+    if err::check(e) {return; }
+
+    if async != 0 {
+        self->ctx.async = async;
+        unix::make_async(self->ctx.fd, e);
+        if err::check(e) {return; }
+    }
+
+    self->sockaddrsize = (uint)unix::alen(&addr, e);
+    if err::check(e) {return; }
+
+    int r = unsafe<int>(os::bind(self->ctx.fd, (sockaddr*)(&addr.os), self->sockaddrsize));
+    if r != 0 {
+        e->fail_with_errno("bind");
+    }
+    self->ctx.isvalid = true;
+}
+
+export fn recvfrom(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *buf, address::Address mut*from) -> io::Result
+    where err::checked(*e)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    if (self->ctx.async != 0) {
+        static_attest(safe(self->ctx.async));
+        io::select(self->ctx.async, e, &self->ctx, io::Ready::Read);
+        if err::check(e) {return io::Result::Error; }
+    }
+
+    memset(from, 0, sizeof(address::Address));
+
+    uint mut alen = self->sockaddrsize;
+    int r = unsafe<int>(os::recvfrom(
+        self->ctx.fd,
+        buf->mem +  buf->at,
+        st  - buf->at,
+        0,
+        (sockaddr mut*)&from->os,
+        &alen
+    ));
+
+    if unsafe<bool>(from->os.ipv4.sin_family  == AF_INET) {
+        from->typ = address::Type::Ipv4;
+    } else if unsafe<bool>(from->os.ipv6.sin6_family == AF_INET6) {
+        from->typ = address::Type::Ipv6;
+    }
+
+    if (r < 1) {
+        if unsafe<bool>(errno == EAGAIN) {
+            return io::Result::Later;
+        }
+        e->fail_with_errno("recvfrom");
+        return io::Result::Error;
+    }
+
+    buf->at += (usize)r;
+    return io::Result::Ready;
+}
+
+export fn sendto(Socket mut *self, err::Err+et mut*e, slice::slice::Slice buf, address::Address * to) -> io::Result
+    where slice::slice::integrity(&buf)
+    where err::checked(*e)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    let sockaddrsize = (uint)unix::alen(to, e);
+    if err::check(e) {return io::Result::Error; }
+
+    int r = unsafe<int>(os::sendto(
+        self->ctx.fd,
+        buf.mem,
+        buf.size,
+        0,
+        (sockaddr *)&to->os,
+        sockaddrsize
+    ));
+
+    if (r < 0) {
+        e->fail_with_errno("sendto");
+        return io::Result::Error;
+    }
+    return io::Result::Ready;
+}

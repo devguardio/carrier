@@ -5,7 +5,6 @@ using shell;
 using sft;
 using config;
 using io;
-using net;
 using bootstrap;
 using time;
 using endpoint;
@@ -24,10 +23,10 @@ pub fn cmd(vault::Vault va, int mut argc, char ** argv) -> int
 
     cmd_common::print_identity(&ep);
 
-    bootstrap::sync(&e, &ep.vault, net::os(), &async, time::from_seconds(10));
+    bootstrap::sync(&e, &ep.vault, &async, time::from_seconds(10));
     e.abort();
 
-    ep.start(&e, net::os(), &async);
+    ep.start(&e, &async);
     e.abort();
 
     io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));

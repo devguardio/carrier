@@ -1,0 +1,18 @@
+[project]
+version = "0.1.0"
+name = "esp32"
+cincludes = []
+cobjects = []
+pkgconfig = []
+cflags = []
+lflags = []
+
+[variants]
+default = []
+
+[dependencies]
+log = "1"
+mem = "1"
+err = "1"
+
+[repos]

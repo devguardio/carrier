@@ -3,7 +3,6 @@ using cmd_common;
 using subscribe;
 using config;
 using io;
-using net;
 using bootstrap;
 using time;
 using endpoint;
@@ -16,6 +15,10 @@ using <stdlib.h>::{calloc, memset, free, exit};
 using <string.h>::{memcpy};
 using <unistd.h>::{sleep};
 
+
+flags {
+    linker("-lpthread")
+}
 
 pub fn cmd(int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
@@ -42,7 +45,7 @@ fn spawn(void mut *ptr) -> void mut *
 
     cmd_common::print_identity(&ep);
 
-    ep.start(&e, net::os(), &async);
+    ep.start(&e, &async);
     e.abort();
 
     io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
@@ -67,7 +70,7 @@ export fn run() -> int {
     new va = vault_toml::from_home_carriertoml(&e);
     e.abort();
 
-    bootstrap::sync(&e, &va, net::os(), &async, time::from_seconds(10));
+    bootstrap::sync(&e, &va, &async, time::from_seconds(10));
     e.abort();
 
     for (usize mut i = 0; i < vault::MAX_BROKERS; i++) {

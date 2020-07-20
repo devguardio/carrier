@@ -12,7 +12,7 @@ using io::unix;
 using io;
 using slice;
 using <unistd.h>::{write};
-using string;
+using buffer;
 using hpack;
 using <stdlib.h>::{atoi};
 
@@ -87,22 +87,22 @@ pub fn cmd(usize mut argc, char ** argv) -> int
 
 static char IFS = '\n';
 static io::Io mut stdinio = {0};
-static string::String+500 mut inbuf = {0};
+static buffer::Buffer+500 mut inbuf = {0};
 static bool mut inbufready = false;
 
 fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     if inbufready {
-        static_attest(inbuf.len < 100000);
-        static_attest(inbuf.len <= len(inbuf.mem));
-        let mut *frame = self->stream(e, inbuf.len);
+        static_attest(inbuf.at  < 100000);
+        static_attest(inbuf.at  <= len(inbuf.mem));
+        let mut frame = self->stream(e, inbuf.at);
         if err::check(e) {
             e->elog();
             e->make();
             return;
         }
-        frame->append_bytes((u8*)inbuf.mem, inbuf.len);
+        frame.append_bytes((u8*)inbuf.mem, inbuf.at);
         inbufready = false;
         inbuf.clear();
     }
@@ -150,8 +150,9 @@ fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
 
 export symbol OpenResponse;
 
-fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
     if self->state == 0 {
         self->state = 1;
@@ -176,10 +177,10 @@ fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -
         }
         return true;
     } else {
-        if msg->size < 1 ||  msg->size > 0xffffff {
+        if msg.size < 1 ||  msg.size > 0xffffff {
             return true;
         }
-        write(1, msg->mem , msg->size);
+        write(1, msg.mem , msg.size);
         return true;
     }
 }

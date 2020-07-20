@@ -8,7 +8,7 @@ using protonerf;
 using slice;
 using proto;
 using stream;
-using string;
+using buffer;
 using cmd_common;
 using channel;
 using <stdlib.h>::{atoi, exit};
@@ -29,7 +29,7 @@ export fn run_self(
     where nullterm(addme_s)
 {
     identity::Identity mut addme = {0};
-    identity::identity_from_str (&addme, e, addme_s, string::strlen(addme_s));
+    identity::identity_from_str (&addme, e, addme_s, buffer::strlen(addme_s));
     if err::check(e) {
         e->fail(err::InvalidArgument, "parsing auth add identity from commandline argument");
         return;
@@ -77,12 +77,12 @@ export fn run_remote(
     static_attest(safe(stx));
     stx->errors_are_fatal = true;
 
-    let slen = string::strlen(resource);
+    let slen = buffer::strlen(resource);
     err::assert(slen < 125);
     let frame = stx->stream(e, 150 + slen);
     if err::check(e) { return; }
 
-    protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Identity, (u8*)addme, string::strlen(addme));
+    protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Identity, (u8*)addme, buffer::strlen(addme));
     if err::check(e) { return; }
 
     protonerf::encode_bytes(frame, e, proto::AuthorizationAdd::Path, (u8*)resource, slen);

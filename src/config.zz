@@ -2,7 +2,7 @@ using stream;
 using err;
 using endpoint;
 using slice;
-using string;
+using buffer;
 using identity;
 using hpack;
 using log;
@@ -53,8 +53,7 @@ fn auth_get_cb(void mut * u, identity::Identity *id, char *resource)
     where nullterm(resource)
 {
     let frame = (slice::mut_slice::MutSlice mut *)u;
-    static_attest(frame->slice.size >= len(frame->slice.mem));
-    static_attest(frame->at <= frame->slice.size);
+    static_attest(slice::mut_slice::integrity(frame));
 
     new+1000 e = err::make();
 
@@ -63,20 +62,22 @@ fn auth_get_cb(void mut * u, identity::Identity *id, char *resource)
     if err::check(&e) { e.elog();  return; }
 
     u8 mut buf[256] = {0};
-    new obj = slice::mut_slice::make(buf, 256);
-    protonerf::encode_bytes(&obj, &e, proto::AuthorizationAdd::Identity, (u8*)identity_str, string::strlen(identity_str));
+    usize mut at = 0;
+    new obj = slice::mut_slice::make(buf, static(len(buf)), &at);
+    protonerf::encode_bytes(obj, &e, proto::AuthorizationAdd::Identity, (u8*)identity_str, buffer::strlen(identity_str));
     if err::check(&e) { e.elog();  return; }
-    protonerf::encode_bytes(&obj, &e, proto::AuthorizationAdd::Path,     (u8*)resource, string::strlen(resource));
+    protonerf::encode_bytes(obj, &e, proto::AuthorizationAdd::Path,     (u8*)resource, buffer::strlen(resource));
     if err::check(&e) { e.elog();  return; }
-    protonerf::encode_bytes(frame, &e, proto::AuthListResult::Auth, obj.mem(), obj.at);
+    protonerf::encode_bytes(*frame, &e, proto::AuthListResult::Auth, obj.mem, *obj.at);
     if err::check(&e) { e.elog();  return; }
 }
 
-fn auth_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn auth_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
+    where slice::slice::integrity(&headers)
 {
     {
-        let mut *frame = self->stream(e, 27);
+        let mut frame = self->stream(e, 27);
         if err::check(e) { return; }
         hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200",   3);
         if err::check(e) { return; }
@@ -87,21 +88,22 @@ fn auth_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     {
         static_attest(safe(self->chan));
         static_attest(safe(self->chan->endpoint));
-        slice::MutSlice mut * frame = self->stream(e, 512);
+        slice::MutSlice mut frame = self->stream(e, 512);
         if err::check(e) { return; }
 
-        self->chan->endpoint->vault.list_authorizations(e, auth_get_cb, frame);
+        self->chan->endpoint->vault.list_authorizations(e, auth_get_cb, &frame);
         if err::check(e) { return; }
     }
 
     self->close();
 }
 
-fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
+    where slice::slice::integrity(&headers)
 {
     {
-        let mut *frame = self->stream(e, 27);
+        let mut frame = self->stream(e, 27);
         if err::check(e) { return; }
         hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200",   3);
         if err::check(e) { return; }
@@ -112,7 +114,7 @@ fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     {
         static_attest(safe(self->chan));
         static_attest(safe(self->chan->endpoint));
-        slice::MutSlice mut * frame = self->stream(e, 128);
+        let mut frame = self->stream(e, 128);
         if err::check(e) { return; }
 
 
@@ -122,17 +124,18 @@ fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
         identity::address_to_str(e, buf, 64, &addr);
         if err::check(e) { return; }
 
-        protonerf::encode_bytes(frame, e, proto::NetworkGetResult::Address, (u8*)buf, string::strlen(buf));
+        protonerf::encode_bytes(frame, e, proto::NetworkGetResult::Address, (u8*)buf, buffer::strlen(buf));
         if err::check(e) { return; }
     }
 
     self->close();
 }
 
-fn open_then_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn open_then_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
+    where slice::slice::integrity(&headers)
 {
-    let mut *frame = self->stream(e, 27);
+    let mut frame = self->stream(e, 27);
     if err::check(e) { return; }
 
     hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
@@ -145,9 +148,10 @@ fn open_then_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *h
 fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
 
 {
+    static_attest(buffer::integrity(&e->trace, et));
     let ch  = e->trace.cstr();
     static_attest(safe(ch));
-    let mut chl = string::strlen(ch);
+    let mut chl = buffer::strlen(ch);
     if chl >  500 {
         chl = 500;
     }
@@ -176,28 +180,29 @@ fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
     return true;
 }
 
-fn auth_add_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *msg) -> bool
+fn auth_add_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
     return auth_add_del_stream(self, e, msg, 1);
 }
 
-fn auth_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *msg) -> bool
+fn auth_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
     return auth_add_del_stream(self, e, msg, 2);
 }
 
-fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *msg, int impl) -> bool
+fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg, int impl) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
-    static_attest(safe(msg->mem));
-
     identity::Identity mut addme = {0};
-    new+256 mut path = string::make();
+    new+256 mut path = buffer::make();
     // prover doesnt advance path temporal :(
 
-    new mut decoder = protonerf::decode(msg->mem, msg->size);
+    new mut decoder = protonerf::decode(msg);
     for (protonerf::Field mut field;decoder.next(e,&field);) {
         if err::check(e) { return true; }
 
@@ -252,14 +257,13 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice
     return true;
 }
 
-fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *msg) -> bool
+fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
-    static_attest(safe(msg->mem));
-
     identity::Secret mut nusecret = {0};
 
-    new mut decoder = protonerf::decode(msg->mem, msg->size);
+    new mut decoder = protonerf::decode(msg);
     for (protonerf::Field mut field;decoder.next(e, &field);) {
         if err::check(e) { return true; }
 

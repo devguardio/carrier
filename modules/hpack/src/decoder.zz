@@ -1,7 +1,8 @@
 using <stdio.h>::{printf};
-using <string.h>::{strlen};
+using <string.h>::{strlen, memset};
 using err;
 using slice::{Slice};
+using slice;
 using <string.h>::{memcpy};
 
 const usize DYNSIZE = 16;
@@ -188,16 +189,27 @@ export struct Iterator {
     Entry mut dyn[DYNSIZE];
 }
 
-export fn decode(Iterator mut new*self, Slice *wire)
+pub theory integrity(Iterator mut*self) -> bool (
+    safe(self)
+    && slice::slice::integrity(&self->key)
+    && slice::slice::integrity(&self->val)
+    && slice::slice::integrity(&self->wire)
+)
+
+export fn decode(Iterator mut new*self, Slice wire)
+    model integrity(self)
 {
-    memcpy(&self->wire, wire, sizeof(Slice));
+    memset(self, 0, sizeof(Iterator));
+    memcpy(&self->wire, &wire, sizeof(Slice));
     self->at   = 0;
+    static_attest(integrity(self));
 }
 
 export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
     where err::checked(*e)
     model len(self->key.mem) >= self->key.size
     model len(self->val.mem) >= self->val.size
+    model integrity(self)
 {
 
     self->key = Slice{mem:0};
@@ -211,6 +223,7 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
             Repr::Indexed => {
                 uint x = self->decode_integer(e, 7);
                 if err::check(e) {
+                    static_attest(integrity(self));
                     return false;
                 }
 

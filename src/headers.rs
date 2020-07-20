@@ -101,16 +101,17 @@ impl Headers {
         let mut err = error::ZZError::new();
 
         let mut mem     = vec![0;2000];
-        let mut slice   = mut_slice::heap::MutSlice::new();
-        unsafe {
-            mut_slice::make(slice._self_mut(), mem.as_mut_ptr(), mem.len());
-        }
+        let mut memat   = 0;
+        let slice   = mut_slice::MutSlice{
+            mem:    mem.as_mut_ptr(),
+            size:   mem.len(),
+            at:     &mut memat
+        };
 
-        let mut at = 0;
         for (k,v) in &self.f {
             unsafe{
                 hpack_encoder::encode(
-                    slice._self_mut(),
+                    slice.clone(),
 
                     err.as_mut_ptr(),
                     error::ZERR_TAIL,
@@ -121,12 +122,11 @@ impl Headers {
                     v.as_ptr(),
                     v.len()
                 );
-                at = slice.inner.at;
             };
 
             err.check().unwrap();
         }
-        mem.truncate(at);
+        mem.truncate(memat);
         mem
     }
 
@@ -134,14 +134,14 @@ impl Headers {
         let mut nu = Self::default();
         let mut err = error::ZZError::new();
 
-        let mut slice = slice::heap::Slice::new();
-        unsafe {
-            slice::make(slice._self_mut(), b.as_ptr(), b.len());
-        }
+        let slice = slice::Slice{
+            mem:    b.as_ptr(),
+            size:   b.len(),
+        };
 
         let mut decoder = hpack_decoder::heap::Iterator::new();
         unsafe {
-            hpack_decoder::decode(decoder._self_mut(), slice._self());
+            hpack_decoder::decode(decoder._self_mut(), slice);
         }
 
         unsafe {

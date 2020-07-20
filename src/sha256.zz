@@ -22,7 +22,7 @@ export struct Sha256 {
     usize mut blockcounter;
 }
 
-export fn init(Sha256 mut set<isinit> *self) {
+export fn init(Sha256 mut new *self) {
     hacl::Hacl_Hash_Core_SHA2_init_256(self->state);
     self->at = 0;
 }

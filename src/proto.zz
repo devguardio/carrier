@@ -166,7 +166,7 @@ export fn PublishRequestTypes (usize index) -> protonerf::FieldType {
 
 
 export enum Alias {
-  Alias = 1,
+  Alias = 2,
 }
 
 export fn AliasTypes (usize index) -> protonerf::FieldType {
@@ -418,7 +418,7 @@ export enum TraceResponse {
   PktsSent = 9,
   PktsLost = 10,
   Rtt = 11,
-  Alias = 12,
+  Alias = 13,
 }
 
 export fn TraceResponseTypes (usize index) -> protonerf::FieldType {

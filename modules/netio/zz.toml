@@ -1,0 +1,19 @@
+[project]
+version = "0.1.0"
+name = "netio"
+cincludes = []
+cobjects = []
+pkgconfig = []
+cflags = []
+lflags = []
+
+[dependencies]
+buffer      = "1"
+err         = "1"
+byteorder   = "1"
+io          = "1"
+pool        = "1"
+net         = "1"
+
+[variants]
+default = []

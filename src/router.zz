@@ -6,15 +6,17 @@ using byteorder;
 using <stdio.h>::{printf};
 using <string.h>::{strlen, memset, memcpy};
 using channel;
-using string;
+using buffer;
 using io;
 using net::address;
-using net::udp;
+using netio::udp;
+using netio::tcp;
 using log;
 using endpoint;
 using publish;
 using time;
-
+using slice;
+using peering;
 
 export symbol OutOfOptions;
 
@@ -26,10 +28,12 @@ enum Direction {
 }
 
 export struct Router {
-    string::String+1500     mut pkt;
+    usize                   mut tcp_expected;
+    buffer::Buffer+1500     mut tcp_buf;
 
     udp::Socket             mut udp4;
     udp::Socket             mut udp6;
+    tcp::Socket             mut tcp4;
 
     bool                    mut inshutdown;
     bool                    mut ded;
@@ -58,6 +62,7 @@ pub fn close(Router mut* self)
 {
     self->udp4.close();
     self->udp6.close();
+    self->tcp4.close();
     self->ded = true;
 }
 
@@ -105,28 +110,83 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
         }
     }
 
-    address::Address mut fromaddr = {0};
-    self->pkt.clear();
-    if self->udp4.recvfrom(e, &self->pkt, &fromaddr) == io::Result::Ready {
-        err::make(e);
-        if !self->push(e) {
-            return io::Result::Error;
+    new+1500 pkt = buffer::make();
+
+    if self->udp4.ctx.valid() {
+        address::Address mut fromaddr = {0};
+        if self->udp4.recvfrom(e, &pkt, &fromaddr) == io::Result::Ready {
+
+            new+100 s = buffer::make();
+            fromaddr.to_buffer(&s);
+            log::debug("received from udp4: %s", s.cstr());
+
+
+            e->ignore();
+            if !self->push(e, pkt.as_slice()) {
+                return io::Result::Error;
+            }
         }
+        if err::check(e) {
+            e->elog();
+            e->make();
+        }
+        pkt.clear();
     }
-    if err::check(e) {
-        e->elog();
-        e->make();
+
+    if self->tcp4.ctx.valid() {
+        switch self->tcp4.recv(e, &pkt) {
+            io::Result::Eof => {
+                self->tcp4.close();
+            }
+            io::Result::Ready => {
+
+                log::debug("received from tcp4");
+
+                e->ignore();
+                for (usize mut i = 0; i < pkt.at; i++) {
+                    if self->tcp_expected == 0 {
+                        if i + 5 > pkt.at {
+                            break;
+                        }
+
+                        if  pkt.mem[i] != 0x17 {
+                            break;
+                        }
+                        self->tcp_expected = (usize)byteorder::from_be16(*(u16*)(pkt.mem + i + 3));
+
+                        i += 4;
+                        continue;
+                    }
+                    static_attest(i < len(pkt.mem));
+                    static_attest(buffer::integrity(&self->tcp_buf, static(len(self->tcp_buf.mem))));
+                    self->tcp_buf.push(pkt.mem[i]);
+                    if --self->tcp_expected == 0 {
+                        if !self->push(e, self->tcp_buf.as_slice()) {
+                            return io::Result::Error;
+                        }
+                        self->tcp_buf.clear();
+                    }
+                }
+            }
+        }
+        if err::check(e) {
+            e->elog();
+            e->make();
+        }
+        pkt.clear();
     }
+
 
     bool mut again = true;
     while again {
+        pkt.make();
         again = false;
         for (usize mut j = 0; j < static(len(self->channels)); j++) {
             if self->channels[j].route == 0 {
                 continue;
             }
             //log::debug("polling chan %zu : %lu", j, self->channels[j].route);
-            if self->channels[j].poll (e, async, &self->pkt) == io::Result::Ready {
+            if self->channels[j].poll (e, async, &pkt) == io::Result::Ready {
                 again = true;
                 if err::check(e) { return io::Result::Error; }
                 bool mut has_any_addr = false;
@@ -134,26 +194,48 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
                     if self->channels[j].peering.paths[i].active {
                         has_any_addr = true;
 
-                        string::String+100 mut s = {0};
-                        self->channels[j].peering.paths[i].addr.to_string(&s);
-                        //log::debug("    sending to %.*s", s.len, s.mem);
+                        new+100 s = buffer::make();
+                        self->channels[j].peering.paths[i].addr.to_buffer(&s);
 
-                        switch self->channels[j].peering.paths[i].addr.typ {
-                            address::Type::Invalid => {
-                            }
-                            address::Type::Ipv4 => {
-                                if io::valid(&self->udp4) {
-                                    self->udp4.sendto(e, &self->pkt, &self->channels[j].peering.paths[i].addr);
-                                    if err::check(e) {
-                                        e->elog();
-                                    }
-                                    e->make();
+                        switch self->channels[j].peering.paths[i].transport {
+                            peering::Transport::Tcp => {
+                                if io::valid(&self->tcp4) {
+                                    log::debug("    sending %d bytes to tcp4:%s", pkt.at, s.cstr());
+
+                                    new+5 mut header = buffer::make();
+                                    let mut header_ms = header.as_mut_slice();
+                                    header_ms.push(0x17);
+                                    header_ms.push(0x03);
+                                    header_ms.push(0x03);
+                                    header_ms.push16(byteorder::to_be16(pkt.at));
+                                    static_attest(buffer::integrity(&header, static(len(header.mem))));
+                                    self->tcp4.send(e, header.as_slice());
+                                    if err::check(e) { e->elog(); e->ignore(); }
+                                    self->tcp4.send(e, pkt.as_slice());
+                                    if err::check(e) { e->elog(); e->ignore(); }
                                 }
                             }
-                            address::Type::Ipv6 => {
-                                if io::valid(&self->udp6) {
-                                    self->udp6.sendto(e, &self->pkt, &self->channels[j].peering.paths[i].addr);
-                                    e->make();
+                            peering::Transport::Udp => {
+                                switch self->channels[j].peering.paths[i].addr.typ {
+                                    address::Type::Invalid => {
+                                    }
+                                    address::Type::Ipv4 => {
+                                        if io::valid(&self->udp4) {
+                                            log::debug("    sending %d bytes to udp4:%s", pkt.at, s.cstr());
+                                            self->udp4.sendto(e, pkt.as_slice(), &self->channels[j].peering.paths[i].addr);
+                                            if err::check(e) {
+                                                e->elog();
+                                            }
+                                            e->make();
+                                        }
+                                    }
+                                    address::Type::Ipv6 => {
+                                        if io::valid(&self->udp6) {
+                                            log::debug("    sending %d bytes to udp6:%s", pkt.at, s.cstr());
+                                            self->udp6.sendto(e, pkt.as_slice(), &self->channels[j].peering.paths[i].addr);
+                                            e->make();
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -173,37 +255,38 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
     return io::Result::Later;
 }
 
-pub fn push(Router mut* self, err::Err+et mut* e) -> bool /*keep going*/
+pub fn push(Router mut* self, err::Err+et mut* e, slice::slice::Slice pkt) -> bool /*keep going*/
     where err::checked(*e)
+    where slice::slice::integrity(&pkt)
 {
-    if self->pkt.len < 4 + 8 + 8 + 16   {
+    if pkt.size < 4 + 8 + 8 + 16   {
         err::fail(e, channel::InvalidFrame, "too small");
         return true;
     }
 
     // version 1B
-    let version = (self->pkt.mem)[0];
+    u8 version = pkt.mem[0];
     if version < 8 {
         err::fail(e, channel::InvalidFrame, "invalid version");
         return true;
     }
     // reserved 3B
     // route    8B
-    u8 *rkeymem = (u8*)self->pkt.mem + 4;
+    u8 *rkeymem = (u8*)pkt.mem + 4;
     static_attest(safe(rkeymem));
     static_attest(len(rkeymem) > 8);
     u64 routingkey = read_routing_key(rkeymem, 0);
     // counter  8B
     u64 mut counter;
-    memcpy(&counter, self->pkt.mem + 12, 8);
+    memcpy(&counter, pkt.mem + 12, 8);
     counter = byteorder::from_be64(counter);
 
 
 
     usize mut at = 4 + 8 + 8;
 
-    u8 mut * ciphertext     = (u8 mut*)self->pkt.mem + at;
-    usize ciphertext_len    = self->pkt.len - at;
+    u8 mut * ciphertext     = (u8 mut*)pkt.mem + at;
+    usize ciphertext_len    = pkt.size  - at;
     static_attest(safe(ciphertext));
     static_attest(len(ciphertext) >= ciphertext_len);
 
@@ -226,7 +309,7 @@ pub fn push(Router mut* self, err::Err+et mut* e) -> bool /*keep going*/
             return true;
         }
     }
-    log::debug("unroutable pkt. size: %zu, counter: %zu, route: %zu", (self->pkt).len, counter, routingkey);
+    log::debug("unroutable pkt. size: %zu, counter: %zu, route: %zu", (pkt).size , counter, routingkey);
     return true;
 }
 

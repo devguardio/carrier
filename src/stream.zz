@@ -1,15 +1,15 @@
 using err;
 using channel;
 using log;
-using slice::{Slice, MutSlice};
+using slice;
 using byteorder;
 using io;
 using time;
-using string;
+using buffer;
 
-export closure open_fn       (Stream mut* self, err::Err+et mut *e, Slice *headers);
+export closure open_fn       (Stream mut* self, err::Err+et mut *e, slice::Slice headers);
 export closure close_fn      (Stream mut* self, err::Err+et mut *e);
-export closure stream_fn     (Stream mut* self, err::Err+et mut *e, Slice *b) -> bool;
+export closure stream_fn     (Stream mut* self, err::Err+et mut *e, slice::Slice b) -> bool;
 export closure fragmented_fn (Stream mut* self, err::Err+et mut *e, u32 fragments) -> bool;
 export closure poll_fn       (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
 
@@ -47,30 +47,26 @@ export struct Stream {
 
 
 /// allocate a frame for sending later
-export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> MutSlice mut *
+export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> slice::MutSlice
     where err::checked(*e)
     where reserved_size < 100000
-    model safe(return) // this is technically wrong, but the prover isnt good enough yet
-    model safe(return->slice.mem)
-    model len(return->slice.mem) >= reserved_size + 14
-    model return->slice.size == reserved_size + 14
-    model return->slice.size >= len(return->slice.mem)
-    model return->at <= return->slice.size
+    model slice::mut_slice::integrity(&return)
 {
     static_attest(safe(self->chan));
-    let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, reserved_size + 14);
+    let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, reserved_size + 14);
     if err::check(e) {
         if e->error == err::OutOfTail {
             self->memory_pressure = true;
         }
         unsafe {
-            return 0;
+            slice::MutSlice bad = {0};
+            return bad;
         }
     }
 
-    err::assert(frame->push32(byteorder::to_be32(self->id)));
-    err::assert(frame->push64(byteorder::to_be64((self->order_outgoing)++)));
-    err::assert(frame->push16(0));
+    err::assert(frame.push32(byteorder::to_be32(self->id)));
+    err::assert(frame.push64(byteorder::to_be64((self->order_outgoing)++)));
+    err::assert(frame.push16(0));
     return frame;
 }
 
@@ -108,8 +104,9 @@ export fn close(Stream mut* self)
     }
 }
 
-pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, Slice *b) -> bool
+pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, slice::Slice b) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&b)
 {
     if self->closing {
         return true;
@@ -220,7 +217,7 @@ pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
         self->memory_pressure = false;
     }
     if self->memory_pressure_timer_io.valid() {
-        new+20 s = string::make();
+        new+20 s = buffer::make();
         if self->memory_pressure_timer_io.read(e, &s) == io::Result::Later {
             return;
         } else {

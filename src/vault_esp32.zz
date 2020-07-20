@@ -2,7 +2,7 @@ using toml;
 using err;
 using vault;
 using fs;
-using string;
+using buffer;
 using identity;
 using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF, fprintf, stderr, fputc};
 using <string.h>::{memcpy, memset};
@@ -14,7 +14,7 @@ inline using "esp.h" as esp;
 struct Authorize {
     bool used;
     identity::Identity identity;
-    string::String+300 mut path;
+    buffer::Buffer+300 mut path;
 }
 
 fn close(vault::Vault mut*self) {
@@ -235,7 +235,7 @@ fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
         };
         static_attest(nullterm(val));
 
-        if (delme->eq(&id) && string::cstr_eq(resource, val)) {
+        if (delme->eq(&id) && buffer::cstr_eq(resource, val)) {
             key[6] = 'i';
             esp::nvs_erase_key(handle, key);
             key[6] = 'p';
@@ -283,7 +283,7 @@ fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
         };
 
         static_attest(nullterm(val));
-        if (addme->eq(&id) && string::cstr_eq(resource, val)) {
+        if (addme->eq(&id) && buffer::cstr_eq(resource, val)) {
             esp::nvs_close(handle);
             return;
         }

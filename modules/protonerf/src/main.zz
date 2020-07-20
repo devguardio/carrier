@@ -2,10 +2,8 @@ using <stdio.h>::{printf};
 using err;
 using protonerf;
 using hex;
-using string;
+using buffer;
 using slice;
-
-
 
 
 enum SimpleMessageField {
@@ -17,20 +15,19 @@ enum SimpleMessageField {
 export fn main() -> int {
     new+1000 e = err::make();
 
-    string::String+1000 mut buf;
+    buffer::Buffer+1000 mut buf;
     buf.clear();
     slice::MutSlice mut sl = buf.as_mut_slice();
 
 
 
-    protonerf::encode_varint(&sl, &e, SimpleMessageField::lucky_number, -9000);
+    protonerf::encode_varint(sl, &e, SimpleMessageField::lucky_number, -9000);
     e.abort();
 
-    protonerf::encode_bytes(&sl, &e, SimpleMessageField::blurp, (u8*)"Bob", 3);
+    protonerf::encode_bytes(sl, &e, SimpleMessageField::blurp, (u8*)"Bob", 3);
     e.abort();
 
-    static_attest(buf.len < len(buf.mem));
-    hex::dump((u8*)buf.mem, buf.len);
+    hex::dump((u8*)buf.mem, buf.at);
 
 
     u8 msg[] = {
@@ -60,7 +57,7 @@ export fn main() -> int {
     };
 
 
-    new dec = protonerf::decode(msg, static(len(msg)));
+    new dec = protonerf::decode(slice::slice::Slice { mem: msg, size: static(len(msg)) } );
     for (protonerf::Field mut v; dec.next(&e, &v);) {
         e.abort();
         printf("index: %u , val: %d\n", v.index, v.value.v_i64);

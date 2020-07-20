@@ -16,7 +16,7 @@ using pq;
 using byteorder;
 using identity;
 using protonerf;
-using string;
+using buffer;
 using stream;
 using slice;
 using net::address;
@@ -55,8 +55,9 @@ fn close_publish(stream::Stream mut *self, err::Err+et mut*e) {
     self->chan->endpoint->close();
 }
 
-fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
+fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice bs) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&bs)
 {
     static_attest(safe(self->chan));
     if self->state == 0 {
@@ -70,16 +71,16 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
         }
 
 
-        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
+        let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
         if err::check(e) {
             return false;
         }
 
         self->state = 1;
 
-        frame->push32(byteorder::to_be32(1)); // stream
-        frame->push64(byteorder::to_be64(2)); // order
-        frame->push16(0); // size placeholder
+        frame.push32(byteorder::to_be32(1)); // stream
+        frame.push64(byteorder::to_be64(2)); // order
+        frame.push16(0); // size placeholder
 
         static_attest(safe(self->chan->endpoint));
 
@@ -97,7 +98,7 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
         }
 
     } else if self->state == 1 {
-        new mut dec = protonerf::decode_slice(bs);
+        new mut dec = protonerf::decode(bs);
         for (protonerf::Field mut field; dec.next(e,&field);) {
             if err::check(e) {
                 return true;
@@ -105,7 +106,8 @@ fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> 
             switch field.index {
                 proto::PublishChange::Alias => {
                     static_attest(safe(field.a));
-                    new mut dec2 = protonerf::decode(field.a, field.value.v_len);
+                    static_attest(len(field.a) >= field.value.v_len);
+                    new mut dec2 = protonerf::decode(slice::slice::Slice{mem: field.a, size: field.value.v_len});
                     for (protonerf::Field mut field; dec2.next(e,&field);) {
                         switch field.index {
                             proto::Alias::Alias => {
@@ -130,20 +132,21 @@ static stream::Config PeerConnect = stream::Config {
 };
 
 
-pub fn on_remote_open(stream::Stream mut*self, err::Err+et mut*e, slice::Slice *headers)
+pub fn on_remote_open(stream::Stream mut*self, err::Err+et mut*e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
     static_attest(safe(self->chan));
-    let mut *frame = self->stream(e, 14);
+    let mut frame = self->stream(e, 14);
     if err::check(e) { return; }
 
     hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
     if err::check(e) { return ; }
 }
 
-fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+    where slice::slice::integrity(&msg)
     where err::checked(*e)
-    where safe(msg->mem)
 {
     static_attest(safe(self->chan));
 
@@ -161,7 +164,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         // -----------
         // 1. decode the protobuf message sent by the broker
 
-        new mut dec = protonerf::decode(msg->mem, msg->size);
+        new mut dec = protonerf::decode(msg);
         for (protonerf::Field mut field;dec.next(e, &field);) {
             if err::check(e) {
                 return true;
@@ -237,8 +240,8 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
 
         // verify signature over symmetric hash
         u8 mut signme[static(len(endpoint::SIGN_PURPOSE) + len(rsp.symm.h))] = {0};
-        mem::copy(endpoint::SIGN_PURPOSE, signme, string::strlen(endpoint::SIGN_PURPOSE));
-        u8 mut * m = signme + string::strlen(endpoint::SIGN_PURPOSE);
+        mem::copy(endpoint::SIGN_PURPOSE, signme, buffer::strlen(endpoint::SIGN_PURPOSE));
+        u8 mut * m = signme + buffer::strlen(endpoint::SIGN_PURPOSE);
         mem::copy(rsp.symm.h, m, static(len(rsp.symm.h)));
 
         identity::Signature mut signature = {0};
@@ -276,13 +279,13 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         if !authorized {
             log::error("UNAUTHORIZED");
 
-            let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 34);
+            let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 34);
             if err::check(e) {
                 return true;
             }
-            frame->push32(byteorder::to_be32(self->id));
-            frame->push64(byteorder::to_be64((self->order_outgoing)++));
-            frame->push16(0); // size placeholder
+            frame.push32(byteorder::to_be32(self->id));
+            frame.push64(byteorder::to_be64((self->order_outgoing)++));
+            frame.push16(0); // size placeholder
 
             protonerf::encode_varint(frame, e, proto::PeerConnectResponse::Ok, 0);
             if err::check(e) {
@@ -310,33 +313,34 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         err::assert_safe(ep);
         let nuchan = ep->statem.connected.next_channel();
 
-        slice::MutSlice mut * mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 290);
+        let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 290);
+        bool mut frameok = true;
         if err::check(e) {
             e->elog();
-            unsafe { frame = 0; }
+            frameok = false;
             e->make();
         }
 
         // oom
-        if nuchan == 0 || frame == 0 {
+        if nuchan == 0 || !frameok {
             if nuchan == 0 {
                 log::error("cannot accept: max channels");
             } else {
                 log::error("cannot accept: max framepool");
             }
 
-            if frame != 0 {
+            if frameok  {
                 self->chan->q.cancel();
-                unsafe { frame = 0; }
+                frameok = false;
             }
 
-            let mut *frame = self->chan->q.alloc(e, channel::FrameType::Stream, 30);
+            let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 30);
             if err::check(e) {
                 return false;
             }
-            frame->push32(byteorder::to_be32(self->id));
-            frame->push64(byteorder::to_be64((self->order_outgoing)++));
-            frame->push16(0); // size placeholder
+            frame.push32(byteorder::to_be32(self->id));
+            frame.push64(byteorder::to_be64((self->order_outgoing)++));
+            frame.push16(0); // size placeholder
 
             protonerf::encode_varint(frame, e, proto::PeerConnectResponse::Ok, 0);
             if err::check(e) {
@@ -359,9 +363,9 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         // -----------
         // 4. send connect response header
 
-        frame->push32(byteorder::to_be32(self->id));
-        frame->push64(byteorder::to_be64((self->order_outgoing)++));
-        frame->push16(0); // size placeholder
+        frame.push32(byteorder::to_be32(self->id));
+        frame.push64(byteorder::to_be64((self->order_outgoing)++));
+        frame.push16(0); // size placeholder
 
         protonerf::encode_varint(frame, e, proto::PeerConnectResponse::Ok, 1);
         if err::check(e) {
@@ -375,8 +379,8 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             return true;
         }
 
-        static_attest(len(frame->slice.mem) > frame->at);
-        static_attest(len(frame->slice.mem) > frame->at + 252);
+        static_attest(len(frame.mem) > *frame.at);
+        static_attest(len(frame.mem) > *frame.at + 252);
         static_attest(safe(self->chan->store));
 
         responder::accept_insecure(
@@ -385,7 +389,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             self->chan->store,
             route,
             timestamp,
-            frame
+            &frame
         );
         if err::check(e) {
             return true;
@@ -398,7 +402,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
             return true;
         }
 
-        log::info("accepted %zu %lu\n", frame->at, route);
+        log::info("accepted %zu %lu\n", *frame.at, route);
 
 
         channel::from_transfer(nuchan, channel::transfer_from_symmetric(&rsp.symm, 0x08, route, true));

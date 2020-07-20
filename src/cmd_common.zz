@@ -4,7 +4,6 @@ using log;
 using err;
 using hex;
 using stream;
-using string;
 using slice;
 using hpack;
 using <stdlib.h>::{atoi};
@@ -26,8 +25,9 @@ pub fn print_identity(endpoint::Endpoint *self)
     log::info("my identity: %s", buf);
 }
 
-pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
     if self->state == 0 {
         self->state = 1;
@@ -56,13 +56,12 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Sli
     } else {
         self->state = 2;
 
-        static_attest(safe(msg->mem));
         err::assert_safe(self->user2);
         static_attest(nullterm(self->user2));
 
         log::warn("%s.proto unavailable, printing unlabeled data. see documentation for CARRIER_PROTO_PATHS", self->user2);
 
-        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        new mut decoder = protonerf::decode(msg);
         for (protonerf::Field mut field;decoder.next(e, &field);) {
              if err::check(e) { return true; }
 
@@ -81,7 +80,8 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Sli
 }
 
 
-export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+    where slice::slice::integrity(&msg)
     where err::checked(*e)
 {
     int mut rcode = 0;

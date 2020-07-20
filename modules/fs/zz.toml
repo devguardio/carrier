@@ -11,5 +11,5 @@ lflags = []
 default = []
 
 [dependencies]
-string = "1"
-err = "1"
+buffer  = "1"
+err     = "1"

@@ -18,7 +18,7 @@ inline using (needs size_t) "base58.h" as b58;
 using err;
 using crc8;
 using rand;
-using string;
+using buffer;
 using base32;
 
 export symbol Invalid;
@@ -327,12 +327,15 @@ export fn identity_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Ident
     return to_str_bc58(32, e, to, l, 8, 9, from->k);
 }
 
-export fn identity_to_string (Identity* self, err::Err+et mut* e, string::String+st mut*str)
-    where err::checked(*e)
+export fn identity_to_string (Identity* self, err::Err+et mut* e, buffer::Buffer+st mut*str)
+    where   err::checked(*e)
+    where   buffer::integrity(str, st)
+    model   buffer::integrity(str, st)
 {
-    static_attest(str->len < len(str->mem));
-    let ur = to_str(32, e, str->mem + str->len, st - str->len, 1, 9, self->k);
-    str->len += ur;
+    static_attest(str->at < len(str->mem));
+    let ur = to_str(32, e, str->mem + str->at , st - str->at , 1, 9, self->k);
+    str->at += ur;
+    static_attest(buffer::integrity(str, st))
 }
 
 export fn address_to_str (err::Err+et mut* e,     char mut* to, usize l, Address* from)  -> usize
@@ -388,7 +391,7 @@ export fn signature_to_str (err::Err+et mut* e,      char mut* to, usize l, Sign
 }
 
 
-export fn alias_from_str (Alias mut* self, err::Err+et mut* e, char* from, usize l)
+export fn alias_from_str (Alias new mut* self, err::Err+et mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {

@@ -2,7 +2,6 @@ using carrier::cipher;
 using err;
 using hex;
 using <string.h>::{memcmp};
-using string;
 using <stdio.h>::{fread, stdin, stderr};
 
 

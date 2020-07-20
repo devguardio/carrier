@@ -5,7 +5,7 @@ using slice;
 using io;
 using log;
 using hpack;
-using string;
+using buffer;
 using time;
 using <stdlib.h>::{exit, calloc, free};
 using sysinfo;
@@ -27,7 +27,8 @@ static stream::Config ConfigSensors = stream::Config {
     open:       sensors_open,
 };
 
-fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
     let mut *frame = self->stream(e, 14);
@@ -40,12 +41,15 @@ fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *heade
     if err::check(e) { return; }
     sysinfo::sysinfo(frame2);
 
-    protonerf::encode_bytes(frame2, e, proto::Sysinfo::CarrierBuildId, (u8*)revision::BUILD_ID, string::strlen(revision::BUILD_ID));
+    static_attest(safe(revision::BUILD_ID));
+    static_attest(nullterm(revision::BUILD_ID));
+    protonerf::encode_bytes(frame2, e, proto::Sysinfo::CarrierBuildId, (u8*)revision::BUILD_ID, buffer::strlen(revision::BUILD_ID));
 
     self->close();
 }
 
-fn sensors_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn sensors_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
     let mut *frame = self->stream(e, 14);

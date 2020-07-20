@@ -5,7 +5,7 @@ using slice;
 using io;
 using log;
 using hpack;
-using string;
+using buffer;
 using time;
 using pool;
 using io::unix;
@@ -46,13 +46,13 @@ fn out_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* as
     where err::checked(*e)
 {
 
-    let mut *frame = self->stream(e, 300);
+    let mut frame = self->stream(e, 300);
     if err::check(e) {
         e->elog();
         e->make();
         return;
     }
-    err::assert(frame->push(1));
+    err::assert(frame.push(1));
 
     // make sure we do NOT select before stream alloc, so that if alloc fails, we wait to the next poll loop
     if !stdinio.valid() {
@@ -62,19 +62,20 @@ fn out_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* as
     async->select(e, &stdinio, io::Ready::Read);
     if err::check(e) { return; }
 
-    if stdinio.read_slice(e, frame) != io::Result::Ready {
+    if stdinio.read_slice(e, &frame) != io::Result::Ready {
         self->cancel();
     }
     if err::check(e) { return; }
 
 }
 
-fn out_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+fn out_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+    where slice::slice::integrity(&msg)
 {
-    if msg->size < 2 ||  msg->size > 0xffffff {
+    if msg.size < 2 ||  msg.size > 0xffffff {
         return true;
     }
-    write(1, msg->mem+1 , msg->size - 1);
+    write(1, msg.mem+1 , msg.size - 1);
     return true;
 }
 
@@ -87,7 +88,7 @@ fn out_shell_close(stream::Stream mut *self, err::Err+et mut*e)
 struct Shell {
     io::Io  master;
     pid_t   pid;
-    string::String+100 mut inbuf;
+    buffer::Buffer+100 mut inbuf;
 }
 
 static stream::Config ShellConfig = stream::Config {
@@ -98,10 +99,10 @@ static stream::Config ShellConfig = stream::Config {
     poll:       in_shell_poll,
 };
 
-export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
 {
-    let mut *frame = self->stream(e, 14);
+    let mut frame = self->stream(e, 14);
     if err::check(e) { return; }
 
 
@@ -111,7 +112,7 @@ export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slic
 
 
 
-    new+300 command = string::make();
+    new+300 command = buffer::make();
     new it = hpack::decoder::decode(headers);
     while it.next(e) {
         if it.key.eq_cstr("command") {
@@ -193,7 +194,7 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e, char * command)
         ioctl(0, TIOCSCTTY, 1);
 
 
-        if string::strlen(command) > 0 {
+        if buffer::strlen(command) > 0 {
             char mut * args[] = {SHPATH, "-i", "-l", "-c", (char mut*)command, 0};
             execv(args[0], args);
         } else {
@@ -213,24 +214,24 @@ fn in_shell_open_impl(Shell mut *self, err::Err+et mut*e, char * command)
 
 }
 
-export fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+export fn in_shell_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
-    where safe(msg->mem)
+    where slice::slice::integrity(&msg)
 {
     Shell mut * state = (Shell mut*)self->user2;
     static_attest(safe(state));
 
 
-    if msg->size < 2 {
+    if msg.size < 2 {
         return true;
     }
 
-    if msg->mem[0] != 1 {
+    if msg.mem[0] != 1 {
         return true;
     }
 
-    let msgmem  = msg->mem + 1;
-    let msgsize = msg->size - 1;
+    let msgmem  = msg.mem + 1;
+    let msgsize = msg.size - 1;
 
     if state->master.valid() {
         usize mut blen = msgsize;
@@ -275,7 +276,7 @@ export fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async m
         unix::make_read_async(&state->master, async);
     }
 
-    if state->inbuf.len == 0 {
+    if state->inbuf.at == 0 {
         if state->master.valid() {
             async->select(e, &state->master, io::Ready::Read);
             if err::check(e) { return; }
@@ -289,16 +290,16 @@ export fn in_shell_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async m
         }
     }
 
-    if state->inbuf.len != 0 {
-        static_attest(state->inbuf.len <= static(len(state->inbuf.mem)));
-        let mut *frame = self->stream(e, 1 + state->inbuf.len);
+    if state->inbuf.at != 0 {
+        static_attest(state->inbuf.at <= static(len(state->inbuf.mem)));
+        let mut frame = self->stream(e, 1 + state->inbuf.at);
         if err::check(e) {
             e->elog();
             e->make();
             return;
         }
-        err::assert(frame->push(1));
-        err::assert(frame->append_bytes((u8*)state->inbuf.mem, state->inbuf.len));
+        err::assert(frame.push(1));
+        err::assert(frame.append_bytes((u8*)state->inbuf.mem, state->inbuf.at));
         state->inbuf.clear();
     }
 

@@ -4,7 +4,7 @@ using connect;
 using log;
 using channel;
 using identity;
-using string;
+using buffer;
 using endpoint;
 using <stdio.h>::{fprintf, stderr, printf};
 using <string.h>::{strcpy};
@@ -79,11 +79,11 @@ pub fn cmd(usize mut argc, char ** argv) -> int
         static_attest(safe(arg));
         static_attest(nullterm(arg));
         if target == Target::None {
-            if string::cstr_eq(arg, "self") {
+            if buffer::cstr_eq(arg, "self") {
                 target = Target::Self;
             } else {
                 target = Target::Identity;
-                identity::identity_from_str (&target_id, &e, arg, string::strlen(arg));
+                identity::identity_from_str (&target_id, &e, arg, buffer::strlen(arg));
                 if err::check(&e) {
                     e.fail(err::InvalidArgument, "parsing remote target identity from commandline argument");
                     e.eprintf(stderr);
@@ -92,9 +92,9 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                 }
             }
         } else if service == Service::None {
-            if string::cstr_eq(arg, "auth") {
+            if buffer::cstr_eq(arg, "auth") {
                 service = Service::Auth;
-            } else if string::cstr_eq(arg, "net") {
+            } else if buffer::cstr_eq(arg, "net") {
                 service = Service::Net;
             } else {
                 fprintf(stderr, "%s", USAGE);
@@ -102,21 +102,21 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                 return 1;
             }
         } else if method == Method::None {
-            if string::cstr_eq(arg, "add") {
+            if buffer::cstr_eq(arg, "add") {
                 method = Method::Add;
-            } else if string::cstr_eq(arg, "set") {
+            } else if buffer::cstr_eq(arg, "set") {
                 method = Method::Join;
-            } else if string::cstr_eq(arg, "join") {
+            } else if buffer::cstr_eq(arg, "join") {
                 method = Method::Join;
-            } else if string::cstr_eq(arg, "ls") {
+            } else if buffer::cstr_eq(arg, "ls") {
                 method = Method::Get;
-            } else if string::cstr_eq(arg, "get") {
+            } else if buffer::cstr_eq(arg, "get") {
                 method = Method::Get;
-            } else if string::cstr_eq(arg, "list") {
+            } else if buffer::cstr_eq(arg, "list") {
                 method = Method::Get;
-            } else if string::cstr_eq(arg, "rm") {
+            } else if buffer::cstr_eq(arg, "rm") {
                 method = Method::Remove;
-            } else if string::cstr_eq(arg, "del") {
+            } else if buffer::cstr_eq(arg, "del") {
                 method = Method::Remove;
             } else {
                 fprintf(stderr, "%s", USAGE);
@@ -153,7 +153,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
             }
         } else if service == Service::Auth {
             if authme == Target::None {
-                if string::cstr_eq(arg, "self") {
+                if buffer::cstr_eq(arg, "self") {
                     authme = Target::Self;
                     if method == Method::Remove {
                         fprintf(stderr, "cannot deauthorize self\n");
@@ -171,7 +171,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                     authme = Target::Identity;
 
                     identity::Identity mut checkme = {0};
-                    identity::identity_from_str (&checkme, &e, arg, string::strlen(arg));
+                    identity::identity_from_str (&checkme, &e, arg, buffer::strlen(arg));
                     if err::check(&e) {
                         e.fail(err::InvalidArgument, "parsing auth add identity '%s' from commandline argument", arg);
                         e.eprintf(stderr);
@@ -198,7 +198,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
             strcpy(net_secret, arg);
 
             identity::Secret mut checkme = {0};
-            identity::secret_from_str (&checkme, &e, arg, string::strlen(arg));
+            identity::secret_from_str (&checkme, &e, arg, buffer::strlen(arg));
             if err::check(&e) {
                 e.fail(err::InvalidArgument, "parsing network secret from commandline argument");
                 e.eprintf(stderr);
@@ -231,7 +231,8 @@ pub fn cmd(usize mut argc, char ** argv) -> int
 
 export symbol RemoteOpFailed;
 
-pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+    where slice::slice::integrity(&msg)
     where err::checked(*e)
 {
     if self->state == 0 {
@@ -239,14 +240,12 @@ pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slic
         return cmd_common::on_stream_want_header_200(self, e, msg);
     } else {
         self->state = 2;
-        static_attest(safe(msg->mem));
-
 
         let mut ok = false;
         char * mut remote_error = 0;
         usize  mut remote_error_len = 0;
 
-        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        new mut decoder = protonerf::decode(msg);
         for (protonerf::Field mut field;decoder.next(e,&field);) {
             if err::check(e) { return true; }
             switch field.index {

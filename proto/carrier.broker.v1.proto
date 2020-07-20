@@ -63,7 +63,8 @@ message PublishRequest {
 }
 
 message Alias   {
-    uint64  alias  = 1;
+    //string alias = 1;
+    uint64  alias  = 2;
 }
 
 message PublishChange {
@@ -152,7 +153,8 @@ message TraceResponse {
     uint64  pkts_sent           = 9;
     uint64  pkts_lost           = 10;
     uint64  rtt                 = 11;
-    uint64  alias               = 12;
+    // string alias = 12
+    uint64  alias               = 13;
 }
 
 service Broker {

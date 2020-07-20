@@ -38,6 +38,8 @@ struct Frame {
     u64 packet;
 
     u8              typ;
+
+    usize mut bufat;
     slice::MutSlice mut buf;
 }
 
@@ -73,9 +75,9 @@ export struct Q+ {
 
 export fn clear(Q+qt mut* self) {
     for (usize mut i = 0; i < qt; i++) {
-        if self->q[i].buf.slice.mem != 0 {
+        if self->q[i].buf.mem != 0 {
             unsafe {
-                pool::free(self->allocator, (u8 mut*)(self->q[i].buf.slice.mem));
+                pool::free(self->allocator, (u8 mut*)(self->q[i].buf.mem));
             }
         }
         memset(self->q + i, 0, sizeof(Frame));
@@ -85,21 +87,17 @@ export fn clear(Q+qt mut* self) {
 
 
 /// allocate the next frame in the queue
-export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) -> slice::MutSlice mut *
-    where err::checked(*e)
-    model safe(return) // this is technically wrong, but the prover isnt good enough yet
-    model safe(return->slice.mem)
-    model len(return->slice.mem) >= size
-    model return->slice.size == size
-    model return->slice.size >= len(return->slice.mem)
-    model return->at <= return->slice.size
+export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) -> slice::MutSlice
+    where   err::checked(*e)
+    model   slice::mut_slice::integrity(&return)
 {
     err::assert_safe(self->allocator);
     void mut *payload = self->allocator->malloc(size);
     if payload == 0 {
         err::fail(e, err::OutOfTail, "cannot alloc %u b: %u free", size, self->allocator->free_bytes());
         unsafe {
-            return 0;
+            slice::MutSlice bad = {0};
+            return bad;
         }
     }
 
@@ -108,13 +106,15 @@ export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) ->
         self->allocator->free(payload);
         err::fail(e, err::OutOfTail, "maxq");
         unsafe {
-            return 0;
+            slice::MutSlice bad = {0};
+            return bad;
         }
     }
     (self->count)++;
     unsafe {
         r = self->q + (self->back)++;
     }
+    //log::debug("alloc frame %d|%x", self->back-1, r);
 
     if (self->back >= qt) {
         self->back = 0;
@@ -122,16 +122,14 @@ export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) ->
 
     memset(r, 0, sizeof(Frame));
     static_attest(safe(r));
-    r->typ = (u8)typ;
-    r->buf.slice.mem  = payload;
-    r->buf.slice.size = size;
+    r->typ      = (u8)typ;
+    r->buf.mem  = payload;
+    r->buf.size = size;
+    r->buf.at   = &r->bufat;
+    static_attest(slice::mut_slice::integrity(&r->buf));
 
-    static_attest(safe(r->buf.slice.mem));
-    static_attest(len(r->buf.slice.mem) == size);
-    static_attest(r->buf.slice.size == size);
-    static_attest(r->buf.at <= r->buf.slice.size);
 
-    return &r->buf;
+    return r->buf;
 }
 
 /// undo last allocation without sending anything
@@ -139,7 +137,7 @@ export fn cancel(Q+qt mut* self)
 {
     wrapdec(self, &self->back);
     unsafe {
-        pool::free(self->allocator, (u8 mut*)(self->q[self->back].buf.slice.mem));
+        pool::free(self->allocator, (u8 mut*)(self->q[self->back].buf.mem));
     }
     static_attest(self->back < len(self->q));
     memset(self->q + self->back, 0, sizeof(Frame));
@@ -189,7 +187,7 @@ export fn ack(Q+qt mut* self, u64 time, u64 counter) {
             static_attest(safe(self->allocator));
 
             unsafe {
-                pool::free(self->allocator, (u8 mut*)(qq[f].buf.slice.mem));
+                pool::free(self->allocator, (u8 mut*)(qq[f].buf.mem));
             }
 
             memset(qq + f, 0, sizeof(Frame));
@@ -212,7 +210,7 @@ export fn ack(Q+qt mut* self, u64 time, u64 counter) {
             memcpy(&mov, &(qq[f]), sizeof(Frame));
             memset(qq + f, 0, sizeof(Frame));
             wrapinc(self, &self->front);
-
+            mov.buf.at = 0;
 
             for (usize mut i = wrapinc(self, &self->back); i != self->sent;) {
                 usize p    = wrapdec(self, &i);
@@ -315,8 +313,7 @@ export fn keepalive(Q+qt mut* self, u64 now) -> u64
         self->time_last_ping_sent = now;
         //log::debug("sending ping %u, expected in %zu", self->tlp_counter, tt);
 
-        err::Err+0 mut e;
-        e.make();
+        new+10 e = err::make();
         let mut *frame = self->alloc(&e, channel::FrameType::Ping, 1);
         return tt;
     }
@@ -325,27 +322,30 @@ export fn keepalive(Q+qt mut* self, u64 now) -> u64
 
 
 
-
+// learning: don't use frame->buf.at.
+// the frame is memcpyied in recovery, and that pointer is wrong
 fn make_frame_size(Frame mut* frame)
 {
-    static_attest(frame->buf.slice.size >= len(frame->buf.slice.mem));
-    static_attest(frame->buf.at  <= len(frame->buf.slice.mem));
+    static_attest(slice::mut_slice::integrity(&frame->buf));
+
     switch frame->typ {
         channel::FrameType::Ack         => {}
         channel::FrameType::Ping        => {}
         channel::FrameType::Disconnect  => {}
         channel::FrameType::Open        => {
-            err::assert(frame->buf.slice.size >= 4 + 2 + 4);
-            u16 bsize = byteorder::to_be16(frame->buf.at - 4 - 2);
-            memcpy(frame->buf.mem() + 4, &bsize, 2);
+            err::assert(frame->buf.size >= 4 + 2 + 4);
+            u16 bsize = byteorder::to_be16(frame->bufat - 4 - 2);
+            memcpy(frame->buf.mem + 4, &bsize, 2);
+            err::assert(unsafe<bool>(frame->bufat   >= 4 + 2 + 4));
         }
         channel::FrameType::Stream => {
-            err::assert(frame->buf.slice.size >= 4 + 8 + 2);
-            u16 bsize = byteorder::to_be16(frame->buf.at - 4 - 8 - 2);
-            memcpy(frame->buf.mem() + 4 + 8, &bsize, 2);
+            err::assert(frame->buf.size >= 4 + 8 + 2);
+            u16 bsize = byteorder::to_be16(frame->bufat - 4 - 8 - 2);
+            memcpy(frame->buf.mem + 4 + 8, &bsize, 2);
+            err::assert(unsafe<bool>(frame->bufat   >= 4 + 8 + 2));
         }
         channel::FrameType::Close => {
-            err::assert(frame->buf.at == 13 || frame->buf.at == 12);
+            err::assert(frame->bufat == 13 || frame->bufat == 12);
         }
     }
 }
@@ -361,15 +361,21 @@ export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) 
 
         Frame mut* f = &((self->q)[self->sent]);
 
-        if (f->sent_at == 0) {
+        if (f->sent_at == 0 && f->typ != 0 /*TODO how does this happen?*/) {
 
-            if ((sent_bytes + (u16)f->buf.at + 1) > buflen) {
+            if ((sent_bytes + (u16)f->bufat + 1) > buflen) {
                 break;
             }
 
+            //log::debug("frame: %zu (typ: %d, size %d), sent in pkt %zu",
+            //    self->sent,
+            //    f->typ,
+            //    f->bufat,
+            //    counter
+            //);
             make_frame_size(f);
 
-            //log::debug("frame: %zu, sent in pkt %zu", self->sent, counter);
+
             f->packet   = counter;
             f->sent_at  = time;
 
@@ -379,9 +385,9 @@ export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) 
             sent_bytes += 1;
 
             unsafe {
-                memcpy(buf + sent_bytes, (u8 mut*)f->buf.slice.mem, f->buf.at);
+                memcpy(buf + sent_bytes, (u8 mut*)f->buf.mem, f->bufat);
             }
-            sent_bytes += (u16)f->buf.at;
+            sent_bytes += (u16)f->bufat;
         }
         (self->sent)++;
         if (self->sent >= qt) {

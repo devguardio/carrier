@@ -8,7 +8,7 @@ using pq;
 using mem;
 using crc8;
 using <string.h>::{memset};
-using string;
+using buffer;
 using peering;
 using log;
 using stream;
@@ -132,18 +132,18 @@ export fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> st
     }
     static_attest(safe(r));
 
-    let mut *frame = self->q.alloc(e, FrameType::Open, 100);
+    let mut frame = self->q.alloc(e, FrameType::Open, 100);
     if err::check(e) {
         r->id = 0;
         return 0;
     }
 
-    frame->push32(byteorder::to_be32(r->id)); // stream
-    frame->push16(0); // size placeholder
+    frame.push32(byteorder::to_be32(r->id)); // stream
+    frame.push16(0); // size placeholder
 
     static_attest(nullterm(conf->path));
     static_attest(safe(conf->path));
-    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, string::strlen(conf->path));
+    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, buffer::strlen(conf->path));
     if err::check(e) {
         r->id = 0;
         return 0;
@@ -186,24 +186,24 @@ export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config
     err::assert(extraheaders->size < 10000);
     let framesize = 100 + extraheaders->size;
 
-    let mut *frame = self->q.alloc(e, FrameType::Open, framesize);
+    let mut frame = self->q.alloc(e, FrameType::Open, framesize);
     if err::check(e) {
         r->id = 0;
         return 0;
     }
 
-    frame->push32(byteorder::to_be32(r->id)); // stream
-    frame->push16(0); // size placeholder
+    frame.push32(byteorder::to_be32(r->id)); // stream
+    frame.push16(0); // size placeholder
 
     static_attest(nullterm(conf->path));
     static_attest(safe(conf->path));
-    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, string::strlen(conf->path));
+    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, buffer::strlen(conf->path));
     if err::check(e) {
         r->id = 0;
         return 0;
     }
 
-    frame->append_slice(extraheaders);
+    frame.append_slice(extraheaders);
 
     self->streamidcounter += 1;
     return r;
@@ -283,17 +283,17 @@ pub fn stream_exists(Channel mut* self, u32 streamid) -> bool {
 pub fn send_close_frame(Channel mut* self, err::Err+et mut *e, u32 streamid, u64 order)
     where err::checked(*e)
 {
-    slice::MutSlice mut * frame = self->q.alloc(e, FrameType::Close, 16);
+    slice::MutSlice mut frame = self->q.alloc(e, FrameType::Close, 16);
     if err::check(e) {
         e->make();
         return;
     }
 
-    frame->push32(byteorder::to_be32(streamid)); // stream
-    frame->push64(byteorder::to_be64(order)); // order
+    frame.push32(byteorder::to_be32(streamid)); // stream
+    frame.push64(byteorder::to_be64(order)); // order
 
     if self->version >= 0x09 {
-        frame->push(0); //TODO set reason
+        frame.push(0); //TODO set reason
     }
 }
 
@@ -366,8 +366,9 @@ fn disconnect(Channel mut* this, err::Err+et mut* e)
 }
 
 
-pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string::String+st mut* buf) -> io::Result
+pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, buffer::Buffer+st mut* buf) -> io::Result
     where err::checked(*e)
+    where buffer::integrity(buf, st)
     where st >= 4 + 8 + 8 + 320
 {
     // poll user streams
@@ -438,23 +439,23 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
         mem::copy(counter_b,    buf->mem + 4 + 8, 8);
     }
 
-    buf->len = 4 + 8 + 8;
-    usize unencrypted_size = buf->len;
+    buf->at = 4 + 8 + 8;
+    usize unencrypted_size = buf->at;
 
     //broken header crc
-    buf->mem[buf->len] = (char)crc8::broken_crc8(0, (u8*)buf->mem, 4 + 8 + 8);
-    buf->len += 1;
+    buf->mem[buf->at] = (char)crc8::broken_crc8(0, (u8*)buf->mem, 4 + 8 + 8);
+    buf->at += 1;
 
     //flags
-    buf->mem[buf->len] = 0x00;
-    buf->len += 1;
+    buf->mem[buf->at] = 0x00;
+    buf->at += 1;
 
     //payload size
-    u16 mut * payload_size = (u16 mut*)(buf->mem + buf->len);
-    buf->len += 2;
+    u16 mut * payload_size = (u16 mut*)(buf->mem + buf->at);
+    buf->at += 2;
 
 
-    usize size_before_payload = buf->len;
+    usize size_before_payload = buf->at;
 
 
     // all outgoing acks will fit in because 32 * 8 = 256
@@ -462,54 +463,53 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
     if self->outgoing_acks_at > 0 {
 
         // frame type
-        buf->mem[buf->len] = 0x01;
-        buf->len += 1;
+        buf->mem[buf->at] = 0x01;
+        buf->at += 1;
 
         // ack delay
-        buf->mem[buf->len ]       = 0x00;
-        buf->mem[buf->len + 1]   = 0x01;
-        buf->len += 2;
+        buf->mem[buf->at ]       = 0x00;
+        buf->mem[buf->at + 1]   = 0x01;
+        buf->at += 2;
 
         // number of acks
-        buf->mem[buf->len ]     = 0x00;
-        buf->mem[buf->len+ 1]   = (char)self->outgoing_acks_at;
-        buf->len += 2;
+        buf->mem[buf->at ]     = 0x00;
+        buf->mem[buf->at+ 1]   = (char)self->outgoing_acks_at;
+        buf->at += 2;
 
         //TODO acks must be sorted
         static_attest(len(self->outgoing_acks) > self->outgoing_acks_at);
         for (usize mut i = 0; i < (usize)self->outgoing_acks_at ; i++) {
-            err::assert(buf->len < st);
+            err::assert(buf->at < st);
             u64 ackd  = byteorder::to_be64((self->outgoing_acks)[i]);
             unsafe {
-                mem::copy(&ackd, buf->mem + buf->len , 8);
+                mem::copy(&ackd, buf->mem + buf->at , 8);
             }
-            buf->len += 8;
+            buf->at += 8;
         }
         self->outgoing_acks_at = 0;
     }
 
     // deque some frames
-    static_attest(len(buf->mem) > buf->len);
-    if st - buf->len > 16 {
-        buf->len += self->q.send(now, (u8 mut*)buf->mem + buf->len, st - buf->len -16, self->counter_out);
+    static_attest(len(buf->mem) > buf->at);
+    if st - buf->at > 16 {
+        buf->at += self->q.send(now, (u8 mut*)buf->mem + buf->at, st - buf->at -16, self->counter_out);
     }
 
 
     // nothing in the packet
-    if buf->len - size_before_payload < 1 {
+    if buf->at - size_before_payload < 1 {
         return io::Result::Later;
     }
 
-
-    (*payload_size) = byteorder::to_be16(buf->len - size_before_payload);
+    (*payload_size) = byteorder::to_be16(buf->at - size_before_payload);
 
     // padding to %64
-    buf->len += 64 - ((buf->len + 16) % 64);
-    if buf->len > st - 16{
-        buf->len = st - 16;
+    buf->at += 64 - ((buf->at + 16) % 64);
+    if buf->at > st - 16{
+        buf->at = st - 16;
     }
 
-    usize padded_size = buf->len - unencrypted_size;
+    usize padded_size = buf->at - unencrypted_size;
     usize budget      = st       - unencrypted_size;
 
 
@@ -523,10 +523,10 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 
     static_attest(len(ciphertext) >= padded_size);
     static_attest(len(ciphertext) >= budget);
-    static_attest(buf->len < len(buf->mem));
+    static_attest(buf->at < len(buf->mem));
 
     //log::debug("pkt before encrypt:");
-    //hex::dump((u8*)buf->mem, buf->len);
+    //hex::dump((u8*)buf->mem, buf->at);
 
 
     usize cipherlen = cipher::encrypt(
@@ -545,7 +545,7 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, string:
 
     self->counter_out += 1;
 
-    buf->len = unencrypted_size + cipherlen;
+    buf->at = unencrypted_size + cipherlen;
     return io::Result::Ready;
 }
 
@@ -573,12 +573,11 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
         return;
     }
 
-
     // broken crc and flags 2B
     if version >= 9 {
         body = body + 2;
     }
-    
+
     // payload len 2B
     usize mut frames_len;
     unsafe {frames_len = byteorder::from_be16(*(u16*)(body)) }
@@ -699,8 +698,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 } else {
                     log::debug("[%lu] received open stream=%u, size=%zu", self->route, streamid, size);
 
-                    new+128 path = string::make();
-                    new it = hpack::decoder::decode(&header_slice);
+                    new+128 path = buffer::make();
+                    new it = hpack::decoder::decode(header_slice);
                     while it.next(e) {
                         if it.key.eq_cstr(":path") {
                             path.clear();
@@ -756,14 +755,14 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                                     streami->order_outgoing = 1;
                                     err::assert_safe(conf->open.fn);
                                     static_attest(safe(conf->open));
-                                    conf->open(streami, e, &header_slice);
+                                    conf->open(streami, e, header_slice);
 
 
                                     if err::check(e) {
                                         e->elog();
                                         e->make();
                                         let mut *frame = streami->stream(e, 14);
-                                        if frame  == 0{
+                                        if err::check(e) {
                                             please_resend = true;
                                             log::warn("oom while sending 500");
                                         } else {
@@ -783,15 +782,15 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     if !accepted {
                         //log::warn("[%u] no service accepts path '%s'", self->route, path.cstr());
 
-                        let mut *frame = self->q.alloc(e, FrameType::Stream, 28);
+                        let mut frame = self->q.alloc(e, FrameType::Stream, 28);
                         if err::check(e) {
                             e->elog();
                             e->make();
                             please_resend = true;
                         } else {
-                            frame->push32(byteorder::to_be32(streamid)); // stream
-                            frame->push64(byteorder::to_be64(1)); // order
-                            frame->push16(0); // size placeholder
+                            frame.push32(byteorder::to_be32(streamid)); // stream
+                            frame.push64(byteorder::to_be64(1)); // order
+                            frame.push16(0); // size placeholder
 
                             hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"404", 3);
                             if err::check(e) { return ; }
@@ -859,7 +858,7 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                         let accepted = strx->incomming_stream(
                             e,
                             order,
-                            &bs
+                            bs
                         );
                         if err::check(e) {
                             if strx->errors_are_fatal {
@@ -1066,12 +1065,12 @@ pub fn ack(Channel mut* self, err::Err mut* e, u64 ackd) {
 fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     where err::checked(*e)
 {
-    let mut *frame1 = self->q.alloc(e, FrameType::Stream, 14 + 14);
+    let mut frame1 = self->q.alloc(e, FrameType::Stream, 14 + 14);
     if err::check(e) { return; }
 
-    err::assert(frame1->push32(byteorder::to_be32(stream_id)));
-    err::assert(frame1->push64(byteorder::to_be64(1)));
-    err::assert(frame1->push16(0));
+    err::assert(frame1.push32(byteorder::to_be32(stream_id)));
+    err::assert(frame1.push64(byteorder::to_be64(1)));
+    err::assert(frame1.push16(0));
 
 
     usize mut memneeded = 0;
@@ -1084,7 +1083,7 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
         static_attest(safe(conf));
         err::assert_safe(conf->path);
         static_attest(nullterm(conf->path));
-        memneeded += 2 + string::strlen(conf->path);
+        memneeded += 2 + buffer::strlen(conf->path);
     }
 
     //header
@@ -1092,12 +1091,14 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     // revision
     memneeded += 8;
     // application strings
-    memneeded += 10;
+    static_attest(safe(revision::BUILD_ID));
+    static_attest(nullterm(revision::BUILD_ID));
+    memneeded += 10 + buffer::strlen(revision::BUILD_ID);
 
 
 
-    let mut *frame2 = self->q.alloc(e, FrameType::Stream, memneeded);
-    static_attest(frame2->slice.size >= 20);
+    let mut frame2 = self->q.alloc(e, FrameType::Stream, memneeded);
+    static_attest(frame2.size >= 20);
     if err::check(e) {
         e->make();
         hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"500", 3);
@@ -1106,13 +1107,14 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
         hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"200", 3);
         if err::check(e) { return; }
 
-        err::assert(frame2->push32(byteorder::to_be32(stream_id)));
-        err::assert(frame2->push64(byteorder::to_be64(2)));
-        err::assert(frame2->push16(1));
+        err::assert(frame2.push32(byteorder::to_be32(stream_id)));
+        err::assert(frame2.push64(byteorder::to_be64(2)));
+        err::assert(frame2.push16(1));
+
 
         protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, revision::REVISION);
         e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,  (u8*)revision::BUILD_ID, string::strlen(revision::BUILD_ID));
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,  (u8*)revision::BUILD_ID, buffer::strlen(revision::BUILD_ID));
         e->abort();
         protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Application,              (u8*)"zz", 2);
         e->abort();
@@ -1134,21 +1136,21 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
 
             protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Paths,
                 (u8*)conf->path,
-                string::strlen(conf->path)
+                buffer::strlen(conf->path)
             );
             e->abort();
         }
     }
 
-    slice::MutSlice mut * frame3 = self->q.alloc(e, FrameType::Close, 16);
+    slice::MutSlice mut frame3 = self->q.alloc(e, FrameType::Close, 16);
     if err::check(e) {
         return;
     }
 
-    frame3->push32(byteorder::to_be32(stream_id)); // stream
-    frame3->push64(byteorder::to_be64(3)); // order
+    frame3.push32(byteorder::to_be32(stream_id)); // stream
+    frame3.push64(byteorder::to_be64(3)); // order
 
     if self->version >= 0x09 {
-        frame3->push(0); //TODO set reason
+        frame3.push(0); //TODO set reason
     }
 }

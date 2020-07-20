@@ -1,7 +1,7 @@
 using <stdio.h>::{fprintf, printf, stderr};
 using err;
 using carrier;
-using string;
+using buffer;
 using vault_toml;
 using vault;
 using log;
@@ -38,11 +38,11 @@ export fn main(int mut argc, char ** argv) -> int
         new va = vault_toml::from_home_carriertoml(&e);
         e.abort();
 
-        if string::cstr_eq(arg, "identity") {
+        if buffer::cstr_eq(arg, "identity") {
             return cmd_vault::print_identity(&va, argc, argv);
-        } else if string::cstr_eq(arg, "publish") {
+        } else if buffer::cstr_eq(arg, "publish") {
             return dopublish(va, argc, argv);
-        } else if string::cstr_eq(arg, "vault") {
+        } else if buffer::cstr_eq(arg, "vault") {
             return cmd_vault::cmd(&va, argc, argv);
         }
     }
@@ -55,7 +55,6 @@ using shell;
 using sft;
 using config;
 using io;
-using net;
 using bootstrap;
 using time;
 using endpoint;
@@ -82,10 +81,10 @@ pub fn dopublish(vault::Vault va, int mut argc, char ** argv) -> int
 
     cmd_common::print_identity(&ep);
 
-    bootstrap::sync(&e, &ep.vault, net::os(), &async, time::from_seconds(10));
+    bootstrap::sync(&e, &ep.vault, &async, time::from_seconds(10));
     e.abort();
 
-    ep.start(&e, net::os(), &async);
+    ep.start(&e, &async);
     e.abort();
 
     io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
@@ -98,11 +97,17 @@ pub fn dopublish(vault::Vault va, int mut argc, char ** argv) -> int
     sft::register(&ep);
     config::register(&ep);
     pub_sysinfo::register(&ep);
-    ep.register_stream(&OTAConfig);
+    register(&ep);
 
     io::await(&async, &e, endpoint::poll, &ep, time::infinite());
     e.abort();
     return 0;
+}
+
+
+export fn register(endpoint::Endpoint mut*ep)
+{
+    ep->register_stream(&OTAConfig);
 }
 
 using <sys/types.h>::{pid_t};
@@ -128,11 +133,12 @@ struct OTAState {
     pid_t       pid;
     io::Io      i_stdout;
 
-    string::String+300 mut inbuf;
+    buffer::Buffer+300 mut inbuf;
 }
 
-fn ota_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn ota_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
+    where slice::slice::integrity(&headers)
 {
     let mut *frame = self->stream(e, 14);
     if err::check(e) { return; }
@@ -180,18 +186,18 @@ fn ota_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     log::info("OTA open %u", self->id);
 }
 
-fn ota_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+fn ota_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
-    where safe(msg->mem)
+    where slice::slice::integrity(&msg)
 {
-    if msg->size >= 10000 {
+    if msg.size >= 10000 {
         return false;
     }
 
     let this = (OTAState mut*)self->user2;
     err::assert_safe(this);
 
-    if msg->size  == 0 {
+    if msg.size  == 0 {
         let mut *frame = self->stream(e, 50);
         if err::check(e) { return false; }
 
@@ -216,8 +222,8 @@ fn ota_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -
         if err::check(e) { return false; }
 
     } else {
-        this->sha.update(msg->mem, msg->size);
-        fwrite(msg->mem, 1, msg->size, this->f);
+        this->sha.update(msg.mem, msg.size);
+        fwrite(msg.mem, 1, msg.size, this->f);
     }
 
     return true;
@@ -253,7 +259,7 @@ fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
     static_attest(safe(state));
 
 
-    if state->inbuf.len == 0 {
+    if state->inbuf.at == 0 {
         if state->i_stdout.valid() {
 
             if state->i_stdout.ctx.async == 0 {
@@ -272,21 +278,21 @@ fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
                 }
                 default => {}
             }
-            log::info("] %d", state->inbuf.len);
+            log::info("] %d", state->inbuf.at);
             e->make();
         }
     }
 
-    if state->inbuf.len != 0 {
-        static_attest(state->inbuf.len <= static(len(state->inbuf.mem)));
-        let mut *frame = self->stream(e, 1 + state->inbuf.len);
+    if state->inbuf.at != 0 {
+        static_attest(state->inbuf.at <= static(len(state->inbuf.mem)));
+        let mut frame = self->stream(e, 1 + state->inbuf.at);
         if err::check(e) {
             e->elog();
             e->make();
             return;
         }
-        err::assert(frame->push(1));
-        err::assert(frame->append_bytes((u8*)state->inbuf.mem, state->inbuf.len));
+        err::assert(frame.push(1));
+        err::assert(frame.append_bytes((u8*)state->inbuf.mem, state->inbuf.at));
         state->inbuf.clear();
     }
 

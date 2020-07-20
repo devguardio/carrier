@@ -12,7 +12,7 @@ using proto;
 using protonerf;
 using slice;
 using hex;
-using string;
+using buffer;
 using log;
 
 export fn run_self_net_get(
@@ -42,7 +42,7 @@ export fn run_self_net_join(
     where nullterm(net_secret_s)
 {
     identity::Secret mut net_secret = {0};
-    identity::secret_from_str (&net_secret, e, net_secret_s, string::strlen(net_secret_s));
+    identity::secret_from_str (&net_secret, e, net_secret_s, buffer::strlen(net_secret_s));
     if err::check(e) {
         e->fail(err::InvalidArgument, "parsing auth add identity from commandline argument");
         return;
@@ -79,7 +79,7 @@ export fn run_remote_net_join(
     let frame = stx->stream(e, 64);
     if err::check(e) { return; }
 
-    protonerf::encode_bytes(frame, e, proto::NetworkJoin::Secret, (u8*)net_secret_s, string::strlen(net_secret_s));
+    protonerf::encode_bytes(frame, e, proto::NetworkJoin::Secret, (u8*)net_secret_s, buffer::strlen(net_secret_s));
     if err::check(e) { return; }
 
     mx.wait(e);
@@ -118,7 +118,8 @@ static stream::Config NetGetStream = stream::Config {
     close:  on_close,
 };
 
-fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+    where slice::slice::integrity(&msg)
     where err::checked(*e)
 {
     if self->state == 0 {
@@ -126,9 +127,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) ->
         return cmd_common::on_stream_want_header_200(self, e, msg);
     } else {
         self->state = 2;
-        static_attest(safe(msg->mem));
 
-        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        new mut decoder = protonerf::decode(msg);
         for (protonerf::Field mut field; decoder.next(e, &field);) {
             if err::check(e) { return true; }
 

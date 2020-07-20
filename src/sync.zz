@@ -5,7 +5,6 @@ using identity;
 using io;
 using io::unix;
 using log;
-using net;
 using time;
 using connect as connectI;
 using channel;
@@ -37,7 +36,7 @@ export fn start(Sync mut new * self, err::Err+et mut *e, endpoint::Endpoint mut 
     e->abort();
     */
 
-    bootstrap::sync(e, &self->ep->vault, net::os(), &self->async, time::from_seconds(10));
+    bootstrap::sync(e, &self->ep->vault, &self->async, time::from_seconds(10));
     if err::check(e) { return ; }
 
 }
@@ -67,7 +66,7 @@ export fn connect(Sync mut new * self, err::Err+et mut*e, identity::Identity *ta
 
     endpoint::cluster_target(self->ep, target);
 
-    self->ep->start(e, net::os(), &self->async);
+    self->ep->start(e, &self->async);
     if err::check(e) { return ; }
 
     io::await(&self->async, e, endpoint::poll, self->ep, time::from_seconds(30));

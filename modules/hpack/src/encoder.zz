@@ -1,63 +1,67 @@
 using err;
 using <string.h>::{strlen, memcpy};
 using slice;
+using slice::mut_slice;
 
-export fn encode(slice::MutSlice mut* slice, err::Err+et mut *e, u8* key, usize keylen, u8* val, usize vallen)
+export fn encode(slice::MutSlice slice, err::Err+et mut *e, u8* key, usize keylen, u8* val, usize vallen)
     where len(key)    >= keylen
     where len(val)    >= vallen
     where err::checked(*e)
+    where mut_slice::integrity(&slice)
+    model mut_slice::integrity(&slice)
 {
-    if slice->at >= slice->slice.size || slice->at + 1 >= slice->slice.size {
+    if *slice.at >= slice.size || *slice.at + 1 >= slice.size {
         err::fail(e, err::OutOfTail, "overflow");
         return;
     }
 
-    slice->mem()[slice->at] = 0;
-    slice->at += 1;
+    slice.mem[*slice.at] = 0;
+    *slice.at += 1;
 
-    if slice->at + 1 >= slice->slice.size {
+    if *slice.at + 1 >= slice.size {
         err::fail(e, err::OutOfTail, "overflow");
         return;
     }
 
-    slice->mem()[slice->at] = 0;
-    static_attest(len(slice->slice.mem) > slice->at);
+    slice.mem[*slice.at] = 0;
     encode_integer(slice, e, keylen, 7);
     if err::check(e) {
         return;
     }
-    slice->at += 1;
+    *slice.at += 1;
 
-    if slice->at + keylen >= slice->slice.size {
+    if *slice.at + keylen >= slice.size {
         err::fail(e, err::OutOfTail, "overflow");
         return;
     }
-    memcpy(slice->mem() + slice->at, key, keylen);
-    slice->at += keylen;
+    memcpy(slice.mem + *slice.at, key, keylen);
+    *slice.at += keylen;
 
-    slice->mem()[slice->at] = 0;
+    slice.mem[*slice.at] = 0;
     encode_integer(slice, e, vallen, 7);
     if err::check(e) {
         return;
     }
-    slice->at += 1;
+    *slice.at += 1;
 
-    if slice->at >= slice->slice.size || slice->at >= slice->slice.size - vallen {
+    if *slice.at >= slice.size || *slice.at >= slice.size - vallen {
         err::fail(e, err::OutOfTail, "overflow");
         return;
     }
 
-    memcpy(slice->mem() + slice->at, val, vallen);
-    slice->at += vallen;
-    static_attest(slice->at <= slice->slice.size);
+    memcpy(slice.mem + *slice.at, val, vallen);
+    *slice.at += vallen;
+    static_attest(*slice.at <= slice.size);
 }
 
 
 
-pub fn encode_integer(slice::MutSlice mut* slice, err::Err+et mut *e, usize value, u8 prefix_size)
+pub fn encode_integer(slice::MutSlice slice, err::Err+et mut *e, usize value, u8 prefix_size)
     where err::checked(*e)
+    where mut_slice::integrity(&slice)
+    model mut_slice::integrity(&slice)
 {
-    if slice->at >= slice->slice.size {
+    if *slice.at >= slice.size {
         err::fail(e, err::OutOfTail, "eof");
         return;
     }
@@ -67,7 +71,7 @@ pub fn encode_integer(slice::MutSlice mut* slice, err::Err+et mut *e, usize valu
     }
 
     if value < (usize)mask {
-        slice->mem()[slice->at] = slice->mem()[slice->at] & ~mask | (u8)value;
+        slice.mem[*slice.at] = slice.mem[*slice.at] & ~mask | (u8)value;
         return;
     }
 

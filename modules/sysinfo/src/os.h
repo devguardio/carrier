@@ -1,6 +1,6 @@
 #ifdef __linux__
 #include <sys/utsname.h>
-static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     struct utsname name;
     if (uname(&name) != 0) {
@@ -17,7 +17,7 @@ static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl
 }
 
 #include <sys/sysinfo.h>
-static bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     struct sysinfo info;
     if (sysinfo(&info) != 0) {
@@ -38,7 +38,7 @@ uint64_t time_to_millis(time_Time const*self);
 time_Time time_real();
 time_Time time_tick();
 
-static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     FILE *fi = fopen("/proc/loadavg", "r");
     if (fi == 0) {
@@ -94,7 +94,7 @@ static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
     return true;
 }
 
-static bool lsb_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool lsb_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     FILE *fi = fopen("/etc/lsb-release", "r");
     if (fi == 0) {
@@ -178,7 +178,7 @@ static bool lsb_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSl
 
 #ifdef __ANDROID__
 #include <sys/system_properties.h>
-static bool android_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool android_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     protonerf_encode_bytes(sl, e, et, sysinfo_proto_Firmware_Distro,  "Android", 7);
 
@@ -208,7 +208,7 @@ static bool android_os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_M
 #endif
 
 
-static bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
 #ifdef __ANDROID__
     return android_os_sysinfo_firmware(e, et, sl);
@@ -218,7 +218,7 @@ static bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice 
 }
 
 #include <dirent.h>
-static bool hwmon_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool hwmon_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     DIR *d = opendir("/sys/class/hwmon/");
     if (d == 0) {
@@ -277,17 +277,16 @@ static bool hwmon_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutS
             int ivalue = atoi(value);
 
             uint8_t bb[200] = {0};
+            size_t at = 0;
             slice_mut_slice_MutSlice bbs = {
-                .slice = {
-                    .mem  = bb,
-                    .size = 200,
-                },
-                .at = 0,
+                .mem    = bb,
+                .size   = 200,
+                .at     = &at,
             };
-            protonerf_encode_bytes(&bbs, e, et, sysinfo_proto_Sensor_Name,  (uint8_t*)name_f, strlen(name_f));
-            protonerf_encode_varint(&bbs, e, et, sysinfo_proto_Sensor_Vtype,  sysinfo_proto_Sensor__ValueType_MilliCelsius);
-            protonerf_encode_varint(&bbs, e, et, sysinfo_proto_Sensor_Value, ivalue);
-            protonerf_encode_bytes(sl, e, et, sysinfo_proto_Sensors_Sensors, bb, bbs.at);
+            protonerf_encode_bytes(bbs, e, et, sysinfo_proto_Sensor_Name,  (uint8_t*)name_f, strlen(name_f));
+            protonerf_encode_varint(bbs, e, et, sysinfo_proto_Sensor_Vtype,  sysinfo_proto_Sensor__ValueType_MilliCelsius);
+            protonerf_encode_varint(bbs, e, et, sysinfo_proto_Sensor_Value, ivalue);
+            protonerf_encode_bytes(sl, e, et, sysinfo_proto_Sensors_Sensors, bb, at);
         }
 
 
@@ -297,7 +296,7 @@ static bool hwmon_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutS
 }
 
 #include <dirent.h>
-static void thermal_zone_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static void thermal_zone_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     DIR *d = opendir("/sys/devices/virtual/thermal/");
     if (d == 0) {
@@ -336,30 +335,29 @@ static void thermal_zone_os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_sli
         int ivalue = atoi(value);
 
         uint8_t bb[200] = {0};
+        size_t at = 0;
         slice_mut_slice_MutSlice bbs = {
-            .slice = {
-                .mem  = bb,
-                .size = 200,
-            },
-            .at = 0,
+            .mem    = bb,
+            .size   = 200,
+            .at     = &at,
         };
-        protonerf_encode_bytes(&bbs, e, et, sysinfo_proto_Sensor_Name,  (uint8_t*)name, strlen(name));
-        protonerf_encode_varint(&bbs, e, et, sysinfo_proto_Sensor_Vtype,  sysinfo_proto_Sensor__ValueType_MilliCelsius);
-        protonerf_encode_varint(&bbs, e, et, sysinfo_proto_Sensor_Value, ivalue);
-        protonerf_encode_bytes(sl, e, et, sysinfo_proto_Sensors_Sensors, bb, bbs.at);
+        protonerf_encode_bytes(bbs, e, et, sysinfo_proto_Sensor_Name,  (uint8_t*)name, strlen(name));
+        protonerf_encode_varint(bbs, e, et, sysinfo_proto_Sensor_Vtype,  sysinfo_proto_Sensor__ValueType_MilliCelsius);
+        protonerf_encode_varint(bbs, e, et, sysinfo_proto_Sensor_Value, ivalue);
+        protonerf_encode_bytes(sl, e, et, sysinfo_proto_Sensors_Sensors, bb, at);
     }
     closedir(d);
 
 }
 
-static bool os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     hwmon_os_sysinfo_sensors(e, et, sl);
     thermal_zone_os_sysinfo_sensors(e, et, sl);
     return true;
 }
 
-static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     return false;
 }
@@ -368,7 +366,7 @@ static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlic
 #include <esp_efuse.h>
 #include <esp_system.h>
 size_t spi_flash_get_chip_size(void);
-static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
 
     protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Sysname,  (uint8_t*)CONFIG_IDF_TARGET, strlen(CONFIG_IDF_TARGET));
@@ -411,7 +409,7 @@ static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl
 
 
 #include <esp_heap_caps.h>
-static bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     multi_heap_info_t info = {0};
     heap_caps_get_info(&info, 0);
@@ -428,7 +426,7 @@ static bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
 #include <esp_app_format.h>
 #include <esp_ota_ops.h>
 
-static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
 
     protonerf_encode_varint(sl, e, et, sysinfo_proto_Load_Uptime,  esp_timer_get_time());
@@ -440,7 +438,7 @@ static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
     protonerf_encode_varint(sl, e, et, sysinfo_proto_Load_Threads,  info.cores);
     return true;
 }
-static bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     const esp_app_desc_t *appdesc = esp_ota_get_app_description();
     if (appdesc == 0) { return false; }
@@ -497,13 +495,13 @@ static bool os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice 
     return true;
 }
 
-static bool os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     return false;
 }
 #include "../../bootloader_support/include/esp_app_format.h"
 #include "../../app_update/include/esp_ota_ops.h"
-static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl)
+static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
     char * reason = "unknown";
     switch (esp_reset_reason()) {
@@ -532,10 +530,10 @@ static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlic
 }
 
 #else
-bool __attribute__((weak)) os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
-bool __attribute__((weak)) os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
-bool __attribute__((weak)) os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
-bool __attribute__((weak)) os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
-bool __attribute__((weak)) os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
-bool __attribute__((weak)) os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice *sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
+bool __attribute__((weak)) os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
 #endif

@@ -2,7 +2,7 @@ using err;
 using identity;
 using log;
 using mem;
-using string;
+using buffer;
 using <string.h>::{memcpy};
 
 export closure close_fn (Vault mut*self);
@@ -75,7 +75,7 @@ fn check_existing_authorizations_cb(void mut * unsafe user, identity::Identity *
     static_attest(safe(s->addme));
     static_attest(safe(s->resource));
     static_attest(nullterm(s->resource));
-    if identity::eq(id, s->addme) && string::cstr_eq(resource, s->resource) {
+    if identity::eq(id, s->addme) && buffer::cstr_eq(resource, s->resource) {
         s->found = true;
     }
 }
@@ -196,7 +196,7 @@ fn list_authorizations_cb_i(void mut * user, identity::Identity *id, char *resou
     if identity::eq(id, si->ii) {
         if si->ii == 0 {
             si->accepted = true;
-        } else if string::cstr_eq(resource, "*") || string::cstr_eq(resource, si->path) {
+        } else if buffer::cstr_eq(resource, "*") || buffer::cstr_eq(resource, si->path) {
             si->accepted = true;
         }
     }
@@ -225,7 +225,7 @@ export fn authorize_open_stream(Vault * self, identity::Identity *ii, char * uns
             log::warn("no authorizations configured, accepting config");
             return true;
         }
-        if string::cstr_eq(path, "/v2/carrier.config.v1/auth_add") {
+        if buffer::cstr_eq(path, "/v2/carrier.config.v1/auth_add") {
             log::warn("no authorizations configured, accepting %s", path);
             return true;
         }

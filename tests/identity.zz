@@ -23,7 +23,6 @@ using err;
 using <string.h>::{memcmp};
 using <stdio.h>::{printf};
 using <assert.h>::{assert};
-using string;
 
 fn test_identity(err::Err+et mut* e)
     where err::checked(*e)

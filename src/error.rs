@@ -25,7 +25,7 @@ impl ZZError {
             let e = err::check(self.as_mut_ptr(), ZERR_TAIL, this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
             if e  {
                 let mut s = [0u8;1024];
-                err::to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
+                err::to_str(self.as_mut_ptr(), ZERR_TAIL, s.as_mut_ptr(), s.len());
                 Err(Error::ZZ(e as isize, String::from_utf8_lossy(&s).into()))
             } else {
                 Ok(())

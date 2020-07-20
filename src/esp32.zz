@@ -68,7 +68,8 @@ static stream::Config RebootConfig = stream::Config{
     open:   reboot_stream_open,
 };
 
-fn reboot_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * headers)
+fn reboot_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
     let frame = self->stream(e, 20);
@@ -96,7 +97,7 @@ fn close_later(endpoint::Endpoint mut *ep) {
 
 using sha256;
 using mem;
-using string;
+using buffer;
 
 static esp::esp_partition_t * mut ota_partition = 0;
 static esp::esp_ota_handle_t mut ota_handle     = 0;
@@ -110,7 +111,8 @@ static stream::Config OtaConfig = stream::Config{
     stream: ota_stream_stream
 };
 
-fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * headers)
+fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
     let frame = self->stream(e, 100);
@@ -120,7 +122,7 @@ fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * 
         hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"409", 3);
         if err::check(e) { return; }
         char * estr = "ota in progress";
-        hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, string::strlen(estr));
+        hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, buffer::strlen(estr));
         if err::check(e) { return; }
         self->close();
         return;
@@ -134,7 +136,7 @@ fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * 
                 hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"400", 3);
                 if err::check(e) { return; }
                 char *estr = "invalid sha256 header size";
-                hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, string::strlen(estr));
+                hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, buffer::strlen(estr));
                 if err::check(e) { return; }
                 self->close();
                 return;
@@ -148,6 +150,7 @@ fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice * 
 
     ota_partition = unsafe<esp::esp_partition_t*>(esp::esp_ota_get_next_update_partition(0));
     if check_err(e, unsafe<esp_err_t>(esp_ota_begin(ota_partition, esp::OTA_SIZE_UNKNOWN, &ota_handle))) {
+        static_attest(buffer::integrity(&e->trace, et));
         char *estr = e->trace.cstr();
         usize el   = e->trace.slen();
         static_attest(err::checked(*e));
@@ -179,13 +182,13 @@ fn ota_stream_close (stream::Stream mut* self, err::Err+et mut *e)
 
 
 
-fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice * msg) -> bool
+fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice msg) -> bool
     where err::checked(*e)
 {
     let frame = self->stream(e, 100);
     if err::check(e) { return false; }
 
-    if msg->size == 0 {
+    if msg.size == 0 {
         u8 mut hash[32] = {0};
         sha256::finish (&ota_sha256, hash);
 
@@ -197,7 +200,7 @@ fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice
             if err::check(e) { return false; }
 
             char *estr = "sha256 mismatch";
-            hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, string::strlen(estr));
+            hpack::encoder::encode(frame, e, (u8*)"error", 5, (u8*)estr, buffer::strlen(estr));
             if err::check(e) { return true; }
 
             self->close();
@@ -209,6 +212,7 @@ fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice
     if (unsafe<bool>(ee == ESP_OK)) { ee = unsafe<esp_err_t>(esp_ota_set_boot_partition(ota_partition)); }
 
     if check_err(e, ee) {
+        static_attest(buffer::integrity(&e->trace, et));
         char *estr = e->trace.cstr();
         usize el   = e->trace.slen();
         static_attest(err::checked(*e));

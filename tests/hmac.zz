@@ -3,7 +3,7 @@ using <string.h>::{memcmp, strlen};
 using hex;
 using <assert.h>::{assert};
 using <stdio.h>::{printf};
-using string;
+using buffer;
 
 // NIST
 static char * vectors[] = {
@@ -49,20 +49,20 @@ pub fn main() -> int {
         static_attest(nullterm(keystr));
 
         u8 mut key[1024] = {0};
-        usize keylen = hex::str2bin(keystr, string::strlen(keystr), key, static(len(key)));
+        usize keylen = hex::str2bin(keystr, buffer::strlen(keystr), key, static(len(key)));
         static_attest(sha256::BLOCKLEN > keylen);
 
         char *msgstr = vectors[i+1];
         static_attest(safe(msgstr));
         static_attest(nullterm(msgstr));
         u8 mut msg[1024] = {0};
-        usize msglen = hex::str2bin(msgstr, string::strlen(msgstr), msg, static(len(msg)));
+        usize msglen = hex::str2bin(msgstr, buffer::strlen(msgstr), msg, static(len(msg)));
 
         char *macstr = vectors[i+2];
         static_attest(safe(macstr));
         static_attest(nullterm(macstr));
         u8 mut mac[1024] = {0};
-        usize maclen = hex::str2bin(macstr, string::strlen(macstr), mac, static(len(mac)));
+        usize maclen = hex::str2bin(macstr, buffer::strlen(macstr), mac, static(len(mac)));
         printf("%zu\n", maclen);
         assert(maclen == 32);
 

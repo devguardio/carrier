@@ -1,0 +1,68 @@
+using net::address;
+using err;
+
+inline using "os.h" as os;
+inline using "os.h"::{
+    (struct sockaddr_in)    as sockaddr_in,
+    (struct sockaddr_in6)   as sockaddr_in6,
+};
+
+pub fn alen(address::Address *addr, err::Err+et mut *e) -> usize
+    where err::checked(*e)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    switch (addr->typ) {
+        address::Type::Invalid => {
+            e->fail(err::InvalidArgument, "invalid addr");
+            return 0;
+        }
+        address::Type::Ipv4 => {
+            return unsafe<usize>(sizeof(sockaddr_in));
+        }
+        address::Type::Ipv6 => {
+            return unsafe<usize>(sizeof(sockaddr_in6));
+        }
+    }
+}
+
+pub fn socket(address::Address *addr, err::Err+et mut *e, int typ) -> int
+    where err::checked(*e)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    int mut fd = 0;
+    switch (addr->typ) {
+        address::Type::Invalid => {
+            e->fail(err::InvalidArgument, "invalid addr");
+            return 0;
+        }
+        address::Type::Ipv4 => {
+            fd = unsafe<int>(os::socket(os::AF_INET, typ, 0));
+        }
+        address::Type::Ipv6 => {
+            fd = unsafe<int>(os::socket(os::AF_INET6, typ, 0));
+        }
+    }
+    if fd < 0 {
+        e->fail_with_errno("socket");
+        return 0;
+    }
+    return fd;
+}
+
+pub fn make_async(int fd, err::Err+et mut *e)
+    where err::checked(*e)
+    if #(os::ZZ_NETIO_UNIX)
+{
+    int mut flags = unsafe<int>(os::fcntl(fd, os::F_GETFL, 0));
+    if (flags == -1) {
+        e->fail_with_errno("F_GETFL");
+        return;
+    }
+    flags = flags | unsafe<int>(os::O_NONBLOCK);
+
+    if unsafe<int>(os::fcntl(fd, os::F_SETFL, flags)) != 0 {
+        e->fail_with_errno("F_SETFL");
+        return;
+    }
+}
+

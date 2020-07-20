@@ -4,21 +4,20 @@ using <string.h>::{memcpy, memset};
 using <stdlib.h>::{atoi, getenv};
 using <stdio.h>::{printf, fopen, fclose, fread, FILE, fgetc, EOF};
 
-using string;
+using buffer;
 using net::address;
 using err;
 using byteorder;
-using net::udp;
+using netio::udp;
 using time;
 using identity;
 using io;
-using net;
 using vault;
 
-export fn sync(err::Err+et mut * e, vault::Vault mut* store, net::Engine *netengine, io::Async mut* async, time::Time timeout)
+export fn sync(err::Err+et mut * e, vault::Vault mut* store, io::Async mut* async, time::Time timeout)
     where err::checked(*e)
 {
-    new bs = bootstrap(e, store, netengine, async);
+    new bs = bootstrap(e, store, async);
     if err::check(e) { return; }
     io::await(async, e, poll, &bs, timeout);
     if err::check(e) { return; }
@@ -45,7 +44,7 @@ export struct Bootstrap {
     vault::Vault        mut* store;
 }
 
-export fn bootstrap(Bootstrap mut new*self, err::Err+et mut * e, vault::Vault mut*store, net::Engine *netengine, io::Async mut* async)
+export fn bootstrap(Bootstrap mut new*self, err::Err+et mut * e, vault::Vault mut*store, io::Async mut* async)
     where err::checked(*e)
 {
     self->store = store;
@@ -59,13 +58,13 @@ export fn bootstrap(Bootstrap mut new*self, err::Err+et mut * e, vault::Vault mu
     get_system_dns_servers(self->dns_servers, &self->dns_servers_count);
 
     new addr4 = address::from_cstr("0.0.0.0:0");
-    net::udp(&self->sock4, netengine, e, &addr4, async);
+    udp::bind(&self->sock4, e, addr4, async);
     if err::check(e) {
         return;
     }
 
     new addr6 = address::from_cstr("[::1]:0");
-    net::udp(&self->sock6, netengine, e, &addr6, async);
+    udp::bind(&self->sock6, e, addr6, async);
     // ignore v6 creation error
     err::make(e);
 }
@@ -79,11 +78,11 @@ export fn close(Bootstrap mut * self) {
 export fn poll(Bootstrap mut * self, err::Err+et mut * e, io::Async mut* async) -> io::Result
     where err::checked(*e)
 {
-    string::String+1500 mut xbuf = {0};
+    new+1500 mut xbuf = buffer::make();
 
     static_attest(self->dns_servers_count < len(self->dns_servers));
 
-    string::String+10 mut tb = {0};
+    new+10 mut tb = buffer::make();
     if  !(self->retry_timer).valid() ||  (self->retry_timer).read(e, &tb) == io::Result::Ready {
         if err::check(e) {
             return io::Result::Error;
@@ -104,9 +103,9 @@ export fn poll(Bootstrap mut * self, err::Err+et mut * e, io::Async mut* async) 
         if fromenv != 0 {
             static_attest(safe(fromenv));
             static_attest(nullterm(fromenv));
-            string::append_cstr(&xbuf, fromenv);
+            buffer::append_cstr(&xbuf, fromenv);
         } else {
-            string::append_cstr(&xbuf, "4.carrier.devguard.io");
+            buffer::append_cstr(&xbuf, "4.carrier.devguard.io");
         }
         for (usize mut i = 0; i < self->dns_servers_count; i++) {
             switch self->dns_servers[i].typ {
@@ -166,22 +165,23 @@ struct DnsPacket packed {
 
 fn send_query(
         err::Err+et mut *e,
-        string::String+st *name,
+        buffer::Buffer+st *name,
         udp::Socket mut*sock,
         address::Address *dns_server
     )
     where err::checked(*e)
+    where buffer::integrity(name, st)
 {
 
     /*
     {
-        string::String+100 mut dbg = {0};
+        buffer::Buffer+100 mut dbg = {0};
         dns_server->to_string(&dbg);
         printf("sending to %.*s\n", dbg.len, dbg.mem);
     }
     */
 
-    string::String+1000 mut pkt = {0};
+    new+1000 mut pkt = buffer::make();
 
     DnsPacket mut *head = (DnsPacket mut *)pkt.mem;
 
@@ -192,18 +192,18 @@ fn send_query(
     head->authorities = 0;
     head->additionals = byteorder::to_be16(1);
 
-    pkt.len += as<usize>(sizeof(DnsPacket));
+    pkt.at += as<usize>(sizeof(DnsPacket));
+    static_attest(buffer::integrity(&pkt, static(len(pkt.mem))));
 
     usize mut it = 0;
-    string::String+256 mut part = {0};
-    string::clear(&part);
-    while (string::split(name, '.', &it, &part)) {
-        if part.len >= 255 || (string::space(&part) < (1 + part.len)) {
-            err::fail(e, 22, "name too long");
+    new+256 mut part = buffer::make();
+    while (buffer::split(name, '.', &it, &part)) {
+        if part.at >= 255 || (part.available() < (1 + part.at)) {
+            err::fail(e, err::OutOfTail, "name too long");
             return;
         }
-        pkt.push((char)part.len);
-        pkt.append(&part);
+        pkt.push((char)part.at);
+        pkt.append_slice(part.as_slice());
         part.clear();
     }
     static_attest(err::checked(*e));
@@ -225,21 +225,21 @@ fn send_query(
         0, 0, // no more data
 
     };
-    string::append_bytes(&pkt, end, static(len(end)));
+    buffer::append_bytes(&pkt, end, static(len(end)));
 
-    static_attest(len(pkt.mem) >= pkt.len);
+    static_attest(len(pkt.mem) >= pkt.at );
 
-    udp::sendto(sock, e, &pkt, dns_server);
+    udp::sendto(sock, e, pkt.as_slice(), dns_server);
     //e->abort();
     // don't care if send failed
     err::make(e);
 }
 
-pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
+pub fn parse_query(buffer::Buffer+t *pkt, vault::Vault mut*store) -> bool
 {
-    static_attest(len(pkt->mem) >= pkt->len);
+    static_attest(len(pkt->mem) >= pkt->at);
 
-    if pkt->len < as<usize>(sizeof(DnsPacket)) {
+    if pkt->at < as<usize>(sizeof(DnsPacket)) {
         return false;
     }
 
@@ -255,7 +255,7 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
 
     // skip the query sections
     for (usize mut i = 0; i < queries; i++) {
-        while at < pkt->len - 1 {
+        while at < pkt->at - 1 {
             static_attest(at < len(pkt->mem));
             // find end of labels
             if (pkt->mem)[at] == 0 {
@@ -272,7 +272,7 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
 
     for (usize mut i = 0; i < answers; i++) {
         // find start of answer header
-        while at < pkt->len - 1 {
+        while at < pkt->at - 1 {
             static_attest(at < len(pkt->mem));
             if (pkt->mem)[at] == 0 {
                 break;
@@ -285,7 +285,7 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
         }
         at += 1;
 
-        if at + 2 >= pkt->len {
+        if at + 2 >= pkt->at {
             break;
         }
         static_attest(at < len(pkt->mem));
@@ -295,7 +295,7 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
         record_type = byteorder::from_be16(record_type);
         at += 2;
 
-        if at + 6 >= pkt->len {
+        if at + 6 >= pkt->at {
             break;
         }
         static_attest(at < len(pkt->mem));
@@ -304,7 +304,7 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
         record_class = byteorder::from_be16(record_class);
         at += 6;
 
-        if at + 2 >= pkt->len {
+        if at + 2 >= pkt->at {
             break;
         }
         static_attest(at < len(pkt->mem));
@@ -313,20 +313,20 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
         record_len = byteorder::from_be16(record_len);
         at += 2;
 
-        if at + (usize)record_len + 1 >= pkt->len {
+        if at + (usize)record_len + 1 >= pkt->at {
             break;
         }
         static_attest(at + 1 < len(pkt->mem));
 
         if record_type == 0x10 && record_class == 0x01 {
-            string::String+200 mut record ={0};
+            new+200 record = buffer::make();
 
             u8 *rm = (u8*)pkt->mem;
             static_attest(at + 1 < len(rm));
             u8 * record_b = rm + (at + 1);
             static_attest(len(record_b) == (usize)record_len - 1);
             static_attest(safe(record_b));
-            string::append_bytes(&record, record_b, (usize)record_len - 1);
+            buffer::append_bytes(&record, record_b, (usize)record_len - 1);
 
             bool parseok = parse_record(&record, store->broker + storepos);
             static_attest(storepos < len(store->broker));
@@ -348,19 +348,20 @@ pub fn parse_query(string::String+t *pkt, vault::Vault mut*store) -> bool
 }
 
 
-pub fn parse_record(string::String+st * record, vault::Broker mut *entry) -> bool {
+pub fn parse_record(buffer::Buffer+st * record, vault::Broker mut *entry) -> bool
+    where buffer::integrity(record, st)
+{
     new+1 e = err::make();
 
     bool mut has_netaddr = false;
     bool mut has_xaddr   = false;
 
     usize mut it = 0;
-    string::String+256 mut part = {0};
-    string::clear(&part);
-    while (string::split(record, ' ', &it, &part)) {
-        if string::starts_with_cstr(&part, "n=") {
+    new+256 part = buffer::make();
+    while (buffer::split(record, ' ', &it, &part)) {
+        if buffer::starts_with_cstr(&part, "n=") {
             char *from = part.mem + 2;
-            usize fromlen = part.len - 2;
+            usize fromlen = part.at - 2;
             static_attest(safe(from));
             static_attest(len(from) >= fromlen);
 
@@ -369,9 +370,9 @@ pub fn parse_record(string::String+st * record, vault::Broker mut *entry) -> boo
                 memcpy(entry->ip4addr, address::get_ip(&a), 4);
                 has_netaddr = true;
             }
-        } else if string::starts_with_cstr(&part, "n6=") {
+        } else if buffer::starts_with_cstr(&part, "n6=") {
             char *from = part.mem + 3;
-            usize fromlen = part.len - 3;
+            usize fromlen = part.at - 3;
             static_attest(safe(from));
             static_attest(len(from) >= fromlen);
 
@@ -380,9 +381,9 @@ pub fn parse_record(string::String+st * record, vault::Broker mut *entry) -> boo
                 memcpy(entry->ip6addr, address::get_ip(&a), 16);
                 has_netaddr = true;
             }
-        } else if string::starts_with_cstr(&part, "x=") {
+        } else if buffer::starts_with_cstr(&part, "x=") {
             char *from = part.mem + 2;
-            usize fromlen = part.len - 2;
+            usize fromlen = part.at - 2;
             static_attest(safe(from));
             static_attest(fromlen  <= len(from));
 
@@ -392,29 +393,29 @@ pub fn parse_record(string::String+st * record, vault::Broker mut *entry) -> boo
                 has_xaddr = true;
             }
             err::make(&e);
-        } else if string::starts_with_cstr(&part, "carrier=") {
+        } else if buffer::starts_with_cstr(&part, "carrier=") {
             char *from = part.mem + 8;
-            usize fromlen = part.len - 8;
+            usize fromlen = part.at - 8;
             static_attest(safe(from));
             static_attest(fromlen == len(from));
 
-            string::String+20 mut bb = {0};
-            string::append_bytes(&bb, (u8*)from, fromlen);
+            buffer::Buffer+20 mut bb = {0};
+            buffer::append_bytes(&bb, (u8*)from, fromlen);
 
             entry->protocol = (u8)atoi(bb.mem);
-        } else if string::starts_with_cstr(&part, "c=") {
+        } else if buffer::starts_with_cstr(&part, "c=") {
             char *from = part.mem + 2;
-            usize fromlen = part.len - 2;
+            usize fromlen = part.at - 2;
             static_attest(safe(from));
             static_attest(fromlen == len(from));
 
-            string::String+20 mut bb = {0};
-            string::append_bytes(&bb, (u8*)from, fromlen);
+            buffer::Buffer+20 mut bb = {0};
+            buffer::append_bytes(&bb, (u8*)from, fromlen);
 
             entry->protocol = (u8)atoi(bb.mem);
         }
 
-        string::clear(&part);
+        buffer::clear(&part);
     }
 
     return has_netaddr && has_xaddr && entry->protocol != 0;
@@ -428,25 +429,25 @@ fn get_system_dns_servers(address::Address mut *dns_servers, usize mut *at)
     }
     static_attest(safe(fp));
 
-    string::String+300 mut str;
+    new+300 str = buffer::make();
     for (;;) {
         if *at >= 16 {
             break;
         }
         static_attest(*at < len(dns_servers));
 
-        string::clear(&str);
-        if !string::fgets(&str, fp) {
+        buffer::clear(&str);
+        if !buffer::fgets(&str, fp) {
             break;
         }
-        string::pop(&str);
+        buffer::pop(&str);
 
-        if string::starts_with_cstr(&str, "nameserver") {
-            string::String+100 mut sub = {0};
-            string::substr(&str, 11, 0, &sub);
+        if buffer::starts_with_cstr(&str, "nameserver") {
+            new+100 mut sub = buffer::make();
+            buffer::substr(&str, 11, 0, &sub);
 
 
-            address::from_string(dns_servers + *at, &sub);
+            address::from_buffer(dns_servers + *at, &sub);
             if (dns_servers[*at]).valid() {
                 (dns_servers[*at]).set_port(53);
                 *at += 1;

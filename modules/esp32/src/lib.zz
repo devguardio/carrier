@@ -1,0 +1,28 @@
+using log;
+using err;
+
+
+using <esp_err.h>::{
+    ESP_OK,
+    esp_err_t,
+    esp_err_to_name,
+};
+
+export  fn check_err (
+        err::Err+tail mut* self,
+        esp_err_t ec,
+        char* callsite_source<file>      unsafe file,
+        char* callsite_source<function>  unsafe scope,
+        usize callsite_source<line>      line,
+) -> bool
+model return == true || err::checked(*self)
+{
+    if (ec != unsafe<esp_err_t>(ESP_OK)) {
+        self->fail(err::SystemError, "%d: %s", ec, unsafe<char*>(esp_err_to_name(ec)));
+        err::backtrace(self, file, scope, line);
+        static_attest(err::checked(*self));
+        return true;
+    }
+    return false;
+}
+

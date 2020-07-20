@@ -5,7 +5,7 @@ using slice;
 using io;
 using log;
 using hpack;
-using string;
+using buffer;
 using time;
 using <stdlib.h>::{exit, calloc, free};
 using <stdio.h>::{FILE, fopen, fclose, fwrite};
@@ -30,13 +30,14 @@ static stream::Config StupidFileTransfer = stream::Config {
     stream:     sft_stream,
 };
 
-fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
+fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
-    let mut *frame = self->stream(e, 14);
+    let mut frame = self->stream(e, 14);
     if err::check(e) { return; }
 
-    new+200 filename    = string::make();
+    new+200 filename    = buffer::make();
     u8 mut expecthash[32]   = {0};
 
     new it = hpack::decoder::decode(headers);
@@ -49,7 +50,7 @@ fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
                 return;
             }
         } else if it.key.eq_cstr("file") {
-            filename.append_slice(&it.val);
+            filename.append_slice(it.val);
         } else if it.key.eq_cstr("sha256") {
             err::assert_safe(it.val.mem);
             if it.val.size != 32 {
@@ -88,19 +89,20 @@ fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice *headers)
     log::info("SFT open %u", self->id);
 }
 
-pub fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+pub fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
-    where safe(msg->mem)
+    where slice::slice::integrity(&msg)
+
 {
-    if msg->size >= 10000 {
+    if msg.size >= 10000 {
         return false;
     }
 
     let this = (State mut*)self->user2;
     err::assert_safe(this);
 
-    if msg->size  == 0 {
-        let mut *frame = self->stream(e, 50);
+    if msg.size  == 0 {
+        let mut frame = self->stream(e, 50);
         if err::check(e) { return false; }
 
         u8 mut h[32] = {0};
@@ -118,8 +120,8 @@ pub fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * ms
         if err::check(e) { return false; }
         self->close();
     } else {
-        this->sha.update(msg->mem, msg->size);
-        fwrite(msg->mem, 1, msg->size, this->f);
+        this->sha.update(msg.mem, msg.size);
+        fwrite(msg.mem, 1, msg.size, this->f);
     }
 
     return true;

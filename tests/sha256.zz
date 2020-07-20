@@ -1,5 +1,5 @@
 using carrier::sha256;
-using string;
+using buffer;
 using hex;
 using <stdio.h>::{printf, strlen, fgets, stdin};
 
@@ -54,7 +54,7 @@ pub fn main() -> int {
         static_attest(safe(line));
         static_attest(nullterm(line));
 
-        usize mut l = string::strlen(line);
+        usize mut l = buffer::strlen(line);
 
         if line[l-1] == '\n' {
             line[l-1] = 0;

@@ -29,77 +29,66 @@ export enum FieldType {
 
 export symbol Invalid;
 
-export fn encode_bytes_start(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, usize l)
-    where err::checked(*e)
+export fn encode_bytes_start(slice::MutSlice mut str, err::Err+et mut*e, u8 index, usize l)
+    where   err::checked(*e)
+    where   slice::mut_slice::integrity(&str)
+    model   slice::mut_slice::integrity(&str)
 {
-    if str->at + 1  > str->slice.size  {
+    if !str.push((index << 3) | 2) {
         err::fail(e, err::OutOfTail, "short write");
         return;
     }
-
-    u8 mut*mm = str->mem();
-    static_attest(str->at < len(mm));
-    mm[str->at]  = (index << 3) | 2;
-    str->at += 1;
-    static_attest(str->at <= len(str->slice.mem));
 
     //TODO evidently this is broken on 32bit arm, but who cares, we dont support packets that large anyway
     //write_varint(str, e, (u32)l, (u32)(l >> 32));
     write_varint(str, e, (u32)l, 0);
 }
 
-export fn encode_bytes(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u8*b, usize l)
-    where len(b) >= l
-    where err::checked(*e)
+export fn encode_bytes(slice::MutSlice mut str, err::Err+et mut*e, u8 index, u8*b, usize l)
+    where   len(b) >= l
+    where   err::checked(*e)
+    where   slice::mut_slice::integrity(&str)
+    model   slice::mut_slice::integrity(&str)
 {
-    if str->at + 1 + l > str->slice.size  {
+    if !str.push((index << 3) | 2) {
         err::fail(e, err::OutOfTail, "short write");
         return;
     }
-
-    u8 mut*mm = str->mem();
-    static_attest(str->at < len(mm));
-    mm[str->at]  = (index << 3) | 2;
-    str->at += 1;
-    static_attest(str->at <= len(str->slice.mem));
 
     //TODO evidently this is broken on 32bit arm, but who cares, we dont support packets that large anyway
     //write_varint(str, e, (u32)l, (u32)(l >> 32));
     write_varint(str, e, (u32)l, 0);
 
-    static_attest(str->at < len(mm));
-    memcpy(mm + str->at, b, l);
-    str->at += l;
-}
-
-export fn encode_varint(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, u64 mut value)
-    where err::checked(*e)
-{
-    if str->at + 1 > str->slice.size {
+    if !str.append_bytes(b, l) {
         err::fail(e, err::OutOfTail, "short write");
         return;
     }
-    u8 mut*mm = str->mem();
-    static_attest(str->at < len(mm));
-    mm[str->at]  = index << 3;
-    str->at +=1;
+}
+
+export fn encode_varint(slice::MutSlice mut str, err::Err+et mut*e, u8 index, u64 mut value)
+    where   err::checked(*e)
+    where   slice::mut_slice::integrity(&str)
+    model   slice::mut_slice::integrity(&str)
+{
+    if !str.push(index << 3) {
+        err::fail(e, err::OutOfTail, "short write");
+        return;
+    }
     write_varint(str, e, (u32)value, (u32)(value >> 32));
 }
 
-export fn encode_f64(slice::MutSlice mut *str, err::Err+et mut*e, u8 index, f64 mut value)
-    where err::checked(*e)
+export fn encode_f64(slice::MutSlice mut str, err::Err+et mut*e, u8 index, f64 mut value)
+    where   err::checked(*e)
+    where   slice::mut_slice::integrity(&str)
+    model   slice::mut_slice::integrity(&str)
 {
-    if str->at + 1 > str->slice.size || str->slice.size < 9{
-        err::fail(e, err::OutOfTail, "short write");
-        return;
-    }
-
     u64 mut xv = 0;
     memcpy(&xv, &value, 8);
 
-    xv = byteorder::to_le64(xv);
-    str->push(index << 3 | 1);
-    str->push64(xv);
+    if !str.push(index << 3 | 1) || !str.push64(byteorder::to_le64(xv)) {
+        err::fail(e, err::OutOfTail, "short write");
+        return;
+    }
 }
 
 export struct Decoder {
@@ -109,17 +98,12 @@ export struct Decoder {
 }
 
 
-export fn decode(Decoder mut new*self, u8 *mem, usize size) {
+export fn decode(Decoder mut new*self, slice::Slice sl)
+    where slice::slice::integrity(&sl)
+{
     *self = Decoder {
-        mem:    mem,
-        size:   size,
-    };
-}
-
-export fn decode_slice(Decoder mut new*self, slice::Slice * slice) {
-    *self = Decoder {
-        mem:    slice->mem,
-        size:   slice->size,
+        mem:    sl.mem,
+        size:   sl.size,
     };
 }
 
@@ -140,8 +124,10 @@ export struct Field {
 
 
 
-fn write_varint(slice::MutSlice mut*str, err::Err+et mut*e, u32 mut low, u32 mut high)
+fn write_varint(slice::MutSlice mut str, err::Err+et mut*e, u32 mut low, u32 mut high)
     where err::checked(*e)
+    where slice::mut_slice::integrity(&str)
+    model slice::mut_slice::integrity(&str)
 {
     usize mut i = 0;
     u8 mut buffer[10];
@@ -175,13 +161,10 @@ fn write_varint(slice::MutSlice mut*str, err::Err+et mut*e, u32 mut low, u32 mut
     buffer[i] = byte;
     i++;
 
-    if str->at + i > str->slice.size {
+    if !str.append_bytes(buffer, i) {
         err::fail(e, err::OutOfTail, "short write");
         return;
     }
-    static_attest(str->at < len(str->slice.mem));
-    memcpy(str->mem() + str->at , buffer, i);
-    str->at += i;
 }
 
 

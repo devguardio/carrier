@@ -27,6 +27,9 @@ args = { arg ~ ( "," ~ arg)* }
 rpc = {"rpc" ~ ident ~ "(" ~ args ~ ")" ~ "returns" ~ "(" ~ args ~ ")" ~ ("{" ~ "}")? ~ ";"? }
 service =  {"service" ~ ident ~ "{" ~ rpc* ~ "}" }
 
+
+option    = {"option" ~ ident ~ "=" ~ string_literal ~ ";" }
+
 file = {
-  SOI ~  ( ienum | syntax | package | message | service )+ ~ EOI
+  SOI ~  ( ienum | syntax | package | message | service | option)+ ~ EOI
 }

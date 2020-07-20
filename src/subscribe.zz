@@ -17,7 +17,6 @@ using pq;
 using byteorder;
 using identity;
 using protonerf;
-using string;
 using stream;
 using slice;
 using net::address;
@@ -51,8 +50,9 @@ fn on_close(stream::Stream mut *self, err::Err+et mut*e)
     self->chan->endpoint->close();
 }
 
-fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice bs) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&bs)
 {
     static_attest(safe(self->chan));
     if self->state == 0 {
@@ -66,16 +66,16 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
         }
 
 
-        slice::MutSlice mut * frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
+        let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
         if err::check(e) {
             return false;
         }
 
         self->state = 1;
 
-        frame->push32(byteorder::to_be32(1)); // stream
-        frame->push64(byteorder::to_be64(2)); // order
-        frame->push16(0); // size placeholder
+        frame.push32(byteorder::to_be32(1)); // stream
+        frame.push64(byteorder::to_be64(2)); // order
+        frame.push16(0); // size placeholder
 
 
         identity::Address mut network ={0};
@@ -88,13 +88,13 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice *bs) -> bool
             return false;
         }
     } else if self->state == 1 {
-        new iter = protonerf::decode_slice(bs);
+        new iter = protonerf::decode(bs);
         for (protonerf::Field mut field; iter.next(e, &field);) {
             if err::check(e) { return true; }
             if field.a != 0  && field.value.v_len >= 32 {
                 static_attest(safe(field.a));
                 static_attest(len(field.a) >= field.value.v_len);
-                new iter2 = protonerf::decode(field.a, field.value.v_len);
+                new iter2 = protonerf::decode(slice::slice::Slice { mem: field.a, size: field.value.v_len});
                 for (protonerf::Field mut field; iter2.next(e, &field);) {
                     if err::check(e) { return true; }
                     let id = (identity::Identity *)field.a;

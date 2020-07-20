@@ -33,7 +33,6 @@ extern crate wasm_bindgen;
 
 pub mod certificate;
 pub mod channel;
-pub mod clock;
 pub mod config;
 pub mod dns;
 pub mod error;

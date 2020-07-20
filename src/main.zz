@@ -1,8 +1,8 @@
 using <stdio.h>::{fprintf, printf, stderr};
 using err;
 using carrier;
-using string;
 using vault_toml;
+using buffer;
 
 using cmd_publish;
 using cmd_shell;
@@ -38,33 +38,33 @@ export fn main(int mut argc, char ** argv) -> int
         static_attest(nullterm(arg));
 
 
-        if string::cstr_eq(arg, "identity") {
+        if buffer::cstr_eq(arg, "identity") {
             new+1000  e     = err::make();
             new va = vault_toml::from_home_carriertoml(&e);
             e.abort();
 
             return cmd_vault::print_identity(&va, argc, argv);
-        } else if string::cstr_eq(arg, "publish") {
+        } else if buffer::cstr_eq(arg, "publish") {
             new+1000  e     = err::make();
             new va = vault_toml::from_home_carriertoml(&e);
             e.abort();
 
             return cmd_publish::cmd(va, argc, argv);
-        } else if string::cstr_eq(arg, "shell") {
+        } else if buffer::cstr_eq(arg, "shell") {
             return cmd_shell::cmd(argc, argv);
-        } else if string::cstr_eq(arg, "config") {
+        } else if buffer::cstr_eq(arg, "config") {
             return cmd_config::cmd(argc, argv);
-        } else if string::cstr_eq(arg, "subscribe") {
+        } else if buffer::cstr_eq(arg, "subscribe") {
             return cmd_subscribe::cmd(argc, argv);
-        } else if string::cstr_eq(arg, "vault") {
+        } else if buffer::cstr_eq(arg, "vault") {
             new+1000  e     = err::make();
             new va = vault_toml::from_home_carriertoml(&e);
             e.abort();
 
             return cmd_vault::cmd(&va, argc, argv);
-        } else if string::cstr_eq(arg, "stream") {
+        } else if buffer::cstr_eq(arg, "stream") {
             return cmd_stream::cmd(argc, argv);
-        } else if string::cstr_eq(arg, "get") {
+        } else if buffer::cstr_eq(arg, "get") {
             return cmd_stream::cmd(argc, argv);
         }
     }

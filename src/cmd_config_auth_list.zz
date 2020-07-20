@@ -65,8 +65,9 @@ static stream::Config AuthListStream = stream::Config {
     close:  on_close,
 };
 
-fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) -> bool
+fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
+    where slice::slice::integrity(&msg)
 {
     if self->state == 0 {
         self->state = 1;
@@ -74,10 +75,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) ->
     } else {
         self->state = 2;
 
-        static_attest(safe(msg->mem));
-
         printf("IDENTITY                                       \tPATH\n");
-        new mut decoder = protonerf::decode(msg->mem, msg->size);
+        new mut decoder = protonerf::decode(msg);
         for (protonerf::Field mut field;decoder.next(e,&field);) {
             if err::check(e) { return true; }
 
@@ -86,7 +85,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice * msg) ->
                     if field.a != 0 {
                         static_attest(safe(field.a));
                         static_attest(len(field.a) > field.value.v_len);
-                        new mut decoder = protonerf::decode(field.a, field.value.v_len);
+                        new mut decoder = protonerf::decode(slice::slice::Slice{mem:field.a, size: field.value.v_len});
 
                         char * mut id = 0;
                         usize  mut id_l = 0;

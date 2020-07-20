@@ -1,16 +1,17 @@
 using <stdio.h>::{printf};
 using <string.h>::{memset, memcpy};
-using string;
+using buffer;
 using net::address;
 using err;
 using byteorder;
-using net::udp;
+using netio::udp;
+using netio::tcp;
 using time;
 using bootstrap;
 using identity;
 using initiator;
 using io;
-using net;
+using netio as net;
 using cipher;
 using hex;
 using channel;
@@ -32,6 +33,9 @@ using vault_ik;
 
 export const char* PROLOGUE = "carrier has arrived";
 export const char* SIGN_PURPOSE = "carrier handshake hash 1";
+
+
+static u8 FAKE_TLS[] = {0x17, 0x03, 0x03, 0x00, 0x00};
 
 
 inline using (needs
@@ -57,8 +61,8 @@ enum State {
 struct ConnectingState {
     vault::Broker           mut current_broker;
     initiator::Initiator    mut initiator;
-    string::String+1024     mut pkt_in;
-    string::String+1024     mut pkt_out;
+    buffer::Buffer+1024     mut pkt_in;
+    buffer::Buffer+1024     mut pkt_out;
     usize trying_broker_index;
     usize retry_sending;
 }
@@ -69,7 +73,6 @@ union StateM {
 }
 
 export struct Endpoint+ {
-    net::Engine*            netengine;
     vault::Vault            vault;
 
     initiator::Move         cluster_move;
@@ -80,6 +83,8 @@ export struct Endpoint+ {
 
     udp::Socket     mut udp4;
     udp::Socket     mut udp6;
+    tcp::Socket     mut tcp4;
+
     io::Io          mut timeout;
 
     State           mut state;
@@ -89,10 +94,9 @@ export struct Endpoint+ {
     pool::Pool+     mut framebuffer;
 }
 
-export fn start(Endpoint mut* self, err::Err+et mut*e, net::Engine *netengine, io::Async mut* async)
+export fn start(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
     where err::checked(*e)
 {
-    self->netengine = netengine;
     self->state = State::Connecting;
     self->do_state_connect(e, async);
 }
@@ -171,6 +175,7 @@ export fn close(Endpoint mut* self)
         State::Connecting => {
             self->udp4.close();
             self->udp6.close();
+            self->tcp4.close();
         }
         State::Connected => {
             self->statem.connected.close();
@@ -245,22 +250,73 @@ fn do_state_connect(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
     self->state = State::Connecting;
     memset(&self->statem.connecting, 0, sizeof(ConnectingState));
 
-    static_attest(safe(self->netengine));
     new addr4 = address::from_cstr("0.0.0.0:0");
-    net::udp(&self->udp4, self->netengine, e, &addr4, async);
+    udp::bind(&self->udp4, e, addr4, async);
     if err::check(e) {
         return;
     }
 
     new addr6 = address::from_cstr("[::1]:0");
-    net::udp(&self->udp6, self->netengine, e, &addr6, async);
-    if err::check(e) {
-        return;
-    }
+    udp::bind(&self->udp6, e, addr6, async);
+    e->ignore();
 
     if !self->next_broker(){
         err::fail(e, InvalidBootstrap, "no brokers in bootstrap store");
         return;
+    }
+}
+
+fn do_complete(Endpoint mut* self, err::Err+et mut*e, peering::Transport trp, address::Address fromaddr) -> bool
+    where err::checked(*e)
+{
+    channel::Transfer mut broker_chan = {0};
+
+    vault::Broker mut redir = {0};
+
+    static_attest(buffer::integrity(&self->statem.connecting.pkt_in, static(len(self->statem.connecting.pkt_in.mem))));
+    let mut udpkt = self->statem.connecting.pkt_in.as_slice();
+
+    if trp == peering::Transport::Tcp {
+        if udpkt.size <= static(len(FAKE_TLS)) {
+            err::fail(e, channel::InvalidFrame , "too small");
+            return true;
+        }
+
+        static_attest(static(len(FAKE_TLS)) < len(udpkt.mem));
+        udpkt.size = udpkt.size - static(len(FAKE_TLS));
+        udpkt.mem  = udpkt.mem  + static(len(FAKE_TLS));
+        static_attest(slice::slice::integrity(&udpkt));
+    }
+
+    self->statem.connecting.initiator.complete(e, &broker_chan, &redir, udpkt, 0);
+    if err::check(e) { return false; }
+
+    if redir.protocol != 0 {
+        log::debug("received redirect");
+        memcpy(&self->statem.connecting.current_broker, &redir, sizeof(vault::Broker));
+        self->statem.connecting.retry_sending = 0;
+        self->timeout.close();
+        return true;
+    } else {
+        log::debug("accepted HS");
+        self->state = State::Connected;
+        memset(&self->statem , 0, sizeof(StateM));
+
+        self->statem.connected.udp4 = self->udp4;
+        self->statem.connected.tcp4 = self->tcp4;
+
+        channel::Channel mut* broker_chan_c = self->statem.connected.channels;
+        static_attest(safe(broker_chan_c));
+        channel::from_transfer(broker_chan_c, broker_chan);
+        broker_chan_c->peering.received(trp, fromaddr, peering::Class::Internet);
+        broker_chan_c->q.allocator = &self->framebuffer;
+        broker_chan_c->store  = &self->vault;
+        broker_chan_c->this_is_the_broker_channel = true;
+        broker_chan_c->errors_are_fatal = true;
+
+        self->statem.connected.channels[0].endpoint = self;
+
+        return false;
     }
 }
 
@@ -269,7 +325,6 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
 {
 
     switch self->state {
-        // TODO retry timeout
         State::Connecting => {
 
             // make sure we always activate
@@ -281,8 +336,8 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                 async->select(e, &self->udp4, io::Ready::Read);
                 if err::check(e) {return io::Result::Error; }
             }
-            if io::valid(&self->udp6) {
-                async->select(e, &self->udp6, io::Ready::Read);
+            if io::valid(&self->tcp4) {
+                async->select(e, &self->tcp4, io::Ready::Read);
                 if err::check(e) {return io::Result::Error; }
             }
 
@@ -290,49 +345,55 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
             address::Address    mut fromaddr = {0};
 
             self->statem.connecting.pkt_in.clear();
-            if self->udp4.recvfrom(e, &self->statem.connecting.pkt_in, &fromaddr) == io::Result::Ready {
-                err::make(e);
+            if self->udp4.ctx.valid() && self->udp4.recvfrom(e, &self->statem.connecting.pkt_in, &fromaddr) == io::Result::Ready {
+                if err::check(e) {return io::Result::Error; }
 
-                string::String+100 mut bufx = {0};
-                fromaddr.to_string(&bufx);
-                log::debug("receiving %zu bytes from %s", self->statem.connecting.pkt_in.len, bufx.mem);
+                new+100 bufx = buffer::make();
+                fromaddr.to_buffer(&bufx);
+                log::debug("receiving %zu bytes from udp:%s", self->statem.connecting.pkt_in.at, bufx.cstr());
 
-                channel::Transfer mut broker_chan = {0};
-
-                vault::Broker mut redir = {0};
-                self->statem.connecting.initiator.complete(e, &broker_chan, &redir, &self->statem.connecting.pkt_in, 0);
+                bool again = self->do_complete(e, peering::Transport::Udp, fromaddr);
                 if err::check(e) {
                     e->elog();
-                    err::make(e);
+                    e->ignore();
                     // don't return here. we might have stuff to set the timer in the rest of the code
-                } else if redir.protocol != 0 {
-                    log::debug("received redirect");
-                    memcpy(&self->statem.connecting.current_broker, &redir, sizeof(vault::Broker));
-                    self->statem.connecting.retry_sending = 0;
-                    self->timeout.close();
-                    return self->poll(e, async);
                 } else {
-                    log::debug("accepted HS");
-                    self->state = State::Connected;
-                    memset(&self->statem , 0, sizeof(StateM));
-
-                    self->statem.connected.udp4 = self->udp4;
-                    self->statem.connected.udp6 = self->udp6;
-
-                    channel::Channel mut* broker_chan_c = self->statem.connected.channels;
-                    static_attest(safe(broker_chan_c));
-                    channel::from_transfer(broker_chan_c, broker_chan);
-                    broker_chan_c->peering.received(peering::Transport::Udp, fromaddr, peering::Class::Internet);
-                    broker_chan_c->q.allocator = &self->framebuffer;
-                    broker_chan_c->store  = &self->vault;
-                    broker_chan_c->this_is_the_broker_channel = true;
-                    broker_chan_c->errors_are_fatal = true;
-
-                    self->statem.connected.channels[0].endpoint = self;
-
-                    return io::Result::Ready;
+                    if again {
+                        return self->poll(e, async);
+                    } else {
+                        return io::Result::Ready;
+                    }
                 }
-                err::make(e);
+            }
+            if err::check(e) {return io::Result::Error; }
+
+            if self->tcp4.ctx.valid() {
+                switch self->tcp4.recv(e, &self->statem.connecting.pkt_in) {
+                    io::Result::Eof => {
+                        self->tcp4.close();
+                    }
+                    io::Result::Ready => {
+                        if err::check(e) {return io::Result::Error; }
+
+                        new+100 bufx = buffer::make();
+                        self->tcp4.remote_addr.to_buffer(&bufx);
+                        log::debug("receiving %zu bytes from tcp:%s", self->statem.connecting.pkt_in.at, bufx.cstr());
+
+                        bool again = self->do_complete(e, peering::Transport::Tcp, self->tcp4.remote_addr);
+                        if err::check(e) {
+                            e->elog();
+                            e->ignore();
+                            // don't return here. we might have stuff to set the timer in the rest of the code
+                        } else {
+                            if again {
+                                return self->poll(e, async);
+                            } else {
+                                return io::Result::Ready;
+                            }
+                        }
+                    }
+                    default => {}
+                }
             }
             if err::check(e) {return io::Result::Error; }
 
@@ -369,13 +430,6 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                 self->next_broker();
             }
 
-            // TODO: abstract
-            // TODO: this is stupid in the first place. the protocol needs a different replay protection
-            //time::Time now = time::real();
-            //self->vault.mem->time = now.to_millis();
-
-
-
             address::Address  mut ip4addr = {0};
             address::Address  mut ip6addr = {0};
             identity::Address mut xaddr   = {0};
@@ -388,6 +442,10 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
             if self->statem.connecting.retry_sending % 3 == 0 {
                 log::debug("resetting crypto state");
 
+                buffer::make(&self->statem.connecting.pkt_out);
+
+                self->statem.connecting.pkt_out.append_bytes(FAKE_TLS, static(len(FAKE_TLS)));
+
                 self->statem.connecting.initiator.initiate(
                     e,
                     true,
@@ -396,40 +454,77 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                     &self->cluster_target,
                     &xaddr,
                     self->vault.vector_time(),
-                    &self->statem.connecting.pkt_out
+                    self->statem.connecting.pkt_out.as_mut_slice()
                 );
+
+                u16 mut * mo = (u16 mut *)(self->statem.connecting.pkt_out.mem + static(len(FAKE_TLS) - 2));
+                *mo = byteorder::to_be16(self->statem.connecting.pkt_out.at - static(len(FAKE_TLS)));
+
                 if err::check(e) {return io::Result::Error;}
             }
 
-            string::String+150 mut dbn = {0};
-            ip4addr.ip_to_string(&dbn);
+
+            let mut udpkt = self->statem.connecting.pkt_out.as_slice();
+            static_attest(static(len(FAKE_TLS)) < len(udpkt.mem));
+            udpkt.size = udpkt.size - static(len(FAKE_TLS));
+            udpkt.mem  = udpkt.mem  + static(len(FAKE_TLS));
+            static_attest(slice::slice::integrity(&udpkt));
+
+            new+150 dbn = buffer::make();
+            ip4addr.ip_to_buffer(&dbn);
             dbn.append_cstr(" ");
-            static_attest(len(&dbn.mem) > dbn.len);
-            dbn.len += identity::address_to_str(e, dbn.mem + dbn.len, 150 - dbn.len, &xaddr);
+            static_attest(len(&dbn.mem) > dbn.at);
+            dbn.at += identity::address_to_str(e, dbn.mem + dbn.at, 150 - dbn.at, &xaddr);
             if err::check(e) {return io::Result::Error; }
 
             log::debug("attempt %zu sending %zu bytes to %.*s",
                 self->statem.connecting.retry_sending,
-                self->statem.connecting.pkt_out.len,
-                (int)dbn.len, dbn.mem);
+                udpkt.size,
+                (int)dbn.at, dbn.mem);
 
             ++self->statem.connecting.retry_sending;
+
+
 
             for (usize mut i = 0; i < static(len(PORTS));i++) {
                 ip4addr.set_port(PORTS[i]);
                 ip6addr.set_port(PORTS[i]);
 
-                self->udp4.sendto(e, &self->statem.connecting.pkt_out, &ip4addr);
-                err::make(e);
+                self->udp4.sendto(e, udpkt, &ip4addr);
+                e->ignore();
 
                 if io::valid(&self->udp6) && ip6addr.valid() {
-                    self->udp6.sendto(e, &self->statem.connecting.pkt_out, &ip6addr);
-                    err::make(e);
+                    self->udp6.sendto(e, udpkt,  &ip6addr);
+                    e->ignore();
                 }
            }
 
 
             async->select(e, &self->udp4, io::Ready::Read);
+            e->ignore();
+            async->select(e, &self->udp6, io::Ready::Read);
+            e->ignore();
+            async->select(e, &self->tcp4, io::Ready::Read);
+            e->ignore();
+
+            if self->statem.connecting.retry_sending == 2 {
+                if io::valid(&self->tcp4) {
+                    self->tcp4.close();
+                }
+                ip4addr.set_port(8443);
+                tcp::connect(&self->tcp4, e, ip4addr, async);
+                if err::check(e) {
+                    return io::Result::Error;
+                }
+            }
+
+            if io::valid(&self->tcp4) {
+                static_attest(buffer::integrity(&self->statem.connecting.pkt_out,
+                    static(len(self->statem.connecting.pkt_out.mem))));
+
+                self->tcp4.send(e, self->statem.connecting.pkt_out.as_slice());
+                e->ignore();
+            }
 
 
             return io::Result::Later;

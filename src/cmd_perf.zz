@@ -1,17 +1,17 @@
 using initiator;
 using err;
 using vault;
-using string;
+using buffer;
 
 pub fn cmd(vault::Vault mut *va, usize mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
 {
 
-    new+1200 pkt  = string::make();
+    new+1200 pkt  = buffer::make();
     new+100 e = err::make();
 
     for (usize mut  i = 0 ; i < 1000; i++) {
-        new ii = initiator::initiate(&e, false , va, initiator::Move::Self, 0, 0, 0, &pkt);
+        new ii = initiator::initiate(&e, false , va, initiator::Move::Self, 0, 0, 0, pkt.as_mut_slice());
     }
     return 0;
 }

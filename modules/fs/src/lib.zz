@@ -1,21 +1,20 @@
-using string;
+using buffer;
 using err;
 
 inline using "native.h"::{
     os_get_homedir,
 }
 
-export fn get_homedir(err::Err+et mut *e, string::String+st mut *to)
+export fn get_homedir(err::Err+et mut *e, buffer::Buffer+st mut *to)
     where err::checked(*e)
+    where buffer::integrity(to, st)
 {
-    static_attest(to->len < st);
-
-    let rr = (usize)os_get_homedir(to->mem + to->len, st - to->len);
+    let rr = (usize)os_get_homedir(to->mem + to->at, st - to->at);
     if rr == 0 {
         err::fail_with_errno(e, "homedir");
     }
 
-    to->len += rr;
-    err::assert(to->len < st);
-    to->mem[to->len] = 0;
+    to->at += rr;
+    err::assert(to->at < st);
+    to->mem[to->at] = 0;
 }

@@ -3,6 +3,7 @@ using err;
 using carrier;
 using vault_toml;
 using buffer;
+using revision;
 
 using cmd_publish;
 using cmd_shell;
@@ -12,7 +13,6 @@ using cmd_subscribe;
 using cmd_stream;
 
 static char * USAGE = "
-carrier 0.13 [zz]
 devguard carrier is a secure message system for IoT
 
 Usage:
@@ -68,6 +68,9 @@ export fn main(int mut argc, char ** argv) -> int
             return cmd_stream::cmd(argc, argv);
         }
     }
+
+
+    fprintf(stderr, "carrier %s [zz]", revision::build_id());
     fprintf(stderr, "%s", USAGE);
     return 1;
 }

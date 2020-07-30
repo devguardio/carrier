@@ -457,9 +457,12 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
                     self->statem.connecting.pkt_out.as_mut_slice()
                 );
 
-                u16 mut * mo = (u16 mut *)(self->statem.connecting.pkt_out.mem + static(len(FAKE_TLS) - 2));
-                *mo = byteorder::to_be16(self->statem.connecting.pkt_out.at - static(len(FAKE_TLS)));
-
+                u16 mo = byteorder::to_be16(self->statem.connecting.pkt_out.at - static(len(FAKE_TLS)));
+                memcpy(
+                    self->statem.connecting.pkt_out.mem + static(len(FAKE_TLS) - 2),
+                    &mo,
+                    2
+                );
                 if err::check(e) {return io::Result::Error;}
             }
 

@@ -64,7 +64,7 @@ pub fn accept_insecure(
     frame->push64(byteorder::to_be64(timestamp));
 
     // revision
-    frame->push32(byteorder::to_be32(revision::REVISION));
+    frame->push32(byteorder::to_be32(revision::revision()));
 
 
     *frame->at += 16 ;

@@ -41,9 +41,8 @@ fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice header
     if err::check(e) { return; }
     sysinfo::sysinfo(frame2);
 
-    static_attest(safe(revision::BUILD_ID));
-    static_attest(nullterm(revision::BUILD_ID));
-    protonerf::encode_bytes(frame2, e, proto::Sysinfo::CarrierBuildId, (u8*)revision::BUILD_ID, buffer::strlen(revision::BUILD_ID));
+    let bi = revision::build_id();
+    protonerf::encode_bytes(frame2, e, proto::Sysinfo::CarrierBuildId, (u8*)bi, buffer::strlen(bi));
 
     self->close();
 }

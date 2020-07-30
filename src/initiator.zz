@@ -97,7 +97,7 @@ pub fn initiate(
     memcpy(plaintext + plaintext_len, &network_time_be, 8);
     plaintext_len += 8;
 
-    u32 revision_be = byteorder::to_be32(revision::REVISION);
+    u32 revision_be = byteorder::to_be32(revision::revision());
     memcpy(plaintext + plaintext_len, &revision_be, 4);
     plaintext_len += 4;
 
@@ -125,20 +125,23 @@ pub fn initiate(
     static_attest(pkt_starts_at < len(pkt.mem));
     // version 1B
     if secure {
-        pkt.push(9);
+        u8 header[] = {
+            9,                  // version
+            0,0,0,              // reserved
+            0,0,0,0, 0,0,0,0,   // route
+            0,0,0,0, 0,0,0,0,   // counter
+        };
+        pkt.append_bytes(header, static(len(header)));
     } else {
-        pkt.push(8);
-        pkt.push(0xff);
-        pkt.push(0xff);
-        pkt.push(0xff);
+        u8 header[] = {
+            8,                  // version
+            0xff,0xff,0xff,     // reserved
+            0,0,0,0, 0,0,0,0,   // route
+            0,0,0,0, 0,0,0,0,   // counter
+        };
+        pkt.append_bytes(header, static(len(header)));
     }
 
-    u8 header[] = {
-        0,0,0,              // reserved
-        0,0,0,0, 0,0,0,0,   // route
-        0,0,0,0, 0,0,0,0,   // counter
-    };
-    pkt.append_bytes(header, static(len(header)));
 
 
     if secure {

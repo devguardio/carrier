@@ -84,7 +84,7 @@ fn main() -> int
                 if in_times     == (usize)EOF { return 0; }
 
                 for (usize mut i = 0;i < in_times ;i++) {
-                    let mut frame = q.alloc(&e, channel::FrameType::Open, 10);
+                    let mut frame = q.alloc(&e, channel::FrameType::Ack , 10);
                     if err::check(&e) {
                         return 1;
                     }

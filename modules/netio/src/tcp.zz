@@ -73,9 +73,18 @@ export fn recv(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *buf) 
 
 export fn send(Socket mut *self, err::Err+et mut*e, slice::Slice buf) -> io::Result
     where err::checked(*e)
-    if #(os::ZZ_NETIO_UNIX)
+    if #(os::ZZ_NETIO_UNIX  && os::defined(os::MSG_NOSIGNAL))
 {
     isize r = unsafe<isize>(os::send(self->ctx.fd, buf.mem, buf.size, os::MSG_NOSIGNAL));
+    if (usize)r != buf.size {
+        e->fail_with_errno("send");
+        return io::Result::Error;
+    }
+
+    return io::Result::Ready;
+} else if #(os::ZZ_NETIO_UNIX)
+{
+    isize r = unsafe<isize>(os::send(self->ctx.fd, buf.mem, buf.size, 0));
     if (usize)r != buf.size {
         e->fail_with_errno("send");
         return io::Result::Error;

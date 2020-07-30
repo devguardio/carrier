@@ -49,6 +49,16 @@ pub fn socket(address::Address *addr, err::Err+et mut *e, int typ) -> int
     return fd;
 }
 
+fn so_nosigpipe(int fd)
+if #(os::defined(os::SO_NOSIGPIPE))
+{
+    int set = 1;
+    os::setsockopt(fd, os::SOL_SOCKET, os::SO_NOSIGPIPE, &set, sizeof(set));
+}
+else
+{
+}
+
 pub fn make_async(int fd, err::Err+et mut *e)
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
@@ -64,5 +74,6 @@ pub fn make_async(int fd, err::Err+et mut *e)
         e->fail_with_errno("F_SETFL");
         return;
     }
-}
+    so_nosigpipe(fd);
 
+}

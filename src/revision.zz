@@ -5,7 +5,7 @@ using <stdlib.h>::{system};
 using <stdio.h>::{printf, fflush, stdout};
 
 pub macro m_revision() {
-    system("echo -n $(git rev-list --count HEAD)");
+    system("git rev-list --count HEAD | tr -d '\\n' ");
 }
 
 export inline fn revision() -> u32 {
@@ -15,7 +15,7 @@ export inline fn revision() -> u32 {
 macro m_build_id() {
     printf("\"");
     fflush(stdout);
-    system("echo -n $(git describe --tags --always --dirty=-dirty)");
+    system("git describe --tags --always --dirty=-dirty | tr -d '\\n'");
     printf("\"");
 }
 

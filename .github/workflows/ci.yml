@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+
+
+    - name: macos
+      if: matrix.os == 'macos-latest'
+      run: |
+        brew install z3
+        wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-macos.zip
+        unzip zz*.zip
+        export "PATH=$PATH:$PWD/target/release/"
+        zz test
+
+
+    - name: ubuntu
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        sudo apt-get install -y z3
+        wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-ubuntu.zip
+        unzip zz*.zip
+        export "PATH=$PATH:$PWD/target/release/"
+        zz test
+

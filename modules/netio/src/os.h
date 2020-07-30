@@ -2,6 +2,7 @@
     #define ZZ_NETIO_UNIX 1
 #elif defined(__APPLE__)
     #define ZZ_NETIO_UNIX 1
+    #define ZZ_NETIO_OSX 1
 #endif
 
 

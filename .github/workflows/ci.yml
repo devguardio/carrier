@@ -37,6 +37,7 @@ jobs:
         wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-macos.zip
         unzip zz*.zip
         export "PATH=$PATH:$PWD/target/release/"
+        cd core
         zz test
 
 
@@ -47,5 +48,6 @@ jobs:
         wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-ubuntu.zip
         unzip zz*.zip
         export "PATH=$PATH:$PWD/target/release/"
+        cd core
         zz test
 

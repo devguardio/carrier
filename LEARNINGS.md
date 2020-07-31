@@ -65,3 +65,23 @@ essentially identical to how TCP works, so alot of protocols should fit right on
 
 
 
+testing lossy networks
+---------------
+
+```
+sudo ifconfig lo:1 10.0.0.1/8
+
+#add delay (this crashes my kernel)
+sudo tc qdisc add dev lo:1 root netem delay 100ms 20ms distribution normal
+
+#add loss
+sudo tc qdisc add dev lo:1 root netem loss 30%
+
+
+#deutsche bahn wifi
+sudo tc qdisc add dev lo:1 root netem loss 30% delay 100ms 300ms distribution normal
+
+
+
+#delete qc rules
+sudo tc qdisc del dev lo:1 root

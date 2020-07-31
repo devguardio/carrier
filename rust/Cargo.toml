@@ -16,7 +16,7 @@ uefi    = ["smbios", "cluproccmdline"]
 
 
 [dependencies]
-carrier  = {path = "target/rust/carrier/"}
+carrier  = {path = "../core/target/rust/carrier/"}
 
 # not no-std
 prost               = "0.5.0"

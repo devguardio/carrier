@@ -102,13 +102,13 @@ pub fn main() {
     config
         .compile_protos(
             &[
-                "proto/carrier.broker.v1.proto",
-                "proto/carrier.certificate.v1.proto",
-                "proto/carrier.sysinfo.v1.proto",
-                "proto/carrier.discovery.v1.proto",
-                "proto/genesis.v1.proto",
+                "../core/proto/carrier.broker.v1.proto",
+                "../core/proto/carrier.certificate.v1.proto",
+                "../core/proto/carrier.sysinfo.v1.proto",
+                "../core/proto/carrier.discovery.v1.proto",
+                "../core/proto/genesis.v1.proto",
             ],
-            &["proto"],
+            &["../core/proto"],
         )
         .unwrap();
 }

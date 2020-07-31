@@ -30,24 +30,26 @@ jobs:
         fetch-depth: 0
 
 
-    - name: macos
+    - name: prep-macos
       if: matrix.os == 'macos-latest'
       run: |
         brew install z3
         wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-macos.zip
         unzip zz*.zip
-        export "PATH=$PATH:$PWD/target/release/"
-        cd core
-        zz test
 
-
-    - name: ubuntu
+    - name: prep-ubuntu
       if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get install -y z3
         wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-ubuntu.zip
         unzip zz*.zip
+
+    - name: build
+      run: |
         export "PATH=$PATH:$PWD/target/release/"
         cd core
         zz test
-
+        cd ../go
+        go test
+        cd ../cli
+        go test

@@ -1,7 +1,7 @@
 carrier is a generic secure message system for IoT
 -----------
 
-read a intro here: https://book.devguard.io/
+read the intro here: http://book.devguard.io/
 
  - based on the NOISE protocol framework
  - with http3 like semantics based on the QUIC transport spec

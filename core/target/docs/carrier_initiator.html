@@ -1,0 +1,191 @@
+
+<h1> module carrier::initiator </h1>
+<h4> fn swap16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::carrier::initiator::Move
+    move,
+
+    ::carrier::identity::Address*
+    xaddr,
+
+    bool
+    secure,
+
+    ::slice::mut_slice::MutSlice
+    pkt,
+
+    ::carrier::identity::Identity*
+    cluster_target,
+
+    usize
+    et,
+
+    ::carrier::vault::Vault*
+    vault,
+
+    ::err::Err*+et
+    e,
+
+    u64
+    vector_time,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn complete (
+
+    usize
+    et,
+
+    ::carrier::vault::Broker*
+    redirect,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::channel::Transfer*
+    chan,
+
+    ::carrier::identity::Identity*
+    expect_identity,
+
+    ::slice::slice::Slice
+    pkt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+

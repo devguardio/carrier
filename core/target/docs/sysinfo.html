@@ -1,0 +1,181 @@
+
+<h1> module sysinfo </h1>
+<h4> fn sysinfo (
+
+    ::slice::mut_slice::MutSlice
+    sl,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_bytes (
+
+    ::err::Err*+et
+    e,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+    u8*
+    b,
+
+    usize
+    l,
+
+    usize
+    et,
+
+    u8
+    index,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_varint (
+
+    ::err::Err*+et
+    e,
+
+    u8
+    index,
+
+    usize
+    et,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+    u64
+    value,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_le64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_f64 (
+
+    ::err::Err*+et
+    e,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+    u8
+    index,
+
+    usize
+    et,
+
+    f64
+    value,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn fail_with_errno (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    line,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    usize
+    tail,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sensors (
+
+    ::slice::mut_slice::MutSlice
+    sl,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+

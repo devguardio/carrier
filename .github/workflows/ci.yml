@@ -48,6 +48,7 @@ jobs:
       run: |
         export "PATH=$PATH:$PWD/target/release/"
         cd core
+        zz clean
         zz test
         cd ../go
         go test

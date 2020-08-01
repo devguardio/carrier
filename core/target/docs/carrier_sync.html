@@ -1,0 +1,135 @@
+
+<h1> module carrier::sync </h1>
+<h4> fn wait (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::sync::Sync*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn start (
+
+    ::carrier::endpoint::Endpoint*
+    ep,
+
+    usize
+    et,
+
+    ::carrier::sync::Sync*
+    self,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    int
+    exit_code,
+
+    ::carrier::sync::Sync*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn open (
+
+    ::carrier::stream::Config*
+    sc,
+
+    ::carrier::sync::Sync*
+    self,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt ::carrier::stream::Stream*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn connect (
+
+    usize
+    et,
+
+    ::carrier::sync::Sync*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::identity::Identity*
+    target,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn open_with_headers (
+
+    usize
+    et,
+
+    ::carrier::stream::Config*
+    sc,
+
+    ::carrier::sync::Sync*
+    self,
+
+    ::slice::slice::Slice*
+    extraheaders,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt ::carrier::stream::Stream*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+
+
+
+

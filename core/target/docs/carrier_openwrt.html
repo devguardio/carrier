@@ -1,6 +1,25 @@
 
 <h1> module carrier::openwrt </h1>
-<h4> fn register (
+<h4> fn dopublish (
+
+    int
+    argc,
+
+    ::ext::&lt;stddef.h&gt;::char**
+    argv,
+
+    ::carrier::vault::Vault
+    va,
+
+)
+
+-&gt int
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn register (
 
     ::carrier::endpoint::Endpoint*
     ep,
@@ -13,32 +32,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn dopublish (
-
-    ::carrier::vault::Vault
-    va,
-
-    int
-    argc,
-
-    ::ext::&lt;stddef.h&gt;::char**
-    argv,
-
-)
-
--&gt int
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn main (
 
-    int
-    argc,
-
     ::ext::&lt;stddef.h&gt;::char**
     argv,
+
+    int
+    argc,
 
 )
 

@@ -18,11 +18,16 @@ pub fn print_identity(endpoint::Endpoint *self)
     new+1000 e = err::make();
 
     identity::Identity mut id = {0};
-    self->vault.get_identity(&id);
+    self->vault.get_local_identity(&id);
     char mut buf[64] = {0};
     identity::identity_to_str(&e, buf, 64, &id);
     e.abort();
     log::info("my identity: %s", buf);
+
+    self->vault.get_principal_identity(&id);
+    identity::identity_to_str(&e, buf, 64, &id);
+    e.abort();
+    log::info("principal: %s", buf);
 }
 
 pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool

@@ -1,25 +1,6 @@
 
 <h1> module carrier::crc8 </h1>
-<h4> fn broken_crc8 (
-
-    u8
-    crc,
-
-    u8*
-    data,
-
-    usize
-    length,
-
-)
-
--&gt u8
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn crc8 (
+<h4> fn crc8_slow (
 
     usize
     l,
@@ -38,7 +19,26 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn crc8_slow (
+</p><h4> fn broken_crc8 (
+
+    usize
+    length,
+
+    u8
+    crc,
+
+    u8*
+    data,
+
+)
+
+-&gt u8
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn crc8 (
 
     u8*
     data,

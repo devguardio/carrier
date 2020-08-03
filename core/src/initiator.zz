@@ -55,7 +55,7 @@ pub fn initiate(
     self->secure = secure;
 
     identity::Identity mut eid = {0};
-    vault->get_identity(&eid);
+    vault->get_principal_identity(&eid);
 
     if secure {
         err::assert_safe(xaddr);
@@ -204,10 +204,10 @@ pub fn initiate(
     mem::copy(((self->noise).symm).h,  mm, static(len(((self->noise).symm).h)));
 
 
-    identity::Signature mut*sig= (identity::Signature mut*)(pkt.mem + *pkt.at);
+    identity::Signature mut*sig = (identity::Signature mut*)(pkt.mem + *pkt.at);
     static_attest(safe(sig));
 
-    vault->sign(sig, signme, static(len(signme)));
+    vault->sign_principal(sig, signme, static(len(signme)));
     *pkt.at += 64;
 
     //printf("packet len %zu\n", pkt->len);

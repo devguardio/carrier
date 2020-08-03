@@ -1,21 +1,43 @@
 
 <h1> module carrier::identity </h1>
-<h4> fn address_from_str (
+<h4> fn secretkit_to_str (
+
+    ::carrier::identity::SecretKit*
+    from,
 
     usize
     l,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
+    ::err::Err*+et
+    e,
 
-    ::carrier::identity::Address*
-    self,
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
 
     usize
     et,
 
-    ::err::Err*+et
-    e,
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sign (
+
+    u8*
+    subject,
+
+    usize
+    subject_len,
+
+    ::carrier::identity::Signature*
+    s,
+
+    ::carrier::identity::Secret*
+    key,
 
 )
 
@@ -25,23 +47,26 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn address_from_cstr (
-
-    ::err::Err*+et
-    e,
+</p><h4> fn address_to_str (
 
     usize
     et,
 
-    ::carrier::identity::Address*
-    self,
-
     ::ext::&lt;stddef.h&gt;::char*
+    to,
+
+    usize
+    l,
+
+    ::carrier::identity::Address*
     from,
+
+    ::err::Err*+et
+    e,
 
 )
 
-
+-&gt usize
 
 </h4>
 
@@ -49,8 +74,49 @@
 
 </p><h4> fn secret_to_str (
 
+    ::carrier::identity::Secret*
+    from,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
+
     usize
     l,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn identity_from_secret (
+
+    ::carrier::identity::Secret*
+    sk,
+
+    ::carrier::identity::Identity*
+    pk,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn secretkit_generate (
+
+    ::carrier::identity::SecretKit*
+    self,
 
     usize
     et,
@@ -58,8 +124,121 @@
     ::err::Err*+et
     e,
 
-    ::carrier::identity::Secret*
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn identity_from_cstr (
+
+    usize
+    et,
+
+    ::carrier::identity::Identity*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
     from,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn secret_from_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
+
+    ::carrier::identity::Secret*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn signature_from_str (
+
+    ::carrier::identity::Signature*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
+
+    usize
+    et,
+
+    usize
+    l,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn address_to_str_bc58 (
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
+
+    usize
+    l,
+
+    ::carrier::identity::Address*
+    from,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn identity_to_str (
+
+    usize
+    l,
+
+    ::carrier::identity::Identity*
+    from,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
 
     ::ext::&lt;stddef.h&gt;::char*
     to,
@@ -72,13 +251,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn identity_to_str_bc58 (
+</p><h4> fn alias_to_str (
 
     ::err::Err*+et
     e,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
 
     usize
     et,
@@ -86,7 +262,10 @@
     usize
     l,
 
-    ::carrier::identity::Identity*
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
+
+    ::carrier::identity::Alias*
     from,
 
 )
@@ -116,91 +295,54 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn sign (
-
-    ::carrier::identity::Signature*
-    s,
-
-    u8*
-    subject,
-
-    usize
-    subject_len,
-
-    ::carrier::identity::Secret*
-    key,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn identity_to_str (
-
-    ::carrier::identity::Identity*
-    from,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
-
-    usize
-    l,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn address_to_str_bc58 (
+</p><h4> fn address_from_str (
 
     ::carrier::identity::Address*
-    from,
+    self,
 
     usize
     l,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
-    ::err::Err*+et
-    e,
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
 
 )
 
--&gt usize
+
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn verify (
+</p><h4> fn address_from_secret (
 
-    usize
-    subject_len,
-
-    ::carrier::identity::Signature*
-    s,
-
-    ::carrier::identity::Identity*
+    ::carrier::identity::Address*
     pk,
 
-    u8*
-    subject,
+    ::carrier::identity::Secret*
+    sk,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn eq (
+
+    ::carrier::identity::Identity*
+    other,
+
+    ::carrier::identity::Identity*
+    self,
 
 )
 
@@ -210,69 +352,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn identity_from_cstr (
-
-    ::carrier::identity::Identity*
-    self,
-
-    usize
-    et,
+</p><h4> fn alias_from_str (
 
     ::ext::&lt;stddef.h&gt;::char*
     from,
 
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn secret_from_str (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::identity::Secret*
-    self,
-
     usize
     et,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
 
     usize
     l,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn signature_from_str (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
-
-    ::carrier::identity::Signature*
+    ::carrier::identity::Alias*
     self,
 
     ::err::Err*+et
     e,
-
-    usize
-    l,
-
-    usize
-    et,
 
 )
 
@@ -284,14 +379,14 @@
 
 </p><h4> fn identity_from_str (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
-
     ::carrier::identity::Identity*
     self,
 
     ::err::Err*+et
     e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
 
     usize
     et,
@@ -320,98 +415,66 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn identity_from_secret (
+</p><h4> fn secret_from_str (
+
+    ::err::Err*+et
+    e,
 
     ::carrier::identity::Secret*
-    sk,
+    self,
+
+    usize
+    l,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn address_from_cstr (
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
+
+    ::carrier::identity::Address*
+    self,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn verify (
 
     ::carrier::identity::Identity*
     pk,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn address_to_str (
-
-    ::carrier::identity::Address*
-    from,
-
-    ::err::Err*+et
-    e,
-
     usize
-    l,
+    subject_len,
 
-    usize
-    et,
+    ::carrier::identity::Signature*
+    s,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn secret_generate (
-
-    ::carrier::identity::Secret*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn secretkit_to_str (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
-
-    usize
-    l,
-
-    ::carrier::identity::SecretKit*
-    from,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn eq (
-
-    ::carrier::identity::Identity*
-    other,
-
-    ::carrier::identity::Identity*
-    self,
+    u8*
+    subject,
 
 )
 
@@ -421,158 +484,26 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn secretkit_from_str (
-
-    ::err::Err*+et
-    e,
+</p><h4> fn identity_to_string (
 
     usize
     et,
 
-    ::carrier::identity::SecretKit*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
-
-    usize
-    l,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn secretkit_generate (
-
-    ::carrier::identity::SecretKit*
+    ::carrier::identity::Identity*
     self,
 
     ::err::Err*+et
     e,
 
+    ::buffer::Buffer*+st
+    str,
+
     usize
-    et,
+    st,
 
 )
 
 
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn address_from_secret (
-
-    ::carrier::identity::Address*
-    pk,
-
-    ::carrier::identity::Secret*
-    sk,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn alias_from_str (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
-
-    usize
-    l,
-
-    ::carrier::identity::Alias*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn secret_from_cstr (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    from,
-
-    ::carrier::identity::Secret*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn secret_to_str_bc58 (
-
-    ::carrier::identity::Secret*
-    from,
-
-    usize
-    l,
-
-    usize
-    et,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn signature_to_str (
-
-    ::carrier::identity::Signature*
-    from,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    l,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
-
-)
-
--&gt usize
 
 </h4>
 
@@ -597,15 +528,9 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn identity_to_string (
+</p><h4> fn secret_generate (
 
-    ::buffer::Buffer*+st
-    str,
-
-    usize
-    st,
-
-    ::carrier::identity::Identity*
+    ::carrier::identity::Secret*
     self,
 
     ::err::Err*+et
@@ -622,7 +547,63 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn alias_to_str (
+</p><h4> fn signature_to_str (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    l,
+
+    ::carrier::identity::Signature*
+    from,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
+
+    usize
+    et,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn secretkit_from_str (
+
+    ::carrier::identity::SecretKit*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    from,
+
+    usize
+    l,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn secret_to_str_bc58 (
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
 
     usize
     et,
@@ -630,14 +611,33 @@
     usize
     l,
 
-    ::carrier::identity::Alias*
+    ::carrier::identity::Secret*
     from,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    to,
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn identity_to_str_bc58 (
+
+    ::carrier::identity::Identity*
+    from,
 
     ::err::Err*+et
     e,
+
+    usize
+    l,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    to,
 
 )
 

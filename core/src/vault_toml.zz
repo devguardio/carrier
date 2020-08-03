@@ -19,9 +19,11 @@ struct Authorize {
 
 
 struct Mem {
-    identity::Secret secret;
-    identity::Address network;
-    identity::Secret network_secret;
+    identity::Secret    secret;
+    identity::Secret    principal;
+    bool                has_principal;
+    identity::Address   network;
+    identity::Secret    network_secret;
 
     Authorize auth[32];
     buffer::Buffer+2000 mut file_name;
@@ -85,7 +87,10 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * fil
 {
     memset(self, 0, sizeof(vault::Vault));
 
-    self->i_get_secret           = i_get_secret;
+    self->i_get_local_identity   = i_get_local_identity;
+    self->i_sign_local           = i_sign_local;
+    self->i_get_principal_identity   = i_get_principal_identity;
+    self->i_sign_principal           = i_sign_principal;
     self->i_get_network          = i_get_network;
     self->i_get_network_secret   = i_get_network_secret;
     self->i_advance_clock        = i_advance_clock;
@@ -361,6 +366,9 @@ fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, cha
         }
     } else if v.t == toml::ValueType::String && buffer::cstr_eq(k, "secret") {
         load_from_toml_identity_secret(this, e, v);
+    } else if v.t == toml::ValueType::String && buffer::cstr_eq(k, "principal") {
+        identity::secret_from_cstr((identity::Secret mut*)&this->principal, e, v.string);
+        this->has_principal = true;
     }
 }
 
@@ -409,12 +417,44 @@ fn save_to_toml(Mem *self, err::Err+et mut *e)
 }
 
 
-fn i_get_secret (vault::Vault *self, identity::Secret  mut * secret)
+fn i_get_local_identity (vault::Vault *self, identity::Identity mut *id)
 {
     let this = (Mem mut*)self->user;
     static_attest(safe(this));
 
-    memcpy(secret, &this->secret, sizeof(identity::Secret));
+    identity::identity_from_secret(id, &this->secret);
+}
+
+fn i_sign_local(vault::Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    identity::sign(&this->secret, s, subject, subject_len);
+}
+
+fn i_get_principal_identity (vault::Vault *self, identity::Identity mut *id)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    if !this->has_principal {
+        i_get_local_identity(self, id);
+        return;
+    }
+    identity::identity_from_secret(id, &this->principal);
+}
+
+fn i_sign_principal(vault::Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+
+    if !this->has_principal {
+        i_sign_local(self, s, subject, subject_len);
+        return;
+    }
+    identity::sign(&this->principal, s, subject, subject_len);
 }
 
 fn i_get_network (vault::Vault *self, identity::Address mut * network)

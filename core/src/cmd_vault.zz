@@ -21,32 +21,10 @@ pub fn print_identity (vault::Vault mut * va, int mut argc, char ** argv) -> int
     new+1000 e = err::make();
 
     identity::Identity mut id= {0};
-    va->get_identity(&id);
+    va->get_local_identity(&id);
 
     char mut buf[100] = {0};
     identity::identity_to_str(&e, buf, static(len(buf)), &id);
-    e.abort();
-    printf("%s\n", buf);
-
-
-    va->close();
-    return 0;
-}
-
-pub fn print_secretkit(vault::Vault mut *va, int mut argc, char ** argv) -> int
-    where (usize)argc == len(argv)
-{
-    new+1000 e = err::make();
-
-    identity::SecretKit  mut sk = {0};
-
-    static_attest(safe(va->i_get_secret));
-    static_attest(safe(va->i_get_network_secret));
-    va->i_get_secret           (va, &sk.identity);
-    va->i_get_network_secret   (va, &sk.network);
-
-    char mut buf[200] = {0};
-    identity::secretkit_to_str(&e, buf, static(len(buf)), &sk);
     e.abort();
     printf("%s\n", buf);
 
@@ -64,8 +42,6 @@ pub fn cmd(vault::Vault mut *va, usize mut argc, char ** argv) -> int
         static_attest(nullterm(arg));
         if buffer::cstr_eq(arg, "identity") {
             return print_identity(va, argc, argv);
-        } else if buffer::cstr_eq(arg, "secretkit") {
-            return print_secretkit(va, argc, argv);
         } else if buffer::cstr_eq(arg, "bc58") {
             return print_bc58(va, argc, argv);
         }
@@ -81,7 +57,7 @@ pub fn print_bc58(vault::Vault mut *va, int mut argc, char ** argv) -> int
     new+10000 e = err::make();
 
     identity::Identity mut id= {0};
-    va->get_identity(&id);
+    va->get_local_identity(&id);
 
     char mut buf[100] = {0};
     identity::identity_to_str_bc58(&e, buf, static(len(buf)), &id);

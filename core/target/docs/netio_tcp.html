@@ -1,6 +1,31 @@
 
 <h1> module netio::tcp </h1>
-<h4> fn close (
+<h4> fn connect (
+
+    ::netio::tcp::Socket*
+    self,
+
+    ::net::address::Address
+    addr,
+
+    usize
+    et,
+
+    ::io::Async*
+    async,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
 
     ::netio::tcp::Socket*
     self,
@@ -18,14 +43,14 @@
     usize
     et,
 
+    ::slice::slice::Slice
+    buf,
+
     ::netio::tcp::Socket*
     self,
 
     ::err::Err*+et
     e,
-
-    ::slice::slice::Slice
-    buf,
 
 )
 
@@ -37,49 +62,24 @@
 
 </p><h4> fn recv (
 
-    usize
-    et,
-
-    ::netio::tcp::Socket*
-    self,
-
     ::err::Err*+et
     e,
 
-    ::buffer::Buffer*+st
-    buf,
+    usize
+    et,
 
     usize
     st,
 
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn connect (
-
-    usize
-    et,
-
     ::netio::tcp::Socket*
     self,
 
-    ::net::address::Address
-    addr,
-
-    ::err::Err*+et
-    e,
-
-    ::io::Async*
-    async,
+    ::buffer::Buffer*+st
+    buf,
 
 )
 
-
+-&gt ::io::Result
 
 </h4>
 

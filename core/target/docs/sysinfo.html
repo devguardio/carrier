@@ -21,6 +21,9 @@
     ::slice::mut_slice::MutSlice
     str,
 
+    u8
+    index,
+
     u8*
     b,
 
@@ -29,9 +32,6 @@
 
     usize
     et,
-
-    u8
-    index,
 
 )
 
@@ -43,17 +43,17 @@
 
 </p><h4> fn encode_varint (
 
-    ::err::Err*+et
-    e,
-
-    u8
-    index,
-
     usize
     et,
 
+    ::err::Err*+et
+    e,
+
     ::slice::mut_slice::MutSlice
     str,
+
+    u8
+    index,
 
     u64
     value,
@@ -107,14 +107,14 @@
 
 </p><h4> fn encode_f64 (
 
-    ::err::Err*+et
-    e,
-
     ::slice::mut_slice::MutSlice
     str,
 
     u8
     index,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
@@ -133,22 +133,22 @@
 </p><h4> fn fail_with_errno (
 
     ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-    ::ext::&lt;stddef.h&gt;::char*
     fmt,
 
     ::err::Err*+tail
     self,
 
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
     usize
-    line,
+    tail,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
     usize
-    tail,
+    line,
 
 )
 

@@ -1,6 +1,25 @@
 
 <h1> module carrier::publish </h1>
-<h4> fn swap32 (
+<h4> fn publish (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -54,36 +73,17 @@
 
 </p><h4> fn on_remote_open (
 
-    ::err::Err*+et
-    e,
+    usize
+    et,
 
     ::carrier::stream::Stream*
     self,
 
-    usize
-    et,
-
-    ::slice::slice::Slice
-    headers,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn publish (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
     ::err::Err*+et
     e,
 
-    usize
-    et,
+    ::slice::slice::Slice
+    headers,
 
 )
 

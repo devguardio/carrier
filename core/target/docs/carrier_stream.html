@@ -1,6 +1,38 @@
 
 <h1> module carrier::stream </h1>
-<h4> fn incomming_stream (
+<h4> fn swap32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn incomming_fragmented (
+
+    u32
+    fragments,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -11,11 +43,52 @@
     ::carrier::stream::Stream*
     self,
 
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn do_poll (
+
+    ::err::Err*+et
+    e,
+
     usize
     et,
 
+    ::carrier::stream::Stream*
+    self,
+
+    ::io::Async*
+    async,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn incomming_stream (
+
+    ::carrier::stream::Stream*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    u64
+    order,
+
     ::slice::slice::Slice
     b,
+
+    usize
+    et,
 
 )
 
@@ -25,14 +98,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn swap32 (
+</p><h4> fn close (
 
-    u32
-    x,
+    ::carrier::stream::Stream*
+    self,
 
 )
 
--&gt u32
+
 
 </h4>
 
@@ -64,54 +137,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn incomming_fragmented (
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    u64
-    order,
-
-    usize
-    et,
-
-    u32
-    fragments,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn stream (
 
-    ::err::Err*+et
-    e,
-
     usize
     et,
 
     ::carrier::stream::Stream*
     self,
+
+    ::err::Err*+et
+    e,
 
     usize
     reserved_size,
@@ -124,6 +159,28 @@
 
 <p class='doc_comments'>
  allocate a frame for sending later&lt;br&gt;
+</p><h4> fn incomming_close (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    u64
+    order,
+
+    ::carrier::stream::Stream*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn cancel (
 
     ::carrier::stream::Stream*
@@ -137,63 +194,6 @@
 
 <p class='doc_comments'>
  undo last allocation without sending.&lt;br&gt; CAN ONLY UNDO THE LAST ALLOC&lt;br&gt;
-</p><h4> fn do_poll (
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::io::Async*
-    async,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn close (
-
-    ::carrier::stream::Stream*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn incomming_close (
-
-    usize
-    et,
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    u64
-    order,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
 </p>
 
 

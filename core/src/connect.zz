@@ -46,7 +46,7 @@ export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut
 {
     memcpy(&self->target.k, target->k, static(len(self->target.k)));
 
-    ep->vault.get_identity(&self->principal);
+    ep->vault.get_principal_identity(&self->principal);
 
 
     self->initiator_time = ep->vault.vector_time();

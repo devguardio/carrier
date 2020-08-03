@@ -25,7 +25,8 @@ export fn open(vault::Vault mut new *self, err::Err+et mut *e)
 {
     memset(self, 0, sizeof(vault::Vault));
 
-    self->i_get_secret           = i_get_secret;
+    self->i_get_local_identity   = i_get_local_identity;
+    self->i_sign_local           = i_sign_local;
     self->i_get_network          = i_get_network;
     self->i_advance_clock        = i_advance_clock;
     self->i_set_network          = i_set_network;
@@ -51,7 +52,21 @@ fn i_advance_clock (vault::Vault *self) -> u64
 }
 
 
-fn i_get_secret  (vault::Vault *self, identity::Secret mut * secret)
+fn i_get_local_identity (vault::Vault *self, identity::Identity mut *id)
+{
+    identity::Secret mut secret = {0};
+    get_secret(self, &secret);
+    identity::identity_from_secret(id, &secret);
+}
+
+fn i_sign_local(vault::Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len)
+{
+    identity::Secret mut secret = {0};
+    get_secret(self, &secret);
+    identity::sign(&secret, s, subject, subject_len);
+}
+
+fn get_secret  (vault::Vault *self, identity::Secret mut * secret)
 {
     new+200 e = err::make();
 

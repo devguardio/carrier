@@ -13,29 +13,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn revision (
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn swap64 (
 
     u64
@@ -62,28 +39,51 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn accept_insecure (
-
-    ::slice::mut_slice::MutSlice*
-    frame,
-
-    ::carrier::noise::Responder*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    u64
-    route,
 
     ::carrier::vault::Vault*
     store,
 
+    ::slice::mut_slice::MutSlice*
+    frame,
+
+    u64
+    route,
+
     u64
     timestamp,
+
+    ::carrier::noise::Responder*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 

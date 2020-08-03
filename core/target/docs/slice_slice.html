@@ -1,19 +1,54 @@
 
 <h1> module slice::slice </h1>
-<h4> fn make (
+<h4> fn eq_bytes (
+
+    u8*
+    other,
 
     usize
-    size,
+    othersize,
 
     ::slice::slice::Slice*
     self,
 
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn make (
+
+    usize
+    size,
+
     u8*
     mem,
+
+    ::slice::slice::Slice*
+    self,
 
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn eq_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    other,
+
+    ::slice::slice::Slice*
+    self,
+
+)
+
+-&gt bool
 
 </h4>
 
@@ -26,41 +61,6 @@
 
     ::slice::slice::Slice*
     other,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn eq_cstr (
-
-    ::slice::slice::Slice*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    other,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn eq_bytes (
-
-    usize
-    othersize,
-
-    u8*
-    other,
-
-    ::slice::slice::Slice*
-    self,
 
 )
 

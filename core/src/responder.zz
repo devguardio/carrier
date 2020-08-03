@@ -57,7 +57,7 @@ pub fn accept_insecure(
 
     // identity
     identity::Identity mut eid = {0};
-    store->get_identity(&eid);
+    store->get_local_identity(&eid);
     frame->append_bytes(eid.k, 32);
 
     // timestamp
@@ -91,7 +91,7 @@ pub fn accept_insecure(
     mem::copy(self->symm.h, m, static(len(self->symm.h)));
 
     identity::Signature mut sig = {0};
-    store->sign(&sig, signme, static(len(signme)));
+    store->sign_local(&sig, signme, static(len(signme)));
 
     static_attest(mut_slice::integrity(frame));
     assert(frame->append_bytes(sig.k, 64));

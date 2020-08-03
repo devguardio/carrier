@@ -7,6 +7,9 @@ using <string.h>::{memcpy};
 
 export closure close_fn (Vault mut*self);
 
+export closure sign_fn         (Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len);
+export closure get_identity_fn (Vault * self, identity::Identity mut*id);
+
 export closure get_secret_fn         (Vault *self, identity::Secret  mut * secret);
 export closure get_network_fn        (Vault *self, identity::Address mut * address);
 export closure get_network_secret_fn (Vault *self, identity::Secret   mut * address);
@@ -33,7 +36,11 @@ export struct Vault
 {
     close_fn                i_close;
 
-    get_secret_fn           i_get_secret;
+    sign_fn                 i_sign_local;
+    sign_fn                 i_sign_principal;
+    get_identity_fn         i_get_local_identity;
+    get_identity_fn         i_get_principal_identity;
+
     get_network_fn          i_get_network;
     advance_clock_fn        i_advance_clock;
     set_network_fn          i_set_network;
@@ -133,25 +140,35 @@ export fn vector_time(Vault * self) -> u64
     return self->i_advance_clock(self);
 }
 
-export fn sign(Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len) {
-    identity::Secret mut se = {0};
-    static_attest(safe(self->i_get_secret));
-    self->i_get_secret(self, &se);
-
-    err::Err+200 mut e;
-    e.make();
-    identity::nullcheck(&e, se.k);
-    e.abort();
-
-    identity::sign(&se, s, subject, subject_len);
+export fn sign_local(Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len) {
+    static_attest(safe(self->i_sign_local));
+    self->i_sign_local(self, s, subject, subject_len);
 }
 
-export fn get_identity(Vault * self, identity::Identity mut*id)
+export fn get_local_identity(Vault * self, identity::Identity mut*id)
 {
-    identity::Secret mut s = {0};
-    static_attest(safe(self->i_get_secret));
-    self->i_get_secret(self, &s);
-    identity::identity_from_secret(id, &s);
+    static_attest(safe(self->i_get_local_identity));
+    self->i_get_local_identity(self, id);
+}
+
+export fn sign_principal(Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len) {
+    if self->i_sign_principal.fn == 0 {
+        sign_local(self, s, subject, subject_len);
+        return;
+    }
+
+    static_attest(safe(self->i_sign_principal));
+    self->i_sign_principal(self, s, subject, subject_len);
+}
+
+export fn get_principal_identity(Vault * self, identity::Identity mut*id)
+{
+    if self->i_get_principal_identity.fn == 0 {
+        get_local_identity(self, id);
+        return;
+    }
+    static_attest(safe(self->i_get_principal_identity));
+    self->i_get_principal_identity(self, id);
 }
 
 export fn broker_count(Vault * self) -> usize

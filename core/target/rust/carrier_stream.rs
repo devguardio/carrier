@@ -3,21 +3,15 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
-pub struct poll_fn {
+pub struct open_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zheaders: super::slice_slice::Slice, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
 pub struct close_fn {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize, ctx: *mut std::ffi::c_void),
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct open_fn {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zheaders: super::slice_slice::Slice, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
@@ -30,6 +24,12 @@ pub struct stream_fn {
 pub struct fragmented_fn {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfragments: u32, ctx: *mut std::ffi::c_void) -> bool,
+}
+#[derive(Clone)]
+#[repr(C)]
+pub struct poll_fn {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -169,15 +169,9 @@ impl Stream {
 }
 }
 extern {
-
-    #[link_name = "carrier_stream_incomming_stream"]
-    pub fn r#incomming_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zb: super::slice_slice::Slice)  -> bool;
-
     #[link_name = "carrier_stream_incomming_fragmented"]
     pub fn r#incomming_fragmented( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zfragments: u32)  -> bool;
 
-    #[link_name = "carrier_stream_stream"]
-    pub fn r#stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zreserved_size: usize)  -> super::slice_mut_slice::MutSlice;
 
 
 
@@ -186,19 +180,25 @@ extern {
     #[link_name = "sizeof_carrier_stream_Config"]
     pub fn sizeof_Config() -> libc::size_t;
 
-    #[link_name = "carrier_stream_cancel"]
-    pub fn r#cancel( Zself: *mut u8);
-
     #[link_name = "carrier_stream_do_poll"]
     pub fn r#do_poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8);
 
-    #[link_name = "sizeof_carrier_stream_Stream"]
-    pub fn sizeof_Stream() -> libc::size_t;
+    #[link_name = "carrier_stream_incomming_stream"]
+    pub fn r#incomming_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zb: super::slice_slice::Slice)  -> bool;
 
     #[link_name = "carrier_stream_close"]
     pub fn r#close( Zself: *mut u8);
 
+    #[link_name = "carrier_stream_stream"]
+    pub fn r#stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zreserved_size: usize)  -> super::slice_mut_slice::MutSlice;
+
     #[link_name = "carrier_stream_incomming_close"]
     pub fn r#incomming_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64)  -> bool;
+
+    #[link_name = "sizeof_carrier_stream_Stream"]
+    pub fn sizeof_Stream() -> libc::size_t;
+
+    #[link_name = "carrier_stream_cancel"]
+    pub fn r#cancel( Zself: *mut u8);
 
 }

@@ -2,8 +2,8 @@
 <h1> module carrier::vault_ik </h1>
 <h4> fn from_ik (
 
-    ::carrier::vault::Vault*
-    self,
+    ::err::Err*+et
+    e,
 
     ::carrier::identity::SecretKit
     ik,
@@ -11,8 +11,8 @@
     usize
     et,
 
-    ::err::Err*+et
-    e,
+    ::carrier::vault::Vault*
+    self,
 
 )
 

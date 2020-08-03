@@ -2,17 +2,17 @@
 <h1> module carrier::shell </h1>
 <h4> fn in_shell_stream (
 
+    ::slice::slice::Slice
+    msg,
+
+    usize
+    et,
+
     ::carrier::stream::Stream*
     self,
 
     ::err::Err*+et
     e,
-
-    usize
-    et,
-
-    ::slice::slice::Slice
-    msg,
 
 )
 
@@ -22,16 +22,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn open (
-
-    ::carrier::channel::Channel*
-    chan,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn in_shell_close (
 
     usize
     et,
+
+    ::carrier::stream::Stream*
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -41,19 +41,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn in_shell_poll (
+</p><h4> fn register (
 
-    ::carrier::stream::Stream*
-    self,
-
-    ::io::Async*
-    async,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
+    ::carrier::endpoint::Endpoint*
+    ep,
 
 )
 
@@ -85,16 +76,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn in_shell_close (
+</p><h4> fn in_shell_poll (
 
-    usize
-    et,
+    ::io::Async*
+    async,
+
+    ::carrier::stream::Stream*
+    self,
 
     ::err::Err*+et
     e,
 
-    ::carrier::stream::Stream*
-    self,
+    usize
+    et,
 
 )
 
@@ -104,10 +98,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn register (
+</p><h4> fn open (
 
-    ::carrier::endpoint::Endpoint*
-    ep,
+    ::carrier::channel::Channel*
+    chan,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 

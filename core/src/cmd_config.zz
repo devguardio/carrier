@@ -163,7 +163,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                     }
 
                     identity::Identity mut me = {0};
-                    ep.vault.get_identity(&me);
+                    ep.vault.get_local_identity(&me);
                     identity::identity_to_str(&e, auth_id, static(len(auth_id)), &me);
                     if err::check(&e) { return 1; }
 

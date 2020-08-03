@@ -2,6 +2,9 @@
 <h1> module carrier::cmd_config </h1>
 <h4> fn on_result_stream (
 
+    ::err::Err*+et
+    e,
+
     usize
     et,
 
@@ -10,9 +13,6 @@
 
     ::carrier::stream::Stream*
     self,
-
-    ::err::Err*+et
-    e,
 
 )
 

@@ -11,14 +11,9 @@ import (
 
 type Vault C.carrier_vault_Vault;
 
-
-
-
-
-
 func (self *Vault) GetIdentity() *Identity {
     var v = &C.carrier_identity_Identity{};
-    C.carrier_vault_get_identity(
+    C.carrier_vault_get_local_identity(
         (*C.carrier_vault_Vault)(unsafe.Pointer(self)),
         v,
     );

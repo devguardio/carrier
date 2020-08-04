@@ -13,10 +13,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_millis (
-
-    u64
-    millis,
+</p><h4> fn infinite (
 
 )
 
@@ -26,16 +23,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn tick (
-
-)
-
--&gt ::time::Time
-
-</h4>
-
-<p class='doc_comments'>
- monotonic system clock&lt;br&gt;
 </p><h4> fn real (
 
 )
@@ -46,10 +33,7 @@
 
 <p class='doc_comments'>
  real world time&lt;br&gt;
-</p><h4> fn from_seconds (
-
-    u64
-    secs,
+</p><h4> fn tick (
 
 )
 
@@ -58,12 +42,15 @@
 </h4>
 
 <p class='doc_comments'>
+ monotonic system clock&lt;br&gt;
+</p><h4> fn to_millis (
 
-</p><h4> fn infinite (
+    ::time::Time*
+    self,
 
 )
 
--&gt ::time::Time
+-&gt u64
 
 </h4>
 
@@ -85,14 +72,27 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_millis (
+</p><h4> fn from_millis (
 
-    ::time::Time*
-    self,
+    u64
+    millis,
 
 )
 
--&gt u64
+-&gt ::time::Time
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_seconds (
+
+    u64
+    secs,
+
+)
+
+-&gt ::time::Time
 
 </h4>
 

@@ -1,98 +1,25 @@
 
 <h1> module carrier::channel </h1>
-<h4> fn swap32 (
+<h4> fn ack (
 
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn shutdown (
-
-    ::carrier::channel::Channel*
-    self,
-
-    ::err::Err*+et
+    ::err::Err*
     e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn transfer_from_symmetric (
-
-    u8
-    version,
-
-    bool
-    responder,
 
     u64
-    route,
-
-    ::carrier::symmetric::SymmetricState*
-    symm,
-
-)
-
--&gt ::carrier::channel::Transfer
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn open_with_headers (
+    ackd,
 
     ::carrier::channel::Channel*
     self,
 
-    ::err::Err*+et
-    e,
-
-    ::carrier::stream::Config*
-    conf,
-
-    usize
-    et,
-
-    ::slice::slice::Slice*
-    extraheaders,
-
 )
 
--&gt ::carrier::stream::Stream*
+
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn from_be32 (
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -131,26 +58,94 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn send_close_frame (
+</p><h4> fn from_be64 (
 
-    u32
-    streamid,
+    u64
+    x,
 
-    usize
-    et,
+)
 
-    ::err::Err*+et
-    e,
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_transfer (
+
+    ::carrier::channel::Transfer
+    tr,
 
     ::carrier::channel::Channel*
     self,
 
-    u64
-    order,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn shutdown (
+
+    usize
+    et,
+
+    ::carrier::channel::Channel*
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn open (
+
+    ::carrier::channel::Channel*
+    self,
+
+    usize
+    et,
+
+    ::carrier::stream::Config*
+    conf,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt ::carrier::stream::Stream*
 
 </h4>
 
@@ -182,76 +177,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn revision (
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn alloc_stream (
-
-    ::carrier::channel::Channel*
-    self,
-
-    u32
-    streamid,
-
-    ::carrier::stream::Config*
-    config,
-
-)
-
--&gt ::carrier::stream::Stream*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn ack (
-
-    ::err::Err*
-    e,
-
-    u64
-    ackd,
-
-    ::carrier::channel::Channel*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn open (
-
-    ::carrier::channel::Channel*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::stream::Config*
-    conf,
-
-)
-
--&gt ::carrier::stream::Stream*
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn from_be16 (
 
     u16
@@ -265,16 +190,60 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn cleanup (
+</p><h4> fn alloc_stream (
 
-    ::err::Err*+et
-    e,
+    u32
+    streamid,
 
     ::carrier::channel::Channel*
     self,
 
+    ::carrier::stream::Config*
+    config,
+
+)
+
+-&gt ::carrier::stream::Stream*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push (
+
     usize
     et,
+
+    usize
+    l,
+
+    u8*
+    body,
+
+    u8
+    version,
+
+    u64
+    counter,
+
+    ::carrier::channel::Channel*
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -300,67 +269,104 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_transfer (
-
-    ::carrier::channel::Transfer
-    tr,
-
-    ::carrier::channel::Channel*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_be64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push (
-
-    u8*
-    body,
-
-    ::carrier::channel::Channel*
-    self,
+</p><h4> fn send_close_frame (
 
     ::err::Err*+et
     e,
 
+    ::carrier::channel::Channel*
+    self,
+
+    u32
+    streamid,
+
     u64
-    counter,
+    order,
 
     usize
     et,
 
-    usize
-    l,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn transfer_from_symmetric (
+
+    u64
+    route,
+
+    ::carrier::symmetric::SymmetricState*
+    symm,
 
     u8
     version,
 
+    bool
+    responder,
+
+)
+
+-&gt ::carrier::channel::Transfer
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn cleanup (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::channel::Channel*
+    self,
+
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn open_with_headers (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::stream::Config*
+    conf,
+
+    ::carrier::channel::Channel*
+    self,
+
+    ::slice::slice::Slice*
+    extraheaders,
+
+)
+
+-&gt ::carrier::stream::Stream*
 
 </h4>
 
 <p class='doc_comments'>
 
 </p><h4> fn poll (
+
+    usize
+    st,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -371,14 +377,8 @@
     ::carrier::channel::Channel*
     self,
 
-    usize
-    et,
-
     ::io::Async*
     async,
-
-    usize
-    st,
 
 )
 

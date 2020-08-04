@@ -32,14 +32,14 @@ extern PyTypeObject py_Type_slice_slice_Slice;
 
 
 
-static PyObject* py_hex_print(PyObject *pyself, PyObject *args) {
+static PyObject* py_hex_dump(PyObject *pyself, PyObject *args) {
     //data
     uint8_t * arg0 = 0;
     Py_ssize_t arg0_len = 0;
     //l
     long long int arg1 = 0;
-    if (!PyArg_ParseTuple(args, "s#l", &arg0,&arg0_len,&arg1)) { return NULL; };
-    hex_print(
+    if (!PyArg_ParseTuple(args, "z#l", &arg0,&arg0_len,&arg1)) { return NULL; };
+    hex_dump(
         arg0,
         arg1);
     Py_RETURN_NONE;
@@ -81,14 +81,14 @@ static PyObject* py_hex_fdump(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_hex_dump(PyObject *pyself, PyObject *args) {
+static PyObject* py_hex_print(PyObject *pyself, PyObject *args) {
     //data
     uint8_t * arg0 = 0;
     Py_ssize_t arg0_len = 0;
     //l
     long long int arg1 = 0;
-    if (!PyArg_ParseTuple(args, "z#l", &arg0,&arg0_len,&arg1)) { return NULL; };
-    hex_dump(
+    if (!PyArg_ParseTuple(args, "s#l", &arg0,&arg0_len,&arg1)) { return NULL; };
+    hex_print(
         arg0,
         arg1);
     Py_RETURN_NONE;
@@ -96,10 +96,10 @@ static PyObject* py_hex_dump(PyObject *pyself, PyObject *args) {
 
 
 static PyMethodDef methods[] = {
-{"print", py_hex_print, METH_VARARGS,""},
+{"dump", py_hex_dump, METH_VARARGS,""},
 {"str2bin", py_hex_str2bin, METH_VARARGS,""},
 {"fdump", py_hex_fdump, METH_VARARGS,""},
-{"dump", py_hex_dump, METH_VARARGS,""},
+{"print", py_hex_print, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

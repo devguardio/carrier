@@ -28,9 +28,9 @@ extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
 
 
 static PyMethodDef methods[] = {

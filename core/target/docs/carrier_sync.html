@@ -1,18 +1,59 @@
 
 <h1> module carrier::sync </h1>
-<h4> fn open_with_headers (
+<h4> fn connect (
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
+
+    ::carrier::identity::Identity*
+    target,
+
+    ::carrier::sync::Sync*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn wait (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::sync::Sync*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn open_with_headers (
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::sync::Sync*
+    self,
 
     ::carrier::stream::Config*
     sc,
 
     usize
     et,
-
-    ::carrier::sync::Sync*
-    self,
 
     ::slice::slice::Slice*
     extraheaders,
@@ -27,14 +68,14 @@
 
 </p><h4> fn open (
 
-    ::carrier::sync::Sync*
-    self,
-
     ::carrier::stream::Config*
     sc,
 
     usize
     et,
+
+    ::carrier::sync::Sync*
+    self,
 
     ::err::Err*+et
     e,
@@ -42,28 +83,6 @@
 )
 
 -&gt ::carrier::stream::Stream*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn connect (
-
-    ::carrier::sync::Sync*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::carrier::identity::Identity*
-    target,
-
-)
-
-
 
 </h4>
 
@@ -89,25 +108,6 @@
 
     ::carrier::endpoint::Endpoint*
     ep,
-
-    usize
-    et,
-
-    ::carrier::sync::Sync*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn wait (
 
     usize
     et,

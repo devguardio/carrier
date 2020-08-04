@@ -2,17 +2,17 @@
 <h1> module carrier::cmd_config_auth_list </h1>
 <h4> fn run_remote (
 
-    ::carrier::identity::Identity*
-    target,
-
     ::err::Err*+et
     e,
 
-    ::carrier::endpoint::Endpoint*
-    endpoint,
-
     usize
     et,
+
+    ::carrier::identity::Identity*
+    target,
+
+    ::carrier::endpoint::Endpoint*
+    endpoint,
 
 )
 
@@ -24,14 +24,14 @@
 
 </p><h4> fn run_self (
 
-    ::err::Err*+et
-    e,
-
     usize
     et,
 
     ::carrier::endpoint::Endpoint*
     endpoint,
+
+    ::err::Err*+et
+    e,
 
 )
 

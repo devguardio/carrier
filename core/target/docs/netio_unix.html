@@ -2,17 +2,17 @@
 <h1> module netio::unix </h1>
 <h4> fn socket (
 
-    int
-    typ,
-
-    usize
-    et,
+    ::net::address::Address*
+    addr,
 
     ::err::Err*+et
     e,
 
-    ::net::address::Address*
-    addr,
+    usize
+    et,
+
+    int
+    typ,
 
 )
 
@@ -24,14 +24,14 @@
 
 </p><h4> fn alen (
 
+    usize
+    et,
+
     ::net::address::Address*
     addr,
 
     ::err::Err*+et
     e,
-
-    usize
-    et,
 
 )
 
@@ -43,11 +43,11 @@
 
 </p><h4> fn make_async (
 
-    ::err::Err*+et
-    e,
-
     int
     fd,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,

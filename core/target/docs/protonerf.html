@@ -41,8 +41,36 @@
 
 </p><h4> fn encode_f64 (
 
+    u8
+    index,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
     f64
     value,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_bytes (
+
+    usize
+    l,
+
+    u8*
+    b,
 
     ::err::Err*+et
     e,
@@ -52,6 +80,31 @@
 
     u8
     index,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_bytes_start (
+
+    u8
+    index,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    l,
 
     ::slice::mut_slice::MutSlice
     str,
@@ -66,17 +119,17 @@
 
 </p><h4> fn next (
 
-    ::protonerf::Decoder*
-    self,
-
-    usize
-    et,
-
     ::err::Err*+et
     e,
 
+    ::protonerf::Decoder*
+    self,
+
     ::protonerf::Field*
     v,
+
+    usize
+    et,
 
 )
 
@@ -86,13 +139,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn encode_bytes (
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-    u8
-    index,
+</p><h4> fn encode_varint (
 
     usize
     et,
@@ -100,11 +147,14 @@
     ::err::Err*+et
     e,
 
-    u8*
-    b,
+    ::slice::mut_slice::MutSlice
+    str,
 
-    usize
-    l,
+    u8
+    index,
+
+    u64
+    value,
 
 )
 
@@ -121,56 +171,6 @@
 
     ::slice::slice::Slice
     sl,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encode_varint (
-
-    u64
-    value,
-
-    u8
-    index,
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encode_bytes_start (
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-    usize
-    et,
-
-    usize
-    l,
-
-    u8
-    index,
-
-    ::err::Err*+et
-    e,
 
 )
 

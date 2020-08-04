@@ -1,23 +1,16 @@
 
 <h1> module io::select </h1>
-<h4> fn unix (
+<h4> fn select_read_fd (
 
     int
     fd,
 
-)
-
--&gt ::io::Io
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn stdin (
+    ::io::select::Async*
+    self,
 
 )
 
--&gt ::io::Io
+-&gt bool
 
 </h4>
 
@@ -31,6 +24,19 @@
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn unix (
+
+    int
+    fd,
+
+)
+
+-&gt ::io::Io
 
 </h4>
 
@@ -68,17 +74,11 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn select_read_fd (
-
-    ::io::select::Async*
-    self,
-
-    int
-    fd,
+</p><h4> fn stdin (
 
 )
 
--&gt bool
+-&gt ::io::Io
 
 </h4>
 

@@ -25,11 +25,18 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
+
+
+
+
+
+
+
+
 
 
 
@@ -105,49 +112,16 @@ PyTypeObject py_Type_buffer_Buffer  = {
 
 
 
-
-
-
-
-
-
-
-
-static PyObject* py_buffer_append_cstr(PyObject *pyself, PyObject *args) {
+static PyObject* py_buffer_fgets(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
-    //cstr
-    char * arg2 = 0;
-    Py_ssize_t arg2_len = 0;
-    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg2,&arg2_len)) { return NULL; };
-    buffer_append_cstr(
+    //stream
+    PyObject * arg2 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg2)) { return NULL; };
+    long long rarg = (long long int)(buffer_fgets(
         pyFATGetPtr(arg0, "buffer_Buffer"),
         ((pyFATObject *)arg0)->tail,
-        arg2);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_buffer_format(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //fmt
-    char * arg2 = 0;
-    Py_ssize_t arg2_len = 0;
-    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg2,&arg2_len)) { return NULL; };
-    long long int rarg = (long long int)(buffer_format(
-        pyFATGetPtr(arg0, "buffer_Buffer"),
-        ((pyFATObject *)arg0)->tail,
-        arg2));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_buffer_pop(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long rarg = (long long int)(buffer_pop(
-        pyFATGetPtr(arg0, "buffer_Buffer"),
-        ((pyFATObject *)arg0)->tail));
+        pyFATGetPtr(arg2, "FILE")));
     return PyBool_FromLong(rarg);
 }
 
@@ -161,20 +135,6 @@ static PyObject* py_buffer_available(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
-static PyObject* py_buffer_eq_cstr(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //b
-    char * arg2 = 0;
-    Py_ssize_t arg2_len = 0;
-    if (!PyArg_ParseTuple(args, "Oz#", &arg0,&arg2,&arg2_len)) { return NULL; };
-    long long rarg = (long long int)(buffer_eq_cstr(
-        pyFATGetPtr(arg0, "buffer_Buffer"),
-        ((pyFATObject *)arg0)->tail,
-        arg2));
-    return PyBool_FromLong(rarg);
-}
-
 static PyObject* py_buffer_make(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -182,6 +142,30 @@ static PyObject* py_buffer_make(PyObject *pyself, PyObject *args) {
     buffer_make(
         pyFATGetPtr(arg0, "buffer_Buffer"),
         ((pyFATObject *)arg0)->tail);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_buffer_pop(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long rarg = (long long int)(buffer_pop(
+        pyFATGetPtr(arg0, "buffer_Buffer"),
+        ((pyFATObject *)arg0)->tail));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_buffer_append_cstr(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //cstr
+    char * arg2 = 0;
+    Py_ssize_t arg2_len = 0;
+    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg2,&arg2_len)) { return NULL; };
+    buffer_append_cstr(
+        pyFATGetPtr(arg0, "buffer_Buffer"),
+        ((pyFATObject *)arg0)->tail,
+        arg2);
     Py_RETURN_NONE;
 }
 
@@ -199,7 +183,7 @@ static PyObject* py_buffer_starts_with_cstr(PyObject *pyself, PyObject *args) {
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_buffer_append_bytes(PyObject *pyself, PyObject *args) {
+static PyObject* py_buffer_copy_bytes(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
     //bytes
@@ -208,7 +192,7 @@ static PyObject* py_buffer_append_bytes(PyObject *pyself, PyObject *args) {
     //inlen
     long long int arg3 = 0;
     if (!PyArg_ParseTuple(args, "Os#l", &arg0,&arg2,&arg2_len,&arg3)) { return NULL; };
-    buffer_append_bytes(
+    buffer_copy_bytes(
         pyFATGetPtr(arg0, "buffer_Buffer"),
         ((pyFATObject *)arg0)->tail,
         arg2,
@@ -216,18 +200,66 @@ static PyObject* py_buffer_append_bytes(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_buffer_ends_with_cstr(PyObject *pyself, PyObject *args) {
+static PyObject* py_buffer_copy_cstr(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
-    //a
+    //s
     char * arg2 = 0;
     Py_ssize_t arg2_len = 0;
-    if (!PyArg_ParseTuple(args, "Oz#", &arg0,&arg2,&arg2_len)) { return NULL; };
-    long long rarg = (long long int)(buffer_ends_with_cstr(
+    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg2,&arg2_len)) { return NULL; };
+    buffer_copy_cstr(
+        pyFATGetPtr(arg0, "buffer_Buffer"),
+        ((pyFATObject *)arg0)->tail,
+        arg2);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_buffer_clear(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    buffer_clear(
+        pyFATGetPtr(arg0, "buffer_Buffer"),
+        ((pyFATObject *)arg0)->tail);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_buffer_strlen(PyObject *pyself, PyObject *args) {
+    //s
+    char * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    if (!PyArg_ParseTuple(args, "s#", &arg0,&arg0_len)) { return NULL; };
+    long long int rarg = (long long int)(buffer_strlen(
+        arg0));
+    return PyLong_FromLong(rarg);
+}
+
+static PyObject* py_buffer_cstr_eq(PyObject *pyself, PyObject *args) {
+    //a
+    char * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    //b
+    char * arg1 = 0;
+    Py_ssize_t arg1_len = 0;
+    if (!PyArg_ParseTuple(args, "z#z#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
+    long long rarg = (long long int)(buffer_cstr_eq(
+        arg0,
+        arg1));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_buffer_format(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //fmt
+    char * arg2 = 0;
+    Py_ssize_t arg2_len = 0;
+    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg2,&arg2_len)) { return NULL; };
+    long long int rarg = (long long int)(buffer_format(
         pyFATGetPtr(arg0, "buffer_Buffer"),
         ((pyFATObject *)arg0)->tail,
         arg2));
-    return PyBool_FromLong(rarg);
+    return PyLong_FromLong(rarg);
 }
 
 static PyObject* py_buffer_cstr(PyObject *pyself, PyObject *args) {
@@ -280,77 +312,20 @@ static PyObject* py_buffer_split(PyObject *pyself, PyObject *args) {
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_buffer_push(PyObject *pyself, PyObject *args) {
+static PyObject* py_buffer_append_bytes(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
-    //b
-    char arg2 = 0;
-    if (!PyArg_ParseTuple(args, "Oc", &arg0,&arg2)) { return NULL; };
-    long long rarg = (long long int)(buffer_push(
-        pyFATGetPtr(arg0, "buffer_Buffer"),
-        ((pyFATObject *)arg0)->tail,
-        arg2));
-    return PyBool_FromLong(rarg);
-}
-
-static PyObject* py_buffer_cstr_eq(PyObject *pyself, PyObject *args) {
-    //a
-    char * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    //b
-    char * arg1 = 0;
-    Py_ssize_t arg1_len = 0;
-    if (!PyArg_ParseTuple(args, "z#z#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
-    long long rarg = (long long int)(buffer_cstr_eq(
-        arg0,
-        arg1));
-    return PyBool_FromLong(rarg);
-}
-
-static PyObject* py_buffer_strlen(PyObject *pyself, PyObject *args) {
-    //s
-    char * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    if (!PyArg_ParseTuple(args, "s#", &arg0,&arg0_len)) { return NULL; };
-    long long int rarg = (long long int)(buffer_strlen(
-        arg0));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_buffer_clear(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    buffer_clear(
-        pyFATGetPtr(arg0, "buffer_Buffer"),
-        ((pyFATObject *)arg0)->tail);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_buffer_fgets(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //stream
-    PyObject * arg2 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg2)) { return NULL; };
-    long long rarg = (long long int)(buffer_fgets(
-        pyFATGetPtr(arg0, "buffer_Buffer"),
-        ((pyFATObject *)arg0)->tail,
-        pyFATGetPtr(arg2, "FILE")));
-    return PyBool_FromLong(rarg);
-}
-
-static PyObject* py_buffer_copy_cstr(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //s
-    char * arg2 = 0;
+    //bytes
+    uint8_t * arg2 = 0;
     Py_ssize_t arg2_len = 0;
-    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg2,&arg2_len)) { return NULL; };
-    buffer_copy_cstr(
+    //inlen
+    long long int arg3 = 0;
+    if (!PyArg_ParseTuple(args, "Os#l", &arg0,&arg2,&arg2_len,&arg3)) { return NULL; };
+    buffer_append_bytes(
         pyFATGetPtr(arg0, "buffer_Buffer"),
         ((pyFATObject *)arg0)->tail,
-        arg2);
+        arg2,
+        arg3);
     Py_RETURN_NONE;
 }
 
@@ -364,45 +339,69 @@ static PyObject* py_buffer_slen(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
-static PyObject* py_buffer_copy_bytes(PyObject *pyself, PyObject *args) {
+static PyObject* py_buffer_push(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
-    //bytes
-    uint8_t * arg2 = 0;
-    Py_ssize_t arg2_len = 0;
-    //inlen
-    long long int arg3 = 0;
-    if (!PyArg_ParseTuple(args, "Os#l", &arg0,&arg2,&arg2_len,&arg3)) { return NULL; };
-    buffer_copy_bytes(
+    //b
+    char arg2 = 0;
+    if (!PyArg_ParseTuple(args, "Oc", &arg0,&arg2)) { return NULL; };
+    long long rarg = (long long int)(buffer_push(
         pyFATGetPtr(arg0, "buffer_Buffer"),
         ((pyFATObject *)arg0)->tail,
-        arg2,
-        arg3);
-    Py_RETURN_NONE;
+        arg2));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_buffer_eq_cstr(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //b
+    char * arg2 = 0;
+    Py_ssize_t arg2_len = 0;
+    if (!PyArg_ParseTuple(args, "Oz#", &arg0,&arg2,&arg2_len)) { return NULL; };
+    long long rarg = (long long int)(buffer_eq_cstr(
+        pyFATGetPtr(arg0, "buffer_Buffer"),
+        ((pyFATObject *)arg0)->tail,
+        arg2));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_buffer_ends_with_cstr(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //a
+    char * arg2 = 0;
+    Py_ssize_t arg2_len = 0;
+    if (!PyArg_ParseTuple(args, "Oz#", &arg0,&arg2,&arg2_len)) { return NULL; };
+    long long rarg = (long long int)(buffer_ends_with_cstr(
+        pyFATGetPtr(arg0, "buffer_Buffer"),
+        ((pyFATObject *)arg0)->tail,
+        arg2));
+    return PyBool_FromLong(rarg);
 }
 
 
 static PyMethodDef methods[] = {
-{"append_cstr", py_buffer_append_cstr, METH_VARARGS,"append a null terminated c buffer"},
-{"format", py_buffer_format, METH_VARARGS,"append formated string with vsnprintf"},
-{"pop", py_buffer_pop, METH_VARARGS,"remove the last byte\n\n returns false if buffer was empty"},
+{"fgets", py_buffer_fgets, METH_VARARGS,"append to this buffer by reading a line from a FILE"},
 {"available", py_buffer_available, METH_VARARGS,"returns the amount of bytes still left in the tail\n\n note that one byte is always reserved for null terminator"},
-{"eq_cstr", py_buffer_eq_cstr, METH_VARARGS,"test if this buffer is equal with a c string"},
 {"make", py_buffer_make, METH_VARARGS,"make an empty buffer"},
+{"pop", py_buffer_pop, METH_VARARGS,"remove the last byte\n\n returns false if buffer was empty"},
+{"append_cstr", py_buffer_append_cstr, METH_VARARGS,"append a null terminated c buffer"},
 {"starts_with_cstr", py_buffer_starts_with_cstr, METH_VARARGS,"test if this buffer begins with some c string"},
-{"append_bytes", py_buffer_append_bytes, METH_VARARGS,"append raw bytes with given len"},
-{"ends_with_cstr", py_buffer_ends_with_cstr, METH_VARARGS,"test if self ends with other buffer"},
+{"copy_bytes", py_buffer_copy_bytes, METH_VARARGS,"make a buffer by copying raw bytes with given len"},
+{"copy_cstr", py_buffer_copy_cstr, METH_VARARGS,"make a buffer by copying a c string"},
+{"clear", py_buffer_clear, METH_VARARGS,"clear the buffer"},
+{"strlen", py_buffer_strlen, METH_VARARGS,"length of a null terminated c buffer"},
+{"cstr_eq", py_buffer_cstr_eq, METH_VARARGS,"test if some c string is equal another c string"},
+{"format", py_buffer_format, METH_VARARGS,"append formated string with vsnprintf"},
 {"cstr", py_buffer_cstr, METH_VARARGS,"buffer as null terminated c buffer"},
 {"substr", py_buffer_substr, METH_VARARGS,"append parts of this buffer to other buffer"},
 {"split", py_buffer_split, METH_VARARGS,"split this buffer by token and copy the subbuffer into other"},
-{"push", py_buffer_push, METH_VARARGS,"push a single byte"},
-{"cstr_eq", py_buffer_cstr_eq, METH_VARARGS,"test if some c string is equal another c string"},
-{"strlen", py_buffer_strlen, METH_VARARGS,"length of a null terminated c buffer"},
-{"clear", py_buffer_clear, METH_VARARGS,"clear the buffer"},
-{"fgets", py_buffer_fgets, METH_VARARGS,"append to this buffer by reading a line from a FILE"},
-{"copy_cstr", py_buffer_copy_cstr, METH_VARARGS,"make a buffer by copying a c string"},
+{"append_bytes", py_buffer_append_bytes, METH_VARARGS,"append raw bytes with given len"},
 {"slen", py_buffer_slen, METH_VARARGS,"length of buffer (excluding null terminator)"},
-{"copy_bytes", py_buffer_copy_bytes, METH_VARARGS,"make a buffer by copying raw bytes with given len"},
+{"push", py_buffer_push, METH_VARARGS,"push a single byte"},
+{"eq_cstr", py_buffer_eq_cstr, METH_VARARGS,"test if this buffer is equal with a c string"},
+{"ends_with_cstr", py_buffer_ends_with_cstr, METH_VARARGS,"test if self ends with other buffer"},
 {NULL, NULL, 0, NULL}
 };
 

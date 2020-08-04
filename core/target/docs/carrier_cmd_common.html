@@ -1,12 +1,25 @@
 
 <h1> module carrier::cmd_common </h1>
-<h4> fn on_printer_stream (
+<h4> fn print_identity (
 
-    ::carrier::stream::Stream*
+    ::carrier::endpoint::Endpoint*
     self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn on_printer_stream (
 
     ::slice::slice::Slice
     msg,
+
+    ::carrier::stream::Stream*
+    self,
 
     ::err::Err*+et
     e,
@@ -22,23 +35,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn print_identity (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn on_stream_want_header_200 (
 
-    ::carrier::stream::Stream*
-    self,
+    usize
+    et,
 
     ::slice::slice::Slice
     msg,
@@ -46,8 +46,8 @@
     ::err::Err*+et
     e,
 
-    usize
-    et,
+    ::carrier::stream::Stream*
+    self,
 
 )
 

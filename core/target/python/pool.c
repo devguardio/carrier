@@ -26,15 +26,12 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_pool_Pool;
-extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_pool_Pool;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-
 static PyObject * py_get_pool_Pool_blocksize(PyObject *pyself, void *closure) {
 
     pool_Pool * self = pyFATGetPtr(pyself, "pool_Pool");
@@ -135,8 +132,6 @@ PyTypeObject py_Type_pool_Pool  = {
 };
 
 
-
-
 static void  py_CLOSURE_pool_iterator (pool_Pool*  const  arg0, void*  const  arg1, void*  const  arg2, void * _ctx) {
     PyObject *callobject = (PyObject *)_ctx;
 
@@ -153,14 +148,8 @@ static void  py_CLOSURE_pool_iterator (pool_Pool*  const  arg0, void*  const  ar
 
 
 
-static PyObject* py_pool_free_bytes(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long int rarg = (long long int)(pool_free_bytes(
-        pyFATGetPtr(arg0, "pool_Pool")));
-    return PyLong_FromLong(rarg);
-}
+
+
 
 static PyObject* py_pool_alloc(PyObject *pyself, PyObject *args) {
     //self
@@ -183,19 +172,6 @@ static PyObject* py_pool_malloc(PyObject *pyself, PyObject *args) {
     return PyCapsule_New(rarg, "void", 0);
 }
 
-static PyObject* py_pool_make(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //blocksize
-    long long int arg2 = 0;
-    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg2)) { return NULL; };
-    pool_make(
-        pyFATGetPtr(arg0, "pool_Pool"),
-        ((pyFATObject *)arg0)->tail,
-        arg2);
-    Py_RETURN_NONE;
-}
-
 static PyObject* py_pool_each(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -209,6 +185,28 @@ static PyObject* py_pool_each(PyObject *pyself, PyObject *args) {
         (pool_iterator){ fn: py_CLOSURE_pool_iterator, ctx: arg1 } ,
         pyFATGetPtr(arg2, "void"));
     Py_RETURN_NONE;
+}
+
+static PyObject* py_pool_make(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //blocksize
+    long long int arg2 = 0;
+    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg2)) { return NULL; };
+    pool_make(
+        pyFATGetPtr(arg0, "pool_Pool"),
+        ((pyFATObject *)arg0)->tail,
+        arg2);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_pool_free_bytes(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long int rarg = (long long int)(pool_free_bytes(
+        pyFATGetPtr(arg0, "pool_Pool")));
+    return PyLong_FromLong(rarg);
 }
 
 static PyObject* py_pool_free(PyObject *pyself, PyObject *args) {
@@ -225,11 +223,11 @@ static PyObject* py_pool_free(PyObject *pyself, PyObject *args) {
 
 
 static PyMethodDef methods[] = {
-{"free_bytes", py_pool_free_bytes, METH_VARARGS,"get the number of bytes left in the pool"},
 {"alloc", py_pool_alloc, METH_VARARGS,"alloc a block\n returns null if the pool is full"},
 {"malloc", py_pool_malloc, METH_VARARGS,"malloc a continuous memory block of any size\n returns null if the pool is full\n this is alot less efficient than alloc()\n as alignment requirements can lead to more blocks being allocated than you expect"},
-{"make", py_pool_make, METH_VARARGS,"creates a new pool with blocksize\n\n new+1000 mypool = pool::make(10);\n mypool.alloc(); // get a single block of 10 bytes\n mypool.malloc(22); // get a continuous memory span of 22 bytes (less efficient)"},
 {"each", py_pool_each, METH_VARARGS,"run an iterator on every allocated block\n this is useful when you want to use the pool as a vector\n but cannot be used if you ever malloc()'d from this pool\n\n it is safe to call free() and alloc() from iterator, because they are implemented as markers"},
+{"make", py_pool_make, METH_VARARGS,"creates a new pool with blocksize\n\n new+1000 mypool = pool::make(10);\n mypool.alloc(); // get a single block of 10 bytes\n mypool.malloc(22); // get a continuous memory span of 22 bytes (less efficient)"},
+{"free_bytes", py_pool_free_bytes, METH_VARARGS,"get the number of bytes left in the pool"},
 {"free", py_pool_free, METH_VARARGS,"free a pointer previously allocated from this pool\n requires pointer to be a member()"},
 {NULL, NULL, 0, NULL}
 };

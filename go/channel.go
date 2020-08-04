@@ -2,8 +2,8 @@ package carrier;
 
 /*
 #cgo CFLAGS: -Wno-attributes
-#cgo CFLAGS: -g -fsanitize=address -fstack-protector-all
-#cgo LDFLAGS: -g  -fsanitize=address
+//#cgo CFLAGS: -g -fsanitize=address -fstack-protector-all
+//#cgo LDFLAGS: -g  -fsanitize=address
 #include "carrier_go.h"
 */
 import "C"

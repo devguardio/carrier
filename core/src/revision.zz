@@ -15,7 +15,10 @@ export inline fn revision() -> u32 {
 macro m_build_id() {
     printf("\"");
     fflush(stdout);
-    system("git describe --tags --always --dirty=-dirty | tr -d '\\n'");
+
+    //TODO dirty doesnt work because we check in target
+    //system("git describe --tags --always --dirty=-dirty | tr -d '\\n'");
+    system("git describe --tags --always | tr -d '\\n'");
     printf("\"");
 }
 

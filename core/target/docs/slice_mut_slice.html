@@ -1,6 +1,57 @@
 
 <h1> module slice::mut_slice </h1>
-<h4> fn as_slice (
+<h4> fn append_bytes (
+
+    usize
+    l,
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    u8*
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push16 (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    u16
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push32 (
+
+    u32
+    b,
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn as_slice (
 
     ::slice::mut_slice::MutSlice*
     self,
@@ -13,13 +64,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn append_slice (
+</p><h4> fn append_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
 
     ::slice::mut_slice::MutSlice*
     self,
-
-    ::slice::slice::Slice*
-    other,
 
 )
 
@@ -29,16 +80,51 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn append_bytes (
+</p><h4> fn push64 (
+
+    u64
+    b,
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn make (
+
+    usize*
+    at,
+
+    u8*
+    mem,
 
     ::slice::mut_slice::MutSlice*
     self,
 
     usize
-    l,
+    size,
 
-    u8*
-    b,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn append_slice (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    ::slice::slice::Slice*
+    other,
 
 )
 
@@ -64,92 +150,6 @@
 
 <p class='doc_comments'>
  push a single character&lt;br&gt;
-</p><h4> fn push16 (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    u16
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push64 (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    u64
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn make (
-
-    usize*
-    at,
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    usize
-    size,
-
-    u8*
-    mem,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn append_cstr (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push32 (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    u32
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
 </p>
 
 

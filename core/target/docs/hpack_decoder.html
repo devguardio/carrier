@@ -21,9 +21,6 @@
 
 </p><h4> fn decode_integer (
 
-    ::err::Err*+et
-    e,
-
     u8
     prefix_size,
 
@@ -32,6 +29,9 @@
 
     ::hpack::decoder::Iterator*
     self,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -43,11 +43,11 @@
 
 </p><h4> fn decode (
 
-    ::hpack::decoder::Iterator*
-    self,
-
     ::slice::slice::Slice
     wire,
+
+    ::hpack::decoder::Iterator*
+    self,
 
 )
 

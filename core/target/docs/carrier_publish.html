@@ -39,10 +39,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn on_remote_open (
-
-    ::carrier::stream::Stream*
-    self,
+</p><h4> fn publish (
 
     ::err::Err*+et
     e,
@@ -50,8 +47,8 @@
     usize
     et,
 
-    ::slice::slice::Slice
-    headers,
+    ::carrier::endpoint::Endpoint*
+    self,
 
 )
 
@@ -74,15 +71,18 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn publish (
+</p><h4> fn on_remote_open (
 
-    usize
-    et,
+    ::slice::slice::Slice
+    headers,
 
     ::err::Err*+et
     e,
 
-    ::carrier::endpoint::Endpoint*
+    usize
+    et,
+
+    ::carrier::stream::Stream*
     self,
 
 )

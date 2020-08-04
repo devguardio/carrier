@@ -1,28 +1,6 @@
 
 <h1> module carrier::stream </h1>
-<h4> fn do_poll (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::io::Async*
-    async,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap32 (
+<h4> fn swap32 (
 
     u32
     x,
@@ -61,19 +39,53 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn cancel (
+</p><h4> fn incomming_close (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    u64
+    order,
 
     ::carrier::stream::Stream*
     self,
 
 )
 
-
+-&gt bool
 
 </h4>
 
 <p class='doc_comments'>
- undo last allocation without sending.&lt;br&gt; CAN ONLY UNDO THE LAST ALLOC&lt;br&gt;
+
+</p><h4> fn incomming_stream (
+
+    ::slice::slice::Slice
+    b,
+
+    u64
+    order,
+
+    ::carrier::stream::Stream*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn to_be32 (
 
     u32
@@ -87,48 +99,23 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn stream (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    reserved_size,
-
-    ::carrier::stream::Stream*
-    self,
+</p><h4> fn do_poll (
 
     usize
     et,
 
-)
-
--&gt ::slice::mut_slice::MutSlice
-
-</h4>
-
-<p class='doc_comments'>
- allocate a frame for sending later&lt;br&gt;
-</p><h4> fn incomming_fragmented (
-
-    usize
-    et,
-
-    u64
-    order,
-
-    u32
-    fragments,
-
-    ::carrier::stream::Stream*
-    self,
+    ::io::Async*
+    async,
 
     ::err::Err*+et
     e,
 
+    ::carrier::stream::Stream*
+    self,
+
 )
 
--&gt bool
+
 
 </h4>
 
@@ -147,7 +134,45 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn incomming_stream (
+</p><h4> fn incomming_fragmented (
+
+    ::err::Err*+et
+    e,
+
+    u64
+    order,
+
+    u32
+    fragments,
+
+    usize
+    et,
+
+    ::carrier::stream::Stream*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn cancel (
+
+    ::carrier::stream::Stream*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ undo last allocation without sending.&lt;br&gt; CAN ONLY UNDO THE LAST ALLOC&lt;br&gt;
+</p><h4> fn stream (
 
     ::carrier::stream::Stream*
     self,
@@ -158,42 +183,17 @@
     usize
     et,
 
-    u64
-    order,
-
-    ::slice::slice::Slice
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn incomming_close (
-
-    u64
-    order,
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::err::Err*+et
-    e,
-
     usize
-    et,
+    reserved_size,
 
 )
 
--&gt bool
+-&gt ::slice::mut_slice::MutSlice
 
 </h4>
 
 <p class='doc_comments'>
-
+ allocate a frame for sending later&lt;br&gt;
 </p>
 
 

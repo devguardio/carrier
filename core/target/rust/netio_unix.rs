@@ -11,10 +11,10 @@ extern {
     #[link_name = "netio_unix_alen"]
     pub fn r#alen( Zaddr: *const u8,  Ze: *mut u8,  Zet: usize)  -> usize;
 
-    #[link_name = "netio_unix_so_nosigpipe"]
-    pub fn r#so_nosigpipe( Zfd: std::os::raw::c_int);
-
     #[link_name = "netio_unix_make_async"]
     pub fn r#make_async( Zfd: std::os::raw::c_int,  Ze: *mut u8,  Zet: usize);
+
+    #[link_name = "netio_unix_so_nosigpipe"]
+    pub fn r#so_nosigpipe( Zfd: std::os::raw::c_int);
 
 }

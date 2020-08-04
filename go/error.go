@@ -10,7 +10,6 @@ import (
 )
 
 const TAIL_ERR  = 1000;
-const TAIL_EP   = 10000;
 
 func ErrNew() *C.err_Err {
     var e = (*C.err_Err)(C.malloc(C.real_sizeof_err_Err(TAIL_ERR)));

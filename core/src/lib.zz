@@ -13,6 +13,7 @@ using sft;
 using config;
 using pub_sysinfo;
 using sync;
+using subscribe;
 
 export fn hellozz() -> int {
     printf("hello carrier\n");

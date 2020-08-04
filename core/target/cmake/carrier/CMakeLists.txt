@@ -8,60 +8,61 @@ set(carrier_SOURCES
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Poly1305_32_c.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Chacha20_c.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/buffer.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_cipher.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/err.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_identity.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/slice_slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hpack_decoder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_peering.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_connect.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio_unix.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/sysinfo_proto.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_pub_sysinfo.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio_udp.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_rand.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/byteorder.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_bootstrap.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/fs.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/toml.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/symbols.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/base32.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/log.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/protonerf.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/sysinfo.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/mem.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_channel.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/net_address.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_config.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_crc8.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_proto.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_revision.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hpack_encoder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_sha256.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/pool.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hex.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_noise.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_initiator.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_sync.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_router.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_pq.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/slice_mut_slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_stream.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/time.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio_tcp.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/io.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_sft.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/io_unix.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_vault_ik.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/slice_slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_pub_sysinfo.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/base32.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_router.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hex.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/fs.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_sha256.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_initiator.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_endpoint.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/pool.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/err.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_symmetric.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_vault.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/symbols.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hpack_decoder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_rand.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/io_unix.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/byteorder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/time.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_vault_toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_connect.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_channel.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_sft.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/mem.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_identity.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_vault.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_stream.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio_tcp.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_sync.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_proto.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_cipher.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/net_address.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio_udp.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_crc8.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_subscribe.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_noise.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hpack_encoder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/protonerf.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/buffer.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_pq.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/io.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio_unix.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_peering.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_config.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/slice_mut_slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/sysinfo_proto.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_revision.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/slice.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/hpack.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_publish.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_responder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/carrier_publish.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/netio.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/aep/proj/devguard/carrier/core/target/test/zz/net.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/gen/zz_builtins_carrier_carrier_CMake.c

@@ -1,27 +1,46 @@
 
 <h1> module carrier::symmetric </h1>
-<h4> fn decrypt_and_mix_hash (
-
-    usize
-    et,
-
-    usize
-    plain_len_max,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    cipher_len,
+<h4> fn mix_key (
 
     ::carrier::symmetric::SymmetricState*
     self,
 
     u8*
-    plain,
+    data,
+
+    usize
+    l,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt_and_mix_hash (
+
+    usize
+    cipher_len_max,
+
+    usize
+    plain_len,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    ::err::Err*+et
+    e,
 
     u64
     nonce,
+
+    usize
+    et,
+
+    u8*
+    plain,
 
     u8*
     ciphertext,
@@ -34,7 +53,57 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn mix_key (
+</p><h4> fn init (
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    protocolname,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt_and_mix_hash (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    plain_len_max,
+
+    u8*
+    ciphertext,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    usize
+    et,
+
+    u8*
+    plain,
+
+    u64
+    nonce,
+
+    usize
+    cipher_len,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn mix_hash (
 
     ::carrier::symmetric::SymmetricState*
     self,
@@ -56,86 +125,17 @@
 </p><h4> fn split (
 
     ::carrier::cipher::CipherState*
+    ini,
+
+    ::carrier::cipher::CipherState*
     resp,
 
     ::carrier::symmetric::SymmetricState*
     self,
 
-    ::carrier::cipher::CipherState*
-    ini,
-
 )
 
 
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn init (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    protocolname,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn mix_hash (
-
-    usize
-    l,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    u8*
-    data,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt_and_mix_hash (
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    usize
-    et,
-
-    u64
-    nonce,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    cipher_len_max,
-
-    u8*
-    plain,
-
-    usize
-    plain_len,
-
-    u8*
-    ciphertext,
-
-)
-
--&gt usize
 
 </h4>
 

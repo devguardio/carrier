@@ -145,16 +145,16 @@ impl Peering {
 extern {
 
 
+    #[link_name = "carrier_peering_from_proto"]
+    pub fn r#from_proto( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfield: super::protonerf::Field);
+
     #[link_name = "sizeof_carrier_peering_Path"]
     pub fn sizeof_Path() -> libc::size_t;
-
-    #[link_name = "carrier_peering_received"]
-    pub fn r#received( Zself: *mut u8,  Ztransport: super::carrier_peering::Transport,  Zaddr: super::net_address::Address,  Zklass: super::carrier_peering::Class);
 
     #[link_name = "sizeof_carrier_peering_Peering"]
     pub fn sizeof_Peering() -> libc::size_t;
 
-    #[link_name = "carrier_peering_from_proto"]
-    pub fn r#from_proto( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfield: super::protonerf::Field);
+    #[link_name = "carrier_peering_received"]
+    pub fn r#received( Zself: *mut u8,  Ztransport: super::carrier_peering::Transport,  Zaddr: super::net_address::Address,  Zklass: super::carrier_peering::Class);
 
 }

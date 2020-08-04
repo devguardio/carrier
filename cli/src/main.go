@@ -4,13 +4,14 @@ import (
     "fmt"
     "os"
     "github.com/spf13/cobra"
+    "github.com/devguardio/carrier/go"
     "log"
 
 )
 
 var rootCmd = cobra.Command{
     Use:   "carrier",
-    Short: "carrier 0.14\nThe devguard carrier cli",
+    Short: "carrier " + carrier.BuildId() + "\nThe devguard carrier cli",
 }
 
 

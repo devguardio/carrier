@@ -30,6 +30,11 @@ static unsigned long real_sizeof_carrier_connect_Connect()
     return sizeof_carrier_connect_Connect();
 }
 
+static unsigned long real_sizeof_carrier_subscribe_Subscribe()
+{
+    return sizeof_carrier_subscribe_Subscribe();
+}
+
 static unsigned long real_sizeof_io_Io()
 {
     return sizeof_io_Io();

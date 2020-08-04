@@ -367,13 +367,13 @@ export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) 
                 break;
             }
 
-            //log::debug("frame: %zu (typ: %d, size %d), sent in pkt %zu",
-            //    self->sent,
-            //    f->typ,
-            //    f->bufat,
-            //    counter
-            //);
             make_frame_size(f);
+            log::debug("frame: %zu (typ: %d, size %d), sent in pkt %zu",
+                self->sent,
+                f->typ,
+                f->bufat,
+                counter
+            );
 
 
             f->packet   = counter;

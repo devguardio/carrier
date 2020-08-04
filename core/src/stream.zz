@@ -52,6 +52,7 @@ export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> s
     where reserved_size < 100000
     model slice::mut_slice::integrity(&return)
 {
+    log::debug("req stream frame with size %d", reserved_size);
     static_attest(safe(self->chan));
     let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, reserved_size + 14);
     if err::check(e) {

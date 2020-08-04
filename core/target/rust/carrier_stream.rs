@@ -169,8 +169,8 @@ impl Stream {
 }
 }
 extern {
-    #[link_name = "carrier_stream_incomming_fragmented"]
-    pub fn r#incomming_fragmented( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zfragments: u32)  -> bool;
+    #[link_name = "carrier_stream_do_poll"]
+    pub fn r#do_poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8);
 
 
 
@@ -180,25 +180,25 @@ extern {
     #[link_name = "sizeof_carrier_stream_Config"]
     pub fn sizeof_Config() -> libc::size_t;
 
-    #[link_name = "carrier_stream_do_poll"]
-    pub fn r#do_poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8);
-
-    #[link_name = "carrier_stream_incomming_stream"]
-    pub fn r#incomming_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zb: super::slice_slice::Slice)  -> bool;
-
-    #[link_name = "carrier_stream_close"]
-    pub fn r#close( Zself: *mut u8);
-
-    #[link_name = "carrier_stream_stream"]
-    pub fn r#stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zreserved_size: usize)  -> super::slice_mut_slice::MutSlice;
-
-    #[link_name = "carrier_stream_incomming_close"]
-    pub fn r#incomming_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64)  -> bool;
+    #[link_name = "carrier_stream_cancel"]
+    pub fn r#cancel( Zself: *mut u8);
 
     #[link_name = "sizeof_carrier_stream_Stream"]
     pub fn sizeof_Stream() -> libc::size_t;
 
-    #[link_name = "carrier_stream_cancel"]
-    pub fn r#cancel( Zself: *mut u8);
+    #[link_name = "carrier_stream_stream"]
+    pub fn r#stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zreserved_size: usize)  -> super::slice_mut_slice::MutSlice;
+
+    #[link_name = "carrier_stream_incomming_fragmented"]
+    pub fn r#incomming_fragmented( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zfragments: u32)  -> bool;
+
+    #[link_name = "carrier_stream_close"]
+    pub fn r#close( Zself: *mut u8);
+
+    #[link_name = "carrier_stream_incomming_stream"]
+    pub fn r#incomming_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64,  Zb: super::slice_slice::Slice)  -> bool;
+
+    #[link_name = "carrier_stream_incomming_close"]
+    pub fn r#incomming_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zorder: u64)  -> bool;
 
 }

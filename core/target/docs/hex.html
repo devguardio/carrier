@@ -1,22 +1,13 @@
 
 <h1> module hex </h1>
-<h4> fn str2bin (
+<h4> fn dump_slice (
 
-    u8*
-    out,
-
-    usize
-    inlen,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    in,
-
-    usize
-    outlen,
+    ::slice::slice::Slice
+    s,
 
 )
 
--&gt usize
+
 
 </h4>
 
@@ -24,15 +15,37 @@
 
 </p><h4> fn print (
 
-    u8*
-    data,
-
     usize
     l,
+
+    u8*
+    data,
 
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn str2bin (
+
+    usize
+    outlen,
+
+    u8*
+    out,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    in,
+
+    usize
+    inlen,
+
+)
+
+-&gt usize
 
 </h4>
 
@@ -59,24 +72,11 @@
 
 </p><h4> fn dump (
 
-    usize
-    l,
-
     u8*
     data,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn dump_slice (
-
-    ::slice::slice::Slice
-    s,
+    usize
+    l,
 
 )
 

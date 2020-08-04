@@ -1,48 +1,6 @@
 
 <h1> module carrier::router </h1>
-<h4> fn next_channel (
-
-    ::carrier::router::Router*
-    self,
-
-)
-
--&gt ::carrier::channel::Channel*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn read_routing_key (
-
-    u8*
-    i,
-
-    ::carrier::router::Direction*
-    direction,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn close (
-
-    ::carrier::router::Router*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap16 (
+<h4> fn swap16 (
 
     u16
     x,
@@ -89,11 +47,11 @@
     usize
     et,
 
-    ::io::Async*
-    async,
-
     ::err::Err*+et
     e,
+
+    ::io::Async*
+    async,
 
 )
 
@@ -103,16 +61,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn shutdown (
+</p><h4> fn close (
 
     ::carrier::router::Router*
     self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -174,19 +126,48 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn read_routing_key (
+
+    u8*
+    i,
+
+    ::carrier::router::Direction*
+    direction,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn next_channel (
+
+    ::carrier::router::Router*
+    self,
+
+)
+
+-&gt ::carrier::channel::Channel*
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn push (
 
     ::err::Err*+et
     e,
-
-    ::slice::slice::Slice
-    pkt,
 
     ::carrier::router::Router*
     self,
 
     usize
     et,
+
+    ::slice::slice::Slice
+    pkt,
 
 )
 
@@ -209,6 +190,25 @@
 
     u64
     route,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn shutdown (
+
+    usize
+    et,
+
+    ::carrier::router::Router*
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 

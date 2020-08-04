@@ -64,60 +64,60 @@ impl Err {
 }
 }
 extern {
-
-    #[link_name = "err_fail_with_system_error"]
-    pub fn r#fail_with_system_error( Zself: *mut u8,  Ztail: usize,  Zmerrno: std::os::raw::c_int,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
-
-    #[link_name = "err_ignore"]
-    pub fn r#ignore( Zself: *mut u8,  Ztail: usize);
-
     #[link_name = "err_panic"]
     pub fn r#panic( Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
-
-    #[link_name = "err_fail_with_win32"]
-    pub fn r#fail_with_win32( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
-
-    #[link_name = "err_make"]
-    pub fn r#make( Zself: *mut u8,  Ztail: usize);
-
-    #[link_name = "err_elog"]
-    pub fn r#elog( Zself: *const u8,  Ztail: usize);
-
-
-
-    #[link_name = "err_backtrace"]
-    pub fn r#backtrace( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize);
-
-    #[link_name = "err_eprintf"]
-    pub fn r#eprintf( Zself: *const u8,  Ztail: usize,  Zout: *mut u8);
-
-
-    #[link_name = "sizeof_err_Err"]
-    pub fn sizeof_Err(tail: libc::size_t) -> libc::size_t;
 
     #[link_name = "err_check"]
     pub fn r#check( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize)  -> bool;
 
 
-    #[link_name = "err_to_str"]
-    pub fn r#to_str( Zself: *const u8,  Zet: usize,  Zdest: *mut u8,  Zdest_len: usize);
+    #[link_name = "err_fail_with_system_error"]
+    pub fn r#fail_with_system_error( Zself: *mut u8,  Ztail: usize,  Zmerrno: std::os::raw::c_int,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
 
-    #[link_name = "err_fail"]
-    pub fn r#fail( Zself: *mut u8,  Ztail: usize,  Ze: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
-
-    #[link_name = "err_abort"]
-    pub fn r#abort( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize);
-
-    #[link_name = "err_fail_with_errno"]
-    pub fn r#fail_with_errno( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
-
-    #[link_name = "err_assert2"]
-    pub fn r#assert2( Za: bool,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
+    #[link_name = "err_fail_with_win32"]
+    pub fn r#fail_with_win32( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
 
     #[link_name = "err_assert_safe"]
     pub fn r#assert_safe( Za: *const u8,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize);
 
+
+
+    #[link_name = "err_abort"]
+    pub fn r#abort( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize);
+
+    #[link_name = "err_ignore"]
+    pub fn r#ignore( Zself: *mut u8,  Ztail: usize);
+
+    #[link_name = "err_fail"]
+    pub fn r#fail( Zself: *mut u8,  Ztail: usize,  Ze: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
+
+    #[link_name = "err_elog"]
+    pub fn r#elog( Zself: *const u8,  Ztail: usize);
+
+    #[link_name = "err_backtrace"]
+    pub fn r#backtrace( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize);
+
+    #[link_name = "sizeof_err_Err"]
+    pub fn sizeof_Err(tail: libc::size_t) -> libc::size_t;
+
+
+
     #[link_name = "err_assert"]
     pub fn r#assert( Za: bool,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize);
+
+    #[link_name = "err_assert2"]
+    pub fn r#assert2( Za: bool,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
+
+    #[link_name = "err_fail_with_errno"]
+    pub fn r#fail_with_errno( Zself: *mut u8,  Ztail: usize,  Zfile: *const u8,  Zscope: *const u8,  Zline: usize,  Zfmt: *const u8);
+
+    #[link_name = "err_make"]
+    pub fn r#make( Zself: *mut u8,  Ztail: usize);
+
+    #[link_name = "err_to_str"]
+    pub fn r#to_str( Zself: *const u8,  Zet: usize,  Zdest: *mut u8,  Zdest_len: usize);
+
+    #[link_name = "err_eprintf"]
+    pub fn r#eprintf( Zself: *const u8,  Ztail: usize,  Zout: *mut u8);
 
 }

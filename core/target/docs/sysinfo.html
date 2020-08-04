@@ -1,25 +1,15 @@
 
 <h1> module sysinfo </h1>
-<h4> fn sysinfo (
+<h4> fn encode_bytes (
 
-    ::slice::mut_slice::MutSlice
-    sl,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encode_bytes (
-
-    ::err::Err*+et
-    e,
+    usize
+    et,
 
     ::slice::mut_slice::MutSlice
     str,
+
+    ::err::Err*+et
+    e,
 
     u8
     index,
@@ -29,9 +19,6 @@
 
     usize
     l,
-
-    usize
-    et,
 
 )
 
@@ -43,20 +30,20 @@
 
 </p><h4> fn encode_varint (
 
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
     ::slice::mut_slice::MutSlice
     str,
+
+    usize
+    et,
 
     u8
     index,
 
     u64
     value,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -107,20 +94,20 @@
 
 </p><h4> fn encode_f64 (
 
+    ::err::Err*+et
+    e,
+
+    f64
+    value,
+
     ::slice::mut_slice::MutSlice
     str,
 
     u8
     index,
 
-    ::err::Err*+et
-    e,
-
     usize
     et,
-
-    f64
-    value,
 
 )
 
@@ -132,23 +119,36 @@
 
 </p><h4> fn fail_with_errno (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
-
     ::err::Err*+tail
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
     usize
-    tail,
+    line,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
     usize
-    line,
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sysinfo (
+
+    ::slice::mut_slice::MutSlice
+    sl,
 
 )
 
@@ -160,14 +160,14 @@
 
 </p><h4> fn sensors (
 
+    usize
+    et,
+
     ::slice::mut_slice::MutSlice
     sl,
 
     ::err::Err*+et
     e,
-
-    usize
-    et,
 
 )
 

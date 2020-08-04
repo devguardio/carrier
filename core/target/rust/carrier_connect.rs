@@ -3,15 +3,15 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
-pub struct disconnect_t {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zcon: *mut u8,  Zep: *mut u8, ctx: *mut std::ffi::c_void),
-}
-#[derive(Clone)]
-#[repr(C)]
 pub struct connect_t {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zcon: *mut u8,  Zchan: *mut u8, ctx: *mut std::ffi::c_void),
+}
+#[derive(Clone)]
+#[repr(C)]
+pub struct disconnect_t {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zcon: *mut u8,  Zep: *mut u8, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -84,6 +84,10 @@ impl Connect {
 }
 }
 extern {
+
+    #[link_name = "carrier_connect_on_stream"]
+    pub fn r#on_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbs: super::slice_slice::Slice)  -> bool;
+
     #[link_name = "carrier_connect_on_close"]
     pub fn r#on_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
@@ -91,10 +95,6 @@ extern {
 
     #[link_name = "sizeof_carrier_connect_Connect"]
     pub fn sizeof_Connect() -> libc::size_t;
-
-    #[link_name = "carrier_connect_on_stream"]
-    pub fn r#on_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbs: super::slice_slice::Slice)  -> bool;
-
 
     #[link_name = "carrier_connect_start"]
     pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zep: *mut u8,  Ztarget: *const u8);

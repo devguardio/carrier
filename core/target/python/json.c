@@ -24,19 +24,20 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_json_ParserStack;
 extern PyTypeObject py_Type_json_Parser;
 extern PyTypeObject py_Type_json_Value;
 extern PyTypeObject py_Type_json_U;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_json_ParserStack;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_json_ParserStack;
 extern PyTypeObject py_Type_json_Parser;
+extern PyTypeObject py_Type_err_Err;
+
 static PyObject * py_get_json_Value_t(PyObject *pyself, void *closure) {
 
     json_Value * self = pyFATGetPtr(pyself, "json_Value");
@@ -382,7 +383,6 @@ PyTypeObject py_Type_json_Parser  = {
     .tp_getset      = py_getset_json_Parser,
     .tp_dealloc     = py_free_json_Parser,
 };
-
 
 
 static PyObject* py_json_push(PyObject *pyself, PyObject *args) {

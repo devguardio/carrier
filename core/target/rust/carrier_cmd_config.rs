@@ -38,11 +38,11 @@ extern {
 
 
 
-    #[link_name = "carrier_cmd_config_on_result_stream"]
-    pub fn r#on_result_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmsg: super::slice_slice::Slice)  -> bool;
-
-
     #[link_name = "carrier_cmd_config_cmd"]
     pub fn r#cmd( Zargc: usize,  Zargv: *const *const u8)  -> std::os::raw::c_int;
+
+
+    #[link_name = "carrier_cmd_config_on_result_stream"]
+    pub fn r#on_result_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmsg: super::slice_slice::Slice)  -> bool;
 
 }

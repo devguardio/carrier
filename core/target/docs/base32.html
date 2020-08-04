@@ -2,23 +2,23 @@
 <h1> module base32 </h1>
 <h4> fn encode (
 
-    usize
-    et,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    out,
-
     u8*
     src,
+
+    usize
+    outlen,
 
     ::err::Err*+et
     e,
 
     usize
-    inlen,
+    et,
 
     usize
-    outlen,
+    inlen,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    out,
 
 )
 
@@ -30,6 +30,15 @@
 
 </p><h4> fn decode (
 
+    usize
+    et,
+
+    usize
+    inlen,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    src,
+
     ::err::Err*+et
     e,
 
@@ -38,15 +47,6 @@
 
     usize
     outlen,
-
-    usize
-    inlen,
-
-    usize
-    et,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    src,
 
 )
 

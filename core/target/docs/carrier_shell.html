@@ -1,9 +1,6 @@
 
 <h1> module carrier::shell </h1>
-<h4> fn in_shell_stream (
-
-    ::slice::slice::Slice
-    msg,
+<h4> fn in_shell_open (
 
     usize
     et,
@@ -11,12 +8,15 @@
     ::carrier::stream::Stream*
     self,
 
+    ::slice::slice::Slice
+    headers,
+
     ::err::Err*+et
     e,
 
 )
 
--&gt bool
+
 
 </h4>
 
@@ -29,6 +29,25 @@
 
     ::carrier::stream::Stream*
     self,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn open (
+
+    usize
+    et,
+
+    ::carrier::channel::Channel*
+    chan,
 
     ::err::Err*+et
     e,
@@ -54,23 +73,23 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn in_shell_open (
-
-    ::slice::slice::Slice
-    headers,
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn in_shell_stream (
 
     usize
     et,
 
+    ::carrier::stream::Stream*
+    self,
+
+    ::slice::slice::Slice
+    msg,
+
+    ::err::Err*+et
+    e,
+
 )
 
-
+-&gt bool
 
 </h4>
 
@@ -81,33 +100,14 @@
     ::io::Async*
     async,
 
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
     ::carrier::stream::Stream*
     self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn open (
-
-    ::carrier::channel::Channel*
-    chan,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
 
 )
 

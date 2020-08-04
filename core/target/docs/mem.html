@@ -1,15 +1,15 @@
 
 <h1> module mem </h1>
-<h4> fn move (
+<h4> fn copy (
+
+    ::ext::&lt;stddef.h&gt;::void*
+    dst,
 
     usize
     n,
 
     ::ext::&lt;stddef.h&gt;::void*
     src,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
 
 )
 
@@ -24,11 +24,11 @@
     usize
     n,
 
-    u8
-    c,
-
     ::ext::&lt;stddef.h&gt;::void*
     dst,
+
+    u8
+    c,
 
 )
 
@@ -38,13 +38,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn copy (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    src,
+</p><h4> fn move (
 
     ::ext::&lt;stddef.h&gt;::void*
     dst,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    src,
 
     usize
     n,
@@ -59,14 +59,14 @@
 
 </p><h4> fn eq (
 
-    usize
-    n,
+    ::ext::&lt;stddef.h&gt;::void*
+    a,
 
     ::ext::&lt;stddef.h&gt;::void*
     b,
 
-    ::ext::&lt;stddef.h&gt;::void*
-    a,
+    usize
+    n,
 
 )
 

@@ -25,17 +25,15 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_carrier_cipher_CipherState;
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_carrier_cipher_CipherState;
 extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_carrier_cipher_CipherState;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
 static PyObject * py_get_carrier_symmetric_SymmetricState_cipher(PyObject *pyself, void *closure) {
 

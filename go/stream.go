@@ -6,11 +6,12 @@ package carrier;
 import "C"
 import (
     "unsafe"
+    "log"
 )
 
-type openStreamOptions struct {
-    SendHeaders map[string][]string
-    OnHeaders   func (headers map[string][]byte)
+type OpenStreamOptions struct {
+    SendHeaders map[string][][]byte
+    OnHeaders   func (headers map[string][][]byte)
     OnMessage   func(msg []byte)
     OnFragmented func(uint32)
     OnClose     func()
@@ -19,7 +20,7 @@ type openStreamOptions struct {
     Critical    bool
 };
 
-func openStream(_chan *C.carrier_channel_Channel, path string, opt openStreamOptions) (*C.carrier_stream_Stream, error) {
+func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOptions) (*C.carrier_stream_Stream, error) {
 
     var destructors [](func());
     var destroy = func() {
@@ -90,12 +91,15 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt openStreamOpt
             }
             frame := C.carrier_stream_stream(stream, e, et, (C.ulong)(len(backbuffered[0])));
             if err := ErrCheck(e); err != nil {
+                log.Println(err);
                 return;
             }
-            C.slice_mut_slice_append_bytes(
-                &frame,
-                (*C.uint8_t)(&backbuffered[0][0]), (C.ulong)(len(backbuffered[0])),
-            );
+            if len(backbuffered[0]) > 0 {
+                C.slice_mut_slice_append_bytes(
+                    &frame,
+                    (*C.uint8_t)(&backbuffered[0][0]), (C.ulong)(len(backbuffered[0])),
+                );
+            }
             backbuffered = backbuffered [1:]
         }
 
@@ -123,7 +127,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt openStreamOpt
         defer C.free(unsafe.Pointer(key));
 
         for _, val := range values {
-            var value = C.CString(val);
+            var value = C.CBytes(val);
             defer C.free(unsafe.Pointer(value));
 
             C.hpack_encoder_encode(
@@ -161,7 +165,7 @@ func on_stream(
     e       *C.err_Err, et C.uintptr_t,
     msg     C.slice_slice_Slice,
 
-    onheaders   func(headers map[string][]byte),
+    onheaders   func(headers map[string][][]byte),
     onmessage   func(msg []byte),
 ) bool {
     if self.state == 0 {
@@ -169,7 +173,7 @@ func on_stream(
         var it = C.hpack_decoder_Iterator{};
         C.hpack_decoder_decode(&it, msg);
 
-        var kv = make(map[string][]byte);
+        var kv = make(map[string][][]byte);
 
         for {
             if !C.hpack_decoder_next(&it, e, et) {
@@ -177,7 +181,7 @@ func on_stream(
             }
             var key = C.GoStringN((*C.char)(unsafe.Pointer(it.key.mem)), (C.int)(it.key.size));
             var val = C.GoBytes((unsafe.Pointer(it.val.mem)), (C.int)(it.val.size));
-            kv[key] = val;
+            kv[key] = append(kv[key], val);
         }
 
         if onheaders != nil {

@@ -1,6 +1,16 @@
 
 <h1> module carrier::initiator </h1>
-<h4> fn swap32 (
+<h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -13,40 +23,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn swap64 (
+</p><h4> fn to_be32 (
 
-    u64
+    u32
     x,
 
 )
 
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_be64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
+-&gt u32
 
 </h4>
 
@@ -91,55 +75,71 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn complete (
+</p><h4> fn swap64 (
 
-    ::carrier::identity::Identity*
-    expect_identity,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::channel::Transfer*
-    chan,
-
-    ::slice::slice::Slice
-    pkt,
-
-    ::carrier::initiator::Initiator*
-    self,
-
-    usize
-    et,
-
-    ::carrier::vault::Broker*
-    redirect,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be32 (
-
-    u32
+    u64
     x,
 
 )
 
--&gt u32
+-&gt u64
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn revision (
+</p><h4> fn to_be64 (
+
+    u64
+    x,
 
 )
 
--&gt u32
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn complete (
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::slice::slice::Slice
+    pkt,
+
+    ::carrier::vault::Broker*
+    redirect,
+
+    ::carrier::identity::Identity*
+    expect_identity,
+
+    ::carrier::channel::Transfer*
+    chan,
+
+    usize
+    et,
+
+)
+
+
 
 </h4>
 
@@ -147,17 +147,20 @@
 
 </p><h4> fn initiate (
 
-    usize
-    et,
-
     u64
     vector_time,
 
-    ::carrier::identity::Identity*
-    cluster_target,
+    usize
+    et,
 
-    bool
-    secure,
+    ::slice::mut_slice::MutSlice
+    pkt,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::carrier::identity::Address*
+    xaddr,
 
     ::carrier::initiator::Move
     move,
@@ -165,17 +168,14 @@
     ::err::Err*+et
     e,
 
-    ::carrier::initiator::Initiator*
-    self,
-
-    ::slice::mut_slice::MutSlice
-    pkt,
-
-    ::carrier::identity::Address*
-    xaddr,
-
     ::carrier::vault::Vault*
     vault,
+
+    ::carrier::identity::Identity*
+    cluster_target,
+
+    bool
+    secure,
 
 )
 

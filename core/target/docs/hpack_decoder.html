@@ -2,34 +2,18 @@
 <h1> module hpack::decoder </h1>
 <h4> fn next (
 
+    ::err::Err*+et
+    e,
+
     usize
     et,
 
     ::hpack::decoder::Iterator*
     self,
 
-    ::err::Err*+et
-    e,
-
 )
 
 -&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decode (
-
-    ::slice::slice::Slice
-    wire,
-
-    ::hpack::decoder::Iterator*
-    self,
-
-)
-
-
 
 </h4>
 
@@ -52,6 +36,22 @@
 )
 
 -&gt uint
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decode (
+
+    ::hpack::decoder::Iterator*
+    self,
+
+    ::slice::slice::Slice
+    wire,
+
+)
+
+
 
 </h4>
 

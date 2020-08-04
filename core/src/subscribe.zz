@@ -1,4 +1,3 @@
-using <stdio.h>::{printf};
 using <string.h>::{memcpy};
 using <assert.h>::{assert};
 using err;
@@ -27,18 +26,26 @@ using proto;
 using noise;
 using responder;
 
-static stream::Config Subscribe = stream::Config {
+static stream::Config SubscribeConfig = stream::Config {
     path:   "/carrier.broker.v1/broker/subscribe",
     stream: on_stream,
     close:  on_close,
 };
 
-export fn start(endpoint::Endpoint mut*self, err::Err+et mut*e)
+export closure identity_change_event_cb(Subscribe mut*self, identity::Identity *id, stream::Stream mut *st);
+
+export struct Subscribe {
+    identity_change_event_cb on_publish;
+    identity_change_event_cb on_unpublish;
+}
+
+export fn start(endpoint::Endpoint mut*self, err::Err+et mut*e, Subscribe mut new *ss)
     where err::checked(*e)
 {
-    stream::Stream mut* streami = self->broker()->open(e, &Subscribe);
+    stream::Stream mut* streami = self->broker()->open(e, &SubscribeConfig);
     if err::check(e) { return; }
     static_attest(safe(streami));
+    streami->user2 = ss;
 }
 
 fn on_close(stream::Stream mut *self, err::Err+et mut*e)
@@ -54,6 +61,8 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice bs) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&bs)
 {
+    Subscribe mut*this = (Subscribe mut*)self->user2;
+    static_attest(safe(this));
     static_attest(safe(self->chan));
     if self->state == 0 {
         log::debug("subscribe response headers:");
@@ -98,19 +107,18 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, Slice bs) -> bool
                 for (protonerf::Field mut field; iter2.next(e, &field);) {
                     if err::check(e) { return true; }
                     let id = (identity::Identity *)field.a;
-                    char mut buf[100] = {0};
-                    static_attest(safe(id));
-                    identity::identity_to_str(e, buf, static(len(buf)), id);
-                    if err::check(e) {
-                        e->elog();
-                        e->make();
-                    }
                     switch field.index {
                         proto::SubscribeChange::Publish => {
-                            printf("+ %s\n", buf);
+                            if this->on_publish.fn != 0 {
+                                static_attest(safe(this->on_publish));
+                                this->on_publish(this, id, self);
+                            }
                         }
                         proto::SubscribeChange::Unpublish => {
-                            printf("- %s\n", buf);
+                            if this->on_unpublish.fn != 0 {
+                                static_attest(safe(this->on_unpublish));
+                                this->on_unpublish(this, id, self);
+                            }
                         }
                         default => {}
                     }

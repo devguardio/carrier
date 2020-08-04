@@ -1,18 +1,18 @@
 
 <h1> module carrier::cmd_common </h1>
-<h4> fn on_stream_want_header_200 (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
+<h4> fn on_printer_stream (
 
     ::carrier::stream::Stream*
     self,
 
     ::slice::slice::Slice
     msg,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 
@@ -35,19 +35,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn on_printer_stream (
+</p><h4> fn on_stream_want_header_200 (
 
     ::carrier::stream::Stream*
     self,
-
-    usize
-    et,
 
     ::slice::slice::Slice
     msg,
 
     ::err::Err*+et
     e,
+
+    usize
+    et,
 
 )
 

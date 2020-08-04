@@ -245,7 +245,7 @@ static u16 PORTS[] = {53, 443, 8443, 80, 123};
 fn do_state_connect(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
     where err::checked(*e)
 {
-    log::info("trustvector complete, ring has %zu brokers", self->vault.broker_count());
+    log::debug("trustvector complete, ring has %zu brokers", self->vault.broker_count());
 
     self->state = State::Connecting;
     memset(&self->statem.connecting, 0, sizeof(ConnectingState));

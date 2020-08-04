@@ -8,14 +8,14 @@
     usize
     value,
 
-    u8
-    prefix_size,
+    ::slice::mut_slice::MutSlice
+    slice,
 
     ::err::Err*+et
     e,
 
-    ::slice::mut_slice::MutSlice
-    slice,
+    u8
+    prefix_size,
 
 )
 
@@ -27,14 +27,14 @@
 
 </p><h4> fn encode (
 
-    usize
-    keylen,
-
-    u8*
-    key,
-
     u8*
     val,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
     usize
     vallen,
@@ -42,11 +42,11 @@
     ::slice::mut_slice::MutSlice
     slice,
 
-    ::err::Err*+et
-    e,
+    u8*
+    key,
 
     usize
-    et,
+    keylen,
 
 )
 

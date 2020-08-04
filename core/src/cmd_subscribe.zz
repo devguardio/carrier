@@ -9,11 +9,14 @@ using endpoint;
 using vault;
 using log;
 using vault_toml;
+using identity;
+using stream;
 
 using <pthread.h> as pthread;
 using <stdlib.h>::{calloc, memset, free, exit};
 using <string.h>::{memcpy};
 using <unistd.h>::{sleep};
+using <stdio.h>::{printf};
 
 
 flags {
@@ -26,6 +29,29 @@ pub fn cmd(int mut argc, char ** argv) -> int
     return run();
 }
 
+
+
+fn on_publish(subscribe::Subscribe mut*self, identity::Identity *id, stream::Stream mut *st)
+{
+    new+1000  e     = err::make();
+    char mut buf[100] = {0};
+    identity::identity_to_str(&e, buf, static(len(buf)), id);
+    if err::check(&e) {
+        e.elog();
+    }
+    printf("+ %s\n", buf);
+}
+
+fn on_unpublish(subscribe::Subscribe mut*self, identity::Identity *id, stream::Stream mut *st)
+{
+    new+1000  e     = err::make();
+    char mut buf[100] = {0};
+    identity::identity_to_str(&e, buf, static(len(buf)), id);
+    if err::check(&e) {
+        e.elog();
+    }
+    printf("- %s\n", buf);
+}
 
 fn spawn(void mut *ptr) -> void mut *
 {
@@ -51,8 +77,11 @@ fn spawn(void mut *ptr) -> void mut *
     io::await(&async, &e, endpoint::poll, &ep, time::from_seconds(30));
     e.abort();
 
-    subscribe::start(&ep, &e);
+    new sub = subscribe::start(&ep, &e);
     e.abort();
+
+    sub.on_publish    = on_publish;
+    sub.on_unpublish  = on_unpublish;
 
     io::await(&async, &e, endpoint::poll, &ep, time::infinite());
     e.abort();

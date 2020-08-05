@@ -23,22 +23,6 @@ pub struct Value {
 }
 #[derive(Clone)]
 #[repr(C)]
-pub enum ParserState {
-    json_ParserState_Document = 0,
-    json_ParserState_Object = 1,
-    json_ParserState_Key = 2,
-    json_ParserState_PostKey = 3,
-    json_ParserState_PreVal = 4,
-    json_ParserState_StringVal = 5,
-    json_ParserState_IntVal = 6,
-    json_ParserState_BoolVal = 7,
-    json_ParserState_PostVal = 8,
-
-}
-
-pub const MAX_DEPTH : usize = 64;
-#[derive(Clone)]
-#[repr(C)]
 pub struct Iter {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::json::Value, ctx: *mut std::ffi::c_void),
@@ -58,6 +42,21 @@ pub struct U {
     pub user1 :*mut u8 ,
     pub user2 :usize ,
 }
+#[derive(Clone)]
+#[repr(C)]
+pub enum ParserState {
+    json_ParserState_Document = 0,
+    json_ParserState_Object = 1,
+    json_ParserState_Key = 2,
+    json_ParserState_PostKey = 3,
+    json_ParserState_PreVal = 4,
+    json_ParserState_StringVal = 5,
+    json_ParserState_IntVal = 6,
+    json_ParserState_BoolVal = 7,
+    json_ParserState_PostVal = 8,
+
+}
+
 
 #[derive(Clone)]
 #[repr(C)]
@@ -67,6 +66,7 @@ pub struct ParserStack {
     pub in_array :bool ,
     pub index :usize ,
 }
+pub const MAX_DEPTH : usize = 64;
 
 #[derive(Clone)]
 #[repr(C)]
@@ -302,29 +302,29 @@ extern {
 
 
 
-
-
-    #[link_name = "json_advance"]
-    pub fn r#advance( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Ztoken: u8);
-
-
     #[link_name = "sizeof_json_U"]
     pub fn sizeof_U() -> libc::size_t;
 
-    #[link_name = "sizeof_json_ParserStack"]
-    pub fn sizeof_ParserStack() -> libc::size_t;
+    #[link_name = "json_parser"]
+    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
-    #[link_name = "sizeof_json_Parser"]
-    pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
 
-    #[link_name = "json_next"]
-    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
     #[link_name = "json_push"]
     pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
 
+    #[link_name = "sizeof_json_ParserStack"]
+    pub fn sizeof_ParserStack() -> libc::size_t;
 
-    #[link_name = "json_parser"]
-    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
+
+    #[link_name = "sizeof_json_Parser"]
+    pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
+
+
+    #[link_name = "json_next"]
+    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
+
+    #[link_name = "json_advance"]
+    pub fn r#advance( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Ztoken: u8);
 
 }

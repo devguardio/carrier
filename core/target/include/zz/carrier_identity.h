@@ -1,74 +1,11 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#ifndef ZZ_FORWARD_buffer_Buffer
-#define ZZ_FORWARD_buffer_Buffer
-struct buffer_Buffer_t;
-typedef struct buffer_Buffer_t buffer_Buffer;
+#ifndef ZZ_FORWARD__stdint_h_
+#define ZZ_FORWARD__stdint_h_
 #endif
-#ifndef ZZ_FORWARD__stddef_h_
-#define ZZ_FORWARD__stddef_h_
-#endif
-#ifndef ZZ_FORWARD_buffer_integrity
-#define ZZ_FORWARD_buffer_integrity
-#endif
-#ifndef ZZ_FORWARD_buffer_split
-#define ZZ_FORWARD_buffer_split
-#endif
-#ifndef ZZ_FORWARD_err_Err
-#define ZZ_FORWARD_err_Err
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-#endif
-#ifndef ZZ_FORWARD_err_Err_200
-#define ZZ_FORWARD_err_Err_200
-struct err_Err_200_t;
-typedef struct err_Err_200_t err_Err_200;
-#endif
-#ifndef ZZ_FORWARD_err_checked
-#define ZZ_FORWARD_err_checked
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_errno
-#define ZZ_FORWARD_err_fail_with_errno
-#endif
-#ifndef ZZ_FORWARD__string_h_
-#define ZZ_FORWARD__string_h_
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_Address
-#define ZZ_FORWARD_carrier_identity_Address
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_address_from_str
-#define ZZ_FORWARD_carrier_identity_address_from_str
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_address_from_cstr
-#define ZZ_FORWARD_carrier_identity_address_from_cstr
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_system_error
-#define ZZ_FORWARD_err_fail_with_system_error
-#endif
-#ifndef ZZ_FORWARD_err_fail
-#define ZZ_FORWARD_err_fail
-#endif
-#ifndef ZZ_FORWARD_slice_slice_Slice
-#define ZZ_FORWARD_slice_slice_Slice
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
-#define ZZ_FORWARD_slice_mut_slice_MutSlice
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_integrity
-#define ZZ_FORWARD_slice_mut_slice_integrity
-#endif
-#ifndef ZZ_FORWARD_slice_slice_integrity
-#define ZZ_FORWARD_slice_slice_integrity
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_as_slice
-#define ZZ_FORWARD_slice_mut_slice_as_slice
+#ifndef ZZ_FORWARD_carrier_identity_BASEPOINT
+#define ZZ_FORWARD_carrier_identity_BASEPOINT
 #endif
 #ifndef ZZ_FORWARD___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Ed25519_h_
 #define ZZ_FORWARD___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Ed25519_h_
@@ -86,29 +23,55 @@ typedef struct carrier_identity_Signature_t carrier_identity_Signature;
 #ifndef ZZ_FORWARD_carrier_identity_verify
 #define ZZ_FORWARD_carrier_identity_verify
 #endif
-#ifndef ZZ_FORWARD_err_abort
-#define ZZ_FORWARD_err_abort
+#ifndef ZZ_FORWARD_slice_slice_Slice
+#define ZZ_FORWARD_slice_slice_Slice
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
 #endif
-#ifndef ZZ_FORWARD__stdio_h_
-#define ZZ_FORWARD__stdio_h_
+#ifndef ZZ_FORWARD_buffer_Buffer
+#define ZZ_FORWARD_buffer_Buffer
+struct buffer_Buffer_t;
+typedef struct buffer_Buffer_t buffer_Buffer;
 #endif
-#ifndef ZZ_FORWARD_buffer_fgets
-#define ZZ_FORWARD_buffer_fgets
+#ifndef ZZ_FORWARD_buffer_integrity
+#define ZZ_FORWARD_buffer_integrity
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_from_str
-#define ZZ_FORWARD_carrier_identity_identity_from_str
+#ifndef ZZ_FORWARD_slice_slice_integrity
+#define ZZ_FORWARD_slice_slice_integrity
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_from_cstr
-#define ZZ_FORWARD_carrier_identity_identity_from_cstr
+#ifndef ZZ_FORWARD_buffer_as_slice
+#define ZZ_FORWARD_buffer_as_slice
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_slice
+#define ZZ_FORWARD_buffer_copy_slice
+#endif
+#ifndef ZZ_FORWARD_err_Err
+#define ZZ_FORWARD_err_Err
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
+#endif
+#ifndef ZZ_FORWARD_err_Err_200
+#define ZZ_FORWARD_err_Err_200
+struct err_Err_200_t;
+typedef struct err_Err_200_t err_Err_200;
+#endif
+#ifndef ZZ_FORWARD__stddef_h_
+#define ZZ_FORWARD__stddef_h_
+#endif
+#ifndef ZZ_FORWARD_err_checked
+#define ZZ_FORWARD_err_checked
 #endif
 #ifndef ZZ_FORWARD_carrier_identity_to_str_bc58
 #define ZZ_FORWARD_carrier_identity_to_str_bc58
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_address_to_str_bc58
-#define ZZ_FORWARD_carrier_identity_address_to_str_bc58
+#ifndef ZZ_FORWARD_carrier_identity_identity_to_str_bc58
+#define ZZ_FORWARD_carrier_identity_identity_to_str_bc58
 #endif
-#ifndef ZZ_FORWARD_buffer_cstr
-#define ZZ_FORWARD_buffer_cstr
+#ifndef ZZ_FORWARD_buffer_starts_with_cstr
+#define ZZ_FORWARD_buffer_starts_with_cstr
+#endif
+#ifndef ZZ_FORWARD__stddef_h_
+#define ZZ_FORWARD__stddef_h_
 #endif
 #ifndef ZZ_FORWARD_buffer_Buffer
 #define ZZ_FORWARD_buffer_Buffer
@@ -136,154 +99,42 @@ typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 #ifndef ZZ_FORWARD_carrier_identity_sign
 #define ZZ_FORWARD_carrier_identity_sign
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_from_str
-#define ZZ_FORWARD_carrier_identity_secret_from_str
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_from_cstr
-#define ZZ_FORWARD_carrier_identity_secret_from_cstr
-#endif
-#ifndef ZZ_FORWARD_err_eprintf
-#define ZZ_FORWARD_err_eprintf
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push
-#define ZZ_FORWARD_slice_mut_slice_push
-#endif
-#ifndef ZZ_FORWARD__stdint_h_
-#define ZZ_FORWARD__stdint_h_
-#endif
-#ifndef ZZ_FORWARD_carrier_rand_rand
-#define ZZ_FORWARD_carrier_rand_rand
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_SecretKit
-#define ZZ_FORWARD_carrier_identity_SecretKit
-struct carrier_identity_SecretKit_t;
-typedef struct carrier_identity_SecretKit_t carrier_identity_SecretKit;
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secretkit_generate
-#define ZZ_FORWARD_carrier_identity_secretkit_generate
-#endif
-#ifndef ZZ_FORWARD_buffer_format
-#define ZZ_FORWARD_buffer_format
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_to_str
-#define ZZ_FORWARD_carrier_identity_to_str
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_to_str
-#define ZZ_FORWARD_carrier_identity_secret_to_str
-#endif
-#ifndef ZZ_FORWARD_buffer_available
-#define ZZ_FORWARD_buffer_available
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push16
-#define ZZ_FORWARD_slice_mut_slice_push16
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_cstr
-#define ZZ_FORWARD_slice_mut_slice_append_cstr
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_bytes
-#define ZZ_FORWARD_slice_mut_slice_append_bytes
-#endif
-#ifndef ZZ_FORWARD_err_ignore
-#define ZZ_FORWARD_err_ignore
-#endif
-#ifndef ZZ_FORWARD_buffer_push
-#define ZZ_FORWARD_buffer_push
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secretkit_to_str
-#define ZZ_FORWARD_carrier_identity_secretkit_to_str
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_make
-#define ZZ_FORWARD_slice_mut_slice_make
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_signature_to_str
-#define ZZ_FORWARD_carrier_identity_signature_to_str
+#ifndef ZZ_FORWARD_err_fail
+#define ZZ_FORWARD_err_fail
 #endif
 #ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
 #define ZZ_FORWARD_slice_mut_slice_MutSlice
 struct slice_mut_slice_MutSlice_t;
 typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
 #endif
-#ifndef ZZ_FORWARD_buffer_as_mut_slice
-#define ZZ_FORWARD_buffer_as_mut_slice
-#endif
-#ifndef ZZ_FORWARD_carrier_crc8_broken_crc8
-#define ZZ_FORWARD_carrier_crc8_broken_crc8
-#endif
-#ifndef ZZ_FORWARD_buffer_copy_bytes
-#define ZZ_FORWARD_buffer_copy_bytes
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_to_str_bc58
-#define ZZ_FORWARD_carrier_identity_identity_to_str_bc58
-#endif
-#ifndef ZZ_FORWARD___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
-#define ZZ_FORWARD___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_BASEPOINT
-#define ZZ_FORWARD_carrier_identity_BASEPOINT
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_address_from_secret
-#define ZZ_FORWARD_carrier_identity_address_from_secret
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_Invalid
-#define ZZ_FORWARD_carrier_identity_Invalid
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_from_str_base32
-#define ZZ_FORWARD_carrier_identity_from_str_base32
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_from_str_base58
-#define ZZ_FORWARD_carrier_identity_from_str_base58
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_from_str
-#define ZZ_FORWARD_carrier_identity_from_str
-#endif
-#ifndef ZZ_FORWARD_err_check
-#define ZZ_FORWARD_err_check
-#endif
-#ifndef ZZ_FORWARD_err_OutOfTail
-#define ZZ_FORWARD_err_OutOfTail
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_isnull
-#define ZZ_FORWARD_carrier_identity_isnull
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_nullcheck
-#define ZZ_FORWARD_carrier_identity_nullcheck
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_from_str
-#define ZZ_FORWARD_carrier_identity_secret_from_str
-#endif
-#ifndef ZZ_FORWARD_buffer_append_bytes
-#define ZZ_FORWARD_buffer_append_bytes
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push32
-#define ZZ_FORWARD_slice_mut_slice_push32
+#ifndef ZZ_FORWARD_slice_mut_slice_integrity
+#define ZZ_FORWARD_slice_mut_slice_integrity
 #endif
 #ifndef ZZ_FORWARD_slice_mut_slice_append_slice
 #define ZZ_FORWARD_slice_mut_slice_append_slice
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_isnull
-#define ZZ_FORWARD_carrier_identity_isnull
+#ifndef ZZ_FORWARD_buffer_append_slice
+#define ZZ_FORWARD_buffer_append_slice
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_from_str
+#define ZZ_FORWARD_carrier_identity_from_str
 #endif
 #ifndef ZZ_FORWARD_carrier_identity_Address
 #define ZZ_FORWARD_carrier_identity_Address
 struct carrier_identity_Address_t;
 typedef struct carrier_identity_Address_t carrier_identity_Address;
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_eq
-#define ZZ_FORWARD_carrier_identity_eq
+#ifndef ZZ_FORWARD_carrier_identity_address_from_str
+#define ZZ_FORWARD_carrier_identity_address_from_str
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Identity
-#define ZZ_FORWARD_carrier_identity_Identity
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+#ifndef ZZ_FORWARD_err_backtrace
+#define ZZ_FORWARD_err_backtrace
 #endif
-#ifndef ZZ_FORWARD_buffer_eq_cstr
-#define ZZ_FORWARD_buffer_eq_cstr
+#ifndef ZZ_FORWARD_carrier_identity_identity_from_str
+#define ZZ_FORWARD_carrier_identity_identity_from_str
 #endif
-#ifndef ZZ_FORWARD_buffer_pop
-#define ZZ_FORWARD_buffer_pop
-#endif
-#ifndef ZZ_FORWARD_buffer_starts_with_cstr
-#define ZZ_FORWARD_buffer_starts_with_cstr
+#ifndef ZZ_FORWARD_carrier_identity_to_str
+#define ZZ_FORWARD_carrier_identity_to_str
 #endif
 #ifndef ZZ_FORWARD_carrier_identity_Alias
 #define ZZ_FORWARD_carrier_identity_Alias
@@ -293,50 +144,99 @@ typedef struct carrier_identity_Alias_t carrier_identity_Alias;
 #ifndef ZZ_FORWARD_carrier_identity_alias_to_str
 #define ZZ_FORWARD_carrier_identity_alias_to_str
 #endif
-#ifndef ZZ_FORWARD_carrier_crc8_crc8
-#define ZZ_FORWARD_carrier_crc8_crc8
-#endif
-#ifndef ZZ_FORWARD_base32_encode
-#define ZZ_FORWARD_base32_encode
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_to_str
-#define ZZ_FORWARD_carrier_identity_to_str
-#endif
-#ifndef ZZ_FORWARD_err_to_str
-#define ZZ_FORWARD_err_to_str
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secretkit_from_str
-#define ZZ_FORWARD_carrier_identity_secretkit_from_str
-#endif
 #ifndef ZZ_FORWARD_carrier_identity_secret_to_str_bc58
 #define ZZ_FORWARD_carrier_identity_secret_to_str_bc58
 #endif
-#ifndef ZZ_FORWARD_err_make
-#define ZZ_FORWARD_err_make
+#ifndef ZZ_FORWARD_err_check
+#define ZZ_FORWARD_err_check
 #endif
-#ifndef ZZ_FORWARD_slice_slice_eq_cstr
-#define ZZ_FORWARD_slice_slice_eq_cstr
+#ifndef ZZ_FORWARD_buffer_substr
+#define ZZ_FORWARD_buffer_substr
 #endif
-#ifndef ZZ_FORWARD_base32_decode
-#define ZZ_FORWARD_base32_decode
+#ifndef ZZ_FORWARD__string_h_
+#define ZZ_FORWARD__string_h_
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_address_from_str
-#define ZZ_FORWARD_carrier_identity_address_from_str
+#ifndef ZZ_FORWARD_buffer_push
+#define ZZ_FORWARD_buffer_push
 #endif
-#ifndef ZZ_FORWARD__stdarg_h_
-#define ZZ_FORWARD__stdarg_h_
+#ifndef ZZ_FORWARD_carrier_crc8_crc8
+#define ZZ_FORWARD_carrier_crc8_crc8
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_signature_to_str
+#define ZZ_FORWARD_carrier_identity_signature_to_str
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push16
+#define ZZ_FORWARD_slice_mut_slice_push16
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push
+#define ZZ_FORWARD_slice_mut_slice_push
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_address_to_str_bc58
+#define ZZ_FORWARD_carrier_identity_address_to_str_bc58
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Invalid
+#define ZZ_FORWARD_carrier_identity_Invalid
+#endif
+#ifndef ZZ_FORWARD_carrier_crc8_broken_crc8
+#define ZZ_FORWARD_carrier_crc8_broken_crc8
+#endif
+#ifndef ZZ_FORWARD___home_aep_proj_devguard_carrier_core_src_base58_h_
+#define ZZ_FORWARD___home_aep_proj_devguard_carrier_core_src_base58_h_
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_to_str_bc58
+#define ZZ_FORWARD_carrier_identity_to_str_bc58
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_bytes
+#define ZZ_FORWARD_buffer_copy_bytes
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Signature
+#define ZZ_FORWARD_carrier_identity_Signature
+struct carrier_identity_Signature_t;
+typedef struct carrier_identity_Signature_t carrier_identity_Signature;
 #endif
 #ifndef ZZ_FORWARD_buffer_make
 #define ZZ_FORWARD_buffer_make
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_from_str
-#define ZZ_FORWARD_carrier_identity_identity_from_str
+#ifndef ZZ_FORWARD_carrier_identity_identity_from_secret
+#define ZZ_FORWARD_carrier_identity_identity_from_secret
 #endif
-#ifndef ZZ_FORWARD_buffer_as_slice
-#define ZZ_FORWARD_buffer_as_slice
+#ifndef ZZ_FORWARD_slice_slice_make
+#define ZZ_FORWARD_slice_slice_make
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_signature_from_str
-#define ZZ_FORWARD_carrier_identity_signature_from_str
+#ifndef ZZ_FORWARD_carrier_rand_rand
+#define ZZ_FORWARD_carrier_rand_rand
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secret_generate
+#define ZZ_FORWARD_carrier_identity_secret_generate
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_identity_to_str
+#define ZZ_FORWARD_carrier_identity_identity_to_str
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secret_from_str
+#define ZZ_FORWARD_carrier_identity_secret_from_str
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
+#define ZZ_FORWARD_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#endif
+#ifndef ZZ_FORWARD_buffer_as_mut_slice
+#define ZZ_FORWARD_buffer_as_mut_slice
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_isnull
+#define ZZ_FORWARD_carrier_identity_isnull
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_cstr
+#define ZZ_FORWARD_slice_mut_slice_append_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_available
+#define ZZ_FORWARD_buffer_available
+#endif
+#ifndef ZZ_FORWARD_buffer_append_bytes
+#define ZZ_FORWARD_buffer_append_bytes
+#endif
+#ifndef ZZ_FORWARD_buffer_clear
+#define ZZ_FORWARD_buffer_clear
 #endif
 #ifndef ZZ_FORWARD_carrier_identity_Secret
 #define ZZ_FORWARD_carrier_identity_Secret
@@ -348,55 +248,141 @@ typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 struct carrier_identity_SecretKit_t;
 typedef struct carrier_identity_SecretKit_t carrier_identity_SecretKit;
 #endif
-#ifndef ZZ_FORWARD_buffer_append_slice
-#define ZZ_FORWARD_buffer_append_slice
+#ifndef ZZ_FORWARD_carrier_identity_from_str_base32
+#define ZZ_FORWARD_carrier_identity_from_str_base32
 #endif
-#ifndef ZZ_FORWARD_buffer_ends_with_cstr
-#define ZZ_FORWARD_buffer_ends_with_cstr
+#ifndef ZZ_FORWARD_carrier_identity_from_str_base58
+#define ZZ_FORWARD_carrier_identity_from_str_base58
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_type_string
-#define ZZ_FORWARD_carrier_identity_type_string
+#ifndef ZZ_FORWARD_carrier_identity_from_str
+#define ZZ_FORWARD_carrier_identity_from_str
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_address_to_str
-#define ZZ_FORWARD_carrier_identity_address_to_str
+#ifndef ZZ_FORWARD_slice_mut_slice_as_slice
+#define ZZ_FORWARD_slice_mut_slice_as_slice
 #endif
-#ifndef ZZ_FORWARD_buffer_copy_slice
-#define ZZ_FORWARD_buffer_copy_slice
+#ifndef ZZ_FORWARD_buffer_slen
+#define ZZ_FORWARD_buffer_slen
 #endif
-#ifndef ZZ_FORWARD_buffer_copy_cstr
-#define ZZ_FORWARD_buffer_copy_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_alias_from_str
-#define ZZ_FORWARD_carrier_identity_alias_from_str
-#endif
-#ifndef ZZ_FORWARD_buffer_append_cstr
-#define ZZ_FORWARD_buffer_append_cstr
-#endif
-#ifndef ZZ_FORWARD___home_aep_proj_devguard_carrier_core_src_base58_h_
-#define ZZ_FORWARD___home_aep_proj_devguard_carrier_core_src_base58_h_
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_to_str_bc58
-#define ZZ_FORWARD_carrier_identity_to_str_bc58
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_from_secret
-#define ZZ_FORWARD_carrier_identity_identity_from_secret
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_to_string
-#define ZZ_FORWARD_carrier_identity_identity_to_string
-#endif
-#ifndef ZZ_FORWARD_err_backtrace
-#define ZZ_FORWARD_err_backtrace
+#ifndef ZZ_FORWARD_slice_mut_slice_push32
+#define ZZ_FORWARD_slice_mut_slice_push32
 #endif
 #ifndef ZZ_FORWARD_err_elog
 #define ZZ_FORWARD_err_elog
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Signature
-#define ZZ_FORWARD_carrier_identity_Signature
-struct carrier_identity_Signature_t;
-typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+#ifndef ZZ_FORWARD_slice_slice_eq_cstr
+#define ZZ_FORWARD_slice_slice_eq_cstr
 #endif
-#ifndef ZZ_FORWARD_buffer_slen
-#define ZZ_FORWARD_buffer_slen
+#ifndef ZZ_FORWARD_slice_slice_eq
+#define ZZ_FORWARD_slice_slice_eq
+#endif
+#ifndef ZZ_FORWARD_base32_decode
+#define ZZ_FORWARD_base32_decode
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_type_string
+#define ZZ_FORWARD_carrier_identity_type_string
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_from_str_base32
+#define ZZ_FORWARD_carrier_identity_from_str_base32
+#endif
+#ifndef ZZ_FORWARD_err_fail_with_system_error
+#define ZZ_FORWARD_err_fail_with_system_error
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secretkit_to_str
+#define ZZ_FORWARD_carrier_identity_secretkit_to_str
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_identity_to_string
+#define ZZ_FORWARD_carrier_identity_identity_to_string
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secret_to_str
+#define ZZ_FORWARD_carrier_identity_secret_to_str
+#endif
+#ifndef ZZ_FORWARD_buffer_eq_cstr
+#define ZZ_FORWARD_buffer_eq_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_identity_from_cstr
+#define ZZ_FORWARD_carrier_identity_identity_from_cstr
+#endif
+#ifndef ZZ_FORWARD___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
+#define ZZ_FORWARD___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_dh
+#define ZZ_FORWARD_carrier_identity_dh
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Identity
+#define ZZ_FORWARD_carrier_identity_Identity
+struct carrier_identity_Identity_t;
+typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+#endif
+#ifndef ZZ_FORWARD_err_make
+#define ZZ_FORWARD_err_make
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_type_string
+#define ZZ_FORWARD_carrier_identity_type_string
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_make
+#define ZZ_FORWARD_slice_mut_slice_make
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_nullcheck
+#define ZZ_FORWARD_carrier_identity_nullcheck
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secretkit_generate
+#define ZZ_FORWARD_carrier_identity_secretkit_generate
+#endif
+#ifndef ZZ_FORWARD_err_OutOfTail
+#define ZZ_FORWARD_err_OutOfTail
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Alias
+#define ZZ_FORWARD_carrier_identity_Alias
+struct carrier_identity_Alias_t;
+typedef struct carrier_identity_Alias_t carrier_identity_Alias;
+#endif
+#ifndef ZZ_FORWARD__stdio_h_
+#define ZZ_FORWARD__stdio_h_
+#endif
+#ifndef ZZ_FORWARD_buffer_fgets
+#define ZZ_FORWARD_buffer_fgets
+#endif
+#ifndef ZZ_FORWARD_buffer_pop
+#define ZZ_FORWARD_buffer_pop
+#endif
+#ifndef ZZ_FORWARD_buffer_cstr
+#define ZZ_FORWARD_buffer_cstr
+#endif
+#ifndef ZZ_FORWARD_err_fail_with_errno
+#define ZZ_FORWARD_err_fail_with_errno
+#endif
+#ifndef ZZ_FORWARD_err_fail_with_win32
+#define ZZ_FORWARD_err_fail_with_win32
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_from_str_base58
+#define ZZ_FORWARD_carrier_identity_from_str_base58
+#endif
+#ifndef ZZ_FORWARD_base32_encode
+#define ZZ_FORWARD_base32_encode
+#endif
+#ifndef ZZ_FORWARD_err_eprintf
+#define ZZ_FORWARD_err_eprintf
+#endif
+#ifndef ZZ_FORWARD_err_to_str
+#define ZZ_FORWARD_err_to_str
+#endif
+#ifndef ZZ_FORWARD_buffer_split
+#define ZZ_FORWARD_buffer_split
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_address_to_str
+#define ZZ_FORWARD_carrier_identity_address_to_str
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secret_from_cstr
+#define ZZ_FORWARD_carrier_identity_secret_from_cstr
+#endif
+#ifndef ZZ_FORWARD_err_ignore
+#define ZZ_FORWARD_err_ignore
+#endif
+#ifndef ZZ_FORWARD_err_abort
+#define ZZ_FORWARD_err_abort
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq_bytes
+#define ZZ_FORWARD_slice_slice_eq_bytes
 #endif
 #ifndef ZZ_FORWARD__stdarg_h_
 #define ZZ_FORWARD__stdarg_h_
@@ -404,116 +390,53 @@ typedef struct carrier_identity_Signature_t carrier_identity_Signature;
 #ifndef ZZ_FORWARD_buffer_vformat
 #define ZZ_FORWARD_buffer_vformat
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_to_str
-#define ZZ_FORWARD_carrier_identity_identity_to_str
+#ifndef ZZ_FORWARD_slice_mut_slice_append_bytes
+#define ZZ_FORWARD_slice_mut_slice_append_bytes
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_from_str_base58
-#define ZZ_FORWARD_carrier_identity_from_str_base58
+#ifndef ZZ_FORWARD_buffer_format
+#define ZZ_FORWARD_buffer_format
 #endif
-#ifndef ZZ_FORWARD_buffer_substr
-#define ZZ_FORWARD_buffer_substr
+#ifndef ZZ_FORWARD_buffer_copy_cstr
+#define ZZ_FORWARD_buffer_copy_cstr
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_generate
-#define ZZ_FORWARD_carrier_identity_secret_generate
+#ifndef ZZ_FORWARD_carrier_identity_address_from_cstr
+#define ZZ_FORWARD_carrier_identity_address_from_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Address
+#define ZZ_FORWARD_carrier_identity_Address
+struct carrier_identity_Address_t;
+typedef struct carrier_identity_Address_t carrier_identity_Address;
+#endif
+#ifndef ZZ_FORWARD_buffer_ends_with_cstr
+#define ZZ_FORWARD_buffer_ends_with_cstr
 #endif
 #ifndef ZZ_FORWARD_slice_mut_slice_push64
 #define ZZ_FORWARD_slice_mut_slice_push64
 #endif
-#ifndef ZZ_FORWARD_buffer_clear
-#define ZZ_FORWARD_buffer_clear
+#ifndef ZZ_FORWARD_buffer_append_cstr
+#define ZZ_FORWARD_buffer_append_cstr
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_dh
-#define ZZ_FORWARD_carrier_identity_dh
+#ifndef ZZ_FORWARD_carrier_identity_secretkit_from_str
+#define ZZ_FORWARD_carrier_identity_secretkit_from_str
 #endif
-#ifndef ZZ_FORWARD_err_fail_with_win32
-#define ZZ_FORWARD_err_fail_with_win32
+#ifndef ZZ_FORWARD_carrier_identity_signature_from_str
+#define ZZ_FORWARD_carrier_identity_signature_from_str
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Alias
-#define ZZ_FORWARD_carrier_identity_Alias
-struct carrier_identity_Alias_t;
-typedef struct carrier_identity_Alias_t carrier_identity_Alias;
+#ifndef ZZ_FORWARD_carrier_identity_alias_from_str
+#define ZZ_FORWARD_carrier_identity_alias_from_str
 #endif
-#ifndef ZZ_FORWARD_slice_slice_make
-#define ZZ_FORWARD_slice_slice_make
+#ifndef ZZ_FORWARD_carrier_identity_address_from_secret
+#define ZZ_FORWARD_carrier_identity_address_from_secret
 #endif
-#ifndef ZZ_FORWARD_slice_slice_eq_bytes
-#define ZZ_FORWARD_slice_slice_eq_bytes
+#ifndef ZZ_FORWARD_carrier_identity_eq
+#define ZZ_FORWARD_carrier_identity_eq
 #endif
-#ifndef ZZ_FORWARD_slice_slice_eq
-#define ZZ_FORWARD_slice_slice_eq
+#ifndef ZZ_FORWARD_carrier_identity_to_str
+#define ZZ_FORWARD_carrier_identity_to_str
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_from_str_base32
-#define ZZ_FORWARD_carrier_identity_from_str_base32
-#endif
-#ifndef ZZ_EXPORT__stddef_h_
-#define ZZ_EXPORT__stddef_h_
-#include <stddef.h>
-
-#endif
-#ifndef ZZ_EXPORT_buffer_integrity
-#define ZZ_EXPORT_buffer_integrity
-
-#endif
-#ifndef ZZ_EXPORT_buffer_split
-#define ZZ_EXPORT_buffer_split
-bool buffer_split (buffer_Buffer const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, buffer_Buffer*  const  other, uintptr_t const  tail2);
-
-#endif
-#ifndef ZZ_EXPORT_err_checked
-#define ZZ_EXPORT_err_checked
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_errno
-#define ZZ_EXPORT_err_fail_with_errno
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT__string_h_
-#define ZZ_EXPORT__string_h_
-#include <string.h>
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_address_from_str
-#define ZZ_EXPORT_carrier_identity_address_from_str
-void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_address_from_cstr
-#define ZZ_EXPORT_carrier_identity_address_from_cstr
-void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_system_error
-#define ZZ_EXPORT_err_fail_with_system_error
-void err_fail_with_system_error (err_Err*  const  self, uintptr_t const  tail, int const  merrno, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail
-#define ZZ_EXPORT_err_fail
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_Slice
-#define ZZ_EXPORT_slice_slice_Slice
-struct slice_slice_Slice_t {
-   uint8_t const *  mem ;
-   uintptr_t size ;
-}
-;
-size_t sizeof_slice_slice_Slice();
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_integrity
-#define ZZ_EXPORT_slice_mut_slice_integrity
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_integrity
-#define ZZ_EXPORT_slice_slice_integrity
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_as_slice
-#define ZZ_EXPORT_slice_mut_slice_as_slice
-slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  const  self);
+#ifndef ZZ_EXPORT__stdint_h_
+#define ZZ_EXPORT__stdint_h_
+#include <stdint.h>
 
 #endif
 #ifndef ZZ_EXPORT___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Ed25519_h_
@@ -526,29 +449,41 @@ slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  co
 bool carrier_identity_verify (carrier_identity_Identity const *  const  pk, carrier_identity_Signature const *  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
 
 #endif
-#ifndef ZZ_EXPORT_err_abort
-#define ZZ_EXPORT_err_abort
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+#ifndef ZZ_EXPORT_slice_slice_Slice
+#define ZZ_EXPORT_slice_slice_Slice
+struct slice_slice_Slice_t {
+   uint8_t const *  mem ;
+   uintptr_t size ;
+}
+;
+size_t sizeof_slice_slice_Slice();
 
 #endif
-#ifndef ZZ_EXPORT__stdio_h_
-#define ZZ_EXPORT__stdio_h_
-#include <stdio.h>
+#ifndef ZZ_EXPORT_buffer_integrity
+#define ZZ_EXPORT_buffer_integrity
 
 #endif
-#ifndef ZZ_EXPORT_buffer_fgets
-#define ZZ_EXPORT_buffer_fgets
-bool buffer_fgets (buffer_Buffer*  const  self, uintptr_t const  tail, FILE*  const  stream);
+#ifndef ZZ_EXPORT_slice_slice_integrity
+#define ZZ_EXPORT_slice_slice_integrity
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_from_str
-#define ZZ_EXPORT_carrier_identity_identity_from_str
-void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#ifndef ZZ_EXPORT_buffer_as_slice
+#define ZZ_EXPORT_buffer_as_slice
+slice_slice_Slice buffer_as_slice (buffer_Buffer const *  const  self, uintptr_t const  tail);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_from_cstr
-#define ZZ_EXPORT_carrier_identity_identity_from_cstr
-void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+#ifndef ZZ_EXPORT_buffer_copy_slice
+#define ZZ_EXPORT_buffer_copy_slice
+void buffer_copy_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+
+#endif
+#ifndef ZZ_EXPORT__stddef_h_
+#define ZZ_EXPORT__stddef_h_
+#include <stddef.h>
+
+#endif
+#ifndef ZZ_EXPORT_err_checked
+#define ZZ_EXPORT_err_checked
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_to_str_bc58
@@ -556,14 +491,18 @@ void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  sel
 static uintptr_t carrier_identity_to_str_bc58 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_address_to_str_bc58
-#define ZZ_EXPORT_carrier_identity_address_to_str_bc58
-uintptr_t carrier_identity_address_to_str_bc58 (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from);
+#ifndef ZZ_EXPORT_carrier_identity_identity_to_str_bc58
+#define ZZ_EXPORT_carrier_identity_identity_to_str_bc58
+uintptr_t carrier_identity_identity_to_str_bc58 (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_cstr
-#define ZZ_EXPORT_buffer_cstr
-char  const * buffer_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_buffer_starts_with_cstr
+#define ZZ_EXPORT_buffer_starts_with_cstr
+bool buffer_starts_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#endif
+#ifndef ZZ_EXPORT__stddef_h_
+#define ZZ_EXPORT__stddef_h_
 
 #endif
 #ifndef ZZ_EXPORT_buffer_Buffer
@@ -608,195 +547,13 @@ void carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_
 void carrier_identity_sign (carrier_identity_Secret const *  const  key, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_from_str
-#define ZZ_EXPORT_carrier_identity_secret_from_str
-void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#ifndef ZZ_EXPORT_err_fail
+#define ZZ_EXPORT_err_fail
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_from_cstr
-#define ZZ_EXPORT_carrier_identity_secret_from_cstr
-void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_err_eprintf
-#define ZZ_EXPORT_err_eprintf
-void err_eprintf (err_Err const *  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push
-#define ZZ_EXPORT_slice_mut_slice_push
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT__stdint_h_
-#define ZZ_EXPORT__stdint_h_
-#include <stdint.h>
-
-#endif
-#ifndef ZZ_EXPORT_carrier_rand_rand
-#define ZZ_EXPORT_carrier_rand_rand
-extern void carrier_rand_rand (err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, uintptr_t size);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secretkit_generate
-#define ZZ_EXPORT_carrier_identity_secretkit_generate
-void carrier_identity_secretkit_generate (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_format
-#define ZZ_EXPORT_buffer_format
-int buffer_format (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_to_str
-#define ZZ_EXPORT_carrier_identity_to_str
-static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_to_str
-#define ZZ_EXPORT_carrier_identity_secret_to_str
-uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_available
-#define ZZ_EXPORT_buffer_available
-uintptr_t buffer_available (buffer_Buffer const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push16
-#define ZZ_EXPORT_slice_mut_slice_push16
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_cstr
-#define ZZ_EXPORT_slice_mut_slice_append_cstr
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_bytes
-#define ZZ_EXPORT_slice_mut_slice_append_bytes
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_err_ignore
-#define ZZ_EXPORT_err_ignore
-void err_ignore (err_Err*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_push
-#define ZZ_EXPORT_buffer_push
-bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secretkit_to_str
-#define ZZ_EXPORT_carrier_identity_secretkit_to_str
-uintptr_t carrier_identity_secretkit_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_SecretKit const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_make
-#define ZZ_EXPORT_slice_mut_slice_make
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size, uintptr_t*  const  at);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_signature_to_str
-#define ZZ_EXPORT_carrier_identity_signature_to_str
-uintptr_t carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_MutSlice
-#define ZZ_EXPORT_slice_mut_slice_MutSlice
-struct slice_mut_slice_MutSlice_t {
-   uint8_t*  mem ;
-   uintptr_t size ;
-   uintptr_t*  at ;
-}
-;
-size_t sizeof_slice_mut_slice_MutSlice();
-
-#endif
-#ifndef ZZ_EXPORT_buffer_as_mut_slice
-#define ZZ_EXPORT_buffer_as_mut_slice
-slice_mut_slice_MutSlice buffer_as_mut_slice (buffer_Buffer*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_crc8_broken_crc8
-#define ZZ_EXPORT_carrier_crc8_broken_crc8
-uint8_t carrier_crc8_broken_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  length);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_copy_bytes
-#define ZZ_EXPORT_buffer_copy_bytes
-void buffer_copy_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_to_str_bc58
-#define ZZ_EXPORT_carrier_identity_identity_to_str_bc58
-uintptr_t carrier_identity_identity_to_str_bc58 (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
-#define ZZ_EXPORT___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
-#include "../../c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h.h"
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_address_from_secret
-#define ZZ_EXPORT_carrier_identity_address_from_secret
-void carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_Invalid
-#define ZZ_EXPORT_carrier_identity_Invalid
-extern const __attribute__ ((unused)) size_t carrier_identity_Invalid;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_from_str_base32
-#define ZZ_EXPORT_carrier_identity_from_str_base32
-static void carrier_identity_from_str_base32 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_from_str_base58
-#define ZZ_EXPORT_carrier_identity_from_str_base58
-static void carrier_identity_from_str_base58 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_from_str
-#define ZZ_EXPORT_carrier_identity_from_str
-static void carrier_identity_from_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
-
-#endif
-#ifndef ZZ_EXPORT_err_check
-#define ZZ_EXPORT_err_check
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#endif
-#ifndef ZZ_EXPORT_err_OutOfTail
-#define ZZ_EXPORT_err_OutOfTail
-extern const __attribute__ ((unused)) size_t err_OutOfTail;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_isnull
-#define ZZ_EXPORT_carrier_identity_isnull
-bool carrier_identity_isnull (uint8_t const *  const  k);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_nullcheck
-#define ZZ_EXPORT_carrier_identity_nullcheck
-void carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  k);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_from_str
-#define ZZ_EXPORT_carrier_identity_secret_from_str
-void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_append_bytes
-#define ZZ_EXPORT_buffer_append_bytes
-void buffer_append_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push32
-#define ZZ_EXPORT_slice_mut_slice_push32
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+#ifndef ZZ_EXPORT_slice_mut_slice_integrity
+#define ZZ_EXPORT_slice_mut_slice_integrity
 
 #endif
 #ifndef ZZ_EXPORT_slice_mut_slice_append_slice
@@ -804,97 +561,14 @@ bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t co
 bool slice_mut_slice_append_slice (slice_mut_slice_MutSlice*  const  self, slice_slice_Slice const *  const  other);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_isnull
-#define ZZ_EXPORT_carrier_identity_isnull
-bool carrier_identity_isnull (uint8_t const *  const  k);
+#ifndef ZZ_EXPORT_buffer_append_slice
+#define ZZ_EXPORT_buffer_append_slice
+void buffer_append_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_Address
-#define ZZ_EXPORT_carrier_identity_Address
-struct carrier_identity_Address_t {
-   uint8_t k[    32] ;
-}
-;
-size_t sizeof_carrier_identity_Address();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_eq
-#define ZZ_EXPORT_carrier_identity_eq
-bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_Identity
-#define ZZ_EXPORT_carrier_identity_Identity
-struct carrier_identity_Identity_t {
-   uint8_t k[    32] ;
-}
-;
-size_t sizeof_carrier_identity_Identity();
-
-#endif
-#ifndef ZZ_EXPORT_buffer_eq_cstr
-#define ZZ_EXPORT_buffer_eq_cstr
-bool buffer_eq_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_pop
-#define ZZ_EXPORT_buffer_pop
-bool buffer_pop (buffer_Buffer*  const  self, uintptr_t const  t);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_starts_with_cstr
-#define ZZ_EXPORT_buffer_starts_with_cstr
-bool buffer_starts_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_alias_to_str
-#define ZZ_EXPORT_carrier_identity_alias_to_str
-uintptr_t carrier_identity_alias_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Alias const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_crc8_crc8
-#define ZZ_EXPORT_carrier_crc8_crc8
-uint8_t carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_base32_encode
-#define ZZ_EXPORT_base32_encode
-uintptr_t base32_encode (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  src, uintptr_t const  inlen, char*  const  out, uintptr_t const  outlen);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_to_str
-#define ZZ_EXPORT_carrier_identity_to_str
-static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
-
-#endif
-#ifndef ZZ_EXPORT_err_to_str
-#define ZZ_EXPORT_err_to_str
-void err_to_str (err_Err const *  const  self, uintptr_t const  et, char*  const  dest, uintptr_t const  dest_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secretkit_from_str
-#define ZZ_EXPORT_carrier_identity_secretkit_from_str
-void carrier_identity_secretkit_from_str (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_to_str_bc58
-#define ZZ_EXPORT_carrier_identity_secret_to_str_bc58
-uintptr_t carrier_identity_secret_to_str_bc58 (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_err_make
-#define ZZ_EXPORT_err_make
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq_cstr
-#define ZZ_EXPORT_slice_slice_eq_cstr
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_base32_decode
-#define ZZ_EXPORT_base32_decode
-uintptr_t base32_decode (err_Err*  const  e, uintptr_t const  et, char const *  const  src, uintptr_t const  inlen, uint8_t*  const  out, uintptr_t const  outlen);
+#ifndef ZZ_EXPORT_carrier_identity_from_str
+#define ZZ_EXPORT_carrier_identity_from_str
+static void carrier_identity_from_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_address_from_str
@@ -902,14 +576,9 @@ uintptr_t base32_decode (err_Err*  const  e, uintptr_t const  et, char const *  
 void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
 #endif
-#ifndef ZZ_EXPORT__stdarg_h_
-#define ZZ_EXPORT__stdarg_h_
-#include <stdarg.h>
-
-#endif
-#ifndef ZZ_EXPORT_buffer_make
-#define ZZ_EXPORT_buffer_make
-void buffer_make (buffer_Buffer*  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_err_backtrace
+#define ZZ_EXPORT_err_backtrace
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_identity_from_str
@@ -917,73 +586,74 @@ void buffer_make (buffer_Buffer*  const  self, uintptr_t const  tail);
 void carrier_identity_identity_from_str (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_as_slice
-#define ZZ_EXPORT_buffer_as_slice
-slice_slice_Slice buffer_as_slice (buffer_Buffer const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_carrier_identity_to_str
+#define ZZ_EXPORT_carrier_identity_to_str
+static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_signature_from_str
-#define ZZ_EXPORT_carrier_identity_signature_from_str
-void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#ifndef ZZ_EXPORT_carrier_identity_alias_to_str
+#define ZZ_EXPORT_carrier_identity_alias_to_str
+uintptr_t carrier_identity_alias_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Alias const *  const  from);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_Secret
-#define ZZ_EXPORT_carrier_identity_Secret
-struct carrier_identity_Secret_t {
-   uint8_t k[    32] ;
-}
-;
-size_t sizeof_carrier_identity_Secret();
+#ifndef ZZ_EXPORT_carrier_identity_secret_to_str_bc58
+#define ZZ_EXPORT_carrier_identity_secret_to_str_bc58
+uintptr_t carrier_identity_secret_to_str_bc58 (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_SecretKit
-#define ZZ_EXPORT_carrier_identity_SecretKit
-struct carrier_identity_SecretKit_t {
-   carrier_identity_Secret identity ;
-   carrier_identity_Secret network ;
-}
-;
-size_t sizeof_carrier_identity_SecretKit();
+#ifndef ZZ_EXPORT_err_check
+#define ZZ_EXPORT_err_check
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_append_slice
-#define ZZ_EXPORT_buffer_append_slice
-void buffer_append_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+#ifndef ZZ_EXPORT_buffer_substr
+#define ZZ_EXPORT_buffer_substr
+void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, buffer_Buffer*  const  other, uintptr_t const  tail2);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_ends_with_cstr
-#define ZZ_EXPORT_buffer_ends_with_cstr
-bool buffer_ends_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
+#ifndef ZZ_EXPORT__string_h_
+#define ZZ_EXPORT__string_h_
+#include <string.h>
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_type_string
-#define ZZ_EXPORT_carrier_identity_type_string
-static char  const * carrier_identity_type_string (uint8_t const  typ);
+#ifndef ZZ_EXPORT_buffer_push
+#define ZZ_EXPORT_buffer_push
+bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_address_to_str
-#define ZZ_EXPORT_carrier_identity_address_to_str
-uintptr_t carrier_identity_address_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from);
+#ifndef ZZ_EXPORT_carrier_crc8_crc8
+#define ZZ_EXPORT_carrier_crc8_crc8
+uint8_t carrier_crc8_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  l);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_copy_slice
-#define ZZ_EXPORT_buffer_copy_slice
-void buffer_copy_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+#ifndef ZZ_EXPORT_carrier_identity_signature_to_str
+#define ZZ_EXPORT_carrier_identity_signature_to_str
+uintptr_t carrier_identity_signature_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Signature const *  const  from);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_copy_cstr
-#define ZZ_EXPORT_buffer_copy_cstr
-void buffer_copy_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  s);
+#ifndef ZZ_EXPORT_slice_mut_slice_push16
+#define ZZ_EXPORT_slice_mut_slice_push16
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_alias_from_str
-#define ZZ_EXPORT_carrier_identity_alias_from_str
-void carrier_identity_alias_from_str (carrier_identity_Alias*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#ifndef ZZ_EXPORT_slice_mut_slice_push
+#define ZZ_EXPORT_slice_mut_slice_push
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_append_cstr
-#define ZZ_EXPORT_buffer_append_cstr
-void buffer_append_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  cstr);
+#ifndef ZZ_EXPORT_carrier_identity_address_to_str_bc58
+#define ZZ_EXPORT_carrier_identity_address_to_str_bc58
+uintptr_t carrier_identity_address_to_str_bc58 (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Invalid
+#define ZZ_EXPORT_carrier_identity_Invalid
+extern const __attribute__ ((unused)) size_t carrier_identity_Invalid;
+
+#endif
+#ifndef ZZ_EXPORT_carrier_crc8_broken_crc8
+#define ZZ_EXPORT_carrier_crc8_broken_crc8
+uint8_t carrier_crc8_broken_crc8 (uint8_t crc, uint8_t const *  data, uintptr_t const  length);
 
 #endif
 #ifndef ZZ_EXPORT___home_aep_proj_devguard_carrier_core_src_base58_h_
@@ -1206,24 +876,9 @@ static bool b58check_enc(char *b58c, size_t *b58c_sz, uint8_t ver, const void *d
 static uintptr_t carrier_identity_to_str_bc58 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_from_secret
-#define ZZ_EXPORT_carrier_identity_identity_from_secret
-void carrier_identity_identity_from_secret (carrier_identity_Identity*  const  pk, carrier_identity_Secret const *  const  sk);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_to_string
-#define ZZ_EXPORT_carrier_identity_identity_to_string
-void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_err_backtrace
-#define ZZ_EXPORT_err_backtrace
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#endif
-#ifndef ZZ_EXPORT_err_elog
-#define ZZ_EXPORT_err_elog
-void err_elog (err_Err const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_buffer_copy_bytes
+#define ZZ_EXPORT_buffer_copy_bytes
+void buffer_copy_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_Signature
@@ -1235,33 +890,24 @@ struct carrier_identity_Signature_t {
 size_t sizeof_carrier_identity_Signature();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_slen
-#define ZZ_EXPORT_buffer_slen
-uintptr_t buffer_slen (buffer_Buffer const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_buffer_make
+#define ZZ_EXPORT_buffer_make
+void buffer_make (buffer_Buffer*  const  self, uintptr_t const  tail);
 
 #endif
-#ifndef ZZ_EXPORT__stdarg_h_
-#define ZZ_EXPORT__stdarg_h_
+#ifndef ZZ_EXPORT_carrier_identity_identity_from_secret
+#define ZZ_EXPORT_carrier_identity_identity_from_secret
+void carrier_identity_identity_from_secret (carrier_identity_Identity*  const  pk, carrier_identity_Secret const *  const  sk);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_vformat
-#define ZZ_EXPORT_buffer_vformat
-int buffer_vformat (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+#ifndef ZZ_EXPORT_slice_slice_make
+#define ZZ_EXPORT_slice_slice_make
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_to_str
-#define ZZ_EXPORT_carrier_identity_identity_to_str
-uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_from_str_base58
-#define ZZ_EXPORT_carrier_identity_from_str_base58
-static void carrier_identity_from_str_base58 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_substr
-#define ZZ_EXPORT_buffer_substr
-void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, buffer_Buffer*  const  other, uintptr_t const  tail2);
+#ifndef ZZ_EXPORT_carrier_rand_rand
+#define ZZ_EXPORT_carrier_rand_rand
+extern void carrier_rand_rand (err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, uintptr_t size);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_secret_generate
@@ -1269,9 +915,50 @@ void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, u
 void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push64
-#define ZZ_EXPORT_slice_mut_slice_push64
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+#ifndef ZZ_EXPORT_carrier_identity_identity_to_str
+#define ZZ_EXPORT_carrier_identity_identity_to_str
+uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secret_from_str
+#define ZZ_EXPORT_carrier_identity_secret_from_str
+void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_MutSlice
+#define ZZ_EXPORT_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t {
+   uint8_t*  mem ;
+   uintptr_t size ;
+   uintptr_t*  at ;
+}
+;
+size_t sizeof_slice_mut_slice_MutSlice();
+
+#endif
+#ifndef ZZ_EXPORT_buffer_as_mut_slice
+#define ZZ_EXPORT_buffer_as_mut_slice
+slice_mut_slice_MutSlice buffer_as_mut_slice (buffer_Buffer*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_isnull
+#define ZZ_EXPORT_carrier_identity_isnull
+bool carrier_identity_isnull (uint8_t const *  const  k);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_cstr
+#define ZZ_EXPORT_slice_mut_slice_append_cstr
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_available
+#define ZZ_EXPORT_buffer_available
+uintptr_t buffer_available (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_append_bytes
+#define ZZ_EXPORT_buffer_append_bytes
+void buffer_append_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
 
 #endif
 #ifndef ZZ_EXPORT_buffer_clear
@@ -1279,14 +966,162 @@ bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t co
 void buffer_clear (buffer_Buffer*  const  self, uintptr_t const  tail);
 
 #endif
+#ifndef ZZ_EXPORT_carrier_identity_Secret
+#define ZZ_EXPORT_carrier_identity_Secret
+struct carrier_identity_Secret_t {
+   uint8_t k[    32] ;
+}
+;
+size_t sizeof_carrier_identity_Secret();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_SecretKit
+#define ZZ_EXPORT_carrier_identity_SecretKit
+struct carrier_identity_SecretKit_t {
+   carrier_identity_Secret identity ;
+   carrier_identity_Secret network ;
+}
+;
+size_t sizeof_carrier_identity_SecretKit();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_from_str_base32
+#define ZZ_EXPORT_carrier_identity_from_str_base32
+static void carrier_identity_from_str_base32 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_from_str_base58
+#define ZZ_EXPORT_carrier_identity_from_str_base58
+static void carrier_identity_from_str_base58 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_from_str
+#define ZZ_EXPORT_carrier_identity_from_str
+static void carrier_identity_from_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_as_slice
+#define ZZ_EXPORT_slice_mut_slice_as_slice
+slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_slen
+#define ZZ_EXPORT_buffer_slen
+uintptr_t buffer_slen (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push32
+#define ZZ_EXPORT_slice_mut_slice_push32
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_err_elog
+#define ZZ_EXPORT_err_elog
+void err_elog (err_Err const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq_cstr
+#define ZZ_EXPORT_slice_slice_eq_cstr
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq
+#define ZZ_EXPORT_slice_slice_eq
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_base32_decode
+#define ZZ_EXPORT_base32_decode
+uintptr_t base32_decode (err_Err*  const  e, uintptr_t const  et, char const *  const  src, uintptr_t const  inlen, uint8_t*  const  out, uintptr_t const  outlen);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_type_string
+#define ZZ_EXPORT_carrier_identity_type_string
+static char  const * carrier_identity_type_string (uint8_t const  typ);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_from_str_base32
+#define ZZ_EXPORT_carrier_identity_from_str_base32
+static void carrier_identity_from_str_base32 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail_with_system_error
+#define ZZ_EXPORT_err_fail_with_system_error
+void err_fail_with_system_error (err_Err*  const  self, uintptr_t const  tail, int const  merrno, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secretkit_to_str
+#define ZZ_EXPORT_carrier_identity_secretkit_to_str
+uintptr_t carrier_identity_secretkit_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_SecretKit const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_identity_to_string
+#define ZZ_EXPORT_carrier_identity_identity_to_string
+void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secret_to_str
+#define ZZ_EXPORT_carrier_identity_secret_to_str
+uintptr_t carrier_identity_secret_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Secret const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_eq_cstr
+#define ZZ_EXPORT_buffer_eq_cstr
+bool buffer_eq_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_identity_from_cstr
+#define ZZ_EXPORT_carrier_identity_identity_from_cstr
+void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
+#define ZZ_EXPORT___home_aep_proj_devguard_carrier_core_3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h_
+#include "../../c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Curve25519_51_h.h"
+
+#endif
 #ifndef ZZ_EXPORT_carrier_identity_dh
 #define ZZ_EXPORT_carrier_identity_dh
 void carrier_identity_dh (carrier_identity_Address*  const  out, carrier_identity_Secret const *  const  me, carrier_identity_Address const *  const  them);
 
 #endif
-#ifndef ZZ_EXPORT_err_fail_with_win32
-#define ZZ_EXPORT_err_fail_with_win32
-void err_fail_with_win32 (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#ifndef ZZ_EXPORT_carrier_identity_Identity
+#define ZZ_EXPORT_carrier_identity_Identity
+struct carrier_identity_Identity_t {
+   uint8_t k[    32] ;
+}
+;
+size_t sizeof_carrier_identity_Identity();
+
+#endif
+#ifndef ZZ_EXPORT_err_make
+#define ZZ_EXPORT_err_make
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_type_string
+#define ZZ_EXPORT_carrier_identity_type_string
+static char  const * carrier_identity_type_string (uint8_t const  typ);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_make
+#define ZZ_EXPORT_slice_mut_slice_make
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size, uintptr_t*  const  at);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_nullcheck
+#define ZZ_EXPORT_carrier_identity_nullcheck
+void carrier_identity_nullcheck (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  k);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secretkit_generate
+#define ZZ_EXPORT_carrier_identity_secretkit_generate
+void carrier_identity_secretkit_generate (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_err_OutOfTail
+#define ZZ_EXPORT_err_OutOfTail
+extern const __attribute__ ((unused)) size_t err_OutOfTail;
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_Alias
@@ -1298,9 +1133,79 @@ struct carrier_identity_Alias_t {
 size_t sizeof_carrier_identity_Alias();
 
 #endif
-#ifndef ZZ_EXPORT_slice_slice_make
-#define ZZ_EXPORT_slice_slice_make
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#ifndef ZZ_EXPORT__stdio_h_
+#define ZZ_EXPORT__stdio_h_
+#include <stdio.h>
+
+#endif
+#ifndef ZZ_EXPORT_buffer_fgets
+#define ZZ_EXPORT_buffer_fgets
+bool buffer_fgets (buffer_Buffer*  const  self, uintptr_t const  tail, FILE*  const  stream);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_pop
+#define ZZ_EXPORT_buffer_pop
+bool buffer_pop (buffer_Buffer*  const  self, uintptr_t const  t);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_cstr
+#define ZZ_EXPORT_buffer_cstr
+char  const * buffer_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail_with_errno
+#define ZZ_EXPORT_err_fail_with_errno
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail_with_win32
+#define ZZ_EXPORT_err_fail_with_win32
+void err_fail_with_win32 (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_from_str_base58
+#define ZZ_EXPORT_carrier_identity_from_str_base58
+static void carrier_identity_from_str_base58 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
+
+#endif
+#ifndef ZZ_EXPORT_base32_encode
+#define ZZ_EXPORT_base32_encode
+uintptr_t base32_encode (err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  src, uintptr_t const  inlen, char*  const  out, uintptr_t const  outlen);
+
+#endif
+#ifndef ZZ_EXPORT_err_eprintf
+#define ZZ_EXPORT_err_eprintf
+void err_eprintf (err_Err const *  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#endif
+#ifndef ZZ_EXPORT_err_to_str
+#define ZZ_EXPORT_err_to_str
+void err_to_str (err_Err const *  const  self, uintptr_t const  et, char*  const  dest, uintptr_t const  dest_len);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_split
+#define ZZ_EXPORT_buffer_split
+bool buffer_split (buffer_Buffer const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, buffer_Buffer*  const  other, uintptr_t const  tail2);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_address_to_str
+#define ZZ_EXPORT_carrier_identity_address_to_str
+uintptr_t carrier_identity_address_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Address const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secret_from_cstr
+#define ZZ_EXPORT_carrier_identity_secret_from_cstr
+void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_err_ignore
+#define ZZ_EXPORT_err_ignore
+void err_ignore (err_Err*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_err_abort
+#define ZZ_EXPORT_err_abort
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #endif
 #ifndef ZZ_EXPORT_slice_slice_eq_bytes
@@ -1308,13 +1213,87 @@ void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  
 bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
 
 #endif
-#ifndef ZZ_EXPORT_slice_slice_eq
-#define ZZ_EXPORT_slice_slice_eq
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const *  const  other);
+#ifndef ZZ_EXPORT__stdarg_h_
+#define ZZ_EXPORT__stdarg_h_
+#include <stdarg.h>
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_from_str_base32
-#define ZZ_EXPORT_carrier_identity_from_str_base32
-static void carrier_identity_from_str_base32 (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  to, char const *  const  from, uintptr_t const  l, uint8_t const  expect_type);
+#ifndef ZZ_EXPORT_buffer_vformat
+#define ZZ_EXPORT_buffer_vformat
+int buffer_vformat (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_bytes
+#define ZZ_EXPORT_slice_mut_slice_append_bytes
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_format
+#define ZZ_EXPORT_buffer_format
+int buffer_format (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_cstr
+#define ZZ_EXPORT_buffer_copy_cstr
+void buffer_copy_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  s);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_address_from_cstr
+#define ZZ_EXPORT_carrier_identity_address_from_cstr
+void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Address
+#define ZZ_EXPORT_carrier_identity_Address
+struct carrier_identity_Address_t {
+   uint8_t k[    32] ;
+}
+;
+size_t sizeof_carrier_identity_Address();
+
+#endif
+#ifndef ZZ_EXPORT_buffer_ends_with_cstr
+#define ZZ_EXPORT_buffer_ends_with_cstr
+bool buffer_ends_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push64
+#define ZZ_EXPORT_slice_mut_slice_push64
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_append_cstr
+#define ZZ_EXPORT_buffer_append_cstr
+void buffer_append_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secretkit_from_str
+#define ZZ_EXPORT_carrier_identity_secretkit_from_str
+void carrier_identity_secretkit_from_str (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_signature_from_str
+#define ZZ_EXPORT_carrier_identity_signature_from_str
+void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_alias_from_str
+#define ZZ_EXPORT_carrier_identity_alias_from_str
+void carrier_identity_alias_from_str (carrier_identity_Alias*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_address_from_secret
+#define ZZ_EXPORT_carrier_identity_address_from_secret
+void carrier_identity_address_from_secret (carrier_identity_Address*  const  pk, carrier_identity_Secret const *  const  sk);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_eq
+#define ZZ_EXPORT_carrier_identity_eq
+bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_to_str
+#define ZZ_EXPORT_carrier_identity_to_str
+static uintptr_t carrier_identity_to_str (uintptr_t const  size, err_Err*  const  e, uintptr_t const  et, char*  to, uintptr_t l, uint8_t const  version, uint8_t const  typ, uint8_t const *  const  k);
 
 #endif

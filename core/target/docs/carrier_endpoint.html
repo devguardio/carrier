@@ -1,47 +1,18 @@
 
 <h1> module carrier::endpoint </h1>
-<h4> fn close (
+<h4> fn start (
 
     ::carrier::endpoint::Endpoint*
     self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- close endpoint immediately&lt;br&gt;
-</p><h4> fn broker (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
--&gt ::carrier::channel::Channel*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_carriertoml (
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    ::err::Err*+et
-    e,
 
     usize
     et,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    file_name,
+    ::io::Async*
+    async,
 
-    usize
-    xt,
+    ::err::Err*+et
+    e,
 
 )
 
@@ -53,62 +24,11 @@
 
 </p><h4> fn cluster_target (
 
-    ::carrier::identity::Identity*
-    target,
-
     ::carrier::endpoint::Endpoint*
     self,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_secretkit (
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    ::carrier::identity::SecretKit
-    ik,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    xt,
-
-    usize
-    et,
+    ::carrier::identity::Identity*
+    target,
 
 )
 
@@ -153,19 +73,60 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn native (
+</p><h4> fn register_stream (
+
+    ::carrier::stream::Config*
+    conf,
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_carriertoml (
 
     ::err::Err*+et
     e,
-
-    usize
-    et,
 
     ::carrier::endpoint::Endpoint*+xt
     self,
 
     usize
     xt,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file_name,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn native (
+
+    usize
+    xt,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
 
 )
 
@@ -197,10 +158,32 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn register_stream (
+</p><h4> fn from_secretkit (
 
-    ::carrier::stream::Config*
-    conf,
+    ::err::Err*+et
+    e,
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    usize
+    xt,
+
+    ::carrier::identity::SecretKit
+    ik,
+
+    usize
+    et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
 
     ::carrier::endpoint::Endpoint*
     self,
@@ -212,24 +195,15 @@
 </h4>
 
 <p class='doc_comments'>
-
-</p><h4> fn start (
-
-    ::err::Err*+et
-    e,
-
-    ::io::Async*
-    async,
-
-    usize
-    et,
+ close endpoint immediately&lt;br&gt;
+</p><h4> fn broker (
 
     ::carrier::endpoint::Endpoint*
     self,
 
 )
 
-
+-&gt ::carrier::channel::Channel*
 
 </h4>
 
@@ -248,26 +222,27 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_vault (
+</p><h4> fn swap16 (
 
-    usize
-    et,
-
-    usize
-    xt,
-
-    ::carrier::vault::Vault
-    vault,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
+    u16
+    x,
 
 )
 
+-&gt u16
 
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
 
 </h4>
 
@@ -275,8 +250,36 @@
 
 </p><h4> fn poll (
 
+    ::carrier::endpoint::Endpoint*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
     ::io::Async*
     async,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_vault (
+
+    usize
+    xt,
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    ::carrier::vault::Vault
+    vault,
 
     usize
     et,
@@ -284,12 +287,9 @@
     ::err::Err*+et
     e,
 
-    ::carrier::endpoint::Endpoint*
-    self,
-
 )
 
--&gt ::io::Result
+
 
 </h4>
 

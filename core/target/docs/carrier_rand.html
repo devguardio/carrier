@@ -5,20 +5,20 @@
     ::err::Err*+tail
     self,
 
-    usize
-    tail,
-
     ::ext::&lt;stddef.h&gt;::char*
     scope,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
-    usize
-    line,
-
     ::ext::&lt;stddef.h&gt;::char*
     fmt,
+
+    usize
+    tail,
+
+    usize
+    line,
 
 )
 
@@ -36,11 +36,11 @@
     usize
     et,
 
-    ::err::Err*+et
-    e,
-
     u8*
     bytes,
+
+    ::err::Err*+et
+    e,
 
 )
 

@@ -129,76 +129,76 @@ impl Mem {
 }
 }
 extern {
-    #[link_name = "carrier_vault_toml_i_set_network"]
-    pub fn r#i_set_network( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zsecret: *const u8);
-
     #[link_name = "carrier_vault_toml_i_get_local_identity"]
     pub fn r#i_get_local_identity( Zself: *const u8,  Zid: *mut u8);
-
-    #[link_name = "carrier_vault_toml_from_carriertoml"]
-    pub fn r#from_carriertoml( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8);
 
     #[link_name = "carrier_vault_toml_findmtdindex"]
     pub fn r#findmtdindex( Ze: *mut u8,  Zet: usize,  Zmtdname: *const u8)  -> usize;
 
-    #[link_name = "carrier_vault_toml_from_carriertoml_and_secret"]
-    pub fn r#from_carriertoml_and_secret( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8,  Zsecret: *const u8);
-
-    #[link_name = "carrier_vault_toml_i_get_principal_identity"]
-    pub fn r#i_get_principal_identity( Zself: *const u8,  Zid: *mut u8);
-
     #[link_name = "sizeof_carrier_vault_toml_Authorize"]
     pub fn sizeof_Authorize() -> libc::size_t;
-
-    #[link_name = "carrier_vault_toml_i_get_network_secret"]
-    pub fn r#i_get_network_secret( Zself: *const u8,  Zsecret: *mut u8);
-
-    #[link_name = "carrier_vault_toml_save_to_toml"]
-    pub fn r#save_to_toml( Zself: *const u8,  Ze: *mut u8,  Zet: usize);
-
-    #[link_name = "carrier_vault_toml_load_from_toml_identity_secret"]
-    pub fn r#load_from_toml_identity_secret( Zthis: *mut u8,  Ze: *mut u8,  Zet: usize,  Zv: super::toml::Value);
-
-    #[link_name = "carrier_vault_toml_i_list_authorizations"]
-    pub fn r#i_list_authorizations( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zcb: super::carrier_vault::list_authorizations_cb,  Zuser: *mut u8);
-
-    #[link_name = "carrier_vault_toml_i_sign_principal"]
-    pub fn r#i_sign_principal( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
-
-    #[link_name = "carrier_vault_toml_i_del_authorization"]
-    pub fn r#i_del_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zdelme: *const u8,  Zresource: *const u8);
 
     #[link_name = "sizeof_carrier_vault_toml_Mem"]
     pub fn sizeof_Mem() -> libc::size_t;
 
+    #[link_name = "carrier_vault_toml_save_to_toml"]
+    pub fn r#save_to_toml( Zself: *const u8,  Ze: *mut u8,  Zet: usize);
+
+    #[link_name = "carrier_vault_toml_i_get_network_secret"]
+    pub fn r#i_get_network_secret( Zself: *const u8,  Zsecret: *mut u8);
+
     #[link_name = "carrier_vault_toml_close"]
     pub fn r#close( Zself: *mut u8);
 
-    #[link_name = "carrier_vault_toml_load_from_toml_cb_publish"]
-    pub fn r#load_from_toml_cb_publish( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value);
+    #[link_name = "carrier_vault_toml_i_get_network"]
+    pub fn r#i_get_network( Zself: *const u8,  Znetwork: *mut u8);
 
-    #[link_name = "carrier_vault_toml_i_advance_clock"]
-    pub fn r#i_advance_clock( Zself: *const u8)  -> u64;
+    #[link_name = "carrier_vault_toml_from_carriertoml"]
+    pub fn r#from_carriertoml( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8);
 
-    #[link_name = "carrier_vault_toml_i_add_authorization"]
-    pub fn r#i_add_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddme: *const u8,  Zresource: *const u8);
+    #[link_name = "carrier_vault_toml_i_del_authorization"]
+    pub fn r#i_del_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zdelme: *const u8,  Zresource: *const u8);
 
     #[link_name = "carrier_vault_toml_load_from_toml_authorize_iter"]
     pub fn r#load_from_toml_authorize_iter( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value);
 
+    #[link_name = "carrier_vault_toml_i_add_authorization"]
+    pub fn r#i_add_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddme: *const u8,  Zresource: *const u8);
+
+    #[link_name = "carrier_vault_toml_from_carriertoml_and_secret"]
+    pub fn r#from_carriertoml_and_secret( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8,  Zsecret: *const u8);
+
     #[link_name = "carrier_vault_toml_i_sign_local"]
     pub fn r#i_sign_local( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
-
-    #[link_name = "carrier_vault_toml_load_from_toml_cb"]
-    pub fn r#load_from_toml_cb( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value);
-
-    #[link_name = "carrier_vault_toml_i_from_carriertoml"]
-    pub fn r#i_from_carriertoml( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8);
 
     #[link_name = "carrier_vault_toml_from_home_carriertoml"]
     pub fn r#from_home_carriertoml( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
-    #[link_name = "carrier_vault_toml_i_get_network"]
-    pub fn r#i_get_network( Zself: *const u8,  Znetwork: *mut u8);
+    #[link_name = "carrier_vault_toml_i_get_principal_identity"]
+    pub fn r#i_get_principal_identity( Zself: *const u8,  Zid: *mut u8);
+
+    #[link_name = "carrier_vault_toml_i_list_authorizations"]
+    pub fn r#i_list_authorizations( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zcb: super::carrier_vault::list_authorizations_cb,  Zuser: *mut u8);
+
+    #[link_name = "carrier_vault_toml_i_advance_clock"]
+    pub fn r#i_advance_clock( Zself: *const u8)  -> u64;
+
+    #[link_name = "carrier_vault_toml_i_from_carriertoml"]
+    pub fn r#i_from_carriertoml( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zfile_name: *const u8);
+
+    #[link_name = "carrier_vault_toml_load_from_toml_cb_publish"]
+    pub fn r#load_from_toml_cb_publish( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value);
+
+    #[link_name = "carrier_vault_toml_i_set_network"]
+    pub fn r#i_set_network( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zsecret: *const u8);
+
+    #[link_name = "carrier_vault_toml_load_from_toml_cb"]
+    pub fn r#load_from_toml_cb( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value);
+
+    #[link_name = "carrier_vault_toml_load_from_toml_identity_secret"]
+    pub fn r#load_from_toml_identity_secret( Zthis: *mut u8,  Ze: *mut u8,  Zet: usize,  Zv: super::toml::Value);
+
+    #[link_name = "carrier_vault_toml_i_sign_principal"]
+    pub fn r#i_sign_principal( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
 
 }

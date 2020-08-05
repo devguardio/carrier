@@ -1,39 +1,29 @@
 
 <h1> module carrier::sha256 </h1>
-<h4> fn blocklen (
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn init (
-
-    ::carrier::sha256::Sha256*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn finish (
+<h4> fn update (
 
     ::carrier::sha256::Sha256*
     self,
 
     u8*
-    out,
+    data,
+
+    usize
+    l,
 
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn blocklen (
+
+)
+
+-&gt usize
 
 </h4>
 
@@ -45,38 +35,19 @@
     input_key_material,
 
     u8*
-    chaining_key,
+    out1,
 
     usize
     input_key_material_len,
 
     u8*
-    out1,
+    chaining_key,
 
     u8*
     out3,
 
     u8*
     out2,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn update (
-
-    u8*
-    data,
-
-    ::carrier::sha256::Sha256*
-    self,
-
-    usize
-    l,
 
 )
 
@@ -96,19 +67,48 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn finish (
+
+    u8*
+    out,
+
+    ::carrier::sha256::Sha256*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn init (
+
+    ::carrier::sha256::Sha256*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn hmac (
-
-    u8*
-    key,
-
-    u8*
-    data,
 
     u8*
     out,
 
     usize
     keylen,
+
+    u8*
+    key,
+
+    u8*
+    data,
 
     usize
     datalen,

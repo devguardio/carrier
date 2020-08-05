@@ -3,21 +3,6 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
-pub enum ParserState {
-    toml_ParserState_Document = 0,
-    toml_ParserState_SectionKey = 1,
-    toml_ParserState_Object = 2,
-    toml_ParserState_Key = 3,
-    toml_ParserState_PostKey = 4,
-    toml_ParserState_PreVal = 5,
-    toml_ParserState_StringVal = 6,
-    toml_ParserState_IntVal = 7,
-    toml_ParserState_PostVal = 8,
-
-}
-
-#[derive(Clone)]
-#[repr(C)]
 pub enum ValueType {
     toml_ValueType_String = 0,
     toml_ValueType_Object = 1,
@@ -56,6 +41,21 @@ pub struct U {
     pub user1 :*mut u8 ,
     pub user2 :usize ,
 }
+#[derive(Clone)]
+#[repr(C)]
+pub enum ParserState {
+    toml_ParserState_Document = 0,
+    toml_ParserState_SectionKey = 1,
+    toml_ParserState_Object = 2,
+    toml_ParserState_Key = 3,
+    toml_ParserState_PostKey = 4,
+    toml_ParserState_PreVal = 5,
+    toml_ParserState_StringVal = 6,
+    toml_ParserState_IntVal = 7,
+    toml_ParserState_PostVal = 8,
+
+}
+
 pub const MAX_DEPTH : usize = 64;
 
 #[derive(Clone)]
@@ -291,10 +291,6 @@ impl Parser {
 }
 extern {
 
-    #[link_name = "toml_close"]
-    pub fn r#close( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize);
-
-
     #[link_name = "sizeof_toml_Value"]
     pub fn sizeof_Value() -> libc::size_t;
 
@@ -303,8 +299,6 @@ extern {
     #[link_name = "sizeof_toml_U"]
     pub fn sizeof_U() -> libc::size_t;
 
-    #[link_name = "toml_parser"]
-    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
 
 
 
@@ -314,10 +308,16 @@ extern {
     #[link_name = "sizeof_toml_ParserStack"]
     pub fn sizeof_ParserStack() -> libc::size_t;
 
-    #[link_name = "toml_next"]
-    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
+    #[link_name = "toml_close"]
+    pub fn r#close( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize);
 
     #[link_name = "sizeof_toml_Parser"]
     pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
+
+    #[link_name = "toml_parser"]
+    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
+
+    #[link_name = "toml_next"]
+    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
 
 }

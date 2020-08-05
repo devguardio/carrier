@@ -24,21 +24,20 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_toml_ParserStack;
 extern PyTypeObject py_Type_toml_Parser;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_toml_Value;
 extern PyTypeObject py_Type_toml_U;
+extern PyTypeObject py_Type_toml_ParserStack;
+extern PyTypeObject py_Type_toml_ParserStack;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_toml_ParserStack;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_toml_Parser;
-
 static PyObject * py_get_toml_Value_t(PyObject *pyself, void *closure) {
 
     toml_Value * self = pyFATGetPtr(pyself, "toml_Value");
@@ -256,7 +255,6 @@ PyTypeObject py_Type_toml_U  = {
 
 
 
-
 static PyObject * py_get_toml_Parser_col(PyObject *pyself, void *closure) {
 
     toml_Parser * self = pyFATGetPtr(pyself, "toml_Parser");
@@ -401,19 +399,7 @@ PyTypeObject py_Type_toml_Parser  = {
 };
 
 
-static PyObject* py_toml_close(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
-    PyObject * arg2 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg2)) { return NULL; };
-    toml_close(
-        pyFATGetPtr(arg0, "toml_Parser"),
-        ((pyFATObject *)arg0)->tail,
-        pyFATGetPtr(arg2, "err_Err"),
-        ((pyFATObject *)arg2)->tail);
-    Py_RETURN_NONE;
-}
+
 
 static PyObject* py_toml_push(PyObject *pyself, PyObject *args) {
     //self
@@ -436,10 +422,24 @@ static PyObject* py_toml_push(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_toml_close(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg2 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg2)) { return NULL; };
+    toml_close(
+        pyFATGetPtr(arg0, "toml_Parser"),
+        ((pyFATObject *)arg0)->tail,
+        pyFATGetPtr(arg2, "err_Err"),
+        ((pyFATObject *)arg2)->tail);
+    Py_RETURN_NONE;
+}
+
 
 static PyMethodDef methods[] = {
-{"close", py_toml_close, METH_VARARGS,""},
 {"push", py_toml_push, METH_VARARGS,""},
+{"close", py_toml_close, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

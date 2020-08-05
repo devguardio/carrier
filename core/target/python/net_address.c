@@ -25,15 +25,14 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_net_address_Address;
+extern PyTypeObject py_Type_net_address_OsAddress;
 extern PyTypeObject py_Type_net_address_Address;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_net_address_OsAddress;
 extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_net_address_Address;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_net_address_OsAddress;
 extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_net_address_OsAddress;
 
 
 static PyObject * py_get_net_address_Address_typ(PyObject *pyself, void *closure) {
@@ -89,6 +88,7 @@ PyTypeObject py_Type_net_address_Address  = {
     .tp_getset      = py_getset_net_address_Address,
     .tp_dealloc     = py_free_net_address_Address,
 };
+
 
 
 
@@ -171,53 +171,6 @@ PyTypeObject py_Type_net_address_OsAddress  = {
 
 
 
-
-static PyObject* py_net_address_from_cstr(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //s
-    char * arg1 = 0;
-    Py_ssize_t arg1_len = 0;
-    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg1,&arg1_len)) { return NULL; };
-    net_address_from_cstr(
-        pyFATGetPtr(arg0, "net_address_Address"),
-        arg1);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_net_address_none(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    net_address_none(
-        pyFATGetPtr(arg0, "net_address_Address"));
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_net_address_set_port(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //port
-    long long int arg1 = 0;
-    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg1)) { return NULL; };
-    net_address_set_port(
-        pyFATGetPtr(arg0, "net_address_Address"),
-        arg1);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_net_address_eq(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //other
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    long long rarg = (long long int)(net_address_eq(
-        pyFATGetPtr(arg0, "net_address_Address"),
-        pyFATGetPtr(arg1, "net_address_Address")));
-    return PyBool_FromLong(rarg);
-}
-
 static PyObject* py_net_address_to_buffer(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -225,19 +178,6 @@ static PyObject* py_net_address_to_buffer(PyObject *pyself, PyObject *args) {
     PyObject * arg1 = 0;
     if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
     net_address_to_buffer(
-        pyFATGetPtr(arg0, "net_address_Address"),
-        pyFATGetPtr(arg1, "buffer_Buffer"),
-        ((pyFATObject *)arg1)->tail);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_net_address_ip_to_buffer(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //to
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    net_address_ip_to_buffer(
         pyFATGetPtr(arg0, "net_address_Address"),
         pyFATGetPtr(arg1, "buffer_Buffer"),
         ((pyFATObject *)arg1)->tail);
@@ -260,6 +200,49 @@ static PyObject* py_net_address_from_str_ipv4(PyObject *pyself, PyObject *args) 
     return PyBool_FromLong(rarg);
 }
 
+static PyObject* py_net_address_get_ip(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long int rarg = (long long int)(net_address_get_ip(
+        pyFATGetPtr(arg0, "net_address_Address")));
+    return PyLong_FromLong(rarg);
+}
+
+static PyObject* py_net_address_get_port(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long int rarg = (long long int)(net_address_get_port(
+        pyFATGetPtr(arg0, "net_address_Address")));
+    return PyLong_FromLong(rarg);
+}
+
+static PyObject* py_net_address_eq(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //other
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    long long rarg = (long long int)(net_address_eq(
+        pyFATGetPtr(arg0, "net_address_Address"),
+        pyFATGetPtr(arg1, "net_address_Address")));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_net_address_from_cstr(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //s
+    char * arg1 = 0;
+    Py_ssize_t arg1_len = 0;
+    if (!PyArg_ParseTuple(args, "Os#", &arg0,&arg1,&arg1_len)) { return NULL; };
+    net_address_from_cstr(
+        pyFATGetPtr(arg0, "net_address_Address"),
+        arg1);
+    Py_RETURN_NONE;
+}
+
 static PyObject* py_net_address_from_str(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -274,6 +257,62 @@ static PyObject* py_net_address_from_str(PyObject *pyself, PyObject *args) {
         arg1,
         arg2);
     Py_RETURN_NONE;
+}
+
+static PyObject* py_net_address_set_port(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //port
+    long long int arg1 = 0;
+    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg1)) { return NULL; };
+    net_address_set_port(
+        pyFATGetPtr(arg0, "net_address_Address"),
+        arg1);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_net_address_from_buffer(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //s
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    net_address_from_buffer(
+        pyFATGetPtr(arg0, "net_address_Address"),
+        pyFATGetPtr(arg1, "buffer_Buffer"),
+        ((pyFATObject *)arg1)->tail);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_net_address_ip_to_buffer(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //to
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    net_address_ip_to_buffer(
+        pyFATGetPtr(arg0, "net_address_Address"),
+        pyFATGetPtr(arg1, "buffer_Buffer"),
+        ((pyFATObject *)arg1)->tail);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_net_address_none(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    net_address_none(
+        pyFATGetPtr(arg0, "net_address_Address"));
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_net_address_valid(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long rarg = (long long int)(net_address_valid(
+        pyFATGetPtr(arg0, "net_address_Address")));
+    return PyBool_FromLong(rarg);
 }
 
 static PyObject* py_net_address_from_str_ipv6(PyObject *pyself, PyObject *args) {
@@ -292,61 +331,21 @@ static PyObject* py_net_address_from_str_ipv6(PyObject *pyself, PyObject *args) 
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_net_address_valid(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long rarg = (long long int)(net_address_valid(
-        pyFATGetPtr(arg0, "net_address_Address")));
-    return PyBool_FromLong(rarg);
-}
-
-static PyObject* py_net_address_from_buffer(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //s
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    net_address_from_buffer(
-        pyFATGetPtr(arg0, "net_address_Address"),
-        pyFATGetPtr(arg1, "buffer_Buffer"),
-        ((pyFATObject *)arg1)->tail);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_net_address_get_port(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long int rarg = (long long int)(net_address_get_port(
-        pyFATGetPtr(arg0, "net_address_Address")));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_net_address_get_ip(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long int rarg = (long long int)(net_address_get_ip(
-        pyFATGetPtr(arg0, "net_address_Address")));
-    return PyLong_FromLong(rarg);
-}
-
 
 static PyMethodDef methods[] = {
-{"from_cstr", py_net_address_from_cstr, METH_VARARGS,"parse a char * to an address\n\n same as from_buffer"},
-{"none", py_net_address_none, METH_VARARGS,"make an invalid network address"},
-{"set_port", py_net_address_set_port, METH_VARARGS,"set port number"},
-{"eq", py_net_address_eq, METH_VARARGS,"compare equality between two addresses"},
 {"to_buffer", py_net_address_to_buffer, METH_VARARGS,"append ip address to buffer, including port"},
-{"ip_to_buffer", py_net_address_ip_to_buffer, METH_VARARGS,"append ip address to buffer, excluding port"},
 {"from_str_ipv4", py_net_address_from_str_ipv4, METH_VARARGS,"parse a char * with len to an ipv4 address\n\n will fail for ipv6 address"},
-{"from_str", py_net_address_from_str, METH_VARARGS,"parse a char * with len to an address\n\n same as from_buffer"},
-{"from_str_ipv6", py_net_address_from_str_ipv6, METH_VARARGS,"parse a char * with len to an ipv6 address\n\n will fail for ipv4 address"},
-{"valid", py_net_address_valid, METH_VARARGS,"check if address is valid"},
-{"from_buffer", py_net_address_from_buffer, METH_VARARGS,"parse a buffer to an address\n\n both ipv4 and ipv6 with and without port are supported\n\n valid examples:\n  - 192.168.0.1:8080\n  - 1.1.1.1\n  - [2001:4860:4860::8888]:9000\n  - [10f::]:9000\n  - 2003:fb:ef05:6000:6000:9a6a:dd59:1234"},
-{"get_port", py_net_address_get_port, METH_VARARGS,"get port number\n\n returns 0 if address does not have a port"},
 {"get_ip", py_net_address_get_ip, METH_VARARGS,"get ip address as raw bytes.\n\n length depends on self->typ\n  - ipv4 is 4  bytes long\n  - ipv6 is 16 bytes long"},
+{"get_port", py_net_address_get_port, METH_VARARGS,"get port number\n\n returns 0 if address does not have a port"},
+{"eq", py_net_address_eq, METH_VARARGS,"compare equality between two addresses"},
+{"from_cstr", py_net_address_from_cstr, METH_VARARGS,"parse a char * to an address\n\n same as from_buffer"},
+{"from_str", py_net_address_from_str, METH_VARARGS,"parse a char * with len to an address\n\n same as from_buffer"},
+{"set_port", py_net_address_set_port, METH_VARARGS,"set port number"},
+{"from_buffer", py_net_address_from_buffer, METH_VARARGS,"parse a buffer to an address\n\n both ipv4 and ipv6 with and without port are supported\n\n valid examples:\n  - 192.168.0.1:8080\n  - 1.1.1.1\n  - [2001:4860:4860::8888]:9000\n  - [10f::]:9000\n  - 2003:fb:ef05:6000:6000:9a6a:dd59:1234"},
+{"ip_to_buffer", py_net_address_ip_to_buffer, METH_VARARGS,"append ip address to buffer, excluding port"},
+{"none", py_net_address_none, METH_VARARGS,"make an invalid network address"},
+{"valid", py_net_address_valid, METH_VARARGS,"check if address is valid"},
+{"from_str_ipv6", py_net_address_from_str_ipv6, METH_VARARGS,"parse a char * with len to an ipv6 address\n\n will fail for ipv4 address"},
 {NULL, NULL, 0, NULL}
 };
 

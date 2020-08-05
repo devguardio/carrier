@@ -2,17 +2,17 @@
 <h1> module carrier::vault_toml </h1>
 <h4> fn from_carriertoml (
 
-    ::err::Err*+et
-    e,
+    usize
+    et,
 
     ::carrier::vault::Vault*
     self,
 
-    usize
-    et,
-
     ::ext::&lt;stddef.h&gt;::char*
     file_name,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -24,20 +24,20 @@
 
 </p><h4> fn from_carriertoml_and_secret (
 
-    ::carrier::identity::Secret*
-    secret,
+    ::ext::&lt;stddef.h&gt;::char*
+    file_name,
 
     ::carrier::vault::Vault*
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    file_name,
-
-    ::err::Err*+et
-    e,
+    ::carrier::identity::Secret*
+    secret,
 
     usize
     et,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -49,11 +49,11 @@
 
 </p><h4> fn from_home_carriertoml (
 
-    usize
-    et,
-
     ::err::Err*+et
     e,
+
+    usize
+    et,
 
     ::carrier::vault::Vault*
     self,

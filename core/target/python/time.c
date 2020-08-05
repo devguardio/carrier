@@ -25,8 +25,6 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_time_Time;
-extern PyTypeObject py_Type_time_Time;
-
 static PyObject * py_get_time_Time_secs(PyObject *pyself, void *closure) {
 
     time_Time * self = pyFATGetPtr(pyself, "time_Time");
@@ -117,23 +115,6 @@ PyTypeObject py_Type_time_Time  = {
 
 
 
-static PyObject* py_time_to_seconds(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long int rarg = (long long int)(time_to_seconds(
-        pyFATGetPtr(arg0, "time_Time")));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_time_to_millis(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long int rarg = (long long int)(time_to_millis(
-        pyFATGetPtr(arg0, "time_Time")));
-    return PyLong_FromLong(rarg);
-}
 
 static PyObject* py_time_more_than(PyObject *pyself, PyObject *args) {
     //self
@@ -147,11 +128,29 @@ static PyObject* py_time_more_than(PyObject *pyself, PyObject *args) {
     return PyBool_FromLong(rarg);
 }
 
+static PyObject* py_time_to_millis(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long int rarg = (long long int)(time_to_millis(
+        pyFATGetPtr(arg0, "time_Time")));
+    return PyLong_FromLong(rarg);
+}
+
+static PyObject* py_time_to_seconds(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long int rarg = (long long int)(time_to_seconds(
+        pyFATGetPtr(arg0, "time_Time")));
+    return PyLong_FromLong(rarg);
+}
+
 
 static PyMethodDef methods[] = {
-{"to_seconds", py_time_to_seconds, METH_VARARGS,""},
-{"to_millis", py_time_to_millis, METH_VARARGS,""},
 {"more_than", py_time_more_than, METH_VARARGS,""},
+{"to_millis", py_time_to_millis, METH_VARARGS,""},
+{"to_seconds", py_time_to_seconds, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

@@ -5,14 +5,14 @@
     ::carrier::peering::Class
     klass,
 
-    ::carrier::peering::Transport
-    transport,
+    ::net::address::Address
+    addr,
 
     ::carrier::peering::Peering*
     self,
 
-    ::net::address::Address
-    addr,
+    ::carrier::peering::Transport
+    transport,
 
 )
 
@@ -24,11 +24,11 @@
 
 </p><h4> fn from_proto (
 
-    ::err::Err*+et
-    e,
-
     ::protonerf::Field
     field,
+
+    ::err::Err*+et
+    e,
 
     ::carrier::peering::Peering*
     self,

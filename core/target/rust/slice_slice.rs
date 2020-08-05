@@ -64,20 +64,20 @@ impl Slice {
 }
 }
 extern {
-
-    #[link_name = "slice_slice_eq_bytes"]
-    pub fn r#eq_bytes( Zself: *const u8,  Zother: *const u8,  Zothersize: usize)  -> bool;
-
     #[link_name = "slice_slice_eq"]
     pub fn r#eq( Zself: *const u8,  Zother: *const u8)  -> bool;
-
-    #[link_name = "slice_slice_eq_cstr"]
-    pub fn r#eq_cstr( Zself: *const u8,  Zother: *const u8)  -> bool;
 
     #[link_name = "slice_slice_make"]
     pub fn r#make( Zself: *mut u8,  Zmem: *const u8,  Zsize: usize);
 
     #[link_name = "sizeof_slice_slice_Slice"]
     pub fn sizeof_Slice() -> libc::size_t;
+
+    #[link_name = "slice_slice_eq_bytes"]
+    pub fn r#eq_bytes( Zself: *const u8,  Zother: *const u8,  Zothersize: usize)  -> bool;
+
+    #[link_name = "slice_slice_eq_cstr"]
+    pub fn r#eq_cstr( Zself: *const u8,  Zother: *const u8)  -> bool;
+
 
 }

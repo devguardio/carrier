@@ -5,33 +5,14 @@
     usize
     et,
 
+    ::carrier::sync::Sync*
+    self,
+
     ::err::Err*+et
     e,
 
     ::carrier::identity::Identity*
     target,
-
-    ::carrier::sync::Sync*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn wait (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::sync::Sync*
-    self,
 
 )
 
@@ -43,24 +24,62 @@
 
 </p><h4> fn open_with_headers (
 
-    ::err::Err*+et
-    e,
-
     ::carrier::sync::Sync*
     self,
 
     ::carrier::stream::Config*
     sc,
 
-    usize
-    et,
+    ::err::Err*+et
+    e,
 
     ::slice::slice::Slice*
     extraheaders,
 
+    usize
+    et,
+
 )
 
 -&gt ::carrier::stream::Stream*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn start (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::sync::Sync*
+    self,
+
+    ::carrier::endpoint::Endpoint*
+    ep,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::carrier::sync::Sync*
+    self,
+
+    int
+    exit_code,
+
+)
+
+
 
 </h4>
 
@@ -88,26 +107,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
-
-    ::carrier::sync::Sync*
-    self,
-
-    int
-    exit_code,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn start (
-
-    ::carrier::endpoint::Endpoint*
-    ep,
+</p><h4> fn wait (
 
     usize
     et,

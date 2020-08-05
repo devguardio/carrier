@@ -70,12 +70,9 @@ impl Subscribe {
 }
 }
 extern {
-
     #[link_name = "carrier_subscribe_on_close"]
     pub fn r#on_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
-    #[link_name = "sizeof_carrier_subscribe_Subscribe"]
-    pub fn sizeof_Subscribe() -> libc::size_t;
 
     #[link_name = "carrier_subscribe_on_stream"]
     pub fn r#on_stream( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbs: super::slice_slice::Slice)  -> bool;
@@ -83,5 +80,8 @@ extern {
 
     #[link_name = "carrier_subscribe_start"]
     pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zss: *mut u8);
+
+    #[link_name = "sizeof_carrier_subscribe_Subscribe"]
+    pub fn sizeof_Subscribe() -> libc::size_t;
 
 }

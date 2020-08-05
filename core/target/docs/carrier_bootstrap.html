@@ -1,6 +1,28 @@
 
 <h1> module carrier::bootstrap </h1>
-<h4> fn swap16 (
+<h4> fn from_store (
+
+    ::net::address::Address*
+    ip6addr,
+
+    ::net::address::Address*
+    ip4addr,
+
+    ::carrier::vault::Broker*
+    b,
+
+    ::carrier::identity::Address*
+    xaddr,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap16 (
 
     u16
     x,
@@ -26,23 +48,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_store (
+</p><h4> fn from_be16 (
 
-    ::net::address::Address*
-    ip6addr,
-
-    ::net::address::Address*
-    ip4addr,
-
-    ::carrier::vault::Broker*
-    b,
-
-    ::carrier::identity::Address*
-    xaddr,
+    u16
+    x,
 
 )
 
--&gt bool
+-&gt u16
 
 </h4>
 
@@ -50,43 +63,18 @@
 
 </p><h4> fn parse_record (
 
-    ::carrier::vault::Broker*
-    entry,
+    ::buffer::Buffer*+st
+    record,
 
     usize
     st,
 
-    ::buffer::Buffer*+st
-    record,
+    ::carrier::vault::Broker*
+    entry,
 
 )
 
 -&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn bootstrap (
-
-    ::carrier::bootstrap::Bootstrap*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::carrier::vault::Vault*
-    store,
-
-    ::io::Async*
-    async,
-
-)
-
-
 
 </h4>
 
@@ -105,20 +93,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_be16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn poll (
+
+    ::carrier::bootstrap::Bootstrap*
+    self,
 
     usize
     et,
@@ -128,9 +106,6 @@
 
     ::io::Async*
     async,
-
-    ::carrier::bootstrap::Bootstrap*
-    self,
 
 )
 
@@ -145,11 +120,11 @@
     ::carrier::vault::Vault*
     store,
 
-    ::buffer::Buffer*+t
-    pkt,
-
     usize
     t,
+
+    ::buffer::Buffer*+t
+    pkt,
 
 )
 
@@ -167,14 +142,39 @@
     ::carrier::vault::Vault*
     store,
 
+    usize
+    et,
+
     ::io::Async*
     async,
 
     ::time::Time
     timeout,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn bootstrap (
+
+    ::carrier::bootstrap::Bootstrap*
+    self,
+
     usize
     et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::vault::Vault*
+    store,
+
+    ::io::Async*
+    async,
 
 )
 

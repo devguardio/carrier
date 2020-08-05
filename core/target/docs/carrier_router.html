@@ -1,15 +1,35 @@
 
 <h1> module carrier::router </h1>
-<h4> fn shutdown (
+<h4> fn swap16 (
 
-    ::err::Err*+et
-    e,
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
 
     ::carrier::router::Router*
     self,
-
-    usize
-    et,
 
 )
 
@@ -19,14 +39,36 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn next_channel (
+</p><h4> fn from_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn poll (
+
+    usize
+    et,
 
     ::carrier::router::Router*
     self,
 
+    ::err::Err*+et
+    e,
+
+    ::io::Async*
+    async,
+
 )
 
--&gt ::carrier::channel::Channel*
+-&gt ::io::Result
 
 </h4>
 
@@ -84,41 +126,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn disconnect (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::router::Router*
-    self,
-
-    u64
-    route,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn push (
-
-    ::err::Err*+et
-    e,
 
     ::slice::slice::Slice
     pkt,
 
-    usize
-    et,
-
     ::carrier::router::Router*
     self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 
@@ -130,11 +150,11 @@
 
 </p><h4> fn read_routing_key (
 
-    ::carrier::router::Direction*
-    direction,
-
     u8*
     i,
+
+    ::carrier::router::Direction*
+    direction,
 
 )
 
@@ -144,62 +164,23 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
+</p><h4> fn next_channel (
 
     ::carrier::router::Router*
     self,
 
 )
 
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
+-&gt ::carrier::channel::Channel*
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be16 (
+</p><h4> fn disconnect (
 
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_be16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn poll (
-
-    ::carrier::router::Router*
-    self,
+    u64
+    route,
 
     usize
     et,
@@ -207,12 +188,31 @@
     ::err::Err*+et
     e,
 
-    ::io::Async*
-    async,
+    ::carrier::router::Router*
+    self,
 
 )
 
--&gt ::io::Result
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn shutdown (
+
+    ::carrier::router::Router*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+
 
 </h4>
 

@@ -19,7 +19,7 @@
 </p><h4> fn str2bin (
 
     usize
-    inlen,
+    outlen,
 
     ::ext::&lt;stddef.h&gt;::char*
     in,
@@ -28,11 +28,30 @@
     out,
 
     usize
-    outlen,
+    inlen,
 
 )
 
 -&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn fdump (
+
+    u8*
+    data,
+
+    usize
+    l,
+
+    ::ext::&lt;stdio.h&gt;::FILE*
+    f,
+
+)
+
+
 
 </h4>
 
@@ -51,32 +70,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn fdump (
-
-    u8*
-    data,
-
-    ::ext::&lt;stdio.h&gt;::FILE*
-    f,
-
-    usize
-    l,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn print (
 
-    usize
-    l,
-
     u8*
     data,
+
+    usize
+    l,
 
 )
 

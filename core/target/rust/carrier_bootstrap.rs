@@ -131,14 +131,14 @@ impl DnsPacket {
 }
 }
 extern {
+    #[link_name = "sizeof_carrier_bootstrap_Bootstrap"]
+    pub fn sizeof_Bootstrap() -> libc::size_t;
+
     #[link_name = "carrier_bootstrap_from_store"]
     pub fn r#from_store( Zb: *const u8,  Zip4addr: *mut u8,  Zip6addr: *mut u8,  Zxaddr: *mut u8)  -> bool;
 
     #[link_name = "carrier_bootstrap_parse_record"]
     pub fn r#parse_record( Zrecord: *const u8,  Zst: usize,  Zentry: *mut u8)  -> bool;
-
-    #[link_name = "carrier_bootstrap_bootstrap"]
-    pub fn r#bootstrap( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstore: *mut u8,  Zasync: *mut u8);
 
     #[link_name = "carrier_bootstrap_get_system_dns_servers"]
     pub fn r#get_system_dns_servers( Zdns_servers: *mut u8,  Zat: *mut usize);
@@ -146,22 +146,22 @@ extern {
     #[link_name = "carrier_bootstrap_close"]
     pub fn r#close( Zself: *mut u8);
 
-    #[link_name = "sizeof_carrier_bootstrap_Bootstrap"]
-    pub fn sizeof_Bootstrap() -> libc::size_t;
+    #[link_name = "carrier_bootstrap_send_query"]
+    pub fn r#send_query( Ze: *mut u8,  Zet: usize,  Zname: *const u8,  Zst: usize,  Zsock: *mut u8,  Zdns_server: *const u8);
 
     #[link_name = "carrier_bootstrap_poll"]
     pub fn r#poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8)  -> super::io::Result;
 
-    #[link_name = "sizeof_carrier_bootstrap_DnsPacket"]
-    pub fn sizeof_DnsPacket() -> libc::size_t;
-
     #[link_name = "carrier_bootstrap_parse_query"]
     pub fn r#parse_query( Zpkt: *const u8,  Zt: usize,  Zstore: *mut u8)  -> bool;
 
-    #[link_name = "carrier_bootstrap_send_query"]
-    pub fn r#send_query( Ze: *mut u8,  Zet: usize,  Zname: *const u8,  Zst: usize,  Zsock: *mut u8,  Zdns_server: *const u8);
-
     #[link_name = "carrier_bootstrap_sync"]
     pub fn r#sync( Ze: *mut u8,  Zet: usize,  Zstore: *mut u8,  Zasync: *mut u8,  Ztimeout: super::time::Time);
+
+    #[link_name = "sizeof_carrier_bootstrap_DnsPacket"]
+    pub fn sizeof_DnsPacket() -> libc::size_t;
+
+    #[link_name = "carrier_bootstrap_bootstrap"]
+    pub fn r#bootstrap( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstore: *mut u8,  Zasync: *mut u8);
 
 }

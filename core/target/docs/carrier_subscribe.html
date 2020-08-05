@@ -13,19 +13,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn swap64 (
 
     u64
@@ -52,16 +39,29 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn start (
+</p><h4> fn to_be32 (
 
-    ::carrier::endpoint::Endpoint*
-    self,
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn start (
 
     ::carrier::subscribe::Subscribe*
     ss,
 
     usize
     et,
+
+    ::carrier::endpoint::Endpoint*
+    self,
 
     ::err::Err*+et
     e,

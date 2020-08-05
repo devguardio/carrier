@@ -1,7 +1,0 @@
-[package]
-    name = "carrier"
-    version = "0.0.1"
-[dependencies]
-libc = "0.2"
-[build-dependencies]
-cc = "1"

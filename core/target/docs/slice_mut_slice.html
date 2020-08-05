@@ -1,19 +1,22 @@
 
 <h1> module slice::mut_slice </h1>
-<h4> fn append_bytes (
+<h4> fn make (
+
+    u8*
+    mem,
 
     usize
-    l,
+    size,
+
+    usize*
+    at,
 
     ::slice::mut_slice::MutSlice*
     self,
 
-    u8*
-    b,
-
 )
 
--&gt bool
+
 
 </h4>
 
@@ -35,9 +38,25 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn push32 (
+</p><h4> fn append_cstr (
 
-    u32
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn push (
+
+    u8
     b,
 
     ::slice::mut_slice::MutSlice*
@@ -50,7 +69,7 @@
 </h4>
 
 <p class='doc_comments'>
-
+ push a single character&lt;br&gt;
 </p><h4> fn as_slice (
 
     ::slice::mut_slice::MutSlice*
@@ -64,13 +83,32 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn append_cstr (
+</p><h4> fn append_slice (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
+    ::slice::slice::Slice*
+    other,
 
     ::slice::mut_slice::MutSlice*
     self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn append_bytes (
+
+    usize
+    l,
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    u8*
+    b,
 
 )
 
@@ -82,12 +120,12 @@
 
 </p><h4> fn push64 (
 
+    ::slice::mut_slice::MutSlice*
+    self,
+
     u64
     b,
 
-    ::slice::mut_slice::MutSlice*
-    self,
-
 )
 
 -&gt bool
@@ -96,50 +134,12 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn make (
-
-    usize*
-    at,
-
-    u8*
-    mem,
+</p><h4> fn push32 (
 
     ::slice::mut_slice::MutSlice*
     self,
 
-    usize
-    size,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn append_slice (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    ::slice::slice::Slice*
-    other,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push (
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    u8
+    u32
     b,
 
 )
@@ -149,7 +149,7 @@
 </h4>
 
 <p class='doc_comments'>
- push a single character&lt;br&gt;
+
 </p>
 
 

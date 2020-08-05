@@ -1,15 +1,15 @@
 
 <h1> module mem </h1>
-<h4> fn copy (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    src,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
+<h4> fn set (
 
     usize
     n,
+
+    u8
+    c,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    dst,
 
 )
 
@@ -24,11 +24,11 @@
     ::ext::&lt;stddef.h&gt;::void*
     src,
 
-    usize
-    n,
-
     ::ext::&lt;stddef.h&gt;::void*
     dst,
+
+    usize
+    n,
 
 )
 
@@ -43,11 +43,11 @@
     ::ext::&lt;stddef.h&gt;::void*
     a,
 
-    usize
-    n,
-
     ::ext::&lt;stddef.h&gt;::void*
     b,
+
+    usize
+    n,
 
 )
 
@@ -57,16 +57,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn set (
+</p><h4> fn copy (
 
-    usize
-    n,
+    ::ext::&lt;stddef.h&gt;::void*
+    src,
 
     ::ext::&lt;stddef.h&gt;::void*
     dst,
 
-    u8
-    c,
+    usize
+    n,
 
 )
 

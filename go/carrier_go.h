@@ -1,4 +1,4 @@
-#include "../core/target/go/carrier/carrier.h"
+#include "../core/snapshot/target/go/carrier/carrier.h"
 
 static unsigned long real_sizeof_err_Err(size_t tail)
 {

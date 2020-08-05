@@ -1,40 +1,6 @@
 
 <h1> module carrier::symmetric </h1>
-<h4> fn encrypt_and_mix_hash (
-
-    usize
-    plain_len,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    usize
-    et,
-
-    u64
-    nonce,
-
-    u8*
-    ciphertext,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    cipher_len_max,
-
-    u8*
-    plain,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn init (
+<h4> fn init (
 
     ::ext::&lt;stddef.h&gt;::char*
     protocolname,
@@ -50,31 +16,50 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decrypt_and_mix_hash (
+</p><h4> fn mix_hash (
+
+    u8*
+    data,
 
     ::carrier::symmetric::SymmetricState*
     self,
 
     usize
-    et,
+    l,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt_and_mix_hash (
 
     usize
-    cipher_len,
+    plain_len,
+
+    usize
+    cipher_len_max,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    u8*
+    ciphertext,
 
     u64
     nonce,
 
     u8*
-    ciphertext,
-
-    u8*
     plain,
-
-    usize
-    plain_len_max,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -84,35 +69,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn mix_hash (
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    u8*
-    data,
-
-    usize
-    l,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn mix_key (
 
-    u8*
-    data,
+    usize
+    l,
 
     ::carrier::symmetric::SymmetricState*
     self,
 
-    usize
-    l,
+    u8*
+    data,
 
 )
 
@@ -125,17 +91,51 @@
 </p><h4> fn split (
 
     ::carrier::cipher::CipherState*
+    ini,
+
+    ::carrier::cipher::CipherState*
     resp,
 
     ::carrier::symmetric::SymmetricState*
     self,
 
-    ::carrier::cipher::CipherState*
-    ini,
-
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt_and_mix_hash (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    cipher_len,
+
+    u8*
+    plain,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    u8*
+    ciphertext,
+
+    u64
+    nonce,
+
+    usize
+    plain_len_max,
+
+    usize
+    et,
+
+)
+
+-&gt usize
 
 </h4>
 

@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
   build:
 
@@ -50,7 +47,26 @@ jobs:
         cd core
         zz clean
         zz test
+        ./snapshot.sh
         cd ../go
         go test
         cd ../cli
         go test
+
+    - name: Snapshot
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        export "PATH=$PATH:$PWD/target/release/"
+        cd core
+        ./snapshot.sh
+        git config --local user.email "aep@exys.org"
+        git config --local user.name "Snapshot Bot"
+        git add snapshot
+        git commit -m "snapshot"
+
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+

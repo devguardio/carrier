@@ -1,2 +1,2 @@
-#include "../core/target/go/carrier/carrier.c"
+#include "../core/snapshot/target/go/carrier/carrier.c"
 

@@ -1,0 +1,498 @@
+
+<h1> module buffer </h1>
+<h4> fn pop (
+
+    ::buffer::Buffer*+t
+    self,
+
+    usize
+    t,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ remove the last byte&lt;br&gt;&lt;br&gt; returns false if buffer was empty&lt;br&gt;
+</p><h4> fn fgets (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    ::ext::&lt;stdio.h&gt;::FILE*
+    stream,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ append to this buffer by reading a line from a FILE&lt;br&gt;
+</p><h4> fn copy_bytes (
+
+    ::buffer::Buffer*+t
+    self,
+
+    u8*
+    bytes,
+
+    usize
+    t,
+
+    usize
+    inlen,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make a buffer by copying raw bytes with given len&lt;br&gt;
+</p><h4> fn as_mut_slice (
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+-&gt ::slice::mut_slice::MutSlice
+
+</h4>
+
+<p class='doc_comments'>
+ create mutable slice pointing to this buffer&lt;br&gt;&lt;br&gt; modifying the mutable slice will modify this buffer&lt;br&gt;&lt;br&gt; warning: mut_slice does not nullterminate, possibly violating integrity&lt;br&gt; you need to manually attest that the mutslice does not cause&lt;br&gt; the last byte to be overwritten and then call static_attest(buffer::integrity(buf))&lt;br&gt;&lt;br&gt;
+</p><h4> fn eq_cstr (
+
+    ::buffer::Buffer*+tail
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+    usize
+    tail,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if this buffer is equal with a c string&lt;br&gt;
+</p><h4> fn starts_with_cstr (
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if this buffer begins with some c string&lt;br&gt;
+</p><h4> fn format (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+)
+
+-&gt int
+
+</h4>
+
+<p class='doc_comments'>
+ append formated string with vsnprintf&lt;br&gt;
+</p><h4> fn split (
+
+    usize
+    tail2,
+
+    ::buffer::Buffer*+tail2
+    other,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char
+    token,
+
+    usize*
+    iterator,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ split this buffer by token and copy the subbuffer into other&lt;br&gt;
+</p><h4> fn append_bytes (
+
+    u8*
+    bytes,
+
+    usize
+    t,
+
+    ::buffer::Buffer*+t
+    self,
+
+    usize
+    inlen,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ append raw bytes with given len&lt;br&gt;
+</p><h4> fn copy_cstr (
+
+    usize
+    t,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    s,
+
+    ::buffer::Buffer*+t
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make a buffer by copying a c string&lt;br&gt;
+</p><h4> fn strlen (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    s,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ length of a null terminated c buffer&lt;br&gt;
+</p><h4> fn as_slice (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+-&gt ::slice::slice::Slice
+
+</h4>
+
+<p class='doc_comments'>
+ create slice pointing to used memory of this buffer, excluding null terminator&lt;br&gt;
+</p><h4> fn append_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    cstr,
+
+    ::buffer::Buffer*+t
+    self,
+
+    usize
+    t,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ append a null terminated c buffer&lt;br&gt;
+</p><h4> fn append_slice (
+
+    usize
+    t,
+
+    ::buffer::Buffer*+t
+    self,
+
+    ::slice::slice::Slice
+    slice,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ append a slice&lt;br&gt;
+</p><h4> fn available (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ returns the amount of bytes still left in the tail&lt;br&gt;&lt;br&gt; note that one byte is always reserved for null terminator&lt;br&gt;
+</p><h4> fn vformat (
+
+    usize
+    tail,
+
+    ::ext::&lt;stdarg.h&gt;::va_list
+    args,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+-&gt int
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn cstr (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+-&gt ::ext::&lt;stddef.h&gt;::char*
+
+</h4>
+
+<p class='doc_comments'>
+ buffer as null terminated c buffer&lt;br&gt;
+</p><h4> fn ends_with_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if self ends with other buffer&lt;br&gt;
+</p><h4> fn cstr_eq (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if some c string is equal another c string&lt;br&gt;
+</p><h4> fn slen (
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ length of buffer (excluding null terminator)&lt;br&gt;
+</p><h4> fn make (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make an empty buffer&lt;br&gt;
+</p><h4> fn push (
+
+    usize
+    t,
+
+    ::buffer::Buffer*+t
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ push a single byte&lt;br&gt;
+</p><h4> fn copy_slice (
+
+    ::slice::slice::Slice
+    slice,
+
+    ::buffer::Buffer*+t
+    self,
+
+    usize
+    t,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make a buffer by copying a slice&lt;br&gt;
+</p><h4> fn substr (
+
+    ::buffer::Buffer*+tail2
+    other,
+
+    usize
+    size,
+
+    usize
+    tail2,
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    from,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ append parts of this buffer to other buffer&lt;br&gt;
+</p><h4> fn clear (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ clear the buffer&lt;br&gt;
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

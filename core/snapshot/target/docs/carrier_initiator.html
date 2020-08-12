@@ -1,0 +1,191 @@
+
+<h1> module carrier::initiator </h1>
+<h4> fn swap32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
+
+    ::carrier::identity::Identity*
+    cluster_target,
+
+    usize
+    et,
+
+    u64
+    vector_time,
+
+    ::slice::mut_slice::MutSlice
+    pkt,
+
+    ::carrier::vault::Vault*
+    vault,
+
+    ::carrier::identity::Address*
+    xaddr,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::carrier::initiator::Move
+    move,
+
+    ::err::Err*+et
+    e,
+
+    bool
+    secure,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn complete (
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::identity::Identity*
+    expect_identity,
+
+    usize
+    et,
+
+    ::carrier::channel::Transfer*
+    chan,
+
+    ::carrier::vault::Broker*
+    redirect,
+
+    ::slice::slice::Slice
+    pkt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p>
+
+
+

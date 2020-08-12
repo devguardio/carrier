@@ -197,8 +197,13 @@ pub fn initiate(
     //printf("identity:\n");
     //hex::dump(eid.k, 32);
 
+    //printf("pre sign %zu\n", *pkt.at);
+    //static_attest(slice::mut_slice::integrity(&pkt));
+    //hex::dump_slice(pkt.as_slice());
+
+
     //sign handshake hash
-    u8 mut signme[static(len(endpoint::SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
+    u8 mut signme[static(len(endpoint::SIGN_PURPOSE) - 1) + static(len(((self->noise).symm).h))] = {0};
     mem::copy(endpoint::SIGN_PURPOSE, signme, buffer::strlen(endpoint::SIGN_PURPOSE));
     u8 mut * mm = signme + buffer::strlen(endpoint::SIGN_PURPOSE);
     mem::copy(((self->noise).symm).h,  mm, static(len(((self->noise).symm).h)));
@@ -210,9 +215,9 @@ pub fn initiate(
     vault->sign_principal(sig, signme, static(len(signme)));
     *pkt.at += 64;
 
-    //printf("packet len %zu\n", pkt->len);
-    //static_attest(len(pkt->mem) >= pkt->len);
-    //hex::dump((u8*)pkt->mem, pkt->len);
+    //printf("post sign %zu\n", *pkt.at);
+    //static_attest(slice::mut_slice::integrity(&pkt));
+    //hex::dump_slice(pkt.as_slice());
 
     let now_t = time::tick();
     let now = now_t.to_millis();
@@ -320,7 +325,7 @@ pub fn complete (
 
 
     //check handshake signature
-    u8 mut signme[static(len(endpoint::SIGN_PURPOSE)) + static(len(((self->noise).symm).h))] = {0};
+    u8 mut signme[static(len(endpoint::SIGN_PURPOSE) - 1) + static(len(((self->noise).symm).h))] = {0};
     mem::copy(endpoint::SIGN_PURPOSE, signme, buffer::strlen(endpoint::SIGN_PURPOSE));
     u8 mut* mm = signme + buffer::strlen(endpoint::SIGN_PURPOSE);
     mem::copy(((self->noise).symm).h, mm, static(len(((self->noise).symm).h)));

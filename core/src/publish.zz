@@ -229,7 +229,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg)
         identity::secret_generate(&rsp.ephemeral, e);
         rsp.receive_insecure(
                 (u8*)endpoint::PROLOGUE,
-                static(len(endpoint::PROLOGUE)),
+                static(len(endpoint::PROLOGUE) - 1),
                 handshake.mem,
                 handshake.size - 64
         );
@@ -239,7 +239,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg)
 
 
         // verify signature over symmetric hash
-        u8 mut signme[static(len(endpoint::SIGN_PURPOSE) + len(rsp.symm.h))] = {0};
+        u8 mut signme[static(len(endpoint::SIGN_PURPOSE) - 1 + len(rsp.symm.h))] = {0};
         mem::copy(endpoint::SIGN_PURPOSE, signme, buffer::strlen(endpoint::SIGN_PURPOSE));
         u8 mut * m = signme + buffer::strlen(endpoint::SIGN_PURPOSE);
         mem::copy(rsp.symm.h, m, static(len(rsp.symm.h)));

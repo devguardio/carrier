@@ -85,7 +85,7 @@ pub fn accept_insecure(
 
 
     //signature
-    u8 mut signme[static(len(endpoint::SIGN_PURPOSE) + len(self->symm.h))] = {0};
+    u8 mut signme[static(len(endpoint::SIGN_PURPOSE) - 1 + len(self->symm.h))] = {0};
     mem::copy(endpoint::SIGN_PURPOSE, signme, buffer::strlen(endpoint::SIGN_PURPOSE));
     u8 mut * m = signme + buffer::strlen(endpoint::SIGN_PURPOSE);
     mem::copy(self->symm.h, m, static(len(self->symm.h)));

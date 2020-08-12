@@ -2,6 +2,7 @@ using carrier::sha256;
 using buffer;
 using hex;
 using <stdio.h>::{printf, strlen, fgets, stdin};
+using err;
 
 test {
     stdin = "abc"
@@ -55,6 +56,7 @@ pub fn main() -> int {
         static_attest(nullterm(line));
 
         usize mut l = buffer::strlen(line);
+        err::assert(l > 0);
 
         if line[l-1] == '\n' {
             line[l-1] = 0;

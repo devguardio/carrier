@@ -3,6 +3,17 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
+pub enum ValueType {
+    json_ValueType_String = 0,
+    json_ValueType_Object = 1,
+    json_ValueType_Integer = 2,
+    json_ValueType_Boolean = 3,
+    json_ValueType_Array = 4,
+
+}
+
+#[derive(Clone)]
+#[repr(C)]
 pub enum ParserState {
     json_ParserState_Document = 0,
     json_ParserState_Object = 1,
@@ -17,17 +28,6 @@ pub enum ParserState {
 }
 
 pub const MAX_DEPTH : usize = 64;
-#[derive(Clone)]
-#[repr(C)]
-pub enum ValueType {
-    json_ValueType_String = 0,
-    json_ValueType_Object = 1,
-    json_ValueType_Integer = 2,
-    json_ValueType_Boolean = 3,
-    json_ValueType_Array = 4,
-
-}
-
 
 #[derive(Clone)]
 #[repr(C)]
@@ -36,12 +36,6 @@ pub struct Value {
     pub string :*const u8 ,
     pub integer :std::os::raw::c_int ,
     pub index :usize ,
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct deserialize_t {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zuser: *mut u8,  Zk: *const u8,  Zv: super::json::Value, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
@@ -84,6 +78,12 @@ pub struct Parser {
     pub depth :usize ,
     pub keylen :usize ,
     pub capture :super::buffer::Buffer ,
+}
+#[derive(Clone)]
+#[repr(C)]
+pub struct deserialize_t {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zuser: *mut u8,  Zk: *const u8,  Zv: super::json::Value, ctx: *mut std::ffi::c_void),
 }
 
 pub mod heap {
@@ -299,13 +299,9 @@ extern {
 
 
 
-    #[link_name = "json_push"]
-    pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
-
 
     #[link_name = "sizeof_json_Value"]
     pub fn sizeof_Value() -> libc::size_t;
-
 
 
     #[link_name = "json_advance"]
@@ -321,10 +317,14 @@ extern {
     #[link_name = "sizeof_json_Parser"]
     pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
 
-    #[link_name = "json_next"]
-    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
-
     #[link_name = "json_parser"]
     pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
+
+
+    #[link_name = "json_push"]
+    pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
+
+    #[link_name = "json_next"]
+    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
 }

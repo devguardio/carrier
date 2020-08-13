@@ -24,16 +24,16 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_hpack_decoder_Entry;
+extern PyTypeObject py_Type_hpack_decoder_Iterator;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_hpack_decoder_Entry;
 extern PyTypeObject py_Type_hpack_decoder_Iterator;
-extern PyTypeObject py_Type_hpack_decoder_Iterator;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+
 
 static PyObject * py_get_hpack_decoder_Iterator_key(PyObject *pyself, void *closure) {
 
@@ -136,7 +136,6 @@ PyTypeObject py_Type_hpack_decoder_Iterator  = {
     .tp_getset      = py_getset_hpack_decoder_Iterator,
     .tp_dealloc     = py_free_hpack_decoder_Iterator,
 };
-
 
 
 

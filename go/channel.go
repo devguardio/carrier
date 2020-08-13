@@ -2,9 +2,10 @@ package carrier;
 
 /*
 #cgo CFLAGS: -Wno-attributes
-#cgo CFLAGS: -g -fsanitize=address -fstack-protector-all
-#cgo LDFLAGS: -g  -fsanitize=address
 #include "carrier_go.h"
+// DO NOT PUT INTO RELEASE BINARIES
+//#cgo CFLAGS: -g -fsanitize=address -fstack-protector-all
+//#cgo LDFLAGS: -g  -fsanitize=address
 */
 import "C"
 import (

@@ -1,6 +1,16 @@
 
 <h1> module carrier::responder </h1>
-<h4> fn swap32 (
+<h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -39,16 +49,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn revision (
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn to_be32 (
 
     u32
@@ -64,12 +64,6 @@
 
 </p><h4> fn accept_insecure (
 
-    u64
-    timestamp,
-
-    ::slice::mut_slice::MutSlice*
-    frame,
-
     ::carrier::noise::Responder*
     self,
 
@@ -79,11 +73,17 @@
     ::carrier::vault::Vault*
     store,
 
-    usize
-    et,
-
     u64
     route,
+
+    u64
+    timestamp,
+
+    ::slice::mut_slice::MutSlice*
+    frame,
+
+    usize
+    et,
 
 )
 

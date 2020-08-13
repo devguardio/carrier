@@ -39,53 +39,37 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn init (
+</p><h4> fn encrypt_ad (
 
     u8*
-    k,
+    plain,
+
+    usize
+    authtext_len,
+
+    u64
+    nonce,
+
+    u8*
+    ciphertext,
 
     ::carrier::cipher::CipherState*
     self,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt_ad (
+    usize
+    et,
 
     ::err::Err*+et
     e,
 
-    usize
-    et,
+    u8*
+    authtext,
 
     usize
     plainlen,
 
     usize
-    authtext_len,
-
-    u8*
-    plain,
-
-    u64
-    nonce,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    usize
     cipherlen_max,
-
-    u8*
-    ciphertext,
-
-    u8*
-    authtext,
 
 )
 
@@ -95,16 +79,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decrypt (
+</p><h4> fn decrypt_ad (
 
     ::carrier::cipher::CipherState*
     self,
 
     usize
-    plainlen_max,
-
-    ::err::Err*+et
-    e,
+    authtext_len,
 
     usize
     et,
@@ -112,14 +93,73 @@
     usize
     cipherlen,
 
+    usize
+    plainlen_max,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    ciphertext,
+
+    u8*
+    plain,
+
+    u8*
+    authtext,
+
+    u64
+    nonce,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn init (
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    u8*
+    k,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt (
+
+    usize
+    plainlen_max,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    usize
+    cipherlen,
+
+    u8*
+    plain,
+
     u8*
     ciphertext,
 
     u64
     nonce,
 
-    u8*
-    plain,
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 
@@ -134,17 +174,17 @@
     u8*
     plain,
 
+    u64
+    nonce,
+
     ::err::Err*+et
     e,
 
-    usize
-    cipherlen_max,
+    ::carrier::cipher::CipherState*
+    self,
 
     usize
     et,
-
-    ::carrier::cipher::CipherState*
-    self,
 
     usize
     plainlen,
@@ -152,48 +192,8 @@
     u8*
     ciphertext,
 
-    u64
-    nonce,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decrypt_ad (
-
-    u8*
-    plain,
-
     usize
-    cipherlen,
-
-    usize
-    et,
-
-    u8*
-    authtext,
-
-    usize
-    plainlen_max,
-
-    u8*
-    ciphertext,
-
-    ::err::Err*+et
-    e,
-
-    u64
-    nonce,
-
-    usize
-    authtext_len,
-
-    ::carrier::cipher::CipherState*
-    self,
+    cipherlen_max,
 
 )
 

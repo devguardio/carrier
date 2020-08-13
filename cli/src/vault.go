@@ -24,7 +24,7 @@ func init() {
 
     vaultCmd := &cobra.Command{
         Use:    "vault <subcommand>",
-        Short:  "secret storage",
+        Short:  "Secret storage",
     };
     vaultCmd.AddCommand(getInfoCmd);
     rootCmd.AddCommand(vaultCmd);

@@ -117,11 +117,12 @@ export fn open(Sync mut new * self, err::Err+et mut*e, stream::Config * sc) -> s
 }
 
 
-export fn open_with_headers(Sync mut new * self, err::Err+et mut*e, stream::Config * sc, slice::Slice * extraheaders) -> stream::Stream mut *
+export fn open_with_headers(Sync mut new * self, err::Err+et mut*e, stream::Config * sc, slice::Slice extraheaders) -> stream::Stream mut *
     where err::checked(*e)
     where safe(self->chan)
     where safe(sc->path)
     where nullterm(sc->path)
+    where slice::slice::integrity(&extraheaders)
 {
     static_attest(safe(self->ep));
 

@@ -1,28 +1,6 @@
 
 <h1> module io </h1>
-<h4> fn read_slice (
-
-    ::io::Io*
-    self,
-
-    ::slice::mut_slice::MutSlice*
-    slice,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn valid (
+<h4> fn valid (
 
     ::io::Context*
     self,
@@ -35,26 +13,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn wait (
-
-    ::io::Async*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn read (
+</p><h4> fn readline (
 
     ::buffer::Buffer*+st
     str,
@@ -74,41 +33,6 @@
 )
 
 -&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn timeout (
-
-    usize
-    et,
-
-    ::time::Time
-    t2,
-
-    ::io::Async*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt ::io::Io
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn close (
-
-    ::io::Io*
-    self,
-
-)
-
-
 
 </h4>
 
@@ -127,22 +51,35 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn channel (
+</p><h4> fn read (
+
+    ::buffer::Buffer*+st
+    str,
 
     ::err::Err*+et
     e,
 
     usize
-    et,
+    st,
 
-    ::io::Async*
+    ::io::Io*
     self,
 
-    ::io::Io*
-    write,
+    usize
+    et,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
 
     ::io::Io*
-    read,
+    self,
 
 )
 
@@ -154,23 +91,23 @@
 
 </p><h4> fn await (
 
+    ::io::Async*
+    self,
+
     ::ext::&lt;stddef.h&gt;::void*
     poll,
 
+    ::ext::&lt;stddef.h&gt;::void*
+    user,
+
     ::time::Time
     timeout_,
-
-    ::io::Async*
-    self,
 
     ::err::Err*+et
     e,
 
     usize
     et,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    user,
 
 )
 
@@ -180,22 +117,141 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn readline (
+</p><h4> fn channel (
+
+    ::err::Err*+et
+    e,
 
     ::io::Io*
+    read,
+
+    ::io::Async*
     self,
 
     usize
     et,
 
-    ::buffer::Buffer*+st
-    str,
+    ::io::Io*
+    write,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select (
+
+    ::io::Ready
+    w,
+
+    ::io::Async*
+    self,
+
+    ::io::Context*
+    ctx,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn read_slice (
+
+    ::io::Io*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::slice::mut_slice::MutSlice*
+    slice,
+
     usize
-    st,
+    et,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn timeout (
+
+    ::time::Time
+    t2,
+
+    ::err::Err*+et
+    e,
+
+    ::io::Async*
+    self,
+
+    usize
+    et,
+
+)
+
+-&gt ::io::Io
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn write_bytes (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    b,
+
+    ::io::Io*
+    self,
+
+    usize*
+    blen,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn read_bytes (
+
+    usize
+    et,
+
+    usize*
+    memlen,
+
+    ::io::Io*
+    self,
+
+    u8*
+    mem,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -207,37 +263,12 @@
 
 </p><h4> fn write_cstr (
 
-    ::err::Err*+et
-    e,
-
     usize
     et,
 
     ::ext::&lt;stddef.h&gt;::char*
     b,
 
-    ::io::Io*
-    self,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn write_bytes (
-
-    u8*
-    b,
-
-    usize
-    et,
-
-    usize*
-    blen,
-
     ::err::Err*+et
     e,
 
@@ -252,51 +283,20 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn select (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn wait (
 
     ::io::Async*
     self,
 
-    ::io::Context*
-    ctx,
-
-    ::io::Ready
-    w,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn read_bytes (
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
-    ::io::Io*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    u8*
-    mem,
-
-    usize*
-    memlen,
-
 )
 
--&gt ::io::Result
+
 
 </h4>
 
@@ -304,20 +304,20 @@
 
 </p><h4> fn write (
 
-    usize
-    st,
-
-    ::buffer::Buffer*+st
-    str,
-
-    usize
-    et,
-
     ::io::Io*
     self,
 
     ::err::Err*+et
     e,
+
+    usize
+    st,
+
+    usize
+    et,
+
+    ::buffer::Buffer*+st
+    str,
 
 )
 

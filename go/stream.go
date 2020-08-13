@@ -146,7 +146,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
     };
 
 
-    var stx = C.carrier_channel_open_with_headers(_chan, e, TAIL_ERR, sc, &extraheaders);
+    var stx = C.carrier_channel_open_with_headers(_chan, e, TAIL_ERR, sc, extraheaders);
     if err := ErrCheck(e); err != nil {
         destroy();
         return nil, err;

@@ -26,10 +26,10 @@ func init() {
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
-            channel , err := con.Open("/v2/carrier.sysinfo.v1/sysinfo");
+            stream, err := con.Open("/v2/carrier.sysinfo.v1/sysinfo");
             if err != nil { log.Fatal(err); }
 
-            for msg := range channel.Rx {
+            for msg := range stream.Rx {
 
                 var dr = &protos.Sysinfo{};
                 err := proto.Unmarshal(msg, dr);
@@ -57,10 +57,10 @@ func init() {
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
-            channel , err := con.Open("/v2/carrier.sysinfo.v1/sensors");
+            stream, err := con.Open("/v2/carrier.sysinfo.v1/sensors");
             if err != nil { log.Fatal(err); }
 
-            for msg := range channel.Rx {
+            for msg := range stream.Rx {
 
                 var dr = &protos.Sensors{};
                 err := proto.Unmarshal(msg, dr);
@@ -89,10 +89,10 @@ func init() {
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
-            channel , err := con.Open("/v2/carrier.discovery.v1/discover");
+            stream, err := con.Open("/v2/carrier.discovery.v1/discover");
             if err != nil { log.Fatal(err); }
 
-            for msg := range channel.Rx {
+            for msg := range stream.Rx {
 
                 var dr = &protos.DiscoveryResponse{};
                 err := proto.Unmarshal(msg, dr);

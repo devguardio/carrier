@@ -39,64 +39,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
+</p><h4> fn from_be64 (
 
-    u32
+    u64
     x,
 
 )
 
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn revision (
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn initiate (
-
-    ::carrier::identity::Identity*
-    cluster_target,
-
-    usize
-    et,
-
-    u64
-    vector_time,
-
-    ::slice::mut_slice::MutSlice
-    pkt,
-
-    ::carrier::vault::Vault*
-    vault,
-
-    ::carrier::identity::Address*
-    xaddr,
-
-    ::carrier::initiator::Initiator*
-    self,
-
-    ::carrier::initiator::Move
-    move,
-
-    ::err::Err*+et
-    e,
-
-    bool
-    secure,
-
-)
-
-
+-&gt u64
 
 </h4>
 
@@ -141,40 +91,90 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_be64 (
+</p><h4> fn complete (
 
-    u64
-    x,
+    ::err::Err*+et
+    e,
+
+    ::carrier::channel::Transfer*
+    chan,
+
+    ::slice::slice::Slice
+    pkt,
+
+    ::carrier::identity::Identity*
+    expect_identity,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::carrier::vault::Broker*
+    redirect,
+
+    usize
+    et,
 
 )
 
--&gt u64
+
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn complete (
+</p><h4> fn to_be32 (
 
-    ::carrier::initiator::Initiator*
-    self,
+    u32
+    x,
 
-    ::err::Err*+et
-    e,
+)
 
-    ::carrier::identity::Identity*
-    expect_identity,
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
 
     usize
     et,
 
-    ::carrier::channel::Transfer*
-    chan,
+    ::carrier::identity::Identity*
+    cluster_target,
 
-    ::carrier::vault::Broker*
-    redirect,
+    ::carrier::identity::Address*
+    xaddr,
 
-    ::slice::slice::Slice
+    ::err::Err*+et
+    e,
+
+    ::carrier::initiator::Move
+    move,
+
+    ::carrier::vault::Vault*
+    vault,
+
+    u64
+    vector_time,
+
+    bool
+    secure,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::slice::mut_slice::MutSlice
     pkt,
 
 )

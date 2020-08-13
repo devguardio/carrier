@@ -1,12 +1,53 @@
 
 <h1> module carrier::cmd_config_net </h1>
-<h4> fn run_self_net_join (
+<h4> fn run_self_net_get (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::endpoint::Endpoint*
+    endpoint,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn run_remote_net_get (
+
+    ::err::Err*+et
+    e,
 
     ::carrier::endpoint::Endpoint*
     endpoint,
 
     usize
     et,
+
+    ::carrier::identity::Identity*
+    target,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn run_self_net_join (
+
+    usize
+    et,
+
+    ::carrier::endpoint::Endpoint*
+    endpoint,
 
     ::err::Err*+et
     e,
@@ -24,61 +65,20 @@
 
 </p><h4> fn run_remote_net_join (
 
+    ::carrier::identity::Identity*
+    target,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
     ::ext::&lt;stddef.h&gt;::char*
     net_secret_s,
 
-    usize
-    et,
-
-    ::carrier::identity::Identity*
-    target,
-
-    ::err::Err*+et
-    e,
-
     ::carrier::endpoint::Endpoint*
     endpoint,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn run_self_net_get (
-
-    usize
-    et,
-
-    ::carrier::endpoint::Endpoint*
-    endpoint,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn run_remote_net_get (
-
-    ::carrier::identity::Identity*
-    target,
-
-    ::carrier::endpoint::Endpoint*
-    endpoint,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
 
 )
 

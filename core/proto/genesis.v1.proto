@@ -1,18 +1,18 @@
 syntax = "proto3";
 option go_package = ".;protos";
 
-package genesis.v1;
+package genesis.v2;
 
 message GenesisCurrent {
-    bytes   sha256  = 1;
-    string  commit  = 2;
-    bytes   data    = 3;
-    bool    stable  = 4;
+    bytes   sha256      = 1;
+    string  commitmsg   = 2;
+    bool    stable      = 3;
+    uint64  contentsize = 4;
 }
 
 message GenesisUpdate {
-    bytes   sha256  = 1;
-    bytes   previous_sha256 = 2;
-    string  commit  = 3;
-    bytes   data    = 4;
+    bytes   sha256      = 1;
+    string  commitmsg   = 2;
+    bytes   parent      = 3;
+    uint64  contentsize = 4;
 }

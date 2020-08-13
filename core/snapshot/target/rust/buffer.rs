@@ -63,32 +63,29 @@ impl Buffer {
 }
 }
 extern {
-    #[link_name = "buffer_pop"]
-    pub fn r#pop( Zself: *mut u8,  Zt: usize)  -> bool;
+    #[link_name = "buffer_push"]
+    pub fn r#push( Zself: *mut u8,  Zt: usize,  Zb: u8)  -> bool;
+
+    #[link_name = "buffer_vformat"]
+    pub fn r#vformat( Zself: *mut u8,  Ztail: usize,  Zfmt: *const u8)  -> std::os::raw::c_int;
+
+    #[link_name = "buffer_ends_with_cstr"]
+    pub fn r#ends_with_cstr( Zself: *const u8,  Ztail: usize,  Za: *const u8)  -> bool;
 
     #[link_name = "buffer_fgets"]
     pub fn r#fgets( Zself: *mut u8,  Ztail: usize,  Zstream: *mut u8)  -> bool;
 
-    #[link_name = "buffer_copy_bytes"]
-    pub fn r#copy_bytes( Zself: *mut u8,  Zt: usize,  Zbytes: *const u8,  Zinlen: usize);
+    #[link_name = "buffer_pop"]
+    pub fn r#pop( Zself: *mut u8,  Zt: usize)  -> bool;
 
-    #[link_name = "buffer_as_mut_slice"]
-    pub fn r#as_mut_slice( Zself: *mut u8,  Ztail: usize)  -> super::slice_mut_slice::MutSlice;
-
-    #[link_name = "buffer_eq_cstr"]
-    pub fn r#eq_cstr( Zself: *const u8,  Ztail: usize,  Zb: *const u8)  -> bool;
-
-    #[link_name = "buffer_starts_with_cstr"]
-    pub fn r#starts_with_cstr( Zself: *const u8,  Ztail: usize,  Za: *const u8)  -> bool;
+    #[link_name = "buffer_clear"]
+    pub fn r#clear( Zself: *mut u8,  Ztail: usize);
 
     #[link_name = "buffer_format"]
     pub fn r#format( Zself: *mut u8,  Ztail: usize,  Zfmt: *const u8)  -> std::os::raw::c_int;
 
-    #[link_name = "buffer_split"]
-    pub fn r#split( Zself: *const u8,  Ztail: usize,  Ztoken: u8,  Ziterator: *mut usize,  Zother: *mut u8,  Ztail2: usize)  -> bool;
-
-    #[link_name = "buffer_append_bytes"]
-    pub fn r#append_bytes( Zself: *mut u8,  Zt: usize,  Zbytes: *const u8,  Zinlen: usize);
+    #[link_name = "buffer_copy_slice"]
+    pub fn r#copy_slice( Zself: *mut u8,  Zt: usize,  Zslice: super::slice_slice::Slice);
 
     #[link_name = "buffer_copy_cstr"]
     pub fn r#copy_cstr( Zself: *mut u8,  Zt: usize,  Zs: *const u8);
@@ -96,30 +93,11 @@ extern {
     #[link_name = "buffer_strlen"]
     pub fn r#strlen( Zs: *const u8)  -> usize;
 
+    #[link_name = "buffer_split"]
+    pub fn r#split( Zself: *const u8,  Ztail: usize,  Ztoken: u8,  Ziterator: *mut usize,  Zother: *mut u8,  Ztail2: usize)  -> bool;
 
-    #[link_name = "buffer_as_slice"]
-    pub fn r#as_slice( Zself: *const u8,  Ztail: usize)  -> super::slice_slice::Slice;
-
-    #[link_name = "buffer_append_cstr"]
-    pub fn r#append_cstr( Zself: *mut u8,  Zt: usize,  Zcstr: *const u8);
-
-    #[link_name = "buffer_append_slice"]
-    pub fn r#append_slice( Zself: *mut u8,  Zt: usize,  Zslice: super::slice_slice::Slice);
-
-    #[link_name = "buffer_available"]
-    pub fn r#available( Zself: *const u8,  Ztail: usize)  -> usize;
-
-    #[link_name = "buffer_vformat"]
-    pub fn r#vformat( Zself: *mut u8,  Ztail: usize,  Zfmt: *const u8)  -> std::os::raw::c_int;
-
-    #[link_name = "buffer_cstr"]
-    pub fn r#cstr( Zself: *const u8,  Ztail: usize)  -> *const u8;
-
-    #[link_name = "buffer_ends_with_cstr"]
-    pub fn r#ends_with_cstr( Zself: *const u8,  Ztail: usize,  Za: *const u8)  -> bool;
-
-    #[link_name = "buffer_cstr_eq"]
-    pub fn r#cstr_eq( Za: *const u8,  Zb: *const u8)  -> bool;
+    #[link_name = "buffer_substr"]
+    pub fn r#substr( Zself: *const u8,  Ztail: usize,  Zfrom: usize,  Zsize: usize,  Zother: *mut u8,  Ztail2: usize);
 
     #[link_name = "buffer_slen"]
     pub fn r#slen( Zself: *const u8,  Ztail: usize)  -> usize;
@@ -130,16 +108,38 @@ extern {
     #[link_name = "sizeof_buffer_Buffer"]
     pub fn sizeof_Buffer(tail: libc::size_t) -> libc::size_t;
 
-    #[link_name = "buffer_push"]
-    pub fn r#push( Zself: *mut u8,  Zt: usize,  Zb: u8)  -> bool;
+    #[link_name = "buffer_as_mut_slice"]
+    pub fn r#as_mut_slice( Zself: *mut u8,  Ztail: usize)  -> super::slice_mut_slice::MutSlice;
 
-    #[link_name = "buffer_copy_slice"]
-    pub fn r#copy_slice( Zself: *mut u8,  Zt: usize,  Zslice: super::slice_slice::Slice);
+    #[link_name = "buffer_as_slice"]
+    pub fn r#as_slice( Zself: *const u8,  Ztail: usize)  -> super::slice_slice::Slice;
 
-    #[link_name = "buffer_substr"]
-    pub fn r#substr( Zself: *const u8,  Ztail: usize,  Zfrom: usize,  Zsize: usize,  Zother: *mut u8,  Ztail2: usize);
+    #[link_name = "buffer_available"]
+    pub fn r#available( Zself: *const u8,  Ztail: usize)  -> usize;
 
-    #[link_name = "buffer_clear"]
-    pub fn r#clear( Zself: *mut u8,  Ztail: usize);
+    #[link_name = "buffer_append_cstr"]
+    pub fn r#append_cstr( Zself: *mut u8,  Zt: usize,  Zcstr: *const u8);
+
+    #[link_name = "buffer_starts_with_cstr"]
+    pub fn r#starts_with_cstr( Zself: *const u8,  Ztail: usize,  Za: *const u8)  -> bool;
+
+    #[link_name = "buffer_cstr"]
+    pub fn r#cstr( Zself: *const u8,  Ztail: usize)  -> *const u8;
+
+    #[link_name = "buffer_eq_cstr"]
+    pub fn r#eq_cstr( Zself: *const u8,  Ztail: usize,  Zb: *const u8)  -> bool;
+
+    #[link_name = "buffer_copy_bytes"]
+    pub fn r#copy_bytes( Zself: *mut u8,  Zt: usize,  Zbytes: *const u8,  Zinlen: usize);
+
+    #[link_name = "buffer_cstr_eq"]
+    pub fn r#cstr_eq( Za: *const u8,  Zb: *const u8)  -> bool;
+
+    #[link_name = "buffer_append_slice"]
+    pub fn r#append_slice( Zself: *mut u8,  Zt: usize,  Zslice: super::slice_slice::Slice);
+
+    #[link_name = "buffer_append_bytes"]
+    pub fn r#append_bytes( Zself: *mut u8,  Zt: usize,  Zbytes: *const u8,  Zinlen: usize);
+
 
 }

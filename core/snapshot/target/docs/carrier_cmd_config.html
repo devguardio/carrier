@@ -2,11 +2,11 @@
 <h1> module carrier::cmd_config </h1>
 <h4> fn cmd (
 
-    ::ext::&lt;stddef.h&gt;::char**
-    argv,
-
     usize
     argc,
+
+    ::ext::&lt;stddef.h&gt;::char**
+    argv,
 
 )
 
@@ -21,11 +21,11 @@
     ::slice::slice::Slice
     msg,
 
-    usize
-    et,
-
     ::carrier::stream::Stream*
     self,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,

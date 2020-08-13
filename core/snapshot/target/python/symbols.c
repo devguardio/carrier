@@ -27,15 +27,6 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 
 
 
-static PyObject* py_symbols_nameof(PyObject *pyself, PyObject *args) {
-    //s
-    long long int arg0 = 0;
-    if (!PyArg_ParseTuple(args, "l", &arg0)) { return NULL; };
-    const char * rarg = symbols_nameof(
-        arg0);
-    return PyUnicode_FromString(rarg);
-}
-
 static PyObject* py_symbols_nameof_checked(PyObject *pyself, PyObject *args) {
     //s
     long long int arg0 = 0;
@@ -45,10 +36,19 @@ static PyObject* py_symbols_nameof_checked(PyObject *pyself, PyObject *args) {
     return PyUnicode_FromString(rarg);
 }
 
+static PyObject* py_symbols_nameof(PyObject *pyself, PyObject *args) {
+    //s
+    long long int arg0 = 0;
+    if (!PyArg_ParseTuple(args, "l", &arg0)) { return NULL; };
+    const char * rarg = symbols_nameof(
+        arg0);
+    return PyUnicode_FromString(rarg);
+}
+
 
 static PyMethodDef methods[] = {
-{"nameof", py_symbols_nameof, METH_VARARGS,""},
 {"nameof_checked", py_symbols_nameof_checked, METH_VARARGS,""},
+{"nameof", py_symbols_nameof, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

@@ -24,14 +24,8 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
-
-
-
-
 static PyObject * py_get_slice_mut_slice_MutSlice_mem(PyObject *pyself, void *closure) {
 
     slice_mut_slice_MutSlice * self = pyFATGetPtr(pyself, "slice_mut_slice_MutSlice");
@@ -120,17 +114,10 @@ PyTypeObject py_Type_slice_mut_slice_MutSlice  = {
 
 
 
-static PyObject* py_slice_mut_slice_push(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //b
-    uint8_t arg1 = 0;
-    if (!PyArg_ParseTuple(args, "Ob", &arg0,&arg1)) { return NULL; };
-    long long rarg = (long long int)(slice_mut_slice_push(
-        pyFATGetPtr(arg0, "slice_mut_slice_MutSlice"),
-        arg1));
-    return PyBool_FromLong(rarg);
-}
+
+
+
+
 
 static PyObject* py_slice_mut_slice_make(PyObject *pyself, PyObject *args) {
     //self
@@ -149,6 +136,18 @@ static PyObject* py_slice_mut_slice_make(PyObject *pyself, PyObject *args) {
         arg2,
         pyFATGetPtr(arg3, "uintptr_t"));
     Py_RETURN_NONE;
+}
+
+static PyObject* py_slice_mut_slice_push(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //b
+    uint8_t arg1 = 0;
+    if (!PyArg_ParseTuple(args, "Ob", &arg0,&arg1)) { return NULL; };
+    long long rarg = (long long int)(slice_mut_slice_push(
+        pyFATGetPtr(arg0, "slice_mut_slice_MutSlice"),
+        arg1));
+    return PyBool_FromLong(rarg);
 }
 
 static PyObject* py_slice_mut_slice_append_bytes(PyObject *pyself, PyObject *args) {
@@ -180,15 +179,28 @@ static PyObject* py_slice_mut_slice_append_cstr(PyObject *pyself, PyObject *args
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_slice_mut_slice_push64(PyObject *pyself, PyObject *args) {
+static PyObject* py_slice_mut_slice_push32(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
     //b
     long long int arg1 = 0;
     if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg1)) { return NULL; };
-    long long rarg = (long long int)(slice_mut_slice_push64(
+    long long rarg = (long long int)(slice_mut_slice_push32(
         pyFATGetPtr(arg0, "slice_mut_slice_MutSlice"),
         arg1));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_slice_mut_slice_append_obj(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //b
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    long long rarg = (long long int)(slice_mut_slice_append_obj(
+        pyFATGetPtr(arg0, "slice_mut_slice_MutSlice"),
+        pyFATGetPtr(arg1, "void"),
+        ((pyFATObject *)arg1)->tail));
     return PyBool_FromLong(rarg);
 }
 
@@ -204,40 +216,28 @@ static PyObject* py_slice_mut_slice_push16(PyObject *pyself, PyObject *args) {
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_slice_mut_slice_push32(PyObject *pyself, PyObject *args) {
+static PyObject* py_slice_mut_slice_push64(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
     //b
     long long int arg1 = 0;
     if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg1)) { return NULL; };
-    long long rarg = (long long int)(slice_mut_slice_push32(
+    long long rarg = (long long int)(slice_mut_slice_push64(
         pyFATGetPtr(arg0, "slice_mut_slice_MutSlice"),
         arg1));
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_slice_mut_slice_append_slice(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //other
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    long long rarg = (long long int)(slice_mut_slice_append_slice(
-        pyFATGetPtr(arg0, "slice_mut_slice_MutSlice"),
-        pyFATGetPtr(arg1, "slice_slice_Slice")));
-    return PyBool_FromLong(rarg);
-}
-
 
 static PyMethodDef methods[] = {
+{"make", py_slice_mut_slice_make, METH_VARARGS,"create new mutable slice from its components"},
 {"push", py_slice_mut_slice_push, METH_VARARGS,"push a single character"},
-{"make", py_slice_mut_slice_make, METH_VARARGS,""},
-{"append_bytes", py_slice_mut_slice_append_bytes, METH_VARARGS,""},
-{"append_cstr", py_slice_mut_slice_append_cstr, METH_VARARGS,""},
-{"push64", py_slice_mut_slice_push64, METH_VARARGS,""},
-{"push16", py_slice_mut_slice_push16, METH_VARARGS,""},
-{"push32", py_slice_mut_slice_push32, METH_VARARGS,""},
-{"append_slice", py_slice_mut_slice_append_slice, METH_VARARGS,""},
+{"append_bytes", py_slice_mut_slice_append_bytes, METH_VARARGS,"append raw bytes"},
+{"append_cstr", py_slice_mut_slice_append_cstr, METH_VARARGS,"append a null terminated cstring, excluding its null terminator"},
+{"push32", py_slice_mut_slice_push32, METH_VARARGS,"append a 32 bit integer as 4 bytes"},
+{"append_obj", py_slice_mut_slice_append_obj, METH_VARARGS,"append any sized objects as raw bytes"},
+{"push16", py_slice_mut_slice_push16, METH_VARARGS,"append a 16 bit integer as 2 bytes"},
+{"push64", py_slice_mut_slice_push64, METH_VARARGS,"append a 64 bit integer as 8 bytes"},
 {NULL, NULL, 0, NULL}
 };
 

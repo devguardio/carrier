@@ -27,22 +27,22 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 
 
 
-static PyObject* py_carrier_revision_build_id(PyObject *pyself, PyObject *args) {
-    const char * rarg = carrier_revision_build_id(
-        );
-    return PyUnicode_FromString(rarg);
-}
-
 static PyObject* py_carrier_revision_revision(PyObject *pyself, PyObject *args) {
     long long int rarg = (long long int)(carrier_revision_revision(
         ));
     return PyLong_FromLong(rarg);
 }
 
+static PyObject* py_carrier_revision_build_id(PyObject *pyself, PyObject *args) {
+    const char * rarg = carrier_revision_build_id(
+        );
+    return PyUnicode_FromString(rarg);
+}
+
 
 static PyMethodDef methods[] = {
-{"build_id", py_carrier_revision_build_id, METH_NOARGS,""},
 {"revision", py_carrier_revision_revision, METH_NOARGS,""},
+{"build_id", py_carrier_revision_build_id, METH_NOARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

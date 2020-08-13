@@ -1,8 +1,34 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#ifndef ZZ_FORWARD_toml_ParserState
-#define ZZ_FORWARD_toml_ParserState
+#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint
+#define ZZ_FORWARD_carrier_endpoint_Endpoint
+struct carrier_endpoint_Endpoint_t;
+typedef struct carrier_endpoint_Endpoint_t carrier_endpoint_Endpoint;
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint_1000
+#define ZZ_FORWARD_carrier_endpoint_Endpoint_1000
+struct carrier_endpoint_Endpoint_1000_t;
+typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_close
+#define ZZ_FORWARD_carrier_endpoint_close
+#endif
+#ifndef ZZ_FORWARD_net_address_Address
+#define ZZ_FORWARD_net_address_Address
+struct net_address_Address_t;
+typedef struct net_address_Address_t net_address_Address;
+#endif
+#ifndef ZZ_FORWARD_net_address_valid
+#define ZZ_FORWARD_net_address_valid
+#endif
+#ifndef ZZ_FORWARD_io_Result
+#define ZZ_FORWARD_io_Result
+#endif
+#ifndef ZZ_FORWARD_io_Io
+#define ZZ_FORWARD_io_Io
+struct io_Io_t;
+typedef struct io_Io_t io_Io;
 #endif
 #ifndef ZZ_FORWARD_err_Err
 #define ZZ_FORWARD_err_Err
@@ -19,13 +45,188 @@ typedef struct err_Err_200_t err_Err_200;
 struct err_Err_5000_t;
 typedef struct err_Err_5000_t err_Err_5000;
 #endif
+#ifndef ZZ_FORWARD__stddef_h_
+#define ZZ_FORWARD__stddef_h_
+#endif
+#ifndef ZZ_FORWARD_err_checked
+#define ZZ_FORWARD_err_checked
+#endif
+#ifndef ZZ_FORWARD_io_write_cstr
+#define ZZ_FORWARD_io_write_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer
+#define ZZ_FORWARD_buffer_Buffer
+struct buffer_Buffer_t;
+typedef struct buffer_Buffer_t buffer_Buffer;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_1500
+#define ZZ_FORWARD_buffer_Buffer_1500
+struct buffer_Buffer_1500_t;
+typedef struct buffer_Buffer_1500_t buffer_Buffer_1500;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_300
+#define ZZ_FORWARD_buffer_Buffer_300
+struct buffer_Buffer_300_t;
+typedef struct buffer_Buffer_300_t buffer_Buffer_300;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_2000
+#define ZZ_FORWARD_buffer_Buffer_2000
+struct buffer_Buffer_2000_t;
+typedef struct buffer_Buffer_2000_t buffer_Buffer_2000;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_20
+#define ZZ_FORWARD_buffer_Buffer_20
+struct buffer_Buffer_20_t;
+typedef struct buffer_Buffer_20_t buffer_Buffer_20;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_1024
+#define ZZ_FORWARD_buffer_Buffer_1024
+struct buffer_Buffer_1024_t;
+typedef struct buffer_Buffer_1024_t buffer_Buffer_1024;
+#endif
+#ifndef ZZ_FORWARD_buffer_integrity
+#define ZZ_FORWARD_buffer_integrity
+#endif
+#ifndef ZZ_FORWARD_net_address_ip_to_buffer
+#define ZZ_FORWARD_net_address_ip_to_buffer
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_Stream
+#define ZZ_FORWARD_carrier_stream_Stream
+struct carrier_stream_Stream_t;
+typedef struct carrier_stream_Stream_t carrier_stream_Stream;
+#endif
+#ifndef ZZ_FORWARD_carrier_connect_on_close
+#define ZZ_FORWARD_carrier_connect_on_close
+#endif
+#ifndef ZZ_FORWARD_io_read_bytes
+#define ZZ_FORWARD_io_read_bytes
+#endif
+#ifndef ZZ_FORWARD_err_elog
+#define ZZ_FORWARD_err_elog
+#endif
+#ifndef ZZ_FORWARD_slice_slice_Slice
+#define ZZ_FORWARD_slice_slice_Slice
+struct slice_slice_Slice_t;
+typedef struct slice_slice_Slice_t slice_slice_Slice;
+#endif
+#ifndef ZZ_FORWARD_slice_slice_integrity
+#define ZZ_FORWARD_slice_slice_integrity
+#endif
+#ifndef ZZ_FORWARD_carrier_connect_on_stream
+#define ZZ_FORWARD_carrier_connect_on_stream
+#endif
+#ifndef ZZ_FORWARD_net_address_from_str
+#define ZZ_FORWARD_net_address_from_str
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_Method
+#define ZZ_FORWARD_carrier_cmd_config_Method
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Identity
+#define ZZ_FORWARD_carrier_identity_Identity
+struct carrier_identity_Identity_t;
+typedef struct carrier_identity_Identity_t carrier_identity_Identity;
+#endif
+#ifndef ZZ_FORWARD__stddef_h_
+#define ZZ_FORWARD__stddef_h_
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer
+#define ZZ_FORWARD_buffer_Buffer
+struct buffer_Buffer_t;
+typedef struct buffer_Buffer_t buffer_Buffer;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_1500
+#define ZZ_FORWARD_buffer_Buffer_1500
+struct buffer_Buffer_1500_t;
+typedef struct buffer_Buffer_1500_t buffer_Buffer_1500;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_300
+#define ZZ_FORWARD_buffer_Buffer_300
+struct buffer_Buffer_300_t;
+typedef struct buffer_Buffer_300_t buffer_Buffer_300;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_2000
+#define ZZ_FORWARD_buffer_Buffer_2000
+struct buffer_Buffer_2000_t;
+typedef struct buffer_Buffer_2000_t buffer_Buffer_2000;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_20
+#define ZZ_FORWARD_buffer_Buffer_20
+struct buffer_Buffer_20_t;
+typedef struct buffer_Buffer_20_t buffer_Buffer_20;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_1024
+#define ZZ_FORWARD_buffer_Buffer_1024
+struct buffer_Buffer_1024_t;
+typedef struct buffer_Buffer_1024_t buffer_Buffer_1024;
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_Authorize
+#define ZZ_FORWARD_carrier_vault_toml_Authorize
+struct carrier_vault_toml_Authorize_t;
+typedef struct carrier_vault_toml_Authorize_t carrier_vault_toml_Authorize;
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_from_carriertoml
+#define ZZ_FORWARD_carrier_endpoint_from_carriertoml
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_Vault
+#define ZZ_FORWARD_carrier_vault_Vault
+struct carrier_vault_Vault_t;
+typedef struct carrier_vault_Vault_t carrier_vault_Vault;
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_del_authorization
+#define ZZ_FORWARD_carrier_vault_ik_i_del_authorization
+#endif
 #ifndef ZZ_FORWARD_toml_Parser
 #define ZZ_FORWARD_toml_Parser
 struct toml_Parser_t;
 typedef struct toml_Parser_t toml_Parser;
 #endif
-#ifndef ZZ_FORWARD__stddef_h_
-#define ZZ_FORWARD__stddef_h_
+#ifndef ZZ_FORWARD_toml_close
+#define ZZ_FORWARD_toml_close
+#endif
+#ifndef ZZ_FORWARD_pool_Pool
+#define ZZ_FORWARD_pool_Pool
+struct pool_Pool_t;
+typedef struct pool_Pool_t pool_Pool;
+#endif
+#ifndef ZZ_FORWARD_pool_Pool_1024
+#define ZZ_FORWARD_pool_Pool_1024
+struct pool_Pool_1024_t;
+typedef struct pool_Pool_1024_t pool_Pool_1024;
+#endif
+#ifndef ZZ_FORWARD_pool_member
+#define ZZ_FORWARD_pool_member
+#endif
+#ifndef ZZ_FORWARD_carrier_router_Router
+#define ZZ_FORWARD_carrier_router_Router
+struct carrier_router_Router_t;
+typedef struct carrier_router_Router_t carrier_router_Router;
+#endif
+#ifndef ZZ_FORWARD_io_Async
+#define ZZ_FORWARD_io_Async
+struct io_Async_t;
+typedef struct io_Async_t io_Async;
+#endif
+#ifndef ZZ_FORWARD_carrier_router_poll
+#define ZZ_FORWARD_carrier_router_poll
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_Responder
+#define ZZ_FORWARD_carrier_noise_Responder
+struct carrier_noise_Responder_t;
+typedef struct carrier_noise_Responder_t carrier_noise_Responder;
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_receive_insecure
+#define ZZ_FORWARD_carrier_noise_receive_insecure
+#endif
+#ifndef ZZ_FORWARD_net_address_from_buffer
+#define ZZ_FORWARD_net_address_from_buffer
+#endif
+#ifndef ZZ_FORWARD_carrier_proto_ConfigResult
+#define ZZ_FORWARD_carrier_proto_ConfigResult
+#endif
+#ifndef ZZ_FORWARD_toml_U
+#define ZZ_FORWARD_toml_U
+struct toml_U_t;
+typedef struct toml_U_t toml_U;
 #endif
 #ifndef ZZ_FORWARD_toml_ValueType
 #define ZZ_FORWARD_toml_ValueType
@@ -34,6 +235,120 @@ typedef struct toml_Parser_t toml_Parser;
 #define ZZ_FORWARD_toml_Value
 struct toml_Value_t;
 typedef struct toml_Value_t toml_Value;
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_load_from_toml_authorize_iter
+#define ZZ_FORWARD_carrier_vault_toml_load_from_toml_authorize_iter
+#endif
+#ifndef ZZ_FORWARD_pool_malloc
+#define ZZ_FORWARD_pool_malloc
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_principal_identity
+#define ZZ_FORWARD_carrier_vault_toml_i_get_principal_identity
+#endif
+#ifndef ZZ_FORWARD_netio_tcp_Socket
+#define ZZ_FORWARD_netio_tcp_Socket
+struct netio_tcp_Socket_t;
+typedef struct netio_tcp_Socket_t netio_tcp_Socket;
+#endif
+#ifndef ZZ_FORWARD_netio_tcp_close
+#define ZZ_FORWARD_netio_tcp_close
+#endif
+#ifndef ZZ_FORWARD_err_make
+#define ZZ_FORWARD_err_make
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_close
+#define ZZ_FORWARD_carrier_vault_ik_i_close
+#endif
+#ifndef ZZ_FORWARD_carrier_symmetric_SymmetricState
+#define ZZ_FORWARD_carrier_symmetric_SymmetricState
+struct carrier_symmetric_SymmetricState_t;
+typedef struct carrier_symmetric_SymmetricState_t carrier_symmetric_SymmetricState;
+#endif
+#ifndef ZZ_FORWARD_carrier_symmetric_decrypt_and_mix_hash
+#define ZZ_FORWARD_carrier_symmetric_decrypt_and_mix_hash
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
+#define ZZ_FORWARD_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_integrity
+#define ZZ_FORWARD_slice_mut_slice_integrity
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_bytes
+#define ZZ_FORWARD_slice_mut_slice_append_bytes
+#endif
+#ifndef ZZ_FORWARD_net_address_set_port
+#define ZZ_FORWARD_net_address_set_port
+#endif
+#ifndef ZZ_FORWARD___home_aep_proj_zz_modules_net_src_os_h_
+#define ZZ_FORWARD___home_aep_proj_zz_modules_net_src_os_h_
+#endif
+#ifndef ZZ_FORWARD_carrier_sha256_HASHLEN
+#define ZZ_FORWARD_carrier_sha256_HASHLEN
+#endif
+#ifndef ZZ_FORWARD_carrier_cipher_CipherState
+#define ZZ_FORWARD_carrier_cipher_CipherState
+struct carrier_cipher_CipherState_t;
+typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
+#endif
+#ifndef ZZ_FORWARD_carrier_symmetric_SymmetricState
+#define ZZ_FORWARD_carrier_symmetric_SymmetricState
+struct carrier_symmetric_SymmetricState_t;
+typedef struct carrier_symmetric_SymmetricState_t carrier_symmetric_SymmetricState;
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Secret
+#define ZZ_FORWARD_carrier_identity_Secret
+struct carrier_identity_Secret_t;
+typedef struct carrier_identity_Secret_t carrier_identity_Secret;
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Address
+#define ZZ_FORWARD_carrier_identity_Address
+struct carrier_identity_Address_t;
+typedef struct carrier_identity_Address_t carrier_identity_Address;
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_Responder
+#define ZZ_FORWARD_carrier_noise_Responder
+struct carrier_noise_Responder_t;
+typedef struct carrier_noise_Responder_t carrier_noise_Responder;
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_MAX_BROKERS
+#define ZZ_FORWARD_carrier_vault_MAX_BROKERS
+#endif
+#ifndef ZZ_FORWARD_carrier_initiator_Initiator
+#define ZZ_FORWARD_carrier_initiator_Initiator
+struct carrier_initiator_Initiator_t;
+typedef struct carrier_initiator_Initiator_t carrier_initiator_Initiator;
+#endif
+#ifndef ZZ_FORWARD_carrier_initiator_Move
+#define ZZ_FORWARD_carrier_initiator_Move
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
+#define ZZ_FORWARD_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#endif
+#ifndef ZZ_FORWARD_carrier_initiator_initiate
+#define ZZ_FORWARD_carrier_initiator_initiate
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_Q
+#define ZZ_FORWARD_carrier_pq_Q
+struct carrier_pq_Q_t;
+typedef struct carrier_pq_Q_t carrier_pq_Q;
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_Q_64
+#define ZZ_FORWARD_carrier_pq_Q_64
+struct carrier_pq_Q_64_t;
+typedef struct carrier_pq_Q_64_t carrier_pq_Q_64;
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_keepalive
+#define ZZ_FORWARD_carrier_pq_keepalive
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_accept
+#define ZZ_FORWARD_carrier_noise_accept
+#endif
+#ifndef ZZ_FORWARD_toml_ParserState
+#define ZZ_FORWARD_toml_ParserState
 #endif
 #ifndef ZZ_FORWARD_toml_Iter
 #define ZZ_FORWARD_toml_Iter
@@ -51,74 +366,11 @@ typedef struct toml_U_t toml_U;
 struct toml_ParserStack_t;
 typedef struct toml_ParserStack_t toml_ParserStack;
 #endif
-#ifndef ZZ_FORWARD_io_Async
-#define ZZ_FORWARD_io_Async
-struct io_Async_t;
-typedef struct io_Async_t io_Async;
+#ifndef ZZ_FORWARD_slice_slice_split
+#define ZZ_FORWARD_slice_slice_split
 #endif
-#ifndef ZZ_FORWARD_io_Context
-#define ZZ_FORWARD_io_Context
-struct io_Context_t;
-typedef struct io_Context_t io_Context;
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_Stream
-#define ZZ_FORWARD_carrier_stream_Stream
-struct carrier_stream_Stream_t;
-typedef struct carrier_stream_Stream_t carrier_stream_Stream;
-#endif
-#ifndef ZZ_FORWARD_slice_slice_Slice
-#define ZZ_FORWARD_slice_slice_Slice
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-#endif
-#ifndef ZZ_FORWARD_err_checked
-#define ZZ_FORWARD_err_checked
-#endif
-#ifndef ZZ_FORWARD_slice_slice_integrity
-#define ZZ_FORWARD_slice_slice_integrity
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_common_on_printer_stream
-#define ZZ_FORWARD_carrier_cmd_common_on_printer_stream
-#endif
-#ifndef ZZ_FORWARD_io_Result
-#define ZZ_FORWARD_io_Result
-#endif
-#ifndef ZZ_FORWARD_io_Io
-#define ZZ_FORWARD_io_Io
-struct io_Io_t;
-typedef struct io_Io_t io_Io;
-#endif
-#ifndef ZZ_FORWARD_io_write_bytes
-#define ZZ_FORWARD_io_write_bytes
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_Channel
-#define ZZ_FORWARD_carrier_channel_Channel
-struct carrier_channel_Channel_t;
-typedef struct carrier_channel_Channel_t carrier_channel_Channel;
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_Config
-#define ZZ_FORWARD_carrier_stream_Config
-struct carrier_stream_Config_t;
-typedef struct carrier_stream_Config_t carrier_stream_Config;
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_open
-#define ZZ_FORWARD_carrier_channel_open
-#endif
-#ifndef ZZ_FORWARD_io_valid
-#define ZZ_FORWARD_io_valid
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_clean_closed
-#define ZZ_FORWARD_carrier_channel_clean_closed
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint
-#define ZZ_FORWARD_carrier_endpoint_Endpoint
-struct carrier_endpoint_Endpoint_t;
-typedef struct carrier_endpoint_Endpoint_t carrier_endpoint_Endpoint;
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint_1000
-#define ZZ_FORWARD_carrier_endpoint_Endpoint_1000
-struct carrier_endpoint_Endpoint_1000_t;
-typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
+#ifndef ZZ_FORWARD_io_wake
+#define ZZ_FORWARD_io_wake
 #endif
 #ifndef ZZ_FORWARD_carrier_vault_close_fn
 #define ZZ_FORWARD_carrier_vault_close_fn
@@ -131,29 +383,14 @@ typedef struct carrier_identity_Signature_t carrier_identity_Signature;
 #ifndef ZZ_FORWARD_carrier_vault_sign_fn
 #define ZZ_FORWARD_carrier_vault_sign_fn
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Identity
-#define ZZ_FORWARD_carrier_identity_Identity
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
-#endif
 #ifndef ZZ_FORWARD_carrier_vault_get_identity_fn
 #define ZZ_FORWARD_carrier_vault_get_identity_fn
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_Address
-#define ZZ_FORWARD_carrier_identity_Address
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
 #endif
 #ifndef ZZ_FORWARD_carrier_vault_get_network_fn
 #define ZZ_FORWARD_carrier_vault_get_network_fn
 #endif
 #ifndef ZZ_FORWARD_carrier_vault_advance_clock_fn
 #define ZZ_FORWARD_carrier_vault_advance_clock_fn
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_Secret
-#define ZZ_FORWARD_carrier_identity_Secret
-struct carrier_identity_Secret_t;
-typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 #endif
 #ifndef ZZ_FORWARD_carrier_vault_set_network_fn
 #define ZZ_FORWARD_carrier_vault_set_network_fn
@@ -173,11 +410,6 @@ typedef struct carrier_identity_Secret_t carrier_identity_Secret;
 #ifndef ZZ_FORWARD_carrier_vault_add_authorization_fn
 #define ZZ_FORWARD_carrier_vault_add_authorization_fn
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Secret
-#define ZZ_FORWARD_carrier_identity_Secret
-struct carrier_identity_Secret_t;
-typedef struct carrier_identity_Secret_t carrier_identity_Secret;
-#endif
 #ifndef ZZ_FORWARD_carrier_identity_SecretKit
 #define ZZ_FORWARD_carrier_identity_SecretKit
 struct carrier_identity_SecretKit_t;
@@ -188,228 +420,194 @@ typedef struct carrier_identity_SecretKit_t carrier_identity_SecretKit;
 struct carrier_vault_Broker_t;
 typedef struct carrier_vault_Broker_t carrier_vault_Broker;
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_MAX_BROKERS
-#define ZZ_FORWARD_carrier_vault_MAX_BROKERS
-#endif
 #ifndef ZZ_FORWARD_carrier_vault_Vault
 #define ZZ_FORWARD_carrier_vault_Vault
 struct carrier_vault_Vault_t;
 typedef struct carrier_vault_Vault_t carrier_vault_Vault;
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_from_vault
-#define ZZ_FORWARD_carrier_endpoint_from_vault
+#ifndef ZZ_FORWARD_carrier_router_push
+#define ZZ_FORWARD_carrier_router_push
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_cluster_target
-#define ZZ_FORWARD_carrier_endpoint_cluster_target
+#ifndef ZZ_FORWARD_carrier_stream_incomming_fragmented
+#define ZZ_FORWARD_carrier_stream_incomming_fragmented
 #endif
-#ifndef ZZ_FORWARD_net_address_Address
-#define ZZ_FORWARD_net_address_Address
-struct net_address_Address_t;
-typedef struct net_address_Address_t net_address_Address;
+#ifndef ZZ_FORWARD_carrier_vault_authorize_open_stream_cb_s
+#define ZZ_FORWARD_carrier_vault_authorize_open_stream_cb_s
+struct carrier_vault_authorize_open_stream_cb_s_t;
+typedef struct carrier_vault_authorize_open_stream_cb_s_t carrier_vault_authorize_open_stream_cb_s;
 #endif
-#ifndef ZZ_FORWARD_net_address_Type
-#define ZZ_FORWARD_net_address_Type
+#ifndef ZZ_FORWARD_buffer_append_bytes
+#define ZZ_FORWARD_buffer_append_bytes
 #endif
-#ifndef ZZ_FORWARD_net_address_set_ip
-#define ZZ_FORWARD_net_address_set_ip
+#ifndef ZZ_FORWARD_carrier_pq_Frame
+#define ZZ_FORWARD_carrier_pq_Frame
+struct carrier_pq_Frame_t;
+typedef struct carrier_pq_Frame_t carrier_pq_Frame;
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_add_authorization
-#define ZZ_FORWARD_carrier_vault_add_authorization
-#endif
-#ifndef ZZ_FORWARD_pool_Pool
-#define ZZ_FORWARD_pool_Pool
-struct pool_Pool_t;
-typedef struct pool_Pool_t pool_Pool;
-#endif
-#ifndef ZZ_FORWARD_pool_Pool_1024
-#define ZZ_FORWARD_pool_Pool_1024
-struct pool_Pool_1024_t;
-typedef struct pool_Pool_1024_t pool_Pool_1024;
-#endif
-#ifndef ZZ_FORWARD_pool_member
-#define ZZ_FORWARD_pool_member
-#endif
-#ifndef ZZ_FORWARD_pool_Pool
-#define ZZ_FORWARD_pool_Pool
-struct pool_Pool_t;
-typedef struct pool_Pool_t pool_Pool;
-#endif
-#ifndef ZZ_FORWARD_pool_Pool_1024
-#define ZZ_FORWARD_pool_Pool_1024
-struct pool_Pool_1024_t;
-typedef struct pool_Pool_1024_t pool_Pool_1024;
-#endif
-#ifndef ZZ_FORWARD_pool_continuous
-#define ZZ_FORWARD_pool_continuous
-#endif
-#ifndef ZZ_FORWARD_pool_free
-#define ZZ_FORWARD_pool_free
-#endif
-#ifndef ZZ_FORWARD_io_make_channel_fn
-#define ZZ_FORWARD_io_make_channel_fn
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_Target
-#define ZZ_FORWARD_carrier_cmd_config_Target
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_close
-#define ZZ_FORWARD_carrier_vault_close
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer
-#define ZZ_FORWARD_buffer_Buffer
-struct buffer_Buffer_t;
-typedef struct buffer_Buffer_t buffer_Buffer;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_300
-#define ZZ_FORWARD_buffer_Buffer_300
-struct buffer_Buffer_300_t;
-typedef struct buffer_Buffer_300_t buffer_Buffer_300;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_1024
-#define ZZ_FORWARD_buffer_Buffer_1024
-struct buffer_Buffer_1024_t;
-typedef struct buffer_Buffer_1024_t buffer_Buffer_1024;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_2000
-#define ZZ_FORWARD_buffer_Buffer_2000
-struct buffer_Buffer_2000_t;
-typedef struct buffer_Buffer_2000_t buffer_Buffer_2000;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_1500
-#define ZZ_FORWARD_buffer_Buffer_1500
-struct buffer_Buffer_1500_t;
-typedef struct buffer_Buffer_1500_t buffer_Buffer_1500;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_20
-#define ZZ_FORWARD_buffer_Buffer_20
-struct buffer_Buffer_20_t;
-typedef struct buffer_Buffer_20_t buffer_Buffer_20;
-#endif
-#ifndef ZZ_FORWARD_buffer_integrity
-#define ZZ_FORWARD_buffer_integrity
-#endif
-#ifndef ZZ_FORWARD_buffer_eq_cstr
-#define ZZ_FORWARD_buffer_eq_cstr
-#endif
-#ifndef ZZ_FORWARD_netio_tcp_Socket
-#define ZZ_FORWARD_netio_tcp_Socket
-struct netio_tcp_Socket_t;
-typedef struct netio_tcp_Socket_t netio_tcp_Socket;
-#endif
-#ifndef ZZ_FORWARD_netio_tcp_send
-#define ZZ_FORWARD_netio_tcp_send
-#endif
-#ifndef ZZ_FORWARD_io_read_fn
-#define ZZ_FORWARD_io_read_fn
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_on_stream
-#define ZZ_FORWARD_carrier_cmd_config_auth_list_on_stream
-#endif
-#ifndef ZZ_FORWARD_protonerf_Decoder
-#define ZZ_FORWARD_protonerf_Decoder
-struct protonerf_Decoder_t;
-typedef struct protonerf_Decoder_t protonerf_Decoder;
-#endif
-#ifndef ZZ_FORWARD_protonerf_read_varint
-#define ZZ_FORWARD_protonerf_read_varint
+#ifndef ZZ_FORWARD_toml_push
+#define ZZ_FORWARD_toml_push
 #endif
 #ifndef ZZ_FORWARD_netio_udp_Socket
 #define ZZ_FORWARD_netio_udp_Socket
 struct netio_udp_Socket_t;
 typedef struct netio_udp_Socket_t netio_udp_Socket;
 #endif
-#ifndef ZZ_FORWARD_netio_udp_recvfrom
-#define ZZ_FORWARD_netio_udp_recvfrom
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_Entry
-#define ZZ_FORWARD_hpack_decoder_Entry
-struct hpack_decoder_Entry_t;
-typedef struct hpack_decoder_Entry_t hpack_decoder_Entry;
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_DYNSIZE
-#define ZZ_FORWARD_hpack_decoder_DYNSIZE
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_Iterator
-#define ZZ_FORWARD_hpack_decoder_Iterator
-struct hpack_decoder_Iterator_t;
-typedef struct hpack_decoder_Iterator_t hpack_decoder_Iterator;
-#endif
 #ifndef ZZ_FORWARD_netio_udp_close
 #define ZZ_FORWARD_netio_udp_close
 #endif
-#ifndef ZZ_FORWARD_carrier_router_Router
-#define ZZ_FORWARD_carrier_router_Router
-struct carrier_router_Router_t;
-typedef struct carrier_router_Router_t carrier_router_Router;
+#ifndef ZZ_FORWARD_carrier_vault_CheckExistingAuthorizationState
+#define ZZ_FORWARD_carrier_vault_CheckExistingAuthorizationState
+struct carrier_vault_CheckExistingAuthorizationState_t;
+typedef struct carrier_vault_CheckExistingAuthorizationState_t carrier_vault_CheckExistingAuthorizationState;
 #endif
-#ifndef ZZ_FORWARD_carrier_router_poll
-#define ZZ_FORWARD_carrier_router_poll
+#ifndef ZZ_FORWARD_carrier_channel_Channel
+#define ZZ_FORWARD_carrier_channel_Channel
+struct carrier_channel_Channel_t;
+typedef struct carrier_channel_Channel_t carrier_channel_Channel;
 #endif
-#ifndef ZZ_FORWARD_carrier_router_next_channel
-#define ZZ_FORWARD_carrier_router_next_channel
+#ifndef ZZ_FORWARD_carrier_channel_send_close_frame
+#define ZZ_FORWARD_carrier_channel_send_close_frame
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_State
-#define ZZ_FORWARD_carrier_endpoint_State
+#ifndef ZZ_FORWARD_slice_mut_slice_push32
+#define ZZ_FORWARD_slice_mut_slice_push32
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_Mem
-#define ZZ_FORWARD_carrier_vault_toml_Mem
-struct carrier_vault_toml_Mem_t;
-typedef struct carrier_vault_toml_Mem_t carrier_vault_toml_Mem;
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_network
+#define ZZ_FORWARD_carrier_vault_toml_i_get_network
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_save_to_toml
-#define ZZ_FORWARD_carrier_vault_toml_save_to_toml
+#ifndef ZZ_FORWARD_toml_MAX_DEPTH
+#define ZZ_FORWARD_toml_MAX_DEPTH
+#endif
+#ifndef ZZ_FORWARD_toml_Parser
+#define ZZ_FORWARD_toml_Parser
+struct toml_Parser_t;
+typedef struct toml_Parser_t toml_Parser;
+#endif
+#ifndef ZZ_FORWARD_buffer_as_mut_slice
+#define ZZ_FORWARD_buffer_as_mut_slice
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_eq
+#define ZZ_FORWARD_carrier_identity_eq
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_Config
+#define ZZ_FORWARD_carrier_stream_Config
+struct carrier_stream_Config_t;
+typedef struct carrier_stream_Config_t carrier_stream_Config;
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_open
+#define ZZ_FORWARD_carrier_channel_open
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_get_network
+#define ZZ_FORWARD_carrier_vault_get_network
+#endif
+#ifndef ZZ_FORWARD_carrier_connect_Connect
+#define ZZ_FORWARD_carrier_connect_Connect
+struct carrier_connect_Connect_t;
+typedef struct carrier_connect_Connect_t carrier_connect_Connect;
+#endif
+#ifndef ZZ_FORWARD_carrier_connect_disconnect_t
+#define ZZ_FORWARD_carrier_connect_disconnect_t
+#endif
+#ifndef ZZ_FORWARD_buffer_cstr_eq
+#define ZZ_FORWARD_buffer_cstr_eq
+#endif
+#ifndef ZZ_FORWARD_pool_Pool
+#define ZZ_FORWARD_pool_Pool
+struct pool_Pool_t;
+typedef struct pool_Pool_t pool_Pool;
+#endif
+#ifndef ZZ_FORWARD_pool_Pool_1024
+#define ZZ_FORWARD_pool_Pool_1024
+struct pool_Pool_1024_t;
+typedef struct pool_Pool_1024_t pool_Pool_1024;
+#endif
+#ifndef ZZ_FORWARD_err_to_str
+#define ZZ_FORWARD_err_to_str
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_Transfer
+#define ZZ_FORWARD_carrier_channel_Transfer
+struct carrier_channel_Transfer_t;
+typedef struct carrier_channel_Transfer_t carrier_channel_Transfer;
+#endif
+#ifndef ZZ_FORWARD_carrier_initiator_complete
+#define ZZ_FORWARD_carrier_initiator_complete
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_Target
+#define ZZ_FORWARD_carrier_cmd_config_Target
+#endif
+#ifndef ZZ_FORWARD_carrier_symmetric_split
+#define ZZ_FORWARD_carrier_symmetric_split
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_wrapinc
+#define ZZ_FORWARD_carrier_pq_wrapinc
+#endif
+#ifndef ZZ_FORWARD_carrier_symmetric_mix_hash
+#define ZZ_FORWARD_carrier_symmetric_mix_hash
+#endif
+#ifndef ZZ_FORWARD_io_Context
+#define ZZ_FORWARD_io_Context
+struct io_Context_t;
+typedef struct io_Context_t io_Context;
+#endif
+#ifndef ZZ_FORWARD_io_read_fn
+#define ZZ_FORWARD_io_read_fn
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_set_network
+#define ZZ_FORWARD_carrier_vault_set_network
 #endif
 #ifndef ZZ_FORWARD_carrier_noise_Initiator
 #define ZZ_FORWARD_carrier_noise_Initiator
 struct carrier_noise_Initiator_t;
 typedef struct carrier_noise_Initiator_t carrier_noise_Initiator;
 #endif
-#ifndef ZZ_FORWARD_carrier_noise_complete
-#define ZZ_FORWARD_carrier_noise_complete
+#ifndef ZZ_FORWARD_carrier_noise_initiate_insecure
+#define ZZ_FORWARD_carrier_noise_initiate_insecure
 #endif
-#ifndef ZZ_FORWARD_io_Ready
-#define ZZ_FORWARD_io_Ready
+#ifndef ZZ_FORWARD_carrier_cmd_config_net_on_close
+#define ZZ_FORWARD_carrier_cmd_config_net_on_close
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_close
-#define ZZ_FORWARD_carrier_vault_ik_i_close
+#ifndef ZZ_FORWARD_carrier_identity_identity_to_str
+#define ZZ_FORWARD_carrier_identity_identity_to_str
 #endif
-#ifndef ZZ_FORWARD_carrier_router_disconnect
-#define ZZ_FORWARD_carrier_router_disconnect
+#ifndef ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_get
+#define ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_get
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_common_on_stream_want_header_200
+#define ZZ_FORWARD_carrier_cmd_common_on_stream_want_header_200
+#endif
+#ifndef ZZ_FORWARD_slice_slice_sub
+#define ZZ_FORWARD_slice_slice_sub
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_cancel
+#define ZZ_FORWARD_carrier_stream_cancel
+#endif
+#ifndef ZZ_FORWARD_buffer_format
+#define ZZ_FORWARD_buffer_format
 #endif
 #ifndef ZZ_FORWARD_time_Time
 #define ZZ_FORWARD_time_Time
 struct time_Time_t;
 typedef struct time_Time_t time_Time;
 #endif
-#ifndef ZZ_FORWARD__stddef_h_
-#define ZZ_FORWARD__stddef_h_
+#ifndef ZZ_FORWARD_carrier_vault_get_network_secret
+#define ZZ_FORWARD_carrier_vault_get_network_secret
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_del_authorization
-#define ZZ_FORWARD_carrier_vault_ik_i_del_authorization
+#ifndef ZZ_FORWARD_buffer_pop
+#define ZZ_FORWARD_buffer_pop
 #endif
-#ifndef ZZ_FORWARD_toml_next
-#define ZZ_FORWARD_toml_next
+#ifndef ZZ_FORWARD_carrier_identity_signature_from_str
+#define ZZ_FORWARD_carrier_identity_signature_from_str
 #endif
-#ifndef ZZ_FORWARD_carrier_cipher_CipherState
-#define ZZ_FORWARD_carrier_cipher_CipherState
-struct carrier_cipher_CipherState_t;
-typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
+#ifndef ZZ_FORWARD_carrier_channel_shutdown
+#define ZZ_FORWARD_carrier_channel_shutdown
 #endif
-#ifndef ZZ_FORWARD_carrier_cipher_decrypt
-#define ZZ_FORWARD_carrier_cipher_decrypt
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_sign_principal
-#define ZZ_FORWARD_carrier_vault_toml_i_sign_principal
-#endif
-#ifndef ZZ_FORWARD_io_select
-#define ZZ_FORWARD_io_select
-#endif
-#ifndef ZZ_FORWARD_carrier_peering_Peering
-#define ZZ_FORWARD_carrier_peering_Peering
-struct carrier_peering_Peering_t;
-typedef struct carrier_peering_Peering_t carrier_peering_Peering;
+#ifndef ZZ_FORWARD_carrier_endpoint_none
+#define ZZ_FORWARD_carrier_endpoint_none
 #endif
 #ifndef ZZ_FORWARD_carrier_peering_Transport
 #define ZZ_FORWARD_carrier_peering_Transport
+#endif
+#ifndef ZZ_FORWARD_net_address_Type
+#define ZZ_FORWARD_net_address_Type
 #endif
 #ifndef ZZ_FORWARD_net_address_Address
 #define ZZ_FORWARD_net_address_Address
@@ -419,17 +617,48 @@ typedef struct net_address_Address_t net_address_Address;
 #ifndef ZZ_FORWARD_carrier_peering_Class
 #define ZZ_FORWARD_carrier_peering_Class
 #endif
-#ifndef ZZ_FORWARD_carrier_peering_received
-#define ZZ_FORWARD_carrier_peering_received
+#ifndef ZZ_FORWARD_carrier_peering_Path
+#define ZZ_FORWARD_carrier_peering_Path
+struct carrier_peering_Path_t;
+typedef struct carrier_peering_Path_t carrier_peering_Path;
 #endif
-#ifndef ZZ_FORWARD_carrier_stream_fragmented_fn
-#define ZZ_FORWARD_carrier_stream_fragmented_fn
+#ifndef ZZ_FORWARD_carrier_peering_Peering
+#define ZZ_FORWARD_carrier_peering_Peering
+struct carrier_peering_Peering_t;
+typedef struct carrier_peering_Peering_t carrier_peering_Peering;
 #endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_Method
-#define ZZ_FORWARD_carrier_cmd_config_Method
+#ifndef ZZ_FORWARD_carrier_endpoint_poll
+#define ZZ_FORWARD_carrier_endpoint_poll
 #endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_auth_add_run_remote
-#define ZZ_FORWARD_carrier_cmd_config_auth_add_run_remote
+#ifndef ZZ_FORWARD_carrier_vault_toml_Mem
+#define ZZ_FORWARD_carrier_vault_toml_Mem
+struct carrier_vault_toml_Mem_t;
+typedef struct carrier_vault_toml_Mem_t carrier_vault_toml_Mem;
+#endif
+#ifndef ZZ_FORWARD_hpack_decoder_Entry
+#define ZZ_FORWARD_hpack_decoder_Entry
+struct hpack_decoder_Entry_t;
+typedef struct hpack_decoder_Entry_t hpack_decoder_Entry;
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_stream_exists
+#define ZZ_FORWARD_carrier_channel_stream_exists
+#endif
+#ifndef ZZ_FORWARD_net_address_OsAddress
+#define ZZ_FORWARD_net_address_OsAddress
+union net_address_OsAddress_t;
+typedef union net_address_OsAddress_t net_address_OsAddress;
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_incomming_close
+#define ZZ_FORWARD_carrier_stream_incomming_close
+#endif
+#ifndef ZZ_FORWARD_carrier_cipher_decrypt
+#define ZZ_FORWARD_carrier_cipher_decrypt
+#endif
+#ifndef ZZ_FORWARD__stdio_h_
+#define ZZ_FORWARD__stdio_h_
+#endif
+#ifndef ZZ_FORWARD_net_address_eq
+#define ZZ_FORWARD_net_address_eq
 #endif
 #ifndef ZZ_FORWARD_io_unix_Async
 #define ZZ_FORWARD_io_unix_Async
@@ -444,26 +673,32 @@ typedef struct io_unix_Async_100_t io_unix_Async_100;
 #ifndef ZZ_FORWARD_io_unix_make
 #define ZZ_FORWARD_io_unix_make
 #endif
-#ifndef ZZ_FORWARD_net_address_get_ip
-#define ZZ_FORWARD_net_address_get_ip
+#ifndef ZZ_FORWARD_carrier_cipher_encrypt_ad
+#define ZZ_FORWARD_carrier_cipher_encrypt_ad
 #endif
-#ifndef ZZ_FORWARD_carrier_sha256_HASHLEN
-#define ZZ_FORWARD_carrier_sha256_HASHLEN
+#ifndef ZZ_FORWARD_carrier_cmd_config_USAGE
+#define ZZ_FORWARD_carrier_cmd_config_USAGE
 #endif
-#ifndef ZZ_FORWARD_carrier_cipher_CipherState
-#define ZZ_FORWARD_carrier_cipher_CipherState
-struct carrier_cipher_CipherState_t;
-typedef struct carrier_cipher_CipherState_t carrier_cipher_CipherState;
+#ifndef ZZ_FORWARD_carrier_stream_close
+#define ZZ_FORWARD_carrier_stream_close
 #endif
-#ifndef ZZ_FORWARD_carrier_symmetric_SymmetricState
-#define ZZ_FORWARD_carrier_symmetric_SymmetricState
-struct carrier_symmetric_SymmetricState_t;
-typedef struct carrier_symmetric_SymmetricState_t carrier_symmetric_SymmetricState;
+#ifndef ZZ_FORWARD_slice_mut_slice_as_slice
+#define ZZ_FORWARD_slice_mut_slice_as_slice
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Address
-#define ZZ_FORWARD_carrier_identity_Address
-struct carrier_identity_Address_t;
-typedef struct carrier_identity_Address_t carrier_identity_Address;
+#ifndef ZZ_FORWARD__stdarg_h_
+#define ZZ_FORWARD__stdarg_h_
+#endif
+#ifndef ZZ_FORWARD_buffer_vformat
+#define ZZ_FORWARD_buffer_vformat
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_get_network
+#define ZZ_FORWARD_carrier_vault_ik_i_get_network
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_net_on_stream
+#define ZZ_FORWARD_carrier_cmd_config_net_on_stream
+#endif
+#ifndef ZZ_FORWARD_io_valid
+#define ZZ_FORWARD_io_valid
 #endif
 #ifndef ZZ_FORWARD_carrier_noise_Initiator
 #define ZZ_FORWARD_carrier_noise_Initiator
@@ -475,83 +710,38 @@ typedef struct carrier_noise_Initiator_t carrier_noise_Initiator;
 struct carrier_initiator_Initiator_t;
 typedef struct carrier_initiator_Initiator_t carrier_initiator_Initiator;
 #endif
-#ifndef ZZ_FORWARD_buffer_Buffer
-#define ZZ_FORWARD_buffer_Buffer
-struct buffer_Buffer_t;
-typedef struct buffer_Buffer_t buffer_Buffer;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_300
-#define ZZ_FORWARD_buffer_Buffer_300
-struct buffer_Buffer_300_t;
-typedef struct buffer_Buffer_300_t buffer_Buffer_300;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_1024
-#define ZZ_FORWARD_buffer_Buffer_1024
-struct buffer_Buffer_1024_t;
-typedef struct buffer_Buffer_1024_t buffer_Buffer_1024;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_2000
-#define ZZ_FORWARD_buffer_Buffer_2000
-struct buffer_Buffer_2000_t;
-typedef struct buffer_Buffer_2000_t buffer_Buffer_2000;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_1500
-#define ZZ_FORWARD_buffer_Buffer_1500
-struct buffer_Buffer_1500_t;
-typedef struct buffer_Buffer_1500_t buffer_Buffer_1500;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_20
-#define ZZ_FORWARD_buffer_Buffer_20
-struct buffer_Buffer_20_t;
-typedef struct buffer_Buffer_20_t buffer_Buffer_20;
-#endif
 #ifndef ZZ_FORWARD_carrier_endpoint_ConnectingState
 #define ZZ_FORWARD_carrier_endpoint_ConnectingState
 struct carrier_endpoint_ConnectingState_t;
 typedef struct carrier_endpoint_ConnectingState_t carrier_endpoint_ConnectingState;
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_Signature
-#define ZZ_FORWARD_carrier_identity_Signature
-struct carrier_identity_Signature_t;
-typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+#ifndef ZZ_FORWARD_io_wake_fn
+#define ZZ_FORWARD_io_wake_fn
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_list_authorizations
-#define ZZ_FORWARD_carrier_vault_toml_i_list_authorizations
+#ifndef ZZ_FORWARD_carrier_vault_ik_from_ik
+#define ZZ_FORWARD_carrier_vault_ik_from_ik
 #endif
-#ifndef ZZ_FORWARD_carrier_proto_ConfigResult
-#define ZZ_FORWARD_carrier_proto_ConfigResult
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_run_self
-#define ZZ_FORWARD_carrier_cmd_config_auth_list_run_self
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_open_with_headers
-#define ZZ_FORWARD_carrier_channel_open_with_headers
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_cleanup
-#define ZZ_FORWARD_carrier_channel_cleanup
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_Transfer
-#define ZZ_FORWARD_carrier_channel_Transfer
-struct carrier_channel_Transfer_t;
-typedef struct carrier_channel_Transfer_t carrier_channel_Transfer;
-#endif
-#ifndef ZZ_FORWARD_carrier_initiator_Move
-#define ZZ_FORWARD_carrier_initiator_Move
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_Identity
-#define ZZ_FORWARD_carrier_identity_Identity
-struct carrier_identity_Identity_t;
-typedef struct carrier_identity_Identity_t carrier_identity_Identity;
-#endif
-#ifndef ZZ_FORWARD_netio_udp_Socket
-#define ZZ_FORWARD_netio_udp_Socket
-struct netio_udp_Socket_t;
-typedef struct netio_udp_Socket_t netio_udp_Socket;
+#ifndef ZZ_FORWARD_io_Context
+#define ZZ_FORWARD_io_Context
+struct io_Context_t;
+typedef struct io_Context_t io_Context;
 #endif
 #ifndef ZZ_FORWARD_netio_tcp_Socket
 #define ZZ_FORWARD_netio_tcp_Socket
 struct netio_tcp_Socket_t;
 typedef struct netio_tcp_Socket_t netio_tcp_Socket;
+#endif
+#ifndef ZZ_FORWARD_carrier_router_shutdown
+#define ZZ_FORWARD_carrier_router_shutdown
+#endif
+#ifndef ZZ_FORWARD_toml_next
+#define ZZ_FORWARD_toml_next
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq_bytes
+#define ZZ_FORWARD_slice_slice_eq_bytes
+#endif
+#ifndef ZZ_FORWARD_buffer_append_slice
+#define ZZ_FORWARD_buffer_append_slice
 #endif
 #ifndef ZZ_FORWARD_io_write_fn
 #define ZZ_FORWARD_io_write_fn
@@ -564,15 +754,111 @@ typedef struct netio_tcp_Socket_t netio_tcp_Socket;
 struct io_Io_t;
 typedef struct io_Io_t io_Io;
 #endif
-#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
-#define ZZ_FORWARD_slice_mut_slice_MutSlice
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#ifndef ZZ_FORWARD_io_make_timeout_fn
+#define ZZ_FORWARD_io_make_timeout_fn
 #endif
-#ifndef ZZ_FORWARD_carrier_pq_Frame
-#define ZZ_FORWARD_carrier_pq_Frame
-struct carrier_pq_Frame_t;
-typedef struct carrier_pq_Frame_t carrier_pq_Frame;
+#ifndef ZZ_FORWARD__string_h_
+#define ZZ_FORWARD__string_h_
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_sign_local
+#define ZZ_FORWARD_carrier_vault_sign_local
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_join
+#define ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_join
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_run_self
+#define ZZ_FORWARD_carrier_cmd_config_auth_list_run_self
+#endif
+#ifndef ZZ_FORWARD_carrier_sync_Sync
+#define ZZ_FORWARD_carrier_sync_Sync
+struct carrier_sync_Sync_t;
+typedef struct carrier_sync_Sync_t carrier_sync_Sync;
+#endif
+#ifndef ZZ_FORWARD_carrier_sync_open
+#define ZZ_FORWARD_carrier_sync_open
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_initiate
+#define ZZ_FORWARD_carrier_noise_initiate
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_auth_add_run_remote
+#define ZZ_FORWARD_carrier_cmd_config_auth_add_run_remote
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_address_from_str
+#define ZZ_FORWARD_carrier_identity_address_from_str
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_del_authorization
+#define ZZ_FORWARD_carrier_vault_del_authorization
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Alias
+#define ZZ_FORWARD_carrier_identity_Alias
+struct carrier_identity_Alias_t;
+typedef struct carrier_identity_Alias_t carrier_identity_Alias;
+#endif
+#ifndef ZZ_FORWARD_net_address_to_buffer
+#define ZZ_FORWARD_net_address_to_buffer
+#endif
+#ifndef ZZ_FORWARD_protonerf_Decoder
+#define ZZ_FORWARD_protonerf_Decoder
+struct protonerf_Decoder_t;
+typedef struct protonerf_Decoder_t protonerf_Decoder;
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_set_network
+#define ZZ_FORWARD_carrier_vault_toml_i_set_network
+#endif
+#ifndef ZZ_FORWARD_buffer_push
+#define ZZ_FORWARD_buffer_push
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_shutdown
+#define ZZ_FORWARD_carrier_endpoint_shutdown
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_close
+#define ZZ_FORWARD_carrier_vault_toml_close
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_start
+#define ZZ_FORWARD_carrier_endpoint_start
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_from_carriertoml
+#define ZZ_FORWARD_carrier_vault_toml_i_from_carriertoml
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_open_with_headers
+#define ZZ_FORWARD_carrier_channel_open_with_headers
+#endif
+#ifndef ZZ_FORWARD_carrier_bootstrap_Bootstrap
+#define ZZ_FORWARD_carrier_bootstrap_Bootstrap
+struct carrier_bootstrap_Bootstrap_t;
+typedef struct carrier_bootstrap_Bootstrap_t carrier_bootstrap_Bootstrap;
+#endif
+#ifndef ZZ_FORWARD_carrier_bootstrap_close
+#define ZZ_FORWARD_carrier_bootstrap_close
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_RemoteOpFailed
+#define ZZ_FORWARD_carrier_cmd_config_RemoteOpFailed
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq
+#define ZZ_FORWARD_slice_slice_eq
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq_cstr
+#define ZZ_FORWARD_slice_slice_eq_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_cipher_decrypt_ad
+#define ZZ_FORWARD_carrier_cipher_decrypt_ad
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_Service
+#define ZZ_FORWARD_carrier_cmd_config_Service
+#endif
+#ifndef ZZ_FORWARD_err_backtrace
+#define ZZ_FORWARD_err_backtrace
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secret_generate
+#define ZZ_FORWARD_carrier_identity_secret_generate
+#endif
+#ifndef ZZ_FORWARD_netio_tcp_connect
+#define ZZ_FORWARD_netio_tcp_connect
+#endif
+#ifndef ZZ_FORWARD_netio_udp_Socket
+#define ZZ_FORWARD_netio_udp_Socket
+struct netio_udp_Socket_t;
+typedef struct netio_udp_Socket_t netio_udp_Socket;
 #endif
 #ifndef ZZ_FORWARD_carrier_pq_Q
 #define ZZ_FORWARD_carrier_pq_Q
@@ -583,16 +869,6 @@ typedef struct carrier_pq_Q_t carrier_pq_Q;
 #define ZZ_FORWARD_carrier_pq_Q_64
 struct carrier_pq_Q_64_t;
 typedef struct carrier_pq_Q_64_t carrier_pq_Q_64;
-#endif
-#ifndef ZZ_FORWARD_carrier_peering_Path
-#define ZZ_FORWARD_carrier_peering_Path
-struct carrier_peering_Path_t;
-typedef struct carrier_peering_Path_t carrier_peering_Path;
-#endif
-#ifndef ZZ_FORWARD_carrier_peering_Peering
-#define ZZ_FORWARD_carrier_peering_Peering
-struct carrier_peering_Peering_t;
-typedef struct carrier_peering_Peering_t carrier_peering_Peering;
 #endif
 #ifndef ZZ_FORWARD_carrier_channel_Channel
 #define ZZ_FORWARD_carrier_channel_Channel
@@ -612,27 +888,34 @@ typedef struct carrier_router_Router_t carrier_router_Router;
 union carrier_endpoint_StateM_t;
 typedef union carrier_endpoint_StateM_t carrier_endpoint_StateM;
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint
-#define ZZ_FORWARD_carrier_endpoint_Endpoint
-struct carrier_endpoint_Endpoint_t;
-typedef struct carrier_endpoint_Endpoint_t carrier_endpoint_Endpoint;
+#ifndef ZZ_FORWARD_hpack_decoder_Iterator
+#define ZZ_FORWARD_hpack_decoder_Iterator
+struct hpack_decoder_Iterator_t;
+typedef struct hpack_decoder_Iterator_t hpack_decoder_Iterator;
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint_1000
-#define ZZ_FORWARD_carrier_endpoint_Endpoint_1000
-struct carrier_endpoint_Endpoint_1000_t;
-typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
+#ifndef ZZ_FORWARD_hpack_decoder_decode_literal
+#define ZZ_FORWARD_hpack_decoder_decode_literal
 #endif
-#ifndef ZZ_FORWARD_err_make
-#define ZZ_FORWARD_err_make
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_set_network
+#define ZZ_FORWARD_carrier_vault_ik_i_set_network
+#endif
+#ifndef ZZ_FORWARD__poll_h_
+#define ZZ_FORWARD__poll_h_
+#endif
+#ifndef ZZ_FORWARD_buffer_cstr
+#define ZZ_FORWARD_buffer_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_common_on_printer_stream
+#define ZZ_FORWARD_carrier_cmd_common_on_printer_stream
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_cstr
+#define ZZ_FORWARD_slice_mut_slice_append_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_split
+#define ZZ_FORWARD_buffer_split
 #endif
 #ifndef ZZ_FORWARD_carrier_endpoint_from_home_carriertoml
 #define ZZ_FORWARD_carrier_endpoint_from_home_carriertoml
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_Service
-#define ZZ_FORWARD_carrier_cmd_config_Service
-#endif
-#ifndef ZZ_FORWARD_buffer_cstr_eq
-#define ZZ_FORWARD_buffer_cstr_eq
 #endif
 #ifndef ZZ_FORWARD_carrier_identity_identity_from_str
 #define ZZ_FORWARD_carrier_identity_identity_from_str
@@ -646,26 +929,11 @@ typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
 #ifndef ZZ_FORWARD_err_InvalidArgument
 #define ZZ_FORWARD_err_InvalidArgument
 #endif
-#ifndef ZZ_FORWARD__stdio_h_
-#define ZZ_FORWARD__stdio_h_
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_USAGE
-#define ZZ_FORWARD_carrier_cmd_config_USAGE
-#endif
 #ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_run_remote
 #define ZZ_FORWARD_carrier_cmd_config_auth_list_run_remote
 #endif
 #ifndef ZZ_FORWARD_carrier_cmd_config_net_run_self_net_get
 #define ZZ_FORWARD_carrier_cmd_config_net_run_self_net_get
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_get
-#define ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_get
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_to_str
-#define ZZ_FORWARD_carrier_identity_identity_to_str
-#endif
-#ifndef ZZ_FORWARD__string_h_
-#define ZZ_FORWARD__string_h_
 #endif
 #ifndef ZZ_FORWARD_carrier_cmd_config_auth_add_run_self
 #define ZZ_FORWARD_carrier_cmd_config_auth_add_run_self
@@ -676,68 +944,80 @@ typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
 #ifndef ZZ_FORWARD_carrier_cmd_config_net_run_self_net_join
 #define ZZ_FORWARD_carrier_cmd_config_net_run_self_net_join
 #endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_join
-#define ZZ_FORWARD_carrier_cmd_config_net_run_remote_net_join
-#endif
 #ifndef ZZ_FORWARD_carrier_cmd_config_cmd
 #define ZZ_FORWARD_carrier_cmd_config_cmd
 #endif
-#ifndef ZZ_FORWARD_buffer_copy_slice
-#define ZZ_FORWARD_buffer_copy_slice
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_sign_local
+#define ZZ_FORWARD_carrier_vault_ik_i_sign_local
 #endif
-#ifndef ZZ_FORWARD_io_read_bytes
-#define ZZ_FORWARD_io_read_bytes
+#ifndef ZZ_FORWARD_carrier_channel_push
+#define ZZ_FORWARD_carrier_channel_push
 #endif
-#ifndef ZZ_FORWARD_pool_free_bytes
-#define ZZ_FORWARD_pool_free_bytes
+#ifndef ZZ_FORWARD_carrier_endpoint_State
+#define ZZ_FORWARD_carrier_endpoint_State
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_list_authorizations
-#define ZZ_FORWARD_carrier_vault_list_authorizations
+#ifndef ZZ_FORWARD_pool_continuous
+#define ZZ_FORWARD_pool_continuous
 #endif
-#ifndef ZZ_FORWARD_io_read
-#define ZZ_FORWARD_io_read
+#ifndef ZZ_FORWARD_pool_free
+#define ZZ_FORWARD_pool_free
 #endif
-#ifndef ZZ_FORWARD_buffer_cstr
-#define ZZ_FORWARD_buffer_cstr
+#ifndef ZZ_FORWARD_net_address_set_ip
+#define ZZ_FORWARD_net_address_set_ip
 #endif
-#ifndef ZZ_FORWARD_net_address_eq
-#define ZZ_FORWARD_net_address_eq
+#ifndef ZZ_FORWARD_carrier_endpoint_do_not_move
+#define ZZ_FORWARD_carrier_endpoint_do_not_move
 #endif
-#ifndef ZZ_FORWARD_pool_malloc
-#define ZZ_FORWARD_pool_malloc
+#ifndef ZZ_FORWARD_carrier_vault_broker_count
+#define ZZ_FORWARD_carrier_vault_broker_count
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_sign_local
-#define ZZ_FORWARD_carrier_vault_toml_i_sign_local
+#ifndef ZZ_FORWARD_buffer_slen
+#define ZZ_FORWARD_buffer_slen
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_get_local_identity
+#define ZZ_FORWARD_carrier_vault_get_local_identity
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_add_authorization
+#define ZZ_FORWARD_carrier_vault_ik_i_add_authorization
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_slice
+#define ZZ_FORWARD_slice_mut_slice_append_slice
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_from_carriertoml
+#define ZZ_FORWARD_carrier_vault_toml_from_carriertoml
+#endif
+#ifndef ZZ_FORWARD_net_address_get_ip
+#define ZZ_FORWARD_net_address_get_ip
+#endif
+#ifndef ZZ_FORWARD_netio_tcp_send
+#define ZZ_FORWARD_netio_tcp_send
 #endif
 #ifndef ZZ_FORWARD_net_address_none
 #define ZZ_FORWARD_net_address_none
 #endif
-#ifndef ZZ_FORWARD_io_make_timeout_fn
-#define ZZ_FORWARD_io_make_timeout_fn
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_get_local_identity
+#define ZZ_FORWARD_carrier_vault_ik_i_get_local_identity
 #endif
-#ifndef ZZ_FORWARD_carrier_stream_close
-#define ZZ_FORWARD_carrier_stream_close
+#ifndef ZZ_FORWARD_carrier_symmetric_mix_key
+#define ZZ_FORWARD_carrier_symmetric_mix_key
 #endif
-#ifndef ZZ_FORWARD_slice_mut_slice_integrity
-#define ZZ_FORWARD_slice_mut_slice_integrity
+#ifndef ZZ_FORWARD_err_fail
+#define ZZ_FORWARD_err_fail
 #endif
-#ifndef ZZ_FORWARD_slice_mut_slice_make
-#define ZZ_FORWARD_slice_mut_slice_make
+#ifndef ZZ_FORWARD_carrier_endpoint_from_vault
+#define ZZ_FORWARD_carrier_endpoint_from_vault
 #endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push
-#define ZZ_FORWARD_slice_mut_slice_push
+#ifndef ZZ_FORWARD_net_address_from_str_ipv6
+#define ZZ_FORWARD_net_address_from_str_ipv6
 #endif
-#ifndef ZZ_FORWARD_carrier_channel_shutdown
-#define ZZ_FORWARD_carrier_channel_shutdown
+#ifndef ZZ_FORWARD_io_make_channel_fn
+#define ZZ_FORWARD_io_make_channel_fn
 #endif
-#ifndef ZZ_FORWARD_carrier_cipher_encrypt
-#define ZZ_FORWARD_carrier_cipher_encrypt
+#ifndef ZZ_FORWARD_io_Ready
+#define ZZ_FORWARD_io_Ready
 #endif
 #ifndef ZZ_FORWARD_io_select_fn
 #define ZZ_FORWARD_io_select_fn
-#endif
-#ifndef ZZ_FORWARD_io_wake_fn
-#define ZZ_FORWARD_io_wake_fn
 #endif
 #ifndef ZZ_FORWARD_io_wait_fn
 #define ZZ_FORWARD_io_wait_fn
@@ -747,8 +1027,227 @@ typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
 struct io_Async_t;
 typedef struct io_Async_t io_Async;
 #endif
-#ifndef ZZ_FORWARD__poll_h_
-#define ZZ_FORWARD__poll_h_
+#ifndef ZZ_FORWARD_buffer_ends_with_cstr
+#define ZZ_FORWARD_buffer_ends_with_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_sync_close
+#define ZZ_FORWARD_carrier_sync_close
+#endif
+#ifndef ZZ_FORWARD_protonerf_Value
+#define ZZ_FORWARD_protonerf_Value
+union protonerf_Value_t;
+typedef union protonerf_Value_t protonerf_Value;
+#endif
+#ifndef ZZ_FORWARD_carrier_sha256_Sha256
+#define ZZ_FORWARD_carrier_sha256_Sha256
+struct carrier_sha256_Sha256_t;
+typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
+#endif
+#ifndef ZZ_FORWARD_carrier_sha256_init
+#define ZZ_FORWARD_carrier_sha256_init
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_wrapdec
+#define ZZ_FORWARD_carrier_pq_wrapdec
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_identity_to_string
+#define ZZ_FORWARD_carrier_identity_identity_to_string
+#endif
+#ifndef ZZ_FORWARD_protonerf_Field
+#define ZZ_FORWARD_protonerf_Field
+struct protonerf_Field_t;
+typedef struct protonerf_Field_t protonerf_Field;
+#endif
+#ifndef ZZ_FORWARD_protonerf_next
+#define ZZ_FORWARD_protonerf_next
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_poll
+#define ZZ_FORWARD_carrier_channel_poll
+#endif
+#ifndef ZZ_FORWARD_netio_udp_bind
+#define ZZ_FORWARD_netio_udp_bind
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_close_fn
+#define ZZ_FORWARD_carrier_stream_close_fn
+#endif
+#ifndef ZZ_FORWARD_pool_iterator
+#define ZZ_FORWARD_pool_iterator
+#endif
+#ifndef ZZ_FORWARD_pool_each
+#define ZZ_FORWARD_pool_each
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_FrameType
+#define ZZ_FORWARD_carrier_channel_FrameType
+#endif
+#ifndef ZZ_FORWARD_hpack_decoder_integrity
+#define ZZ_FORWARD_hpack_decoder_integrity
+#endif
+#ifndef ZZ_FORWARD_hpack_decoder_decode
+#define ZZ_FORWARD_hpack_decoder_decode
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_send
+#define ZZ_FORWARD_carrier_pq_send
+#endif
+#ifndef ZZ_FORWARD_buffer_starts_with_cstr
+#define ZZ_FORWARD_buffer_starts_with_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_substr
+#define ZZ_FORWARD_buffer_substr
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_register_stream
+#define ZZ_FORWARD_carrier_endpoint_register_stream
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_sign_principal
+#define ZZ_FORWARD_carrier_vault_sign_principal
+#endif
+#ifndef ZZ_FORWARD_io_readline
+#define ZZ_FORWARD_io_readline
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_Transfer
+#define ZZ_FORWARD_carrier_channel_Transfer
+struct carrier_channel_Transfer_t;
+typedef struct carrier_channel_Transfer_t carrier_channel_Transfer;
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_from_transfer
+#define ZZ_FORWARD_carrier_channel_from_transfer
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_ack
+#define ZZ_FORWARD_carrier_channel_ack
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_receive
+#define ZZ_FORWARD_carrier_noise_receive
+#endif
+#ifndef ZZ_FORWARD_buffer_append_cstr
+#define ZZ_FORWARD_buffer_append_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_sha256_finish
+#define ZZ_FORWARD_carrier_sha256_finish
+#endif
+#ifndef ZZ_FORWARD_carrier_sync_open_with_headers
+#define ZZ_FORWARD_carrier_sync_open_with_headers
+#endif
+#ifndef ZZ_FORWARD_hpack_decoder_decode_integer
+#define ZZ_FORWARD_hpack_decoder_decode_integer
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_cluster_target
+#define ZZ_FORWARD_carrier_endpoint_cluster_target
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push64
+#define ZZ_FORWARD_slice_mut_slice_push64
+#endif
+#ifndef ZZ_FORWARD_carrier_connect_start
+#define ZZ_FORWARD_carrier_connect_start
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_auth_add_on_close
+#define ZZ_FORWARD_carrier_cmd_config_auth_add_on_close
+#endif
+#ifndef ZZ_FORWARD_carrier_cipher_encrypt
+#define ZZ_FORWARD_carrier_cipher_encrypt
+#endif
+#ifndef ZZ_FORWARD_carrier_noise_complete
+#define ZZ_FORWARD_carrier_noise_complete
+#endif
+#ifndef ZZ_FORWARD_buffer_fgets
+#define ZZ_FORWARD_buffer_fgets
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_do_state_connect
+#define ZZ_FORWARD_carrier_endpoint_do_state_connect
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_from_secretkit
+#define ZZ_FORWARD_carrier_endpoint_from_secretkit
+#endif
+#ifndef ZZ_FORWARD_buffer_eq_cstr
+#define ZZ_FORWARD_buffer_eq_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_sign_principal
+#define ZZ_FORWARD_carrier_vault_toml_i_sign_principal
+#endif
+#ifndef ZZ_FORWARD_time_to_seconds
+#define ZZ_FORWARD_time_to_seconds
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_native
+#define ZZ_FORWARD_carrier_endpoint_native
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_network_secret
+#define ZZ_FORWARD_carrier_vault_toml_i_get_network_secret
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_common_print_identity
+#define ZZ_FORWARD_carrier_cmd_common_print_identity
+#endif
+#ifndef ZZ_FORWARD_carrier_channel_cleanup
+#define ZZ_FORWARD_carrier_channel_cleanup
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_stream_fn
+#define ZZ_FORWARD_carrier_stream_stream_fn
+#endif
+#ifndef ZZ_FORWARD_io_timeout
+#define ZZ_FORWARD_io_timeout
+#endif
+#ifndef ZZ_FORWARD_protonerf_decode
+#define ZZ_FORWARD_protonerf_decode
+#endif
+#ifndef ZZ_FORWARD_protonerf_Field
+#define ZZ_FORWARD_protonerf_Field
+struct protonerf_Field_t;
+typedef struct protonerf_Field_t protonerf_Field;
+#endif
+#ifndef ZZ_FORWARD_log_info
+#define ZZ_FORWARD_log_info
+#endif
+#ifndef ZZ_FORWARD_carrier_cmd_config_on_result_stream
+#define ZZ_FORWARD_carrier_cmd_config_on_result_stream
+#endif
+#ifndef ZZ_FORWARD_carrier_symmetric_init
+#define ZZ_FORWARD_carrier_symmetric_init
+#endif
+#ifndef ZZ_FORWARD_netio_udp_recvfrom
+#define ZZ_FORWARD_netio_udp_recvfrom
+#endif
+#ifndef ZZ_FORWARD_carrier_pq_alloc
+#define ZZ_FORWARD_carrier_pq_alloc
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_alias_from_str
+#define ZZ_FORWARD_carrier_identity_alias_from_str
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_get_principal_identity
+#define ZZ_FORWARD_carrier_vault_get_principal_identity
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_Signature
+#define ZZ_FORWARD_carrier_identity_Signature
+struct carrier_identity_Signature_t;
+typedef struct carrier_identity_Signature_t carrier_identity_Signature;
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_incomming_stream
+#define ZZ_FORWARD_carrier_stream_incomming_stream
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push
+#define ZZ_FORWARD_slice_mut_slice_push
+#endif
+#ifndef ZZ_FORWARD_carrier_router_disconnect
+#define ZZ_FORWARD_carrier_router_disconnect
+#endif
+#ifndef ZZ_FORWARD_slice_slice_make
+#define ZZ_FORWARD_slice_slice_make
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_close
+#define ZZ_FORWARD_carrier_vault_close
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_bytes
+#define ZZ_FORWARD_buffer_copy_bytes
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_add_authorization
+#define ZZ_FORWARD_carrier_vault_toml_i_add_authorization
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_list_authorizations
+#define ZZ_FORWARD_carrier_vault_list_authorizations
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secretkit_generate
+#define ZZ_FORWARD_carrier_identity_secretkit_generate
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_address_from_cstr
+#define ZZ_FORWARD_carrier_identity_address_from_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_router_close
+#define ZZ_FORWARD_carrier_router_close
 #endif
 #ifndef ZZ_FORWARD_io_unix_Async
 #define ZZ_FORWARD_io_unix_Async
@@ -759,9 +1258,6 @@ typedef struct io_unix_Async_t io_unix_Async;
 #define ZZ_FORWARD_io_unix_Async_100
 struct io_unix_Async_100_t;
 typedef struct io_unix_Async_100_t io_unix_Async_100;
-#endif
-#ifndef ZZ_FORWARD_carrier_connect_disconnect_t
-#define ZZ_FORWARD_carrier_connect_disconnect_t
 #endif
 #ifndef ZZ_FORWARD_carrier_connect_connect_t
 #define ZZ_FORWARD_carrier_connect_connect_t
@@ -776,129 +1272,23 @@ typedef struct carrier_connect_Connect_t carrier_connect_Connect;
 struct carrier_sync_Sync_t;
 typedef struct carrier_sync_Sync_t carrier_sync_Sync;
 #endif
-#ifndef ZZ_FORWARD_buffer_split
-#define ZZ_FORWARD_buffer_split
+#ifndef ZZ_FORWARD_carrier_pq_ack
+#define ZZ_FORWARD_carrier_pq_ack
 #endif
-#ifndef ZZ_FORWARD_slice_slice_make
-#define ZZ_FORWARD_slice_slice_make
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_list_authorizations
+#define ZZ_FORWARD_carrier_vault_toml_i_list_authorizations
 #endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push16
-#define ZZ_FORWARD_slice_mut_slice_push16
+#ifndef ZZ_FORWARD_hpack_decoder_next
+#define ZZ_FORWARD_hpack_decoder_next
 #endif
-#ifndef ZZ_FORWARD_carrier_channel_send_close_frame
-#define ZZ_FORWARD_carrier_channel_send_close_frame
+#ifndef ZZ_FORWARD_carrier_channel_clean_closed
+#define ZZ_FORWARD_carrier_channel_clean_closed
 #endif
-#ifndef ZZ_FORWARD_net_address_from_cstr
-#define ZZ_FORWARD_net_address_from_cstr
+#ifndef ZZ_FORWARD_carrier_pq_clear
+#define ZZ_FORWARD_carrier_pq_clear
 #endif
-#ifndef ZZ_FORWARD_toml_push
-#define ZZ_FORWARD_toml_push
-#endif
-#ifndef ZZ_FORWARD_log_info
-#define ZZ_FORWARD_log_info
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_common_on_stream_want_header_200
-#define ZZ_FORWARD_carrier_cmd_common_on_stream_want_header_200
-#endif
-#ifndef ZZ_FORWARD_protonerf_decode
-#define ZZ_FORWARD_protonerf_decode
-#endif
-#ifndef ZZ_FORWARD_protonerf_Value
-#define ZZ_FORWARD_protonerf_Value
-union protonerf_Value_t;
-typedef union protonerf_Value_t protonerf_Value;
-#endif
-#ifndef ZZ_FORWARD_protonerf_Field
-#define ZZ_FORWARD_protonerf_Field
-struct protonerf_Field_t;
-typedef struct protonerf_Field_t protonerf_Field;
-#endif
-#ifndef ZZ_FORWARD_err_fail
-#define ZZ_FORWARD_err_fail
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_RemoteOpFailed
-#define ZZ_FORWARD_carrier_cmd_config_RemoteOpFailed
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_on_result_stream
-#define ZZ_FORWARD_carrier_cmd_config_on_result_stream
-#endif
-#ifndef ZZ_FORWARD_io_unix_select_fd
-#define ZZ_FORWARD_io_unix_select_fd
-#endif
-#ifndef ZZ_FORWARD_carrier_sync_iwait
-#define ZZ_FORWARD_carrier_sync_iwait
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_from_cstr
-#define ZZ_FORWARD_carrier_identity_identity_from_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_start
-#define ZZ_FORWARD_carrier_endpoint_start
-#endif
-#ifndef ZZ_FORWARD_carrier_connect_start
-#define ZZ_FORWARD_carrier_connect_start
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_common_print_identity
-#define ZZ_FORWARD_carrier_cmd_common_print_identity
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_load_from_toml_authorize_iter
-#define ZZ_FORWARD_carrier_vault_toml_load_from_toml_authorize_iter
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_get_network
-#define ZZ_FORWARD_carrier_vault_get_network
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_do_not_move
-#define ZZ_FORWARD_carrier_endpoint_do_not_move
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_list_authorizations
-#define ZZ_FORWARD_carrier_vault_ik_i_list_authorizations
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_stream_fn
-#define ZZ_FORWARD_carrier_stream_stream_fn
-#endif
-#ifndef ZZ_FORWARD_io_write_cstr
-#define ZZ_FORWARD_io_write_cstr
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_bytes
-#define ZZ_FORWARD_slice_mut_slice_append_bytes
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_Alias
-#define ZZ_FORWARD_carrier_identity_Alias
-struct carrier_identity_Alias_t;
-typedef struct carrier_identity_Alias_t carrier_identity_Alias;
-#endif
-#ifndef ZZ_FORWARD_carrier_symmetric_split
-#define ZZ_FORWARD_carrier_symmetric_split
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_authorize_open_stream_cb_s
-#define ZZ_FORWARD_carrier_vault_authorize_open_stream_cb_s
-struct carrier_vault_authorize_open_stream_cb_s_t;
-typedef struct carrier_vault_authorize_open_stream_cb_s_t carrier_vault_authorize_open_stream_cb_s;
-#endif
-#ifndef ZZ_FORWARD_carrier_sha256_Sha256
-#define ZZ_FORWARD_carrier_sha256_Sha256
-struct carrier_sha256_Sha256_t;
-typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
-#endif
-#ifndef ZZ_FORWARD_carrier_sha256_init
-#define ZZ_FORWARD_carrier_sha256_init
-#endif
-#ifndef ZZ_FORWARD_err_backtrace
-#define ZZ_FORWARD_err_backtrace
-#endif
-#ifndef ZZ_FORWARD_carrier_sync_open
-#define ZZ_FORWARD_carrier_sync_open
-#endif
-#ifndef ZZ_FORWARD_err_eprintf
-#define ZZ_FORWARD_err_eprintf
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push64
-#define ZZ_FORWARD_slice_mut_slice_push64
-#endif
-#ifndef ZZ_FORWARD_buffer_substr
-#define ZZ_FORWARD_buffer_substr
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_incomming_close
-#define ZZ_FORWARD_carrier_stream_incomming_close
+#ifndef ZZ_FORWARD_io_close
+#define ZZ_FORWARD_io_close
 #endif
 #ifndef ZZ_FORWARD_err_Err
 #define ZZ_FORWARD_err_Err
@@ -915,659 +1305,504 @@ typedef struct err_Err_200_t err_Err_200;
 struct err_Err_5000_t;
 typedef struct err_Err_5000_t err_Err_5000;
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_network
-#define ZZ_FORWARD_carrier_vault_toml_i_get_network
-#endif
-#ifndef ZZ_FORWARD_carrier_initiator_complete
-#define ZZ_FORWARD_carrier_initiator_complete
-#endif
-#ifndef ZZ_FORWARD_carrier_bootstrap_Bootstrap
-#define ZZ_FORWARD_carrier_bootstrap_Bootstrap
-struct carrier_bootstrap_Bootstrap_t;
-typedef struct carrier_bootstrap_Bootstrap_t carrier_bootstrap_Bootstrap;
-#endif
-#ifndef ZZ_FORWARD_carrier_bootstrap_poll
-#define ZZ_FORWARD_carrier_bootstrap_poll
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_CheckExistingAuthorizationState
-#define ZZ_FORWARD_carrier_vault_CheckExistingAuthorizationState
-struct carrier_vault_CheckExistingAuthorizationState_t;
-typedef struct carrier_vault_CheckExistingAuthorizationState_t carrier_vault_CheckExistingAuthorizationState;
-#endif
-#ifndef ZZ_FORWARD_io_await
-#define ZZ_FORWARD_io_await
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secretkit_generate
-#define ZZ_FORWARD_carrier_identity_secretkit_generate
-#endif
-#ifndef ZZ_FORWARD__stdarg_h_
-#define ZZ_FORWARD__stdarg_h_
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_add_authorization
-#define ZZ_FORWARD_carrier_vault_ik_i_add_authorization
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secretkit_from_str
-#define ZZ_FORWARD_carrier_identity_secretkit_from_str
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_Stream
-#define ZZ_FORWARD_carrier_stream_Stream
-struct carrier_stream_Stream_t;
-typedef struct carrier_stream_Stream_t carrier_stream_Stream;
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_Authorize
-#define ZZ_FORWARD_carrier_vault_toml_Authorize
-struct carrier_vault_toml_Authorize_t;
-typedef struct carrier_vault_toml_Authorize_t carrier_vault_toml_Authorize;
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_win32
-#define ZZ_FORWARD_err_fail_with_win32
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_do_poll
-#define ZZ_FORWARD_carrier_stream_do_poll
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_from_carriertoml
-#define ZZ_FORWARD_carrier_vault_toml_from_carriertoml
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_get_network_secret
-#define ZZ_FORWARD_carrier_vault_get_network_secret
-#endif
-#ifndef ZZ_FORWARD_io_readline
-#define ZZ_FORWARD_io_readline
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_principal_identity
-#define ZZ_FORWARD_carrier_vault_toml_i_get_principal_identity
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_get_network
-#define ZZ_FORWARD_carrier_vault_ik_i_get_network
-#endif
-#ifndef ZZ_FORWARD_buffer_pop
-#define ZZ_FORWARD_buffer_pop
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_errno
-#define ZZ_FORWARD_err_fail_with_errno
-#endif
-#ifndef ZZ_FORWARD_carrier_cipher_decrypt_ad
-#define ZZ_FORWARD_carrier_cipher_decrypt_ad
-#endif
-#ifndef ZZ_FORWARD_buffer_append_bytes
-#define ZZ_FORWARD_buffer_append_bytes
-#endif
-#ifndef ZZ_FORWARD_net_address_ip_to_buffer
-#define ZZ_FORWARD_net_address_ip_to_buffer
-#endif
-#ifndef ZZ_FORWARD_buffer_fgets
-#define ZZ_FORWARD_buffer_fgets
-#endif
-#ifndef ZZ_FORWARD_carrier_sync_connect
-#define ZZ_FORWARD_carrier_sync_connect
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_window
-#define ZZ_FORWARD_carrier_pq_window
-#endif
-#ifndef ZZ_FORWARD_time_more_than
-#define ZZ_FORWARD_time_more_than
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_slice
-#define ZZ_FORWARD_slice_mut_slice_append_slice
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_do_complete
-#define ZZ_FORWARD_carrier_endpoint_do_complete
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_register_stream
-#define ZZ_FORWARD_carrier_endpoint_register_stream
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_authorize_connect
-#define ZZ_FORWARD_carrier_vault_authorize_connect
-#endif
-#ifndef ZZ_FORWARD_carrier_router_shutdown
-#define ZZ_FORWARD_carrier_router_shutdown
-#endif
-#ifndef ZZ_FORWARD_err_ignore
-#define ZZ_FORWARD_err_ignore
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_set_network
-#define ZZ_FORWARD_carrier_vault_set_network
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_do_state_connect
-#define ZZ_FORWARD_carrier_endpoint_do_state_connect
-#endif
-#ifndef ZZ_FORWARD_protonerf_next
-#define ZZ_FORWARD_protonerf_next
-#endif
-#ifndef ZZ_FORWARD_carrier_sync_wait
-#define ZZ_FORWARD_carrier_sync_wait
-#endif
-#ifndef ZZ_FORWARD_slice_slice_eq_cstr
-#define ZZ_FORWARD_slice_slice_eq_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_bootstrap_bootstrap
-#define ZZ_FORWARD_carrier_bootstrap_bootstrap
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_integrity
-#define ZZ_FORWARD_hpack_decoder_integrity
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_wrapinc
-#define ZZ_FORWARD_carrier_pq_wrapinc
-#endif
-#ifndef ZZ_FORWARD_carrier_router_close
-#define ZZ_FORWARD_carrier_router_close
-#endif
-#ifndef ZZ_FORWARD_buffer_format
-#define ZZ_FORWARD_buffer_format
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_from_carriertoml_and_secret
-#define ZZ_FORWARD_carrier_vault_toml_from_carriertoml_and_secret
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_clear
-#define ZZ_FORWARD_carrier_pq_clear
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_net_on_stream
-#define ZZ_FORWARD_carrier_cmd_config_net_on_stream
-#endif
-#ifndef ZZ_FORWARD_buffer_as_mut_slice
-#define ZZ_FORWARD_buffer_as_mut_slice
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_next
-#define ZZ_FORWARD_hpack_decoder_next
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_network_secret
-#define ZZ_FORWARD_carrier_vault_toml_i_get_network_secret
-#endif
-#ifndef ZZ_FORWARD_carrier_sync_open_with_headers
-#define ZZ_FORWARD_carrier_sync_open_with_headers
-#endif
-#ifndef ZZ_FORWARD_io_write
-#define ZZ_FORWARD_io_write
-#endif
-#ifndef ZZ_FORWARD_io_read_slice
-#define ZZ_FORWARD_io_read_slice
-#endif
-#ifndef ZZ_FORWARD_time_to_seconds
-#define ZZ_FORWARD_time_to_seconds
-#endif
-#ifndef ZZ_FORWARD_pool_iterator
-#define ZZ_FORWARD_pool_iterator
-#endif
-#ifndef ZZ_FORWARD_pool_each
-#define ZZ_FORWARD_pool_each
-#endif
-#ifndef ZZ_FORWARD_buffer_copy_bytes
-#define ZZ_FORWARD_buffer_copy_bytes
-#endif
-#ifndef ZZ_FORWARD_net_address_set_port
-#define ZZ_FORWARD_net_address_set_port
-#endif
-#ifndef ZZ_FORWARD_carrier_symmetric_encrypt_and_mix_hash
-#define ZZ_FORWARD_carrier_symmetric_encrypt_and_mix_hash
-#endif
-#ifndef ZZ_FORWARD_net_address_from_str
-#define ZZ_FORWARD_net_address_from_str
-#endif
-#ifndef ZZ_FORWARD_buffer_as_slice
-#define ZZ_FORWARD_buffer_as_slice
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_set_network
-#define ZZ_FORWARD_carrier_vault_ik_i_set_network
-#endif
-#ifndef ZZ_FORWARD_io_unix_reset
-#define ZZ_FORWARD_io_unix_reset
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_decode_literal
-#define ZZ_FORWARD_hpack_decoder_decode_literal
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_del_authorization
-#define ZZ_FORWARD_carrier_vault_del_authorization
-#endif
-#ifndef ZZ_FORWARD_carrier_connect_on_stream
-#define ZZ_FORWARD_carrier_connect_on_stream
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_open_fn
-#define ZZ_FORWARD_carrier_stream_open_fn
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_get_local_identity
-#define ZZ_FORWARD_carrier_vault_ik_i_get_local_identity
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_shutdown
-#define ZZ_FORWARD_carrier_endpoint_shutdown
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_i_sign_local
-#define ZZ_FORWARD_carrier_vault_ik_i_sign_local
-#endif
-#ifndef ZZ_FORWARD_carrier_router_push
-#define ZZ_FORWARD_carrier_router_push
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_broker_count
-#define ZZ_FORWARD_carrier_vault_broker_count
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_identity_to_string
-#define ZZ_FORWARD_carrier_identity_identity_to_string
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_broker
-#define ZZ_FORWARD_carrier_endpoint_broker
-#endif
-#ifndef ZZ_FORWARD_err_to_str
-#define ZZ_FORWARD_err_to_str
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_get_local_identity
-#define ZZ_FORWARD_carrier_vault_get_local_identity
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_close
-#define ZZ_FORWARD_carrier_vault_toml_close
-#endif
-#ifndef ZZ_FORWARD_buffer_slen
-#define ZZ_FORWARD_buffer_slen
-#endif
-#ifndef ZZ_FORWARD_carrier_connect_on_close
-#define ZZ_FORWARD_carrier_connect_on_close
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_poll
-#define ZZ_FORWARD_carrier_channel_poll
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_from_carriertoml
-#define ZZ_FORWARD_carrier_endpoint_from_carriertoml
-#endif
-#ifndef ZZ_FORWARD_net_address_from_buffer
-#define ZZ_FORWARD_net_address_from_buffer
-#endif
-#ifndef ZZ_FORWARD_carrier_symmetric_decrypt_and_mix_hash
-#define ZZ_FORWARD_carrier_symmetric_decrypt_and_mix_hash
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_authorize_open_stream
-#define ZZ_FORWARD_carrier_vault_authorize_open_stream
-#endif
-#ifndef ZZ_FORWARD_carrier_cipher_init
-#define ZZ_FORWARD_carrier_cipher_init
-#endif
-#ifndef ZZ_FORWARD_carrier_sha256_finish
-#define ZZ_FORWARD_carrier_sha256_finish
-#endif
-#ifndef ZZ_FORWARD_io_close
-#define ZZ_FORWARD_io_close
-#endif
-#ifndef ZZ_FORWARD_toml_MAX_DEPTH
-#define ZZ_FORWARD_toml_MAX_DEPTH
-#endif
-#ifndef ZZ_FORWARD_toml_Parser
-#define ZZ_FORWARD_toml_Parser
-struct toml_Parser_t;
-typedef struct toml_Parser_t toml_Parser;
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_stream_exists
-#define ZZ_FORWARD_carrier_channel_stream_exists
-#endif
-#ifndef ZZ_FORWARD_protonerf_Decoder
-#define ZZ_FORWARD_protonerf_Decoder
-struct protonerf_Decoder_t;
-typedef struct protonerf_Decoder_t protonerf_Decoder;
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_FrameType
-#define ZZ_FORWARD_carrier_channel_FrameType
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_from_transfer
-#define ZZ_FORWARD_carrier_channel_from_transfer
-#endif
-#ifndef ZZ_FORWARD_net_address_get_port
-#define ZZ_FORWARD_net_address_get_port
-#endif
-#ifndef ZZ_FORWARD_buffer_append_slice
-#define ZZ_FORWARD_buffer_append_slice
-#endif
-#ifndef ZZ_FORWARD_buffer_starts_with_cstr
-#define ZZ_FORWARD_buffer_starts_with_cstr
-#endif
-#ifndef ZZ_FORWARD_slice_slice_eq_bytes
-#define ZZ_FORWARD_slice_slice_eq_bytes
-#endif
-#ifndef ZZ_FORWARD_toml_parser
-#define ZZ_FORWARD_toml_parser
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_cstr
-#define ZZ_FORWARD_slice_mut_slice_append_cstr
-#endif
-#ifndef ZZ_FORWARD__stdarg_h_
-#define ZZ_FORWARD__stdarg_h_
-#endif
-#ifndef ZZ_FORWARD_buffer_vformat
-#define ZZ_FORWARD_buffer_vformat
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_address_from_cstr
-#define ZZ_FORWARD_carrier_identity_address_from_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_generate
-#define ZZ_FORWARD_carrier_identity_secret_generate
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_signature_from_str
-#define ZZ_FORWARD_carrier_identity_signature_from_str
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_poll
-#define ZZ_FORWARD_carrier_endpoint_poll
-#endif
-#ifndef ZZ_FORWARD_net_address_valid
-#define ZZ_FORWARD_net_address_valid
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_from_home_carriertoml
-#define ZZ_FORWARD_carrier_vault_toml_from_home_carriertoml
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_as_slice
-#define ZZ_FORWARD_slice_mut_slice_as_slice
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_on_close
-#define ZZ_FORWARD_carrier_cmd_config_auth_list_on_close
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_stream
-#define ZZ_FORWARD_carrier_stream_stream
-#endif
-#ifndef ZZ_FORWARD_carrier_cipher_encrypt_ad
-#define ZZ_FORWARD_carrier_cipher_encrypt_ad
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_poll_fn
-#define ZZ_FORWARD_carrier_stream_poll_fn
-#endif
-#ifndef ZZ_FORWARD_netio_tcp_recv
-#define ZZ_FORWARD_netio_tcp_recv
-#endif
 #ifndef ZZ_FORWARD_err_fail_with_system_error
 #define ZZ_FORWARD_err_fail_with_system_error
 #endif
-#ifndef ZZ_FORWARD_carrier_bootstrap_Bootstrap
-#define ZZ_FORWARD_carrier_bootstrap_Bootstrap
-struct carrier_bootstrap_Bootstrap_t;
-typedef struct carrier_bootstrap_Bootstrap_t carrier_bootstrap_Bootstrap;
+#ifndef ZZ_FORWARD_buffer_clear
+#define ZZ_FORWARD_buffer_clear
 #endif
-#ifndef ZZ_FORWARD_carrier_bootstrap_close
-#define ZZ_FORWARD_carrier_bootstrap_close
-#endif
-#ifndef ZZ_FORWARD_netio_udp_bind
-#define ZZ_FORWARD_netio_udp_bind
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_decode
-#define ZZ_FORWARD_hpack_decoder_decode
-#endif
-#ifndef ZZ_FORWARD_pool_make
-#define ZZ_FORWARD_pool_make
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_Mem
-#define ZZ_FORWARD_carrier_vault_toml_Mem
-struct carrier_vault_toml_Mem_t;
-typedef struct carrier_vault_toml_Mem_t carrier_vault_toml_Mem;
-#endif
-#ifndef ZZ_FORWARD_hpack_decoder_decode_integer
-#define ZZ_FORWARD_hpack_decoder_decode_integer
-#endif
-#ifndef ZZ_FORWARD___home_runner_work_carrier_carrier_modules_net_src_os_h_
-#define ZZ_FORWARD___home_runner_work_carrier_carrier_modules_net_src_os_h_
-#endif
-#ifndef ZZ_FORWARD_net_address_OsAddress
-#define ZZ_FORWARD_net_address_OsAddress
-union net_address_OsAddress_t;
-typedef union net_address_OsAddress_t net_address_OsAddress;
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_cancel
-#define ZZ_FORWARD_carrier_pq_cancel
-#endif
-#ifndef ZZ_FORWARD_carrier_sync_close
-#define ZZ_FORWARD_carrier_sync_close
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_incomming_fragmented
-#define ZZ_FORWARD_carrier_stream_incomming_fragmented
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_alias_from_str
-#define ZZ_FORWARD_carrier_identity_alias_from_str
-#endif
-#ifndef ZZ_FORWARD_carrier_noise_Responder
-#define ZZ_FORWARD_carrier_noise_Responder
-struct carrier_noise_Responder_t;
-typedef struct carrier_noise_Responder_t carrier_noise_Responder;
-#endif
-#ifndef ZZ_FORWARD_carrier_noise_accept
-#define ZZ_FORWARD_carrier_noise_accept
+#ifndef ZZ_FORWARD_slice_mut_slice_append_obj
+#define ZZ_FORWARD_slice_mut_slice_append_obj
 #endif
 #ifndef ZZ_FORWARD_carrier_vault_ik_i_advance_clock
 #define ZZ_FORWARD_carrier_vault_ik_i_advance_clock
 #endif
-#ifndef ZZ_FORWARD_carrier_stream_incomming_stream
-#define ZZ_FORWARD_carrier_stream_incomming_stream
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_cancel
-#define ZZ_FORWARD_carrier_stream_cancel
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_close
-#define ZZ_FORWARD_carrier_endpoint_close
-#endif
-#ifndef ZZ_FORWARD_buffer_append_cstr
-#define ZZ_FORWARD_buffer_append_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_noise_initiate
-#define ZZ_FORWARD_carrier_noise_initiate
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_vector_time
-#define ZZ_FORWARD_carrier_vault_vector_time
-#endif
-#ifndef ZZ_FORWARD_carrier_symmetric_mix_key
-#define ZZ_FORWARD_carrier_symmetric_mix_key
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_next_broker
-#define ZZ_FORWARD_carrier_endpoint_next_broker
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_keepalive
-#define ZZ_FORWARD_carrier_pq_keepalive
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_eq
-#define ZZ_FORWARD_carrier_identity_eq
-#endif
-#ifndef ZZ_FORWARD_carrier_identity_secret_from_cstr
-#define ZZ_FORWARD_carrier_identity_secret_from_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_endpoint_from_secretkit
-#define ZZ_FORWARD_carrier_endpoint_from_secretkit
-#endif
-#ifndef ZZ_FORWARD_pool_alloc
-#define ZZ_FORWARD_pool_alloc
-#endif
-#ifndef ZZ_FORWARD_carrier_stream_close_fn
-#define ZZ_FORWARD_carrier_stream_close_fn
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_add_authorization
-#define ZZ_FORWARD_carrier_vault_toml_i_add_authorization
+#ifndef ZZ_FORWARD_carrier_vault_authorize_open_stream
+#define ZZ_FORWARD_carrier_vault_authorize_open_stream
 #endif
 #ifndef ZZ_FORWARD_err_abort
 #define ZZ_FORWARD_err_abort
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_none
-#define ZZ_FORWARD_carrier_endpoint_none
+#ifndef ZZ_FORWARD_io_select
+#define ZZ_FORWARD_io_select
 #endif
-#ifndef ZZ_FORWARD_carrier_endpoint_native
-#define ZZ_FORWARD_carrier_endpoint_native
+#ifndef ZZ_FORWARD_carrier_channel_disco
+#define ZZ_FORWARD_carrier_channel_disco
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_ik_from_ik
-#define ZZ_FORWARD_carrier_vault_ik_from_ik
+#ifndef ZZ_FORWARD_carrier_bootstrap_Bootstrap
+#define ZZ_FORWARD_carrier_bootstrap_Bootstrap
+struct carrier_bootstrap_Bootstrap_t;
+typedef struct carrier_bootstrap_Bootstrap_t carrier_bootstrap_Bootstrap;
 #endif
-#ifndef ZZ_FORWARD_carrier_pq_ack
-#define ZZ_FORWARD_carrier_pq_ack
+#ifndef ZZ_FORWARD_carrier_peering_from_proto
+#define ZZ_FORWARD_carrier_peering_from_proto
 #endif
-#ifndef ZZ_FORWARD_err_elog
-#define ZZ_FORWARD_err_elog
+#ifndef ZZ_FORWARD_carrier_symmetric_encrypt_and_mix_hash
+#define ZZ_FORWARD_carrier_symmetric_encrypt_and_mix_hash
 #endif
-#ifndef ZZ_FORWARD_netio_tcp_connect
-#define ZZ_FORWARD_netio_tcp_connect
+#ifndef ZZ_FORWARD_carrier_vault_authorize_connect
+#define ZZ_FORWARD_carrier_vault_authorize_connect
 #endif
-#ifndef ZZ_FORWARD_buffer_make
-#define ZZ_FORWARD_buffer_make
+#ifndef ZZ_FORWARD_carrier_sync_connect
+#define ZZ_FORWARD_carrier_sync_connect
 #endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_auth_add_on_close
-#define ZZ_FORWARD_carrier_cmd_config_auth_add_on_close
+#ifndef ZZ_FORWARD_carrier_stream_open_fn
+#define ZZ_FORWARD_carrier_stream_open_fn
 #endif
-#ifndef ZZ_FORWARD_carrier_channel_alloc_stream
-#define ZZ_FORWARD_carrier_channel_alloc_stream
+#ifndef ZZ_FORWARD_err_ignore
+#define ZZ_FORWARD_err_ignore
 #endif
-#ifndef ZZ_FORWARD_net_address_from_str_ipv6
-#define ZZ_FORWARD_net_address_from_str_ipv6
+#ifndef ZZ_FORWARD_net_address_from_str_ipv4
+#define ZZ_FORWARD_net_address_from_str_ipv4
 #endif
-#ifndef ZZ_FORWARD_io_channel
-#define ZZ_FORWARD_io_channel
+#ifndef ZZ_FORWARD_io_write
+#define ZZ_FORWARD_io_write
 #endif
-#ifndef ZZ_FORWARD_buffer_push
-#define ZZ_FORWARD_buffer_push
+#ifndef ZZ_FORWARD_carrier_endpoint_next_broker
+#define ZZ_FORWARD_carrier_endpoint_next_broker
 #endif
-#ifndef ZZ_FORWARD_carrier_sync_start
-#define ZZ_FORWARD_carrier_sync_start
+#ifndef ZZ_FORWARD_carrier_router_next_channel
+#define ZZ_FORWARD_carrier_router_next_channel
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_set_network
-#define ZZ_FORWARD_carrier_vault_toml_i_set_network
+#ifndef ZZ_FORWARD_io_wait
+#define ZZ_FORWARD_io_wait
 #endif
-#ifndef ZZ_FORWARD_net_address_to_buffer
-#define ZZ_FORWARD_net_address_to_buffer
+#ifndef ZZ_FORWARD_slice_mut_slice_push16
+#define ZZ_FORWARD_slice_mut_slice_push16
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_del_authorization
-#define ZZ_FORWARD_carrier_vault_toml_i_del_authorization
+#ifndef ZZ_FORWARD_buffer_available
+#define ZZ_FORWARD_buffer_available
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_slice
+#define ZZ_FORWARD_buffer_copy_slice
+#endif
+#ifndef ZZ_FORWARD_protonerf_read_varint
+#define ZZ_FORWARD_protonerf_read_varint
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_local_identity
+#define ZZ_FORWARD_carrier_vault_toml_i_get_local_identity
+#endif
+#ifndef ZZ_FORWARD_io_unix_select_fd
+#define ZZ_FORWARD_io_unix_select_fd
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_cstr
+#define ZZ_FORWARD_buffer_copy_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_identity_from_cstr
+#define ZZ_FORWARD_carrier_identity_identity_from_cstr
+#endif
+#ifndef ZZ_FORWARD_carrier_endpoint_broker
+#define ZZ_FORWARD_carrier_endpoint_broker
+#endif
+#ifndef ZZ_FORWARD_net_address_get_port
+#define ZZ_FORWARD_net_address_get_port
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_poll_fn
+#define ZZ_FORWARD_carrier_stream_poll_fn
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_ik_i_list_authorizations
+#define ZZ_FORWARD_carrier_vault_ik_i_list_authorizations
+#endif
+#ifndef ZZ_FORWARD_carrier_sha256_update
+#define ZZ_FORWARD_carrier_sha256_update
+#endif
+#ifndef ZZ_FORWARD_io_read
+#define ZZ_FORWARD_io_read
+#endif
+#ifndef ZZ_FORWARD_toml_parser
+#define ZZ_FORWARD_toml_parser
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_do_poll
+#define ZZ_FORWARD_carrier_stream_do_poll
+#endif
+#ifndef ZZ_FORWARD_netio_tcp_recv
+#define ZZ_FORWARD_netio_tcp_recv
+#endif
+#ifndef ZZ_FORWARD_buffer_as_slice
+#define ZZ_FORWARD_buffer_as_slice
+#endif
+#ifndef ZZ_FORWARD_hpack_decoder_DYNSIZE
+#define ZZ_FORWARD_hpack_decoder_DYNSIZE
+#endif
+#ifndef ZZ_FORWARD_io_read_slice
+#define ZZ_FORWARD_io_read_slice
+#endif
+#ifndef ZZ_FORWARD_pool_free_bytes
+#define ZZ_FORWARD_pool_free_bytes
+#endif
+#ifndef ZZ_FORWARD_hpack_decoder_Iterator
+#define ZZ_FORWARD_hpack_decoder_Iterator
+struct hpack_decoder_Iterator_t;
+typedef struct hpack_decoder_Iterator_t hpack_decoder_Iterator;
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_fragmented_fn
+#define ZZ_FORWARD_carrier_stream_fragmented_fn
 #endif
 #ifndef ZZ_FORWARD_carrier_stream_Config
 #define ZZ_FORWARD_carrier_stream_Config
 struct carrier_stream_Config_t;
 typedef struct carrier_stream_Config_t carrier_stream_Config;
 #endif
-#ifndef ZZ_FORWARD_carrier_noise_receive_insecure
-#define ZZ_FORWARD_carrier_noise_receive_insecure
-#endif
-#ifndef ZZ_FORWARD_io_wait
-#define ZZ_FORWARD_io_wait
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_get_principal_identity
-#define ZZ_FORWARD_carrier_vault_get_principal_identity
-#endif
-#ifndef ZZ_FORWARD_carrier_symmetric_mix_hash
-#define ZZ_FORWARD_carrier_symmetric_mix_hash
+#ifndef ZZ_FORWARD_net_address_from_cstr
+#define ZZ_FORWARD_net_address_from_cstr
 #endif
 #ifndef ZZ_FORWARD_time_to_millis
 #define ZZ_FORWARD_time_to_millis
 #endif
-#ifndef ZZ_FORWARD_carrier_symmetric_init
-#define ZZ_FORWARD_carrier_symmetric_init
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_advance_clock
+#define ZZ_FORWARD_carrier_vault_toml_i_advance_clock
 #endif
-#ifndef ZZ_FORWARD_netio_udp_sendto
-#define ZZ_FORWARD_netio_udp_sendto
+#ifndef ZZ_FORWARD_carrier_pq_cancel
+#define ZZ_FORWARD_carrier_pq_cancel
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_sign_principal
-#define ZZ_FORWARD_carrier_vault_sign_principal
+#ifndef ZZ_FORWARD_carrier_vault_vector_time
+#define ZZ_FORWARD_carrier_vault_vector_time
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_del_authorization
+#define ZZ_FORWARD_carrier_vault_toml_i_del_authorization
+#endif
+#ifndef ZZ_FORWARD_io_write_bytes
+#define ZZ_FORWARD_io_write_bytes
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_make
+#define ZZ_FORWARD_slice_mut_slice_make
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_i_sign_local
+#define ZZ_FORWARD_carrier_vault_toml_i_sign_local
+#endif
+#ifndef ZZ_FORWARD_carrier_cipher_init
+#define ZZ_FORWARD_carrier_cipher_init
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_from_carriertoml_and_secret
+#define ZZ_FORWARD_carrier_vault_toml_from_carriertoml_and_secret
+#endif
+#ifndef ZZ_FORWARD_slice_slice_atoi
+#define ZZ_FORWARD_slice_slice_atoi
+#endif
+#ifndef ZZ_FORWARD_pool_alloc
+#define ZZ_FORWARD_pool_alloc
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_toml_from_home_carriertoml
+#define ZZ_FORWARD_carrier_vault_toml_from_home_carriertoml
+#endif
+#ifndef ZZ_FORWARD_err_fail_with_errno
+#define ZZ_FORWARD_err_fail_with_errno
+#endif
+#ifndef ZZ_FORWARD_carrier_bootstrap_poll
+#define ZZ_FORWARD_carrier_bootstrap_poll
+#endif
+#ifndef ZZ_FORWARD_time_more_than
+#define ZZ_FORWARD_time_more_than
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_stream
+#define ZZ_FORWARD_carrier_stream_stream
 #endif
 #ifndef ZZ_FORWARD_carrier_bootstrap_DnsPacket
 #define ZZ_FORWARD_carrier_bootstrap_DnsPacket
 struct carrier_bootstrap_DnsPacket_t;
 typedef struct carrier_bootstrap_DnsPacket_t carrier_bootstrap_DnsPacket;
 #endif
-#ifndef ZZ_FORWARD_slice_slice_eq
-#define ZZ_FORWARD_slice_slice_eq
+#ifndef ZZ_FORWARD_carrier_pq_window
+#define ZZ_FORWARD_carrier_pq_window
 #endif
-#ifndef ZZ_FORWARD_toml_close
-#define ZZ_FORWARD_toml_close
+#ifndef ZZ_FORWARD_netio_udp_sendto
+#define ZZ_FORWARD_netio_udp_sendto
 #endif
-#ifndef ZZ_FORWARD_io_timeout
-#define ZZ_FORWARD_io_timeout
+#ifndef ZZ_FORWARD_pool_make
+#define ZZ_FORWARD_pool_make
 #endif
-#ifndef ZZ_FORWARD_carrier_channel_push
-#define ZZ_FORWARD_carrier_channel_push
+#ifndef ZZ_FORWARD_carrier_vault_toml_save_to_toml
+#define ZZ_FORWARD_carrier_vault_toml_save_to_toml
 #endif
-#ifndef ZZ_FORWARD_carrier_channel_ack
-#define ZZ_FORWARD_carrier_channel_ack
+#ifndef ZZ_FORWARD_carrier_bootstrap_bootstrap
+#define ZZ_FORWARD_carrier_bootstrap_bootstrap
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_sign_local
-#define ZZ_FORWARD_carrier_vault_sign_local
+#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint
+#define ZZ_FORWARD_carrier_endpoint_Endpoint
+struct carrier_endpoint_Endpoint_t;
+typedef struct carrier_endpoint_Endpoint_t carrier_endpoint_Endpoint;
 #endif
-#ifndef ZZ_FORWARD_buffer_clear
-#define ZZ_FORWARD_buffer_clear
+#ifndef ZZ_FORWARD_carrier_endpoint_Endpoint_1000
+#define ZZ_FORWARD_carrier_endpoint_Endpoint_1000
+struct carrier_endpoint_Endpoint_1000_t;
+typedef struct carrier_endpoint_Endpoint_1000_t carrier_endpoint_Endpoint_1000;
 #endif
-#ifndef ZZ_FORWARD_net_address_from_str_ipv4
-#define ZZ_FORWARD_net_address_from_str_ipv4
+#ifndef ZZ_FORWARD_carrier_channel_alloc_stream
+#define ZZ_FORWARD_carrier_channel_alloc_stream
 #endif
-#ifndef ZZ_FORWARD_carrier_pq_alloc
-#define ZZ_FORWARD_carrier_pq_alloc
+#ifndef ZZ_FORWARD_err_fail_with_win32
+#define ZZ_FORWARD_err_fail_with_win32
 #endif
-#ifndef ZZ_FORWARD_carrier_identity_address_from_str
-#define ZZ_FORWARD_carrier_identity_address_from_str
+#ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_on_stream
+#define ZZ_FORWARD_carrier_cmd_config_auth_list_on_stream
 #endif
-#ifndef ZZ_FORWARD_buffer_available
-#define ZZ_FORWARD_buffer_available
+#ifndef ZZ_FORWARD_io_channel
+#define ZZ_FORWARD_io_channel
 #endif
-#ifndef ZZ_FORWARD_netio_tcp_close
-#define ZZ_FORWARD_netio_tcp_close
+#ifndef ZZ_FORWARD_carrier_endpoint_do_complete
+#define ZZ_FORWARD_carrier_endpoint_do_complete
 #endif
-#ifndef ZZ_FORWARD_carrier_noise_receive
-#define ZZ_FORWARD_carrier_noise_receive
+#ifndef ZZ_FORWARD_carrier_sync_wait
+#define ZZ_FORWARD_carrier_sync_wait
+#endif
+#ifndef ZZ_FORWARD_carrier_sync_iwait
+#define ZZ_FORWARD_carrier_sync_iwait
+#endif
+#ifndef ZZ_FORWARD_carrier_stream_Stream
+#define ZZ_FORWARD_carrier_stream_Stream
+struct carrier_stream_Stream_t;
+typedef struct carrier_stream_Stream_t carrier_stream_Stream;
+#endif
+#ifndef ZZ_FORWARD_err_eprintf
+#define ZZ_FORWARD_err_eprintf
+#endif
+#ifndef ZZ_FORWARD_carrier_vault_add_authorization
+#define ZZ_FORWARD_carrier_vault_add_authorization
+#endif
+#ifndef ZZ_FORWARD_io_await
+#define ZZ_FORWARD_io_await
+#endif
+#ifndef ZZ_FORWARD_io_unix_reset
+#define ZZ_FORWARD_io_unix_reset
+#endif
+#ifndef ZZ_FORWARD_buffer_make
+#define ZZ_FORWARD_buffer_make
+#endif
+#ifndef ZZ_FORWARD_carrier_sync_start
+#define ZZ_FORWARD_carrier_sync_start
+#endif
+#ifndef ZZ_FORWARD_carrier_identity_secret_from_cstr
+#define ZZ_FORWARD_carrier_identity_secret_from_cstr
 #endif
 #ifndef ZZ_FORWARD_carrier_sha256_Sha256
 #define ZZ_FORWARD_carrier_sha256_Sha256
 struct carrier_sha256_Sha256_t;
 typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
 #endif
-#ifndef ZZ_FORWARD_carrier_initiator_initiate
-#define ZZ_FORWARD_carrier_initiator_initiate
+#ifndef ZZ_FORWARD_carrier_identity_secretkit_from_str
+#define ZZ_FORWARD_carrier_identity_secretkit_from_str
 #endif
-#ifndef ZZ_FORWARD_carrier_sha256_update
-#define ZZ_FORWARD_carrier_sha256_update
+#ifndef ZZ_FORWARD_carrier_peering_received
+#define ZZ_FORWARD_carrier_peering_received
 #endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_from_carriertoml
-#define ZZ_FORWARD_carrier_vault_toml_i_from_carriertoml
+#ifndef ZZ_FORWARD_carrier_cmd_config_auth_list_on_close
+#define ZZ_FORWARD_carrier_cmd_config_auth_list_on_close
 #endif
-#ifndef ZZ_FORWARD_carrier_noise_initiate_insecure
-#define ZZ_FORWARD_carrier_noise_initiate_insecure
-#endif
-#ifndef ZZ_FORWARD_carrier_peering_from_proto
-#define ZZ_FORWARD_carrier_peering_from_proto
-#endif
-#ifndef ZZ_FORWARD_buffer_ends_with_cstr
-#define ZZ_FORWARD_buffer_ends_with_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_cmd_config_net_on_close
-#define ZZ_FORWARD_carrier_cmd_config_net_on_close
-#endif
-#ifndef ZZ_FORWARD_carrier_channel_disco
-#define ZZ_FORWARD_carrier_channel_disco
-#endif
-#ifndef ZZ_FORWARD_io_wake
-#define ZZ_FORWARD_io_wake
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_wrapdec
-#define ZZ_FORWARD_carrier_pq_wrapdec
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_get_local_identity
-#define ZZ_FORWARD_carrier_vault_toml_i_get_local_identity
-#endif
-#ifndef ZZ_FORWARD_carrier_pq_send
-#define ZZ_FORWARD_carrier_pq_send
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push32
-#define ZZ_FORWARD_slice_mut_slice_push32
-#endif
-#ifndef ZZ_FORWARD_carrier_noise_Responder
-#define ZZ_FORWARD_carrier_noise_Responder
-struct carrier_noise_Responder_t;
-typedef struct carrier_noise_Responder_t carrier_noise_Responder;
-#endif
-#ifndef ZZ_FORWARD_buffer_copy_cstr
-#define ZZ_FORWARD_buffer_copy_cstr
-#endif
-#ifndef ZZ_FORWARD_carrier_vault_toml_i_advance_clock
-#define ZZ_FORWARD_carrier_vault_toml_i_advance_clock
-#endif
-#ifndef ZZ_EXPORT_toml_ParserState
-#define ZZ_EXPORT_toml_ParserState
-typedef enum {
-    toml_ParserState_Document = 0,
-    toml_ParserState_SectionKey = 1,
-    toml_ParserState_Object = 2,
-    toml_ParserState_Key = 3,
-    toml_ParserState_PostKey = 4,
-    toml_ParserState_PreVal = 5,
-    toml_ParserState_StringVal = 6,
-    toml_ParserState_IntVal = 7,
-    toml_ParserState_PostVal = 8,
+#ifndef ZZ_EXPORT_carrier_endpoint_close
+#define ZZ_EXPORT_carrier_endpoint_close
+void carrier_endpoint_close (carrier_endpoint_Endpoint*  const  self);
 
-} toml_ParserState;
+#endif
+#ifndef ZZ_EXPORT_net_address_valid
+#define ZZ_EXPORT_net_address_valid
+bool net_address_valid (net_address_Address const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_io_Result
+#define ZZ_EXPORT_io_Result
+typedef enum {
+    io_Result_Ready = 0,
+    io_Result_Later = 1,
+    io_Result_Error = 2,
+    io_Result_Eof = 3,
+
+} io_Result;
 
 #endif
 #ifndef ZZ_EXPORT__stddef_h_
 #define ZZ_EXPORT__stddef_h_
 #include <stddef.h>
+
+#endif
+#ifndef ZZ_EXPORT_err_checked
+#define ZZ_EXPORT_err_checked
+
+#endif
+#ifndef ZZ_EXPORT_io_write_cstr
+#define ZZ_EXPORT_io_write_cstr
+io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_integrity
+#define ZZ_EXPORT_buffer_integrity
+
+#endif
+#ifndef ZZ_EXPORT_net_address_ip_to_buffer
+#define ZZ_EXPORT_net_address_ip_to_buffer
+void net_address_ip_to_buffer (net_address_Address const *  const  self, buffer_Buffer*  const  to, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_connect_on_close
+#define ZZ_EXPORT_carrier_connect_on_close
+static void carrier_connect_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_io_read_bytes
+#define ZZ_EXPORT_io_read_bytes
+io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+
+#endif
+#ifndef ZZ_EXPORT_err_elog
+#define ZZ_EXPORT_err_elog
+void err_elog (err_Err const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_Slice
+#define ZZ_EXPORT_slice_slice_Slice
+struct slice_slice_Slice_t {
+   uint8_t const *  mem ;
+   uintptr_t size ;
+}
+;
+size_t sizeof_slice_slice_Slice();
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_integrity
+#define ZZ_EXPORT_slice_slice_integrity
+
+#endif
+#ifndef ZZ_EXPORT_carrier_connect_on_stream
+#define ZZ_EXPORT_carrier_connect_on_stream
+static bool carrier_connect_on_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  bs);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_from_str
+#define ZZ_EXPORT_net_address_from_str
+void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_Method
+#define ZZ_EXPORT_carrier_cmd_config_Method
+typedef enum {
+    carrier_cmd_config_Method_None = 0,
+    carrier_cmd_config_Method_Get = 1,
+    carrier_cmd_config_Method_Add = 2,
+    carrier_cmd_config_Method_Remove = 3,
+    carrier_cmd_config_Method_Join = 4,
+
+} carrier_cmd_config_Method;
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Identity
+#define ZZ_EXPORT_carrier_identity_Identity
+struct carrier_identity_Identity_t {
+   uint8_t k[    32] ;
+}
+;
+size_t sizeof_carrier_identity_Identity();
+
+#endif
+#ifndef ZZ_EXPORT__stddef_h_
+#define ZZ_EXPORT__stddef_h_
+
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer
+#define ZZ_EXPORT_buffer_Buffer
+struct buffer_Buffer_t {
+   uintptr_t at ;
+   char mem[] ;
+}
+;
+size_t sizeof_buffer_Buffer(size_t tail);
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_1500_1500
+#define ZZ_EXPORT_buffer_Buffer_1500_1500
+struct buffer_Buffer_1500_t {
+   uintptr_t at ;
+   char mem[1500] ;
+}
+;
+size_t sizeof_buffer_Buffer_1500();
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_300_300
+#define ZZ_EXPORT_buffer_Buffer_300_300
+struct buffer_Buffer_300_t {
+   uintptr_t at ;
+   char mem[300] ;
+}
+;
+size_t sizeof_buffer_Buffer_300();
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_2000_2000
+#define ZZ_EXPORT_buffer_Buffer_2000_2000
+struct buffer_Buffer_2000_t {
+   uintptr_t at ;
+   char mem[2000] ;
+}
+;
+size_t sizeof_buffer_Buffer_2000();
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_20_20
+#define ZZ_EXPORT_buffer_Buffer_20_20
+struct buffer_Buffer_20_t {
+   uintptr_t at ;
+   char mem[20] ;
+}
+;
+size_t sizeof_buffer_Buffer_20();
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_1024_1024
+#define ZZ_EXPORT_buffer_Buffer_1024_1024
+struct buffer_Buffer_1024_t {
+   uintptr_t at ;
+   char mem[1024] ;
+}
+;
+size_t sizeof_buffer_Buffer_1024();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_Authorize
+#define ZZ_EXPORT_carrier_vault_toml_Authorize
+struct carrier_vault_toml_Authorize_t {
+   bool used ;
+   carrier_identity_Identity identity ;
+   buffer_Buffer_300 path ;
+}
+;
+size_t sizeof_carrier_vault_toml_Authorize();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_from_carriertoml
+#define ZZ_EXPORT_carrier_endpoint_from_carriertoml
+void carrier_endpoint_from_carriertoml (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_del_authorization
+#define ZZ_EXPORT_carrier_vault_ik_i_del_authorization
+static void carrier_vault_ik_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+
+#endif
+#ifndef ZZ_EXPORT_toml_close
+#define ZZ_EXPORT_toml_close
+void toml_close (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_pool_member
+#define ZZ_EXPORT_pool_member
+
+#endif
+#ifndef ZZ_EXPORT_carrier_router_poll
+#define ZZ_EXPORT_carrier_router_poll
+extern io_Result carrier_router_poll (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_noise_receive_insecure
+#define ZZ_EXPORT_carrier_noise_receive_insecure
+extern void carrier_noise_receive_insecure (carrier_noise_Responder*  const  self, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  packet, uintptr_t const  packet_len);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_from_buffer
+#define ZZ_EXPORT_net_address_from_buffer
+void net_address_from_buffer (net_address_Address*  const  self, buffer_Buffer const *  const  s, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_proto_ConfigResult
+#define ZZ_EXPORT_carrier_proto_ConfigResult
+typedef enum {
+    carrier_proto_ConfigResult_Ok = 1,
+    carrier_proto_ConfigResult_Error = 2,
+
+} carrier_proto_ConfigResult;
 
 #endif
 #ifndef ZZ_EXPORT_toml_ValueType
@@ -1591,6 +1826,201 @@ struct toml_Value_t {
 }
 ;
 size_t sizeof_toml_Value();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_load_from_toml_authorize_iter
+#define ZZ_EXPORT_carrier_vault_toml_load_from_toml_authorize_iter
+static void carrier_vault_toml_load_from_toml_authorize_iter (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
+
+#endif
+#ifndef ZZ_EXPORT_pool_malloc
+#define ZZ_EXPORT_pool_malloc
+void * pool_malloc (pool_Pool*  const  self, uintptr_t size);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_principal_identity
+#define ZZ_EXPORT_carrier_vault_toml_i_get_principal_identity
+static void carrier_vault_toml_i_get_principal_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#endif
+#ifndef ZZ_EXPORT_netio_tcp_close
+#define ZZ_EXPORT_netio_tcp_close
+void netio_tcp_close (netio_tcp_Socket*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_err_make
+#define ZZ_EXPORT_err_make
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_close
+#define ZZ_EXPORT_carrier_vault_ik_i_close
+static void carrier_vault_ik_i_close (carrier_vault_Vault*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_symmetric_decrypt_and_mix_hash
+#define ZZ_EXPORT_carrier_symmetric_decrypt_and_mix_hash
+extern uintptr_t carrier_symmetric_decrypt_and_mix_hash (carrier_symmetric_SymmetricState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipher_len, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plain_len_max);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_integrity
+#define ZZ_EXPORT_slice_mut_slice_integrity
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_bytes
+#define ZZ_EXPORT_slice_mut_slice_append_bytes
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_set_port
+#define ZZ_EXPORT_net_address_set_port
+void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
+
+#endif
+#ifndef ZZ_EXPORT___home_aep_proj_zz_modules_net_src_os_h_
+#define ZZ_EXPORT___home_aep_proj_zz_modules_net_src_os_h_
+
+#line 1 "/home/aep/proj/zz/modules/net/src/os.h"
+#if defined (_WIN32)
+#define WIN32_LEAN_AND_MEAN 1
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#include <Ws2def.h>
+#include <Ws2ipdef.h>
+#endif
+
+#if defined(__unix__) || defined(__APPLE__) || defined(__linux__)
+#include <netinet/in.h>
+#include <stdint.h>
+#include <string.h>
+#endif
+
+#if defined(ESP_PLATFORM)
+#include <netinet/in.h>
+#include <stdint.h>
+#include <string.h>
+#include "lwip/err.h"
+#include "lwip/sockets.h"
+#include "lwip/sys.h"
+#include <lwip/netdb.h>
+#endif
+
+typedef struct sockaddr_in  sockaddr_in4_t;
+typedef struct sockaddr_in6 sockaddr_in6_t;
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sha256_HASHLEN
+#define ZZ_EXPORT_carrier_sha256_HASHLEN
+#define carrier_sha256_HASHLEN ((uintptr_t )    32)
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cipher_CipherState
+#define ZZ_EXPORT_carrier_cipher_CipherState
+struct carrier_cipher_CipherState_t {
+   uint8_t key[    32] ;
+   bool has_key ;
+}
+;
+size_t sizeof_carrier_cipher_CipherState();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_symmetric_SymmetricState
+#define ZZ_EXPORT_carrier_symmetric_SymmetricState
+struct carrier_symmetric_SymmetricState_t {
+   uint8_t ck[    carrier_sha256_HASHLEN] ;
+   uint8_t h[    carrier_sha256_HASHLEN] ;
+   carrier_cipher_CipherState cipher ;
+}
+;
+size_t sizeof_carrier_symmetric_SymmetricState();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Secret
+#define ZZ_EXPORT_carrier_identity_Secret
+struct carrier_identity_Secret_t {
+   uint8_t k[    32] ;
+}
+;
+size_t sizeof_carrier_identity_Secret();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Address
+#define ZZ_EXPORT_carrier_identity_Address
+struct carrier_identity_Address_t {
+   uint8_t k[    32] ;
+}
+;
+size_t sizeof_carrier_identity_Address();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_noise_Responder
+#define ZZ_EXPORT_carrier_noise_Responder
+struct carrier_noise_Responder_t {
+   carrier_symmetric_SymmetricState symm ;
+   carrier_identity_Secret ephemeral ;
+   carrier_identity_Secret statickey ;
+   carrier_identity_Address remote_ephemeral ;
+}
+;
+size_t sizeof_carrier_noise_Responder();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_MAX_BROKERS
+#define ZZ_EXPORT_carrier_vault_MAX_BROKERS
+#define carrier_vault_MAX_BROKERS ((uintptr_t )    16)
+
+#endif
+#ifndef ZZ_EXPORT_carrier_initiator_Move
+#define ZZ_EXPORT_carrier_initiator_Move
+typedef enum {
+    carrier_initiator_Move_Self = 0,
+    carrier_initiator_Move_Never = 1,
+    carrier_initiator_Move_Target = 2,
+
+} carrier_initiator_Move;
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_MutSlice
+#define ZZ_EXPORT_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t {
+   uint8_t*  mem ;
+   uintptr_t size ;
+   uintptr_t*  at ;
+}
+;
+size_t sizeof_slice_mut_slice_MutSlice();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_initiator_initiate
+#define ZZ_EXPORT_carrier_initiator_initiate
+extern void carrier_initiator_initiate (carrier_initiator_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, bool const  secure, carrier_vault_Vault const *  const  vault, carrier_initiator_Move const  move, carrier_identity_Identity const *  const  cluster_target, carrier_identity_Address const *  const  xaddr, uint64_t const  vector_time, slice_mut_slice_MutSlice pkt);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_pq_keepalive
+#define ZZ_EXPORT_carrier_pq_keepalive
+uint64_t carrier_pq_keepalive (carrier_pq_Q*  const  self, uintptr_t const  qt, uint64_t const  now);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_noise_accept
+#define ZZ_EXPORT_carrier_noise_accept
+extern uintptr_t carrier_noise_accept (carrier_noise_Responder*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  pkt, uintptr_t const  pktlen, uint8_t const *  const  payload, uintptr_t const  payload_len);
+
+#endif
+#ifndef ZZ_EXPORT_toml_ParserState
+#define ZZ_EXPORT_toml_ParserState
+typedef enum {
+    toml_ParserState_Document = 0,
+    toml_ParserState_SectionKey = 1,
+    toml_ParserState_Object = 2,
+    toml_ParserState_Key = 3,
+    toml_ParserState_PostKey = 4,
+    toml_ParserState_PreVal = 5,
+    toml_ParserState_StringVal = 6,
+    toml_ParserState_IntVal = 7,
+    toml_ParserState_PostVal = 8,
+
+} toml_ParserState;
 
 #endif
 #ifndef ZZ_EXPORT_toml_Iter
@@ -1639,71 +2069,14 @@ struct toml_ParserStack_t {
 size_t sizeof_toml_ParserStack();
 
 #endif
-#ifndef ZZ_EXPORT_io_Context
-#define ZZ_EXPORT_io_Context
-struct io_Context_t {
-   bool isvalid ;
-   io_Async*  async ;
-   uint64_t time ;
-   int fd ;
-   void*  handle ;
-}
-;
-size_t sizeof_io_Context();
+#ifndef ZZ_EXPORT_slice_slice_split
+#define ZZ_EXPORT_slice_slice_split
+bool slice_slice_split (slice_slice_Slice const *  const  self, uint8_t const  token, uintptr_t*  const  iterator, slice_slice_Slice*  const  other);
 
 #endif
-#ifndef ZZ_EXPORT_slice_slice_Slice
-#define ZZ_EXPORT_slice_slice_Slice
-struct slice_slice_Slice_t {
-   uint8_t const *  mem ;
-   uintptr_t size ;
-}
-;
-size_t sizeof_slice_slice_Slice();
-
-#endif
-#ifndef ZZ_EXPORT_err_checked
-#define ZZ_EXPORT_err_checked
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_integrity
-#define ZZ_EXPORT_slice_slice_integrity
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_common_on_printer_stream
-#define ZZ_EXPORT_carrier_cmd_common_on_printer_stream
-extern bool carrier_cmd_common_on_printer_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
-
-#endif
-#ifndef ZZ_EXPORT_io_Result
-#define ZZ_EXPORT_io_Result
-typedef enum {
-    io_Result_Ready = 0,
-    io_Result_Later = 1,
-    io_Result_Error = 2,
-    io_Result_Eof = 3,
-
-} io_Result;
-
-#endif
-#ifndef ZZ_EXPORT_io_write_bytes
-#define ZZ_EXPORT_io_write_bytes
-io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_open
-#define ZZ_EXPORT_carrier_channel_open
-carrier_stream_Stream * carrier_channel_open (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  conf);
-
-#endif
-#ifndef ZZ_EXPORT_io_valid
-#define ZZ_EXPORT_io_valid
-bool io_valid (io_Context const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_clean_closed
-#define ZZ_EXPORT_carrier_channel_clean_closed
-static void carrier_channel_clean_closed (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et);
+#ifndef ZZ_EXPORT_io_wake
+#define ZZ_EXPORT_io_wake
+void io_wake (io_Async*  const  self);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_vault_close_fn
@@ -1827,15 +2200,6 @@ typedef struct {
 #endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_vault_add_authorization_fn)
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_Secret
-#define ZZ_EXPORT_carrier_identity_Secret
-struct carrier_identity_Secret_t {
-   uint8_t k[    32] ;
-}
-;
-size_t sizeof_carrier_identity_Secret();
-
-#endif
 #ifndef ZZ_EXPORT_carrier_identity_SecretKit
 #define ZZ_EXPORT_carrier_identity_SecretKit
 struct carrier_identity_SecretKit_t {
@@ -1857,11 +2221,6 @@ struct carrier_vault_Broker_t {
 }
  __attribute__((__packed__)) ;
 size_t sizeof_carrier_vault_Broker();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_MAX_BROKERS
-#define ZZ_EXPORT_carrier_vault_MAX_BROKERS
-#define carrier_vault_MAX_BROKERS ((uintptr_t )    16)
 
 #endif
 #ifndef ZZ_EXPORT_carrier_vault_Vault
@@ -1887,38 +2246,138 @@ struct carrier_vault_Vault_t {
 size_t sizeof_carrier_vault_Vault();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_endpoint_from_vault
-#define ZZ_EXPORT_carrier_endpoint_from_vault
-void carrier_endpoint_from_vault (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et, carrier_vault_Vault const  vault);
+#ifndef ZZ_EXPORT_carrier_router_push
+#define ZZ_EXPORT_carrier_router_push
+extern bool carrier_router_push (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  pkt);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_endpoint_cluster_target
-#define ZZ_EXPORT_carrier_endpoint_cluster_target
-void carrier_endpoint_cluster_target (carrier_endpoint_Endpoint*  const  self, carrier_identity_Identity const *  const  target);
+#ifndef ZZ_EXPORT_carrier_stream_incomming_fragmented
+#define ZZ_EXPORT_carrier_stream_incomming_fragmented
+extern bool carrier_stream_incomming_fragmented (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  order, uint32_t const  fragments);
 
 #endif
-#ifndef ZZ_EXPORT_net_address_Type
-#define ZZ_EXPORT_net_address_Type
-typedef enum {
-    net_address_Type_Invalid = 0,
-    net_address_Type_Ipv4 = 1,
-    net_address_Type_Ipv6 = 2,
-
-} net_address_Type;
-
-#endif
-#ifndef ZZ_EXPORT_net_address_set_ip
-#define ZZ_EXPORT_net_address_set_ip
-void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
+#ifndef ZZ_EXPORT_carrier_vault_authorize_open_stream_cb_s
+#define ZZ_EXPORT_carrier_vault_authorize_open_stream_cb_s
+struct carrier_vault_authorize_open_stream_cb_s_t {
+   carrier_identity_Identity const *  ii ;
+   char const *  path ;
+   bool accepted ;
+   bool has_any ;
+}
+;
+size_t sizeof_carrier_vault_authorize_open_stream_cb_s();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_add_authorization
-#define ZZ_EXPORT_carrier_vault_add_authorization
-void carrier_vault_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+#ifndef ZZ_EXPORT_buffer_append_bytes
+#define ZZ_EXPORT_buffer_append_bytes
+void buffer_append_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
 
 #endif
-#ifndef ZZ_EXPORT_pool_member
-#define ZZ_EXPORT_pool_member
+#ifndef ZZ_EXPORT_carrier_pq_Frame
+#define ZZ_EXPORT_carrier_pq_Frame
+struct carrier_pq_Frame_t {
+   uint64_t acked_at ;
+   uint64_t sent_at ;
+   uint64_t packet ;
+   uint8_t typ ;
+   uintptr_t bufat ;
+   slice_mut_slice_MutSlice buf ;
+}
+;
+size_t sizeof_carrier_pq_Frame();
+
+#endif
+#ifndef ZZ_EXPORT_toml_push
+#define ZZ_EXPORT_toml_push
+void toml_push (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
+
+#endif
+#ifndef ZZ_EXPORT_netio_udp_close
+#define ZZ_EXPORT_netio_udp_close
+void netio_udp_close (netio_udp_Socket*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_CheckExistingAuthorizationState
+#define ZZ_EXPORT_carrier_vault_CheckExistingAuthorizationState
+struct carrier_vault_CheckExistingAuthorizationState_t {
+   carrier_identity_Identity const *  addme ;
+   char const *  resource ;
+   bool found ;
+}
+;
+size_t sizeof_carrier_vault_CheckExistingAuthorizationState();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_send_close_frame
+#define ZZ_EXPORT_carrier_channel_send_close_frame
+extern void carrier_channel_send_close_frame (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, uint32_t const  streamid, uint64_t const  order);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push32
+#define ZZ_EXPORT_slice_mut_slice_push32
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_network
+#define ZZ_EXPORT_carrier_vault_toml_i_get_network
+static void carrier_vault_toml_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  network);
+
+#endif
+#ifndef ZZ_EXPORT_toml_MAX_DEPTH
+#define ZZ_EXPORT_toml_MAX_DEPTH
+#define toml_MAX_DEPTH ((uintptr_t )    64)
+
+#endif
+#ifndef ZZ_EXPORT_toml_Parser
+#define ZZ_EXPORT_toml_Parser
+struct toml_Parser_t {
+   uintptr_t col ;
+   uintptr_t line ;
+   bool esc ;
+   bool comment ;
+   toml_ParserStack state[    toml_MAX_DEPTH] ;
+   uintptr_t depth ;
+   uintptr_t keylen ;
+   buffer_Buffer capture ;
+}
+;
+size_t sizeof_toml_Parser(size_t tail);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_as_mut_slice
+#define ZZ_EXPORT_buffer_as_mut_slice
+slice_mut_slice_MutSlice buffer_as_mut_slice (buffer_Buffer*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_eq
+#define ZZ_EXPORT_carrier_identity_eq
+bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_open
+#define ZZ_EXPORT_carrier_channel_open
+carrier_stream_Stream * carrier_channel_open (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  conf);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_get_network
+#define ZZ_EXPORT_carrier_vault_get_network
+void carrier_vault_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_connect_disconnect_t
+#define ZZ_EXPORT_carrier_connect_disconnect_t
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_connect_disconnect_t)
+#define ZZ_HAS_DEFINED_CLOSURE_carrier_connect_disconnect_t 1
+typedef struct {
+    void *ctx;
+    void (*fn) (carrier_connect_Connect*  const  con, carrier_endpoint_Endpoint*  const  ep, void * _ctx);
+} carrier_connect_disconnect_t;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_connect_disconnect_t)
+
+#endif
+#ifndef ZZ_EXPORT_buffer_cstr_eq
+#define ZZ_EXPORT_buffer_cstr_eq
+bool buffer_cstr_eq (char const *  const  a, char const *  const  b);
 
 #endif
 #ifndef ZZ_EXPORT_pool_Pool
@@ -1946,24 +2405,14 @@ struct pool_Pool_1024_t {
 size_t sizeof_pool_Pool_1024();
 
 #endif
-#ifndef ZZ_EXPORT_pool_continuous
-#define ZZ_EXPORT_pool_continuous
+#ifndef ZZ_EXPORT_err_to_str
+#define ZZ_EXPORT_err_to_str
+void err_to_str (err_Err const *  const  self, uintptr_t const  et, char*  const  dest, uintptr_t const  dest_len);
 
 #endif
-#ifndef ZZ_EXPORT_pool_free
-#define ZZ_EXPORT_pool_free
-void pool_free (pool_Pool*  const  self, void const *  ptr_);
-
-#endif
-#ifndef ZZ_EXPORT_io_make_channel_fn
-#define ZZ_EXPORT_io_make_channel_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_channel_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_io_make_channel_fn 1
-typedef struct {
-    void *ctx;
-    void (*fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write, void * _ctx);
-} io_make_channel_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_channel_fn)
+#ifndef ZZ_EXPORT_carrier_initiator_complete
+#define ZZ_EXPORT_carrier_initiator_complete
+extern void carrier_initiator_complete (carrier_initiator_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_channel_Transfer*  const  chan, carrier_vault_Broker*  const  redirect, slice_slice_Slice pkt, carrier_identity_Identity const *  const  expect_identity);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_cmd_config_Target
@@ -1976,23 +2425,19 @@ typedef enum {
 } carrier_cmd_config_Target;
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_close
-#define ZZ_EXPORT_carrier_vault_close
-void carrier_vault_close (carrier_vault_Vault*  const  self);
+#ifndef ZZ_EXPORT_carrier_symmetric_split
+#define ZZ_EXPORT_carrier_symmetric_split
+extern void carrier_symmetric_split (carrier_symmetric_SymmetricState const *  const  self, carrier_cipher_CipherState*  const  ini, carrier_cipher_CipherState*  const  resp);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_integrity
-#define ZZ_EXPORT_buffer_integrity
+#ifndef ZZ_EXPORT_carrier_pq_wrapinc
+#define ZZ_EXPORT_carrier_pq_wrapinc
+static uintptr_t carrier_pq_wrapinc (carrier_pq_Q const *  const  self, uintptr_t const  qt, uintptr_t*  const  i);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_eq_cstr
-#define ZZ_EXPORT_buffer_eq_cstr
-bool buffer_eq_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#endif
-#ifndef ZZ_EXPORT_netio_tcp_send
-#define ZZ_EXPORT_netio_tcp_send
-io_Result netio_tcp_send (netio_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  buf);
+#ifndef ZZ_EXPORT_carrier_symmetric_mix_hash
+#define ZZ_EXPORT_carrier_symmetric_mix_hash
+extern void carrier_symmetric_mix_hash (carrier_symmetric_SymmetricState*  const  self, uint8_t const *  const  data, uintptr_t l);
 
 #endif
 #ifndef ZZ_EXPORT_io_read_fn
@@ -2006,102 +2451,49 @@ typedef struct {
 #endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_read_fn)
 
 #endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_on_stream
-#define ZZ_EXPORT_carrier_cmd_config_auth_list_on_stream
-static bool carrier_cmd_config_auth_list_on_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
+#ifndef ZZ_EXPORT_carrier_vault_set_network
+#define ZZ_EXPORT_carrier_vault_set_network
+void carrier_vault_set_network (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  network);
 
 #endif
-#ifndef ZZ_EXPORT_protonerf_read_varint
-#define ZZ_EXPORT_protonerf_read_varint
-static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+#ifndef ZZ_EXPORT_carrier_noise_initiate_insecure
+#define ZZ_EXPORT_carrier_noise_initiate_insecure
+extern uintptr_t carrier_noise_initiate_insecure (carrier_noise_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  pkt, uintptr_t const  pktlen, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  payload, uintptr_t const  payload_len);
 
 #endif
-#ifndef ZZ_EXPORT_netio_udp_recvfrom
-#define ZZ_EXPORT_netio_udp_recvfrom
-io_Result netio_udp_recvfrom (netio_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  buf, uintptr_t const  st, net_address_Address*  const  from);
+#ifndef ZZ_EXPORT_carrier_cmd_config_net_on_close
+#define ZZ_EXPORT_carrier_cmd_config_net_on_close
+static void carrier_cmd_config_net_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif
-#ifndef ZZ_EXPORT_hpack_decoder_Entry
-#define ZZ_EXPORT_hpack_decoder_Entry
-struct hpack_decoder_Entry_t {
-   slice_slice_Slice key ;
-   slice_slice_Slice val ;
-}
-;
-size_t sizeof_hpack_decoder_Entry();
+#ifndef ZZ_EXPORT_carrier_identity_identity_to_str
+#define ZZ_EXPORT_carrier_identity_identity_to_str
+uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
 
 #endif
-#ifndef ZZ_EXPORT_hpack_decoder_DYNSIZE
-#define ZZ_EXPORT_hpack_decoder_DYNSIZE
-#define hpack_decoder_DYNSIZE ((uintptr_t )    16)
+#ifndef ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_get
+#define ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_get
+void carrier_cmd_config_net_run_remote_net_get (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint, carrier_identity_Identity const *  const  target);
 
 #endif
-#ifndef ZZ_EXPORT_hpack_decoder_Iterator
-#define ZZ_EXPORT_hpack_decoder_Iterator
-struct hpack_decoder_Iterator_t {
-   slice_slice_Slice key ;
-   slice_slice_Slice val ;
-   slice_slice_Slice wire ;
-   uintptr_t at ;
-   hpack_decoder_Entry dyn[    hpack_decoder_DYNSIZE] ;
-}
-;
-size_t sizeof_hpack_decoder_Iterator();
+#ifndef ZZ_EXPORT_carrier_cmd_common_on_stream_want_header_200
+#define ZZ_EXPORT_carrier_cmd_common_on_stream_want_header_200
+bool carrier_cmd_common_on_stream_want_header_200 (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
 
 #endif
-#ifndef ZZ_EXPORT_netio_udp_close
-#define ZZ_EXPORT_netio_udp_close
-void netio_udp_close (netio_udp_Socket*  const  self);
+#ifndef ZZ_EXPORT_slice_slice_sub
+#define ZZ_EXPORT_slice_slice_sub
+slice_slice_Slice slice_slice_sub (slice_slice_Slice const *  const  self, uintptr_t const  from, uintptr_t size);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_router_poll
-#define ZZ_EXPORT_carrier_router_poll
-extern io_Result carrier_router_poll (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
+#ifndef ZZ_EXPORT_carrier_stream_cancel
+#define ZZ_EXPORT_carrier_stream_cancel
+void carrier_stream_cancel (carrier_stream_Stream*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_router_next_channel
-#define ZZ_EXPORT_carrier_router_next_channel
-extern carrier_channel_Channel * carrier_router_next_channel (carrier_router_Router*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_State
-#define ZZ_EXPORT_carrier_endpoint_State
-typedef enum {
-    carrier_endpoint_State_Invalid = 0,
-    carrier_endpoint_State_Connecting = 1,
-    carrier_endpoint_State_Connected = 2,
-    carrier_endpoint_State_Closed = 3,
-
-} carrier_endpoint_State;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_save_to_toml
-#define ZZ_EXPORT_carrier_vault_toml_save_to_toml
-static void carrier_vault_toml_save_to_toml (carrier_vault_toml_Mem const *  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_complete
-#define ZZ_EXPORT_carrier_noise_complete
-extern uintptr_t carrier_noise_complete (carrier_noise_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  payload, uintptr_t const  payload_len, uint8_t const *  const  packet, uintptr_t const  packet_len);
-
-#endif
-#ifndef ZZ_EXPORT_io_Ready
-#define ZZ_EXPORT_io_Ready
-typedef enum {
-    io_Ready_Read = 0,
-    io_Ready_Write = 1,
-
-} io_Ready;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_close
-#define ZZ_EXPORT_carrier_vault_ik_i_close
-static void carrier_vault_ik_i_close (carrier_vault_Vault*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_router_disconnect
-#define ZZ_EXPORT_carrier_router_disconnect
-extern void carrier_router_disconnect (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  route);
+#ifndef ZZ_EXPORT_buffer_format
+#define ZZ_EXPORT_buffer_format
+int buffer_format (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
 #endif
 #ifndef ZZ_EXPORT_time_Time
@@ -2115,33 +2507,29 @@ struct time_Time_t {
 size_t sizeof_time_Time();
 
 #endif
-#ifndef ZZ_EXPORT__stddef_h_
-#define ZZ_EXPORT__stddef_h_
+#ifndef ZZ_EXPORT_carrier_vault_get_network_secret
+#define ZZ_EXPORT_carrier_vault_get_network_secret
+void carrier_vault_get_network_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  addr);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_del_authorization
-#define ZZ_EXPORT_carrier_vault_ik_i_del_authorization
-static void carrier_vault_ik_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+#ifndef ZZ_EXPORT_buffer_pop
+#define ZZ_EXPORT_buffer_pop
+bool buffer_pop (buffer_Buffer*  const  self, uintptr_t const  t);
 
 #endif
-#ifndef ZZ_EXPORT_toml_next
-#define ZZ_EXPORT_toml_next
-void toml_next (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
+#ifndef ZZ_EXPORT_carrier_identity_signature_from_str
+#define ZZ_EXPORT_carrier_identity_signature_from_str
+void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_cipher_decrypt
-#define ZZ_EXPORT_carrier_cipher_decrypt
-uintptr_t carrier_cipher_decrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
+#ifndef ZZ_EXPORT_carrier_channel_shutdown
+#define ZZ_EXPORT_carrier_channel_shutdown
+extern void carrier_channel_shutdown (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_sign_principal
-#define ZZ_EXPORT_carrier_vault_toml_i_sign_principal
-static void carrier_vault_toml_i_sign_principal (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#endif
-#ifndef ZZ_EXPORT_io_select
-#define ZZ_EXPORT_io_select
-void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+#ifndef ZZ_EXPORT_carrier_endpoint_none
+#define ZZ_EXPORT_carrier_endpoint_none
+void carrier_endpoint_none (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_peering_Transport
@@ -2151,6 +2539,16 @@ typedef enum {
     carrier_peering_Transport_Udp = 1,
 
 } carrier_peering_Transport;
+
+#endif
+#ifndef ZZ_EXPORT_net_address_Type
+#define ZZ_EXPORT_net_address_Type
+typedef enum {
+    net_address_Type_Invalid = 0,
+    net_address_Type_Ipv4 = 1,
+    net_address_Type_Ipv6 = 2,
+
+} net_address_Type;
 
 #endif
 #ifndef ZZ_EXPORT_net_address_Address
@@ -2174,37 +2572,92 @@ typedef enum {
 } carrier_peering_Class;
 
 #endif
-#ifndef ZZ_EXPORT_carrier_peering_received
-#define ZZ_EXPORT_carrier_peering_received
-void carrier_peering_received (carrier_peering_Peering*  const  self, carrier_peering_Transport const  transport, net_address_Address const  addr, carrier_peering_Class const  klass);
+#ifndef ZZ_EXPORT_carrier_peering_Path
+#define ZZ_EXPORT_carrier_peering_Path
+struct carrier_peering_Path_t {
+   carrier_peering_Transport transport ;
+   net_address_Address addr ;
+   carrier_peering_Class klass ;
+   bool active ;
+   bool used ;
+}
+;
+size_t sizeof_carrier_peering_Path();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_stream_fragmented_fn
-#define ZZ_EXPORT_carrier_stream_fragmented_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_fragmented_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_fragmented_fn 1
-typedef struct {
-    void *ctx;
-    bool (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint32_t const  fragments, void * _ctx);
-} carrier_stream_fragmented_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_fragmented_fn)
+#ifndef ZZ_EXPORT_carrier_peering_Peering
+#define ZZ_EXPORT_carrier_peering_Peering
+struct carrier_peering_Peering_t {
+   carrier_peering_Path paths[    16] ;
+}
+;
+size_t sizeof_carrier_peering_Peering();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_Method
-#define ZZ_EXPORT_carrier_cmd_config_Method
-typedef enum {
-    carrier_cmd_config_Method_None = 0,
-    carrier_cmd_config_Method_Get = 1,
-    carrier_cmd_config_Method_Add = 2,
-    carrier_cmd_config_Method_Remove = 3,
-    carrier_cmd_config_Method_Join = 4,
-
-} carrier_cmd_config_Method;
+#ifndef ZZ_EXPORT_carrier_endpoint_poll
+#define ZZ_EXPORT_carrier_endpoint_poll
+io_Result carrier_endpoint_poll (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_auth_add_run_remote
-#define ZZ_EXPORT_carrier_cmd_config_auth_add_run_remote
-void carrier_cmd_config_auth_add_run_remote (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  ep, carrier_identity_Identity const *  const  target, char const *  const  addme, char const *  const  resource, carrier_cmd_config_Method const  method);
+#ifndef ZZ_EXPORT_carrier_vault_toml_Mem
+#define ZZ_EXPORT_carrier_vault_toml_Mem
+struct carrier_vault_toml_Mem_t {
+   carrier_identity_Secret secret ;
+   carrier_identity_Secret principal ;
+   bool has_principal ;
+   carrier_identity_Address network ;
+   carrier_identity_Secret network_secret ;
+   carrier_vault_toml_Authorize auth[    32] ;
+   buffer_Buffer_2000 file_name ;
+}
+;
+size_t sizeof_carrier_vault_toml_Mem();
+
+#endif
+#ifndef ZZ_EXPORT_hpack_decoder_Entry
+#define ZZ_EXPORT_hpack_decoder_Entry
+struct hpack_decoder_Entry_t {
+   slice_slice_Slice key ;
+   slice_slice_Slice val ;
+}
+;
+size_t sizeof_hpack_decoder_Entry();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_stream_exists
+#define ZZ_EXPORT_carrier_channel_stream_exists
+extern bool carrier_channel_stream_exists (carrier_channel_Channel*  const  self, uint32_t const  streamid);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_OsAddress
+#define ZZ_EXPORT_net_address_OsAddress
+union net_address_OsAddress_t {
+   sockaddr_in4_t ipv4 ;
+   sockaddr_in6_t ipv6 ;
+   uint8_t b[    32] ;
+}
+;
+size_t sizeof_net_address_OsAddress();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_incomming_close
+#define ZZ_EXPORT_carrier_stream_incomming_close
+extern bool carrier_stream_incomming_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  order);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cipher_decrypt
+#define ZZ_EXPORT_carrier_cipher_decrypt
+uintptr_t carrier_cipher_decrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
+
+#endif
+#ifndef ZZ_EXPORT__stdio_h_
+#define ZZ_EXPORT__stdio_h_
+#include <stdio.h>
+
+#endif
+#ifndef ZZ_EXPORT_net_address_eq
+#define ZZ_EXPORT_net_address_eq
+bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
 
 #endif
 #ifndef ZZ_EXPORT_io_unix_make
@@ -2212,44 +2665,44 @@ void carrier_cmd_config_auth_add_run_remote (err_Err*  const  e, uintptr_t const
 void io_unix_make (io_unix_Async*  const  self, uintptr_t const  tail);
 
 #endif
-#ifndef ZZ_EXPORT_net_address_get_ip
-#define ZZ_EXPORT_net_address_get_ip
-uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
+#ifndef ZZ_EXPORT_carrier_cipher_encrypt_ad
+#define ZZ_EXPORT_carrier_cipher_encrypt_ad
+uintptr_t carrier_cipher_encrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_sha256_HASHLEN
-#define ZZ_EXPORT_carrier_sha256_HASHLEN
-#define carrier_sha256_HASHLEN ((uintptr_t )    32)
+#ifndef ZZ_EXPORT_carrier_stream_close
+#define ZZ_EXPORT_carrier_stream_close
+void carrier_stream_close (carrier_stream_Stream*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_cipher_CipherState
-#define ZZ_EXPORT_carrier_cipher_CipherState
-struct carrier_cipher_CipherState_t {
-   uint8_t key[    32] ;
-   bool has_key ;
-}
-;
-size_t sizeof_carrier_cipher_CipherState();
+#ifndef ZZ_EXPORT_slice_mut_slice_as_slice
+#define ZZ_EXPORT_slice_mut_slice_as_slice
+slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_symmetric_SymmetricState
-#define ZZ_EXPORT_carrier_symmetric_SymmetricState
-struct carrier_symmetric_SymmetricState_t {
-   uint8_t ck[    carrier_sha256_HASHLEN] ;
-   uint8_t h[    carrier_sha256_HASHLEN] ;
-   carrier_cipher_CipherState cipher ;
-}
-;
-size_t sizeof_carrier_symmetric_SymmetricState();
+#ifndef ZZ_EXPORT__stdarg_h_
+#define ZZ_EXPORT__stdarg_h_
+#include <stdarg.h>
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_Address
-#define ZZ_EXPORT_carrier_identity_Address
-struct carrier_identity_Address_t {
-   uint8_t k[    32] ;
-}
-;
-size_t sizeof_carrier_identity_Address();
+#ifndef ZZ_EXPORT_buffer_vformat
+#define ZZ_EXPORT_buffer_vformat
+int buffer_vformat (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_get_network
+#define ZZ_EXPORT_carrier_vault_ik_i_get_network
+static void carrier_vault_ik_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_net_on_stream
+#define ZZ_EXPORT_carrier_cmd_config_net_on_stream
+static bool carrier_cmd_config_net_on_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
+
+#endif
+#ifndef ZZ_EXPORT_io_valid
+#define ZZ_EXPORT_io_valid
+bool io_valid (io_Context const *  const  self);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_noise_Initiator
@@ -2275,61 +2728,6 @@ struct carrier_initiator_Initiator_t {
 size_t sizeof_carrier_initiator_Initiator();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_Buffer
-#define ZZ_EXPORT_buffer_Buffer
-struct buffer_Buffer_t {
-   uintptr_t at ;
-   char mem[] ;
-}
-;
-size_t sizeof_buffer_Buffer(size_t tail);
-#endif
-#ifndef ZZ_EXPORT_buffer_Buffer_300_300
-#define ZZ_EXPORT_buffer_Buffer_300_300
-struct buffer_Buffer_300_t {
-   uintptr_t at ;
-   char mem[300] ;
-}
-;
-size_t sizeof_buffer_Buffer_300();
-#endif
-#ifndef ZZ_EXPORT_buffer_Buffer_1024_1024
-#define ZZ_EXPORT_buffer_Buffer_1024_1024
-struct buffer_Buffer_1024_t {
-   uintptr_t at ;
-   char mem[1024] ;
-}
-;
-size_t sizeof_buffer_Buffer_1024();
-#endif
-#ifndef ZZ_EXPORT_buffer_Buffer_2000_2000
-#define ZZ_EXPORT_buffer_Buffer_2000_2000
-struct buffer_Buffer_2000_t {
-   uintptr_t at ;
-   char mem[2000] ;
-}
-;
-size_t sizeof_buffer_Buffer_2000();
-#endif
-#ifndef ZZ_EXPORT_buffer_Buffer_1500_1500
-#define ZZ_EXPORT_buffer_Buffer_1500_1500
-struct buffer_Buffer_1500_t {
-   uintptr_t at ;
-   char mem[1500] ;
-}
-;
-size_t sizeof_buffer_Buffer_1500();
-#endif
-#ifndef ZZ_EXPORT_buffer_Buffer_20_20
-#define ZZ_EXPORT_buffer_Buffer_20_20
-struct buffer_Buffer_20_t {
-   uintptr_t at ;
-   char mem[20] ;
-}
-;
-size_t sizeof_buffer_Buffer_20();
-
-#endif
 #ifndef ZZ_EXPORT_carrier_endpoint_ConnectingState
 #define ZZ_EXPORT_carrier_endpoint_ConnectingState
 struct carrier_endpoint_ConnectingState_t {
@@ -2344,87 +2742,33 @@ struct carrier_endpoint_ConnectingState_t {
 size_t sizeof_carrier_endpoint_ConnectingState();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_Signature
-#define ZZ_EXPORT_carrier_identity_Signature
-struct carrier_identity_Signature_t {
-   uint8_t k[    64] ;
+#ifndef ZZ_EXPORT_io_wake_fn
+#define ZZ_EXPORT_io_wake_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_io_wake_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_io_wake_fn 1
+typedef struct {
+    void *ctx;
+    void (*fn) (io_Async*  const  async, void * _ctx);
+} io_wake_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_wake_fn)
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_from_ik
+#define ZZ_EXPORT_carrier_vault_ik_from_ik
+void carrier_vault_ik_from_ik (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_SecretKit const  ik);
+
+#endif
+#ifndef ZZ_EXPORT_io_Context
+#define ZZ_EXPORT_io_Context
+struct io_Context_t {
+   bool isvalid ;
+   io_Async*  async ;
+   uint64_t time ;
+   int fd ;
+   void*  handle ;
 }
 ;
-size_t sizeof_carrier_identity_Signature();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_list_authorizations
-#define ZZ_EXPORT_carrier_vault_toml_i_list_authorizations
-static void carrier_vault_toml_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_proto_ConfigResult
-#define ZZ_EXPORT_carrier_proto_ConfigResult
-typedef enum {
-    carrier_proto_ConfigResult_Ok = 1,
-    carrier_proto_ConfigResult_Error = 2,
-
-} carrier_proto_ConfigResult;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_run_self
-#define ZZ_EXPORT_carrier_cmd_config_auth_list_run_self
-void carrier_cmd_config_auth_list_run_self (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_open_with_headers
-#define ZZ_EXPORT_carrier_channel_open_with_headers
-carrier_stream_Stream * carrier_channel_open_with_headers (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  conf, slice_slice_Slice const *  const  extraheaders);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_cleanup
-#define ZZ_EXPORT_carrier_channel_cleanup
-extern void carrier_channel_cleanup (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_Transfer
-#define ZZ_EXPORT_carrier_channel_Transfer
-struct carrier_channel_Transfer_t {
-   uint8_t version ;
-   uint64_t route ;
-   bool responder ;
-   carrier_cipher_CipherState c_mine ;
-   carrier_cipher_CipherState c_them ;
-   uint64_t rtt ;
-   uint64_t counter_out ;
-   uint8_t outgoing_acks_at ;
-}
-;
-size_t sizeof_carrier_channel_Transfer();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_initiator_Move
-#define ZZ_EXPORT_carrier_initiator_Move
-typedef enum {
-    carrier_initiator_Move_Self = 0,
-    carrier_initiator_Move_Never = 1,
-    carrier_initiator_Move_Target = 2,
-
-} carrier_initiator_Move;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_Identity
-#define ZZ_EXPORT_carrier_identity_Identity
-struct carrier_identity_Identity_t {
-   uint8_t k[    32] ;
-}
-;
-size_t sizeof_carrier_identity_Identity();
-
-#endif
-#ifndef ZZ_EXPORT_netio_udp_Socket
-#define ZZ_EXPORT_netio_udp_Socket
-struct netio_udp_Socket_t {
-   io_Context ctx ;
-   unsigned int sockaddrsize ;
-}
-;
-size_t sizeof_netio_udp_Socket();
+size_t sizeof_io_Context();
 
 #endif
 #ifndef ZZ_EXPORT_netio_tcp_Socket
@@ -2435,6 +2779,26 @@ struct netio_tcp_Socket_t {
 }
 ;
 size_t sizeof_netio_tcp_Socket();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_router_shutdown
+#define ZZ_EXPORT_carrier_router_shutdown
+extern void carrier_router_shutdown (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_toml_next
+#define ZZ_EXPORT_toml_next
+void toml_next (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq_bytes
+#define ZZ_EXPORT_slice_slice_eq_bytes
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_append_slice
+#define ZZ_EXPORT_buffer_append_slice
+void buffer_append_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
 
 #endif
 #ifndef ZZ_EXPORT_io_write_fn
@@ -2471,29 +2835,180 @@ struct io_Io_t {
 size_t sizeof_io_Io();
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_MutSlice
-#define ZZ_EXPORT_slice_mut_slice_MutSlice
-struct slice_mut_slice_MutSlice_t {
-   uint8_t*  mem ;
-   uintptr_t size ;
-   uintptr_t*  at ;
-}
-;
-size_t sizeof_slice_mut_slice_MutSlice();
+#ifndef ZZ_EXPORT_io_make_timeout_fn
+#define ZZ_EXPORT_io_make_timeout_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_timeout_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_io_make_timeout_fn 1
+typedef struct {
+    void *ctx;
+    io_Io (*fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2, void * _ctx);
+} io_make_timeout_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_timeout_fn)
 
 #endif
-#ifndef ZZ_EXPORT_carrier_pq_Frame
-#define ZZ_EXPORT_carrier_pq_Frame
-struct carrier_pq_Frame_t {
-   uint64_t acked_at ;
-   uint64_t sent_at ;
-   uint64_t packet ;
-   uint8_t typ ;
-   uintptr_t bufat ;
-   slice_mut_slice_MutSlice buf ;
+#ifndef ZZ_EXPORT__string_h_
+#define ZZ_EXPORT__string_h_
+#include <string.h>
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_sign_local
+#define ZZ_EXPORT_carrier_vault_sign_local
+void carrier_vault_sign_local (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_join
+#define ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_join
+void carrier_cmd_config_net_run_remote_net_join (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint, carrier_identity_Identity const *  const  target, char const *  const  net_secret_s);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_run_self
+#define ZZ_EXPORT_carrier_cmd_config_auth_list_run_self
+void carrier_cmd_config_auth_list_run_self (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sync_open
+#define ZZ_EXPORT_carrier_sync_open
+carrier_stream_Stream * carrier_sync_open (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  sc);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_noise_initiate
+#define ZZ_EXPORT_carrier_noise_initiate
+extern uintptr_t carrier_noise_initiate (carrier_noise_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  pkt, uintptr_t const  pktlen, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  payload, uintptr_t const  payload_len);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_auth_add_run_remote
+#define ZZ_EXPORT_carrier_cmd_config_auth_add_run_remote
+void carrier_cmd_config_auth_add_run_remote (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  ep, carrier_identity_Identity const *  const  target, char const *  const  addme, char const *  const  resource, carrier_cmd_config_Method const  method);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_address_from_str
+#define ZZ_EXPORT_carrier_identity_address_from_str
+void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_del_authorization
+#define ZZ_EXPORT_carrier_vault_del_authorization
+void carrier_vault_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Alias
+#define ZZ_EXPORT_carrier_identity_Alias
+struct carrier_identity_Alias_t {
+   uint8_t k[    8] ;
 }
 ;
-size_t sizeof_carrier_pq_Frame();
+size_t sizeof_carrier_identity_Alias();
+
+#endif
+#ifndef ZZ_EXPORT_net_address_to_buffer
+#define ZZ_EXPORT_net_address_to_buffer
+void net_address_to_buffer (net_address_Address const *  const  self, buffer_Buffer*  const  to, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_protonerf_Decoder
+#define ZZ_EXPORT_protonerf_Decoder
+struct protonerf_Decoder_t {
+   uint8_t const *  mem ;
+   uintptr_t size ;
+   uintptr_t at ;
+}
+;
+size_t sizeof_protonerf_Decoder();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_set_network
+#define ZZ_EXPORT_carrier_vault_toml_i_set_network
+static void carrier_vault_toml_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_push
+#define ZZ_EXPORT_buffer_push
+bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_shutdown
+#define ZZ_EXPORT_carrier_endpoint_shutdown
+void carrier_endpoint_shutdown (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_close
+#define ZZ_EXPORT_carrier_vault_toml_close
+static void carrier_vault_toml_close (carrier_vault_Vault*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_start
+#define ZZ_EXPORT_carrier_endpoint_start
+void carrier_endpoint_start (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_from_carriertoml
+#define ZZ_EXPORT_carrier_vault_toml_i_from_carriertoml
+static void carrier_vault_toml_i_from_carriertoml (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_open_with_headers
+#define ZZ_EXPORT_carrier_channel_open_with_headers
+carrier_stream_Stream * carrier_channel_open_with_headers (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  conf, slice_slice_Slice const  extraheaders);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_bootstrap_close
+#define ZZ_EXPORT_carrier_bootstrap_close
+void carrier_bootstrap_close (carrier_bootstrap_Bootstrap*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_RemoteOpFailed
+#define ZZ_EXPORT_carrier_cmd_config_RemoteOpFailed
+extern const __attribute__ ((unused)) size_t carrier_cmd_config_RemoteOpFailed;
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq
+#define ZZ_EXPORT_slice_slice_eq
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const  other);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq_cstr
+#define ZZ_EXPORT_slice_slice_eq_cstr
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cipher_decrypt_ad
+#define ZZ_EXPORT_carrier_cipher_decrypt_ad
+uintptr_t carrier_cipher_decrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_Service
+#define ZZ_EXPORT_carrier_cmd_config_Service
+typedef enum {
+    carrier_cmd_config_Service_None = 0,
+    carrier_cmd_config_Service_Auth = 1,
+    carrier_cmd_config_Service_Net = 2,
+
+} carrier_cmd_config_Service;
+
+#endif
+#ifndef ZZ_EXPORT_err_backtrace
+#define ZZ_EXPORT_err_backtrace
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secret_generate
+#define ZZ_EXPORT_carrier_identity_secret_generate
+void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_netio_tcp_connect
+#define ZZ_EXPORT_netio_tcp_connect
+void netio_tcp_connect (netio_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const  addr, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_netio_udp_Socket
+#define ZZ_EXPORT_netio_udp_Socket
+struct netio_udp_Socket_t {
+   io_Context ctx ;
+   unsigned int sockaddrsize ;
+}
+;
+size_t sizeof_netio_udp_Socket();
 
 #endif
 #ifndef ZZ_EXPORT_carrier_pq_Q
@@ -2529,28 +3044,6 @@ struct carrier_pq_Q_64_t {
 }
 ;
 size_t sizeof_carrier_pq_Q_64();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_peering_Path
-#define ZZ_EXPORT_carrier_peering_Path
-struct carrier_peering_Path_t {
-   carrier_peering_Transport transport ;
-   net_address_Address addr ;
-   carrier_peering_Class klass ;
-   bool active ;
-   bool used ;
-}
-;
-size_t sizeof_carrier_peering_Path();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_peering_Peering
-#define ZZ_EXPORT_carrier_peering_Peering
-struct carrier_peering_Peering_t {
-   carrier_peering_Path paths[    16] ;
-}
-;
-size_t sizeof_carrier_peering_Peering();
 
 #endif
 #ifndef ZZ_EXPORT_carrier_channel_Channel
@@ -2611,71 +3104,44 @@ union carrier_endpoint_StateM_t {
 size_t sizeof_carrier_endpoint_StateM();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_endpoint_Endpoint
-#define ZZ_EXPORT_carrier_endpoint_Endpoint
-struct carrier_endpoint_Endpoint_t {
-   carrier_vault_Vault vault ;
-   carrier_initiator_Move cluster_move ;
-   carrier_identity_Identity cluster_target ;
-   carrier_stream_Config const *  broker_stream_registry[    2] ;
-   carrier_stream_Config const *  p2p_stream_registry[    32] ;
-   netio_udp_Socket udp4 ;
-   netio_udp_Socket udp6 ;
-   netio_tcp_Socket tcp4 ;
-   io_Io timeout ;
-   carrier_endpoint_State state ;
-   carrier_endpoint_StateM statem ;
-   pool_Pool_1024 streampool ;
-   pool_Pool framebuffer ;
-}
-;
-size_t sizeof_carrier_endpoint_Endpoint(size_t tail);
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_Endpoint_1000_1000
-#define ZZ_EXPORT_carrier_endpoint_Endpoint_1000_1000
-struct carrier_endpoint_Endpoint_1000_t {
-   carrier_vault_Vault vault ;
-   carrier_initiator_Move cluster_move ;
-   carrier_identity_Identity cluster_target ;
-   carrier_stream_Config const *  broker_stream_registry[    2] ;
-   carrier_stream_Config const *  p2p_stream_registry[    32] ;
-   netio_udp_Socket udp4 ;
-   netio_udp_Socket udp6 ;
-   netio_tcp_Socket tcp4 ;
-   io_Io timeout ;
-   carrier_endpoint_State state ;
-   carrier_endpoint_StateM statem ;
-   pool_Pool_1024 streampool ;
-   pool_Pool framebuffer ;
-   uint8_t _____tail [1000];
-}
-;
-size_t sizeof_carrier_endpoint_Endpoint_1000();
+#ifndef ZZ_EXPORT_hpack_decoder_decode_literal
+#define ZZ_EXPORT_hpack_decoder_decode_literal
+static bool hpack_decoder_decode_literal (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, bool const  index);
 
 #endif
-#ifndef ZZ_EXPORT_err_make
-#define ZZ_EXPORT_err_make
-void err_make (err_Err*  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_set_network
+#define ZZ_EXPORT_carrier_vault_ik_i_set_network
+static void carrier_vault_ik_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
+
+#endif
+#ifndef ZZ_EXPORT__poll_h_
+#define ZZ_EXPORT__poll_h_
+#include <poll.h>
+
+#endif
+#ifndef ZZ_EXPORT_buffer_cstr
+#define ZZ_EXPORT_buffer_cstr
+char  const * buffer_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_common_on_printer_stream
+#define ZZ_EXPORT_carrier_cmd_common_on_printer_stream
+extern bool carrier_cmd_common_on_printer_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_cstr
+#define ZZ_EXPORT_slice_mut_slice_append_cstr
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_split
+#define ZZ_EXPORT_buffer_split
+bool buffer_split (buffer_Buffer const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, buffer_Buffer*  const  other, uintptr_t const  tail2);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_endpoint_from_home_carriertoml
 #define ZZ_EXPORT_carrier_endpoint_from_home_carriertoml
 void carrier_endpoint_from_home_carriertoml (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_Service
-#define ZZ_EXPORT_carrier_cmd_config_Service
-typedef enum {
-    carrier_cmd_config_Service_None = 0,
-    carrier_cmd_config_Service_Auth = 1,
-    carrier_cmd_config_Service_Net = 2,
-
-} carrier_cmd_config_Service;
-
-#endif
-#ifndef ZZ_EXPORT_buffer_cstr_eq
-#define ZZ_EXPORT_buffer_cstr_eq
-bool buffer_cstr_eq (char const *  const  a, char const *  const  b);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_identity_identity_from_str
@@ -2698,11 +3164,6 @@ bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  cons
 extern const __attribute__ ((unused)) size_t err_InvalidArgument;
 
 #endif
-#ifndef ZZ_EXPORT__stdio_h_
-#define ZZ_EXPORT__stdio_h_
-#include <stdio.h>
-
-#endif
 #ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_run_remote
 #define ZZ_EXPORT_carrier_cmd_config_auth_list_run_remote
 void carrier_cmd_config_auth_list_run_remote (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint, carrier_identity_Identity const *  const  target);
@@ -2711,21 +3172,6 @@ void carrier_cmd_config_auth_list_run_remote (err_Err*  const  e, uintptr_t cons
 #ifndef ZZ_EXPORT_carrier_cmd_config_net_run_self_net_get
 #define ZZ_EXPORT_carrier_cmd_config_net_run_self_net_get
 void carrier_cmd_config_net_run_self_net_get (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_get
-#define ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_get
-void carrier_cmd_config_net_run_remote_net_get (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint, carrier_identity_Identity const *  const  target);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_to_str
-#define ZZ_EXPORT_carrier_identity_identity_to_str
-uintptr_t carrier_identity_identity_to_str (err_Err*  const  e, uintptr_t const  et, char*  const  to, uintptr_t const  l, carrier_identity_Identity const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT__string_h_
-#define ZZ_EXPORT__string_h_
-#include <string.h>
 
 #endif
 #ifndef ZZ_EXPORT_carrier_cmd_config_auth_add_run_self
@@ -2743,59 +3189,89 @@ void carrier_identity_secret_from_str (carrier_identity_Secret*  const  self, er
 void carrier_cmd_config_net_run_self_net_join (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint, char const *  const  net_secret_s);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_join
-#define ZZ_EXPORT_carrier_cmd_config_net_run_remote_net_join
-void carrier_cmd_config_net_run_remote_net_join (err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  endpoint, carrier_identity_Identity const *  const  target, char const *  const  net_secret_s);
-
-#endif
 #ifndef ZZ_EXPORT_carrier_cmd_config_cmd
 #define ZZ_EXPORT_carrier_cmd_config_cmd
 extern int carrier_cmd_config_cmd (uintptr_t argc, char const *  const *  const  argv);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_copy_slice
-#define ZZ_EXPORT_buffer_copy_slice
-void buffer_copy_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_sign_local
+#define ZZ_EXPORT_carrier_vault_ik_i_sign_local
+static void carrier_vault_ik_i_sign_local (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
 
 #endif
-#ifndef ZZ_EXPORT_io_read_bytes
-#define ZZ_EXPORT_io_read_bytes
-io_Result io_read_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  const  mem, uintptr_t*  const  memlen);
+#ifndef ZZ_EXPORT_carrier_channel_push
+#define ZZ_EXPORT_carrier_channel_push
+extern void carrier_channel_push (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  body, uintptr_t const  l, uint64_t const  counter, uint8_t const  version);
 
 #endif
-#ifndef ZZ_EXPORT_pool_free_bytes
-#define ZZ_EXPORT_pool_free_bytes
-uintptr_t pool_free_bytes (pool_Pool const *  const  self);
+#ifndef ZZ_EXPORT_carrier_endpoint_State
+#define ZZ_EXPORT_carrier_endpoint_State
+typedef enum {
+    carrier_endpoint_State_Invalid = 0,
+    carrier_endpoint_State_Connecting = 1,
+    carrier_endpoint_State_Connected = 2,
+    carrier_endpoint_State_Closed = 3,
+
+} carrier_endpoint_State;
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_list_authorizations
-#define ZZ_EXPORT_carrier_vault_list_authorizations
-void carrier_vault_list_authorizations (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+#ifndef ZZ_EXPORT_pool_continuous
+#define ZZ_EXPORT_pool_continuous
 
 #endif
-#ifndef ZZ_EXPORT_io_read
-#define ZZ_EXPORT_io_read
-io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
+#ifndef ZZ_EXPORT_pool_free
+#define ZZ_EXPORT_pool_free
+void pool_free (pool_Pool*  const  self, void const *  ptr_);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_cstr
-#define ZZ_EXPORT_buffer_cstr
-char  const * buffer_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_net_address_set_ip
+#define ZZ_EXPORT_net_address_set_ip
+void net_address_set_ip (net_address_Address*  const  self, net_address_Type const  t, uint8_t const *  const  b);
 
 #endif
-#ifndef ZZ_EXPORT_net_address_eq
-#define ZZ_EXPORT_net_address_eq
-bool net_address_eq (net_address_Address const *  const  self, net_address_Address const *  const  other);
+#ifndef ZZ_EXPORT_carrier_endpoint_do_not_move
+#define ZZ_EXPORT_carrier_endpoint_do_not_move
+void carrier_endpoint_do_not_move (carrier_endpoint_Endpoint*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_pool_malloc
-#define ZZ_EXPORT_pool_malloc
-void * pool_malloc (pool_Pool*  const  self, uintptr_t size);
+#ifndef ZZ_EXPORT_carrier_vault_broker_count
+#define ZZ_EXPORT_carrier_vault_broker_count
+uintptr_t carrier_vault_broker_count (carrier_vault_Vault const *  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_sign_local
-#define ZZ_EXPORT_carrier_vault_toml_i_sign_local
-static void carrier_vault_toml_i_sign_local (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+#ifndef ZZ_EXPORT_buffer_slen
+#define ZZ_EXPORT_buffer_slen
+uintptr_t buffer_slen (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_get_local_identity
+#define ZZ_EXPORT_carrier_vault_get_local_identity
+void carrier_vault_get_local_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_add_authorization
+#define ZZ_EXPORT_carrier_vault_ik_i_add_authorization
+static void carrier_vault_ik_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_slice
+#define ZZ_EXPORT_slice_mut_slice_append_slice
+bool slice_mut_slice_append_slice (slice_mut_slice_MutSlice*  const  self, slice_slice_Slice const  other);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_from_carriertoml
+#define ZZ_EXPORT_carrier_vault_toml_from_carriertoml
+void carrier_vault_toml_from_carriertoml (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_get_ip
+#define ZZ_EXPORT_net_address_get_ip
+uint8_t  const * net_address_get_ip (net_address_Address const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_netio_tcp_send
+#define ZZ_EXPORT_netio_tcp_send
+io_Result netio_tcp_send (netio_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  buf);
 
 #endif
 #ifndef ZZ_EXPORT_net_address_none
@@ -2803,44 +3279,49 @@ static void carrier_vault_toml_i_sign_local (carrier_vault_Vault const *  const 
 void net_address_none (net_address_Address*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_io_make_timeout_fn
-#define ZZ_EXPORT_io_make_timeout_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_timeout_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_io_make_timeout_fn 1
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_get_local_identity
+#define ZZ_EXPORT_carrier_vault_ik_i_get_local_identity
+static void carrier_vault_ik_i_get_local_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_symmetric_mix_key
+#define ZZ_EXPORT_carrier_symmetric_mix_key
+extern void carrier_symmetric_mix_key (carrier_symmetric_SymmetricState*  self, uint8_t const *  const  data, uintptr_t l);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail
+#define ZZ_EXPORT_err_fail
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_from_vault
+#define ZZ_EXPORT_carrier_endpoint_from_vault
+void carrier_endpoint_from_vault (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et, carrier_vault_Vault const  vault);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_from_str_ipv6
+#define ZZ_EXPORT_net_address_from_str_ipv6
+bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
+
+#endif
+#ifndef ZZ_EXPORT_io_make_channel_fn
+#define ZZ_EXPORT_io_make_channel_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_channel_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_io_make_channel_fn 1
 typedef struct {
     void *ctx;
-    io_Io (*fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, time_Time const  t2, void * _ctx);
-} io_make_timeout_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_timeout_fn)
+    void (*fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write, void * _ctx);
+} io_make_channel_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_make_channel_fn)
 
 #endif
-#ifndef ZZ_EXPORT_carrier_stream_close
-#define ZZ_EXPORT_carrier_stream_close
-void carrier_stream_close (carrier_stream_Stream*  const  self);
+#ifndef ZZ_EXPORT_io_Ready
+#define ZZ_EXPORT_io_Ready
+typedef enum {
+    io_Ready_Read = 0,
+    io_Ready_Write = 1,
 
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_integrity
-#define ZZ_EXPORT_slice_mut_slice_integrity
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_make
-#define ZZ_EXPORT_slice_mut_slice_make
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size, uintptr_t*  const  at);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push
-#define ZZ_EXPORT_slice_mut_slice_push
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_shutdown
-#define ZZ_EXPORT_carrier_channel_shutdown
-extern void carrier_channel_shutdown (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cipher_encrypt
-#define ZZ_EXPORT_carrier_cipher_encrypt
-uintptr_t carrier_cipher_encrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
+} io_Ready;
 
 #endif
 #ifndef ZZ_EXPORT_io_select_fn
@@ -2852,17 +3333,6 @@ typedef struct {
     void (*fn) (io_Async*  const  async, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w, void * _ctx);
 } io_select_fn;
 #endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_select_fn)
-
-#endif
-#ifndef ZZ_EXPORT_io_wake_fn
-#define ZZ_EXPORT_io_wake_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_io_wake_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_io_wake_fn 1
-typedef struct {
-    void *ctx;
-    void (*fn) (io_Async*  const  async, void * _ctx);
-} io_wake_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_io_wake_fn)
 
 #endif
 #ifndef ZZ_EXPORT_io_wait_fn
@@ -2890,9 +3360,400 @@ struct io_Async_t {
 size_t sizeof_io_Async();
 
 #endif
-#ifndef ZZ_EXPORT__poll_h_
-#define ZZ_EXPORT__poll_h_
-#include <poll.h>
+#ifndef ZZ_EXPORT_buffer_ends_with_cstr
+#define ZZ_EXPORT_buffer_ends_with_cstr
+bool buffer_ends_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sync_close
+#define ZZ_EXPORT_carrier_sync_close
+void carrier_sync_close (carrier_sync_Sync*  const  self, int const  exit_code);
+
+#endif
+#ifndef ZZ_EXPORT_protonerf_Value
+#define ZZ_EXPORT_protonerf_Value
+union protonerf_Value_t {
+   uintptr_t v_len ;
+   uint64_t v_u64 ;
+   int64_t v_i64 ;
+   bool v_bool ;
+}
+;
+size_t sizeof_protonerf_Value();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sha256_init
+#define ZZ_EXPORT_carrier_sha256_init
+void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_pq_wrapdec
+#define ZZ_EXPORT_carrier_pq_wrapdec
+static uintptr_t carrier_pq_wrapdec (carrier_pq_Q const *  const  self, uintptr_t const  qt, uintptr_t*  const  i);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_identity_to_string
+#define ZZ_EXPORT_carrier_identity_identity_to_string
+void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_protonerf_next
+#define ZZ_EXPORT_protonerf_next
+bool protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field*  const  v);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_poll
+#define ZZ_EXPORT_carrier_channel_poll
+extern io_Result carrier_channel_poll (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async, buffer_Buffer*  const  buf, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_netio_udp_bind
+#define ZZ_EXPORT_netio_udp_bind
+void netio_udp_bind (netio_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const  addr, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_close_fn
+#define ZZ_EXPORT_carrier_stream_close_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_close_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_close_fn 1
+typedef struct {
+    void *ctx;
+    void (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, void * _ctx);
+} carrier_stream_close_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_close_fn)
+
+#endif
+#ifndef ZZ_EXPORT_pool_iterator
+#define ZZ_EXPORT_pool_iterator
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_pool_iterator)
+#define ZZ_HAS_DEFINED_CLOSURE_pool_iterator 1
+typedef struct {
+    void *ctx;
+    void (*fn) (pool_Pool*  const  self, void*  const  block, void*  const  user, void * _ctx);
+} pool_iterator;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_pool_iterator)
+
+#endif
+#ifndef ZZ_EXPORT_pool_each
+#define ZZ_EXPORT_pool_each
+void pool_each (pool_Pool*  const  self, pool_iterator const  it, void*  const  user);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_FrameType
+#define ZZ_EXPORT_carrier_channel_FrameType
+typedef enum {
+    carrier_channel_FrameType_Ack = 1,
+    carrier_channel_FrameType_Ping = 2,
+    carrier_channel_FrameType_Disconnect = 3,
+    carrier_channel_FrameType_Open = 4,
+    carrier_channel_FrameType_Stream = 5,
+    carrier_channel_FrameType_Close = 6,
+    carrier_channel_FrameType_Configure = 7,
+    carrier_channel_FrameType_Fragmented = 8,
+
+} carrier_channel_FrameType;
+
+#endif
+#ifndef ZZ_EXPORT_hpack_decoder_integrity
+#define ZZ_EXPORT_hpack_decoder_integrity
+
+#endif
+#ifndef ZZ_EXPORT_hpack_decoder_decode
+#define ZZ_EXPORT_hpack_decoder_decode
+void hpack_decoder_decode (hpack_decoder_Iterator*  const  self, slice_slice_Slice const  wire);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_pq_send
+#define ZZ_EXPORT_carrier_pq_send
+uintptr_t carrier_pq_send (carrier_pq_Q*  const  self, uintptr_t const  qt, uint64_t const  time, uint8_t*  const  buf, uint16_t const  buflen, uint64_t const  counter);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_starts_with_cstr
+#define ZZ_EXPORT_buffer_starts_with_cstr
+bool buffer_starts_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_substr
+#define ZZ_EXPORT_buffer_substr
+void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, buffer_Buffer*  const  other, uintptr_t const  tail2);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_register_stream
+#define ZZ_EXPORT_carrier_endpoint_register_stream
+void carrier_endpoint_register_stream (carrier_endpoint_Endpoint*  const  self, carrier_stream_Config const *  const  conf);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_sign_principal
+#define ZZ_EXPORT_carrier_vault_sign_principal
+void carrier_vault_sign_principal (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#endif
+#ifndef ZZ_EXPORT_io_readline
+#define ZZ_EXPORT_io_readline
+io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_Transfer
+#define ZZ_EXPORT_carrier_channel_Transfer
+struct carrier_channel_Transfer_t {
+   uint8_t version ;
+   uint64_t route ;
+   bool responder ;
+   carrier_cipher_CipherState c_mine ;
+   carrier_cipher_CipherState c_them ;
+   uint64_t rtt ;
+   uint64_t counter_out ;
+   uint8_t outgoing_acks_at ;
+}
+;
+size_t sizeof_carrier_channel_Transfer();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_from_transfer
+#define ZZ_EXPORT_carrier_channel_from_transfer
+extern void carrier_channel_from_transfer (carrier_channel_Channel*  const  self, carrier_channel_Transfer const  tr);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_ack
+#define ZZ_EXPORT_carrier_channel_ack
+extern void carrier_channel_ack (carrier_channel_Channel*  const  self, err_Err*  const  e, uint64_t const  ackd);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_noise_receive
+#define ZZ_EXPORT_carrier_noise_receive
+extern uintptr_t carrier_noise_receive (carrier_noise_Responder*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  payload, uintptr_t const  payload_len, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  packet, uintptr_t const  packet_len);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_append_cstr
+#define ZZ_EXPORT_buffer_append_cstr
+void buffer_append_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sha256_finish
+#define ZZ_EXPORT_carrier_sha256_finish
+void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sync_open_with_headers
+#define ZZ_EXPORT_carrier_sync_open_with_headers
+carrier_stream_Stream * carrier_sync_open_with_headers (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  sc, slice_slice_Slice const  extraheaders);
+
+#endif
+#ifndef ZZ_EXPORT_hpack_decoder_decode_integer
+#define ZZ_EXPORT_hpack_decoder_decode_integer
+extern unsigned int hpack_decoder_decode_integer (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const  prefix_size);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_cluster_target
+#define ZZ_EXPORT_carrier_endpoint_cluster_target
+void carrier_endpoint_cluster_target (carrier_endpoint_Endpoint*  const  self, carrier_identity_Identity const *  const  target);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push64
+#define ZZ_EXPORT_slice_mut_slice_push64
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_connect_start
+#define ZZ_EXPORT_carrier_connect_start
+void carrier_connect_start (carrier_connect_Connect*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  ep, carrier_identity_Identity const *  const  target);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_auth_add_on_close
+#define ZZ_EXPORT_carrier_cmd_config_auth_add_on_close
+static void carrier_cmd_config_auth_add_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cipher_encrypt
+#define ZZ_EXPORT_carrier_cipher_encrypt
+uintptr_t carrier_cipher_encrypt (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_noise_complete
+#define ZZ_EXPORT_carrier_noise_complete
+extern uintptr_t carrier_noise_complete (carrier_noise_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  payload, uintptr_t const  payload_len, uint8_t const *  const  packet, uintptr_t const  packet_len);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_fgets
+#define ZZ_EXPORT_buffer_fgets
+bool buffer_fgets (buffer_Buffer*  const  self, uintptr_t const  tail, FILE*  const  stream);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_do_state_connect
+#define ZZ_EXPORT_carrier_endpoint_do_state_connect
+static void carrier_endpoint_do_state_connect (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_from_secretkit
+#define ZZ_EXPORT_carrier_endpoint_from_secretkit
+void carrier_endpoint_from_secretkit (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et, carrier_identity_SecretKit const  ik);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_eq_cstr
+#define ZZ_EXPORT_buffer_eq_cstr
+bool buffer_eq_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_sign_principal
+#define ZZ_EXPORT_carrier_vault_toml_i_sign_principal
+static void carrier_vault_toml_i_sign_principal (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#endif
+#ifndef ZZ_EXPORT_time_to_seconds
+#define ZZ_EXPORT_time_to_seconds
+uint64_t time_to_seconds (time_Time const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_native
+#define ZZ_EXPORT_carrier_endpoint_native
+void carrier_endpoint_native (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_network_secret
+#define ZZ_EXPORT_carrier_vault_toml_i_get_network_secret
+static void carrier_vault_toml_i_get_network_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_common_print_identity
+#define ZZ_EXPORT_carrier_cmd_common_print_identity
+extern void carrier_cmd_common_print_identity (carrier_endpoint_Endpoint const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_cleanup
+#define ZZ_EXPORT_carrier_channel_cleanup
+extern void carrier_channel_cleanup (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_stream_fn
+#define ZZ_EXPORT_carrier_stream_stream_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_stream_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_stream_fn 1
+typedef struct {
+    void *ctx;
+    bool (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  b, void * _ctx);
+} carrier_stream_stream_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_stream_fn)
+
+#endif
+#ifndef ZZ_EXPORT_io_timeout
+#define ZZ_EXPORT_io_timeout
+io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
+
+#endif
+#ifndef ZZ_EXPORT_protonerf_decode
+#define ZZ_EXPORT_protonerf_decode
+void protonerf_decode (protonerf_Decoder*  const  self, slice_slice_Slice const  sl);
+
+#endif
+#ifndef ZZ_EXPORT_protonerf_Field
+#define ZZ_EXPORT_protonerf_Field
+struct protonerf_Field_t {
+   bool valid ;
+   uint64_t index ;
+   protonerf_Value value ;
+   uint8_t const *  a ;
+}
+;
+size_t sizeof_protonerf_Field();
+
+#endif
+#ifndef ZZ_EXPORT_log_info
+#define ZZ_EXPORT_log_info
+void log_info (char const *  const  module, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cmd_config_on_result_stream
+#define ZZ_EXPORT_carrier_cmd_config_on_result_stream
+extern bool carrier_cmd_config_on_result_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_symmetric_init
+#define ZZ_EXPORT_carrier_symmetric_init
+extern void carrier_symmetric_init (carrier_symmetric_SymmetricState*  const  self, char const *  const  protocolname);
+
+#endif
+#ifndef ZZ_EXPORT_netio_udp_recvfrom
+#define ZZ_EXPORT_netio_udp_recvfrom
+io_Result netio_udp_recvfrom (netio_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  buf, uintptr_t const  st, net_address_Address*  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_pq_alloc
+#define ZZ_EXPORT_carrier_pq_alloc
+slice_mut_slice_MutSlice carrier_pq_alloc (carrier_pq_Q*  const  self, uintptr_t const  qt, err_Err*  const  e, uintptr_t const  et, carrier_channel_FrameType const  typ, uintptr_t const  size);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_alias_from_str
+#define ZZ_EXPORT_carrier_identity_alias_from_str
+void carrier_identity_alias_from_str (carrier_identity_Alias*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_get_principal_identity
+#define ZZ_EXPORT_carrier_vault_get_principal_identity
+void carrier_vault_get_principal_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_Signature
+#define ZZ_EXPORT_carrier_identity_Signature
+struct carrier_identity_Signature_t {
+   uint8_t k[    64] ;
+}
+;
+size_t sizeof_carrier_identity_Signature();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_incomming_stream
+#define ZZ_EXPORT_carrier_stream_incomming_stream
+extern bool carrier_stream_incomming_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  order, slice_slice_Slice const  b);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push
+#define ZZ_EXPORT_slice_mut_slice_push
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_router_disconnect
+#define ZZ_EXPORT_carrier_router_disconnect
+extern void carrier_router_disconnect (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  route);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_make
+#define ZZ_EXPORT_slice_slice_make
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_close
+#define ZZ_EXPORT_carrier_vault_close
+void carrier_vault_close (carrier_vault_Vault*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_bytes
+#define ZZ_EXPORT_buffer_copy_bytes
+void buffer_copy_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_add_authorization
+#define ZZ_EXPORT_carrier_vault_toml_i_add_authorization
+static void carrier_vault_toml_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_list_authorizations
+#define ZZ_EXPORT_carrier_vault_list_authorizations
+void carrier_vault_list_authorizations (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_secretkit_generate
+#define ZZ_EXPORT_carrier_identity_secretkit_generate
+void carrier_identity_secretkit_generate (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_address_from_cstr
+#define ZZ_EXPORT_carrier_identity_address_from_cstr
+void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_router_close
+#define ZZ_EXPORT_carrier_router_close
+extern void carrier_router_close (carrier_router_Router*  const  self);
 
 #endif
 #ifndef ZZ_EXPORT_io_unix_Async
@@ -2918,17 +3779,6 @@ struct io_unix_Async_100_t {
 }
 ;
 size_t sizeof_io_unix_Async_100();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_connect_disconnect_t
-#define ZZ_EXPORT_carrier_connect_disconnect_t
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_connect_disconnect_t)
-#define ZZ_HAS_DEFINED_CLOSURE_carrier_connect_disconnect_t 1
-typedef struct {
-    void *ctx;
-    void (*fn) (carrier_connect_Connect*  const  con, carrier_endpoint_Endpoint*  const  ep, void * _ctx);
-} carrier_connect_disconnect_t;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_connect_disconnect_t)
 
 #endif
 #ifndef ZZ_EXPORT_carrier_connect_connect_t
@@ -2974,220 +3824,34 @@ struct carrier_sync_Sync_t {
 size_t sizeof_carrier_sync_Sync();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_split
-#define ZZ_EXPORT_buffer_split
-bool buffer_split (buffer_Buffer const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, buffer_Buffer*  const  other, uintptr_t const  tail2);
+#ifndef ZZ_EXPORT_carrier_pq_ack
+#define ZZ_EXPORT_carrier_pq_ack
+void carrier_pq_ack (carrier_pq_Q*  const  self, uintptr_t const  qt, uint64_t const  time, uint64_t const  counter);
 
 #endif
-#ifndef ZZ_EXPORT_slice_slice_make
-#define ZZ_EXPORT_slice_slice_make
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_list_authorizations
+#define ZZ_EXPORT_carrier_vault_toml_i_list_authorizations
+static void carrier_vault_toml_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push16
-#define ZZ_EXPORT_slice_mut_slice_push16
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+#ifndef ZZ_EXPORT_hpack_decoder_next
+#define ZZ_EXPORT_hpack_decoder_next
+bool hpack_decoder_next (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_channel_send_close_frame
-#define ZZ_EXPORT_carrier_channel_send_close_frame
-extern void carrier_channel_send_close_frame (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, uint32_t const  streamid, uint64_t const  order);
+#ifndef ZZ_EXPORT_carrier_channel_clean_closed
+#define ZZ_EXPORT_carrier_channel_clean_closed
+static void carrier_channel_clean_closed (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif
-#ifndef ZZ_EXPORT_net_address_from_cstr
-#define ZZ_EXPORT_net_address_from_cstr
-void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
+#ifndef ZZ_EXPORT_carrier_pq_clear
+#define ZZ_EXPORT_carrier_pq_clear
+void carrier_pq_clear (carrier_pq_Q*  const  self, uintptr_t const  qt);
 
 #endif
-#ifndef ZZ_EXPORT_toml_push
-#define ZZ_EXPORT_toml_push
-void toml_push (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
-
-#endif
-#ifndef ZZ_EXPORT_log_info
-#define ZZ_EXPORT_log_info
-void log_info (char const *  const  module, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_common_on_stream_want_header_200
-#define ZZ_EXPORT_carrier_cmd_common_on_stream_want_header_200
-bool carrier_cmd_common_on_stream_want_header_200 (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
-
-#endif
-#ifndef ZZ_EXPORT_protonerf_decode
-#define ZZ_EXPORT_protonerf_decode
-void protonerf_decode (protonerf_Decoder*  const  self, slice_slice_Slice const  sl);
-
-#endif
-#ifndef ZZ_EXPORT_protonerf_Value
-#define ZZ_EXPORT_protonerf_Value
-union protonerf_Value_t {
-   uintptr_t v_len ;
-   uint64_t v_u64 ;
-   int64_t v_i64 ;
-   bool v_bool ;
-}
-;
-size_t sizeof_protonerf_Value();
-
-#endif
-#ifndef ZZ_EXPORT_protonerf_Field
-#define ZZ_EXPORT_protonerf_Field
-struct protonerf_Field_t {
-   bool valid ;
-   uint64_t index ;
-   protonerf_Value value ;
-   uint8_t const *  a ;
-}
-;
-size_t sizeof_protonerf_Field();
-
-#endif
-#ifndef ZZ_EXPORT_err_fail
-#define ZZ_EXPORT_err_fail
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_RemoteOpFailed
-#define ZZ_EXPORT_carrier_cmd_config_RemoteOpFailed
-extern const __attribute__ ((unused)) size_t carrier_cmd_config_RemoteOpFailed;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_on_result_stream
-#define ZZ_EXPORT_carrier_cmd_config_on_result_stream
-extern bool carrier_cmd_config_on_result_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
-
-#endif
-#ifndef ZZ_EXPORT_io_unix_select_fd
-#define ZZ_EXPORT_io_unix_select_fd
-extern bool io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sync_iwait
-#define ZZ_EXPORT_carrier_sync_iwait
-static void carrier_sync_iwait (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_from_cstr
-#define ZZ_EXPORT_carrier_identity_identity_from_cstr
-void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_start
-#define ZZ_EXPORT_carrier_endpoint_start
-void carrier_endpoint_start (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_connect_start
-#define ZZ_EXPORT_carrier_connect_start
-void carrier_connect_start (carrier_connect_Connect*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  ep, carrier_identity_Identity const *  const  target);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_common_print_identity
-#define ZZ_EXPORT_carrier_cmd_common_print_identity
-extern void carrier_cmd_common_print_identity (carrier_endpoint_Endpoint const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_load_from_toml_authorize_iter
-#define ZZ_EXPORT_carrier_vault_toml_load_from_toml_authorize_iter
-static void carrier_vault_toml_load_from_toml_authorize_iter (toml_U const *  const  self, err_Err*  const  e, uintptr_t const  et, toml_Parser*  const  p, uintptr_t const  pt, char const *  const  k, toml_Value const  v);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_get_network
-#define ZZ_EXPORT_carrier_vault_get_network
-void carrier_vault_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_do_not_move
-#define ZZ_EXPORT_carrier_endpoint_do_not_move
-void carrier_endpoint_do_not_move (carrier_endpoint_Endpoint*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_list_authorizations
-#define ZZ_EXPORT_carrier_vault_ik_i_list_authorizations
-static void carrier_vault_ik_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_stream_fn
-#define ZZ_EXPORT_carrier_stream_stream_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_stream_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_stream_fn 1
-typedef struct {
-    void *ctx;
-    bool (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  b, void * _ctx);
-} carrier_stream_stream_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_stream_fn)
-
-#endif
-#ifndef ZZ_EXPORT_io_write_cstr
-#define ZZ_EXPORT_io_write_cstr
-io_Result io_write_cstr (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  b);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_bytes
-#define ZZ_EXPORT_slice_mut_slice_append_bytes
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_Alias
-#define ZZ_EXPORT_carrier_identity_Alias
-struct carrier_identity_Alias_t {
-   uint8_t k[    8] ;
-}
-;
-size_t sizeof_carrier_identity_Alias();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_symmetric_split
-#define ZZ_EXPORT_carrier_symmetric_split
-extern void carrier_symmetric_split (carrier_symmetric_SymmetricState const *  const  self, carrier_cipher_CipherState*  const  ini, carrier_cipher_CipherState*  const  resp);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_authorize_open_stream_cb_s
-#define ZZ_EXPORT_carrier_vault_authorize_open_stream_cb_s
-struct carrier_vault_authorize_open_stream_cb_s_t {
-   carrier_identity_Identity const *  ii ;
-   char const *  path ;
-   bool accepted ;
-   bool has_any ;
-}
-;
-size_t sizeof_carrier_vault_authorize_open_stream_cb_s();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sha256_init
-#define ZZ_EXPORT_carrier_sha256_init
-void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_err_backtrace
-#define ZZ_EXPORT_err_backtrace
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sync_open
-#define ZZ_EXPORT_carrier_sync_open
-carrier_stream_Stream * carrier_sync_open (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  sc);
-
-#endif
-#ifndef ZZ_EXPORT_err_eprintf
-#define ZZ_EXPORT_err_eprintf
-void err_eprintf (err_Err const *  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push64
-#define ZZ_EXPORT_slice_mut_slice_push64
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_substr
-#define ZZ_EXPORT_buffer_substr
-void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, buffer_Buffer*  const  other, uintptr_t const  tail2);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_incomming_close
-#define ZZ_EXPORT_carrier_stream_incomming_close
-extern bool carrier_stream_incomming_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  order);
+#ifndef ZZ_EXPORT_io_close
+#define ZZ_EXPORT_io_close
+void io_close (io_Io*  const  self);
 
 #endif
 #ifndef ZZ_EXPORT_err_Err
@@ -3223,14 +3887,343 @@ struct err_Err_5000_t {
 size_t sizeof_err_Err_5000();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_network
-#define ZZ_EXPORT_carrier_vault_toml_i_get_network
-static void carrier_vault_toml_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  network);
+#ifndef ZZ_EXPORT_err_fail_with_system_error
+#define ZZ_EXPORT_err_fail_with_system_error
+void err_fail_with_system_error (err_Err*  const  self, uintptr_t const  tail, int const  merrno, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_initiator_complete
-#define ZZ_EXPORT_carrier_initiator_complete
-extern void carrier_initiator_complete (carrier_initiator_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_channel_Transfer*  const  chan, carrier_vault_Broker*  const  redirect, slice_slice_Slice pkt, carrier_identity_Identity const *  const  expect_identity);
+#ifndef ZZ_EXPORT_buffer_clear
+#define ZZ_EXPORT_buffer_clear
+void buffer_clear (buffer_Buffer*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_obj
+#define ZZ_EXPORT_slice_mut_slice_append_obj
+bool slice_mut_slice_append_obj (slice_mut_slice_MutSlice*  const  self, void const *  const  b, uintptr_t const  vt);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_advance_clock
+#define ZZ_EXPORT_carrier_vault_ik_i_advance_clock
+static uint64_t carrier_vault_ik_i_advance_clock (carrier_vault_Vault const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_authorize_open_stream
+#define ZZ_EXPORT_carrier_vault_authorize_open_stream
+bool carrier_vault_authorize_open_stream (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii, char const *  const  path);
+
+#endif
+#ifndef ZZ_EXPORT_err_abort
+#define ZZ_EXPORT_err_abort
+void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#endif
+#ifndef ZZ_EXPORT_io_select
+#define ZZ_EXPORT_io_select
+void io_select (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Context*  const  ctx, io_Ready const  w);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_channel_disco
+#define ZZ_EXPORT_carrier_channel_disco
+static void carrier_channel_disco (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, uint32_t const  stream_id);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_bootstrap_Bootstrap
+#define ZZ_EXPORT_carrier_bootstrap_Bootstrap
+struct carrier_bootstrap_Bootstrap_t {
+   net_address_Address dns_servers[    16] ;
+   uintptr_t dns_servers_count ;
+   netio_udp_Socket sock4 ;
+   netio_udp_Socket sock6 ;
+   io_Io retry_timer ;
+   carrier_vault_Vault*  store ;
+}
+;
+size_t sizeof_carrier_bootstrap_Bootstrap();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_peering_from_proto
+#define ZZ_EXPORT_carrier_peering_from_proto
+void carrier_peering_from_proto (carrier_peering_Peering*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field const  field);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_symmetric_encrypt_and_mix_hash
+#define ZZ_EXPORT_carrier_symmetric_encrypt_and_mix_hash
+extern uintptr_t carrier_symmetric_encrypt_and_mix_hash (carrier_symmetric_SymmetricState*  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plain_len, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipher_len_max);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_authorize_connect
+#define ZZ_EXPORT_carrier_vault_authorize_connect
+bool carrier_vault_authorize_connect (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sync_connect
+#define ZZ_EXPORT_carrier_sync_connect
+void carrier_sync_connect (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  target);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_open_fn
+#define ZZ_EXPORT_carrier_stream_open_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_open_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_open_fn 1
+typedef struct {
+    void *ctx;
+    void (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  headers, void * _ctx);
+} carrier_stream_open_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_open_fn)
+
+#endif
+#ifndef ZZ_EXPORT_err_ignore
+#define ZZ_EXPORT_err_ignore
+void err_ignore (err_Err*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_from_str_ipv4
+#define ZZ_EXPORT_net_address_from_str_ipv4
+bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
+
+#endif
+#ifndef ZZ_EXPORT_io_write
+#define ZZ_EXPORT_io_write
+io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_next_broker
+#define ZZ_EXPORT_carrier_endpoint_next_broker
+static bool carrier_endpoint_next_broker (carrier_endpoint_Endpoint*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_router_next_channel
+#define ZZ_EXPORT_carrier_router_next_channel
+extern carrier_channel_Channel * carrier_router_next_channel (carrier_router_Router*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_io_wait
+#define ZZ_EXPORT_io_wait
+void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push16
+#define ZZ_EXPORT_slice_mut_slice_push16
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_available
+#define ZZ_EXPORT_buffer_available
+uintptr_t buffer_available (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_slice
+#define ZZ_EXPORT_buffer_copy_slice
+void buffer_copy_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+
+#endif
+#ifndef ZZ_EXPORT_protonerf_read_varint
+#define ZZ_EXPORT_protonerf_read_varint
+static uint64_t protonerf_read_varint (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_local_identity
+#define ZZ_EXPORT_carrier_vault_toml_i_get_local_identity
+static void carrier_vault_toml_i_get_local_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
+
+#endif
+#ifndef ZZ_EXPORT_io_unix_select_fd
+#define ZZ_EXPORT_io_unix_select_fd
+extern bool io_unix_select_fd (io_unix_Async*  const  self, int const  fd, int const  events);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_cstr
+#define ZZ_EXPORT_buffer_copy_cstr
+void buffer_copy_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  s);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_identity_identity_from_cstr
+#define ZZ_EXPORT_carrier_identity_identity_from_cstr
+void carrier_identity_identity_from_cstr (carrier_identity_Identity*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_broker
+#define ZZ_EXPORT_carrier_endpoint_broker
+carrier_channel_Channel * carrier_endpoint_broker (carrier_endpoint_Endpoint*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_net_address_get_port
+#define ZZ_EXPORT_net_address_get_port
+uint16_t net_address_get_port (net_address_Address const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_poll_fn
+#define ZZ_EXPORT_carrier_stream_poll_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_poll_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_poll_fn 1
+typedef struct {
+    void *ctx;
+    void (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async, void * _ctx);
+} carrier_stream_poll_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_poll_fn)
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_ik_i_list_authorizations
+#define ZZ_EXPORT_carrier_vault_ik_i_list_authorizations
+static void carrier_vault_ik_i_list_authorizations (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_list_authorizations_cb const  cb, void*  const  user);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sha256_update
+#define ZZ_EXPORT_carrier_sha256_update
+void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
+
+#endif
+#ifndef ZZ_EXPORT_io_read
+#define ZZ_EXPORT_io_read
+io_Result io_read (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_toml_parser
+#define ZZ_EXPORT_toml_parser
+void toml_parser (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_do_poll
+#define ZZ_EXPORT_carrier_stream_do_poll
+extern void carrier_stream_do_poll (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_netio_tcp_recv
+#define ZZ_EXPORT_netio_tcp_recv
+io_Result netio_tcp_recv (netio_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  buf, uintptr_t const  st);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_as_slice
+#define ZZ_EXPORT_buffer_as_slice
+slice_slice_Slice buffer_as_slice (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_hpack_decoder_DYNSIZE
+#define ZZ_EXPORT_hpack_decoder_DYNSIZE
+#define hpack_decoder_DYNSIZE ((uintptr_t )    16)
+
+#endif
+#ifndef ZZ_EXPORT_io_read_slice
+#define ZZ_EXPORT_io_read_slice
+io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
+
+#endif
+#ifndef ZZ_EXPORT_pool_free_bytes
+#define ZZ_EXPORT_pool_free_bytes
+uintptr_t pool_free_bytes (pool_Pool const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_hpack_decoder_Iterator
+#define ZZ_EXPORT_hpack_decoder_Iterator
+struct hpack_decoder_Iterator_t {
+   slice_slice_Slice key ;
+   slice_slice_Slice val ;
+   slice_slice_Slice wire ;
+   uintptr_t at ;
+   hpack_decoder_Entry dyn[    hpack_decoder_DYNSIZE] ;
+}
+;
+size_t sizeof_hpack_decoder_Iterator();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_fragmented_fn
+#define ZZ_EXPORT_carrier_stream_fragmented_fn
+#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_fragmented_fn)
+#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_fragmented_fn 1
+typedef struct {
+    void *ctx;
+    bool (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint32_t const  fragments, void * _ctx);
+} carrier_stream_fragmented_fn;
+#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_fragmented_fn)
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_Config
+#define ZZ_EXPORT_carrier_stream_Config
+struct carrier_stream_Config_t {
+   char const *  path ;
+   carrier_stream_open_fn open ;
+   carrier_stream_close_fn close ;
+   carrier_stream_stream_fn stream ;
+   carrier_stream_fragmented_fn fragmented ;
+   carrier_stream_poll_fn poll ;
+}
+;
+size_t sizeof_carrier_stream_Config();
+
+#endif
+#ifndef ZZ_EXPORT_net_address_from_cstr
+#define ZZ_EXPORT_net_address_from_cstr
+void net_address_from_cstr (net_address_Address*  const  self, char const *  const  s);
+
+#endif
+#ifndef ZZ_EXPORT_time_to_millis
+#define ZZ_EXPORT_time_to_millis
+uint64_t time_to_millis (time_Time const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_advance_clock
+#define ZZ_EXPORT_carrier_vault_toml_i_advance_clock
+static uint64_t carrier_vault_toml_i_advance_clock (carrier_vault_Vault const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_pq_cancel
+#define ZZ_EXPORT_carrier_pq_cancel
+void carrier_pq_cancel (carrier_pq_Q*  const  self, uintptr_t const  qt);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_vector_time
+#define ZZ_EXPORT_carrier_vault_vector_time
+uint64_t carrier_vault_vector_time (carrier_vault_Vault const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_del_authorization
+#define ZZ_EXPORT_carrier_vault_toml_i_del_authorization
+static void carrier_vault_toml_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
+
+#endif
+#ifndef ZZ_EXPORT_io_write_bytes
+#define ZZ_EXPORT_io_write_bytes
+io_Result io_write_bytes (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  b, uintptr_t*  const  blen);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_make
+#define ZZ_EXPORT_slice_mut_slice_make
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size, uintptr_t*  const  at);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_i_sign_local
+#define ZZ_EXPORT_carrier_vault_toml_i_sign_local
+static void carrier_vault_toml_i_sign_local (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_cipher_init
+#define ZZ_EXPORT_carrier_cipher_init
+void carrier_cipher_init (carrier_cipher_CipherState*  const  self, uint8_t const *  const  k);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_from_carriertoml_and_secret
+#define ZZ_EXPORT_carrier_vault_toml_from_carriertoml_and_secret
+void carrier_vault_toml_from_carriertoml_and_secret (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name, carrier_identity_Secret const *  const  secret);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_atoi
+#define ZZ_EXPORT_slice_slice_atoi
+int64_t slice_slice_atoi (slice_slice_Slice const *  const  self, uintptr_t const  base);
+
+#endif
+#ifndef ZZ_EXPORT_pool_alloc
+#define ZZ_EXPORT_pool_alloc
+void * pool_alloc (pool_Pool*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_from_home_carriertoml
+#define ZZ_EXPORT_carrier_vault_toml_from_home_carriertoml
+void carrier_vault_toml_from_home_carriertoml (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail_with_errno
+#define ZZ_EXPORT_err_fail_with_errno
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_bootstrap_poll
@@ -3238,40 +4231,130 @@ extern void carrier_initiator_complete (carrier_initiator_Initiator*  const  sel
 io_Result carrier_bootstrap_poll (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_CheckExistingAuthorizationState
-#define ZZ_EXPORT_carrier_vault_CheckExistingAuthorizationState
-struct carrier_vault_CheckExistingAuthorizationState_t {
-   carrier_identity_Identity const *  addme ;
-   char const *  resource ;
-   bool found ;
+#ifndef ZZ_EXPORT_time_more_than
+#define ZZ_EXPORT_time_more_than
+bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_stream_stream
+#define ZZ_EXPORT_carrier_stream_stream
+slice_mut_slice_MutSlice carrier_stream_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uintptr_t const  reserved_size);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_bootstrap_DnsPacket
+#define ZZ_EXPORT_carrier_bootstrap_DnsPacket
+struct carrier_bootstrap_DnsPacket_t {
+   uint16_t id ;
+   uint16_t flags ;
+   uint16_t queries ;
+   uint16_t answers ;
+   uint16_t authorities ;
+   uint16_t additionals ;
+}
+ __attribute__((__packed__)) ;
+size_t sizeof_carrier_bootstrap_DnsPacket();
+
+#endif
+#ifndef ZZ_EXPORT_carrier_pq_window
+#define ZZ_EXPORT_carrier_pq_window
+uintptr_t carrier_pq_window (carrier_pq_Q const *  const  self, uintptr_t const  qt);
+
+#endif
+#ifndef ZZ_EXPORT_netio_udp_sendto
+#define ZZ_EXPORT_netio_udp_sendto
+io_Result netio_udp_sendto (netio_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  buf, net_address_Address const *  const  to);
+
+#endif
+#ifndef ZZ_EXPORT_pool_make
+#define ZZ_EXPORT_pool_make
+void pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_vault_toml_save_to_toml
+#define ZZ_EXPORT_carrier_vault_toml_save_to_toml
+static void carrier_vault_toml_save_to_toml (carrier_vault_toml_Mem const *  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_bootstrap_bootstrap
+#define ZZ_EXPORT_carrier_bootstrap_bootstrap
+void carrier_bootstrap_bootstrap (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_Vault*  const  store, io_Async*  const  async);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_Endpoint
+#define ZZ_EXPORT_carrier_endpoint_Endpoint
+struct carrier_endpoint_Endpoint_t {
+   carrier_vault_Vault vault ;
+   carrier_initiator_Move cluster_move ;
+   carrier_identity_Identity cluster_target ;
+   carrier_stream_Config const *  broker_stream_registry[    2] ;
+   carrier_stream_Config const *  p2p_stream_registry[    32] ;
+   netio_udp_Socket udp4 ;
+   netio_udp_Socket udp6 ;
+   netio_tcp_Socket tcp4 ;
+   io_Io timeout ;
+   carrier_endpoint_State state ;
+   carrier_endpoint_StateM statem ;
+   pool_Pool_1024 streampool ;
+   pool_Pool framebuffer ;
 }
 ;
-size_t sizeof_carrier_vault_CheckExistingAuthorizationState();
+size_t sizeof_carrier_endpoint_Endpoint(size_t tail);
+#endif
+#ifndef ZZ_EXPORT_carrier_endpoint_Endpoint_1000_1000
+#define ZZ_EXPORT_carrier_endpoint_Endpoint_1000_1000
+struct carrier_endpoint_Endpoint_1000_t {
+   carrier_vault_Vault vault ;
+   carrier_initiator_Move cluster_move ;
+   carrier_identity_Identity cluster_target ;
+   carrier_stream_Config const *  broker_stream_registry[    2] ;
+   carrier_stream_Config const *  p2p_stream_registry[    32] ;
+   netio_udp_Socket udp4 ;
+   netio_udp_Socket udp6 ;
+   netio_tcp_Socket tcp4 ;
+   io_Io timeout ;
+   carrier_endpoint_State state ;
+   carrier_endpoint_StateM statem ;
+   pool_Pool_1024 streampool ;
+   pool_Pool framebuffer ;
+   uint8_t _____tail [1000];
+}
+;
+size_t sizeof_carrier_endpoint_Endpoint_1000();
 
 #endif
-#ifndef ZZ_EXPORT_io_await
-#define ZZ_EXPORT_io_await
-io_Result io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
+#ifndef ZZ_EXPORT_carrier_channel_alloc_stream
+#define ZZ_EXPORT_carrier_channel_alloc_stream
+extern carrier_stream_Stream * carrier_channel_alloc_stream (carrier_channel_Channel*  const  self, uint32_t const  streamid, carrier_stream_Config const *  const  config);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_secretkit_generate
-#define ZZ_EXPORT_carrier_identity_secretkit_generate
-void carrier_identity_secretkit_generate (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et);
+#ifndef ZZ_EXPORT_err_fail_with_win32
+#define ZZ_EXPORT_err_fail_with_win32
+void err_fail_with_win32 (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #endif
-#ifndef ZZ_EXPORT__stdarg_h_
-#define ZZ_EXPORT__stdarg_h_
-#include <stdarg.h>
+#ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_on_stream
+#define ZZ_EXPORT_carrier_cmd_config_auth_list_on_stream
+static bool carrier_cmd_config_auth_list_on_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_add_authorization
-#define ZZ_EXPORT_carrier_vault_ik_i_add_authorization
-static void carrier_vault_ik_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
+#ifndef ZZ_EXPORT_io_channel
+#define ZZ_EXPORT_io_channel
+void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_identity_secretkit_from_str
-#define ZZ_EXPORT_carrier_identity_secretkit_from_str
-void carrier_identity_secretkit_from_str (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
+#ifndef ZZ_EXPORT_carrier_endpoint_do_complete
+#define ZZ_EXPORT_carrier_endpoint_do_complete
+static bool carrier_endpoint_do_complete (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_peering_Transport const  trp, net_address_Address const  fromaddr);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sync_wait
+#define ZZ_EXPORT_carrier_sync_wait
+void carrier_sync_wait (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et);
+
+#endif
+#ifndef ZZ_EXPORT_carrier_sync_iwait
+#define ZZ_EXPORT_carrier_sync_iwait
+static void carrier_sync_iwait (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_stream_Stream
@@ -3296,270 +4379,19 @@ struct carrier_stream_Stream_t {
 size_t sizeof_carrier_stream_Stream();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_Authorize
-#define ZZ_EXPORT_carrier_vault_toml_Authorize
-struct carrier_vault_toml_Authorize_t {
-   bool used ;
-   carrier_identity_Identity identity ;
-   buffer_Buffer_300 path ;
-}
-;
-size_t sizeof_carrier_vault_toml_Authorize();
+#ifndef ZZ_EXPORT_err_eprintf
+#define ZZ_EXPORT_err_eprintf
+void err_eprintf (err_Err const *  const  self, uintptr_t const  tail, FILE*  const  out);
 
 #endif
-#ifndef ZZ_EXPORT_err_fail_with_win32
-#define ZZ_EXPORT_err_fail_with_win32
-void err_fail_with_win32 (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+#ifndef ZZ_EXPORT_carrier_vault_add_authorization
+#define ZZ_EXPORT_carrier_vault_add_authorization
+void carrier_vault_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_stream_do_poll
-#define ZZ_EXPORT_carrier_stream_do_poll
-extern void carrier_stream_do_poll (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_from_carriertoml
-#define ZZ_EXPORT_carrier_vault_toml_from_carriertoml
-void carrier_vault_toml_from_carriertoml (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_get_network_secret
-#define ZZ_EXPORT_carrier_vault_get_network_secret
-void carrier_vault_get_network_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  addr);
-
-#endif
-#ifndef ZZ_EXPORT_io_readline
-#define ZZ_EXPORT_io_readline
-io_Result io_readline (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_principal_identity
-#define ZZ_EXPORT_carrier_vault_toml_i_get_principal_identity
-static void carrier_vault_toml_i_get_principal_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_get_network
-#define ZZ_EXPORT_carrier_vault_ik_i_get_network
-static void carrier_vault_ik_i_get_network (carrier_vault_Vault const *  const  self, carrier_identity_Address*  const  addr);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_pop
-#define ZZ_EXPORT_buffer_pop
-bool buffer_pop (buffer_Buffer*  const  self, uintptr_t const  t);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_errno
-#define ZZ_EXPORT_err_fail_with_errno
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cipher_decrypt_ad
-#define ZZ_EXPORT_carrier_cipher_decrypt_ad
-uintptr_t carrier_cipher_decrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  ciphertext, uintptr_t const  cipherlen, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plainlen_max);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_append_bytes
-#define ZZ_EXPORT_buffer_append_bytes
-void buffer_append_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_ip_to_buffer
-#define ZZ_EXPORT_net_address_ip_to_buffer
-void net_address_ip_to_buffer (net_address_Address const *  const  self, buffer_Buffer*  const  to, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_fgets
-#define ZZ_EXPORT_buffer_fgets
-bool buffer_fgets (buffer_Buffer*  const  self, uintptr_t const  tail, FILE*  const  stream);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sync_connect
-#define ZZ_EXPORT_carrier_sync_connect
-void carrier_sync_connect (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  target);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_window
-#define ZZ_EXPORT_carrier_pq_window
-uintptr_t carrier_pq_window (carrier_pq_Q const *  const  self, uintptr_t const  qt);
-
-#endif
-#ifndef ZZ_EXPORT_time_more_than
-#define ZZ_EXPORT_time_more_than
-bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_slice
-#define ZZ_EXPORT_slice_mut_slice_append_slice
-bool slice_mut_slice_append_slice (slice_mut_slice_MutSlice*  const  self, slice_slice_Slice const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_do_complete
-#define ZZ_EXPORT_carrier_endpoint_do_complete
-static bool carrier_endpoint_do_complete (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_peering_Transport const  trp, net_address_Address const  fromaddr);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_register_stream
-#define ZZ_EXPORT_carrier_endpoint_register_stream
-void carrier_endpoint_register_stream (carrier_endpoint_Endpoint*  const  self, carrier_stream_Config const *  const  conf);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_authorize_connect
-#define ZZ_EXPORT_carrier_vault_authorize_connect
-bool carrier_vault_authorize_connect (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_router_shutdown
-#define ZZ_EXPORT_carrier_router_shutdown
-extern void carrier_router_shutdown (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_err_ignore
-#define ZZ_EXPORT_err_ignore
-void err_ignore (err_Err*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_set_network
-#define ZZ_EXPORT_carrier_vault_set_network
-void carrier_vault_set_network (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  network);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_do_state_connect
-#define ZZ_EXPORT_carrier_endpoint_do_state_connect
-static void carrier_endpoint_do_state_connect (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
-
-#endif
-#ifndef ZZ_EXPORT_protonerf_next
-#define ZZ_EXPORT_protonerf_next
-bool protonerf_next (protonerf_Decoder*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field*  const  v);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sync_wait
-#define ZZ_EXPORT_carrier_sync_wait
-void carrier_sync_wait (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq_cstr
-#define ZZ_EXPORT_slice_slice_eq_cstr
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_bootstrap_bootstrap
-#define ZZ_EXPORT_carrier_bootstrap_bootstrap
-void carrier_bootstrap_bootstrap (carrier_bootstrap_Bootstrap*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_vault_Vault*  const  store, io_Async*  const  async);
-
-#endif
-#ifndef ZZ_EXPORT_hpack_decoder_integrity
-#define ZZ_EXPORT_hpack_decoder_integrity
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_wrapinc
-#define ZZ_EXPORT_carrier_pq_wrapinc
-static uintptr_t carrier_pq_wrapinc (carrier_pq_Q const *  const  self, uintptr_t const  qt, uintptr_t*  const  i);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_router_close
-#define ZZ_EXPORT_carrier_router_close
-extern void carrier_router_close (carrier_router_Router*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_format
-#define ZZ_EXPORT_buffer_format
-int buffer_format (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_from_carriertoml_and_secret
-#define ZZ_EXPORT_carrier_vault_toml_from_carriertoml_and_secret
-void carrier_vault_toml_from_carriertoml_and_secret (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name, carrier_identity_Secret const *  const  secret);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_clear
-#define ZZ_EXPORT_carrier_pq_clear
-void carrier_pq_clear (carrier_pq_Q*  const  self, uintptr_t const  qt);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_net_on_stream
-#define ZZ_EXPORT_carrier_cmd_config_net_on_stream
-static bool carrier_cmd_config_net_on_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  msg);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_as_mut_slice
-#define ZZ_EXPORT_buffer_as_mut_slice
-slice_mut_slice_MutSlice buffer_as_mut_slice (buffer_Buffer*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_hpack_decoder_next
-#define ZZ_EXPORT_hpack_decoder_next
-bool hpack_decoder_next (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_network_secret
-#define ZZ_EXPORT_carrier_vault_toml_i_get_network_secret
-static void carrier_vault_toml_i_get_network_secret (carrier_vault_Vault const *  const  self, carrier_identity_Secret*  const  secret);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sync_open_with_headers
-#define ZZ_EXPORT_carrier_sync_open_with_headers
-carrier_stream_Stream * carrier_sync_open_with_headers (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_stream_Config const *  const  sc, slice_slice_Slice const *  const  extraheaders);
-
-#endif
-#ifndef ZZ_EXPORT_io_write
-#define ZZ_EXPORT_io_write
-io_Result io_write (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_io_read_slice
-#define ZZ_EXPORT_io_read_slice
-io_Result io_read_slice (io_Io*  const  self, err_Err*  const  e, uintptr_t const  et, slice_mut_slice_MutSlice*  const  slice);
-
-#endif
-#ifndef ZZ_EXPORT_time_to_seconds
-#define ZZ_EXPORT_time_to_seconds
-uint64_t time_to_seconds (time_Time const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_pool_iterator
-#define ZZ_EXPORT_pool_iterator
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_pool_iterator)
-#define ZZ_HAS_DEFINED_CLOSURE_pool_iterator 1
-typedef struct {
-    void *ctx;
-    void (*fn) (pool_Pool*  const  self, void*  const  block, void*  const  user, void * _ctx);
-} pool_iterator;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_pool_iterator)
-
-#endif
-#ifndef ZZ_EXPORT_pool_each
-#define ZZ_EXPORT_pool_each
-void pool_each (pool_Pool*  const  self, pool_iterator const  it, void*  const  user);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_copy_bytes
-#define ZZ_EXPORT_buffer_copy_bytes
-void buffer_copy_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_set_port
-#define ZZ_EXPORT_net_address_set_port
-void net_address_set_port (net_address_Address*  const  self, uint16_t const  port);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_symmetric_encrypt_and_mix_hash
-#define ZZ_EXPORT_carrier_symmetric_encrypt_and_mix_hash
-extern uintptr_t carrier_symmetric_encrypt_and_mix_hash (carrier_symmetric_SymmetricState*  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  plain, uintptr_t const  plain_len, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipher_len_max);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_from_str
-#define ZZ_EXPORT_net_address_from_str
-void net_address_from_str (net_address_Address*  const  self, char const *  s, uintptr_t slen);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_as_slice
-#define ZZ_EXPORT_buffer_as_slice
-slice_slice_Slice buffer_as_slice (buffer_Buffer const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_set_network
-#define ZZ_EXPORT_carrier_vault_ik_i_set_network
-static void carrier_vault_ik_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
+#ifndef ZZ_EXPORT_io_await
+#define ZZ_EXPORT_io_await
+io_Result io_await (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, void const *  const  poll, void*  const  user, time_Time const  timeout_);
 
 #endif
 #ifndef ZZ_EXPORT_io_unix_reset
@@ -3567,571 +4399,9 @@ static void carrier_vault_ik_i_set_network (carrier_vault_Vault const *  const  
 static void io_unix_reset (io_unix_Async*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_hpack_decoder_decode_literal
-#define ZZ_EXPORT_hpack_decoder_decode_literal
-static bool hpack_decoder_decode_literal (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, bool const  index);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_del_authorization
-#define ZZ_EXPORT_carrier_vault_del_authorization
-void carrier_vault_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_connect_on_stream
-#define ZZ_EXPORT_carrier_connect_on_stream
-static bool carrier_connect_on_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  bs);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_open_fn
-#define ZZ_EXPORT_carrier_stream_open_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_open_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_open_fn 1
-typedef struct {
-    void *ctx;
-    void (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  headers, void * _ctx);
-} carrier_stream_open_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_open_fn)
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_get_local_identity
-#define ZZ_EXPORT_carrier_vault_ik_i_get_local_identity
-static void carrier_vault_ik_i_get_local_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_shutdown
-#define ZZ_EXPORT_carrier_endpoint_shutdown
-void carrier_endpoint_shutdown (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_sign_local
-#define ZZ_EXPORT_carrier_vault_ik_i_sign_local
-static void carrier_vault_ik_i_sign_local (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_router_push
-#define ZZ_EXPORT_carrier_router_push
-extern bool carrier_router_push (carrier_router_Router*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  pkt);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_broker_count
-#define ZZ_EXPORT_carrier_vault_broker_count
-uintptr_t carrier_vault_broker_count (carrier_vault_Vault const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_identity_to_string
-#define ZZ_EXPORT_carrier_identity_identity_to_string
-void carrier_identity_identity_to_string (carrier_identity_Identity const *  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  str, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_broker
-#define ZZ_EXPORT_carrier_endpoint_broker
-carrier_channel_Channel * carrier_endpoint_broker (carrier_endpoint_Endpoint*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_err_to_str
-#define ZZ_EXPORT_err_to_str
-void err_to_str (err_Err const *  const  self, uintptr_t const  et, char*  const  dest, uintptr_t const  dest_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_get_local_identity
-#define ZZ_EXPORT_carrier_vault_get_local_identity
-void carrier_vault_get_local_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_close
-#define ZZ_EXPORT_carrier_vault_toml_close
-static void carrier_vault_toml_close (carrier_vault_Vault*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_slen
-#define ZZ_EXPORT_buffer_slen
-uintptr_t buffer_slen (buffer_Buffer const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_connect_on_close
-#define ZZ_EXPORT_carrier_connect_on_close
-static void carrier_connect_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_poll
-#define ZZ_EXPORT_carrier_channel_poll
-extern io_Result carrier_channel_poll (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async, buffer_Buffer*  const  buf, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_from_carriertoml
-#define ZZ_EXPORT_carrier_endpoint_from_carriertoml
-void carrier_endpoint_from_carriertoml (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_from_buffer
-#define ZZ_EXPORT_net_address_from_buffer
-void net_address_from_buffer (net_address_Address*  const  self, buffer_Buffer const *  const  s, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_symmetric_decrypt_and_mix_hash
-#define ZZ_EXPORT_carrier_symmetric_decrypt_and_mix_hash
-extern uintptr_t carrier_symmetric_decrypt_and_mix_hash (carrier_symmetric_SymmetricState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  ciphertext, uintptr_t const  cipher_len, uint64_t const  nonce, uint8_t*  const  plain, uintptr_t const  plain_len_max);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_authorize_open_stream
-#define ZZ_EXPORT_carrier_vault_authorize_open_stream
-bool carrier_vault_authorize_open_stream (carrier_vault_Vault const *  const  self, carrier_identity_Identity const *  const  ii, char const *  const  path);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cipher_init
-#define ZZ_EXPORT_carrier_cipher_init
-void carrier_cipher_init (carrier_cipher_CipherState*  const  self, uint8_t const *  const  k);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sha256_finish
-#define ZZ_EXPORT_carrier_sha256_finish
-void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const  out);
-
-#endif
-#ifndef ZZ_EXPORT_io_close
-#define ZZ_EXPORT_io_close
-void io_close (io_Io*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_toml_MAX_DEPTH
-#define ZZ_EXPORT_toml_MAX_DEPTH
-#define toml_MAX_DEPTH ((uintptr_t )    64)
-
-#endif
-#ifndef ZZ_EXPORT_toml_Parser
-#define ZZ_EXPORT_toml_Parser
-struct toml_Parser_t {
-   uintptr_t col ;
-   uintptr_t line ;
-   bool esc ;
-   bool comment ;
-   toml_ParserStack state[    toml_MAX_DEPTH] ;
-   uintptr_t depth ;
-   uintptr_t keylen ;
-   buffer_Buffer capture ;
-}
-;
-size_t sizeof_toml_Parser(size_t tail);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_stream_exists
-#define ZZ_EXPORT_carrier_channel_stream_exists
-extern bool carrier_channel_stream_exists (carrier_channel_Channel*  const  self, uint32_t const  streamid);
-
-#endif
-#ifndef ZZ_EXPORT_protonerf_Decoder
-#define ZZ_EXPORT_protonerf_Decoder
-struct protonerf_Decoder_t {
-   uint8_t const *  mem ;
-   uintptr_t size ;
-   uintptr_t at ;
-}
-;
-size_t sizeof_protonerf_Decoder();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_FrameType
-#define ZZ_EXPORT_carrier_channel_FrameType
-typedef enum {
-    carrier_channel_FrameType_Ack = 1,
-    carrier_channel_FrameType_Ping = 2,
-    carrier_channel_FrameType_Disconnect = 3,
-    carrier_channel_FrameType_Open = 4,
-    carrier_channel_FrameType_Stream = 5,
-    carrier_channel_FrameType_Close = 6,
-    carrier_channel_FrameType_Configure = 7,
-    carrier_channel_FrameType_Fragmented = 8,
-
-} carrier_channel_FrameType;
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_from_transfer
-#define ZZ_EXPORT_carrier_channel_from_transfer
-extern void carrier_channel_from_transfer (carrier_channel_Channel*  const  self, carrier_channel_Transfer const  tr);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_get_port
-#define ZZ_EXPORT_net_address_get_port
-uint16_t net_address_get_port (net_address_Address const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_append_slice
-#define ZZ_EXPORT_buffer_append_slice
-void buffer_append_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_starts_with_cstr
-#define ZZ_EXPORT_buffer_starts_with_cstr
-bool buffer_starts_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq_bytes
-#define ZZ_EXPORT_slice_slice_eq_bytes
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#endif
-#ifndef ZZ_EXPORT_toml_parser
-#define ZZ_EXPORT_toml_parser
-void toml_parser (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, toml_U const  u);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_cstr
-#define ZZ_EXPORT_slice_mut_slice_append_cstr
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
-
-#endif
-#ifndef ZZ_EXPORT__stdarg_h_
-#define ZZ_EXPORT__stdarg_h_
-
-#endif
-#ifndef ZZ_EXPORT_buffer_vformat
-#define ZZ_EXPORT_buffer_vformat
-int buffer_vformat (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_address_from_cstr
-#define ZZ_EXPORT_carrier_identity_address_from_cstr
-void carrier_identity_address_from_cstr (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_generate
-#define ZZ_EXPORT_carrier_identity_secret_generate
-void carrier_identity_secret_generate (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_signature_from_str
-#define ZZ_EXPORT_carrier_identity_signature_from_str
-void carrier_identity_signature_from_str (carrier_identity_Signature*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_poll
-#define ZZ_EXPORT_carrier_endpoint_poll
-io_Result carrier_endpoint_poll (carrier_endpoint_Endpoint*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_valid
-#define ZZ_EXPORT_net_address_valid
-bool net_address_valid (net_address_Address const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_from_home_carriertoml
-#define ZZ_EXPORT_carrier_vault_toml_from_home_carriertoml
-void carrier_vault_toml_from_home_carriertoml (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_as_slice
-#define ZZ_EXPORT_slice_mut_slice_as_slice
-slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_on_close
-#define ZZ_EXPORT_carrier_cmd_config_auth_list_on_close
-static void carrier_cmd_config_auth_list_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_stream
-#define ZZ_EXPORT_carrier_stream_stream
-slice_mut_slice_MutSlice carrier_stream_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uintptr_t const  reserved_size);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cipher_encrypt_ad
-#define ZZ_EXPORT_carrier_cipher_encrypt_ad
-uintptr_t carrier_cipher_encrypt_ad (carrier_cipher_CipherState*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const *  const  authtext, uintptr_t const  authtext_len, uint8_t const *  const  plain, uintptr_t const  plainlen, uint64_t const  nonce, uint8_t*  const  ciphertext, uintptr_t const  cipherlen_max);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_poll_fn
-#define ZZ_EXPORT_carrier_stream_poll_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_poll_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_poll_fn 1
-typedef struct {
-    void *ctx;
-    void (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, io_Async*  const  async, void * _ctx);
-} carrier_stream_poll_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_poll_fn)
-
-#endif
-#ifndef ZZ_EXPORT_netio_tcp_recv
-#define ZZ_EXPORT_netio_tcp_recv
-io_Result netio_tcp_recv (netio_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, buffer_Buffer*  const  buf, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_system_error
-#define ZZ_EXPORT_err_fail_with_system_error
-void err_fail_with_system_error (err_Err*  const  self, uintptr_t const  tail, int const  merrno, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_bootstrap_Bootstrap
-#define ZZ_EXPORT_carrier_bootstrap_Bootstrap
-struct carrier_bootstrap_Bootstrap_t {
-   net_address_Address dns_servers[    16] ;
-   uintptr_t dns_servers_count ;
-   netio_udp_Socket sock4 ;
-   netio_udp_Socket sock6 ;
-   io_Io retry_timer ;
-   carrier_vault_Vault*  store ;
-}
-;
-size_t sizeof_carrier_bootstrap_Bootstrap();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_bootstrap_close
-#define ZZ_EXPORT_carrier_bootstrap_close
-void carrier_bootstrap_close (carrier_bootstrap_Bootstrap*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_netio_udp_bind
-#define ZZ_EXPORT_netio_udp_bind
-void netio_udp_bind (netio_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const  addr, io_Async*  const  async);
-
-#endif
-#ifndef ZZ_EXPORT_hpack_decoder_decode
-#define ZZ_EXPORT_hpack_decoder_decode
-void hpack_decoder_decode (hpack_decoder_Iterator*  const  self, slice_slice_Slice const  wire);
-
-#endif
-#ifndef ZZ_EXPORT_pool_make
-#define ZZ_EXPORT_pool_make
-void pool_make (pool_Pool*  const  self, uintptr_t const  pt, uintptr_t blocksize);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_Mem
-#define ZZ_EXPORT_carrier_vault_toml_Mem
-struct carrier_vault_toml_Mem_t {
-   carrier_identity_Secret secret ;
-   carrier_identity_Secret principal ;
-   bool has_principal ;
-   carrier_identity_Address network ;
-   carrier_identity_Secret network_secret ;
-   carrier_vault_toml_Authorize auth[    32] ;
-   buffer_Buffer_2000 file_name ;
-}
-;
-size_t sizeof_carrier_vault_toml_Mem();
-
-#endif
-#ifndef ZZ_EXPORT_hpack_decoder_decode_integer
-#define ZZ_EXPORT_hpack_decoder_decode_integer
-extern unsigned int hpack_decoder_decode_integer (hpack_decoder_Iterator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t const  prefix_size);
-
-#endif
-#ifndef ZZ_EXPORT___home_runner_work_carrier_carrier_modules_net_src_os_h_
-#define ZZ_EXPORT___home_runner_work_carrier_carrier_modules_net_src_os_h_
-
-#line 1 "/home/runner/work/carrier/carrier/modules/net/src/os.h"
-#if defined (_WIN32)
-#define WIN32_LEAN_AND_MEAN 1
-#include <windows.h>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <Ws2def.h>
-#include <Ws2ipdef.h>
-#endif
-
-#if defined(__unix__) || defined(__APPLE__) || defined(__linux__)
-#include <netinet/in.h>
-#include <stdint.h>
-#include <string.h>
-#endif
-
-#if defined(ESP_PLATFORM)
-#include <netinet/in.h>
-#include <stdint.h>
-#include <string.h>
-#include "lwip/err.h"
-#include "lwip/sockets.h"
-#include "lwip/sys.h"
-#include <lwip/netdb.h>
-#endif
-
-typedef struct sockaddr_in  sockaddr_in4_t;
-typedef struct sockaddr_in6 sockaddr_in6_t;
-
-#endif
-#ifndef ZZ_EXPORT_net_address_OsAddress
-#define ZZ_EXPORT_net_address_OsAddress
-union net_address_OsAddress_t {
-   sockaddr_in4_t ipv4 ;
-   sockaddr_in6_t ipv6 ;
-   uint8_t b[    32] ;
-}
-;
-size_t sizeof_net_address_OsAddress();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_cancel
-#define ZZ_EXPORT_carrier_pq_cancel
-void carrier_pq_cancel (carrier_pq_Q*  const  self, uintptr_t const  qt);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sync_close
-#define ZZ_EXPORT_carrier_sync_close
-void carrier_sync_close (carrier_sync_Sync*  const  self, int const  exit_code);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_incomming_fragmented
-#define ZZ_EXPORT_carrier_stream_incomming_fragmented
-extern bool carrier_stream_incomming_fragmented (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  order, uint32_t const  fragments);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_alias_from_str
-#define ZZ_EXPORT_carrier_identity_alias_from_str
-void carrier_identity_alias_from_str (carrier_identity_Alias*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_accept
-#define ZZ_EXPORT_carrier_noise_accept
-extern uintptr_t carrier_noise_accept (carrier_noise_Responder*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  pkt, uintptr_t const  pktlen, uint8_t const *  const  payload, uintptr_t const  payload_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_i_advance_clock
-#define ZZ_EXPORT_carrier_vault_ik_i_advance_clock
-static uint64_t carrier_vault_ik_i_advance_clock (carrier_vault_Vault const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_incomming_stream
-#define ZZ_EXPORT_carrier_stream_incomming_stream
-extern bool carrier_stream_incomming_stream (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, uint64_t const  order, slice_slice_Slice const  b);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_cancel
-#define ZZ_EXPORT_carrier_stream_cancel
-void carrier_stream_cancel (carrier_stream_Stream*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_close
-#define ZZ_EXPORT_carrier_endpoint_close
-void carrier_endpoint_close (carrier_endpoint_Endpoint*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_append_cstr
-#define ZZ_EXPORT_buffer_append_cstr
-void buffer_append_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_initiate
-#define ZZ_EXPORT_carrier_noise_initiate
-extern uintptr_t carrier_noise_initiate (carrier_noise_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  pkt, uintptr_t const  pktlen, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  payload, uintptr_t const  payload_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_vector_time
-#define ZZ_EXPORT_carrier_vault_vector_time
-uint64_t carrier_vault_vector_time (carrier_vault_Vault const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_symmetric_mix_key
-#define ZZ_EXPORT_carrier_symmetric_mix_key
-extern void carrier_symmetric_mix_key (carrier_symmetric_SymmetricState*  self, uint8_t const *  const  data, uintptr_t l);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_next_broker
-#define ZZ_EXPORT_carrier_endpoint_next_broker
-static bool carrier_endpoint_next_broker (carrier_endpoint_Endpoint*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_keepalive
-#define ZZ_EXPORT_carrier_pq_keepalive
-uint64_t carrier_pq_keepalive (carrier_pq_Q*  const  self, uintptr_t const  qt, uint64_t const  now);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_eq
-#define ZZ_EXPORT_carrier_identity_eq
-bool carrier_identity_eq (carrier_identity_Identity const *  const  self, carrier_identity_Identity const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_secret_from_cstr
-#define ZZ_EXPORT_carrier_identity_secret_from_cstr
-void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_from_secretkit
-#define ZZ_EXPORT_carrier_endpoint_from_secretkit
-void carrier_endpoint_from_secretkit (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et, carrier_identity_SecretKit const  ik);
-
-#endif
-#ifndef ZZ_EXPORT_pool_alloc
-#define ZZ_EXPORT_pool_alloc
-void * pool_alloc (pool_Pool*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_close_fn
-#define ZZ_EXPORT_carrier_stream_close_fn
-#if !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_close_fn)
-#define ZZ_HAS_DEFINED_CLOSURE_carrier_stream_close_fn 1
-typedef struct {
-    void *ctx;
-    void (*fn) (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et, void * _ctx);
-} carrier_stream_close_fn;
-#endif // !defined(ZZ_HAS_DEFINED_CLOSURE_carrier_stream_close_fn)
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_add_authorization
-#define ZZ_EXPORT_carrier_vault_toml_i_add_authorization
-static void carrier_vault_toml_i_add_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  addme, char const *  const  resource);
-
-#endif
-#ifndef ZZ_EXPORT_err_abort
-#define ZZ_EXPORT_err_abort
-void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_none
-#define ZZ_EXPORT_carrier_endpoint_none
-void carrier_endpoint_none (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_endpoint_native
-#define ZZ_EXPORT_carrier_endpoint_native
-void carrier_endpoint_native (carrier_endpoint_Endpoint*  const  self, uintptr_t const  xt, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_ik_from_ik
-#define ZZ_EXPORT_carrier_vault_ik_from_ik
-void carrier_vault_ik_from_ik (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_SecretKit const  ik);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_ack
-#define ZZ_EXPORT_carrier_pq_ack
-void carrier_pq_ack (carrier_pq_Q*  const  self, uintptr_t const  qt, uint64_t const  time, uint64_t const  counter);
-
-#endif
-#ifndef ZZ_EXPORT_err_elog
-#define ZZ_EXPORT_err_elog
-void err_elog (err_Err const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_netio_tcp_connect
-#define ZZ_EXPORT_netio_tcp_connect
-void netio_tcp_connect (netio_tcp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, net_address_Address const  addr, io_Async*  const  async);
-
-#endif
 #ifndef ZZ_EXPORT_buffer_make
 #define ZZ_EXPORT_buffer_make
 void buffer_make (buffer_Buffer*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_auth_add_on_close
-#define ZZ_EXPORT_carrier_cmd_config_auth_add_on_close
-static void carrier_cmd_config_auth_add_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_alloc_stream
-#define ZZ_EXPORT_carrier_channel_alloc_stream
-extern carrier_stream_Stream * carrier_channel_alloc_stream (carrier_channel_Channel*  const  self, uint32_t const  streamid, carrier_stream_Config const *  const  config);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_from_str_ipv6
-#define ZZ_EXPORT_net_address_from_str_ipv6
-bool net_address_from_str_ipv6 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#endif
-#ifndef ZZ_EXPORT_io_channel
-#define ZZ_EXPORT_io_channel
-void io_channel (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, io_Io*  const  read, io_Io*  const  write);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_push
-#define ZZ_EXPORT_buffer_push
-bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_sync_start
@@ -4139,152 +4409,9 @@ bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b
 void carrier_sync_start (carrier_sync_Sync*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_endpoint_Endpoint*  const  ep);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_set_network
-#define ZZ_EXPORT_carrier_vault_toml_i_set_network
-static void carrier_vault_toml_i_set_network (carrier_vault_Vault const *  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Secret const *  const  secret);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_to_buffer
-#define ZZ_EXPORT_net_address_to_buffer
-void net_address_to_buffer (net_address_Address const *  const  self, buffer_Buffer*  const  to, uintptr_t const  st);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_del_authorization
-#define ZZ_EXPORT_carrier_vault_toml_i_del_authorization
-static void carrier_vault_toml_i_del_authorization (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, carrier_identity_Identity const *  const  delme, char const *  const  resource);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_stream_Config
-#define ZZ_EXPORT_carrier_stream_Config
-struct carrier_stream_Config_t {
-   char const *  path ;
-   carrier_stream_open_fn open ;
-   carrier_stream_close_fn close ;
-   carrier_stream_stream_fn stream ;
-   carrier_stream_fragmented_fn fragmented ;
-   carrier_stream_poll_fn poll ;
-}
-;
-size_t sizeof_carrier_stream_Config();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_receive_insecure
-#define ZZ_EXPORT_carrier_noise_receive_insecure
-extern void carrier_noise_receive_insecure (carrier_noise_Responder*  const  self, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  packet, uintptr_t const  packet_len);
-
-#endif
-#ifndef ZZ_EXPORT_io_wait
-#define ZZ_EXPORT_io_wait
-void io_wait (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_get_principal_identity
-#define ZZ_EXPORT_carrier_vault_get_principal_identity
-void carrier_vault_get_principal_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_symmetric_mix_hash
-#define ZZ_EXPORT_carrier_symmetric_mix_hash
-extern void carrier_symmetric_mix_hash (carrier_symmetric_SymmetricState*  const  self, uint8_t const *  const  data, uintptr_t l);
-
-#endif
-#ifndef ZZ_EXPORT_time_to_millis
-#define ZZ_EXPORT_time_to_millis
-uint64_t time_to_millis (time_Time const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_symmetric_init
-#define ZZ_EXPORT_carrier_symmetric_init
-extern void carrier_symmetric_init (carrier_symmetric_SymmetricState*  const  self, char const *  const  protocolname);
-
-#endif
-#ifndef ZZ_EXPORT_netio_udp_sendto
-#define ZZ_EXPORT_netio_udp_sendto
-io_Result netio_udp_sendto (netio_udp_Socket*  const  self, err_Err*  const  e, uintptr_t const  et, slice_slice_Slice const  buf, net_address_Address const *  const  to);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_sign_principal
-#define ZZ_EXPORT_carrier_vault_sign_principal
-void carrier_vault_sign_principal (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_bootstrap_DnsPacket
-#define ZZ_EXPORT_carrier_bootstrap_DnsPacket
-struct carrier_bootstrap_DnsPacket_t {
-   uint16_t id ;
-   uint16_t flags ;
-   uint16_t queries ;
-   uint16_t answers ;
-   uint16_t authorities ;
-   uint16_t additionals ;
-}
- __attribute__((__packed__)) ;
-size_t sizeof_carrier_bootstrap_DnsPacket();
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq
-#define ZZ_EXPORT_slice_slice_eq
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const  other);
-
-#endif
-#ifndef ZZ_EXPORT_toml_close
-#define ZZ_EXPORT_toml_close
-void toml_close (toml_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_io_timeout
-#define ZZ_EXPORT_io_timeout
-io_Io io_timeout (io_Async*  const  self, err_Err*  const  e, uintptr_t const  et, time_Time const  t2);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_push
-#define ZZ_EXPORT_carrier_channel_push
-extern void carrier_channel_push (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  body, uintptr_t const  l, uint64_t const  counter, uint8_t const  version);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_ack
-#define ZZ_EXPORT_carrier_channel_ack
-extern void carrier_channel_ack (carrier_channel_Channel*  const  self, err_Err*  const  e, uint64_t const  ackd);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_sign_local
-#define ZZ_EXPORT_carrier_vault_sign_local
-void carrier_vault_sign_local (carrier_vault_Vault const *  const  self, carrier_identity_Signature*  const  s, uint8_t const *  const  subject, uintptr_t const  subject_len);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_clear
-#define ZZ_EXPORT_buffer_clear
-void buffer_clear (buffer_Buffer*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_net_address_from_str_ipv4
-#define ZZ_EXPORT_net_address_from_str_ipv4
-bool net_address_from_str_ipv4 (net_address_Address*  const  self, char const *  const  s, uintptr_t const  slen);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_alloc
-#define ZZ_EXPORT_carrier_pq_alloc
-slice_mut_slice_MutSlice carrier_pq_alloc (carrier_pq_Q*  const  self, uintptr_t const  qt, err_Err*  const  e, uintptr_t const  et, carrier_channel_FrameType const  typ, uintptr_t const  size);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_identity_address_from_str
-#define ZZ_EXPORT_carrier_identity_address_from_str
-void carrier_identity_address_from_str (carrier_identity_Address*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_available
-#define ZZ_EXPORT_buffer_available
-uintptr_t buffer_available (buffer_Buffer const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_netio_tcp_close
-#define ZZ_EXPORT_netio_tcp_close
-void netio_tcp_close (netio_tcp_Socket*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_receive
-#define ZZ_EXPORT_carrier_noise_receive
-extern uintptr_t carrier_noise_receive (carrier_noise_Responder*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  payload, uintptr_t const  payload_len, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  packet, uintptr_t const  packet_len);
+#ifndef ZZ_EXPORT_carrier_identity_secret_from_cstr
+#define ZZ_EXPORT_carrier_identity_secret_from_cstr
+void carrier_identity_secret_from_cstr (carrier_identity_Secret*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_sha256_Sha256
@@ -4299,90 +4426,18 @@ struct carrier_sha256_Sha256_t {
 size_t sizeof_carrier_sha256_Sha256();
 
 #endif
-#ifndef ZZ_EXPORT_carrier_initiator_initiate
-#define ZZ_EXPORT_carrier_initiator_initiate
-extern void carrier_initiator_initiate (carrier_initiator_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, bool const  secure, carrier_vault_Vault const *  const  vault, carrier_initiator_Move const  move, carrier_identity_Identity const *  const  cluster_target, carrier_identity_Address const *  const  xaddr, uint64_t const  vector_time, slice_mut_slice_MutSlice pkt);
+#ifndef ZZ_EXPORT_carrier_identity_secretkit_from_str
+#define ZZ_EXPORT_carrier_identity_secretkit_from_str
+void carrier_identity_secretkit_from_str (carrier_identity_SecretKit*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  from, uintptr_t const  l);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_sha256_update
-#define ZZ_EXPORT_carrier_sha256_update
-void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
+#ifndef ZZ_EXPORT_carrier_peering_received
+#define ZZ_EXPORT_carrier_peering_received
+void carrier_peering_received (carrier_peering_Peering*  const  self, carrier_peering_Transport const  transport, net_address_Address const  addr, carrier_peering_Class const  klass);
 
 #endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_from_carriertoml
-#define ZZ_EXPORT_carrier_vault_toml_i_from_carriertoml
-static void carrier_vault_toml_i_from_carriertoml (carrier_vault_Vault*  const  self, err_Err*  const  e, uintptr_t const  et, char const *  const  file_name);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_initiate_insecure
-#define ZZ_EXPORT_carrier_noise_initiate_insecure
-extern uintptr_t carrier_noise_initiate_insecure (carrier_noise_Initiator*  const  self, err_Err*  const  e, uintptr_t const  et, uint8_t*  pkt, uintptr_t const  pktlen, uint8_t const *  const  prologue, uintptr_t const  prologue_len, uint8_t const *  const  payload, uintptr_t const  payload_len);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_peering_from_proto
-#define ZZ_EXPORT_carrier_peering_from_proto
-void carrier_peering_from_proto (carrier_peering_Peering*  const  self, err_Err*  const  e, uintptr_t const  et, protonerf_Field const  field);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_ends_with_cstr
-#define ZZ_EXPORT_buffer_ends_with_cstr
-bool buffer_ends_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_cmd_config_net_on_close
-#define ZZ_EXPORT_carrier_cmd_config_net_on_close
-static void carrier_cmd_config_net_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_channel_disco
-#define ZZ_EXPORT_carrier_channel_disco
-static void carrier_channel_disco (carrier_channel_Channel*  const  self, err_Err*  const  e, uintptr_t const  et, uint32_t const  stream_id);
-
-#endif
-#ifndef ZZ_EXPORT_io_wake
-#define ZZ_EXPORT_io_wake
-void io_wake (io_Async*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_wrapdec
-#define ZZ_EXPORT_carrier_pq_wrapdec
-static uintptr_t carrier_pq_wrapdec (carrier_pq_Q const *  const  self, uintptr_t const  qt, uintptr_t*  const  i);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_get_local_identity
-#define ZZ_EXPORT_carrier_vault_toml_i_get_local_identity
-static void carrier_vault_toml_i_get_local_identity (carrier_vault_Vault const *  const  self, carrier_identity_Identity*  const  id);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_pq_send
-#define ZZ_EXPORT_carrier_pq_send
-uintptr_t carrier_pq_send (carrier_pq_Q*  const  self, uintptr_t const  qt, uint64_t const  time, uint8_t*  const  buf, uint16_t const  buflen, uint64_t const  counter);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push32
-#define ZZ_EXPORT_slice_mut_slice_push32
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_noise_Responder
-#define ZZ_EXPORT_carrier_noise_Responder
-struct carrier_noise_Responder_t {
-   carrier_symmetric_SymmetricState symm ;
-   carrier_identity_Secret ephemeral ;
-   carrier_identity_Secret statickey ;
-   carrier_identity_Address remote_ephemeral ;
-}
-;
-size_t sizeof_carrier_noise_Responder();
-
-#endif
-#ifndef ZZ_EXPORT_buffer_copy_cstr
-#define ZZ_EXPORT_buffer_copy_cstr
-void buffer_copy_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  s);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_vault_toml_i_advance_clock
-#define ZZ_EXPORT_carrier_vault_toml_i_advance_clock
-static uint64_t carrier_vault_toml_i_advance_clock (carrier_vault_Vault const *  const  self);
+#ifndef ZZ_EXPORT_carrier_cmd_config_auth_list_on_close
+#define ZZ_EXPORT_carrier_cmd_config_auth_list_on_close
+static void carrier_cmd_config_auth_list_on_close (carrier_stream_Stream*  const  self, err_Err*  const  e, uintptr_t const  et);
 
 #endif

@@ -170,10 +170,11 @@ pub fn shutdown(Channel mut* self, err::Err+et mut*e)
     //TODO send disconnect frame
 }
 
-export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config *conf, slice::Slice * extraheaders) -> stream::Stream mut *
+export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config *conf, slice::Slice extraheaders) -> stream::Stream mut *
     where err::checked(*e)
     where safe(conf->path)
     where nullterm(conf->path)
+    where slice::slice::integrity(&extraheaders)
     model (return == 0) ||  safe(return)
 {
     let r = self->alloc_stream(1 + self->streamidcounter * 2, conf);
@@ -183,8 +184,8 @@ export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config
     }
     static_attest(safe(r));
 
-    err::assert(extraheaders->size < 10000);
-    let framesize = 100 + extraheaders->size;
+    err::assert(extraheaders.size < 10000);
+    let framesize = 100 + extraheaders.size;
 
     let mut frame = self->q.alloc(e, FrameType::Open, framesize);
     if err::check(e) {

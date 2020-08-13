@@ -15,7 +15,7 @@ func init() {
 
     otaCmd := &cobra.Command{
         Use:    "ota <target> <local-file>",
-        Short:  "update a remote system with a new sysimage",
+        Short:  "Update a remote system with a new sysimage",
         Run: func(cmd *cobra.Command, args []string) {
             if len(args) < 2 {
                 cmd.Help();
@@ -88,7 +88,7 @@ func init() {
     };
     pushCmd := &cobra.Command{
         Use:    "push <target> <local-file> <remote-file>",
-        Short:  "push a file to a remote file system",
+        Short:  "Push a file to a remote file system",
         Run: func(cmd *cobra.Command, args []string) {
             if len(args) < 3 {
                 cmd.Help();
@@ -161,7 +161,7 @@ func init() {
 
     fsCmd := &cobra.Command{
         Use:    "fs <subcommand>",
-        Short:  "file related apis",
+        Short:  "File related apis",
     };
     fsCmd.AddCommand(pushCmd);
     fsCmd.AddCommand(otaCmd);

@@ -2,11 +2,8 @@
 <h1> module carrier::rand </h1>
 <h4> fn fail_with_errno (
 
-    usize
-    tail,
-
     ::ext::&lt;stddef.h&gt;::char*
-    file,
+    scope,
 
     usize
     line,
@@ -14,11 +11,14 @@
     ::ext::&lt;stddef.h&gt;::char*
     fmt,
 
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
     ::err::Err*+tail
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
+    usize
+    tail,
 
 )
 
@@ -30,17 +30,17 @@
 
 </p><h4> fn rand (
 
-    usize
-    size,
-
     ::err::Err*+et
     e,
 
-    u8*
-    bytes,
-
     usize
     et,
+
+    usize
+    size,
+
+    u8*
+    bytes,
 
 )
 

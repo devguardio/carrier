@@ -77,6 +77,7 @@ extern {
 
 
 
+
     #[link_name = "sizeof_pool_Pool"]
     pub fn sizeof_Pool(tail: libc::size_t) -> libc::size_t;
 
@@ -86,13 +87,15 @@ extern {
     #[link_name = "pool_make"]
     pub fn r#make( Zself: *mut u8,  Zpt: usize,  Zblocksize: usize);
 
-    #[link_name = "pool_free_bytes"]
-    pub fn r#free_bytes( Zself: *const u8)  -> usize;
+    #[link_name = "pool_bitarray_test"]
+    pub fn r#bitarray_test( Za: *mut u8,  Zindex: usize)  -> bool;
+
+
+    #[link_name = "pool_free"]
+    pub fn r#free( Zself: *mut u8,  Zptr_: *const u8);
 
     #[link_name = "pool_bitarray_set"]
     pub fn r#bitarray_set( Za: *mut u8,  Zindex: usize);
-
-
 
     #[link_name = "pool_malloc"]
     pub fn r#malloc( Zself: *mut u8,  Zsize: usize)  -> *mut u8;
@@ -100,10 +103,7 @@ extern {
     #[link_name = "pool_alloc"]
     pub fn r#alloc( Zself: *mut u8)  -> *mut u8;
 
-    #[link_name = "pool_bitarray_test"]
-    pub fn r#bitarray_test( Za: *mut u8,  Zindex: usize)  -> bool;
-
-    #[link_name = "pool_free"]
-    pub fn r#free( Zself: *mut u8,  Zptr_: *const u8);
+    #[link_name = "pool_free_bytes"]
+    pub fn r#free_bytes( Zself: *const u8)  -> usize;
 
 }

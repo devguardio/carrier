@@ -1783,9 +1783,9 @@ export fn NetworkGetResultTypes (usize index) -> protonerf::FieldType {
 
 export enum GenesisCurrent {
   Sha256 = 1,
-  Commit = 2,
-  Data = 3,
-  Stable = 4,
+  Commitmsg = 2,
+  Stable = 3,
+  Contentsize = 4,
 }
 
 export fn GenesisCurrentTypes (usize index) -> protonerf::FieldType {
@@ -1793,13 +1793,13 @@ export fn GenesisCurrentTypes (usize index) -> protonerf::FieldType {
         GenesisCurrent::Sha256 => {
             return protonerf::FieldType::Message;
         }
-        GenesisCurrent::Commit => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisCurrent::Data => {
+        GenesisCurrent::Commitmsg => {
             return protonerf::FieldType::Message;
         }
         GenesisCurrent::Stable => {
+            return protonerf::FieldType::Message;
+        }
+        GenesisCurrent::Contentsize => {
             return protonerf::FieldType::Message;
         }
     }
@@ -1809,9 +1809,9 @@ export fn GenesisCurrentTypes (usize index) -> protonerf::FieldType {
 
 export enum GenesisUpdate {
   Sha256 = 1,
-  PreviousSha256 = 2,
-  Commit = 3,
-  Data = 4,
+  Commitmsg = 2,
+  Parent = 3,
+  Contentsize = 4,
 }
 
 export fn GenesisUpdateTypes (usize index) -> protonerf::FieldType {
@@ -1819,13 +1819,13 @@ export fn GenesisUpdateTypes (usize index) -> protonerf::FieldType {
         GenesisUpdate::Sha256 => {
             return protonerf::FieldType::Message;
         }
-        GenesisUpdate::PreviousSha256 => {
+        GenesisUpdate::Commitmsg => {
             return protonerf::FieldType::Message;
         }
-        GenesisUpdate::Commit => {
+        GenesisUpdate::Parent => {
             return protonerf::FieldType::Message;
         }
-        GenesisUpdate::Data => {
+        GenesisUpdate::Contentsize => {
             return protonerf::FieldType::Message;
         }
     }

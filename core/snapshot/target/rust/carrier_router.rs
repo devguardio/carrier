@@ -80,9 +80,18 @@ impl Router {
 }
 }
 extern {
-    #[link_name = "carrier_router_cleanup_dead_broker_route"]
-    pub fn r#cleanup_dead_broker_route( Zchan: *mut u8,  Zdead_route: u64);
 
+
+    #[link_name = "carrier_router_shutdown"]
+    pub fn r#shutdown( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+
+
+    #[link_name = "carrier_router_next_channel"]
+    pub fn r#next_channel( Zself: *mut u8)  -> *mut u8;
+
+
+    #[link_name = "sizeof_carrier_router_Router"]
+    pub fn sizeof_Router() -> libc::size_t;
 
     #[link_name = "carrier_router_push"]
     pub fn r#push( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpkt: super::slice_slice::Slice)  -> bool;
@@ -90,25 +99,16 @@ extern {
     #[link_name = "carrier_router_close"]
     pub fn r#close( Zself: *mut u8);
 
-
     #[link_name = "carrier_router_poll"]
     pub fn r#poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8)  -> super::io::Result;
 
-    #[link_name = "carrier_router_next_channel"]
-    pub fn r#next_channel( Zself: *mut u8)  -> *mut u8;
-
-    #[link_name = "carrier_router_shutdown"]
-    pub fn r#shutdown( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
-
+    #[link_name = "carrier_router_disconnect"]
+    pub fn r#disconnect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zroute: u64);
 
     #[link_name = "carrier_router_read_routing_key"]
     pub fn r#read_routing_key( Zi: *const u8,  Zdirection: *mut u8)  -> u64;
 
-
-    #[link_name = "sizeof_carrier_router_Router"]
-    pub fn sizeof_Router() -> libc::size_t;
-
-    #[link_name = "carrier_router_disconnect"]
-    pub fn r#disconnect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zroute: u64);
+    #[link_name = "carrier_router_cleanup_dead_broker_route"]
+    pub fn r#cleanup_dead_broker_route( Zchan: *mut u8,  Zdead_route: u64);
 
 }

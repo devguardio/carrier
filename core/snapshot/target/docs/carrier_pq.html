@@ -2,6 +2,15 @@
 <h1> module carrier::pq </h1>
 <h4> fn alloc (
 
+    usize
+    et,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
     ::err::Err*+et
     e,
 
@@ -11,15 +20,6 @@
     usize
     size,
 
-    usize
-    qt,
-
-    usize
-    et,
-
-    ::carrier::pq::Q*+qt
-    self,
-
 )
 
 -&gt ::slice::mut_slice::MutSlice
@@ -28,6 +28,22 @@
 
 <p class='doc_comments'>
  allocate the next frame in the queue&lt;br&gt;
+</p><h4> fn cancel (
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ undo last allocation without sending anything&lt;br&gt;
 </p><h4> fn swap16 (
 
     u16
@@ -54,19 +70,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn ack (
-
-    u64
-    time,
-
-    u64
-    counter,
-
-    ::carrier::pq::Q*+qt
-    self,
+</p><h4> fn clear (
 
     usize
     qt,
+
+    ::carrier::pq::Q*+qt
+    self,
 
 )
 
@@ -78,23 +88,23 @@
 
 </p><h4> fn send (
 
-    usize
-    qt,
-
-    u64
-    time,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-    u64
-    counter,
-
     u8*
     buf,
 
     u16
     buflen,
+
+    usize
+    qt,
+
+    u64
+    counter,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    u64
+    time,
 
 )
 
@@ -104,13 +114,19 @@
 
 <p class='doc_comments'>
  send frames out of the queue&lt;br&gt;
-</p><h4> fn clear (
+</p><h4> fn ack (
+
+    u64
+    time,
 
     ::carrier::pq::Q*+qt
     self,
 
     usize
     qt,
+
+    u64
+    counter,
 
 )
 
@@ -122,14 +138,14 @@
 
 </p><h4> fn keepalive (
 
-    usize
-    qt,
-
     u64
     now,
 
     ::carrier::pq::Q*+qt
     self,
+
+    usize
+    qt,
 
 )
 
@@ -139,29 +155,13 @@
 
 <p class='doc_comments'>
  tail loss probe or ping and return the time when we need to call this function again&lt;br&gt;
-</p><h4> fn cancel (
-
-    usize
-    qt,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- undo last allocation without sending anything&lt;br&gt;
 </p><h4> fn window (
 
-    ::carrier::pq::Q*+qt
-    self,
-
     usize
     qt,
+
+    ::carrier::pq::Q*+qt
+    self,
 
 )
 

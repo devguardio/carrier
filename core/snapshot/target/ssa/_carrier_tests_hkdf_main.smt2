@@ -1,105 +1,105 @@
 ; Command:
-; > z3 -in -smt2
+; > yices_smt2_mt --incremental
 
 (set-logic QF_UFBV)
 (declare-fun theory0_len ((_ BitVec 64)) (_ BitVec 64)); theory len
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:2
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:30
-(declare-fun var6___carrier__sha256__update__t0 () (_ BitVec 64))
-(declare-fun var7_true__t0 () Bool)
-(assert
-  (= var7_true__t0 (theory1_safe var6___carrier__sha256__update__t0) )
-)
-
-(assert
-  var7_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:2
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:7
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:7
 ; literal expr
-(declare-fun var9_literal_32__t0 () (_ BitVec 64))
+(declare-fun var6_literal_32__t0 () (_ BitVec 64))
 (assert
-  (= var9_literal_32__t0 (_ bv32 64))
+  (= var6_literal_32__t0 (_ bv32 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-(declare-fun var10_safe_literal_32_____safe___carrier__sha256__HASHLEN___t0 () Bool)
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:7
+(declare-fun var7_safe_literal_32_____safe___carrier__sha256__HASHLEN___t0 () Bool)
 (assert
-  (= var10_safe_literal_32_____safe___carrier__sha256__HASHLEN___t0 (theory1_safe var9_literal_32__t0) )
+  (= var7_safe_literal_32_____safe___carrier__sha256__HASHLEN___t0 (theory1_safe var6_literal_32__t0) )
 )
 
-(declare-fun var8___carrier__sha256__HASHLEN__t1 () (_ BitVec 64))
+(declare-fun var5___carrier__sha256__HASHLEN__t1 () (_ BitVec 64))
 (assert
-  (= var10_safe_literal_32_____safe___carrier__sha256__HASHLEN___t0 (theory1_safe var8___carrier__sha256__HASHLEN__t1) )
+  (= var7_safe_literal_32_____safe___carrier__sha256__HASHLEN___t0 (theory1_safe var5___carrier__sha256__HASHLEN__t1) )
 )
 
-(declare-fun var11_nullterm_literal_32_____nullterm___carrier__sha256__HASHLEN___t0 () Bool)
+(declare-fun var8_nullterm_literal_32_____nullterm___carrier__sha256__HASHLEN___t0 () Bool)
 (assert
-  (= var11_nullterm_literal_32_____nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var9_literal_32__t0) )
-)
-
-(assert
-  (= var11_nullterm_literal_32_____nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var8___carrier__sha256__HASHLEN__t1) )
-)
-
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-(declare-fun var12_implicit_coercion_of_literal_32__t0 () (_ BitVec 64))
-(assert (! (= var12_implicit_coercion_of_literal_32__t0 var9_literal_32__t0) :named A0))(declare-fun var8___carrier__sha256__HASHLEN__t0 () (_ BitVec 64))
-(assert
-  (= var8___carrier__sha256__HASHLEN__t1  (ite true var12_implicit_coercion_of_literal_32__t0 var8___carrier__sha256__HASHLEN__t0)  )
-)
-
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:67
-(declare-fun var13___carrier__sha256__hkdf__t0 () (_ BitVec 64))
-(declare-fun var14_true__t0 () Bool)
-(assert
-  (= var14_true__t0 (theory1_safe var13___carrier__sha256__hkdf__t0) )
+  (= var8_nullterm_literal_32_____nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var6_literal_32__t0) )
 )
 
 (assert
-  var14_true__t0
+  (= var8_nullterm_literal_32_____nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var5___carrier__sha256__HASHLEN__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:25
-(declare-fun var15___carrier__sha256__init__t0 () (_ BitVec 64))
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:7
+(declare-fun var9_implicit_coercion_of_literal_32__t0 () (_ BitVec 64))
+(assert (! (= var9_implicit_coercion_of_literal_32__t0 var6_literal_32__t0) :named A0))(declare-fun var5___carrier__sha256__HASHLEN__t0 () (_ BitVec 64))
+(assert
+  (= var5___carrier__sha256__HASHLEN__t1  (ite true var9_implicit_coercion_of_literal_32__t0 var5___carrier__sha256__HASHLEN__t0)  )
+)
+
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:67
+(declare-fun var10___carrier__sha256__hkdf__t0 () (_ BitVec 64))
+(declare-fun var11_true__t0 () Bool)
+(assert
+  (= var11_true__t0 (theory1_safe var10___carrier__sha256__hkdf__t0) )
+)
+
+(assert
+  var11_true__t0
+)
+
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:4
+(declare-fun var12___carrier__tests__hkdf__main__t0 () (_ BitVec 64))
+(declare-fun var13_true__t0 () Bool)
+(assert
+  (= var13_true__t0 (theory1_safe var12___carrier__tests__hkdf__main__t0) )
+)
+
+(assert
+  var13_true__t0
+)
+
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:18
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:30
+(declare-fun var15___carrier__sha256__update__t0 () (_ BitVec 64))
 (declare-fun var16_true__t0 () Bool)
 (assert
-  (= var16_true__t0 (theory1_safe var15___carrier__sha256__init__t0) )
+  (= var16_true__t0 (theory1_safe var15___carrier__sha256__update__t0) )
 )
 
 (assert
   var16_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:4
-(declare-fun var17___carrier__tests__hkdf__main__t0 () (_ BitVec 64))
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:60
+(declare-fun var17___carrier__sha256__finish__t0 () (_ BitVec 64))
 (declare-fun var18_true__t0 () Bool)
 (assert
-  (= var18_true__t0 (theory1_safe var17___carrier__tests__hkdf__main__t0) )
+  (= var18_true__t0 (theory1_safe var17___carrier__sha256__finish__t0) )
 )
 
 (assert
   var18_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:60
-(declare-fun var19___carrier__sha256__finish__t0 () (_ BitVec 64))
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:25
+(declare-fun var19___carrier__sha256__init__t0 () (_ BitVec 64))
 (declare-fun var20_true__t0 () Bool)
 (assert
-  (= var20_true__t0 (theory1_safe var19___carrier__sha256__finish__t0) )
+  (= var20_true__t0 (theory1_safe var19___carrier__sha256__init__t0) )
 )
 
 (assert
   var20_true__t0
 )
 
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:18
 ;
 
 
@@ -109,8 +109,8 @@
 
 (push 1)
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:4
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:4
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 (declare-fun var22_ck__t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
@@ -121,8 +121,8 @@
   var23_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var24_literal_198__t0 () (_ BitVec 64))
 (assert
@@ -130,7 +130,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var25_literal_177__t0 () (_ BitVec 64))
 (assert
@@ -138,7 +138,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var26_literal_38__t0 () (_ BitVec 64))
 (assert
@@ -146,7 +146,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var27_literal_78__t0 () (_ BitVec 64))
 (assert
@@ -154,7 +154,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var28_literal_189__t0 () (_ BitVec 64))
 (assert
@@ -162,7 +162,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var29_literal_97__t0 () (_ BitVec 64))
 (assert
@@ -170,7 +170,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var30_literal_241__t0 () (_ BitVec 64))
 (assert
@@ -178,7 +178,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var31_literal_65__t0 () (_ BitVec 64))
 (assert
@@ -186,7 +186,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var32_literal_85__t0 () (_ BitVec 64))
 (assert
@@ -194,7 +194,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var33_literal_16__t0 () (_ BitVec 64))
 (assert
@@ -202,7 +202,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var34_literal_195__t0 () (_ BitVec 64))
 (assert
@@ -210,7 +210,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var35_literal_75__t0 () (_ BitVec 64))
 (assert
@@ -218,7 +218,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var36_literal_157__t0 () (_ BitVec 64))
 (assert
@@ -226,7 +226,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var37_literal_30__t0 () (_ BitVec 64))
 (assert
@@ -234,7 +234,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var38_literal_192__t0 () (_ BitVec 64))
 (assert
@@ -242,7 +242,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var39_literal_151__t0 () (_ BitVec 64))
 (assert
@@ -250,7 +250,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var40_literal_178__t0 () (_ BitVec 64))
 (assert
@@ -258,7 +258,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var41_literal_229__t0 () (_ BitVec 64))
 (assert
@@ -266,7 +266,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var42_literal_119__t0 () (_ BitVec 64))
 (assert
@@ -274,7 +274,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var43_literal_120__t0 () (_ BitVec 64))
 (assert
@@ -282,7 +282,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var44_literal_247__t0 () (_ BitVec 64))
 (assert
@@ -290,7 +290,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var45_literal_70__t0 () (_ BitVec 64))
 (assert
@@ -298,7 +298,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var46_literal_143__t0 () (_ BitVec 64))
 (assert
@@ -306,7 +306,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var47_literal_99__t0 () (_ BitVec 64))
 (assert
@@ -314,7 +314,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var48_literal_9__t0 () (_ BitVec 64))
 (assert
@@ -322,7 +322,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var49_literal_6__t0 () (_ BitVec 64))
 (assert
@@ -330,7 +330,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var50_literal_127__t0 () (_ BitVec 64))
 (assert
@@ -338,7 +338,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var51_literal_6__t0 () (_ BitVec 64))
 (assert
@@ -346,7 +346,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var52_literal_169__t0 () (_ BitVec 64))
 (assert
@@ -354,7 +354,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var53_literal_254__t0 () (_ BitVec 64))
 (assert
@@ -362,7 +362,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var54_literal_4__t0 () (_ BitVec 64))
 (assert
@@ -370,7 +370,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 ; literal expr
 (declare-fun var55_literal_245__t0 () (_ BitVec 64))
 (assert
@@ -378,7 +378,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 (declare-fun var56_literal_array_56__t0 () (_ BitVec 64))
 (declare-fun var57_true__t0 () Bool)
 (assert
@@ -389,7 +389,7 @@
   var57_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:5
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:5
 (declare-fun var58_safe_literal_array_56_____safe_ck___t0 () Bool)
 (assert
   (= var58_safe_literal_array_56_____safe_ck___t0 (theory1_safe var56_literal_array_56__t0) )
@@ -419,7 +419,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 (declare-fun var93_material__t0 () (_ BitVec 64))
 (declare-fun var94_true__t0 () Bool)
 (assert
@@ -430,8 +430,8 @@
   var94_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var95_literal_40__t0 () (_ BitVec 64))
 (assert
@@ -439,7 +439,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var96_literal_133__t0 () (_ BitVec 64))
 (assert
@@ -447,7 +447,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var97_literal_7__t0 () (_ BitVec 64))
 (assert
@@ -455,7 +455,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var98_literal_133__t0 () (_ BitVec 64))
 (assert
@@ -463,7 +463,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var99_literal_34__t0 () (_ BitVec 64))
 (assert
@@ -471,7 +471,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var100_literal_135__t0 () (_ BitVec 64))
 (assert
@@ -479,7 +479,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var101_literal_233__t0 () (_ BitVec 64))
 (assert
@@ -487,7 +487,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var102_literal_30__t0 () (_ BitVec 64))
 (assert
@@ -495,7 +495,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var103_literal_68__t0 () (_ BitVec 64))
 (assert
@@ -503,7 +503,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var104_literal_6__t0 () (_ BitVec 64))
 (assert
@@ -511,7 +511,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var105_literal_122__t0 () (_ BitVec 64))
 (assert
@@ -519,7 +519,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var106_literal_111__t0 () (_ BitVec 64))
 (assert
@@ -527,7 +527,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var107_literal_173__t0 () (_ BitVec 64))
 (assert
@@ -535,7 +535,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var108_literal_218__t0 () (_ BitVec 64))
 (assert
@@ -543,7 +543,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var109_literal_138__t0 () (_ BitVec 64))
 (assert
@@ -551,7 +551,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 ; literal expr
 (declare-fun var110_literal_169__t0 () (_ BitVec 64))
 (assert
@@ -559,7 +559,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 (declare-fun var111_literal_array_111__t0 () (_ BitVec 64))
 (declare-fun var112_true__t0 () Bool)
 (assert
@@ -570,7 +570,7 @@
   var112_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:7
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:7
 (declare-fun var113_safe_literal_array_111_____safe_material___t0 () Bool)
 (assert
   (= var113_safe_literal_array_111_____safe_material___t0 (theory1_safe var111_literal_array_111__t0) )
@@ -600,7 +600,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 (declare-fun var132_out1__t0 () (_ BitVec 64))
 (declare-fun var133_true__t0 () Bool)
 (assert
@@ -611,8 +611,8 @@
   var133_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var134_literal_71__t0 () (_ BitVec 64))
 (assert
@@ -620,7 +620,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var135_literal_51__t0 () (_ BitVec 64))
 (assert
@@ -628,7 +628,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var136_literal_182__t0 () (_ BitVec 64))
 (assert
@@ -636,7 +636,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var137_literal_220__t0 () (_ BitVec 64))
 (assert
@@ -644,7 +644,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var138_literal_86__t0 () (_ BitVec 64))
 (assert
@@ -652,7 +652,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var139_literal_93__t0 () (_ BitVec 64))
 (assert
@@ -660,7 +660,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var140_literal_239__t0 () (_ BitVec 64))
 (assert
@@ -668,7 +668,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var141_literal_194__t0 () (_ BitVec 64))
 (assert
@@ -676,7 +676,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var142_literal_35__t0 () (_ BitVec 64))
 (assert
@@ -684,7 +684,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var143_literal_72__t0 () (_ BitVec 64))
 (assert
@@ -692,7 +692,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var144_literal_218__t0 () (_ BitVec 64))
 (assert
@@ -700,7 +700,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var145_literal_219__t0 () (_ BitVec 64))
 (assert
@@ -708,7 +708,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var146_literal_81__t0 () (_ BitVec 64))
 (assert
@@ -716,7 +716,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var147_literal_34__t0 () (_ BitVec 64))
 (assert
@@ -724,7 +724,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var148_literal_146__t0 () (_ BitVec 64))
 (assert
@@ -732,7 +732,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var149_literal_69__t0 () (_ BitVec 64))
 (assert
@@ -740,7 +740,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var150_literal_156__t0 () (_ BitVec 64))
 (assert
@@ -748,7 +748,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var151_literal_42__t0 () (_ BitVec 64))
 (assert
@@ -756,7 +756,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var152_literal_223__t0 () (_ BitVec 64))
 (assert
@@ -764,7 +764,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var153_literal_229__t0 () (_ BitVec 64))
 (assert
@@ -772,7 +772,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var154_literal_83__t0 () (_ BitVec 64))
 (assert
@@ -780,7 +780,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var155_literal_35__t0 () (_ BitVec 64))
 (assert
@@ -788,7 +788,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var156_literal_156__t0 () (_ BitVec 64))
 (assert
@@ -796,7 +796,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var157_literal_48__t0 () (_ BitVec 64))
 (assert
@@ -804,7 +804,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var158_literal_39__t0 () (_ BitVec 64))
 (assert
@@ -812,7 +812,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var159_literal_126__t0 () (_ BitVec 64))
 (assert
@@ -820,7 +820,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var160_literal_38__t0 () (_ BitVec 64))
 (assert
@@ -828,7 +828,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var161_literal_220__t0 () (_ BitVec 64))
 (assert
@@ -836,7 +836,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var162_literal_194__t0 () (_ BitVec 64))
 (assert
@@ -844,7 +844,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var163_literal_74__t0 () (_ BitVec 64))
 (assert
@@ -852,7 +852,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var164_literal_68__t0 () (_ BitVec 64))
 (assert
@@ -860,7 +860,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 ; literal expr
 (declare-fun var165_literal_23__t0 () (_ BitVec 64))
 (assert
@@ -868,7 +868,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 (declare-fun var166_literal_array_166__t0 () (_ BitVec 64))
 (declare-fun var167_true__t0 () Bool)
 (assert
@@ -879,7 +879,7 @@
   var167_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:9
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:9
 (declare-fun var168_safe_literal_array_166_____safe_out1___t0 () Bool)
 (assert
   (= var168_safe_literal_array_166_____safe_out1___t0 (theory1_safe var166_literal_array_166__t0) )
@@ -909,7 +909,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 (declare-fun var203_out2__t0 () (_ BitVec 64))
 (declare-fun var204_true__t0 () Bool)
 (assert
@@ -920,8 +920,8 @@
   var204_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var205_literal_116__t0 () (_ BitVec 64))
 (assert
@@ -929,7 +929,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var206_literal_75__t0 () (_ BitVec 64))
 (assert
@@ -937,7 +937,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var207_literal_223__t0 () (_ BitVec 64))
 (assert
@@ -945,7 +945,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var208_literal_92__t0 () (_ BitVec 64))
 (assert
@@ -953,7 +953,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var209_literal_225__t0 () (_ BitVec 64))
 (assert
@@ -961,7 +961,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var210_literal_217__t0 () (_ BitVec 64))
 (assert
@@ -969,7 +969,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var211_literal_61__t0 () (_ BitVec 64))
 (assert
@@ -977,7 +977,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var212_literal_15__t0 () (_ BitVec 64))
 (assert
@@ -985,7 +985,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var213_literal_177__t0 () (_ BitVec 64))
 (assert
@@ -993,7 +993,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var214_literal_35__t0 () (_ BitVec 64))
 (assert
@@ -1001,7 +1001,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var215_literal_231__t0 () (_ BitVec 64))
 (assert
@@ -1009,7 +1009,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var216_literal_232__t0 () (_ BitVec 64))
 (assert
@@ -1017,7 +1017,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var217_literal_107__t0 () (_ BitVec 64))
 (assert
@@ -1025,7 +1025,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var218_literal_198__t0 () (_ BitVec 64))
 (assert
@@ -1033,7 +1033,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var219_literal_96__t0 () (_ BitVec 64))
 (assert
@@ -1041,7 +1041,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var220_literal_225__t0 () (_ BitVec 64))
 (assert
@@ -1049,7 +1049,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var221_literal_135__t0 () (_ BitVec 64))
 (assert
@@ -1057,7 +1057,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var222_literal_133__t0 () (_ BitVec 64))
 (assert
@@ -1065,7 +1065,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var223_literal_182__t0 () (_ BitVec 64))
 (assert
@@ -1073,7 +1073,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var224_literal_50__t0 () (_ BitVec 64))
 (assert
@@ -1081,7 +1081,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var225_literal_39__t0 () (_ BitVec 64))
 (assert
@@ -1089,7 +1089,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var226_literal_194__t0 () (_ BitVec 64))
 (assert
@@ -1097,7 +1097,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var227_literal_65__t0 () (_ BitVec 64))
 (assert
@@ -1105,7 +1105,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var228_literal_175__t0 () (_ BitVec 64))
 (assert
@@ -1113,7 +1113,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var229_literal_216__t0 () (_ BitVec 64))
 (assert
@@ -1121,7 +1121,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var230_literal_164__t0 () (_ BitVec 64))
 (assert
@@ -1129,7 +1129,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var231_literal_58__t0 () (_ BitVec 64))
 (assert
@@ -1137,7 +1137,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var232_literal_163__t0 () (_ BitVec 64))
 (assert
@@ -1145,7 +1145,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var233_literal_111__t0 () (_ BitVec 64))
 (assert
@@ -1153,7 +1153,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var234_literal_94__t0 () (_ BitVec 64))
 (assert
@@ -1161,7 +1161,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var235_literal_132__t0 () (_ BitVec 64))
 (assert
@@ -1169,7 +1169,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 ; literal expr
 (declare-fun var236_literal_95__t0 () (_ BitVec 64))
 (assert
@@ -1177,7 +1177,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 (declare-fun var237_literal_array_237__t0 () (_ BitVec 64))
 (declare-fun var238_true__t0 () Bool)
 (assert
@@ -1188,7 +1188,7 @@
   var238_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:11
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:11
 (declare-fun var239_safe_literal_array_237_____safe_out2___t0 () Bool)
 (assert
   (= var239_safe_literal_array_237_____safe_out2___t0 (theory1_safe var237_literal_array_237__t0) )
@@ -1218,7 +1218,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 (declare-fun var274_out3__t0 () (_ BitVec 64))
 (declare-fun var275_true__t0 () Bool)
 (assert
@@ -1229,8 +1229,8 @@
   var275_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var276_literal_190__t0 () (_ BitVec 64))
 (assert
@@ -1238,7 +1238,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var277_literal_242__t0 () (_ BitVec 64))
 (assert
@@ -1246,7 +1246,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var278_literal_65__t0 () (_ BitVec 64))
 (assert
@@ -1254,7 +1254,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var279_literal_34__t0 () (_ BitVec 64))
 (assert
@@ -1262,7 +1262,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var280_literal_222__t0 () (_ BitVec 64))
 (assert
@@ -1270,7 +1270,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var281_literal_224__t0 () (_ BitVec 64))
 (assert
@@ -1278,7 +1278,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var282_literal_244__t0 () (_ BitVec 64))
 (assert
@@ -1286,7 +1286,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var283_literal_26__t0 () (_ BitVec 64))
 (assert
@@ -1294,7 +1294,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var284_literal_4__t0 () (_ BitVec 64))
 (assert
@@ -1302,7 +1302,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var285_literal_252__t0 () (_ BitVec 64))
 (assert
@@ -1310,7 +1310,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var286_literal_156__t0 () (_ BitVec 64))
 (assert
@@ -1318,7 +1318,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var287_literal_240__t0 () (_ BitVec 64))
 (assert
@@ -1326,7 +1326,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var288_literal_177__t0 () (_ BitVec 64))
 (assert
@@ -1334,7 +1334,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var289_literal_200__t0 () (_ BitVec 64))
 (assert
@@ -1342,7 +1342,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var290_literal_34__t0 () (_ BitVec 64))
 (assert
@@ -1350,7 +1350,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var291_literal_37__t0 () (_ BitVec 64))
 (assert
@@ -1358,7 +1358,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var292_literal_59__t0 () (_ BitVec 64))
 (assert
@@ -1366,7 +1366,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var293_literal_72__t0 () (_ BitVec 64))
 (assert
@@ -1374,7 +1374,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var294_literal_47__t0 () (_ BitVec 64))
 (assert
@@ -1382,7 +1382,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var295_literal_80__t0 () (_ BitVec 64))
 (assert
@@ -1390,7 +1390,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var296_literal_229__t0 () (_ BitVec 64))
 (assert
@@ -1398,7 +1398,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var297_literal_123__t0 () (_ BitVec 64))
 (assert
@@ -1406,7 +1406,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var298_literal_119__t0 () (_ BitVec 64))
 (assert
@@ -1414,7 +1414,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var299_literal_13__t0 () (_ BitVec 64))
 (assert
@@ -1422,7 +1422,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var300_literal_230__t0 () (_ BitVec 64))
 (assert
@@ -1430,7 +1430,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var301_literal_88__t0 () (_ BitVec 64))
 (assert
@@ -1438,7 +1438,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var302_literal_179__t0 () (_ BitVec 64))
 (assert
@@ -1446,7 +1446,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var303_literal_221__t0 () (_ BitVec 64))
 (assert
@@ -1454,7 +1454,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var304_literal_25__t0 () (_ BitVec 64))
 (assert
@@ -1462,7 +1462,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var305_literal_162__t0 () (_ BitVec 64))
 (assert
@@ -1470,7 +1470,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var306_literal_23__t0 () (_ BitVec 64))
 (assert
@@ -1478,7 +1478,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 ; literal expr
 (declare-fun var307_literal_118__t0 () (_ BitVec 64))
 (assert
@@ -1486,7 +1486,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 (declare-fun var308_literal_array_308__t0 () (_ BitVec 64))
 (declare-fun var309_true__t0 () Bool)
 (assert
@@ -1497,7 +1497,7 @@
   var309_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:13
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:13
 (declare-fun var310_safe_literal_array_308_____safe_out3___t0 () Bool)
 (assert
   (= var310_safe_literal_array_308_____safe_out3___t0 (theory1_safe var308_literal_array_308__t0) )
@@ -1527,7 +1527,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
 (declare-fun var345_t1__t0 () (_ BitVec 64))
 (declare-fun var346_true__t0 () Bool)
 (assert
@@ -1538,7 +1538,7 @@
   var346_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
 ; literal expr
 (declare-fun var347_literal_32__t0 () (_ BitVec 64))
 (assert
@@ -1554,11 +1554,11 @@
 
 ) )
 
-;  = "#x0000000000000020"
+;  = "#b0000000000000000000000000000000000000000000000000000000000100000"
 (push 1)
 
 (assert
-  (not (= var347_literal_32__t0 #x0000000000000020))
+  (not (= var347_literal_32__t0 #b0000000000000000000000000000000000000000000000000000000000100000))
 )
 
 (check-sat)
@@ -1581,9 +1581,9 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
 ; literal expr
 (declare-fun var349_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -1591,7 +1591,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
 (declare-fun var350_literal_array_350__t0 () (_ BitVec 64))
 (declare-fun var351_true__t0 () Bool)
 (assert
@@ -1602,7 +1602,7 @@
   var351_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:16
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:16
 (declare-fun var352_safe_literal_array_350_____safe_t1___t0 () Bool)
 (assert
   (= var352_safe_literal_array_350_____safe_t1___t0 (theory1_safe var350_literal_array_350__t0) )
@@ -1632,7 +1632,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
 (declare-fun var387_t2__t0 () (_ BitVec 64))
 (declare-fun var388_true__t0 () Bool)
 (assert
@@ -1643,7 +1643,7 @@
   var388_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
 ; literal expr
 (declare-fun var389_literal_32__t0 () (_ BitVec 64))
 (assert
@@ -1659,11 +1659,11 @@
 
 ) )
 
-;  = "#x0000000000000020"
+;  = "#b0000000000000000000000000000000000000000000000000000000000100000"
 (push 1)
 
 (assert
-  (not (= var389_literal_32__t0 #x0000000000000020))
+  (not (= var389_literal_32__t0 #b0000000000000000000000000000000000000000000000000000000000100000))
 )
 
 (check-sat)
@@ -1686,9 +1686,9 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
 ; literal expr
 (declare-fun var391_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -1696,7 +1696,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
 (declare-fun var392_literal_array_392__t0 () (_ BitVec 64))
 (declare-fun var393_true__t0 () Bool)
 (assert
@@ -1707,7 +1707,7 @@
   var393_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:17
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:17
 (declare-fun var394_safe_literal_array_392_____safe_t2___t0 () Bool)
 (assert
   (= var394_safe_literal_array_392_____safe_t2___t0 (theory1_safe var392_literal_array_392__t0) )
@@ -1737,7 +1737,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
 (declare-fun var429_t3__t0 () (_ BitVec 64))
 (declare-fun var430_true__t0 () Bool)
 (assert
@@ -1748,7 +1748,7 @@
   var430_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
 ; literal expr
 (declare-fun var431_literal_32__t0 () (_ BitVec 64))
 (assert
@@ -1764,11 +1764,11 @@
 
 ) )
 
-;  = "#x0000000000000020"
+;  = "#b0000000000000000000000000000000000000000000000000000000000100000"
 (push 1)
 
 (assert
-  (not (= var431_literal_32__t0 #x0000000000000020))
+  (not (= var431_literal_32__t0 #b0000000000000000000000000000000000000000000000000000000000100000))
 )
 
 (check-sat)
@@ -1791,9 +1791,9 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
 ; literal expr
 (declare-fun var433_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -1801,7 +1801,7 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
 (declare-fun var434_literal_array_434__t0 () (_ BitVec 64))
 (declare-fun var435_true__t0 () Bool)
 (assert
@@ -1812,7 +1812,7 @@
   var435_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:18
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:18
 (declare-fun var436_safe_literal_array_434_____safe_t3___t0 () Bool)
 (assert
   (= var436_safe_literal_array_434_____safe_t3___t0 (theory1_safe var434_literal_array_434__t0) )
@@ -1842,17 +1842,17 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 ; call of ::carrier::sha256::hkdf
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 ; call of static
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 ; call of len
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 (declare-fun var471_literal_16__t0 () (_ BitVec 64))
 (assert
   (= var471_literal_16__t0 (_ bv16 64))
@@ -1867,11 +1867,11 @@
 
 ) )
 
-;  = "#x0000000000000010"
+;  = "#b0000000000000000000000000000000000000000000000000000000000010000"
 (push 1)
 
 (assert
-  (not (= var471_literal_16__t0 #x0000000000000010))
+  (not (= var471_literal_16__t0 #b0000000000000000000000000000000000000000000000000000000000010000))
 )
 
 (check-sat)
@@ -1884,19 +1884,19 @@
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 (declare-fun var472_literal_16__t0 () (_ BitVec 64))
 (assert
   (= var472_literal_16__t0 (_ bv16 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 ; literal expr
 (declare-fun var473_literal_16__t0 () (_ BitVec 64))
 (assert
@@ -1904,13 +1904,13 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 ;callsite_assert
 (push 1)
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:69
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:69
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -1919,7 +1919,7 @@
   (= var474_interpretation_of_theory_safe_over_material__t0 (theory1_safe var93_material__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:68
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:68
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -1928,12 +1928,12 @@
   (= var475_interpretation_of_theory_safe_over_ck__t0 (theory1_safe var22_ck__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:75
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:75
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:75
 ; call of len
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:75
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:75
 (declare-fun var476_literal_32__t0 () (_ BitVec 64))
 (assert
   (= var476_literal_32__t0 (_ bv32 64))
@@ -1941,16 +1941,16 @@
 )
 
 (declare-fun var477_implicit_coercion_of_literal_32__t0 () (_ BitVec 64))
-(assert (! (= var477_implicit_coercion_of_literal_32__t0 var476_literal_32__t0) :named A1)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
+(assert (! (= var477_implicit_coercion_of_literal_32__t0 var476_literal_32__t0) :named A1)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:75
 (declare-fun var478_infix_expression__t0 () Bool)
 (assert
-  (=  var478_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var477_implicit_coercion_of_literal_32__t0))
+  (=  var478_infix_expression__t0 (bvule var5___carrier__sha256__HASHLEN__t1 var477_implicit_coercion_of_literal_32__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
 ; literal expr
 (declare-fun var479_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -1959,18 +1959,18 @@
 )
 
 (declare-fun var480_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var480_implicit_coercion_of_literal_0__t0 var479_literal_0__t0) :named A2)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
+(assert (! (= var480_implicit_coercion_of_literal_0__t0 var479_literal_0__t0) :named A2)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
 (declare-fun var481_infix_expression__t0 () Bool)
 (assert
   (=  var481_infix_expression__t0 (= var345_t1__t1 var480_implicit_coercion_of_literal_0__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
 ; call of len
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
 (declare-fun var482_literal_32__t0 () (_ BitVec 64))
 (assert
   (= var482_literal_32__t0 (_ bv32 64))
@@ -1978,22 +1978,22 @@
 )
 
 (declare-fun var483_implicit_coercion_of_literal_32__t0 () (_ BitVec 64))
-(assert (! (= var483_implicit_coercion_of_literal_32__t0 var482_literal_32__t0) :named A3)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
+(assert (! (= var483_implicit_coercion_of_literal_32__t0 var482_literal_32__t0) :named A3)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
 (declare-fun var484_infix_expression__t0 () Bool)
 (assert
-  (=  var484_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var483_implicit_coercion_of_literal_32__t0))
+  (=  var484_infix_expression__t0 (bvule var5___carrier__sha256__HASHLEN__t1 var483_implicit_coercion_of_literal_32__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:76
 (declare-fun var485_infix_expression__t0 () Bool)
 (assert
   (=  var485_infix_expression__t0 (or var481_infix_expression__t0 var484_infix_expression__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
 ; literal expr
 (declare-fun var486_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -2002,18 +2002,18 @@
 )
 
 (declare-fun var487_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var487_implicit_coercion_of_literal_0__t0 var486_literal_0__t0) :named A4)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
+(assert (! (= var487_implicit_coercion_of_literal_0__t0 var486_literal_0__t0) :named A4)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
 (declare-fun var488_infix_expression__t0 () Bool)
 (assert
   (=  var488_infix_expression__t0 (= var387_t2__t1 var487_implicit_coercion_of_literal_0__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
 ; call of len
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
 (declare-fun var489_literal_32__t0 () (_ BitVec 64))
 (assert
   (= var489_literal_32__t0 (_ bv32 64))
@@ -2021,22 +2021,22 @@
 )
 
 (declare-fun var490_implicit_coercion_of_literal_32__t0 () (_ BitVec 64))
-(assert (! (= var490_implicit_coercion_of_literal_32__t0 var489_literal_32__t0) :named A5)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
+(assert (! (= var490_implicit_coercion_of_literal_32__t0 var489_literal_32__t0) :named A5)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
 (declare-fun var491_infix_expression__t0 () Bool)
 (assert
-  (=  var491_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var490_implicit_coercion_of_literal_32__t0))
+  (=  var491_infix_expression__t0 (bvule var5___carrier__sha256__HASHLEN__t1 var490_implicit_coercion_of_literal_32__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:77
 (declare-fun var492_infix_expression__t0 () Bool)
 (assert
   (=  var492_infix_expression__t0 (or var488_infix_expression__t0 var491_infix_expression__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
 ; literal expr
 (declare-fun var493_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -2045,18 +2045,18 @@
 )
 
 (declare-fun var494_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var494_implicit_coercion_of_literal_0__t0 var493_literal_0__t0) :named A6)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
+(assert (! (= var494_implicit_coercion_of_literal_0__t0 var493_literal_0__t0) :named A6)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
 (declare-fun var495_infix_expression__t0 () Bool)
 (assert
   (=  var495_infix_expression__t0 (= var429_t3__t1 var494_implicit_coercion_of_literal_0__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
 ; call of len
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
 (declare-fun var496_literal_32__t0 () (_ BitVec 64))
 (assert
   (= var496_literal_32__t0 (_ bv32 64))
@@ -2064,31 +2064,31 @@
 )
 
 (declare-fun var497_implicit_coercion_of_literal_32__t0 () (_ BitVec 64))
-(assert (! (= var497_implicit_coercion_of_literal_32__t0 var496_literal_32__t0) :named A7)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
+(assert (! (= var497_implicit_coercion_of_literal_32__t0 var496_literal_32__t0) :named A7)); : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
 (declare-fun var498_infix_expression__t0 () Bool)
 (assert
-  (=  var498_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var497_implicit_coercion_of_literal_32__t0))
+  (=  var498_infix_expression__t0 (bvule var5___carrier__sha256__HASHLEN__t1 var497_implicit_coercion_of_literal_32__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:78
 (declare-fun var499_infix_expression__t0 () Bool)
 (assert
   (=  var499_infix_expression__t0 (or var495_infix_expression__t0 var498_infix_expression__t0))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:79
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:79
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:79
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:79
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:79
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:79
 ; call of len
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:79
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:79
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:79
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:79
 (declare-fun var500_literal_16__t0 () (_ BitVec 64))
 (assert
   (= var500_literal_16__t0 (_ bv16 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:79
+; : /home/aep/proj/devguard/carrier/core/src/sha256.zz:79
 (declare-fun var501_infix_expression__t0 () Bool)
 (assert
   (=  var501_infix_expression__t0 (bvule var473_literal_16__t0 var500_literal_16__t0))
@@ -2121,16 +2121,16 @@
 (declare-fun var500_literal_16__t0 () (_ BitVec 64))
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:19
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:19
 ; callsite effects
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
 ; call of ::ext::<string.h>::memcmp
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
 ; literal expr
 (declare-fun var503_literal_32__t0 () (_ BitVec 64))
 (assert
@@ -2138,8 +2138,8 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
 ; literal expr
 (declare-fun var505_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -2148,7 +2148,7 @@
 )
 
 (declare-fun var506_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var506_implicit_coercion_of_literal_0__t0 var505_literal_0__t0) :named A8)); : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
+(assert (! (= var506_implicit_coercion_of_literal_0__t0 var505_literal_0__t0) :named A8)); : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
 (declare-fun var507_infix_expression__t0 () Bool)
 (declare-fun var504_return_value_of___ext___string_h___memcmp__t0 () (_ BitVec 64))
 (assert
@@ -2163,19 +2163,19 @@
 
 ) )
 
-;  = "true"
+;  = "false"
 (push 1)
 
 (assert
-  (not (= var507_infix_expression__t0 true))
+  (not (= var507_infix_expression__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:21
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:22
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:21
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:22
 ; literal expr
 (declare-fun var508_literal_1__t0 () (_ BitVec 64))
 (assert
@@ -2197,13 +2197,13 @@
   (not var507_infix_expression__t0)
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
 ; call of ::ext::<string.h>::memcmp
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
 ; literal expr
 (declare-fun var510_literal_32__t0 () (_ BitVec 64))
 (assert
@@ -2211,8 +2211,8 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
 ; literal expr
 (declare-fun var512_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -2221,7 +2221,7 @@
 )
 
 (declare-fun var513_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var513_implicit_coercion_of_literal_0__t0 var512_literal_0__t0) :named A10)); : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
+(assert (! (= var513_implicit_coercion_of_literal_0__t0 var512_literal_0__t0) :named A10)); : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
 (declare-fun var514_infix_expression__t0 () Bool)
 (declare-fun var511_return_value_of___ext___string_h___memcmp__t0 () (_ BitVec 64))
 (assert
@@ -2236,19 +2236,19 @@
 
 ) )
 
-;  = "true"
+;  = "false"
 (push 1)
 
 (assert
-  (not (= var514_infix_expression__t0 true))
+  (not (= var514_infix_expression__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:24
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:25
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:24
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:25
 ; literal expr
 (declare-fun var515_literal_2__t0 () (_ BitVec 64))
 (assert
@@ -2269,13 +2269,13 @@
   (not var514_infix_expression__t0)
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
 ; call of ::ext::<string.h>::memcmp
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
 ; literal expr
 (declare-fun var517_literal_32__t0 () (_ BitVec 64))
 (assert
@@ -2283,8 +2283,8 @@
 
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
 ; literal expr
 (declare-fun var519_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -2293,7 +2293,7 @@
 )
 
 (declare-fun var520_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var520_implicit_coercion_of_literal_0__t0 var519_literal_0__t0) :named A12)); : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
+(assert (! (= var520_implicit_coercion_of_literal_0__t0 var519_literal_0__t0) :named A12)); : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
 (declare-fun var521_infix_expression__t0 () Bool)
 (declare-fun var518_return_value_of___ext___string_h___memcmp__t0 () (_ BitVec 64))
 (assert
@@ -2308,19 +2308,19 @@
 
 ) )
 
-;  = "true"
+;  = "false"
 (push 1)
 
 (assert
-  (not (= var521_infix_expression__t0 true))
+  (not (= var521_infix_expression__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:27
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:28
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:27
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:28
 ; literal expr
 (declare-fun var522_literal_3__t0 () (_ BitVec 64))
 (assert
@@ -2341,7 +2341,7 @@
   (not var521_infix_expression__t0)
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:31
+; : /home/aep/proj/devguard/carrier/core/tests/hkdf.zz:31
 ; literal expr
 (declare-fun var524_literal_0__t0 () (_ BitVec 64))
 (assert

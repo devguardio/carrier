@@ -1,121 +1,30 @@
 
 <h1> module carrier::symmetric </h1>
-<h4> fn mix_key (
+<h4> fn decrypt_and_mix_hash (
 
     usize
-    l,
-
-    u8*
-    data,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn mix_hash (
-
-    usize
-    l,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    u8*
-    data,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decrypt_and_mix_hash (
-
-    u8*
-    plain,
+    et,
 
     u64
     nonce,
 
-    usize
-    plain_len_max,
+    u8*
+    plain,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    ::err::Err*+et
+    e,
 
     u8*
     ciphertext,
-
-    usize
-    et,
 
     usize
     cipher_len,
 
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn split (
-
-    ::carrier::cipher::CipherState*
-    resp,
-
-    ::carrier::cipher::CipherState*
-    ini,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt_and_mix_hash (
-
-    ::err::Err*+et
-    e,
-
-    u8*
-    ciphertext,
-
     usize
-    et,
-
-    usize
-    cipher_len_max,
-
-    u64
-    nonce,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    u8*
-    plain,
-
-    usize
-    plain_len,
+    plain_len_max,
 
 )
 
@@ -132,6 +41,97 @@
 
     ::ext::&lt;stddef.h&gt;::char*
     protocolname,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn split (
+
+    ::carrier::cipher::CipherState*
+    ini,
+
+    ::carrier::cipher::CipherState*
+    resp,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn mix_hash (
+
+    u8*
+    data,
+
+    usize
+    l,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt_and_mix_hash (
+
+    usize
+    cipher_len_max,
+
+    usize
+    plain_len,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    u64
+    nonce,
+
+    u8*
+    ciphertext,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    plain,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn mix_key (
+
+    u8*
+    data,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    usize
+    l,
 
 )
 

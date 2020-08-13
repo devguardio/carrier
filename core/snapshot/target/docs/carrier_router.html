@@ -1,6 +1,77 @@
 
 <h1> module carrier::router </h1>
-<h4> fn swap32 (
+<h4> fn shutdown (
+
+    ::carrier::router::Router*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn next_channel (
+
+    ::carrier::router::Router*
+    self,
+
+)
+
+-&gt ::carrier::channel::Channel*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -54,17 +125,17 @@
 
 </p><h4> fn push (
 
-    ::carrier::router::Router*
-    self,
-
     ::err::Err*+et
     e,
 
-    ::slice::slice::Slice
-    pkt,
+    ::carrier::router::Router*
+    self,
 
     usize
     et,
+
+    ::slice::slice::Slice
+    pkt,
 
 )
 
@@ -87,58 +158,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn swap16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_be16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn poll (
 
     ::carrier::router::Router*
     self,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
     ::io::Async*
     async,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -148,26 +180,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn next_channel (
+</p><h4> fn disconnect (
 
-    ::carrier::router::Router*
-    self,
-
-)
-
--&gt ::carrier::channel::Channel*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn shutdown (
-
-    ::carrier::router::Router*
-    self,
+    u64
+    route,
 
     usize
     et,
+
+    ::carrier::router::Router*
+    self,
 
     ::err::Err*+et
     e,
@@ -182,37 +204,15 @@
 
 </p><h4> fn read_routing_key (
 
-    ::carrier::router::Direction*
-    direction,
-
     u8*
     i,
+
+    ::carrier::router::Direction*
+    direction,
 
 )
 
 -&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn disconnect (
-
-    ::err::Err*+et
-    e,
-
-    u64
-    route,
-
-    ::carrier::router::Router*
-    self,
-
-    usize
-    et,
-
-)
-
-
 
 </h4>
 

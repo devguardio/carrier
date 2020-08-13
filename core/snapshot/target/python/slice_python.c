@@ -25,7 +25,6 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_slice_slice_Slice;
 
 
 static PyObject* py_slice_python_slice_to_PyByteArray(PyObject *pyself, PyObject *args) {

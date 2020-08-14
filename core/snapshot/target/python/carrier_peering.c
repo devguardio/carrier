@@ -25,20 +25,23 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_net_address_Address;
-extern PyTypeObject py_Type_carrier_peering_Path;
-extern PyTypeObject py_Type_carrier_peering_Peering;
-extern PyTypeObject py_Type_protonerf_Decoder;
-extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_protonerf_Decoder;
+extern PyTypeObject py_Type_net_address_Address;
 extern PyTypeObject py_Type_protonerf_Value;
 extern PyTypeObject py_Type_protonerf_Field;
+extern PyTypeObject py_Type_carrier_peering_Peering;
+extern PyTypeObject py_Type_carrier_peering_Path;
+extern PyTypeObject py_Type_carrier_peering_Peering;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_net_address_OsAddress;
+extern PyTypeObject py_Type_protonerf_Decoder;
+extern PyTypeObject py_Type_err_Err;
+
 
 
 static PyObject * py_get_carrier_peering_Path_transport(PyObject *pyself, void *closure) {
@@ -192,7 +195,6 @@ PyTypeObject py_Type_carrier_peering_Peering  = {
     .tp_getset      = py_getset_carrier_peering_Peering,
     .tp_dealloc     = py_free_carrier_peering_Peering,
 };
-
 
 
 

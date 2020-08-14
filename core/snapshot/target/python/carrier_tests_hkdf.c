@@ -25,7 +25,6 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
 
 
 static PyMethodDef methods[] = {

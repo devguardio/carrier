@@ -84,12 +84,12 @@ impl Connect {
 }
 }
 extern {
+    #[link_name = "carrier_connect_on_close"]
+    pub fn r#on_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+
 
     #[link_name = "carrier_connect_start"]
     pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zep: *mut u8,  Ztarget: *const u8);
-
-    #[link_name = "carrier_connect_on_close"]
-    pub fn r#on_close( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
 
 

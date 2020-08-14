@@ -1,25 +1,6 @@
 
 <h1> module carrier::router </h1>
-<h4> fn shutdown (
-
-    ::carrier::router::Router*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap16 (
+<h4> fn swap16 (
 
     u16
     x,
@@ -125,17 +106,17 @@
 
 </p><h4> fn push (
 
-    ::err::Err*+et
-    e,
-
-    ::carrier::router::Router*
-    self,
+    ::slice::slice::Slice
+    pkt,
 
     usize
     et,
 
-    ::slice::slice::Slice
-    pkt,
+    ::carrier::router::Router*
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -145,20 +126,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
-
-    ::carrier::router::Router*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn poll (
+</p><h4> fn disconnect (
 
     ::carrier::router::Router*
     self,
@@ -168,31 +136,9 @@
 
     usize
     et,
-
-    ::io::Async*
-    async,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn disconnect (
 
     u64
     route,
-
-    usize
-    et,
-
-    ::carrier::router::Router*
-    self,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -213,6 +159,60 @@
 )
 
 -&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::carrier::router::Router*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn poll (
+
+    ::io::Async*
+    async,
+
+    ::carrier::router::Router*
+    self,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn shutdown (
+
+    ::carrier::router::Router*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+)
+
+
 
 </h4>
 

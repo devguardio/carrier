@@ -131,19 +131,16 @@ impl Testcase {
 }
 }
 extern {
-    #[link_name = "carrier_tests_noise_deser_tc"]
-    pub fn r#deser_tc( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::json::Value);
-
-
     #[link_name = "sizeof_carrier_tests_noise_Message"]
     pub fn sizeof_Message() -> libc::size_t;
 
     #[link_name = "sizeof_carrier_tests_noise_Testcase"]
     pub fn sizeof_Testcase() -> libc::size_t;
 
+    #[link_name = "carrier_tests_noise_deser_tc"]
+    pub fn r#deser_tc( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::json::Value);
 
-    #[link_name = "carrier_tests_noise_deser_messages"]
-    pub fn r#deser_messages( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::json::Value);
+
 
     #[link_name = "carrier_tests_noise_t2"]
     pub fn r#t2()  -> std::os::raw::c_int;
@@ -151,5 +148,8 @@ extern {
     #[link_name = "carrier_tests_noise_deser_message"]
     pub fn r#deser_message( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::json::Value);
 
+
+    #[link_name = "carrier_tests_noise_deser_messages"]
+    pub fn r#deser_messages( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::json::Value);
 
 }

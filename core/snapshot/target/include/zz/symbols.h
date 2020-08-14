@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#ifndef ZZ_FORWARD___home_aep_proj_zz_modules_symbols_src_lib_h_
-#define ZZ_FORWARD___home_aep_proj_zz_modules_symbols_src_lib_h_
+#ifndef ZZ_FORWARD___home_runner_work_carrier_carrier_modules_symbols_src_lib_h_
+#define ZZ_FORWARD___home_runner_work_carrier_carrier_modules_symbols_src_lib_h_
 #endif
 #ifndef ZZ_FORWARD__stddef_h_
 #define ZZ_FORWARD__stddef_h_
@@ -16,10 +16,10 @@
 #ifndef ZZ_FORWARD_symbols_nameof
 #define ZZ_FORWARD_symbols_nameof
 #endif
-#ifndef ZZ_EXPORT___home_aep_proj_zz_modules_symbols_src_lib_h_
-#define ZZ_EXPORT___home_aep_proj_zz_modules_symbols_src_lib_h_
+#ifndef ZZ_EXPORT___home_runner_work_carrier_carrier_modules_symbols_src_lib_h_
+#define ZZ_EXPORT___home_runner_work_carrier_carrier_modules_symbols_src_lib_h_
 
-#line 1 "/home/aep/proj/zz/modules/symbols/src/lib.h"
+#line 1 "/home/runner/work/carrier/carrier/modules/symbols/src/lib.h"
 #include <stdlib.h>
 
 extern size_t __attribute__ ((unused)) __zz_symbol_names_len;

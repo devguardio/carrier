@@ -1,1599 +1,1593 @@
 ; Command:
-; > yices_smt2_mt --incremental
+; > z3 -in -smt2
 
 (set-logic QF_UFBV)
 (declare-fun theory0_len ((_ BitVec 64)) (_ BitVec 64)); theory len
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:6
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:2
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:1
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:2
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:5
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:11
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:16
-(declare-fun theory10___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:11
-(declare-fun theory11___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:75
-(declare-fun var12___buffer__as_mut_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:1
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:2
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:6
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:11
+(declare-fun theory9___err__checked ((_ BitVec 64)) Bool); theory ::err::checked
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:48
+(declare-fun var10___err__check__t0 () (_ BitVec 64))
+(declare-fun var11_true__t0 () Bool)
+(assert
+  (= var11_true__t0 (theory1_safe var10___err__check__t0) )
+)
+
+(assert
+  var11_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:133
+(declare-fun var12___err__fail__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___buffer__as_mut_slice__t0) )
+  (= var13_true__t0 (theory1_safe var12___err__fail__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:18
-(declare-fun var15___hpack__decoder__Repr__Indexed__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:16
+(declare-fun var14___hpack__decoder__Invalid__t0 () (_ BitVec 64))
+(declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15___hpack__decoder__Repr__Indexed__t0 (_ bv0 64))
+  (= var15_true__t0 (theory3_symbol var14___hpack__decoder__Invalid__t0) )
+)
+
+(assert
+  var15_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:270
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:270
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:271
+; literal expr
+(declare-fun var18_literal_0__t0 () (_ BitVec 64))
+(assert
+  (= var18_literal_0__t0 (_ bv0 64))
 
 )
 
-(declare-fun var16___hpack__decoder__Repr__LiteralWithIncrementalIndexing__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:272
+(declare-fun var19_literal_string___authority___t0 () (_ BitVec 64))
+(declare-fun var20_true__t0 () Bool)
 (assert
-  (= var16___hpack__decoder__Repr__LiteralWithIncrementalIndexing__t0 (_ bv1 64))
-
+  (= var20_true__t0 (theory1_safe var19_literal_string___authority___t0) )
 )
 
-(declare-fun var17___hpack__decoder__Repr__SizeUpdate__t0 () (_ BitVec 64))
 (assert
-  (= var17___hpack__decoder__Repr__SizeUpdate__t0 (_ bv2 64))
-
+  var20_true__t0
 )
 
-(declare-fun var18___hpack__decoder__Repr__LiteralNeverIndexed__t0 () (_ BitVec 64))
+(declare-fun var21_true__t0 () Bool)
 (assert
-  (= var18___hpack__decoder__Repr__LiteralNeverIndexed__t0 (_ bv3 64))
-
+  (= var21_true__t0 (theory2_nullterm var19_literal_string___authority___t0) )
 )
 
-(declare-fun var19___hpack__decoder__Repr__LiteralWithoutIndexing__t0 () (_ BitVec 64))
 (assert
-  (= var19___hpack__decoder__Repr__LiteralWithoutIndexing__t0 (_ bv4 64))
-
+  var21_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:18
-; : /home/aep/proj/zz/modules/err/src/lib.zz:11
-(declare-fun theory21___err__checked ((_ BitVec 64)) Bool); theory ::err::checked
-; : /home/aep/proj/zz/modules/err/src/lib.zz:36
-(declare-fun var22___err__ignore__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:273
+(declare-fun var22_literal_string___method___t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
-  (= var23_true__t0 (theory1_safe var22___err__ignore__t0) )
+  (= var23_true__t0 (theory1_safe var22_literal_string___method___t0) )
 )
 
 (assert
   var23_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:3
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:8
-(declare-fun theory25___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:87
-(declare-fun var26___slice__slice__sub__t0 () (_ BitVec 64))
+(declare-fun var24_true__t0 () Bool)
+(assert
+  (= var24_true__t0 (theory2_nullterm var22_literal_string___method___t0) )
+)
+
+(assert
+  var24_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:274
+(declare-fun var25_literal_string___method___t0 () (_ BitVec 64))
+(declare-fun var26_true__t0 () Bool)
+(assert
+  (= var26_true__t0 (theory1_safe var25_literal_string___method___t0) )
+)
+
+(assert
+  var26_true__t0
+)
+
 (declare-fun var27_true__t0 () Bool)
 (assert
-  (= var27_true__t0 (theory1_safe var26___slice__slice__sub__t0) )
+  (= var27_true__t0 (theory2_nullterm var25_literal_string___method___t0) )
 )
 
 (assert
   var27_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:29
-(declare-fun var28___hpack__decoder__get_repr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:275
+(declare-fun var28_literal_string___path___t0 () (_ BitVec 64))
 (declare-fun var29_true__t0 () Bool)
 (assert
-  (= var29_true__t0 (theory1_safe var28___hpack__decoder__get_repr__t0) )
+  (= var29_true__t0 (theory1_safe var28_literal_string___path___t0) )
 )
 
 (assert
   var29_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:49
-(declare-fun var30___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
-(declare-fun var31_true__t0 () Bool)
+(declare-fun var30_true__t0 () Bool)
 (assert
-  (= var31_true__t0 (theory1_safe var30___slice__mut_slice__append_slice__t0) )
+  (= var30_true__t0 (theory2_nullterm var28_literal_string___path___t0) )
 )
 
 (assert
-  var31_true__t0
+  var30_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:50
-(declare-fun var32___buffer__cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:276
+(declare-fun var31_literal_string___path___t0 () (_ BitVec 64))
+(declare-fun var32_true__t0 () Bool)
+(assert
+  (= var32_true__t0 (theory1_safe var31_literal_string___path___t0) )
+)
+
+(assert
+  var32_true__t0
+)
+
 (declare-fun var33_true__t0 () Bool)
 (assert
-  (= var33_true__t0 (theory1_safe var32___buffer__cstr__t0) )
+  (= var33_true__t0 (theory2_nullterm var31_literal_string___path___t0) )
 )
 
 (assert
   var33_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:161
-(declare-fun var34___buffer__append_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:277
+(declare-fun var34_literal_string___scheme___t0 () (_ BitVec 64))
 (declare-fun var35_true__t0 () Bool)
 (assert
-  (= var35_true__t0 (theory1_safe var34___buffer__append_slice__t0) )
+  (= var35_true__t0 (theory1_safe var34_literal_string___scheme___t0) )
 )
 
 (assert
   var35_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:178
-(declare-fun var36___buffer__append_bytes__t0 () (_ BitVec 64))
-(declare-fun var37_true__t0 () Bool)
+(declare-fun var36_true__t0 () Bool)
 (assert
-  (= var37_true__t0 (theory1_safe var36___buffer__append_bytes__t0) )
+  (= var36_true__t0 (theory2_nullterm var34_literal_string___scheme___t0) )
 )
 
 (assert
-  var37_true__t0
+  var36_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:236
-(declare-fun var38___buffer__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:278
+(declare-fun var37_literal_string___scheme___t0 () (_ BitVec 64))
+(declare-fun var38_true__t0 () Bool)
+(assert
+  (= var38_true__t0 (theory1_safe var37_literal_string___scheme___t0) )
+)
+
+(assert
+  var38_true__t0
+)
+
 (declare-fun var39_true__t0 () Bool)
 (assert
-  (= var39_true__t0 (theory1_safe var38___buffer__eq_cstr__t0) )
+  (= var39_true__t0 (theory2_nullterm var37_literal_string___scheme___t0) )
 )
 
 (assert
   var39_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:92
-(declare-fun var40___slice__mut_slice__push__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:279
+(declare-fun var40_literal_string___status___t0 () (_ BitVec 64))
 (declare-fun var41_true__t0 () Bool)
 (assert
-  (= var41_true__t0 (theory1_safe var40___slice__mut_slice__push__t0) )
+  (= var41_true__t0 (theory1_safe var40_literal_string___status___t0) )
 )
 
 (assert
   var41_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:101
-(declare-fun var42___err__fail_with_system_error__t0 () (_ BitVec 64))
-(declare-fun var43_true__t0 () Bool)
+(declare-fun var42_true__t0 () Bool)
 (assert
-  (= var43_true__t0 (theory1_safe var42___err__fail_with_system_error__t0) )
+  (= var42_true__t0 (theory2_nullterm var40_literal_string___status___t0) )
 )
 
 (assert
-  var43_true__t0
+  var42_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:270
-(declare-fun var44___buffer__starts_with_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:280
+(declare-fun var43_literal_string___status___t0 () (_ BitVec 64))
+(declare-fun var44_true__t0 () Bool)
+(assert
+  (= var44_true__t0 (theory1_safe var43_literal_string___status___t0) )
+)
+
+(assert
+  var44_true__t0
+)
+
 (declare-fun var45_true__t0 () Bool)
 (assert
-  (= var45_true__t0 (theory1_safe var44___buffer__starts_with_cstr__t0) )
+  (= var45_true__t0 (theory2_nullterm var43_literal_string___status___t0) )
 )
 
 (assert
   var45_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:107
-(declare-fun var46___slice__mut_slice__push16__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:281
+(declare-fun var46_literal_string___status___t0 () (_ BitVec 64))
 (declare-fun var47_true__t0 () Bool)
 (assert
-  (= var47_true__t0 (theory1_safe var46___slice__mut_slice__push16__t0) )
+  (= var47_true__t0 (theory1_safe var46_literal_string___status___t0) )
 )
 
 (assert
   var47_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:183
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:192
-(declare-fun theory49___hpack__decoder__integrity ((_ BitVec 64)) Bool); theory ::hpack::decoder::integrity
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:16
-(declare-fun var50___hpack__decoder__Invalid__t0 () (_ BitVec 64))
+(declare-fun var48_true__t0 () Bool)
+(assert
+  (= var48_true__t0 (theory2_nullterm var46_literal_string___status___t0) )
+)
+
+(assert
+  var48_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:282
+(declare-fun var49_literal_string___status___t0 () (_ BitVec 64))
+(declare-fun var50_true__t0 () Bool)
+(assert
+  (= var50_true__t0 (theory1_safe var49_literal_string___status___t0) )
+)
+
+(assert
+  var50_true__t0
+)
+
 (declare-fun var51_true__t0 () Bool)
 (assert
-  (= var51_true__t0 (theory3_symbol var50___hpack__decoder__Invalid__t0) )
+  (= var51_true__t0 (theory2_nullterm var49_literal_string___status___t0) )
 )
 
 (assert
   var51_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:11
-; : /home/aep/proj/zz/modules/err/src/lib.zz:18
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:59
-(declare-fun var52___buffer__as_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:283
+(declare-fun var52_literal_string___status___t0 () (_ BitVec 64))
 (declare-fun var53_true__t0 () Bool)
 (assert
-  (= var53_true__t0 (theory1_safe var52___buffer__as_slice__t0) )
+  (= var53_true__t0 (theory1_safe var52_literal_string___status___t0) )
 )
 
 (assert
   var53_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:143
-(declare-fun var54___buffer__append_cstr__t0 () (_ BitVec 64))
-(declare-fun var55_true__t0 () Bool)
+(declare-fun var54_true__t0 () Bool)
 (assert
-  (= var55_true__t0 (theory1_safe var54___buffer__append_cstr__t0) )
+  (= var54_true__t0 (theory2_nullterm var52_literal_string___status___t0) )
 )
 
 (assert
-  var55_true__t0
+  var54_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:418
-(declare-fun var56___buffer__copy_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:284
+(declare-fun var55_literal_string___status___t0 () (_ BitVec 64))
+(declare-fun var56_true__t0 () Bool)
+(assert
+  (= var56_true__t0 (theory1_safe var55_literal_string___status___t0) )
+)
+
+(assert
+  var56_true__t0
+)
+
 (declare-fun var57_true__t0 () Bool)
 (assert
-  (= var57_true__t0 (theory1_safe var56___buffer__copy_cstr__t0) )
+  (= var57_true__t0 (theory2_nullterm var55_literal_string___status___t0) )
 )
 
 (assert
   var57_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:10
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:398
-(declare-fun var59___buffer__copy_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:285
+(declare-fun var58_literal_string___status___t0 () (_ BitVec 64))
+(declare-fun var59_true__t0 () Bool)
+(assert
+  (= var59_true__t0 (theory1_safe var58_literal_string___status___t0) )
+)
+
+(assert
+  var59_true__t0
+)
+
 (declare-fun var60_true__t0 () Bool)
 (assert
-  (= var60_true__t0 (theory1_safe var59___buffer__copy_bytes__t0) )
+  (= var60_true__t0 (theory2_nullterm var58_literal_string___status___t0) )
 )
 
 (assert
   var60_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:270
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:270
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:271
-; literal expr
-(declare-fun var62_literal_0__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:286
+(declare-fun var61_literal_string__accept_charset___t0 () (_ BitVec 64))
+(declare-fun var62_true__t0 () Bool)
 (assert
-  (= var62_literal_0__t0 (_ bv0 64))
-
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:272
-(declare-fun var63_literal_string___authority___t0 () (_ BitVec 64))
-(declare-fun var64_true__t0 () Bool)
-(assert
-  (= var64_true__t0 (theory1_safe var63_literal_string___authority___t0) )
+  (= var62_true__t0 (theory1_safe var61_literal_string__accept_charset___t0) )
 )
 
 (assert
-  var64_true__t0
+  var62_true__t0
 )
 
+(declare-fun var63_true__t0 () Bool)
+(assert
+  (= var63_true__t0 (theory2_nullterm var61_literal_string__accept_charset___t0) )
+)
+
+(assert
+  var63_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:287
+(declare-fun var64_literal_string__accept_encoding___t0 () (_ BitVec 64))
 (declare-fun var65_true__t0 () Bool)
 (assert
-  (= var65_true__t0 (theory2_nullterm var63_literal_string___authority___t0) )
+  (= var65_true__t0 (theory1_safe var64_literal_string__accept_encoding___t0) )
 )
 
 (assert
   var65_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:273
-(declare-fun var66_literal_string___method___t0 () (_ BitVec 64))
-(declare-fun var67_true__t0 () Bool)
+(declare-fun var66_true__t0 () Bool)
 (assert
-  (= var67_true__t0 (theory1_safe var66_literal_string___method___t0) )
+  (= var66_true__t0 (theory2_nullterm var64_literal_string__accept_encoding___t0) )
 )
 
 (assert
-  var67_true__t0
+  var66_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:288
+(declare-fun var67_literal_string__accept_language___t0 () (_ BitVec 64))
 (declare-fun var68_true__t0 () Bool)
 (assert
-  (= var68_true__t0 (theory2_nullterm var66_literal_string___method___t0) )
+  (= var68_true__t0 (theory1_safe var67_literal_string__accept_language___t0) )
 )
 
 (assert
   var68_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:274
-(declare-fun var69_literal_string___method___t0 () (_ BitVec 64))
-(declare-fun var70_true__t0 () Bool)
+(declare-fun var69_true__t0 () Bool)
 (assert
-  (= var70_true__t0 (theory1_safe var69_literal_string___method___t0) )
+  (= var69_true__t0 (theory2_nullterm var67_literal_string__accept_language___t0) )
 )
 
 (assert
-  var70_true__t0
+  var69_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:289
+(declare-fun var70_literal_string__accept_ranges___t0 () (_ BitVec 64))
 (declare-fun var71_true__t0 () Bool)
 (assert
-  (= var71_true__t0 (theory2_nullterm var69_literal_string___method___t0) )
+  (= var71_true__t0 (theory1_safe var70_literal_string__accept_ranges___t0) )
 )
 
 (assert
   var71_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:275
-(declare-fun var72_literal_string___path___t0 () (_ BitVec 64))
-(declare-fun var73_true__t0 () Bool)
+(declare-fun var72_true__t0 () Bool)
 (assert
-  (= var73_true__t0 (theory1_safe var72_literal_string___path___t0) )
+  (= var72_true__t0 (theory2_nullterm var70_literal_string__accept_ranges___t0) )
 )
 
 (assert
-  var73_true__t0
+  var72_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:290
+(declare-fun var73_literal_string__accept___t0 () (_ BitVec 64))
 (declare-fun var74_true__t0 () Bool)
 (assert
-  (= var74_true__t0 (theory2_nullterm var72_literal_string___path___t0) )
+  (= var74_true__t0 (theory1_safe var73_literal_string__accept___t0) )
 )
 
 (assert
   var74_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:276
-(declare-fun var75_literal_string___path___t0 () (_ BitVec 64))
-(declare-fun var76_true__t0 () Bool)
+(declare-fun var75_true__t0 () Bool)
 (assert
-  (= var76_true__t0 (theory1_safe var75_literal_string___path___t0) )
+  (= var75_true__t0 (theory2_nullterm var73_literal_string__accept___t0) )
 )
 
 (assert
-  var76_true__t0
+  var75_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:291
+(declare-fun var76_literal_string__access_control_allow_origin___t0 () (_ BitVec 64))
 (declare-fun var77_true__t0 () Bool)
 (assert
-  (= var77_true__t0 (theory2_nullterm var75_literal_string___path___t0) )
+  (= var77_true__t0 (theory1_safe var76_literal_string__access_control_allow_origin___t0) )
 )
 
 (assert
   var77_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:277
-(declare-fun var78_literal_string___scheme___t0 () (_ BitVec 64))
-(declare-fun var79_true__t0 () Bool)
+(declare-fun var78_true__t0 () Bool)
 (assert
-  (= var79_true__t0 (theory1_safe var78_literal_string___scheme___t0) )
+  (= var78_true__t0 (theory2_nullterm var76_literal_string__access_control_allow_origin___t0) )
 )
 
 (assert
-  var79_true__t0
+  var78_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:292
+(declare-fun var79_literal_string__age___t0 () (_ BitVec 64))
 (declare-fun var80_true__t0 () Bool)
 (assert
-  (= var80_true__t0 (theory2_nullterm var78_literal_string___scheme___t0) )
+  (= var80_true__t0 (theory1_safe var79_literal_string__age___t0) )
 )
 
 (assert
   var80_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:278
-(declare-fun var81_literal_string___scheme___t0 () (_ BitVec 64))
-(declare-fun var82_true__t0 () Bool)
+(declare-fun var81_true__t0 () Bool)
 (assert
-  (= var82_true__t0 (theory1_safe var81_literal_string___scheme___t0) )
+  (= var81_true__t0 (theory2_nullterm var79_literal_string__age___t0) )
 )
 
 (assert
-  var82_true__t0
+  var81_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:293
+(declare-fun var82_literal_string__allow___t0 () (_ BitVec 64))
 (declare-fun var83_true__t0 () Bool)
 (assert
-  (= var83_true__t0 (theory2_nullterm var81_literal_string___scheme___t0) )
+  (= var83_true__t0 (theory1_safe var82_literal_string__allow___t0) )
 )
 
 (assert
   var83_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:279
-(declare-fun var84_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var85_true__t0 () Bool)
+(declare-fun var84_true__t0 () Bool)
 (assert
-  (= var85_true__t0 (theory1_safe var84_literal_string___status___t0) )
+  (= var84_true__t0 (theory2_nullterm var82_literal_string__allow___t0) )
 )
 
 (assert
-  var85_true__t0
+  var84_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:294
+(declare-fun var85_literal_string__authorization___t0 () (_ BitVec 64))
 (declare-fun var86_true__t0 () Bool)
 (assert
-  (= var86_true__t0 (theory2_nullterm var84_literal_string___status___t0) )
+  (= var86_true__t0 (theory1_safe var85_literal_string__authorization___t0) )
 )
 
 (assert
   var86_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:280
-(declare-fun var87_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var88_true__t0 () Bool)
+(declare-fun var87_true__t0 () Bool)
 (assert
-  (= var88_true__t0 (theory1_safe var87_literal_string___status___t0) )
+  (= var87_true__t0 (theory2_nullterm var85_literal_string__authorization___t0) )
 )
 
 (assert
-  var88_true__t0
+  var87_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:295
+(declare-fun var88_literal_string__cache_control___t0 () (_ BitVec 64))
 (declare-fun var89_true__t0 () Bool)
 (assert
-  (= var89_true__t0 (theory2_nullterm var87_literal_string___status___t0) )
+  (= var89_true__t0 (theory1_safe var88_literal_string__cache_control___t0) )
 )
 
 (assert
   var89_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:281
-(declare-fun var90_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var91_true__t0 () Bool)
+(declare-fun var90_true__t0 () Bool)
 (assert
-  (= var91_true__t0 (theory1_safe var90_literal_string___status___t0) )
+  (= var90_true__t0 (theory2_nullterm var88_literal_string__cache_control___t0) )
 )
 
 (assert
-  var91_true__t0
+  var90_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:296
+(declare-fun var91_literal_string__content_disposition___t0 () (_ BitVec 64))
 (declare-fun var92_true__t0 () Bool)
 (assert
-  (= var92_true__t0 (theory2_nullterm var90_literal_string___status___t0) )
+  (= var92_true__t0 (theory1_safe var91_literal_string__content_disposition___t0) )
 )
 
 (assert
   var92_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:282
-(declare-fun var93_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var94_true__t0 () Bool)
+(declare-fun var93_true__t0 () Bool)
 (assert
-  (= var94_true__t0 (theory1_safe var93_literal_string___status___t0) )
+  (= var93_true__t0 (theory2_nullterm var91_literal_string__content_disposition___t0) )
 )
 
 (assert
-  var94_true__t0
+  var93_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:297
+(declare-fun var94_literal_string__content_encoding___t0 () (_ BitVec 64))
 (declare-fun var95_true__t0 () Bool)
 (assert
-  (= var95_true__t0 (theory2_nullterm var93_literal_string___status___t0) )
+  (= var95_true__t0 (theory1_safe var94_literal_string__content_encoding___t0) )
 )
 
 (assert
   var95_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:283
-(declare-fun var96_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var97_true__t0 () Bool)
+(declare-fun var96_true__t0 () Bool)
 (assert
-  (= var97_true__t0 (theory1_safe var96_literal_string___status___t0) )
+  (= var96_true__t0 (theory2_nullterm var94_literal_string__content_encoding___t0) )
 )
 
 (assert
-  var97_true__t0
+  var96_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:298
+(declare-fun var97_literal_string__content_language___t0 () (_ BitVec 64))
 (declare-fun var98_true__t0 () Bool)
 (assert
-  (= var98_true__t0 (theory2_nullterm var96_literal_string___status___t0) )
+  (= var98_true__t0 (theory1_safe var97_literal_string__content_language___t0) )
 )
 
 (assert
   var98_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:284
-(declare-fun var99_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var100_true__t0 () Bool)
+(declare-fun var99_true__t0 () Bool)
 (assert
-  (= var100_true__t0 (theory1_safe var99_literal_string___status___t0) )
+  (= var99_true__t0 (theory2_nullterm var97_literal_string__content_language___t0) )
 )
 
 (assert
-  var100_true__t0
+  var99_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:299
+(declare-fun var100_literal_string__content_length___t0 () (_ BitVec 64))
 (declare-fun var101_true__t0 () Bool)
 (assert
-  (= var101_true__t0 (theory2_nullterm var99_literal_string___status___t0) )
+  (= var101_true__t0 (theory1_safe var100_literal_string__content_length___t0) )
 )
 
 (assert
   var101_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:285
-(declare-fun var102_literal_string___status___t0 () (_ BitVec 64))
-(declare-fun var103_true__t0 () Bool)
+(declare-fun var102_true__t0 () Bool)
 (assert
-  (= var103_true__t0 (theory1_safe var102_literal_string___status___t0) )
+  (= var102_true__t0 (theory2_nullterm var100_literal_string__content_length___t0) )
 )
 
 (assert
-  var103_true__t0
+  var102_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:300
+(declare-fun var103_literal_string__content_location___t0 () (_ BitVec 64))
 (declare-fun var104_true__t0 () Bool)
 (assert
-  (= var104_true__t0 (theory2_nullterm var102_literal_string___status___t0) )
+  (= var104_true__t0 (theory1_safe var103_literal_string__content_location___t0) )
 )
 
 (assert
   var104_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:286
-(declare-fun var105_literal_string__accept_charset___t0 () (_ BitVec 64))
-(declare-fun var106_true__t0 () Bool)
+(declare-fun var105_true__t0 () Bool)
 (assert
-  (= var106_true__t0 (theory1_safe var105_literal_string__accept_charset___t0) )
+  (= var105_true__t0 (theory2_nullterm var103_literal_string__content_location___t0) )
 )
 
 (assert
-  var106_true__t0
+  var105_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:301
+(declare-fun var106_literal_string__content_range___t0 () (_ BitVec 64))
 (declare-fun var107_true__t0 () Bool)
 (assert
-  (= var107_true__t0 (theory2_nullterm var105_literal_string__accept_charset___t0) )
+  (= var107_true__t0 (theory1_safe var106_literal_string__content_range___t0) )
 )
 
 (assert
   var107_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:287
-(declare-fun var108_literal_string__accept_encoding___t0 () (_ BitVec 64))
-(declare-fun var109_true__t0 () Bool)
+(declare-fun var108_true__t0 () Bool)
 (assert
-  (= var109_true__t0 (theory1_safe var108_literal_string__accept_encoding___t0) )
+  (= var108_true__t0 (theory2_nullterm var106_literal_string__content_range___t0) )
 )
 
 (assert
-  var109_true__t0
+  var108_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:302
+(declare-fun var109_literal_string__content_type___t0 () (_ BitVec 64))
 (declare-fun var110_true__t0 () Bool)
 (assert
-  (= var110_true__t0 (theory2_nullterm var108_literal_string__accept_encoding___t0) )
+  (= var110_true__t0 (theory1_safe var109_literal_string__content_type___t0) )
 )
 
 (assert
   var110_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:288
-(declare-fun var111_literal_string__accept_language___t0 () (_ BitVec 64))
-(declare-fun var112_true__t0 () Bool)
+(declare-fun var111_true__t0 () Bool)
 (assert
-  (= var112_true__t0 (theory1_safe var111_literal_string__accept_language___t0) )
+  (= var111_true__t0 (theory2_nullterm var109_literal_string__content_type___t0) )
 )
 
 (assert
-  var112_true__t0
+  var111_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:303
+(declare-fun var112_literal_string__cookie___t0 () (_ BitVec 64))
 (declare-fun var113_true__t0 () Bool)
 (assert
-  (= var113_true__t0 (theory2_nullterm var111_literal_string__accept_language___t0) )
+  (= var113_true__t0 (theory1_safe var112_literal_string__cookie___t0) )
 )
 
 (assert
   var113_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:289
-(declare-fun var114_literal_string__accept_ranges___t0 () (_ BitVec 64))
-(declare-fun var115_true__t0 () Bool)
+(declare-fun var114_true__t0 () Bool)
 (assert
-  (= var115_true__t0 (theory1_safe var114_literal_string__accept_ranges___t0) )
+  (= var114_true__t0 (theory2_nullterm var112_literal_string__cookie___t0) )
 )
 
 (assert
-  var115_true__t0
+  var114_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:304
+(declare-fun var115_literal_string__date___t0 () (_ BitVec 64))
 (declare-fun var116_true__t0 () Bool)
 (assert
-  (= var116_true__t0 (theory2_nullterm var114_literal_string__accept_ranges___t0) )
+  (= var116_true__t0 (theory1_safe var115_literal_string__date___t0) )
 )
 
 (assert
   var116_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:290
-(declare-fun var117_literal_string__accept___t0 () (_ BitVec 64))
-(declare-fun var118_true__t0 () Bool)
+(declare-fun var117_true__t0 () Bool)
 (assert
-  (= var118_true__t0 (theory1_safe var117_literal_string__accept___t0) )
+  (= var117_true__t0 (theory2_nullterm var115_literal_string__date___t0) )
 )
 
 (assert
-  var118_true__t0
+  var117_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:305
+(declare-fun var118_literal_string__etag___t0 () (_ BitVec 64))
 (declare-fun var119_true__t0 () Bool)
 (assert
-  (= var119_true__t0 (theory2_nullterm var117_literal_string__accept___t0) )
+  (= var119_true__t0 (theory1_safe var118_literal_string__etag___t0) )
 )
 
 (assert
   var119_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:291
-(declare-fun var120_literal_string__access_control_allow_origin___t0 () (_ BitVec 64))
-(declare-fun var121_true__t0 () Bool)
+(declare-fun var120_true__t0 () Bool)
 (assert
-  (= var121_true__t0 (theory1_safe var120_literal_string__access_control_allow_origin___t0) )
+  (= var120_true__t0 (theory2_nullterm var118_literal_string__etag___t0) )
 )
 
 (assert
-  var121_true__t0
+  var120_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:306
+(declare-fun var121_literal_string__expect___t0 () (_ BitVec 64))
 (declare-fun var122_true__t0 () Bool)
 (assert
-  (= var122_true__t0 (theory2_nullterm var120_literal_string__access_control_allow_origin___t0) )
+  (= var122_true__t0 (theory1_safe var121_literal_string__expect___t0) )
 )
 
 (assert
   var122_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:292
-(declare-fun var123_literal_string__age___t0 () (_ BitVec 64))
-(declare-fun var124_true__t0 () Bool)
+(declare-fun var123_true__t0 () Bool)
 (assert
-  (= var124_true__t0 (theory1_safe var123_literal_string__age___t0) )
+  (= var123_true__t0 (theory2_nullterm var121_literal_string__expect___t0) )
 )
 
 (assert
-  var124_true__t0
+  var123_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:307
+(declare-fun var124_literal_string__expires___t0 () (_ BitVec 64))
 (declare-fun var125_true__t0 () Bool)
 (assert
-  (= var125_true__t0 (theory2_nullterm var123_literal_string__age___t0) )
+  (= var125_true__t0 (theory1_safe var124_literal_string__expires___t0) )
 )
 
 (assert
   var125_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:293
-(declare-fun var126_literal_string__allow___t0 () (_ BitVec 64))
-(declare-fun var127_true__t0 () Bool)
+(declare-fun var126_true__t0 () Bool)
 (assert
-  (= var127_true__t0 (theory1_safe var126_literal_string__allow___t0) )
+  (= var126_true__t0 (theory2_nullterm var124_literal_string__expires___t0) )
 )
 
 (assert
-  var127_true__t0
+  var126_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:308
+(declare-fun var127_literal_string__from___t0 () (_ BitVec 64))
 (declare-fun var128_true__t0 () Bool)
 (assert
-  (= var128_true__t0 (theory2_nullterm var126_literal_string__allow___t0) )
+  (= var128_true__t0 (theory1_safe var127_literal_string__from___t0) )
 )
 
 (assert
   var128_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:294
-(declare-fun var129_literal_string__authorization___t0 () (_ BitVec 64))
-(declare-fun var130_true__t0 () Bool)
+(declare-fun var129_true__t0 () Bool)
 (assert
-  (= var130_true__t0 (theory1_safe var129_literal_string__authorization___t0) )
+  (= var129_true__t0 (theory2_nullterm var127_literal_string__from___t0) )
 )
 
 (assert
-  var130_true__t0
+  var129_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:309
+(declare-fun var130_literal_string__host___t0 () (_ BitVec 64))
 (declare-fun var131_true__t0 () Bool)
 (assert
-  (= var131_true__t0 (theory2_nullterm var129_literal_string__authorization___t0) )
+  (= var131_true__t0 (theory1_safe var130_literal_string__host___t0) )
 )
 
 (assert
   var131_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:295
-(declare-fun var132_literal_string__cache_control___t0 () (_ BitVec 64))
-(declare-fun var133_true__t0 () Bool)
+(declare-fun var132_true__t0 () Bool)
 (assert
-  (= var133_true__t0 (theory1_safe var132_literal_string__cache_control___t0) )
+  (= var132_true__t0 (theory2_nullterm var130_literal_string__host___t0) )
 )
 
 (assert
-  var133_true__t0
+  var132_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:310
+(declare-fun var133_literal_string__if_match___t0 () (_ BitVec 64))
 (declare-fun var134_true__t0 () Bool)
 (assert
-  (= var134_true__t0 (theory2_nullterm var132_literal_string__cache_control___t0) )
+  (= var134_true__t0 (theory1_safe var133_literal_string__if_match___t0) )
 )
 
 (assert
   var134_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:296
-(declare-fun var135_literal_string__content_disposition___t0 () (_ BitVec 64))
-(declare-fun var136_true__t0 () Bool)
+(declare-fun var135_true__t0 () Bool)
 (assert
-  (= var136_true__t0 (theory1_safe var135_literal_string__content_disposition___t0) )
+  (= var135_true__t0 (theory2_nullterm var133_literal_string__if_match___t0) )
 )
 
 (assert
-  var136_true__t0
+  var135_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:311
+(declare-fun var136_literal_string__if_modified_since___t0 () (_ BitVec 64))
 (declare-fun var137_true__t0 () Bool)
 (assert
-  (= var137_true__t0 (theory2_nullterm var135_literal_string__content_disposition___t0) )
+  (= var137_true__t0 (theory1_safe var136_literal_string__if_modified_since___t0) )
 )
 
 (assert
   var137_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:297
-(declare-fun var138_literal_string__content_encoding___t0 () (_ BitVec 64))
-(declare-fun var139_true__t0 () Bool)
+(declare-fun var138_true__t0 () Bool)
 (assert
-  (= var139_true__t0 (theory1_safe var138_literal_string__content_encoding___t0) )
+  (= var138_true__t0 (theory2_nullterm var136_literal_string__if_modified_since___t0) )
 )
 
 (assert
-  var139_true__t0
+  var138_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:312
+(declare-fun var139_literal_string__if_none_match___t0 () (_ BitVec 64))
 (declare-fun var140_true__t0 () Bool)
 (assert
-  (= var140_true__t0 (theory2_nullterm var138_literal_string__content_encoding___t0) )
+  (= var140_true__t0 (theory1_safe var139_literal_string__if_none_match___t0) )
 )
 
 (assert
   var140_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:298
-(declare-fun var141_literal_string__content_language___t0 () (_ BitVec 64))
-(declare-fun var142_true__t0 () Bool)
+(declare-fun var141_true__t0 () Bool)
 (assert
-  (= var142_true__t0 (theory1_safe var141_literal_string__content_language___t0) )
+  (= var141_true__t0 (theory2_nullterm var139_literal_string__if_none_match___t0) )
 )
 
 (assert
-  var142_true__t0
+  var141_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:313
+(declare-fun var142_literal_string__if_range___t0 () (_ BitVec 64))
 (declare-fun var143_true__t0 () Bool)
 (assert
-  (= var143_true__t0 (theory2_nullterm var141_literal_string__content_language___t0) )
+  (= var143_true__t0 (theory1_safe var142_literal_string__if_range___t0) )
 )
 
 (assert
   var143_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:299
-(declare-fun var144_literal_string__content_length___t0 () (_ BitVec 64))
-(declare-fun var145_true__t0 () Bool)
+(declare-fun var144_true__t0 () Bool)
 (assert
-  (= var145_true__t0 (theory1_safe var144_literal_string__content_length___t0) )
+  (= var144_true__t0 (theory2_nullterm var142_literal_string__if_range___t0) )
 )
 
 (assert
-  var145_true__t0
+  var144_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:314
+(declare-fun var145_literal_string__if_unmodified_since___t0 () (_ BitVec 64))
 (declare-fun var146_true__t0 () Bool)
 (assert
-  (= var146_true__t0 (theory2_nullterm var144_literal_string__content_length___t0) )
+  (= var146_true__t0 (theory1_safe var145_literal_string__if_unmodified_since___t0) )
 )
 
 (assert
   var146_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:300
-(declare-fun var147_literal_string__content_location___t0 () (_ BitVec 64))
-(declare-fun var148_true__t0 () Bool)
+(declare-fun var147_true__t0 () Bool)
 (assert
-  (= var148_true__t0 (theory1_safe var147_literal_string__content_location___t0) )
+  (= var147_true__t0 (theory2_nullterm var145_literal_string__if_unmodified_since___t0) )
 )
 
 (assert
-  var148_true__t0
+  var147_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:315
+(declare-fun var148_literal_string__last_modified___t0 () (_ BitVec 64))
 (declare-fun var149_true__t0 () Bool)
 (assert
-  (= var149_true__t0 (theory2_nullterm var147_literal_string__content_location___t0) )
+  (= var149_true__t0 (theory1_safe var148_literal_string__last_modified___t0) )
 )
 
 (assert
   var149_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:301
-(declare-fun var150_literal_string__content_range___t0 () (_ BitVec 64))
-(declare-fun var151_true__t0 () Bool)
+(declare-fun var150_true__t0 () Bool)
 (assert
-  (= var151_true__t0 (theory1_safe var150_literal_string__content_range___t0) )
+  (= var150_true__t0 (theory2_nullterm var148_literal_string__last_modified___t0) )
 )
 
 (assert
-  var151_true__t0
+  var150_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:316
+(declare-fun var151_literal_string__link___t0 () (_ BitVec 64))
 (declare-fun var152_true__t0 () Bool)
 (assert
-  (= var152_true__t0 (theory2_nullterm var150_literal_string__content_range___t0) )
+  (= var152_true__t0 (theory1_safe var151_literal_string__link___t0) )
 )
 
 (assert
   var152_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:302
-(declare-fun var153_literal_string__content_type___t0 () (_ BitVec 64))
-(declare-fun var154_true__t0 () Bool)
+(declare-fun var153_true__t0 () Bool)
 (assert
-  (= var154_true__t0 (theory1_safe var153_literal_string__content_type___t0) )
+  (= var153_true__t0 (theory2_nullterm var151_literal_string__link___t0) )
 )
 
 (assert
-  var154_true__t0
+  var153_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:317
+(declare-fun var154_literal_string__location___t0 () (_ BitVec 64))
 (declare-fun var155_true__t0 () Bool)
 (assert
-  (= var155_true__t0 (theory2_nullterm var153_literal_string__content_type___t0) )
+  (= var155_true__t0 (theory1_safe var154_literal_string__location___t0) )
 )
 
 (assert
   var155_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:303
-(declare-fun var156_literal_string__cookie___t0 () (_ BitVec 64))
-(declare-fun var157_true__t0 () Bool)
+(declare-fun var156_true__t0 () Bool)
 (assert
-  (= var157_true__t0 (theory1_safe var156_literal_string__cookie___t0) )
+  (= var156_true__t0 (theory2_nullterm var154_literal_string__location___t0) )
 )
 
 (assert
-  var157_true__t0
+  var156_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:318
+(declare-fun var157_literal_string__max_forwards___t0 () (_ BitVec 64))
 (declare-fun var158_true__t0 () Bool)
 (assert
-  (= var158_true__t0 (theory2_nullterm var156_literal_string__cookie___t0) )
+  (= var158_true__t0 (theory1_safe var157_literal_string__max_forwards___t0) )
 )
 
 (assert
   var158_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:304
-(declare-fun var159_literal_string__date___t0 () (_ BitVec 64))
-(declare-fun var160_true__t0 () Bool)
+(declare-fun var159_true__t0 () Bool)
 (assert
-  (= var160_true__t0 (theory1_safe var159_literal_string__date___t0) )
+  (= var159_true__t0 (theory2_nullterm var157_literal_string__max_forwards___t0) )
 )
 
 (assert
-  var160_true__t0
+  var159_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:319
+(declare-fun var160_literal_string__proxy_authenticate___t0 () (_ BitVec 64))
 (declare-fun var161_true__t0 () Bool)
 (assert
-  (= var161_true__t0 (theory2_nullterm var159_literal_string__date___t0) )
+  (= var161_true__t0 (theory1_safe var160_literal_string__proxy_authenticate___t0) )
 )
 
 (assert
   var161_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:305
-(declare-fun var162_literal_string__etag___t0 () (_ BitVec 64))
-(declare-fun var163_true__t0 () Bool)
+(declare-fun var162_true__t0 () Bool)
 (assert
-  (= var163_true__t0 (theory1_safe var162_literal_string__etag___t0) )
+  (= var162_true__t0 (theory2_nullterm var160_literal_string__proxy_authenticate___t0) )
 )
 
 (assert
-  var163_true__t0
+  var162_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:320
+(declare-fun var163_literal_string__proxy_authorization___t0 () (_ BitVec 64))
 (declare-fun var164_true__t0 () Bool)
 (assert
-  (= var164_true__t0 (theory2_nullterm var162_literal_string__etag___t0) )
+  (= var164_true__t0 (theory1_safe var163_literal_string__proxy_authorization___t0) )
 )
 
 (assert
   var164_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:306
-(declare-fun var165_literal_string__expect___t0 () (_ BitVec 64))
-(declare-fun var166_true__t0 () Bool)
+(declare-fun var165_true__t0 () Bool)
 (assert
-  (= var166_true__t0 (theory1_safe var165_literal_string__expect___t0) )
+  (= var165_true__t0 (theory2_nullterm var163_literal_string__proxy_authorization___t0) )
 )
 
 (assert
-  var166_true__t0
+  var165_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:321
+(declare-fun var166_literal_string__range___t0 () (_ BitVec 64))
 (declare-fun var167_true__t0 () Bool)
 (assert
-  (= var167_true__t0 (theory2_nullterm var165_literal_string__expect___t0) )
+  (= var167_true__t0 (theory1_safe var166_literal_string__range___t0) )
 )
 
 (assert
   var167_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:307
-(declare-fun var168_literal_string__expires___t0 () (_ BitVec 64))
-(declare-fun var169_true__t0 () Bool)
+(declare-fun var168_true__t0 () Bool)
 (assert
-  (= var169_true__t0 (theory1_safe var168_literal_string__expires___t0) )
+  (= var168_true__t0 (theory2_nullterm var166_literal_string__range___t0) )
 )
 
 (assert
-  var169_true__t0
+  var168_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:322
+(declare-fun var169_literal_string__referer___t0 () (_ BitVec 64))
 (declare-fun var170_true__t0 () Bool)
 (assert
-  (= var170_true__t0 (theory2_nullterm var168_literal_string__expires___t0) )
+  (= var170_true__t0 (theory1_safe var169_literal_string__referer___t0) )
 )
 
 (assert
   var170_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:308
-(declare-fun var171_literal_string__from___t0 () (_ BitVec 64))
-(declare-fun var172_true__t0 () Bool)
+(declare-fun var171_true__t0 () Bool)
 (assert
-  (= var172_true__t0 (theory1_safe var171_literal_string__from___t0) )
+  (= var171_true__t0 (theory2_nullterm var169_literal_string__referer___t0) )
 )
 
 (assert
-  var172_true__t0
+  var171_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:323
+(declare-fun var172_literal_string__refresh___t0 () (_ BitVec 64))
 (declare-fun var173_true__t0 () Bool)
 (assert
-  (= var173_true__t0 (theory2_nullterm var171_literal_string__from___t0) )
+  (= var173_true__t0 (theory1_safe var172_literal_string__refresh___t0) )
 )
 
 (assert
   var173_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:309
-(declare-fun var174_literal_string__host___t0 () (_ BitVec 64))
-(declare-fun var175_true__t0 () Bool)
+(declare-fun var174_true__t0 () Bool)
 (assert
-  (= var175_true__t0 (theory1_safe var174_literal_string__host___t0) )
+  (= var174_true__t0 (theory2_nullterm var172_literal_string__refresh___t0) )
 )
 
 (assert
-  var175_true__t0
+  var174_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:324
+(declare-fun var175_literal_string__retry_after___t0 () (_ BitVec 64))
 (declare-fun var176_true__t0 () Bool)
 (assert
-  (= var176_true__t0 (theory2_nullterm var174_literal_string__host___t0) )
+  (= var176_true__t0 (theory1_safe var175_literal_string__retry_after___t0) )
 )
 
 (assert
   var176_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:310
-(declare-fun var177_literal_string__if_match___t0 () (_ BitVec 64))
-(declare-fun var178_true__t0 () Bool)
+(declare-fun var177_true__t0 () Bool)
 (assert
-  (= var178_true__t0 (theory1_safe var177_literal_string__if_match___t0) )
+  (= var177_true__t0 (theory2_nullterm var175_literal_string__retry_after___t0) )
 )
 
 (assert
-  var178_true__t0
+  var177_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:325
+(declare-fun var178_literal_string__server___t0 () (_ BitVec 64))
 (declare-fun var179_true__t0 () Bool)
 (assert
-  (= var179_true__t0 (theory2_nullterm var177_literal_string__if_match___t0) )
+  (= var179_true__t0 (theory1_safe var178_literal_string__server___t0) )
 )
 
 (assert
   var179_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:311
-(declare-fun var180_literal_string__if_modified_since___t0 () (_ BitVec 64))
-(declare-fun var181_true__t0 () Bool)
+(declare-fun var180_true__t0 () Bool)
 (assert
-  (= var181_true__t0 (theory1_safe var180_literal_string__if_modified_since___t0) )
+  (= var180_true__t0 (theory2_nullterm var178_literal_string__server___t0) )
 )
 
 (assert
-  var181_true__t0
+  var180_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:326
+(declare-fun var181_literal_string__set_cookie___t0 () (_ BitVec 64))
 (declare-fun var182_true__t0 () Bool)
 (assert
-  (= var182_true__t0 (theory2_nullterm var180_literal_string__if_modified_since___t0) )
+  (= var182_true__t0 (theory1_safe var181_literal_string__set_cookie___t0) )
 )
 
 (assert
   var182_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:312
-(declare-fun var183_literal_string__if_none_match___t0 () (_ BitVec 64))
-(declare-fun var184_true__t0 () Bool)
+(declare-fun var183_true__t0 () Bool)
 (assert
-  (= var184_true__t0 (theory1_safe var183_literal_string__if_none_match___t0) )
+  (= var183_true__t0 (theory2_nullterm var181_literal_string__set_cookie___t0) )
 )
 
 (assert
-  var184_true__t0
+  var183_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:327
+(declare-fun var184_literal_string__strict_transport_security___t0 () (_ BitVec 64))
 (declare-fun var185_true__t0 () Bool)
 (assert
-  (= var185_true__t0 (theory2_nullterm var183_literal_string__if_none_match___t0) )
+  (= var185_true__t0 (theory1_safe var184_literal_string__strict_transport_security___t0) )
 )
 
 (assert
   var185_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:313
-(declare-fun var186_literal_string__if_range___t0 () (_ BitVec 64))
-(declare-fun var187_true__t0 () Bool)
+(declare-fun var186_true__t0 () Bool)
 (assert
-  (= var187_true__t0 (theory1_safe var186_literal_string__if_range___t0) )
+  (= var186_true__t0 (theory2_nullterm var184_literal_string__strict_transport_security___t0) )
 )
 
 (assert
-  var187_true__t0
+  var186_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:328
+(declare-fun var187_literal_string__transfer_encoding___t0 () (_ BitVec 64))
 (declare-fun var188_true__t0 () Bool)
 (assert
-  (= var188_true__t0 (theory2_nullterm var186_literal_string__if_range___t0) )
+  (= var188_true__t0 (theory1_safe var187_literal_string__transfer_encoding___t0) )
 )
 
 (assert
   var188_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:314
-(declare-fun var189_literal_string__if_unmodified_since___t0 () (_ BitVec 64))
-(declare-fun var190_true__t0 () Bool)
+(declare-fun var189_true__t0 () Bool)
 (assert
-  (= var190_true__t0 (theory1_safe var189_literal_string__if_unmodified_since___t0) )
+  (= var189_true__t0 (theory2_nullterm var187_literal_string__transfer_encoding___t0) )
 )
 
 (assert
-  var190_true__t0
+  var189_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:329
+(declare-fun var190_literal_string__user_agent___t0 () (_ BitVec 64))
 (declare-fun var191_true__t0 () Bool)
 (assert
-  (= var191_true__t0 (theory2_nullterm var189_literal_string__if_unmodified_since___t0) )
+  (= var191_true__t0 (theory1_safe var190_literal_string__user_agent___t0) )
 )
 
 (assert
   var191_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:315
-(declare-fun var192_literal_string__last_modified___t0 () (_ BitVec 64))
-(declare-fun var193_true__t0 () Bool)
+(declare-fun var192_true__t0 () Bool)
 (assert
-  (= var193_true__t0 (theory1_safe var192_literal_string__last_modified___t0) )
+  (= var192_true__t0 (theory2_nullterm var190_literal_string__user_agent___t0) )
 )
 
 (assert
-  var193_true__t0
+  var192_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:330
+(declare-fun var193_literal_string__vary___t0 () (_ BitVec 64))
 (declare-fun var194_true__t0 () Bool)
 (assert
-  (= var194_true__t0 (theory2_nullterm var192_literal_string__last_modified___t0) )
+  (= var194_true__t0 (theory1_safe var193_literal_string__vary___t0) )
 )
 
 (assert
   var194_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:316
-(declare-fun var195_literal_string__link___t0 () (_ BitVec 64))
-(declare-fun var196_true__t0 () Bool)
+(declare-fun var195_true__t0 () Bool)
 (assert
-  (= var196_true__t0 (theory1_safe var195_literal_string__link___t0) )
+  (= var195_true__t0 (theory2_nullterm var193_literal_string__vary___t0) )
 )
 
 (assert
-  var196_true__t0
+  var195_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:331
+(declare-fun var196_literal_string__via___t0 () (_ BitVec 64))
 (declare-fun var197_true__t0 () Bool)
 (assert
-  (= var197_true__t0 (theory2_nullterm var195_literal_string__link___t0) )
+  (= var197_true__t0 (theory1_safe var196_literal_string__via___t0) )
 )
 
 (assert
   var197_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:317
-(declare-fun var198_literal_string__location___t0 () (_ BitVec 64))
-(declare-fun var199_true__t0 () Bool)
+(declare-fun var198_true__t0 () Bool)
 (assert
-  (= var199_true__t0 (theory1_safe var198_literal_string__location___t0) )
+  (= var198_true__t0 (theory2_nullterm var196_literal_string__via___t0) )
 )
 
 (assert
-  var199_true__t0
+  var198_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:332
+(declare-fun var199_literal_string__www_authenticate___t0 () (_ BitVec 64))
 (declare-fun var200_true__t0 () Bool)
 (assert
-  (= var200_true__t0 (theory2_nullterm var198_literal_string__location___t0) )
+  (= var200_true__t0 (theory1_safe var199_literal_string__www_authenticate___t0) )
 )
 
 (assert
   var200_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:318
-(declare-fun var201_literal_string__max_forwards___t0 () (_ BitVec 64))
-(declare-fun var202_true__t0 () Bool)
+(declare-fun var201_true__t0 () Bool)
 (assert
-  (= var202_true__t0 (theory1_safe var201_literal_string__max_forwards___t0) )
+  (= var201_true__t0 (theory2_nullterm var199_literal_string__www_authenticate___t0) )
 )
 
 (assert
-  var202_true__t0
+  var201_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:270
+(declare-fun var202_literal_array_202__t0 () (_ BitVec 64))
 (declare-fun var203_true__t0 () Bool)
 (assert
-  (= var203_true__t0 (theory2_nullterm var201_literal_string__max_forwards___t0) )
+  (= var203_true__t0 (theory1_safe var202_literal_array_202__t0) )
 )
 
 (assert
   var203_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:319
-(declare-fun var204_literal_string__proxy_authenticate___t0 () (_ BitVec 64))
-(declare-fun var205_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:270
+(declare-fun var204_safe_literal_array_202_____safe___hpack__decoder__STATIC_KEYS___t0 () Bool)
 (assert
-  (= var205_true__t0 (theory1_safe var204_literal_string__proxy_authenticate___t0) )
+  (= var204_safe_literal_array_202_____safe___hpack__decoder__STATIC_KEYS___t0 (theory1_safe var202_literal_array_202__t0) )
 )
 
+(declare-fun var17___hpack__decoder__STATIC_KEYS__t1 () (_ BitVec 64))
 (assert
-  var205_true__t0
+  (= var204_safe_literal_array_202_____safe___hpack__decoder__STATIC_KEYS___t0 (theory1_safe var17___hpack__decoder__STATIC_KEYS__t1) )
 )
 
-(declare-fun var206_true__t0 () Bool)
+(declare-fun var205_nullterm_literal_array_202_____nullterm___hpack__decoder__STATIC_KEYS___t0 () Bool)
 (assert
-  (= var206_true__t0 (theory2_nullterm var204_literal_string__proxy_authenticate___t0) )
+  (= var205_nullterm_literal_array_202_____nullterm___hpack__decoder__STATIC_KEYS___t0 (theory2_nullterm var202_literal_array_202__t0) )
 )
 
 (assert
-  var206_true__t0
+  (= var205_nullterm_literal_array_202_____nullterm___hpack__decoder__STATIC_KEYS___t0 (theory2_nullterm var17___hpack__decoder__STATIC_KEYS__t1) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:320
-(declare-fun var207_literal_string__proxy_authorization___t0 () (_ BitVec 64))
-(declare-fun var208_true__t0 () Bool)
+(declare-fun var268_len___hpack__decoder__STATIC_KEYS___t0 () (_ BitVec 64))
 (assert
-  (= var208_true__t0 (theory1_safe var207_literal_string__proxy_authorization___t0) )
+  (= var268_len___hpack__decoder__STATIC_KEYS___t0 (theory0_len var17___hpack__decoder__STATIC_KEYS__t1) )
 )
 
 (assert
-  var208_true__t0
-)
-
-(declare-fun var209_true__t0 () Bool)
-(assert
-  (= var209_true__t0 (theory2_nullterm var207_literal_string__proxy_authorization___t0) )
-)
-
-(assert
-  var209_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:321
-(declare-fun var210_literal_string__range___t0 () (_ BitVec 64))
-(declare-fun var211_true__t0 () Bool)
-(assert
-  (= var211_true__t0 (theory1_safe var210_literal_string__range___t0) )
-)
-
-(assert
-  var211_true__t0
-)
-
-(declare-fun var212_true__t0 () Bool)
-(assert
-  (= var212_true__t0 (theory2_nullterm var210_literal_string__range___t0) )
-)
-
-(assert
-  var212_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:322
-(declare-fun var213_literal_string__referer___t0 () (_ BitVec 64))
-(declare-fun var214_true__t0 () Bool)
-(assert
-  (= var214_true__t0 (theory1_safe var213_literal_string__referer___t0) )
-)
-
-(assert
-  var214_true__t0
-)
-
-(declare-fun var215_true__t0 () Bool)
-(assert
-  (= var215_true__t0 (theory2_nullterm var213_literal_string__referer___t0) )
-)
-
-(assert
-  var215_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:323
-(declare-fun var216_literal_string__refresh___t0 () (_ BitVec 64))
-(declare-fun var217_true__t0 () Bool)
-(assert
-  (= var217_true__t0 (theory1_safe var216_literal_string__refresh___t0) )
-)
-
-(assert
-  var217_true__t0
-)
-
-(declare-fun var218_true__t0 () Bool)
-(assert
-  (= var218_true__t0 (theory2_nullterm var216_literal_string__refresh___t0) )
-)
-
-(assert
-  var218_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:324
-(declare-fun var219_literal_string__retry_after___t0 () (_ BitVec 64))
-(declare-fun var220_true__t0 () Bool)
-(assert
-  (= var220_true__t0 (theory1_safe var219_literal_string__retry_after___t0) )
-)
-
-(assert
-  var220_true__t0
-)
-
-(declare-fun var221_true__t0 () Bool)
-(assert
-  (= var221_true__t0 (theory2_nullterm var219_literal_string__retry_after___t0) )
-)
-
-(assert
-  var221_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:325
-(declare-fun var222_literal_string__server___t0 () (_ BitVec 64))
-(declare-fun var223_true__t0 () Bool)
-(assert
-  (= var223_true__t0 (theory1_safe var222_literal_string__server___t0) )
-)
-
-(assert
-  var223_true__t0
-)
-
-(declare-fun var224_true__t0 () Bool)
-(assert
-  (= var224_true__t0 (theory2_nullterm var222_literal_string__server___t0) )
-)
-
-(assert
-  var224_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:326
-(declare-fun var225_literal_string__set_cookie___t0 () (_ BitVec 64))
-(declare-fun var226_true__t0 () Bool)
-(assert
-  (= var226_true__t0 (theory1_safe var225_literal_string__set_cookie___t0) )
-)
-
-(assert
-  var226_true__t0
-)
-
-(declare-fun var227_true__t0 () Bool)
-(assert
-  (= var227_true__t0 (theory2_nullterm var225_literal_string__set_cookie___t0) )
-)
-
-(assert
-  var227_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:327
-(declare-fun var228_literal_string__strict_transport_security___t0 () (_ BitVec 64))
-(declare-fun var229_true__t0 () Bool)
-(assert
-  (= var229_true__t0 (theory1_safe var228_literal_string__strict_transport_security___t0) )
-)
-
-(assert
-  var229_true__t0
-)
-
-(declare-fun var230_true__t0 () Bool)
-(assert
-  (= var230_true__t0 (theory2_nullterm var228_literal_string__strict_transport_security___t0) )
-)
-
-(assert
-  var230_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:328
-(declare-fun var231_literal_string__transfer_encoding___t0 () (_ BitVec 64))
-(declare-fun var232_true__t0 () Bool)
-(assert
-  (= var232_true__t0 (theory1_safe var231_literal_string__transfer_encoding___t0) )
-)
-
-(assert
-  var232_true__t0
-)
-
-(declare-fun var233_true__t0 () Bool)
-(assert
-  (= var233_true__t0 (theory2_nullterm var231_literal_string__transfer_encoding___t0) )
-)
-
-(assert
-  var233_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:329
-(declare-fun var234_literal_string__user_agent___t0 () (_ BitVec 64))
-(declare-fun var235_true__t0 () Bool)
-(assert
-  (= var235_true__t0 (theory1_safe var234_literal_string__user_agent___t0) )
-)
-
-(assert
-  var235_true__t0
-)
-
-(declare-fun var236_true__t0 () Bool)
-(assert
-  (= var236_true__t0 (theory2_nullterm var234_literal_string__user_agent___t0) )
-)
-
-(assert
-  var236_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:330
-(declare-fun var237_literal_string__vary___t0 () (_ BitVec 64))
-(declare-fun var238_true__t0 () Bool)
-(assert
-  (= var238_true__t0 (theory1_safe var237_literal_string__vary___t0) )
-)
-
-(assert
-  var238_true__t0
-)
-
-(declare-fun var239_true__t0 () Bool)
-(assert
-  (= var239_true__t0 (theory2_nullterm var237_literal_string__vary___t0) )
-)
-
-(assert
-  var239_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:331
-(declare-fun var240_literal_string__via___t0 () (_ BitVec 64))
-(declare-fun var241_true__t0 () Bool)
-(assert
-  (= var241_true__t0 (theory1_safe var240_literal_string__via___t0) )
-)
-
-(assert
-  var241_true__t0
-)
-
-(declare-fun var242_true__t0 () Bool)
-(assert
-  (= var242_true__t0 (theory2_nullterm var240_literal_string__via___t0) )
-)
-
-(assert
-  var242_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:332
-(declare-fun var243_literal_string__www_authenticate___t0 () (_ BitVec 64))
-(declare-fun var244_true__t0 () Bool)
-(assert
-  (= var244_true__t0 (theory1_safe var243_literal_string__www_authenticate___t0) )
-)
-
-(assert
-  var244_true__t0
-)
-
-(declare-fun var245_true__t0 () Bool)
-(assert
-  (= var245_true__t0 (theory2_nullterm var243_literal_string__www_authenticate___t0) )
-)
-
-(assert
-  var245_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:270
-(declare-fun var246_literal_array_246__t0 () (_ BitVec 64))
-(declare-fun var247_true__t0 () Bool)
-(assert
-  (= var247_true__t0 (theory1_safe var246_literal_array_246__t0) )
-)
-
-(assert
-  var247_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:270
-(declare-fun var248_safe_literal_array_246_____safe___hpack__decoder__STATIC_KEYS___t0 () Bool)
-(assert
-  (= var248_safe_literal_array_246_____safe___hpack__decoder__STATIC_KEYS___t0 (theory1_safe var246_literal_array_246__t0) )
-)
-
-(declare-fun var61___hpack__decoder__STATIC_KEYS__t1 () (_ BitVec 64))
-(assert
-  (= var248_safe_literal_array_246_____safe___hpack__decoder__STATIC_KEYS___t0 (theory1_safe var61___hpack__decoder__STATIC_KEYS__t1) )
-)
-
-(declare-fun var249_nullterm_literal_array_246_____nullterm___hpack__decoder__STATIC_KEYS___t0 () Bool)
-(assert
-  (= var249_nullterm_literal_array_246_____nullterm___hpack__decoder__STATIC_KEYS___t0 (theory2_nullterm var246_literal_array_246__t0) )
-)
-
-(assert
-  (= var249_nullterm_literal_array_246_____nullterm___hpack__decoder__STATIC_KEYS___t0 (theory2_nullterm var61___hpack__decoder__STATIC_KEYS__t1) )
-)
-
-(declare-fun var312_len___hpack__decoder__STATIC_KEYS___t0 () (_ BitVec 64))
-(assert
-  (= var312_len___hpack__decoder__STATIC_KEYS___t0 (theory0_len var61___hpack__decoder__STATIC_KEYS__t1) )
-)
-
-(assert
-  (= var312_len___hpack__decoder__STATIC_KEYS___t0 (_ bv62 64))
+  (= var268_len___hpack__decoder__STATIC_KEYS___t0 (_ bv62 64))
 
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:101
-(declare-fun var313___buffer__pop__t0 () (_ BitVec 64))
-(declare-fun var314_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:10
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:16
+(declare-fun var270___err__NotImplemented__t0 () (_ BitVec 64))
+(declare-fun var271_true__t0 () Bool)
 (assert
-  (= var314_true__t0 (theory1_safe var313___buffer__pop__t0) )
+  (= var271_true__t0 (theory3_symbol var270___err__NotImplemented__t0) )
 )
 
 (assert
-  var314_true__t0
+  var271_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:335
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:335
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:336
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:8
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:8
 ; literal expr
-(declare-fun var316_literal_0__t0 () (_ BitVec 64))
+(declare-fun var273_literal_16__t0 () (_ BitVec 64))
 (assert
-  (= var316_literal_0__t0 (_ bv0 64))
+  (= var273_literal_16__t0 (_ bv16 64))
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:337
-(declare-fun var317_literal_string_____t0 () (_ BitVec 64))
-(declare-fun var318_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:8
+(declare-fun var274_safe_literal_16_____safe___hpack__decoder__DYNSIZE___t0 () Bool)
 (assert
-  (= var318_true__t0 (theory1_safe var317_literal_string_____t0) )
+  (= var274_safe_literal_16_____safe___hpack__decoder__DYNSIZE___t0 (theory1_safe var273_literal_16__t0) )
+)
+
+(declare-fun var272___hpack__decoder__DYNSIZE__t1 () (_ BitVec 64))
+(assert
+  (= var274_safe_literal_16_____safe___hpack__decoder__DYNSIZE___t0 (theory1_safe var272___hpack__decoder__DYNSIZE__t1) )
+)
+
+(declare-fun var275_nullterm_literal_16_____nullterm___hpack__decoder__DYNSIZE___t0 () Bool)
+(assert
+  (= var275_nullterm_literal_16_____nullterm___hpack__decoder__DYNSIZE___t0 (theory2_nullterm var273_literal_16__t0) )
 )
 
 (assert
-  var318_true__t0
+  (= var275_nullterm_literal_16_____nullterm___hpack__decoder__DYNSIZE___t0 (theory2_nullterm var272___hpack__decoder__DYNSIZE__t1) )
 )
 
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:8
+(declare-fun var276_implicit_coercion_of_literal_16__t0 () (_ BitVec 64))
+(assert (! (= var276_implicit_coercion_of_literal_16__t0 var273_literal_16__t0) :named A0))(declare-fun var272___hpack__decoder__DYNSIZE__t0 () (_ BitVec 64))
+(assert
+  (= var272___hpack__decoder__DYNSIZE__t1  (ite true var276_implicit_coercion_of_literal_16__t0 var272___hpack__decoder__DYNSIZE__t0)  )
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:183
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:101
+(declare-fun var278___hpack__decoder__decode_literal__t0 () (_ BitVec 64))
+(declare-fun var279_true__t0 () Bool)
+(assert
+  (= var279_true__t0 (theory1_safe var278___hpack__decoder__decode_literal__t0) )
+)
+
+(assert
+  var279_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
+(declare-fun theory281___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
+(declare-fun var282___buffer__available__t0 () (_ BitVec 64))
+(declare-fun var283_true__t0 () Bool)
+(assert
+  (= var283_true__t0 (theory1_safe var282___buffer__available__t0) )
+)
+
+(assert
+  var283_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
+(declare-fun var284___buffer__split__t0 () (_ BitVec 64))
+(declare-fun var285_true__t0 () Bool)
+(assert
+  (= var285_true__t0 (theory1_safe var284___buffer__split__t0) )
+)
+
+(assert
+  var285_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
+(declare-fun var286___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var287_true__t0 () Bool)
+(assert
+  (= var287_true__t0 (theory1_safe var286___buffer__cstr__t0) )
+)
+
+(assert
+  var287_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:64
+(declare-fun var288___err__backtrace__t0 () (_ BitVec 64))
+(declare-fun var289_true__t0 () Bool)
+(assert
+  (= var289_true__t0 (theory1_safe var288___err__backtrace__t0) )
+)
+
+(assert
+  var289_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
+(declare-fun var290___buffer__substr__t0 () (_ BitVec 64))
+(declare-fun var291_true__t0 () Bool)
+(assert
+  (= var291_true__t0 (theory1_safe var290___buffer__substr__t0) )
+)
+
+(assert
+  var291_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:18
+(declare-fun var293___hpack__decoder__Repr__Indexed__t0 () (_ BitVec 64))
+(assert
+  (= var293___hpack__decoder__Repr__Indexed__t0 (_ bv0 64))
+
+)
+
+(declare-fun var294___hpack__decoder__Repr__LiteralWithIncrementalIndexing__t0 () (_ BitVec 64))
+(assert
+  (= var294___hpack__decoder__Repr__LiteralWithIncrementalIndexing__t0 (_ bv1 64))
+
+)
+
+(declare-fun var295___hpack__decoder__Repr__SizeUpdate__t0 () (_ BitVec 64))
+(assert
+  (= var295___hpack__decoder__Repr__SizeUpdate__t0 (_ bv2 64))
+
+)
+
+(declare-fun var296___hpack__decoder__Repr__LiteralNeverIndexed__t0 () (_ BitVec 64))
+(assert
+  (= var296___hpack__decoder__Repr__LiteralNeverIndexed__t0 (_ bv3 64))
+
+)
+
+(declare-fun var297___hpack__decoder__Repr__LiteralWithoutIndexing__t0 () (_ BitVec 64))
+(assert
+  (= var297___hpack__decoder__Repr__LiteralWithoutIndexing__t0 (_ bv4 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:29
+(declare-fun var298___hpack__decoder__get_repr__t0 () (_ BitVec 64))
+(declare-fun var299_true__t0 () Bool)
+(assert
+  (= var299_true__t0 (theory1_safe var298___hpack__decoder__get_repr__t0) )
+)
+
+(assert
+  var299_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
+(declare-fun theory300___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:161
+(declare-fun var301___buffer__append_slice__t0 () (_ BitVec 64))
+(declare-fun var302_true__t0 () Bool)
+(assert
+  (= var302_true__t0 (theory1_safe var301___buffer__append_slice__t0) )
+)
+
+(assert
+  var302_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
+(declare-fun var303___buffer__copy_slice__t0 () (_ BitVec 64))
+(declare-fun var304_true__t0 () Bool)
+(assert
+  (= var304_true__t0 (theory1_safe var303___buffer__copy_slice__t0) )
+)
+
+(assert
+  var304_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:26
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:178
+(declare-fun var306___buffer__append_bytes__t0 () (_ BitVec 64))
+(declare-fun var307_true__t0 () Bool)
+(assert
+  (= var307_true__t0 (theory1_safe var306___buffer__append_bytes__t0) )
+)
+
+(assert
+  var307_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
+(declare-fun var308___buffer__copy_bytes__t0 () (_ BitVec 64))
+(declare-fun var309_true__t0 () Bool)
+(assert
+  (= var309_true__t0 (theory1_safe var308___buffer__copy_bytes__t0) )
+)
+
+(assert
+  var309_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:168
+(declare-fun var310___err__abort__t0 () (_ BitVec 64))
+(declare-fun var311_true__t0 () Bool)
+(assert
+  (= var311_true__t0 (theory1_safe var310___err__abort__t0) )
+)
+
+(assert
+  var311_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:199
+(declare-fun var312___err__to_str__t0 () (_ BitVec 64))
+(declare-fun var313_true__t0 () Bool)
+(assert
+  (= var313_true__t0 (theory1_safe var312___err__to_str__t0) )
+)
+
+(assert
+  var313_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
+(declare-fun theory315___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
+(declare-fun var316___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
+(declare-fun var317_true__t0 () Bool)
+(assert
+  (= var317_true__t0 (theory1_safe var316___slice__mut_slice__as_slice__t0) )
+)
+
+(assert
+  var317_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
+(declare-fun var318___buffer__fgets__t0 () (_ BitVec 64))
 (declare-fun var319_true__t0 () Bool)
 (assert
-  (= var319_true__t0 (theory2_nullterm var317_literal_string_____t0) )
+  (= var319_true__t0 (theory1_safe var318___buffer__fgets__t0) )
 )
 
 (assert
   var319_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:338
-(declare-fun var320_literal_string__GET___t0 () (_ BitVec 64))
-(declare-fun var321_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:192
+(declare-fun theory320___hpack__decoder__integrity ((_ BitVec 64)) Bool); theory ::hpack::decoder::integrity
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:335
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:335
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:336
+; literal expr
+(declare-fun var322_literal_0__t0 () (_ BitVec 64))
 (assert
-  (= var321_true__t0 (theory1_safe var320_literal_string__GET___t0) )
+  (= var322_literal_0__t0 (_ bv0 64))
+
 )
 
-(assert
-  var321_true__t0
-)
-
-(declare-fun var322_true__t0 () Bool)
-(assert
-  (= var322_true__t0 (theory2_nullterm var320_literal_string__GET___t0) )
-)
-
-(assert
-  var322_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:339
-(declare-fun var323_literal_string__POST___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:337
+(declare-fun var323_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var324_true__t0 () Bool)
 (assert
-  (= var324_true__t0 (theory1_safe var323_literal_string__POST___t0) )
+  (= var324_true__t0 (theory1_safe var323_literal_string_____t0) )
 )
 
 (assert
@@ -1602,18 +1596,18 @@
 
 (declare-fun var325_true__t0 () Bool)
 (assert
-  (= var325_true__t0 (theory2_nullterm var323_literal_string__POST___t0) )
+  (= var325_true__t0 (theory2_nullterm var323_literal_string_____t0) )
 )
 
 (assert
   var325_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:340
-(declare-fun var326_literal_string______t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:338
+(declare-fun var326_literal_string__GET___t0 () (_ BitVec 64))
 (declare-fun var327_true__t0 () Bool)
 (assert
-  (= var327_true__t0 (theory1_safe var326_literal_string______t0) )
+  (= var327_true__t0 (theory1_safe var326_literal_string__GET___t0) )
 )
 
 (assert
@@ -1622,18 +1616,18 @@
 
 (declare-fun var328_true__t0 () Bool)
 (assert
-  (= var328_true__t0 (theory2_nullterm var326_literal_string______t0) )
+  (= var328_true__t0 (theory2_nullterm var326_literal_string__GET___t0) )
 )
 
 (assert
   var328_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:341
-(declare-fun var329_literal_string___index_html___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:339
+(declare-fun var329_literal_string__POST___t0 () (_ BitVec 64))
 (declare-fun var330_true__t0 () Bool)
 (assert
-  (= var330_true__t0 (theory1_safe var329_literal_string___index_html___t0) )
+  (= var330_true__t0 (theory1_safe var329_literal_string__POST___t0) )
 )
 
 (assert
@@ -1642,18 +1636,18 @@
 
 (declare-fun var331_true__t0 () Bool)
 (assert
-  (= var331_true__t0 (theory2_nullterm var329_literal_string___index_html___t0) )
+  (= var331_true__t0 (theory2_nullterm var329_literal_string__POST___t0) )
 )
 
 (assert
   var331_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:342
-(declare-fun var332_literal_string__http___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:340
+(declare-fun var332_literal_string______t0 () (_ BitVec 64))
 (declare-fun var333_true__t0 () Bool)
 (assert
-  (= var333_true__t0 (theory1_safe var332_literal_string__http___t0) )
+  (= var333_true__t0 (theory1_safe var332_literal_string______t0) )
 )
 
 (assert
@@ -1662,18 +1656,18 @@
 
 (declare-fun var334_true__t0 () Bool)
 (assert
-  (= var334_true__t0 (theory2_nullterm var332_literal_string__http___t0) )
+  (= var334_true__t0 (theory2_nullterm var332_literal_string______t0) )
 )
 
 (assert
   var334_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:343
-(declare-fun var335_literal_string__https___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:341
+(declare-fun var335_literal_string___index_html___t0 () (_ BitVec 64))
 (declare-fun var336_true__t0 () Bool)
 (assert
-  (= var336_true__t0 (theory1_safe var335_literal_string__https___t0) )
+  (= var336_true__t0 (theory1_safe var335_literal_string___index_html___t0) )
 )
 
 (assert
@@ -1682,18 +1676,18 @@
 
 (declare-fun var337_true__t0 () Bool)
 (assert
-  (= var337_true__t0 (theory2_nullterm var335_literal_string__https___t0) )
+  (= var337_true__t0 (theory2_nullterm var335_literal_string___index_html___t0) )
 )
 
 (assert
   var337_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:344
-(declare-fun var338_literal_string__200___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:342
+(declare-fun var338_literal_string__http___t0 () (_ BitVec 64))
 (declare-fun var339_true__t0 () Bool)
 (assert
-  (= var339_true__t0 (theory1_safe var338_literal_string__200___t0) )
+  (= var339_true__t0 (theory1_safe var338_literal_string__http___t0) )
 )
 
 (assert
@@ -1702,18 +1696,18 @@
 
 (declare-fun var340_true__t0 () Bool)
 (assert
-  (= var340_true__t0 (theory2_nullterm var338_literal_string__200___t0) )
+  (= var340_true__t0 (theory2_nullterm var338_literal_string__http___t0) )
 )
 
 (assert
   var340_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:345
-(declare-fun var341_literal_string__204___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:343
+(declare-fun var341_literal_string__https___t0 () (_ BitVec 64))
 (declare-fun var342_true__t0 () Bool)
 (assert
-  (= var342_true__t0 (theory1_safe var341_literal_string__204___t0) )
+  (= var342_true__t0 (theory1_safe var341_literal_string__https___t0) )
 )
 
 (assert
@@ -1722,18 +1716,18 @@
 
 (declare-fun var343_true__t0 () Bool)
 (assert
-  (= var343_true__t0 (theory2_nullterm var341_literal_string__204___t0) )
+  (= var343_true__t0 (theory2_nullterm var341_literal_string__https___t0) )
 )
 
 (assert
   var343_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:346
-(declare-fun var344_literal_string__206___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:344
+(declare-fun var344_literal_string__200___t0 () (_ BitVec 64))
 (declare-fun var345_true__t0 () Bool)
 (assert
-  (= var345_true__t0 (theory1_safe var344_literal_string__206___t0) )
+  (= var345_true__t0 (theory1_safe var344_literal_string__200___t0) )
 )
 
 (assert
@@ -1742,18 +1736,18 @@
 
 (declare-fun var346_true__t0 () Bool)
 (assert
-  (= var346_true__t0 (theory2_nullterm var344_literal_string__206___t0) )
+  (= var346_true__t0 (theory2_nullterm var344_literal_string__200___t0) )
 )
 
 (assert
   var346_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:347
-(declare-fun var347_literal_string__304___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:345
+(declare-fun var347_literal_string__204___t0 () (_ BitVec 64))
 (declare-fun var348_true__t0 () Bool)
 (assert
-  (= var348_true__t0 (theory1_safe var347_literal_string__304___t0) )
+  (= var348_true__t0 (theory1_safe var347_literal_string__204___t0) )
 )
 
 (assert
@@ -1762,18 +1756,18 @@
 
 (declare-fun var349_true__t0 () Bool)
 (assert
-  (= var349_true__t0 (theory2_nullterm var347_literal_string__304___t0) )
+  (= var349_true__t0 (theory2_nullterm var347_literal_string__204___t0) )
 )
 
 (assert
   var349_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:348
-(declare-fun var350_literal_string__400___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:346
+(declare-fun var350_literal_string__206___t0 () (_ BitVec 64))
 (declare-fun var351_true__t0 () Bool)
 (assert
-  (= var351_true__t0 (theory1_safe var350_literal_string__400___t0) )
+  (= var351_true__t0 (theory1_safe var350_literal_string__206___t0) )
 )
 
 (assert
@@ -1782,18 +1776,18 @@
 
 (declare-fun var352_true__t0 () Bool)
 (assert
-  (= var352_true__t0 (theory2_nullterm var350_literal_string__400___t0) )
+  (= var352_true__t0 (theory2_nullterm var350_literal_string__206___t0) )
 )
 
 (assert
   var352_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:349
-(declare-fun var353_literal_string__404___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:347
+(declare-fun var353_literal_string__304___t0 () (_ BitVec 64))
 (declare-fun var354_true__t0 () Bool)
 (assert
-  (= var354_true__t0 (theory1_safe var353_literal_string__404___t0) )
+  (= var354_true__t0 (theory1_safe var353_literal_string__304___t0) )
 )
 
 (assert
@@ -1802,18 +1796,18 @@
 
 (declare-fun var355_true__t0 () Bool)
 (assert
-  (= var355_true__t0 (theory2_nullterm var353_literal_string__404___t0) )
+  (= var355_true__t0 (theory2_nullterm var353_literal_string__304___t0) )
 )
 
 (assert
   var355_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:350
-(declare-fun var356_literal_string__500___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:348
+(declare-fun var356_literal_string__400___t0 () (_ BitVec 64))
 (declare-fun var357_true__t0 () Bool)
 (assert
-  (= var357_true__t0 (theory1_safe var356_literal_string__500___t0) )
+  (= var357_true__t0 (theory1_safe var356_literal_string__400___t0) )
 )
 
 (assert
@@ -1822,18 +1816,18 @@
 
 (declare-fun var358_true__t0 () Bool)
 (assert
-  (= var358_true__t0 (theory2_nullterm var356_literal_string__500___t0) )
+  (= var358_true__t0 (theory2_nullterm var356_literal_string__400___t0) )
 )
 
 (assert
   var358_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:351
-(declare-fun var359_literal_string_____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:349
+(declare-fun var359_literal_string__404___t0 () (_ BitVec 64))
 (declare-fun var360_true__t0 () Bool)
 (assert
-  (= var360_true__t0 (theory1_safe var359_literal_string_____t0) )
+  (= var360_true__t0 (theory1_safe var359_literal_string__404___t0) )
 )
 
 (assert
@@ -1842,18 +1836,18 @@
 
 (declare-fun var361_true__t0 () Bool)
 (assert
-  (= var361_true__t0 (theory2_nullterm var359_literal_string_____t0) )
+  (= var361_true__t0 (theory2_nullterm var359_literal_string__404___t0) )
 )
 
 (assert
   var361_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:352
-(declare-fun var362_literal_string__gzip__deflate___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:350
+(declare-fun var362_literal_string__500___t0 () (_ BitVec 64))
 (declare-fun var363_true__t0 () Bool)
 (assert
-  (= var363_true__t0 (theory1_safe var362_literal_string__gzip__deflate___t0) )
+  (= var363_true__t0 (theory1_safe var362_literal_string__500___t0) )
 )
 
 (assert
@@ -1862,14 +1856,14 @@
 
 (declare-fun var364_true__t0 () Bool)
 (assert
-  (= var364_true__t0 (theory2_nullterm var362_literal_string__gzip__deflate___t0) )
+  (= var364_true__t0 (theory2_nullterm var362_literal_string__500___t0) )
 )
 
 (assert
   var364_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:353
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:351
 (declare-fun var365_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var366_true__t0 () Bool)
 (assert
@@ -1889,11 +1883,11 @@
   var367_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:354
-(declare-fun var368_literal_string_____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:352
+(declare-fun var368_literal_string__gzip__deflate___t0 () (_ BitVec 64))
 (declare-fun var369_true__t0 () Bool)
 (assert
-  (= var369_true__t0 (theory1_safe var368_literal_string_____t0) )
+  (= var369_true__t0 (theory1_safe var368_literal_string__gzip__deflate___t0) )
 )
 
 (assert
@@ -1902,14 +1896,14 @@
 
 (declare-fun var370_true__t0 () Bool)
 (assert
-  (= var370_true__t0 (theory2_nullterm var368_literal_string_____t0) )
+  (= var370_true__t0 (theory2_nullterm var368_literal_string__gzip__deflate___t0) )
 )
 
 (assert
   var370_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:355
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:353
 (declare-fun var371_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var372_true__t0 () Bool)
 (assert
@@ -1929,7 +1923,7 @@
   var373_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:356
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:354
 (declare-fun var374_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var375_true__t0 () Bool)
 (assert
@@ -1949,7 +1943,7 @@
   var376_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:357
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:355
 (declare-fun var377_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var378_true__t0 () Bool)
 (assert
@@ -1969,7 +1963,7 @@
   var379_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:358
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:356
 (declare-fun var380_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var381_true__t0 () Bool)
 (assert
@@ -1989,7 +1983,7 @@
   var382_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:359
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:357
 (declare-fun var383_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var384_true__t0 () Bool)
 (assert
@@ -2009,7 +2003,7 @@
   var385_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:360
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:358
 (declare-fun var386_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var387_true__t0 () Bool)
 (assert
@@ -2029,7 +2023,7 @@
   var388_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:361
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:359
 (declare-fun var389_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var390_true__t0 () Bool)
 (assert
@@ -2049,7 +2043,7 @@
   var391_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:362
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:360
 (declare-fun var392_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var393_true__t0 () Bool)
 (assert
@@ -2069,7 +2063,7 @@
   var394_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:363
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:361
 (declare-fun var395_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var396_true__t0 () Bool)
 (assert
@@ -2089,7 +2083,7 @@
   var397_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:364
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:362
 (declare-fun var398_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var399_true__t0 () Bool)
 (assert
@@ -2109,7 +2103,7 @@
   var400_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:365
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:363
 (declare-fun var401_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var402_true__t0 () Bool)
 (assert
@@ -2129,7 +2123,7 @@
   var403_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:366
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:364
 (declare-fun var404_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var405_true__t0 () Bool)
 (assert
@@ -2149,7 +2143,7 @@
   var406_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:367
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:365
 (declare-fun var407_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var408_true__t0 () Bool)
 (assert
@@ -2169,7 +2163,7 @@
   var409_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:368
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:366
 (declare-fun var410_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var411_true__t0 () Bool)
 (assert
@@ -2189,7 +2183,7 @@
   var412_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:369
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:367
 (declare-fun var413_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var414_true__t0 () Bool)
 (assert
@@ -2209,7 +2203,7 @@
   var415_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:370
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:368
 (declare-fun var416_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var417_true__t0 () Bool)
 (assert
@@ -2229,7 +2223,7 @@
   var418_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:371
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:369
 (declare-fun var419_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var420_true__t0 () Bool)
 (assert
@@ -2249,7 +2243,7 @@
   var421_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:372
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:370
 (declare-fun var422_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var423_true__t0 () Bool)
 (assert
@@ -2269,7 +2263,7 @@
   var424_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:373
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:371
 (declare-fun var425_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var426_true__t0 () Bool)
 (assert
@@ -2289,7 +2283,7 @@
   var427_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:374
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:372
 (declare-fun var428_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var429_true__t0 () Bool)
 (assert
@@ -2309,7 +2303,7 @@
   var430_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:375
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:373
 (declare-fun var431_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var432_true__t0 () Bool)
 (assert
@@ -2329,7 +2323,7 @@
   var433_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:376
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:374
 (declare-fun var434_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var435_true__t0 () Bool)
 (assert
@@ -2349,7 +2343,7 @@
   var436_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:377
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:375
 (declare-fun var437_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var438_true__t0 () Bool)
 (assert
@@ -2369,7 +2363,7 @@
   var439_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:378
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:376
 (declare-fun var440_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var441_true__t0 () Bool)
 (assert
@@ -2389,7 +2383,7 @@
   var442_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:379
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:377
 (declare-fun var443_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var444_true__t0 () Bool)
 (assert
@@ -2409,7 +2403,7 @@
   var445_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:380
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:378
 (declare-fun var446_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var447_true__t0 () Bool)
 (assert
@@ -2429,7 +2423,7 @@
   var448_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:381
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:379
 (declare-fun var449_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var450_true__t0 () Bool)
 (assert
@@ -2449,7 +2443,7 @@
   var451_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:382
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:380
 (declare-fun var452_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var453_true__t0 () Bool)
 (assert
@@ -2469,7 +2463,7 @@
   var454_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:383
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:381
 (declare-fun var455_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var456_true__t0 () Bool)
 (assert
@@ -2489,7 +2483,7 @@
   var457_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:384
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:382
 (declare-fun var458_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var459_true__t0 () Bool)
 (assert
@@ -2509,7 +2503,7 @@
   var460_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:385
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:383
 (declare-fun var461_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var462_true__t0 () Bool)
 (assert
@@ -2529,7 +2523,7 @@
   var463_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:386
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:384
 (declare-fun var464_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var465_true__t0 () Bool)
 (assert
@@ -2549,7 +2543,7 @@
   var466_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:387
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:385
 (declare-fun var467_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var468_true__t0 () Bool)
 (assert
@@ -2569,7 +2563,7 @@
   var469_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:388
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:386
 (declare-fun var470_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var471_true__t0 () Bool)
 (assert
@@ -2589,7 +2583,7 @@
   var472_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:389
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:387
 (declare-fun var473_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var474_true__t0 () Bool)
 (assert
@@ -2609,7 +2603,7 @@
   var475_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:390
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:388
 (declare-fun var476_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var477_true__t0 () Bool)
 (assert
@@ -2629,7 +2623,7 @@
   var478_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:391
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:389
 (declare-fun var479_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var480_true__t0 () Bool)
 (assert
@@ -2649,7 +2643,7 @@
   var481_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:392
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:390
 (declare-fun var482_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var483_true__t0 () Bool)
 (assert
@@ -2669,7 +2663,7 @@
   var484_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:393
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:391
 (declare-fun var485_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var486_true__t0 () Bool)
 (assert
@@ -2689,7 +2683,7 @@
   var487_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:394
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:392
 (declare-fun var488_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var489_true__t0 () Bool)
 (assert
@@ -2709,7 +2703,7 @@
   var490_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:395
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:393
 (declare-fun var491_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var492_true__t0 () Bool)
 (assert
@@ -2729,7 +2723,7 @@
   var493_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:396
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:394
 (declare-fun var494_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var495_true__t0 () Bool)
 (assert
@@ -2749,7 +2743,7 @@
   var496_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:397
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:395
 (declare-fun var497_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var498_true__t0 () Bool)
 (assert
@@ -2769,519 +2763,526 @@
   var499_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:335
-(declare-fun var500_literal_array_500__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:396
+(declare-fun var500_literal_string_____t0 () (_ BitVec 64))
 (declare-fun var501_true__t0 () Bool)
 (assert
-  (= var501_true__t0 (theory1_safe var500_literal_array_500__t0) )
+  (= var501_true__t0 (theory1_safe var500_literal_string_____t0) )
 )
 
 (assert
   var501_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:335
-(declare-fun var502_safe_literal_array_500_____safe___hpack__decoder__STATIC_VALS___t0 () Bool)
+(declare-fun var502_true__t0 () Bool)
 (assert
-  (= var502_safe_literal_array_500_____safe___hpack__decoder__STATIC_VALS___t0 (theory1_safe var500_literal_array_500__t0) )
-)
-
-(declare-fun var315___hpack__decoder__STATIC_VALS__t1 () (_ BitVec 64))
-(assert
-  (= var502_safe_literal_array_500_____safe___hpack__decoder__STATIC_VALS___t0 (theory1_safe var315___hpack__decoder__STATIC_VALS__t1) )
-)
-
-(declare-fun var503_nullterm_literal_array_500_____nullterm___hpack__decoder__STATIC_VALS___t0 () Bool)
-(assert
-  (= var503_nullterm_literal_array_500_____nullterm___hpack__decoder__STATIC_VALS___t0 (theory2_nullterm var500_literal_array_500__t0) )
+  (= var502_true__t0 (theory2_nullterm var500_literal_string_____t0) )
 )
 
 (assert
-  (= var503_nullterm_literal_array_500_____nullterm___hpack__decoder__STATIC_VALS___t0 (theory2_nullterm var315___hpack__decoder__STATIC_VALS__t1) )
+  var502_true__t0
 )
 
-(declare-fun var566_len___hpack__decoder__STATIC_VALS___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:397
+(declare-fun var503_literal_string_____t0 () (_ BitVec 64))
+(declare-fun var504_true__t0 () Bool)
 (assert
-  (= var566_len___hpack__decoder__STATIC_VALS___t0 (theory0_len var315___hpack__decoder__STATIC_VALS__t1) )
-)
-
-(assert
-  (= var566_len___hpack__decoder__STATIC_VALS___t0 (_ bv62 64))
-
-)
-
-; : /home/aep/proj/zz/modules/err/src/lib.zz:64
-(declare-fun var567___err__backtrace__t0 () (_ BitVec 64))
-(declare-fun var568_true__t0 () Bool)
-(assert
-  (= var568_true__t0 (theory1_safe var567___err__backtrace__t0) )
+  (= var504_true__t0 (theory1_safe var503_literal_string_____t0) )
 )
 
 (assert
-  var568_true__t0
+  var504_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:55
-(declare-fun var569___slice__slice__split__t0 () (_ BitVec 64))
-(declare-fun var570_true__t0 () Bool)
+(declare-fun var505_true__t0 () Bool)
 (assert
-  (= var570_true__t0 (theory1_safe var569___slice__slice__split__t0) )
+  (= var505_true__t0 (theory2_nullterm var503_literal_string_____t0) )
 )
 
 (assert
-  var570_true__t0
+  var505_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:43
-(declare-fun var571___buffer__slen__t0 () (_ BitVec 64))
-(declare-fun var572_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:335
+(declare-fun var506_literal_array_506__t0 () (_ BitVec 64))
+(declare-fun var507_true__t0 () Bool)
 (assert
-  (= var572_true__t0 (theory1_safe var571___buffer__slen__t0) )
+  (= var507_true__t0 (theory1_safe var506_literal_array_506__t0) )
 )
 
 (assert
-  var572_true__t0
+  var507_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:286
-(declare-fun var573___buffer__ends_with_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:335
+(declare-fun var508_safe_literal_array_506_____safe___hpack__decoder__STATIC_VALS___t0 () Bool)
+(assert
+  (= var508_safe_literal_array_506_____safe___hpack__decoder__STATIC_VALS___t0 (theory1_safe var506_literal_array_506__t0) )
+)
+
+(declare-fun var321___hpack__decoder__STATIC_VALS__t1 () (_ BitVec 64))
+(assert
+  (= var508_safe_literal_array_506_____safe___hpack__decoder__STATIC_VALS___t0 (theory1_safe var321___hpack__decoder__STATIC_VALS__t1) )
+)
+
+(declare-fun var509_nullterm_literal_array_506_____nullterm___hpack__decoder__STATIC_VALS___t0 () Bool)
+(assert
+  (= var509_nullterm_literal_array_506_____nullterm___hpack__decoder__STATIC_VALS___t0 (theory2_nullterm var506_literal_array_506__t0) )
+)
+
+(assert
+  (= var509_nullterm_literal_array_506_____nullterm___hpack__decoder__STATIC_VALS___t0 (theory2_nullterm var321___hpack__decoder__STATIC_VALS__t1) )
+)
+
+(declare-fun var572_len___hpack__decoder__STATIC_VALS___t0 () (_ BitVec 64))
+(assert
+  (= var572_len___hpack__decoder__STATIC_VALS___t0 (theory0_len var321___hpack__decoder__STATIC_VALS__t1) )
+)
+
+(assert
+  (= var572_len___hpack__decoder__STATIC_VALS___t0 (_ bv62 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var573___slice__slice__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var574_true__t0 () Bool)
 (assert
-  (= var574_true__t0 (theory1_safe var573___buffer__ends_with_cstr__t0) )
+  (= var574_true__t0 (theory1_safe var573___slice__slice__eq_cstr__t0) )
 )
 
 (assert
   var574_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:26
-(declare-fun var575___err__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:127
+(declare-fun var575___slice__slice__atoi__t0 () (_ BitVec 64))
 (declare-fun var576_true__t0 () Bool)
 (assert
-  (= var576_true__t0 (theory1_safe var575___err__make__t0) )
+  (= var576_true__t0 (theory1_safe var575___slice__slice__atoi__t0) )
 )
 
 (assert
   var576_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:8
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:8
-; literal expr
-(declare-fun var578_literal_16__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:55
+(declare-fun var577___slice__slice__split__t0 () (_ BitVec 64))
+(declare-fun var578_true__t0 () Bool)
 (assert
-  (= var578_literal_16__t0 (_ bv16 64))
-
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:8
-(declare-fun var579_safe_literal_16_____safe___hpack__decoder__DYNSIZE___t0 () Bool)
-(assert
-  (= var579_safe_literal_16_____safe___hpack__decoder__DYNSIZE___t0 (theory1_safe var578_literal_16__t0) )
-)
-
-(declare-fun var577___hpack__decoder__DYNSIZE__t1 () (_ BitVec 64))
-(assert
-  (= var579_safe_literal_16_____safe___hpack__decoder__DYNSIZE___t0 (theory1_safe var577___hpack__decoder__DYNSIZE__t1) )
-)
-
-(declare-fun var580_nullterm_literal_16_____nullterm___hpack__decoder__DYNSIZE___t0 () Bool)
-(assert
-  (= var580_nullterm_literal_16_____nullterm___hpack__decoder__DYNSIZE___t0 (theory2_nullterm var578_literal_16__t0) )
+  (= var578_true__t0 (theory1_safe var577___slice__slice__split__t0) )
 )
 
 (assert
-  (= var580_nullterm_literal_16_____nullterm___hpack__decoder__DYNSIZE___t0 (theory2_nullterm var577___hpack__decoder__DYNSIZE__t1) )
+  var578_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:8
-(declare-fun var581_implicit_coercion_of_literal_16__t0 () (_ BitVec 64))
-(assert (! (= var581_implicit_coercion_of_literal_16__t0 var578_literal_16__t0) :named A0))(declare-fun var577___hpack__decoder__DYNSIZE__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:137
+(declare-fun var579___slice__mut_slice__push64__t0 () (_ BitVec 64))
+(declare-fun var580_true__t0 () Bool)
 (assert
-  (= var577___hpack__decoder__DYNSIZE__t1  (ite true var581_implicit_coercion_of_literal_16__t0 var577___hpack__decoder__DYNSIZE__t0)  )
-)
-
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:33
-(declare-fun var582___slice__slice__eq_bytes__t0 () (_ BitVec 64))
-(declare-fun var583_true__t0 () Bool)
-(assert
-  (= var583_true__t0 (theory1_safe var582___slice__slice__eq_bytes__t0) )
+  (= var580_true__t0 (theory1_safe var579___slice__mut_slice__push64__t0) )
 )
 
 (assert
-  var583_true__t0
+  var580_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:20
-(declare-fun var584___slice__mut_slice__make__t0 () (_ BitVec 64))
-(declare-fun var585_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:187
+(declare-fun var581___err__elog__t0 () (_ BitVec 64))
+(declare-fun var582_true__t0 () Bool)
 (assert
-  (= var585_true__t0 (theory1_safe var584___slice__mut_slice__make__t0) )
-)
-
-(assert
-  var585_true__t0
-)
-
-; : /home/aep/proj/zz/modules/err/src/lib.zz:48
-(declare-fun var586___err__check__t0 () (_ BitVec 64))
-(declare-fun var587_true__t0 () Bool)
-(assert
-  (= var587_true__t0 (theory1_safe var586___err__check__t0) )
+  (= var582_true__t0 (theory1_safe var581___err__elog__t0) )
 )
 
 (assert
-  var587_true__t0
+  var582_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:133
-(declare-fun var588___err__fail__t0 () (_ BitVec 64))
-(declare-fun var589_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:84
+(declare-fun var583___buffer__push__t0 () (_ BitVec 64))
+(declare-fun var584_true__t0 () Bool)
 (assert
-  (= var589_true__t0 (theory1_safe var588___err__fail__t0) )
-)
-
-(assert
-  var589_true__t0
-)
-
-; : /home/aep/proj/zz/modules/err/src/lib.zz:16
-(declare-fun var590___err__NotImplemented__t0 () (_ BitVec 64))
-(declare-fun var591_true__t0 () Bool)
-(assert
-  (= var591_true__t0 (theory3_symbol var590___err__NotImplemented__t0) )
+  (= var584_true__t0 (theory1_safe var583___buffer__push__t0) )
 )
 
 (assert
-  var591_true__t0
+  var584_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:208
-(declare-fun var592___hpack__decoder__next__t0 () (_ BitVec 64))
-(declare-fun var593_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:418
+(declare-fun var585___buffer__copy_cstr__t0 () (_ BitVec 64))
+(declare-fun var586_true__t0 () Bool)
 (assert
-  (= var593_true__t0 (theory1_safe var592___hpack__decoder__next__t0) )
-)
-
-(assert
-  var593_true__t0
-)
-
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:367
-(declare-fun var594___buffer__split__t0 () (_ BitVec 64))
-(declare-fun var595_true__t0 () Bool)
-(assert
-  (= var595_true__t0 (theory1_safe var594___buffer__split__t0) )
+  (= var586_true__t0 (theory1_safe var585___buffer__copy_cstr__t0) )
 )
 
 (assert
-  var595_true__t0
+  var586_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:84
-(declare-fun var596___buffer__push__t0 () (_ BitVec 64))
-(declare-fun var597_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:92
+(declare-fun var587___slice__mut_slice__push__t0 () (_ BitVec 64))
+(declare-fun var588_true__t0 () Bool)
 (assert
-  (= var597_true__t0 (theory1_safe var596___buffer__push__t0) )
-)
-
-(assert
-  var597_true__t0
-)
-
-; : /home/aep/proj/zz/modules/err/src/lib.zz:187
-(declare-fun var598___err__elog__t0 () (_ BitVec 64))
-(declare-fun var599_true__t0 () Bool)
-(assert
-  (= var599_true__t0 (theory1_safe var598___err__elog__t0) )
+  (= var588_true__t0 (theory1_safe var587___slice__mut_slice__push__t0) )
 )
 
 (assert
-  var599_true__t0
+  var588_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:168
-(declare-fun var600___err__abort__t0 () (_ BitVec 64))
-(declare-fun var601_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
+(declare-fun var589___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
+(declare-fun var590_true__t0 () Bool)
 (assert
-  (= var601_true__t0 (theory1_safe var600___err__abort__t0) )
-)
-
-(assert
-  var601_true__t0
-)
-
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:24
-(declare-fun var602___slice__slice__eq_cstr__t0 () (_ BitVec 64))
-(declare-fun var603_true__t0 () Bool)
-(assert
-  (= var603_true__t0 (theory1_safe var602___slice__slice__eq_cstr__t0) )
+  (= var590_true__t0 (theory1_safe var589___slice__mut_slice__append_slice__t0) )
 )
 
 (assert
-  var603_true__t0
+  var590_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:137
-(declare-fun var604___slice__mut_slice__push64__t0 () (_ BitVec 64))
-(declare-fun var605_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
+(declare-fun var591___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var592_true__t0 () Bool)
 (assert
-  (= var605_true__t0 (theory1_safe var604___slice__mut_slice__push64__t0) )
-)
-
-(assert
-  var605_true__t0
-)
-
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:14
-(declare-fun var606___slice__slice__eq__t0 () (_ BitVec 64))
-(declare-fun var607_true__t0 () Bool)
-(assert
-  (= var607_true__t0 (theory1_safe var606___slice__slice__eq__t0) )
+  (= var592_true__t0 (theory1_safe var591___buffer__clear__t0) )
 )
 
 (assert
-  var607_true__t0
+  var592_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:152
-(declare-fun var608___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
-(declare-fun var609_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
+(declare-fun var593___buffer__as_slice__t0 () (_ BitVec 64))
+(declare-fun var594_true__t0 () Bool)
 (assert
-  (= var609_true__t0 (theory1_safe var608___slice__mut_slice__append_obj__t0) )
-)
-
-(assert
-  var609_true__t0
-)
-
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:101
-(declare-fun var610___hpack__decoder__decode_literal__t0 () (_ BitVec 64))
-(declare-fun var611_true__t0 () Bool)
-(assert
-  (= var611_true__t0 (theory1_safe var610___hpack__decoder__decode_literal__t0) )
+  (= var594_true__t0 (theory1_safe var593___buffer__as_slice__t0) )
 )
 
 (assert
-  var611_true__t0
+  var594_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-(declare-fun var612___hpack__decoder__decode_integer__t0 () (_ BitVec 64))
-(declare-fun var613_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
+(declare-fun var595___buffer__vformat__t0 () (_ BitVec 64))
+(declare-fun var596_true__t0 () Bool)
 (assert
-  (= var613_true__t0 (theory1_safe var612___hpack__decoder__decode_integer__t0) )
-)
-
-(assert
-  var613_true__t0
-)
-
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:36
-(declare-fun var614___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
-(declare-fun var615_true__t0 () Bool)
-(assert
-  (= var615_true__t0 (theory1_safe var614___slice__mut_slice__as_slice__t0) )
+  (= var596_true__t0 (theory1_safe var595___buffer__vformat__t0) )
 )
 
 (assert
-  var615_true__t0
+  var596_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:122
-(declare-fun var616___slice__mut_slice__push32__t0 () (_ BitVec 64))
-(declare-fun var617_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:36
+(declare-fun var597___err__ignore__t0 () (_ BitVec 64))
+(declare-fun var598_true__t0 () Bool)
 (assert
-  (= var617_true__t0 (theory1_safe var616___slice__mut_slice__push32__t0) )
-)
-
-(assert
-  var617_true__t0
-)
-
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:134
-(declare-fun var618___buffer__available__t0 () (_ BitVec 64))
-(declare-fun var619_true__t0 () Bool)
-(assert
-  (= var619_true__t0 (theory1_safe var618___buffer__available__t0) )
+  (= var598_true__t0 (theory1_safe var597___err__ignore__t0) )
 )
 
 (assert
-  var619_true__t0
+  var598_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:183
-; : /home/aep/proj/zz/modules/err/src/lib.zz:193
-(declare-fun var620___err__eprintf__t0 () (_ BitVec 64))
-(declare-fun var621_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:81
+(declare-fun var599___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var600_true__t0 () Bool)
 (assert
-  (= var621_true__t0 (theory1_safe var620___err__eprintf__t0) )
+  (= var600_true__t0 (theory1_safe var599___slice__mut_slice__append_cstr__t0) )
 )
 
 (assert
-  var621_true__t0
+  var600_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:26
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:194
-(declare-fun var623___buffer__format__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
+(declare-fun var601___buffer__pop__t0 () (_ BitVec 64))
+(declare-fun var602_true__t0 () Bool)
+(assert
+  (= var602_true__t0 (theory1_safe var601___buffer__pop__t0) )
+)
+
+(assert
+  var602_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
+(declare-fun var603___buffer__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var604_true__t0 () Bool)
+(assert
+  (= var604_true__t0 (theory1_safe var603___buffer__append_cstr__t0) )
+)
+
+(assert
+  var604_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
+(declare-fun var605___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+(declare-fun var606_true__t0 () Bool)
+(assert
+  (= var606_true__t0 (theory1_safe var605___slice__slice__eq_bytes__t0) )
+)
+
+(assert
+  var606_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:65
+(declare-fun var607___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
+(declare-fun var608_true__t0 () Bool)
+(assert
+  (= var608_true__t0 (theory1_safe var607___slice__mut_slice__append_bytes__t0) )
+)
+
+(assert
+  var608_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:107
+(declare-fun var609___slice__mut_slice__push16__t0 () (_ BitVec 64))
+(declare-fun var610_true__t0 () Bool)
+(assert
+  (= var610_true__t0 (theory1_safe var609___slice__mut_slice__push16__t0) )
+)
+
+(assert
+  var610_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:208
+(declare-fun var611___hpack__decoder__next__t0 () (_ BitVec 64))
+(declare-fun var612_true__t0 () Bool)
+(assert
+  (= var612_true__t0 (theory1_safe var611___hpack__decoder__next__t0) )
+)
+
+(assert
+  var612_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:236
+(declare-fun var613___buffer__eq_cstr__t0 () (_ BitVec 64))
+(declare-fun var614_true__t0 () Bool)
+(assert
+  (= var614_true__t0 (theory1_safe var613___buffer__eq_cstr__t0) )
+)
+
+(assert
+  var614_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:122
+(declare-fun var615___slice__mut_slice__push32__t0 () (_ BitVec 64))
+(declare-fun var616_true__t0 () Bool)
+(assert
+  (= var616_true__t0 (theory1_safe var615___slice__mut_slice__push32__t0) )
+)
+
+(assert
+  var616_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:152
+(declare-fun var617___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
+(declare-fun var618_true__t0 () Bool)
+(assert
+  (= var618_true__t0 (theory1_safe var617___slice__mut_slice__append_obj__t0) )
+)
+
+(assert
+  var618_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
+(declare-fun var619___buffer__starts_with_cstr__t0 () (_ BitVec 64))
+(declare-fun var620_true__t0 () Bool)
+(assert
+  (= var620_true__t0 (theory1_safe var619___buffer__starts_with_cstr__t0) )
+)
+
+(assert
+  var620_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+(declare-fun var621___hpack__decoder__decode_integer__t0 () (_ BitVec 64))
+(declare-fun var622_true__t0 () Bool)
+(assert
+  (= var622_true__t0 (theory1_safe var621___hpack__decoder__decode_integer__t0) )
+)
+
+(assert
+  var622_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
+(declare-fun var623___buffer__as_mut_slice__t0 () (_ BitVec 64))
 (declare-fun var624_true__t0 () Bool)
 (assert
-  (= var624_true__t0 (theory1_safe var623___buffer__format__t0) )
+  (= var624_true__t0 (theory1_safe var623___buffer__as_mut_slice__t0) )
 )
 
 (assert
   var624_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:81
-(declare-fun var625___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
+(declare-fun var625___slice__mut_slice__make__t0 () (_ BitVec 64))
 (declare-fun var626_true__t0 () Bool)
 (assert
-  (= var626_true__t0 (theory1_safe var625___slice__mut_slice__append_cstr__t0) )
+  (= var626_true__t0 (theory1_safe var625___slice__mut_slice__make__t0) )
 )
 
 (assert
   var626_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:304
-(declare-fun var627___buffer__fgets__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:87
+(declare-fun var627___slice__slice__sub__t0 () (_ BitVec 64))
 (declare-fun var628_true__t0 () Bool)
 (assert
-  (= var628_true__t0 (theory1_safe var627___buffer__fgets__t0) )
+  (= var628_true__t0 (theory1_safe var627___slice__slice__sub__t0) )
 )
 
 (assert
   var628_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:25
-(declare-fun var629___buffer__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
+(declare-fun var629___buffer__ends_with_cstr__t0 () (_ BitVec 64))
 (declare-fun var630_true__t0 () Bool)
 (assert
-  (= var630_true__t0 (theory1_safe var629___buffer__make__t0) )
+  (= var630_true__t0 (theory1_safe var629___buffer__ends_with_cstr__t0) )
 )
 
 (assert
   var630_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:207
-(declare-fun var631___buffer__vformat__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
+(declare-fun var631___buffer__make__t0 () (_ BitVec 64))
 (declare-fun var632_true__t0 () Bool)
 (assert
-  (= var632_true__t0 (theory1_safe var631___buffer__vformat__t0) )
+  (= var632_true__t0 (theory1_safe var631___buffer__make__t0) )
 )
 
 (assert
   var632_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:70
-(declare-fun var633___err__fail_with_errno__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
+(declare-fun var633___slice__slice__make__t0 () (_ BitVec 64))
 (declare-fun var634_true__t0 () Bool)
 (assert
-  (= var634_true__t0 (theory1_safe var633___err__fail_with_errno__t0) )
+  (= var634_true__t0 (theory1_safe var633___slice__slice__make__t0) )
 )
 
 (assert
   var634_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:199
-(declare-fun var635___err__to_str__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:292
+(declare-fun var635___err__fail_with_win32__t0 () (_ BitVec 64))
 (declare-fun var636_true__t0 () Bool)
 (assert
-  (= var636_true__t0 (theory1_safe var635___err__to_str__t0) )
+  (= var636_true__t0 (theory1_safe var635___err__fail_with_win32__t0) )
 )
 
 (assert
   var636_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:292
-(declare-fun var637___err__fail_with_win32__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
+(declare-fun var637___buffer__slen__t0 () (_ BitVec 64))
 (declare-fun var638_true__t0 () Bool)
 (assert
-  (= var638_true__t0 (theory1_safe var637___err__fail_with_win32__t0) )
+  (= var638_true__t0 (theory1_safe var637___buffer__slen__t0) )
 )
 
 (assert
   var638_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:199
-(declare-fun var639___hpack__decoder__decode__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
+(declare-fun var639___slice__slice__eq__t0 () (_ BitVec 64))
 (declare-fun var640_true__t0 () Bool)
 (assert
-  (= var640_true__t0 (theory1_safe var639___hpack__decoder__decode__t0) )
+  (= var640_true__t0 (theory1_safe var639___slice__slice__eq__t0) )
 )
 
 (assert
   var640_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:320
-(declare-fun var641___buffer__substr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:26
+(declare-fun var641___err__make__t0 () (_ BitVec 64))
 (declare-fun var642_true__t0 () Bool)
 (assert
-  (= var642_true__t0 (theory1_safe var641___buffer__substr__t0) )
+  (= var642_true__t0 (theory1_safe var641___err__make__t0) )
 )
 
 (assert
   var642_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:33
-(declare-fun var643___buffer__clear__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:199
+(declare-fun var643___hpack__decoder__decode__t0 () (_ BitVec 64))
 (declare-fun var644_true__t0 () Bool)
 (assert
-  (= var644_true__t0 (theory1_safe var643___buffer__clear__t0) )
+  (= var644_true__t0 (theory1_safe var643___hpack__decoder__decode__t0) )
 )
 
 (assert
   var644_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:43
-(declare-fun var645___slice__slice__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:10
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:183
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:193
+(declare-fun var645___err__eprintf__t0 () (_ BitVec 64))
 (declare-fun var646_true__t0 () Bool)
 (assert
-  (= var646_true__t0 (theory1_safe var645___slice__slice__make__t0) )
+  (= var646_true__t0 (theory1_safe var645___err__eprintf__t0) )
 )
 
 (assert
   var646_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/slice.zz:127
-(declare-fun var647___slice__slice__atoi__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
+(declare-fun var647___buffer__format__t0 () (_ BitVec 64))
 (declare-fun var648_true__t0 () Bool)
 (assert
-  (= var648_true__t0 (theory1_safe var647___slice__slice__atoi__t0) )
+  (= var648_true__t0 (theory1_safe var647___buffer__format__t0) )
 )
 
 (assert
   var648_true__t0
 )
 
-; : /home/aep/proj/zz/modules/slice/src/mut_slice.zz:65
-(declare-fun var649___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:70
+(declare-fun var649___err__fail_with_errno__t0 () (_ BitVec 64))
 (declare-fun var650_true__t0 () Bool)
 (assert
-  (= var650_true__t0 (theory1_safe var649___slice__mut_slice__append_bytes__t0) )
+  (= var650_true__t0 (theory1_safe var649___err__fail_with_errno__t0) )
 )
 
 (assert
   var650_true__t0
 )
 
-; : /home/aep/proj/zz/modules/buffer/src/lib.zz:408
-(declare-fun var651___buffer__copy_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:101
+(declare-fun var651___err__fail_with_system_error__t0 () (_ BitVec 64))
 (declare-fun var652_true__t0 () Bool)
 (assert
-  (= var652_true__t0 (theory1_safe var651___buffer__copy_slice__t0) )
+  (= var652_true__t0 (theory1_safe var651___err__fail_with_system_error__t0) )
 )
 
 (assert
@@ -3297,9 +3298,9 @@
 
 (push 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
 (declare-fun var657_deref_S654_e__trace__t0 () (_ BitVec 64))
 (declare-fun var658_len_deref_S654_e____t0 () (_ BitVec 64))
 (assert
@@ -3307,8 +3308,8 @@
 )
 
 (declare-fun var655_et__t0 () (_ BitVec 64))
-(assert (! (= var658_len_deref_S654_e____t0 var655_et__t0) :named A1)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
+(assert (! (= var658_len_deref_S654_e____t0 var655_et__t0) :named A1)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -3320,7 +3321,7 @@
 
 (assert (! var660_interpretation_of_theory_safe_over_e__t0 :named A2))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -3332,27 +3333,27 @@
 
 (assert (! var661_interpretation_of_theory_safe_over_self__t0 :named A3))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
 ; call of ::err::checked
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
 ; collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:44
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:44
 (declare-fun var656_deref_S654_e___t0 () (_ BitVec 64))
 (declare-fun var662_interpretation_of_theory___err__checked_over_deref_S654_e___t0 () Bool)
 (assert
-  (= var662_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory21___err__checked var656_deref_S654_e___t0) )
+  (= var662_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory9___err__checked var656_deref_S654_e___t0) )
 )
 
 (assert (! var662_interpretation_of_theory___err__checked_over_deref_S654_e___t0 :named A4))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:45
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:45
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:45
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:45
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:45
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:45
 ; literal expr
 (declare-fun var663_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -3361,7 +3362,7 @@
 )
 
 (declare-fun var664_implicit_coercion_of_literal_0__t0 () (_ BitVec 8))
-(assert (! (= var664_implicit_coercion_of_literal_0__t0 ( (_ extract 7 0) var663_literal_0__t0 )) :named A5)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:45
+(assert (! (= var664_implicit_coercion_of_literal_0__t0 ( (_ extract 7 0) var663_literal_0__t0 )) :named A5)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:45
 (declare-fun var665_infix_expression__t0 () Bool)
 (declare-fun var659_prefix_size__t0 () (_ BitVec 8))
 (assert
@@ -3370,9 +3371,9 @@
 
 (assert (! var665_infix_expression__t0 :named A6))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:46
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:46
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:46
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:46
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:46
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:46
 ; literal expr
 (declare-fun var666_literal_9__t0 () (_ BitVec 64))
 (assert
@@ -3381,7 +3382,7 @@
 )
 
 (declare-fun var667_implicit_coercion_of_literal_9__t0 () (_ BitVec 8))
-(assert (! (= var667_implicit_coercion_of_literal_9__t0 ( (_ extract 7 0) var666_literal_9__t0 )) :named A7)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:46
+(assert (! (= var667_implicit_coercion_of_literal_9__t0 ( (_ extract 7 0) var666_literal_9__t0 )) :named A7)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:46
 (declare-fun var668_infix_expression__t0 () Bool)
 (assert
   (=  var668_infix_expression__t0 (bvult var659_prefix_size__t0 var667_implicit_coercion_of_literal_9__t0))
@@ -3389,9 +3390,9 @@
 
 (assert (! var668_infix_expression__t0 :named A8))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:50
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:50
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:50
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:50
 ; literal expr
 (declare-fun var671_literal_255__t0 () (_ BitVec 64))
 (assert
@@ -3406,9 +3407,9 @@
   (= var670_mask__t1  (ite true var672_implicit_coercion_of_literal_255__t0 var670_mask__t0)  )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:51
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:51
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:51
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:51
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:51
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:51
 ; literal expr
 (declare-fun var673_literal_8__t0 () (_ BitVec 64))
 (assert
@@ -3417,7 +3418,7 @@
 )
 
 (declare-fun var674_implicit_coercion_of_literal_8__t0 () (_ BitVec 8))
-(assert (! (= var674_implicit_coercion_of_literal_8__t0 ( (_ extract 7 0) var673_literal_8__t0 )) :named A10)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:51
+(assert (! (= var674_implicit_coercion_of_literal_8__t0 ( (_ extract 7 0) var673_literal_8__t0 )) :named A10)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:51
 (declare-fun var675_infix_expression__t0 () Bool)
 (assert
   (=  var675_infix_expression__t0 (bvult var659_prefix_size__t0 var674_implicit_coercion_of_literal_8__t0))
@@ -3442,11 +3443,11 @@
 
 (pop 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:51
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:51
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
 ; literal expr
 (declare-fun var676_literal_1__t0 () (_ BitVec 64))
 (assert
@@ -3454,16 +3455,16 @@
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
 (declare-fun var677_implicit_coercion_of_literal_1__t0 () (_ BitVec 8))
-(assert (! (= var677_implicit_coercion_of_literal_1__t0 ( (_ extract 7 0) var676_literal_1__t0 )) :named A11)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
+(assert (! (= var677_implicit_coercion_of_literal_1__t0 ( (_ extract 7 0) var676_literal_1__t0 )) :named A11)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
 (declare-fun var678_infix_expression__t0 () (_ BitVec 8))
 (assert
   (=  var678_infix_expression__t0 (bvshl var677_implicit_coercion_of_literal_1__t0 var659_prefix_size__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
 ; literal expr
 (declare-fun var679_literal_1__t0 () (_ BitVec 64))
 (assert
@@ -3472,7 +3473,7 @@
 )
 
 (declare-fun var680_implicit_coercion_of_literal_1__t0 () (_ BitVec 8))
-(assert (! (= var680_implicit_coercion_of_literal_1__t0 ( (_ extract 7 0) var679_literal_1__t0 )) :named A12)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:52
+(assert (! (= var680_implicit_coercion_of_literal_1__t0 ( (_ extract 7 0) var679_literal_1__t0 )) :named A12)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:52
 (declare-fun var681_infix_expression__t0 () (_ BitVec 8))
 (assert
   (=  var681_infix_expression__t0 (bvsub var678_infix_expression__t0 var680_implicit_coercion_of_literal_1__t0))
@@ -3484,16 +3485,16 @@
 )
 
 ; end branch
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 ; call of static_attest
 ; static_attest
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 ; call of len
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 ; begin safe ptr check
 (declare-fun var683_safe_self___t0 () Bool)
 (assert
@@ -3512,27 +3513,27 @@
 ; unsat / pass
 (pop 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 ; collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 (declare-fun var685_deref_var653_self__wire_mem__t0 () (_ BitVec 64))
 (declare-fun var686_interpretation_of_theory_len_over_deref_var653_self__wire_mem__t0 () (_ BitVec 64))
 (assert
   (= var686_interpretation_of_theory_len_over_deref_var653_self__wire_mem__t0 (theory0_len var685_deref_var653_self__wire_mem__t0) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 (declare-fun var688_infix_expression__t0 () Bool)
 (declare-fun var687_deref_var653_self__at__t0 () (_ BitVec 64))
 (assert
@@ -3541,22 +3542,22 @@
 
 (assert (! var688_infix_expression__t0 :named A13))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:55
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:55
 (declare-fun var689_literal_1__t0 () (_ BitVec 64))
 (assert
   (= var689_literal_1__t0 (_ bv1 64))
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
 (check-sat)
 
 (get-value (
@@ -3565,11 +3566,11 @@
 
 ) )
 
-;  = "#b0000000000000000000000000000000000000000000000000000000000000000"
+;  = "#x0000000000000000"
 (push 1)
 
 (assert
-  (not (= var687_deref_var653_self__at__t0 #b0000000000000000000000000000000000000000000000000000000000000000))
+  (not (= var687_deref_var653_self__at__t0 #x0000000000000000))
 )
 
 (check-sat)
@@ -3577,7 +3578,7 @@
 (pop 1)
 
 ; begin array bounds
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
 (declare-fun var691_len_deref_var653_self__wire_mem___t0 () (_ BitVec 64))
 (assert
   (= var691_len_deref_var653_self__wire_mem___t0 (theory0_len var685_deref_var653_self__wire_mem__t0) )
@@ -3601,17 +3602,17 @@
 ; unsat / pass
 (pop 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
 (declare-fun var694_infix_expression__t0 () (_ BitVec 8))
 (declare-fun var693_array_member_deref_var653_self__wire_mem_deref_var653_self__at___t0 () (_ BitVec 8))
 (assert
   (=  var694_infix_expression__t0 (bvand var693_array_member_deref_var653_self__wire_mem_deref_var653_self__at___t0 var670_mask__t2))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
 (declare-fun var695_cast_of_infix_expression__t0 () (_ BitVec 64))
-(assert (! (= var695_cast_of_infix_expression__t0 ( (_ zero_extend 56) var694_infix_expression__t0 )) :named A14)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:56
+(assert (! (= var695_cast_of_infix_expression__t0 ( (_ zero_extend 56) var694_infix_expression__t0 )) :named A14)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:56
 (declare-fun var696_safe_cast_of_infix_expression_____safe_value___t0 () Bool)
 (assert
   (= var696_safe_cast_of_infix_expression_____safe_value___t0 (theory1_safe var695_cast_of_infix_expression__t0) )
@@ -3636,10 +3637,10 @@
   (= var690_value__t1  (ite true var695_cast_of_infix_expression__t0 var690_value__t0)  )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:57
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:57
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:57
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:57
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:57
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:57
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:57
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:57
 (declare-fun var699_safe_deref_var653_self__at_____safe_previous_value_of_deref_var653_self__at___t0 () Bool)
 (assert
   (= var699_safe_deref_var653_self__at_____safe_previous_value_of_deref_var653_self__at___t0 (theory1_safe var687_deref_var653_self__at__t0) )
@@ -3669,13 +3670,13 @@
   (= var687_deref_var653_self__at__t1 (bvadd var698_previous_value_of_deref_var653_self__at__t1 (_ bv1 64)) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
 (declare-fun var701_cast_of_mask__t0 () (_ BitVec 64))
-(assert (! (= var701_cast_of_mask__t0 ( (_ zero_extend 56) var670_mask__t2 )) :named A15)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
+(assert (! (= var701_cast_of_mask__t0 ( (_ zero_extend 56) var670_mask__t2 )) :named A15)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
 (declare-fun var702_infix_expression__t0 () Bool)
 (assert
   (=  var702_infix_expression__t0 (bvult var690_value__t1 var701_cast_of_mask__t0))
@@ -3700,8 +3701,8 @@
 
 (pop 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:60
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:61
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:60
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:61
 (declare-fun var703_safe_value_____safe_return___t0 () Bool)
 (assert
   (= var703_safe_value_____safe_return___t0 (theory1_safe var690_value__t1) )
@@ -3733,8 +3734,8 @@
   (not var702_infix_expression__t0)
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:65
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:65
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:65
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:65
 ; literal expr
 (declare-fun var706_literal_1__t0 () (_ BitVec 64))
 (assert
@@ -3742,7 +3743,7 @@
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:65
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:65
 (declare-fun var707_safe_literal_1_____safe_consumed___t0 () Bool)
 (assert
   (= var707_safe_literal_1_____safe_consumed___t0 (theory1_safe var706_literal_1__t0) )
@@ -3762,15 +3763,15 @@
   (= var708_nullterm_literal_1_____nullterm_consumed___t0 (theory2_nullterm var705_consumed__t1) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:65
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:65
 (declare-fun var709_implicit_coercion_of_literal_1__t0 () (_ BitVec 64))
 (assert (! (= var709_implicit_coercion_of_literal_1__t0 var706_literal_1__t0) :named A16))(declare-fun var705_consumed__t0 () (_ BitVec 64))
 (assert
   (= var705_consumed__t1  (ite true var709_implicit_coercion_of_literal_1__t0 var705_consumed__t0)  )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:68
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:68
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:68
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:68
 ; literal expr
 (declare-fun var711_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -3785,24 +3786,24 @@
   (= var710_m__t1  (ite true var712_implicit_coercion_of_literal_0__t0 var710_m__t0)  )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
 (declare-fun var687_deref_var653_self__at__t2 () (_ BitVec 64))
 (declare-fun var713_previous_value_of_deref_var653_self__at__t1 () (_ BitVec 64))
 (assert
   (= var687_deref_var653_self__at__t2 (bvadd var713_previous_value_of_deref_var653_self__at__t1 (_ bv1 64)) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:70
 (declare-fun var715_infix_expression__t0 () Bool)
 (declare-fun var714_deref_var653_self__wire_size__t0 () (_ BitVec 64))
 (assert
@@ -3811,8 +3812,8 @@
 
 (assert (! var715_infix_expression__t0 :named A18))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:73
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:73
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:73
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:73
 ; literal expr
 (declare-fun var716_literal_1__t0 () (_ BitVec 64))
 (assert
@@ -3821,39 +3822,39 @@
 )
 
 (declare-fun var717_implicit_coercion_of_literal_1__t0 () (_ BitVec 64))
-(assert (! (= var717_implicit_coercion_of_literal_1__t0 var716_literal_1__t0) :named A19)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:73
+(assert (! (= var717_implicit_coercion_of_literal_1__t0 var716_literal_1__t0) :named A19)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:73
 (declare-fun var718_assign_inter__t0 () (_ BitVec 64))
 (assert
    (=  var718_assign_inter__t0 (bvadd var705_consumed__t1 var717_implicit_coercion_of_literal_1__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 ; call of static_attest
 ; static_attest
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 ; call of len
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 ; collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 (declare-fun var719_interpretation_of_theory_len_over_deref_var653_self__wire_mem__t0 () (_ BitVec 64))
 (assert
   (= var719_interpretation_of_theory_len_over_deref_var653_self__wire_mem__t0 (theory0_len var685_deref_var653_self__wire_mem__t0) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 (declare-fun var720_infix_expression__t0 () Bool)
 (assert
   (=  var720_infix_expression__t0 (bvugt var719_interpretation_of_theory_len_over_deref_var653_self__wire_mem__t0 var687_deref_var653_self__at__t2))
@@ -3861,20 +3862,20 @@
 
 (assert (! var720_infix_expression__t0 :named A20))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:74
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:74
 (declare-fun var721_literal_1__t0 () (_ BitVec 64))
 (assert
   (= var721_literal_1__t0 (_ bv1 64))
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
 (check-sat)
 
 (get-value (
@@ -3883,11 +3884,11 @@
 
 ) )
 
-;  = "#b0000000000000000000000000000000000000000000000000000000000000001"
+;  = "#x0000000000000001"
 (push 1)
 
 (assert
-  (not (= var687_deref_var653_self__at__t2 #b0000000000000000000000000000000000000000000000000000000000000001))
+  (not (= var687_deref_var653_self__at__t2 #x0000000000000001))
 )
 
 (check-sat)
@@ -3895,7 +3896,7 @@
 (pop 1)
 
 ; begin array bounds
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:75
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:75
 (declare-fun var723_len_deref_var653_self__wire_mem___t0 () (_ BitVec 64))
 (assert
   (= var723_len_deref_var653_self__wire_mem___t0 (theory0_len var685_deref_var653_self__wire_mem__t0) )
@@ -3926,12 +3927,12 @@
   (= var722_b__t1  (ite true var725_array_member_deref_var653_self__wire_mem_deref_var653_self__at___t0 var722_b__t0)  )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 ; literal expr
 (declare-fun var726_literal_127__t0 () (_ BitVec 64))
 (assert
@@ -3940,14 +3941,14 @@
 )
 
 (declare-fun var727_implicit_coercion_of_literal_127__t0 () (_ BitVec 8))
-(assert (! (= var727_implicit_coercion_of_literal_127__t0 ( (_ extract 7 0) var726_literal_127__t0 )) :named A21)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+(assert (! (= var727_implicit_coercion_of_literal_127__t0 ( (_ extract 7 0) var726_literal_127__t0 )) :named A21)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 (declare-fun var728_infix_expression__t0 () (_ BitVec 8))
 (assert
   (=  var728_infix_expression__t0 (bvand var722_b__t1 var727_implicit_coercion_of_literal_127__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 ; literal expr
 (declare-fun var729_literal_1__t0 () (_ BitVec 64))
 (assert
@@ -3955,31 +3956,31 @@
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 (declare-fun var730_implicit_coercion_of_literal_1__t0 () (_ BitVec 8))
-(assert (! (= var730_implicit_coercion_of_literal_1__t0 ( (_ extract 7 0) var729_literal_1__t0 )) :named A22)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+(assert (! (= var730_implicit_coercion_of_literal_1__t0 ( (_ extract 7 0) var729_literal_1__t0 )) :named A22)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 (declare-fun var731_infix_expression__t0 () (_ BitVec 8))
 (assert
   (=  var731_infix_expression__t0 (bvshl var730_implicit_coercion_of_literal_1__t0 var710_m__t1))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 (declare-fun var732_infix_expression__t0 () (_ BitVec 8))
 (assert
   (=  var732_infix_expression__t0 (bvmul var728_infix_expression__t0 var731_infix_expression__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 (declare-fun var733_cast_of_infix_expression__t0 () (_ BitVec 64))
-(assert (! (= var733_cast_of_infix_expression__t0 ( (_ zero_extend 56) var732_infix_expression__t0 )) :named A23)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:76
+(assert (! (= var733_cast_of_infix_expression__t0 ( (_ zero_extend 56) var732_infix_expression__t0 )) :named A23)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:76
 (declare-fun var734_assign_inter__t0 () (_ BitVec 64))
 (assert
    (=  var734_assign_inter__t0 (bvadd var690_value__t1 var733_cast_of_infix_expression__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:77
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:77
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:77
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:77
 ; literal expr
 (declare-fun var735_literal_7__t0 () (_ BitVec 64))
 (assert
@@ -3988,16 +3989,16 @@
 )
 
 (declare-fun var736_implicit_coercion_of_literal_7__t0 () (_ BitVec 8))
-(assert (! (= var736_implicit_coercion_of_literal_7__t0 ( (_ extract 7 0) var735_literal_7__t0 )) :named A24)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:77
+(assert (! (= var736_implicit_coercion_of_literal_7__t0 ( (_ extract 7 0) var735_literal_7__t0 )) :named A24)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:77
 (declare-fun var737_assign_inter__t0 () (_ BitVec 8))
 (assert
    (=  var737_assign_inter__t0 (bvadd var710_m__t1 var736_implicit_coercion_of_literal_7__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
 ; literal expr
 (declare-fun var738_literal_128__t0 () (_ BitVec 64))
 (assert
@@ -4006,13 +4007,13 @@
 )
 
 (declare-fun var739_implicit_coercion_of_literal_128__t0 () (_ BitVec 8))
-(assert (! (= var739_implicit_coercion_of_literal_128__t0 ( (_ extract 7 0) var738_literal_128__t0 )) :named A25)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
+(assert (! (= var739_implicit_coercion_of_literal_128__t0 ( (_ extract 7 0) var738_literal_128__t0 )) :named A25)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
 (declare-fun var740_infix_expression__t0 () (_ BitVec 8))
 (assert
   (=  var740_infix_expression__t0 (bvand var722_b__t1 var739_implicit_coercion_of_literal_128__t0))
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
 ; literal expr
 (declare-fun var741_literal_128__t0 () (_ BitVec 64))
 (assert
@@ -4021,7 +4022,7 @@
 )
 
 (declare-fun var742_implicit_coercion_of_literal_128__t0 () (_ BitVec 8))
-(assert (! (= var742_implicit_coercion_of_literal_128__t0 ( (_ extract 7 0) var741_literal_128__t0 )) :named A26)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
+(assert (! (= var742_implicit_coercion_of_literal_128__t0 ( (_ extract 7 0) var741_literal_128__t0 )) :named A26)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
 (declare-fun var743_infix_expression__t0 () Bool)
 (assert
   (=  var743_infix_expression__t0 (not (= var740_infix_expression__t0 var742_implicit_coercion_of_literal_128__t0)))
@@ -4046,18 +4047,18 @@
 
 (pop 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:79
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:80
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:80
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:80
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:80
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:79
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:80
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:80
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:80
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:80
 (declare-fun var687_deref_var653_self__at__t3 () (_ BitVec 64))
 (declare-fun var744_previous_value_of_deref_var653_self__at__t1 () (_ BitVec 64))
 (assert
   (= var687_deref_var653_self__at__t3 (bvadd var744_previous_value_of_deref_var653_self__at__t1 (_ bv1 64)) )
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:81
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:81
 (declare-fun var690_value__t2 () (_ BitVec 64))
 (declare-fun var745_safe_value_____safe_return___t0 () Bool)
 (assert
@@ -4089,9 +4090,9 @@
   (not var743_infix_expression__t0)
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:87
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:87
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:87
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:87
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:87
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:87
 ; literal expr
 (declare-fun var747_literal_5__t0 () (_ BitVec 64))
 (assert
@@ -4100,7 +4101,7 @@
 )
 
 (declare-fun var748_implicit_coercion_of_literal_5__t0 () (_ BitVec 64))
-(assert (! (= var748_implicit_coercion_of_literal_5__t0 var747_literal_5__t0) :named A27)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:87
+(assert (! (= var748_implicit_coercion_of_literal_5__t0 var747_literal_5__t0) :named A27)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:87
 (declare-fun var749_infix_expression__t0 () Bool)
 (declare-fun var705_consumed__t2 () (_ BitVec 64))
 (assert
@@ -4126,13 +4127,13 @@
 
 (pop 1)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:87
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:87
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
 ; call of ::err::fail
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
 (declare-fun var750_literal_string__integer_overflow___t0 () (_ BitVec 64))
 (declare-fun var751_true__t0 () Bool)
 (assert
@@ -4152,15 +4153,15 @@
   var752_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
 (declare-fun var753_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var753_cast_of_e__t0 var654_e__t0) :named A28)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
-; : /home/aep/proj/zz/modules/err/src/lib.zz:136
-(declare-fun var754_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
+(assert (! (= var753_cast_of_e__t0 var654_e__t0) :named A28)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:136
+(declare-fun var754_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
 (declare-fun var755_true__t0 () Bool)
 (assert
-  (= var755_true__t0 (theory1_safe var754_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0) )
+  (= var755_true__t0 (theory1_safe var754_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0) )
 )
 
 (assert
@@ -4169,14 +4170,14 @@
 
 (declare-fun var756_true__t0 () Bool)
 (assert
-  (= var756_true__t0 (theory2_nullterm var754_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0) )
+  (= var756_true__t0 (theory2_nullterm var754_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0) )
 )
 
 (assert
   var756_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:137
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:137
 (declare-fun var757_literal_string____hpack__decoder__decode_integer___t0 () (_ BitVec 64))
 (declare-fun var758_true__t0 () Bool)
 (assert
@@ -4196,7 +4197,7 @@
   var759_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:138
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:138
 ; literal expr
 (declare-fun var760_literal_88__t0 () (_ BitVec 64))
 (assert
@@ -4204,7 +4205,7 @@
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
 (declare-fun var761_literal_string__integer_overflow___t0 () (_ BitVec 64))
 (declare-fun var762_true__t0 () Bool)
 (assert
@@ -4227,7 +4228,7 @@
 ;callsite_assert
 (push 1)
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:139
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:139
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -4236,7 +4237,7 @@
   (= var764_interpretation_of_theory_safe_over_literal_string__integer_overflow___t0 (theory1_safe var761_literal_string__integer_overflow___t0) )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:134
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:134
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -4245,28 +4246,28 @@
   (= var765_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var753_cast_of_e__t0) )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
 ; call of nullterm
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
 (declare-fun var766_interpretation_of_theory_nullterm_over_literal_string__integer_overflow___t0 () Bool)
 (assert
   (= var766_interpretation_of_theory_nullterm_over_literal_string__integer_overflow___t0 (theory2_nullterm var761_literal_string__integer_overflow___t0) )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
 ; call of symbol
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
 (declare-fun var767_interpretation_of_theory_symbol_over___hpack__decoder__Invalid__t0 () Bool)
 (assert
-  (= var767_interpretation_of_theory_symbol_over___hpack__decoder__Invalid__t0 (theory3_symbol var50___hpack__decoder__Invalid__t0) )
+  (= var767_interpretation_of_theory_symbol_over___hpack__decoder__Invalid__t0 (theory3_symbol var14___hpack__decoder__Invalid__t0) )
 )
 
 (push 1)
@@ -4296,7 +4297,7 @@
 )
 
 ; end of borrows after call
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
 ; callsite effects
 (declare-fun var768_return_value_of___err__fail__t0 () (_ BitVec 64))
 (declare-fun var770_safe_return_value_of___err__fail_____safe_return___t0 () Bool)
@@ -4323,24 +4324,24 @@
   (= var769_return__t1  (ite var749_infix_expression__t0 var768_return_value_of___err__fail__t0 var769_return__t0)  )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 ; call of ::err::checked
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 ; collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 (declare-fun var772_interpretation_of_theory___err__checked_over_deref_S654_e___t0 () Bool)
 (assert
-  (= var772_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory21___err__checked var656_deref_S654_e___t1) )
+  (= var772_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory9___err__checked var656_deref_S654_e___t1) )
 )
 
 (assert (! var772_interpretation_of_theory___err__checked_over_deref_S654_e___t0 :named A29))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:88
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:88
 (declare-fun var773_safe_return_____safe_return_value_of___err__fail___t0 () Bool)
 (assert
   (= var773_safe_return_____safe_return_value_of___err__fail___t0 (theory1_safe var769_return__t1) )
@@ -4365,7 +4366,7 @@
 )
 
 ; end of callsite effects
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:89
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:89
 ; literal expr
 (declare-fun var775_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -4404,39 +4405,39 @@
   (not var749_infix_expression__t0)
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
 ; call of static_attest
 ; static_attest
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
 ; call of ::err::checked
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
 ; collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
 (declare-fun var779_interpretation_of_theory___err__checked_over_deref_S654_e___t0 () Bool)
 (assert
-  (= var779_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory21___err__checked var656_deref_S654_e___t1) )
+  (= var779_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory9___err__checked var656_deref_S654_e___t1) )
 )
 
 (assert (! var779_interpretation_of_theory___err__checked_over_deref_S654_e___t0 :named A31))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:94
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:94
 (declare-fun var780_literal_1__t0 () (_ BitVec 64))
 (assert
   (= var780_literal_1__t0 (_ bv1 64))
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
 ; call of ::err::fail
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
 (declare-fun var781_literal_string__short_read___t0 () (_ BitVec 64))
 (declare-fun var782_true__t0 () Bool)
 (assert
@@ -4456,15 +4457,15 @@
   var783_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
 (declare-fun var784_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var784_cast_of_e__t0 var654_e__t0) :named A32)); : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:43
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
-; : /home/aep/proj/zz/modules/err/src/lib.zz:136
-(declare-fun var785_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
+(assert (! (= var784_cast_of_e__t0 var654_e__t0) :named A32)); : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:43
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:136
+(declare-fun var785_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
 (declare-fun var786_true__t0 () Bool)
 (assert
-  (= var786_true__t0 (theory1_safe var785_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0) )
+  (= var786_true__t0 (theory1_safe var785_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0) )
 )
 
 (assert
@@ -4473,14 +4474,14 @@
 
 (declare-fun var787_true__t0 () Bool)
 (assert
-  (= var787_true__t0 (theory2_nullterm var785_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0) )
+  (= var787_true__t0 (theory2_nullterm var785_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0) )
 )
 
 (assert
   var787_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:137
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:137
 (declare-fun var788_literal_string____hpack__decoder__decode_integer___t0 () (_ BitVec 64))
 (declare-fun var789_true__t0 () Bool)
 (assert
@@ -4500,7 +4501,7 @@
   var790_true__t0
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:138
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:138
 ; literal expr
 (declare-fun var791_literal_95__t0 () (_ BitVec 64))
 (assert
@@ -4508,7 +4509,7 @@
 
 )
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
 (declare-fun var792_literal_string__short_read___t0 () (_ BitVec 64))
 (declare-fun var793_true__t0 () Bool)
 (assert
@@ -4531,7 +4532,7 @@
 ;callsite_assert
 (push 1)
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:139
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:139
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -4540,7 +4541,7 @@
   (= var795_interpretation_of_theory_safe_over_literal_string__short_read___t0 (theory1_safe var792_literal_string__short_read___t0) )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:134
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:134
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -4549,28 +4550,28 @@
   (= var796_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var784_cast_of_e__t0) )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
 ; call of nullterm
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:142
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:142
 (declare-fun var797_interpretation_of_theory_nullterm_over_literal_string__short_read___t0 () Bool)
 (assert
   (= var797_interpretation_of_theory_nullterm_over_literal_string__short_read___t0 (theory2_nullterm var792_literal_string__short_read___t0) )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
 ; call of symbol
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:143
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:143
 (declare-fun var798_interpretation_of_theory_symbol_over___hpack__decoder__Invalid__t0 () Bool)
 (assert
-  (= var798_interpretation_of_theory_symbol_over___hpack__decoder__Invalid__t0 (theory3_symbol var50___hpack__decoder__Invalid__t0) )
+  (= var798_interpretation_of_theory_symbol_over___hpack__decoder__Invalid__t0 (theory3_symbol var14___hpack__decoder__Invalid__t0) )
 )
 
 (push 1)
@@ -4600,7 +4601,7 @@
 )
 
 ; end of borrows after call
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
 ; callsite effects
 (declare-fun var799_return_value_of___err__fail__t0 () (_ BitVec 64))
 (declare-fun var801_safe_return_value_of___err__fail_____safe_return___t0 () Bool)
@@ -4627,24 +4628,24 @@
   (= var800_return__t1  (ite true var799_return_value_of___err__fail__t0 var800_return__t0)  )
 )
 
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 ; call of ::err::checked
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 ; collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 ; end of collecting theory invocation arguments
-; : /home/aep/proj/zz/modules/err/src/lib.zz:144
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:144
 (declare-fun var803_interpretation_of_theory___err__checked_over_deref_S654_e___t0 () Bool)
 (assert
-  (= var803_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory21___err__checked var656_deref_S654_e___t2) )
+  (= var803_interpretation_of_theory___err__checked_over_deref_S654_e___t0 (theory9___err__checked var656_deref_S654_e___t2) )
 )
 
 (assert (! var803_interpretation_of_theory___err__checked_over_deref_S654_e___t0 :named A33))(check-sat)
 
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:95
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:95
 (declare-fun var804_safe_return_____safe_return_value_of___err__fail___t0 () Bool)
 (assert
   (= var804_safe_return_____safe_return_value_of___err__fail___t0 (theory1_safe var800_return__t1) )
@@ -4669,7 +4670,7 @@
 )
 
 ; end of callsite effects
-; : /home/aep/proj/devguard/carrier/core/modules/hpack/src/decoder.zz:96
+; : /home/runner/work/carrier/carrier/core/modules/hpack/src/decoder.zz:96
 ; literal expr
 (declare-fun var806_literal_0__t0 () (_ BitVec 64))
 (assert
@@ -4761,7 +4762,7 @@
 (declare-fun var750_literal_string__integer_overflow___t0 () (_ BitVec 64))
 (declare-fun var751_true__t0 () Bool)
 (declare-fun var752_true__t0 () Bool)
-(declare-fun var754_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
+(declare-fun var754_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
 (declare-fun var755_true__t0 () Bool)
 (declare-fun var756_true__t0 () Bool)
 (declare-fun var757_literal_string____hpack__decoder__decode_integer___t0 () (_ BitVec 64))
@@ -4792,7 +4793,7 @@
 (declare-fun var781_literal_string__short_read___t0 () (_ BitVec 64))
 (declare-fun var782_true__t0 () Bool)
 (declare-fun var783_true__t0 () Bool)
-(declare-fun var785_literal_string___home_aep_proj_devguard_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
+(declare-fun var785_literal_string___home_runner_work_carrier_carrier_core_modules_hpack_src_decoder_zz___t0 () (_ BitVec 64))
 (declare-fun var786_true__t0 () Bool)
 (declare-fun var787_true__t0 () Bool)
 (declare-fun var788_literal_string____hpack__decoder__decode_integer___t0 () (_ BitVec 64))

@@ -1,97 +1,96 @@
 ; Command:
-; > yices_smt2_mt --incremental
+; > z3 -in -smt2
 
 (set-logic QF_UFBV)
 (declare-fun theory0_len ((_ BitVec 64)) (_ BitVec 64)); theory len
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/aep/proj/zz/modules/time/src/lib.zz:80
-; : /home/aep/proj/zz/modules/time/src/lib.zz:1
-; : /home/aep/proj/zz/modules/time/src/lib.zz:13
-; : /home/aep/proj/zz/modules/time/src/lib.zz:36
-(declare-fun var8___time__to_millis__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:1
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:80
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:91
+(declare-fun var8___time__real__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
-  (= var9_true__t0 (theory1_safe var8___time__to_millis__t0) )
+  (= var9_true__t0 (theory1_safe var8___time__real__t0) )
 )
 
 (assert
   var9_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:13
-; : /home/aep/proj/zz/modules/time/src/lib.zz:19
-(declare-fun var10___time__infinite__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
+(declare-fun var10___time__to_millis__t0 () (_ BitVec 64))
 (declare-fun var11_true__t0 () Bool)
 (assert
-  (= var11_true__t0 (theory1_safe var10___time__infinite__t0) )
+  (= var11_true__t0 (theory1_safe var10___time__to_millis__t0) )
 )
 
 (assert
   var11_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:91
-(declare-fun var12___time__real__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:83
+(declare-fun var12___time__tick__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___time__real__t0) )
+  (= var13_true__t0 (theory1_safe var12___time__tick__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:50
-(declare-fun var14___time__from_millis__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:25
+(declare-fun var14___time__from_seconds__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___time__from_millis__t0) )
+  (= var15_true__t0 (theory1_safe var14___time__from_seconds__t0) )
 )
 
 (assert
   var15_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:32
-(declare-fun var16___time__to_seconds__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:50
+(declare-fun var16___time__from_millis__t0 () (_ BitVec 64))
 (declare-fun var17_true__t0 () Bool)
 (assert
-  (= var17_true__t0 (theory1_safe var16___time__to_seconds__t0) )
+  (= var17_true__t0 (theory1_safe var16___time__from_millis__t0) )
 )
 
 (assert
   var17_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:25
-(declare-fun var18___time__from_seconds__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:32
+(declare-fun var18___time__to_seconds__t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (assert
-  (= var19_true__t0 (theory1_safe var18___time__from_seconds__t0) )
+  (= var19_true__t0 (theory1_safe var18___time__to_seconds__t0) )
 )
 
 (assert
   var19_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:59
-(declare-fun var20___time__more_than__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:19
+(declare-fun var20___time__infinite__t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
-  (= var21_true__t0 (theory1_safe var20___time__more_than__t0) )
+  (= var21_true__t0 (theory1_safe var20___time__infinite__t0) )
 )
 
 (assert
   var21_true__t0
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:83
-(declare-fun var22___time__tick__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:59
+(declare-fun var22___time__more_than__t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
-  (= var23_true__t0 (theory1_safe var22___time__tick__t0) )
+  (= var23_true__t0 (theory1_safe var22___time__more_than__t0) )
 )
 
 (assert
@@ -107,8 +106,8 @@
 
 (push 1)
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:36
-; : /home/aep/proj/zz/modules/time/src/lib.zz:36
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
@@ -120,11 +119,11 @@
 
 (assert (! var25_interpretation_of_theory_safe_over_self__t0 :named A0))(check-sat)
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:36
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
 ; begin safe ptr check
 (declare-fun var28_safe_self___t0 () Bool)
 (assert
@@ -143,13 +142,13 @@
 ; unsat / pass
 (pop 1)
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
 (declare-fun var30_cast_of___ext___stdint_h___UINT64_MAX__t0 () (_ BitVec 64))
-(declare-fun var6___ext___stdint_h___UINT64_MAX__t0 () (_ BitVec 64))
-(assert (! (= var30_cast_of___ext___stdint_h___UINT64_MAX__t0 var6___ext___stdint_h___UINT64_MAX__t0) :named A1)); : /home/aep/proj/zz/modules/time/src/lib.zz:39
+(declare-fun var4___ext___stdint_h___UINT64_MAX__t0 () (_ BitVec 64))
+(assert (! (= var30_cast_of___ext___stdint_h___UINT64_MAX__t0 var4___ext___stdint_h___UINT64_MAX__t0) :named A1)); : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
 ; literal expr
 (declare-fun var31_literal_1000__t0 () (_ BitVec 64))
 (assert
@@ -158,13 +157,13 @@
 )
 
 (declare-fun var32_implicit_coercion_of_literal_1000__t0 () (_ BitVec 64))
-(assert (! (= var32_implicit_coercion_of_literal_1000__t0 var31_literal_1000__t0) :named A2)); : /home/aep/proj/zz/modules/time/src/lib.zz:39
+(assert (! (= var32_implicit_coercion_of_literal_1000__t0 var31_literal_1000__t0) :named A2)); : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
 (declare-fun var33_infix_expression__t0 () (_ BitVec 64))
 (assert
   (=  var33_infix_expression__t0 (bvudiv var30_cast_of___ext___stdint_h___UINT64_MAX__t0 var32_implicit_coercion_of_literal_1000__t0))
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
 (declare-fun var34_infix_expression__t0 () Bool)
 (declare-fun var29_deref_var24_self__secs__t0 () (_ BitVec 64))
 (assert
@@ -179,23 +178,23 @@
 
 ) )
 
-;  = "false"
+;  = "true"
 (push 1)
 
 (assert
-  (not (= var34_infix_expression__t0 false))
+  (not (= var34_infix_expression__t0 true))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:39
-; : /home/aep/proj/zz/modules/time/src/lib.zz:40
-; : /home/aep/proj/zz/modules/time/src/lib.zz:40
-; : /home/aep/proj/zz/modules/time/src/lib.zz:40
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:39
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:40
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:40
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:40
 (declare-fun var35_cast_of___ext___stdint_h___UINT64_MAX__t0 () (_ BitVec 64))
-(assert (! (= var35_cast_of___ext___stdint_h___UINT64_MAX__t0 var6___ext___stdint_h___UINT64_MAX__t0) :named A3))(declare-fun var36_safe_cast_of___ext___stdint_h___UINT64_MAX_____safe_return___t0 () Bool)
+(assert (! (= var35_cast_of___ext___stdint_h___UINT64_MAX__t0 var4___ext___stdint_h___UINT64_MAX__t0) :named A3))(declare-fun var36_safe_cast_of___ext___stdint_h___UINT64_MAX_____safe_return___t0 () Bool)
 (assert
   (= var36_safe_cast_of___ext___stdint_h___UINT64_MAX_____safe_return___t0 (theory1_safe var35_cast_of___ext___stdint_h___UINT64_MAX__t0) )
 )
@@ -226,11 +225,11 @@
   (not var34_infix_expression__t0)
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:42
-; : /home/aep/proj/zz/modules/time/src/lib.zz:42
-; : /home/aep/proj/zz/modules/time/src/lib.zz:42
-; : /home/aep/proj/zz/modules/time/src/lib.zz:42
-; : /home/aep/proj/zz/modules/time/src/lib.zz:42
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
 ; literal expr
 (declare-fun var39_literal_1000__t0 () (_ BitVec 64))
 (assert
@@ -239,13 +238,13 @@
 )
 
 (declare-fun var40_implicit_coercion_of_literal_1000__t0 () (_ BitVec 64))
-(assert (! (= var40_implicit_coercion_of_literal_1000__t0 var39_literal_1000__t0) :named A4)); : /home/aep/proj/zz/modules/time/src/lib.zz:42
+(assert (! (= var40_implicit_coercion_of_literal_1000__t0 var39_literal_1000__t0) :named A4)); : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
 (declare-fun var41_infix_expression__t0 () (_ BitVec 64))
 (assert
   (=  var41_infix_expression__t0 (bvmul var29_deref_var24_self__secs__t0 var40_implicit_coercion_of_literal_1000__t0))
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:42
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:42
 (declare-fun var42_safe_infix_expression_____safe_r___t0 () Bool)
 (assert
   (= var42_safe_infix_expression_____safe_r___t0 (theory1_safe var41_infix_expression__t0) )
@@ -270,14 +269,14 @@
   (= var38_r__t1  (ite true var41_infix_expression__t0 var38_r__t0)  )
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
 ; literal expr
 (declare-fun var45_literal_1000000__t0 () (_ BitVec 64))
 (assert
@@ -286,21 +285,21 @@
 )
 
 (declare-fun var46_implicit_coercion_of_literal_1000000__t0 () (_ BitVec 64))
-(assert (! (= var46_implicit_coercion_of_literal_1000000__t0 var45_literal_1000000__t0) :named A5)); : /home/aep/proj/zz/modules/time/src/lib.zz:43
+(assert (! (= var46_implicit_coercion_of_literal_1000000__t0 var45_literal_1000000__t0) :named A5)); : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
 (declare-fun var47_infix_expression__t0 () (_ BitVec 64))
 (declare-fun var44_deref_var24_self__nano__t0 () (_ BitVec 64))
 (assert
   (=  var47_infix_expression__t0 (bvudiv var44_deref_var24_self__nano__t0 var46_implicit_coercion_of_literal_1000000__t0))
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
 (declare-fun var48_infix_expression__t0 () (_ BitVec 64))
 (assert
    (=  var48_infix_expression__t0 (bvadd var38_r__t1 var47_infix_expression__t0))
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
 (declare-fun var49_infix_expression__t0 () Bool)
 (assert
   (=  var49_infix_expression__t0 (bvult var48_infix_expression__t0 var38_r__t1))
@@ -325,12 +324,12 @@
 
 (pop 1)
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:43
-; : /home/aep/proj/zz/modules/time/src/lib.zz:44
-; : /home/aep/proj/zz/modules/time/src/lib.zz:44
-; : /home/aep/proj/zz/modules/time/src/lib.zz:44
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:43
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:44
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:44
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:44
 (declare-fun var50_cast_of___ext___stdint_h___UINT64_MAX__t0 () (_ BitVec 64))
-(assert (! (= var50_cast_of___ext___stdint_h___UINT64_MAX__t0 var6___ext___stdint_h___UINT64_MAX__t0) :named A6))(declare-fun var51_safe_cast_of___ext___stdint_h___UINT64_MAX_____safe_return___t0 () Bool)
+(assert (! (= var50_cast_of___ext___stdint_h___UINT64_MAX__t0 var4___ext___stdint_h___UINT64_MAX__t0) :named A6))(declare-fun var51_safe_cast_of___ext___stdint_h___UINT64_MAX_____safe_return___t0 () Bool)
 (assert
   (= var51_safe_cast_of___ext___stdint_h___UINT64_MAX_____safe_return___t0 (theory1_safe var50_cast_of___ext___stdint_h___UINT64_MAX__t0) )
 )
@@ -360,11 +359,11 @@
   (not var49_infix_expression__t0)
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:46
-; : /home/aep/proj/zz/modules/time/src/lib.zz:46
-; : /home/aep/proj/zz/modules/time/src/lib.zz:46
-; : /home/aep/proj/zz/modules/time/src/lib.zz:46
-; : /home/aep/proj/zz/modules/time/src/lib.zz:46
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
 ; literal expr
 (declare-fun var53_literal_1000000__t0 () (_ BitVec 64))
 (assert
@@ -373,13 +372,13 @@
 )
 
 (declare-fun var54_implicit_coercion_of_literal_1000000__t0 () (_ BitVec 64))
-(assert (! (= var54_implicit_coercion_of_literal_1000000__t0 var53_literal_1000000__t0) :named A7)); : /home/aep/proj/zz/modules/time/src/lib.zz:46
+(assert (! (= var54_implicit_coercion_of_literal_1000000__t0 var53_literal_1000000__t0) :named A7)); : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
 (declare-fun var55_infix_expression__t0 () (_ BitVec 64))
 (assert
   (=  var55_infix_expression__t0 (bvudiv var44_deref_var24_self__nano__t0 var54_implicit_coercion_of_literal_1000000__t0))
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:46
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:46
 (declare-fun var56_assign_inter__t0 () (_ BitVec 64))
 (assert
    (=  var56_assign_inter__t0 (bvadd var38_r__t1 var55_infix_expression__t0))
@@ -408,7 +407,7 @@
   (= var38_r__t2  (ite true var56_assign_inter__t0 var38_r__t1)  )
 )
 
-; : /home/aep/proj/zz/modules/time/src/lib.zz:47
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:47
 (declare-fun var59_safe_r_____safe_return___t0 () Bool)
 (assert
   (= var59_safe_r_____safe_return___t0 (theory1_safe var38_r__t2) )

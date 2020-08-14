@@ -1,6 +1,7 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
+pub const DYNSIZE : usize = 16;
 #[derive(Clone)]
 #[repr(C)]
 pub enum Repr {
@@ -12,6 +13,12 @@ pub enum Repr {
 
 }
 
+#[derive(Clone)]
+#[repr(C)]
+pub struct callback {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Ze: *mut u8,  Zet: usize,  Zuser: *mut u8,  Zkey: *const u8,  Zval: *const u8, ctx: *mut std::ffi::c_void),
+}
 
 #[derive(Clone)]
 #[repr(C)]
@@ -19,7 +26,6 @@ pub struct Entry {
     pub key :super::slice_slice::Slice ,
     pub val :super::slice_slice::Slice ,
 }
-pub const DYNSIZE : usize = 16;
 
 #[derive(Clone)]
 #[repr(C)]
@@ -29,12 +35,6 @@ pub struct Iterator {
     pub wire :super::slice_slice::Slice ,
     pub at :usize ,
     pub dyn : [super::hpack_decoder::Entry;    super::hpack_decoder::DYNSIZE] ,
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct callback {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Ze: *mut u8,  Zet: usize,  Zuser: *mut u8,  Zkey: *const u8,  Zval: *const u8, ctx: *mut std::ffi::c_void),
 }
 
 pub mod heap {
@@ -145,13 +145,14 @@ impl Iterator {
 }
 extern {
 
+
+
+    #[link_name = "hpack_decoder_decode_literal"]
+    pub fn r#decode_literal( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: bool)  -> bool;
+
+
     #[link_name = "hpack_decoder_get_repr"]
     pub fn r#get_repr( Zb: u8)  -> super::hpack_decoder::Repr;
-
-
-
-    #[link_name = "sizeof_hpack_decoder_Entry"]
-    pub fn sizeof_Entry() -> libc::size_t;
 
 
 
@@ -159,17 +160,16 @@ extern {
     #[link_name = "hpack_decoder_next"]
     pub fn r#next( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> bool;
 
-    #[link_name = "hpack_decoder_decode_literal"]
-    pub fn r#decode_literal( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zindex: bool)  -> bool;
-
     #[link_name = "hpack_decoder_decode_integer"]
     pub fn r#decode_integer( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zprefix_size: u8)  -> std::os::raw::c_uint;
 
-    #[link_name = "sizeof_hpack_decoder_Iterator"]
-    pub fn sizeof_Iterator() -> libc::size_t;
-
-
     #[link_name = "hpack_decoder_decode"]
     pub fn r#decode( Zself: *mut u8,  Zwire: super::slice_slice::Slice);
+
+    #[link_name = "sizeof_hpack_decoder_Entry"]
+    pub fn sizeof_Entry() -> libc::size_t;
+
+    #[link_name = "sizeof_hpack_decoder_Iterator"]
+    pub fn sizeof_Iterator() -> libc::size_t;
 
 }

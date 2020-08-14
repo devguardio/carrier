@@ -3,13 +3,10 @@
 <h4> fn fail_with_errno (
 
     ::ext::&lt;stddef.h&gt;::char*
-    scope,
+    fmt,
 
     usize
-    line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
+    tail,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
@@ -17,8 +14,11 @@
     ::err::Err*+tail
     self,
 
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
     usize
-    tail,
+    line,
 
 )
 
@@ -36,11 +36,11 @@
     usize
     et,
 
-    usize
-    size,
-
     u8*
     bytes,
+
+    usize
+    size,
 
 )
 

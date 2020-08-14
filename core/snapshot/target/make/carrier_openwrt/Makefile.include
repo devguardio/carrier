@@ -10,72 +10,72 @@ carrier_openwrt_SOURCES=\
      ${carrier_openwrt_TARGET_DIR}/../../c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Poly1305_32_c.c\
      ${carrier_openwrt_TARGET_DIR}/../../c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Chacha20_c.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_openwrt.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_sync.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/slice.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/time.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_router.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_shell.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_rand.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_shell.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config_auth_list.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/err.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_pub_sysinfo.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_bootstrap.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/fs.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/log.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hpack_decoder.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hex.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_stream.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_vault.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_common.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_revision.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_vault.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_responder.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/io_unix.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_identity.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/toml.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config_auth_add.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/sysinfo.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_crc8.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config_net.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/pool.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_subscribe.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cipher.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_pq.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_symmetric.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/net_address.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_subscribe.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/base32.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/slice_mut_slice.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio_tcp.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_publish.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio_unix.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_config.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/slice_slice.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_stream.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hpack_encoder.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_initiator.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/buffer.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_sha256.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_vault.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_vault_ik.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_noise.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/mem.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_vault_toml.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/symbols.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_proto.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_connect.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hpack.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_sft.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/io.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_endpoint.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_peering.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio_tcp.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config_auth_list.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_identity.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_config.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_sync.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hpack_decoder.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cipher.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/symbols.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/mem.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/sysinfo_proto.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_channel.c\
-     ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio_udp.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/fs.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hpack.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/byteorder.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_subscribe.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_stream.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/net_address.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hpack_encoder.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/toml.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_initiator.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_symmetric.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_shell.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_crc8.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_channel.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/io.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_publish.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/hex.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_vault_toml.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/base32.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_pq.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/pool.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/time.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_rand.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_common.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_sft.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/slice_mut_slice.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/err.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_noise.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_proto.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/slice_slice.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio_unix.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config_auth_add.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_bootstrap.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_stream.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/protonerf.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/buffer.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_router.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_subscribe.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/slice.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_endpoint.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_shell.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/log.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_vault.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_responder.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/sysinfo.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_sha256.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_cmd_config_net.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_peering.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio_udp.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_revision.c\
+     ${carrier_openwrt_TARGET_DIR}/../../release/zz/carrier_pub_sysinfo.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/net.c\
      ${carrier_openwrt_TARGET_DIR}/../../release/zz/netio.c\
      ${carrier_openwrt_TARGET_DIR}/../../gen/zz_builtins_carrier_carrier_openwrt_Make.c\

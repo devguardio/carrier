@@ -26,10 +26,15 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+
+
+
 
 static PyObject * py_get_carrier_sha256_Sha256_at(PyObject *pyself, void *closure) {
 
@@ -101,8 +106,21 @@ PyTypeObject py_Type_carrier_sha256_Sha256  = {
 
 
 
-
-
+static PyObject* py_carrier_sha256_update(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //data
+    uint8_t * arg1 = 0;
+    Py_ssize_t arg1_len = 0;
+    //l
+    long long int arg2 = 0;
+    if (!PyArg_ParseTuple(args, "Os#l", &arg0,&arg1,&arg1_len,&arg2)) { return NULL; };
+    carrier_sha256_update(
+        pyFATGetPtr(arg0, "carrier_sha256_Sha256"),
+        arg1,
+        arg2);
+    Py_RETURN_NONE;
+}
 
 static PyObject* py_carrier_sha256_blocklen(PyObject *pyself, PyObject *args) {
     long long int rarg = (long long int)(carrier_sha256_blocklen(
@@ -125,22 +143,6 @@ static PyObject* py_carrier_sha256_hashlen(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
-static PyObject* py_carrier_sha256_update(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //data
-    uint8_t * arg1 = 0;
-    Py_ssize_t arg1_len = 0;
-    //l
-    long long int arg2 = 0;
-    if (!PyArg_ParseTuple(args, "Os#l", &arg0,&arg1,&arg1_len,&arg2)) { return NULL; };
-    carrier_sha256_update(
-        pyFATGetPtr(arg0, "carrier_sha256_Sha256"),
-        arg1,
-        arg2);
-    Py_RETURN_NONE;
-}
-
 static PyObject* py_carrier_sha256_finish(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -156,10 +158,10 @@ static PyObject* py_carrier_sha256_finish(PyObject *pyself, PyObject *args) {
 
 
 static PyMethodDef methods[] = {
+{"update", py_carrier_sha256_update, METH_VARARGS,""},
 {"blocklen", py_carrier_sha256_blocklen, METH_NOARGS,""},
 {"init", py_carrier_sha256_init, METH_VARARGS,""},
 {"hashlen", py_carrier_sha256_hashlen, METH_NOARGS,""},
-{"update", py_carrier_sha256_update, METH_VARARGS,""},
 {"finish", py_carrier_sha256_finish, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };

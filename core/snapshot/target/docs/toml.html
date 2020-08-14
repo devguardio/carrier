@@ -1,34 +1,15 @@
 
 <h1> module toml </h1>
-<h4> fn push (
-
-    usize
-    tail,
-
-    ::toml::Parser*+tail
-    self,
-
-    usize
-    et,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    str,
-
-    usize
-    strlen,
+<h4> fn parser (
 
     ::err::Err*+et
     e,
 
-)
+    usize
+    et,
 
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn parser (
+    usize
+    tail,
 
     ::toml::U
     u,
@@ -36,15 +17,6 @@
     ::toml::Parser*+tail
     self,
 
-    usize
-    et,
-
-    usize
-    tail,
-
-    ::err::Err*+et
-    e,
-
 )
 
 
@@ -53,19 +25,25 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
+</p><h4> fn push (
 
     usize
-    et,
+    tail,
 
     ::err::Err*+et
     e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    str,
 
     ::toml::Parser*+tail
     self,
 
     usize
-    tail,
+    et,
+
+    usize
+    strlen,
 
 )
 
@@ -77,20 +55,42 @@
 
 </p><h4> fn next (
 
-    ::toml::Parser*+tail
-    self,
-
     usize
     et,
 
-    ::toml::U
-    u,
+    ::err::Err*+et
+    e,
 
     usize
     tail,
 
+    ::toml::U
+    u,
+
+    ::toml::Parser*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::toml::Parser*+tail
+    self,
+
     ::err::Err*+et
     e,
+
+    usize
+    tail,
+
+    usize
+    et,
 
 )
 

@@ -1,22 +1,12 @@
 
 <h1> module netio::udp </h1>
-<h4> fn close (
+<h4> fn bind (
 
     ::netio::udp::Socket*
     self,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn bind (
-
-    ::netio::udp::Socket*
-    self,
+    ::io::Async*
+    async,
 
     usize
     et,
@@ -27,8 +17,18 @@
     ::err::Err*+et
     e,
 
-    ::io::Async*
-    async,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::netio::udp::Socket*
+    self,
 
 )
 
@@ -38,25 +38,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn recvfrom (
-
-    ::net::address::Address*
-    from,
+</p><h4> fn sendto (
 
     ::err::Err*+et
     e,
 
+    ::net::address::Address*
+    to,
+
     ::netio::udp::Socket*
     self,
 
-    usize
-    et,
-
-    ::buffer::Buffer*+st
+    ::slice::slice::Slice
     buf,
 
     usize
-    st,
+    et,
 
 )
 
@@ -66,22 +63,25 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn sendto (
+</p><h4> fn recvfrom (
 
-    ::net::address::Address*
-    to,
+    ::netio::udp::Socket*
+    self,
 
-    usize
-    et,
-
-    ::slice::slice::Slice
+    ::buffer::Buffer*+st
     buf,
 
     ::err::Err*+et
     e,
 
-    ::netio::udp::Socket*
-    self,
+    usize
+    et,
+
+    usize
+    st,
+
+    ::net::address::Address*
+    from,
 
 )
 

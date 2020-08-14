@@ -1,14 +1,15 @@
 ; Command:
-; > yices_smt2_mt --incremental
+; > z3 -in -smt2
 
 (set-logic QF_UFBV)
 (declare-fun theory0_len ((_ BitVec 64)) (_ BitVec 64)); theory len
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:5
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:4
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:15
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:4
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:15
 (declare-fun var8___carrier__revision_m_build_id__main__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
@@ -28,10 +29,10 @@
 
 (push 1)
 
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:16
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:16
 ; call of ::ext::<stdio.h>::printf
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:16
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:16
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:16
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:16
 (declare-fun var11_literal_string______t0 () (_ BitVec 64))
 (declare-fun var12_true__t0 () Bool)
 (assert
@@ -51,16 +52,16 @@
   var13_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:16
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:17
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:16
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:17
 ; call of ::ext::<stdio.h>::fflush
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:17
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:17
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:17
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:18
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:17
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:17
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:17
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:18
 ; call of ::ext::<stdlib.h>::system
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:18
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:18
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:18
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:18
 (declare-fun var16_literal_string__git_describe___tags___always___dirty__dirty___tr__d___n____t0 () (_ BitVec 64))
 (declare-fun var17_true__t0 () Bool)
 (assert
@@ -80,11 +81,11 @@
   var18_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:18
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:19
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:18
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:19
 ; call of ::ext::<stdio.h>::printf
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:19
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:19
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:19
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:19
 (declare-fun var20_literal_string______t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
@@ -104,7 +105,7 @@
   var22_true__t0
 )
 
-; : /home/aep/proj/devguard/carrier/core/src/revision.zz:19
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:19
 ; : :1
 ; literal expr
 (declare-fun var24_literal_0__t0 () (_ BitVec 64))

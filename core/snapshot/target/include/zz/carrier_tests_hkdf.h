@@ -27,11 +27,6 @@ typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
 #ifndef ZZ_FORWARD_carrier_sha256_init
 #define ZZ_FORWARD_carrier_sha256_init
 #endif
-#ifndef ZZ_FORWARD_carrier_sha256_Sha256
-#define ZZ_FORWARD_carrier_sha256_Sha256
-struct carrier_sha256_Sha256_t;
-typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
-#endif
 #ifndef ZZ_EXPORT_carrier_sha256_HASHLEN
 #define ZZ_EXPORT_carrier_sha256_HASHLEN
 #define carrier_sha256_HASHLEN ((uintptr_t )    32)
@@ -52,6 +47,18 @@ extern void carrier_sha256_hkdf (uint8_t const *  const  chaining_key, uint8_t c
 extern int carrier_tests_hkdf_main ();
 
 #endif
+#ifndef ZZ_EXPORT_carrier_sha256_Sha256
+#define ZZ_EXPORT_carrier_sha256_Sha256
+struct carrier_sha256_Sha256_t {
+   uint32_t state[    8] ;
+   uint8_t block[    64] ;
+   uint8_t at ;
+   uintptr_t blockcounter ;
+}
+;
+size_t sizeof_carrier_sha256_Sha256();
+
+#endif
 #ifndef ZZ_EXPORT_carrier_sha256_update
 #define ZZ_EXPORT_carrier_sha256_update
 void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
@@ -65,17 +72,5 @@ void carrier_sha256_finish (carrier_sha256_Sha256*  const  self, uint8_t*  const
 #ifndef ZZ_EXPORT_carrier_sha256_init
 #define ZZ_EXPORT_carrier_sha256_init
 void carrier_sha256_init (carrier_sha256_Sha256*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sha256_Sha256
-#define ZZ_EXPORT_carrier_sha256_Sha256
-struct carrier_sha256_Sha256_t {
-   uint32_t state[    8] ;
-   uint8_t block[    64] ;
-   uint8_t at ;
-   uintptr_t blockcounter ;
-}
-;
-size_t sizeof_carrier_sha256_Sha256();
 
 #endif

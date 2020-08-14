@@ -1,27 +1,27 @@
 
 <h1> module carrier::noise </h1>
-<h4> fn complete (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::noise::Initiator*
-    self,
-
-    u8*
-    payload,
+<h4> fn accept (
 
     usize
     payload_len,
 
-    u8*
-    packet,
-
-    usize
-    packet_len,
-
     usize
     et,
+
+    ::carrier::noise::Responder*
+    self,
+
+    u8*
+    pkt,
+
+    usize
+    pktlen,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    payload,
 
 )
 
@@ -31,19 +31,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn accept (
-
-    u8*
-    pkt,
-
-    usize
-    pktlen,
-
-    usize
-    payload_len,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn receive (
 
     usize
     et,
@@ -51,8 +39,57 @@
     u8*
     payload,
 
+    u8*
+    packet,
+
     ::carrier::noise::Responder*
     self,
+
+    u8*
+    prologue,
+
+    usize
+    prologue_len,
+
+    usize
+    payload_len,
+
+    usize
+    packet_len,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn complete (
+
+    usize
+    packet_len,
+
+    usize
+    et,
+
+    ::carrier::noise::Initiator*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    payload,
+
+    usize
+    payload_len,
+
+    u8*
+    packet,
 
 )
 
@@ -67,6 +104,9 @@
     ::carrier::noise::Responder*
     self,
 
+    usize
+    prologue_len,
+
     u8*
     packet,
 
@@ -75,9 +115,6 @@
 
     u8*
     prologue,
-
-    usize
-    prologue_len,
 
 )
 
@@ -87,34 +124,34 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn receive (
-
-    usize
-    packet_len,
+</p><h4> fn initiate (
 
     u8*
-    prologue,
+    pkt,
 
     usize
-    et,
-
-    u8*
-    packet,
-
-    ::carrier::noise::Responder*
-    self,
-
-    ::err::Err*+et
-    e,
+    prologue_len,
 
     usize
     payload_len,
 
+    usize
+    et,
+
+    usize
+    pktlen,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    prologue,
+
     u8*
     payload,
 
-    usize
-    prologue_len,
+    ::carrier::noise::Initiator*
+    self,
 
 )
 
@@ -126,69 +163,32 @@
 
 </p><h4> fn initiate_insecure (
 
+    u8*
+    pkt,
+
+    usize
+    prologue_len,
+
     usize
     payload_len,
 
     ::carrier::noise::Initiator*
     self,
 
+    u8*
+    prologue,
+
     ::err::Err*+et
     e,
 
     usize
-    pktlen,
-
-    usize
     et,
-
-    u8*
-    pkt,
-
-    u8*
-    prologue,
-
-    usize
-    prologue_len,
-
-    u8*
-    payload,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn initiate (
-
-    usize
-    prologue_len,
-
-    ::carrier::noise::Initiator*
-    self,
-
-    u8*
-    payload,
-
-    usize
-    payload_len,
 
     usize
     pktlen,
 
     u8*
-    pkt,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    u8*
-    prologue,
+    payload,
 
 )
 

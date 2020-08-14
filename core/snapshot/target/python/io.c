@@ -24,19 +24,20 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_io_Context;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_io_Context;
+extern PyTypeObject py_Type_io_Async;
 extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_io_Context;
+extern PyTypeObject py_Type_io_Io;
 extern PyTypeObject py_Type_time_Time;
-extern PyTypeObject py_Type_io_Async;
-extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_io_Async;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 
 static PyObject * py_get_io_Context_isvalid(PyObject *pyself, void *closure) {
 
@@ -263,6 +264,23 @@ PyTypeObject py_Type_io_Io  = {
 };
 
 
+
+
+
+
+static void  py_CLOSURE_io_wake_fn (io_Async*  const  arg0, void * _ctx) {
+    PyObject *callobject = (PyObject *)_ctx;
+
+    pyFATObject * fat0 = (pyFATObject *)PyType_GenericAlloc(&py_Type_io_Async, 0);
+    fat0->borrowed = true;
+    fat0->ptr = arg0;
+                                PyObject *rrrr =  PyObject_CallFunction(callobject, "O", fat0); 
+    if (PyErr_Occurred()) {PyErr_WriteUnraisable(callobject);} 
+    Py_DECREF(rrrr);
+} 
+
+
+
 static void  py_CLOSURE_io_make_channel_fn (io_Async*  const  arg0, err_Err*  const  arg1, uintptr_t const  arg2, io_Io*  const  arg3, io_Io*  const  arg4, void * _ctx) {
     PyObject *callobject = (PyObject *)_ctx;
 
@@ -289,16 +307,6 @@ static void  py_CLOSURE_io_make_channel_fn (io_Async*  const  arg0, err_Err*  co
 
 
 
-static void  py_CLOSURE_io_wake_fn (io_Async*  const  arg0, void * _ctx) {
-    PyObject *callobject = (PyObject *)_ctx;
-
-    pyFATObject * fat0 = (pyFATObject *)PyType_GenericAlloc(&py_Type_io_Async, 0);
-    fat0->borrowed = true;
-    fat0->ptr = arg0;
-                                PyObject *rrrr =  PyObject_CallFunction(callobject, "O", fat0); 
-    if (PyErr_Occurred()) {PyErr_WriteUnraisable(callobject);} 
-    Py_DECREF(rrrr);
-} 
 
 static void  py_CLOSURE_io_wait_fn (io_Async*  const  arg0, err_Err*  const  arg1, uintptr_t const  arg2, void * _ctx) {
     PyObject *callobject = (PyObject *)_ctx;
@@ -451,40 +459,6 @@ PyTypeObject py_Type_io_Async  = {
 
 
 
-
-
-
-
-
-
-
-static PyObject* py_io_valid(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    long long rarg = (long long int)(io_valid(
-        pyFATGetPtr(arg0, "io_Context")));
-    return PyBool_FromLong(rarg);
-}
-
-static PyObject* py_io_wake(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    io_wake(
-        pyFATGetPtr(arg0, "io_Async"));
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_io_close(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    io_close(
-        pyFATGetPtr(arg0, "io_Io"));
-    Py_RETURN_NONE;
-}
-
 static PyObject* py_io_channel(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -504,6 +478,24 @@ static PyObject* py_io_channel(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_io_valid(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    long long rarg = (long long int)(io_valid(
+        pyFATGetPtr(arg0, "io_Context")));
+    return PyBool_FromLong(rarg);
+}
+
+static PyObject* py_io_close(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    io_close(
+        pyFATGetPtr(arg0, "io_Io"));
+    Py_RETURN_NONE;
+}
+
 static PyObject* py_io_wait(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -517,13 +509,22 @@ static PyObject* py_io_wait(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_io_wake(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    io_wake(
+        pyFATGetPtr(arg0, "io_Async"));
+    Py_RETURN_NONE;
+}
+
 
 static PyMethodDef methods[] = {
-{"valid", py_io_valid, METH_VARARGS,""},
-{"wake", py_io_wake, METH_VARARGS,""},
-{"close", py_io_close, METH_VARARGS,""},
 {"channel", py_io_channel, METH_VARARGS,""},
+{"valid", py_io_valid, METH_VARARGS,""},
+{"close", py_io_close, METH_VARARGS,""},
 {"wait", py_io_wait, METH_VARARGS,""},
+{"wake", py_io_wake, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

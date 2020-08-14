@@ -5,11 +5,11 @@
     ::err::Err*+et
     e,
 
-    ::net::address::Address*
-    addr,
-
     usize
     et,
+
+    ::net::address::Address*
+    addr,
 
 )
 
@@ -19,26 +19,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn make_async (
-
-    ::err::Err*+et
-    e,
-
-    int
-    fd,
+</p><h4> fn socket (
 
     usize
     et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn socket (
 
     int
     typ,
@@ -49,12 +33,28 @@
     ::err::Err*+et
     e,
 
-    usize
-    et,
-
 )
 
 -&gt int
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn make_async (
+
+    usize
+    et,
+
+    int
+    fd,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
 
 </h4>
 

@@ -2,6 +2,9 @@
 <h1> module carrier::connect </h1>
 <h4> fn start (
 
+    ::carrier::identity::Identity*
+    target,
+
     ::carrier::connect::Connect*
     self,
 
@@ -10,9 +13,6 @@
 
     ::err::Err*+et
     e,
-
-    ::carrier::identity::Identity*
-    target,
 
     usize
     et,

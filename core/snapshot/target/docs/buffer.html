@@ -1,6 +1,25 @@
 
 <h1> module buffer </h1>
-<h4> fn push (
+<h4> fn make (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make an empty buffer&lt;br&gt;
+</p><h4> fn append_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    cstr,
 
     usize
     t,
@@ -8,46 +27,21 @@
     ::buffer::Buffer*+t
     self,
 
-    ::ext::&lt;stddef.h&gt;::char
-    b,
-
 )
 
--&gt bool
+
 
 </h4>
 
 <p class='doc_comments'>
- push a single byte&lt;br&gt;
-</p><h4> fn vformat (
-
-    ::buffer::Buffer*+tail
-    self,
-
-    usize
-    tail,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
-
-    ::ext::&lt;stdarg.h&gt;::va_list
-    args,
-
-)
-
--&gt int
-
-</h4>
-
-<p class='doc_comments'>
-
+ append a null terminated c buffer&lt;br&gt;
 </p><h4> fn ends_with_cstr (
 
-    usize
-    tail,
-
     ::buffer::Buffer*+tail
     self,
+
+    usize
+    tail,
 
     ::ext::&lt;stddef.h&gt;::char*
     a,
@@ -60,13 +54,86 @@
 
 <p class='doc_comments'>
  test if self ends with other buffer&lt;br&gt;
-</p><h4> fn fgets (
+</p><h4> fn copy_bytes (
+
+    u8*
+    bytes,
+
+    usize
+    inlen,
+
+    usize
+    t,
+
+    ::buffer::Buffer*+t
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make a buffer by copying raw bytes with given len&lt;br&gt;
+</p><h4> fn available (
 
     usize
     tail,
 
     ::buffer::Buffer*+tail
     self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ returns the amount of bytes still left in the tail&lt;br&gt;&lt;br&gt; note that one byte is always reserved for null terminator&lt;br&gt;
+</p><h4> fn clear (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ clear the buffer&lt;br&gt;
+</p><h4> fn copy_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    s,
+
+    usize
+    t,
+
+    ::buffer::Buffer*+t
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ make a buffer by copying a c string&lt;br&gt;
+</p><h4> fn fgets (
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
 
     ::ext::&lt;stdio.h&gt;::FILE*
     stream,
@@ -79,6 +146,25 @@
 
 <p class='doc_comments'>
  append to this buffer by reading a line from a FILE&lt;br&gt;
+</p><h4> fn push (
+
+    ::buffer::Buffer*+t
+    self,
+
+    usize
+    t,
+
+    ::ext::&lt;stddef.h&gt;::char
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ push a single byte&lt;br&gt;
 </p><h4> fn pop (
 
     ::buffer::Buffer*+t
@@ -95,7 +181,114 @@
 
 <p class='doc_comments'>
  remove the last byte&lt;br&gt;&lt;br&gt; returns false if buffer was empty&lt;br&gt;
-</p><h4> fn clear (
+</p><h4> fn strlen (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    s,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ length of a null terminated c buffer, excluding the null terminator&lt;br&gt;
+</p><h4> fn split (
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char
+    token,
+
+    usize*
+    iterator,
+
+    ::buffer::Buffer*+tail2
+    other,
+
+    usize
+    tail2,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ split this buffer by token and copy the subbuffer into other&lt;br&gt;
+</p><h4> fn cstr_eq (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if some c string is equal another c string&lt;br&gt;
+</p><h4> fn starts_with_cstr (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    a,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if this buffer begins with some c string&lt;br&gt;
+</p><h4> fn eq_cstr (
+
+    usize
+    tail,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ test if this buffer is equal with a c string&lt;br&gt;
+</p><h4> fn substr (
+
+    usize
+    size,
+
+    usize
+    from,
+
+    usize
+    tail2,
+
+    ::buffer::Buffer*+tail2
+    other,
 
     ::buffer::Buffer*+tail
     self,
@@ -110,7 +303,48 @@
 </h4>
 
 <p class='doc_comments'>
- clear the buffer&lt;br&gt;
+ append parts of this buffer to other buffer&lt;br&gt;
+</p><h4> fn append_slice (
+
+    ::buffer::Buffer*+t
+    self,
+
+    usize
+    t,
+
+    ::slice::slice::Slice
+    slice,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ append a slice&lt;br&gt;
+</p><h4> fn vformat (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+    ::ext::&lt;stdarg.h&gt;::va_list
+    args,
+
+)
+
+-&gt int
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn format (
 
     ::buffer::Buffer*+tail
@@ -132,14 +366,14 @@
  append formated string with vsnprintf&lt;br&gt;
 </p><h4> fn copy_slice (
 
-    usize
-    t,
-
     ::buffer::Buffer*+t
     self,
 
     ::slice::slice::Slice
     slice,
+
+    usize
+    t,
 
 )
 
@@ -149,17 +383,20 @@
 
 <p class='doc_comments'>
  make a buffer by copying a slice&lt;br&gt;
-</p><h4> fn copy_cstr (
+</p><h4> fn append_bytes (
+
+    usize
+    inlen,
 
     usize
     t,
 
+    u8*
+    bytes,
+
     ::buffer::Buffer*+t
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    s,
-
 )
 
 
@@ -167,76 +404,39 @@
 </h4>
 
 <p class='doc_comments'>
- make a buffer by copying a c string&lt;br&gt;
-</p><h4> fn strlen (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    s,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
- length of a null terminated c buffer, excluding the null terminator&lt;br&gt;
-</p><h4> fn split (
-
-    ::ext::&lt;stddef.h&gt;::char
-    token,
-
-    ::buffer::Buffer*+tail
-    self,
-
-    ::buffer::Buffer*+tail2
-    other,
-
-    usize
-    tail2,
-
-    usize
-    tail,
-
-    usize*
-    iterator,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- split this buffer by token and copy the subbuffer into other&lt;br&gt;
-</p><h4> fn substr (
-
-    usize
-    tail2,
-
-    ::buffer::Buffer*+tail2
-    other,
-
-    usize
-    tail,
-
-    usize
-    size,
+ append raw bytes with given len&lt;br&gt;
+</p><h4> fn as_mut_slice (
 
     ::buffer::Buffer*+tail
     self,
 
     usize
-    from,
+    tail,
 
 )
 
-
+-&gt ::slice::mut_slice::MutSlice
 
 </h4>
 
 <p class='doc_comments'>
- append parts of this buffer to other buffer&lt;br&gt;
+ create mutable slice pointing to this buffer&lt;br&gt;&lt;br&gt; modifying the mutable slice will modify this buffer&lt;br&gt;&lt;br&gt; warning: mut_slice does not nullterminate, possibly violating integrity&lt;br&gt; you need to manually attest that the mutslice does not cause&lt;br&gt; the last byte to be overwritten and then call static_attest(buffer::integrity(buf))&lt;br&gt;&lt;br&gt;
+</p><h4> fn cstr (
+
+    ::buffer::Buffer*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+-&gt ::ext::&lt;stddef.h&gt;::char*
+
+</h4>
+
+<p class='doc_comments'>
+ buffer as null terminated c buffer&lt;br&gt;
 </p><h4> fn slen (
 
     ::buffer::Buffer*+tail
@@ -253,45 +453,13 @@
 
 <p class='doc_comments'>
  length of buffer (excluding null terminator)&lt;br&gt;
-</p><h4> fn make (
-
-    usize
-    tail,
-
-    ::buffer::Buffer*+tail
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- make an empty buffer&lt;br&gt;
-</p><h4> fn as_mut_slice (
-
-    usize
-    tail,
-
-    ::buffer::Buffer*+tail
-    self,
-
-)
-
--&gt ::slice::mut_slice::MutSlice
-
-</h4>
-
-<p class='doc_comments'>
- create mutable slice pointing to this buffer&lt;br&gt;&lt;br&gt; modifying the mutable slice will modify this buffer&lt;br&gt;&lt;br&gt; warning: mut_slice does not nullterminate, possibly violating integrity&lt;br&gt; you need to manually attest that the mutslice does not cause&lt;br&gt; the last byte to be overwritten and then call static_attest(buffer::integrity(buf))&lt;br&gt;&lt;br&gt;
 </p><h4> fn as_slice (
 
-    usize
-    tail,
-
     ::buffer::Buffer*+tail
     self,
+
+    usize
+    tail,
 
 )
 
@@ -301,174 +469,6 @@
 
 <p class='doc_comments'>
  create slice pointing to used memory of this buffer, excluding null terminator&lt;br&gt;
-</p><h4> fn available (
-
-    ::buffer::Buffer*+tail
-    self,
-
-    usize
-    tail,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
- returns the amount of bytes still left in the tail&lt;br&gt;&lt;br&gt; note that one byte is always reserved for null terminator&lt;br&gt;
-</p><h4> fn append_cstr (
-
-    usize
-    t,
-
-    ::buffer::Buffer*+t
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    cstr,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- append a null terminated c buffer&lt;br&gt;
-</p><h4> fn starts_with_cstr (
-
-    ::buffer::Buffer*+tail
-    self,
-
-    usize
-    tail,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    a,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- test if this buffer begins with some c string&lt;br&gt;
-</p><h4> fn cstr (
-
-    usize
-    tail,
-
-    ::buffer::Buffer*+tail
-    self,
-
-)
-
--&gt ::ext::&lt;stddef.h&gt;::char*
-
-</h4>
-
-<p class='doc_comments'>
- buffer as null terminated c buffer&lt;br&gt;
-</p><h4> fn eq_cstr (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
-
-    ::buffer::Buffer*+tail
-    self,
-
-    usize
-    tail,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- test if this buffer is equal with a c string&lt;br&gt;
-</p><h4> fn copy_bytes (
-
-    usize
-    inlen,
-
-    ::buffer::Buffer*+t
-    self,
-
-    usize
-    t,
-
-    u8*
-    bytes,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- make a buffer by copying raw bytes with given len&lt;br&gt;
-</p><h4> fn cstr_eq (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    a,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- test if some c string is equal another c string&lt;br&gt;
-</p><h4> fn append_slice (
-
-    usize
-    t,
-
-    ::buffer::Buffer*+t
-    self,
-
-    ::slice::slice::Slice
-    slice,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- append a slice&lt;br&gt;
-</p><h4> fn append_bytes (
-
-    usize
-    t,
-
-    u8*
-    bytes,
-
-    usize
-    inlen,
-
-    ::buffer::Buffer*+t
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- append raw bytes with given len&lt;br&gt;
 </p>
 
 

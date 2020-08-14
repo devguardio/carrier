@@ -1,6 +1,25 @@
 
 <h1> module carrier::sha256 </h1>
-<h4> fn blocklen (
+<h4> fn update (
+
+    u8*
+    data,
+
+    usize
+    l,
+
+    ::carrier::sha256::Sha256*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn blocklen (
 
 )
 
@@ -10,22 +29,25 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn hmac (
+</p><h4> fn hkdf (
+
+    u8*
+    input_key_material,
+
+    u8*
+    chaining_key,
+
+    u8*
+    out2,
+
+    u8*
+    out1,
+
+    u8*
+    out3,
 
     usize
-    keylen,
-
-    u8*
-    out,
-
-    u8*
-    key,
-
-    usize
-    datalen,
-
-    u8*
-    data,
+    input_key_material_len,
 
 )
 
@@ -48,34 +70,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn hkdf (
-
-    u8*
-    input_key_material,
-
-    u8*
-    out1,
-
-    u8*
-    chaining_key,
-
-    usize
-    input_key_material_len,
-
-    u8*
-    out2,
-
-    u8*
-    out3,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn hashlen (
 
 )
@@ -86,16 +80,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn update (
+</p><h4> fn hmac (
+
+    usize
+    keylen,
+
+    usize
+    datalen,
+
+    u8*
+    out,
+
+    u8*
+    key,
 
     u8*
     data,
-
-    ::carrier::sha256::Sha256*
-    self,
-
-    usize
-    l,
 
 )
 
@@ -107,11 +107,11 @@
 
 </p><h4> fn finish (
 
-    u8*
-    out,
-
     ::carrier::sha256::Sha256*
     self,
+
+    u8*
+    out,
 
 )
 

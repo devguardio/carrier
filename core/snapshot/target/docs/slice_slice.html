@@ -1,15 +1,34 @@
 
 <h1> module slice::slice </h1>
-<h4> fn sub (
+<h4> fn make (
+
+    ::slice::slice::Slice*
+    self,
+
+    u8*
+    mem,
 
     usize
     size,
 
-    usize
-    from,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sub (
 
     ::slice::slice::Slice*
     self,
+
+    usize
+    from,
+
+    usize
+    size,
 
 )
 
@@ -19,6 +38,41 @@
 
 <p class='doc_comments'>
  retruns a subslice of a slice&lt;br&gt;
+</p><h4> fn eq_cstr (
+
+    ::slice::slice::Slice*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    other,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn eq_bytes (
+
+    ::slice::slice::Slice*
+    self,
+
+    u8*
+    other,
+
+    usize
+    othersize,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn atoi (
 
     usize
@@ -54,16 +108,16 @@
 </p><h4> fn split (
 
     ::slice::slice::Slice*
-    self,
+    other,
+
+    usize*
+    iterator,
 
     u8
     token,
 
     ::slice::slice::Slice*
-    other,
-
-    usize*
-    iterator,
+    self,
 
 )
 
@@ -73,60 +127,6 @@
 
 <p class='doc_comments'>
  split this slice by a token&lt;br&gt;
-</p><h4> fn make (
-
-    u8*
-    mem,
-
-    usize
-    size,
-
-    ::slice::slice::Slice*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn eq_cstr (
-
-    ::slice::slice::Slice*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    other,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn eq_bytes (
-
-    u8*
-    other,
-
-    usize
-    othersize,
-
-    ::slice::slice::Slice*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
 </p>
 
 

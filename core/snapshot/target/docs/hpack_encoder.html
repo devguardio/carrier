@@ -2,17 +2,8 @@
 <h1> module hpack::encoder </h1>
 <h4> fn encode (
 
-    u8*
-    val,
-
-    u8*
-    key,
-
     ::slice::mut_slice::MutSlice
     slice,
-
-    usize
-    vallen,
 
     ::err::Err*+et
     e,
@@ -22,6 +13,15 @@
 
     usize
     keylen,
+
+    u8*
+    key,
+
+    u8*
+    val,
+
+    usize
+    vallen,
 
 )
 
@@ -33,6 +33,9 @@
 
 </p><h4> fn encode_integer (
 
+    ::slice::mut_slice::MutSlice
+    slice,
+
     usize
     et,
 
@@ -41,9 +44,6 @@
 
     usize
     value,
-
-    ::slice::mut_slice::MutSlice
-    slice,
 
     u8
     prefix_size,

@@ -2,25 +2,6 @@
 <h1> module carrier::cmd_vault </h1>
 <h4> fn print_bc58 (
 
-    ::ext::&lt;stddef.h&gt;::char**
-    argv,
-
-    ::carrier::vault::Vault*
-    va,
-
-    int
-    argc,
-
-)
-
--&gt int
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn print_identity (
-
     int
     argc,
 
@@ -40,14 +21,33 @@
 
 </p><h4> fn cmd (
 
-    usize
-    argc,
+    ::ext::&lt;stddef.h&gt;::char**
+    argv,
 
     ::carrier::vault::Vault*
     va,
 
+    usize
+    argc,
+
+)
+
+-&gt int
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn print_identity (
+
+    int
+    argc,
+
     ::ext::&lt;stddef.h&gt;::char**
     argv,
+
+    ::carrier::vault::Vault*
+    va,
 
 )
 

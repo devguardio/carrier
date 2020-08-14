@@ -25,8 +25,6 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_time_Time;
-extern PyTypeObject py_Type_time_Time;
-
 static PyObject * py_get_time_Time_secs(PyObject *pyself, void *closure) {
 
     time_Time * self = pyFATGetPtr(pyself, "time_Time");
@@ -108,6 +106,7 @@ PyTypeObject py_Type_time_Time  = {
     .tp_getset      = py_getset_time_Time,
     .tp_dealloc     = py_free_time_Time,
 };
+
 
 
 

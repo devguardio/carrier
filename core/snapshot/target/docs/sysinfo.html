@@ -5,8 +5,11 @@
     usize
     l,
 
-    usize
-    et,
+    u8*
+    b,
+
+    u8
+    index,
 
     ::slice::mut_slice::MutSlice
     str,
@@ -14,11 +17,8 @@
     ::err::Err*+et
     e,
 
-    u8
-    index,
-
-    u8*
-    b,
+    usize
+    et,
 
 )
 
@@ -33,8 +33,8 @@
     u64
     value,
 
-    u8
-    index,
+    ::err::Err*+et
+    e,
 
     usize
     et,
@@ -42,8 +42,8 @@
     ::slice::mut_slice::MutSlice
     str,
 
-    ::err::Err*+et
-    e,
+    u8
+    index,
 
 )
 
@@ -94,20 +94,20 @@
 
 </p><h4> fn encode_f64 (
 
-    f64
-    value,
+    ::slice::mut_slice::MutSlice
+    str,
 
     usize
     et,
 
-    ::slice::mut_slice::MutSlice
-    str,
-
-    ::err::Err*+et
-    e,
+    f64
+    value,
 
     u8
     index,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -120,35 +120,22 @@
 </p><h4> fn fail_with_errno (
 
     usize
-    tail,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
+    line,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
     usize
-    line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
+    tail,
 
     ::err::Err*+tail
     self,
 
-)
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn sysinfo (
-
-    ::slice::mut_slice::MutSlice
-    sl,
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
 
 )
 
@@ -168,6 +155,19 @@
 
     ::err::Err*+et
     e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sysinfo (
+
+    ::slice::mut_slice::MutSlice
+    sl,
 
 )
 

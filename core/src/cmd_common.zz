@@ -7,7 +7,7 @@ using stream;
 using slice;
 using hpack;
 using <stdlib.h>::{atoi};
-using <stdio.h>::{printf};
+using <stdio.h>::{printf, stderr, fprintf};
 using protonerf;
 using proto;
 
@@ -85,7 +85,7 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Sli
 }
 
 
-export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e, slice::Slice mut msg) -> bool
     where slice::slice::integrity(&msg)
     where err::checked(*e)
 {
@@ -96,9 +96,7 @@ export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e,
             rcode = (int)atoi((char*)it.val.mem);
         }
     }
-    if err::check(e) {
-        return false;
-    }
+    if err::check(e) { return true; }
     if rcode != 200 {
         new it = hpack::decoder::decode(msg);
         while it.next(e) {

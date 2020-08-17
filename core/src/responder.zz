@@ -14,6 +14,7 @@ using symmetric;
 using hex;
 using <assert.h>::{assert};
 using vault;
+using revision;
 
 pub fn accept_insecure(
     noise::Responder mut* self,

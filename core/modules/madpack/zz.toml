@@ -1,0 +1,18 @@
+[project]
+version = "0.1.0"
+name = "madpack"
+cincludes = []
+cobjects = []
+pkgconfig = []
+cflags = []
+
+[dependencies]
+log     = "1"
+mem     = "1"
+msgpack = "1"
+toml    = "1"
+map     = "1"
+
+[repos]
+zzser = "git://github.com/zetzit/zzser.git"
+

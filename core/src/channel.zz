@@ -25,6 +25,8 @@ using vault;
 using identity;
 using pool;
 using <string.h>::{memcpy};
+using revision;
+using madpack;
 
 
 export symbol InvalidFrame;
@@ -44,6 +46,7 @@ export enum FrameType {
 // move around pre-initialized channel without the whole memory bag
 pub struct Transfer {
     u8      version;
+    u32     revision;
     u64     route;
     bool    responder;
 
@@ -58,6 +61,7 @@ pub struct Transfer {
 pub fn from_transfer (Channel mut new*self, Transfer tr)
 {
     self->version   = tr.version;
+    self->revision  = tr.revision;
     self->route     = tr.route;
     self->responder = tr.responder;
     self->c_mine    = tr.c_mine;
@@ -67,11 +71,12 @@ pub fn from_transfer (Channel mut new*self, Transfer tr)
     self->outgoing_acks_at = tr.outgoing_acks_at;
 }
 
-pub fn transfer_from_symmetric(symmetric::SymmetricState * symm, u8 version, u64 route, bool responder) -> Transfer {
+pub fn transfer_from_symmetric(symmetric::SymmetricState * symm, u8 version, u32 revision, u64 route, bool responder) -> Transfer {
     Transfer mut c = Transfer {
         route:      route,
         responder:  responder,
         version:    version,
+        revision:   revision,
     };
 
     if responder {
@@ -95,6 +100,7 @@ export struct Channel {
     endpoint::Endpoint  mut* endpoint;
 
     u8      version;
+    u32     revision;
     u64     route;
     bool    responder;
     u64     mut counter_out;
@@ -119,41 +125,6 @@ export struct Channel {
     u8  mut outgoing_acks_at;
 }
 
-export fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> stream::Stream mut *
-    where err::checked(*e)
-    where safe(conf->path)
-    where nullterm(conf->path)
-    model (return == 0) ||  safe(return)
-{
-    let r = self->alloc_stream(1 + self->streamidcounter * 2, conf);
-    if r == 0 {
-        err::fail(e, err::OutOfTail, "oom");
-        return 0;
-    }
-    static_attest(safe(r));
-
-    let mut frame = self->q.alloc(e, FrameType::Open, 100);
-    if err::check(e) {
-        r->id = 0;
-        return 0;
-    }
-
-    frame.push32(byteorder::to_be32(r->id)); // stream
-    frame.push16(0); // size placeholder
-
-    static_attest(nullterm(conf->path));
-    static_attest(safe(conf->path));
-    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, buffer::strlen(conf->path));
-    if err::check(e) {
-        r->id = 0;
-        return 0;
-    }
-
-    self->streamidcounter += 1;
-
-    return r;
-}
-
 pub fn shutdown(Channel mut* self, err::Err+et mut*e)
     where err::checked(*e)
 {
@@ -168,6 +139,16 @@ pub fn shutdown(Channel mut* self, err::Err+et mut*e)
     self->clean_closed(e);
     if err::check(e) { e->elog(); e->make(); }
     //TODO send disconnect frame
+}
+
+export fn open(Channel mut* self, err::Err+et mut*e, stream::Config *conf) -> stream::Stream mut *
+    where err::checked(*e)
+    where safe(conf->path)
+    where nullterm(conf->path)
+    model (return == 0) ||  safe(return)
+{
+    new extraheaders = slice::slice::empty();
+    return open_with_headers(self, e, conf, extraheaders);
 }
 
 export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config *conf, slice::Slice extraheaders) -> stream::Stream mut *
@@ -185,7 +166,9 @@ export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config
     static_attest(safe(r));
 
     err::assert(extraheaders.size < 10000);
-    let framesize = 100 + extraheaders.size;
+
+    let pathsize = buffer::strlen(conf->path);
+    let framesize = 50 + extraheaders.size + pathsize;
 
     let mut frame = self->q.alloc(e, FrameType::Open, framesize);
     if err::check(e) {
@@ -198,7 +181,14 @@ export fn open_with_headers(Channel mut* self, err::Err+et mut*e, stream::Config
 
     static_attest(nullterm(conf->path));
     static_attest(safe(conf->path));
-    hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, buffer::strlen(conf->path));
+
+    if self->revision >= revision::REV_PROTOPACK {
+        msgpack::write_uint(frame, proto::OpenHeader::Path);
+        msgpack::write_str(frame, conf->path);
+    } else {
+        hpack::encoder::encode(frame, e, (u8*)":path",5 , (u8*)conf->path, buffer::strlen(conf->path));
+    }
+
     if err::check(e) {
         r->id = 0;
         return 0;
@@ -699,15 +689,29 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                 } else {
                     log::debug("[%lu] received open stream=%u, size=%zu", self->route, streamid, size);
 
-                    new+128 path = buffer::make();
-                    new it = hpack::decoder::decode(header_slice);
-                    while it.next(e) {
-                        if it.key.eq_cstr(":path") {
-                            path.clear();
-                            static_attest(safe(it.val.mem));
-                            path.append_bytes(it.val.mem, it.val.size);
+                    new+200 path = buffer::make();
+                    if self->revision >= revision::REV_PROTOPACK {
+                        new+10 it = madpack::decode(header_slice);
+                        it.spec(proto::OpenHeaderUnpacker);
+                        while it.next(e) {
+                            if it.key.eq_cstr("path") {
+                                path.clear();
+                                static_attest(slice::slice::integrity(&it.value.v_slice));
+                                path.append_slice(it.value.v_slice);
+                            }
+                        }
+                    // TODO remove
+                    } else {
+                        new it = hpack::decoder::decode(header_slice);
+                        while it.next(e) {
+                            if it.key.eq_cstr(":path") {
+                                path.clear();
+                                static_attest(safe(it.val.mem));
+                                path.append_bytes(it.val.mem, it.val.size);
+                            }
                         }
                     }
+
                     if err::check(e) {
                         return;
                     }
@@ -768,7 +772,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                                             log::warn("oom while sending 500");
                                         } else {
                                             static_attest(err::checked(*e));
-                                            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
+                                            madpack::write_uint(frame,  proto::ResponseHeader::Status);
+                                            madpack::write_uint(frame,  500);
                                             if err::check(e) { e->make(); }
                                             streami->close();
                                         }
@@ -793,7 +798,8 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                             frame.push64(byteorder::to_be64(1)); // order
                             frame.push16(0); // size placeholder
 
-                            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"404", 3);
+                            madpack::write_uint(frame,  proto::ResponseHeader::Status);
+                            madpack::write_uint(frame,  404);
                             if err::check(e) { return ; }
                             self->send_close_frame(e, streamid, 2);
                             if err::check(e) {
@@ -1066,15 +1072,8 @@ pub fn ack(Channel mut* self, err::Err mut* e, u64 ackd) {
 fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     where err::checked(*e)
 {
-    let mut frame1 = self->q.alloc(e, FrameType::Stream, 14 + 14);
-    if err::check(e) { return; }
-
-    err::assert(frame1.push32(byteorder::to_be32(stream_id)));
-    err::assert(frame1.push64(byteorder::to_be64(1)));
-    err::assert(frame1.push16(0));
-
-
     usize mut memneeded = 0;
+    usize mut count     = 0;
     err::assert_safe(self->endpoint);
     for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
         stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];
@@ -1084,11 +1083,14 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
         static_attest(safe(conf));
         err::assert_safe(conf->path);
         static_attest(nullterm(conf->path));
-        memneeded += 2 + buffer::strlen(conf->path);
+        memneeded   += 2 + buffer::strlen(conf->path);
+        count       += 1;
     }
 
-    //header
+    // header
     memneeded += 4 + 8 + 2;
+    // status
+    memneeded += 8;
     // revision
     memneeded += 8;
     // application strings
@@ -1097,34 +1099,47 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     memneeded += 10 + buffer::strlen(revision::build_id());
 
 
-
-    let mut frame2 = self->q.alloc(e, FrameType::Stream, memneeded);
-    static_attest(frame2.size >= 20);
+    let mut frame = self->q.alloc(e, FrameType::Stream, memneeded);
     if err::check(e) {
         e->make();
-        hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"500", 3);
-        if err::check(e) { return; }
-    } else {
-        hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"200", 3);
+
+
         if err::check(e) { return; }
 
+        let mut err_frame = self->q.alloc(e, FrameType::Stream, 30);
+        if err::check(e) { return; }
+
+        err::assert(err_frame.push32(byteorder::to_be32(stream_id)));
+        err::assert(err_frame.push64(byteorder::to_be64(1)));
+        err::assert(err_frame.push16(0));
+        madpack::write_uint(err_frame,  proto::ResponseHeader::Status);
+        madpack::write_uint(err_frame,  500);
+        madpack::write_uint(err_frame,  proto::ResponseHeader::Error);
+        madpack::write_str(err_frame,  "oom");
+
+        self->send_close_frame(e, stream_id, 1);
+        e->ignore();
+
+    } else {
+
+        static_attest(frame.size >= 20);
         err::assert(frame2.push32(byteorder::to_be32(stream_id)));
         err::assert(frame2.push64(byteorder::to_be64(2)));
         err::assert(frame2.push16(1));
 
+        madpack::write_uint(frame,  proto::ResponseHeader::Status);
+        madpack::write_uint(frame,  200);
 
-        protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, revision::revision());
-        e->abort();
+        madpack::write_str(frame,  "disco");
+        madpack::start_map(frame,  3);
 
-        let bi = revision::build_id();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,
-            (u8*)bi, buffer::strlen(bi)
-        );
-        e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Application,              (u8*)"zz", 2);
-        e->abort();
-        //protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::ApplicationVersion,      (u8*)"??", 2);
-        //e->abort();
+        madpack::write_uint(frame,  proto::DiscoveryResponse::CarrierRevision);
+        madpack::write_uint(frame,  revision::revision());
+
+        madpack::write_uint(frame,  proto::DiscoveryResponse::CarrierBuildId);
+        madpack::write_str(frame,   revision::build_id());
+
+        madpack::start_Array(frame,  proto::DiscoveryResponse::Paths);
 
         for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
             stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];

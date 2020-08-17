@@ -4,12 +4,14 @@ using err;
 using slice;
 using io;
 using log;
-using hpack;
 using buffer;
 using time;
 using pool;
 using io::unix;
 using channel;
+using revision;
+using proto;
+using madpack;
 
 inline using "posix.h"::{O_RDWR, O_NOCTTY, posix_openpt, grantpt, unlockpt, ptsname, open as stdopen, makerawpty};
 using <unistd.h>::{close, fork, dup2, execv, write};
@@ -101,6 +103,7 @@ static stream::Config ShellConfig = stream::Config {
 
 export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
+    where slice::slice::integrity(&headers)
 {
     let mut frame = self->stream(e, 14);
     if err::check(e) { return; }
@@ -111,14 +114,16 @@ export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slic
     self->user2 = state;
 
 
-
     new+300 command = buffer::make();
-    new it = hpack::decoder::decode(headers);
-    while it.next(e) {
-        if it.key.eq_cstr("command") {
-            static_attest(safe(it.val.mem));
-            command.append_bytes(it.val.mem, it.val.size);
-            break;
+    static_attest(safe(self->chan));
+    if self->chan->revision >= revision::REV_PROTOPACK {
+        new+10 it = madpack::decode(headers);
+        it.spec(proto::OpenHeaderUnpacker);
+        while it.next(e) {
+            if it.key.eq_cstr("command") {
+                static_attest(slice::slice::integrity(&it.value.v_slice));
+                command.append_slice(it.value.v_slice);
+            }
         }
     }
     if err::check(e) { return; }
@@ -126,14 +131,19 @@ export fn in_shell_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slic
     in_shell_open_impl(state, e, command.cstr());
     if err::check(e) {
         e->elog();
+        madpack::write_uint(frame,  proto::ResponseHeader::Status);
+        madpack::write_uint(frame,  500);
+        madpack::write_uint(frame,  proto::ResponseHeader::Error);
+        static_attest(buffer::integrity(&e->trace, et));
+        madpack::write_str(frame,   e->trace.cstr());
         e->make();
-        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
         if err::check(e) { e->make(); }
         self->close();
         return;
     }
 
-    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    madpack::write_uint(frame,  proto::ResponseHeader::Status);
+    madpack::write_uint(frame,  200);
     if err::check(e) { return; }
 }
 

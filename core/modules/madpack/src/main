@@ -1,0 +1,84 @@
+
+export fn main() -> int {
+
+    new+1000 e = err::make();
+
+/*
+    new+1000 b = buffer::make();
+    b.append_cstr("
+1 foo
+2 barish ghey
+3 giant
+66 whatlol
+9 yalla
+");
+
+    new+1000 spec = load(&e, b.as_slice());
+    e.abort();
+
+*/
+
+    u8 bb[] = { 0xa3 ,0x69 ,0x6e ,0x74 ,0x01 ,0xa5 ,0x66 ,
+                0x6c ,0x6f ,0x61 ,0x74 ,0xcb ,0x3f ,0xe0 ,
+                0x00 ,0x00 ,0x00 ,0x00 ,0x00 ,0x00, 0x2,
+                0x82 ,0x01 ,0x02 ,5,6,0x03 ,0x04, 9, 0x93 ,0x01 ,0x02 ,0x03, 66,66};
+
+    new+20 dc = decode(slice::slice::Slice{mem: bb, size: static(len(bb))});
+    dc.spec(UnpackSpec{ unpacker: ExampleUnpacker });
+    while dc.next(&e) {
+        printf("\"%.*s\": ", dc.key.size, dc.key.mem);
+
+        switch dc.item {
+            msgpack::ItemType::Nil => {
+                printf("null\n");
+            }
+            msgpack::ItemType::Map => {
+                printf("{\n");
+                dc.descend();
+                e.abort();
+                usize mut l = dc.value.v_len;
+                for (usize int mut i = 0; i < l && dc.next(&e); i++) {
+                    printf("    \"%.*s\" <%d>\n", dc.key.size, dc.key.mem, i);
+                }
+                printf("}\n");
+            }
+            msgpack::ItemType::Array => {
+                printf("[\n");
+                dc.descend();
+                e.abort();
+                usize mut l = dc.value.v_len;
+                for (usize int mut i = 0; i < l && dc.next(&e); i++) {
+                    printf("    \"%.*s\" <%d>\n", dc.key.size, dc.key.mem, i);
+                }
+                printf("]\n");
+            }
+            msgpack::ItemType::Bool => {
+                if dc.value.v_bool {
+                    printf("true\n");
+                } else {
+                    printf("false\n");
+                }
+            }
+            msgpack::ItemType::Str => {
+                printf("\"%.*s\"\n", dc.value.v_slice.size, dc.value.v_slice.mem);
+            }
+            msgpack::ItemType::Bin => {
+                printf("\"<bin %zu>\"\n", dc.value.v_len);
+            }
+            msgpack::ItemType::Uint => {
+                printf("%llu\n", dc.value.v_uint);
+            }
+            msgpack::ItemType::Sint => {
+                printf("%lld\n", dc.value.v_sint);
+            }
+            msgpack::ItemType::Float => {
+                printf("%f\n", dc.value.v_float);
+            }
+        }
+    }
+    e.abort();
+    return 0;
+}
+
+
+

@@ -1,0 +1,27 @@
+v0
+---
+1. open with hpack2 header
+2. respond with hpack2 header
+3. exchange raw frames
+
+
+v1
+---
+
+1. open with hpack2 header
+2. respond with hpack2 header
+3. exchange protobuf with prefixed size
+
+v2
+---
+
+same as v1, but the path is named after the definition file
+
+
+
+v3
+----
+
+1. open with protopack header
+2. respond with protopack header
+3. exchange depending on content: header

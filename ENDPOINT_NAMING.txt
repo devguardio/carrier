@@ -1,3 +1,0 @@
-v0: raw pkts
-v1: protobuf prefixed size
-v2: protobuf prefixed with size, named after actual definition files

@@ -1,4 +1,6 @@
-using protonerf;
+using slice;
+using madpack;
+
 export enum Path__Category {
   Invalid = 0,
   Local = 1,
@@ -11,16 +13,16 @@ export enum Path {
   Category = 2,
 }
 
-export fn PathTypes (usize index) -> protonerf::FieldType {
+export fn PathUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Path::Ipaddr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ipaddr", size: 6};
         }
         Path::Category => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"category", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -28,13 +30,13 @@ export enum FilterByRole {
   Roles = 1,
 }
 
-export fn FilterByRoleTypes (usize index) -> protonerf::FieldType {
+export fn FilterByRoleUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         FilterByRole::Roles => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"roles", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -42,13 +44,14 @@ export enum Filter {
   Role = 1,
 }
 
-export fn FilterTypes (usize index) -> protonerf::FieldType {
+export fn FilterUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Filter::Role => {
-            return protonerf::FieldType::Message;
+            next->unpacker = FilterByRoleUnpacker;
+            return slice::slice::Slice{mem: (u8*)"role", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -60,25 +63,26 @@ export enum SubscribeRequest {
   ShardWeight = 5,
 }
 
-export fn SubscribeRequestTypes (usize index) -> protonerf::FieldType {
+export fn SubscribeRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         SubscribeRequest::Shadow => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"shadow", size: 6};
         }
         SubscribeRequest::Filter => {
-            return protonerf::FieldType::Message;
+            next->unpacker = FilterUnpacker;
+            return slice::slice::Slice{mem: (u8*)"filter", size: 6};
         }
         SubscribeRequest::GroupKey => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"group_key", size: 9};
         }
         SubscribeRequest::GroupShard => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"group_shard", size: 11};
         }
         SubscribeRequest::ShardWeight => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"shard_weight", size: 12};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -87,16 +91,16 @@ export enum Publish {
   Xaddr = 2,
 }
 
-export fn PublishTypes (usize index) -> protonerf::FieldType {
+export fn PublishUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Publish::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         Publish::Xaddr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"xaddr", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -104,20 +108,20 @@ export enum Unpublish {
   Identity = 1,
 }
 
-export fn UnpublishTypes (usize index) -> protonerf::FieldType {
+export fn UnpublishUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Unpublish::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
-export fn SupersedeTypes (usize index) -> protonerf::FieldType {
+export fn SupersedeUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -127,19 +131,22 @@ export enum SubscribeChange {
   Supersede = 3,
 }
 
-export fn SubscribeChangeTypes (usize index) -> protonerf::FieldType {
+export fn SubscribeChangeUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         SubscribeChange::Publish => {
-            return protonerf::FieldType::Message;
+            next->unpacker = PublishUnpacker;
+            return slice::slice::Slice{mem: (u8*)"publish", size: 7};
         }
         SubscribeChange::Unpublish => {
-            return protonerf::FieldType::Message;
+            next->unpacker = UnpublishUnpacker;
+            return slice::slice::Slice{mem: (u8*)"unpublish", size: 9};
         }
         SubscribeChange::Supersede => {
-            return protonerf::FieldType::Message;
+            next->unpacker = SupersedeUnpacker;
+            return slice::slice::Slice{mem: (u8*)"supersede", size: 9};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -149,19 +156,19 @@ export enum PublishRequest {
   ReceiveAlias = 3,
 }
 
-export fn PublishRequestTypes (usize index) -> protonerf::FieldType {
+export fn PublishRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         PublishRequest::Unused => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"unused", size: 6};
         }
         PublishRequest::Network => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"network", size: 7};
         }
         PublishRequest::ReceiveAlias => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"receive_alias", size: 13};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -169,13 +176,13 @@ export enum Alias {
   Alias = 2,
 }
 
-export fn AliasTypes (usize index) -> protonerf::FieldType {
+export fn AliasUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Alias::Alias => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"alias", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -184,16 +191,18 @@ export enum PublishChange {
   Alias = 2,
 }
 
-export fn PublishChangeTypes (usize index) -> protonerf::FieldType {
+export fn PublishChangeUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         PublishChange::Supersede => {
-            return protonerf::FieldType::Message;
+            next->unpacker = SupersedeUnpacker;
+            return slice::slice::Slice{mem: (u8*)"supersede", size: 9};
         }
         PublishChange::Alias => {
-            return protonerf::FieldType::Message;
+            next->unpacker = AliasUnpacker;
+            return slice::slice::Slice{mem: (u8*)"alias", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -212,31 +221,32 @@ export enum ConnectRequest {
   TargetType = 7,
 }
 
-export fn ConnectRequestTypes (usize index) -> protonerf::FieldType {
+export fn ConnectRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ConnectRequest::Target => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"target", size: 6};
         }
         ConnectRequest::Timestamp => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"timestamp", size: 9};
         }
         ConnectRequest::Handshake => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"handshake", size: 9};
         }
         ConnectRequest::Paths => {
-            return protonerf::FieldType::Message;
+            next->unpacker = PathUnpacker;
+            return slice::slice::Slice{mem: (u8*)"paths", size: 5};
         }
         ConnectRequest::Principal => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"principal", size: 9};
         }
         ConnectRequest::Timeout => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"timeout", size: 7};
         }
         ConnectRequest::TargetType => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"target_type", size: 11};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -248,25 +258,26 @@ export enum ConnectResponse {
   Error = 5,
 }
 
-export fn ConnectResponseTypes (usize index) -> protonerf::FieldType {
+export fn ConnectResponseUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ConnectResponse::Ok => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ok", size: 2};
         }
         ConnectResponse::Handshake => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"handshake", size: 9};
         }
         ConnectResponse::Route => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"route", size: 5};
         }
         ConnectResponse::Paths => {
-            return protonerf::FieldType::Message;
+            next->unpacker = PathUnpacker;
+            return slice::slice::Slice{mem: (u8*)"paths", size: 5};
         }
         ConnectResponse::Error => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"error", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -275,16 +286,16 @@ export enum ClusterShard {
   Other = 2,
 }
 
-export fn ClusterShardTypes (usize index) -> protonerf::FieldType {
+export fn ClusterShardUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ClusterShard::This => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"this", size: 4};
         }
         ClusterShard::Other => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"other", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -295,22 +306,22 @@ export enum ExceptionalRoute {
   Blocked = 4,
 }
 
-export fn ExceptionalRouteTypes (usize index) -> protonerf::FieldType {
+export fn ExceptionalRouteUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ExceptionalRoute::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         ExceptionalRoute::This => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"this", size: 4};
         }
         ExceptionalRoute::Other => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"other", size: 5};
         }
         ExceptionalRoute::Blocked => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"blocked", size: 7};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -322,25 +333,27 @@ export enum ClusterConfig {
   DefaultShadowTrafficLimit32 = 5,
 }
 
-export fn ClusterConfigTypes (usize index) -> protonerf::FieldType {
+export fn ClusterConfigUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ClusterConfig::Shards => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ClusterShardUnpacker;
+            return slice::slice::Slice{mem: (u8*)"shards", size: 6};
         }
         ClusterConfig::ExceptionalRoutes => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ExceptionalRouteUnpacker;
+            return slice::slice::Slice{mem: (u8*)"exceptional_routes", size: 18};
         }
         ClusterConfig::Epoch => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"epoch", size: 5};
         }
         ClusterConfig::DefaultShadowPublisherLimit => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"default_shadow_publisher_limit", size: 30};
         }
         ClusterConfig::DefaultShadowTrafficLimit32 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"default_shadow_traffic_limit32", size: 30};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -348,13 +361,14 @@ export enum ClusterState {
   Config = 1,
 }
 
-export fn ClusterStateTypes (usize index) -> protonerf::FieldType {
+export fn ClusterStateUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ClusterState::Config => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ClusterConfigUnpacker;
+            return slice::slice::Slice{mem: (u8*)"config", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -362,13 +376,13 @@ export enum TraceRequest {
   Target = 1,
 }
 
-export fn TraceRequestTypes (usize index) -> protonerf::FieldType {
+export fn TraceRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         TraceRequest::Target => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"target", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -381,28 +395,28 @@ export enum TraceShadow {
   TrafficLimit64 = 6,
 }
 
-export fn TraceShadowTypes (usize index) -> protonerf::FieldType {
+export fn TraceShadowUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         TraceShadow::Xaddress => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"xaddress", size: 8};
         }
         TraceShadow::PublisherCount => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"publisher_count", size: 15};
         }
         TraceShadow::PublisherSoftLimit => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"publisher_soft_limit", size: 20};
         }
         TraceShadow::PublisherHardLimit => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"publisher_hard_limit", size: 20};
         }
         TraceShadow::TrafficEpoch64 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"traffic_epoch64", size: 15};
         }
         TraceShadow::TrafficLimit64 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"traffic_limit64", size: 15};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -421,46 +435,47 @@ export enum TraceResponse {
   Alias = 13,
 }
 
-export fn TraceResponseTypes (usize index) -> protonerf::FieldType {
+export fn TraceResponseUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         TraceResponse::Publishing => {
-            return protonerf::FieldType::Message;
+            next->unpacker = TraceShadowUnpacker;
+            return slice::slice::Slice{mem: (u8*)"publishing", size: 10};
         }
         TraceResponse::Epoch => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"epoch", size: 5};
         }
         TraceResponse::RxBytes32 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_bytes32", size: 10};
         }
         TraceResponse::TxBytes32 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_bytes32", size: 10};
         }
         TraceResponse::LastSeen => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"last_seen", size: 9};
         }
         TraceResponse::FirstSeen => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"first_seen", size: 10};
         }
         TraceResponse::Allocation => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"allocation", size: 10};
         }
         TraceResponse::Brokerip => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"brokerip", size: 8};
         }
         TraceResponse::PktsSent => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"pkts_sent", size: 9};
         }
         TraceResponse::PktsLost => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"pkts_lost", size: 9};
         }
         TraceResponse::Rtt => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rtt", size: 3};
         }
         TraceResponse::Alias => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"alias", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -472,25 +487,26 @@ export enum PeerConnectRequest {
   Paths = 5,
 }
 
-export fn PeerConnectRequestTypes (usize index) -> protonerf::FieldType {
+export fn PeerConnectRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         PeerConnectRequest::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         PeerConnectRequest::Timestamp => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"timestamp", size: 9};
         }
         PeerConnectRequest::Handshake => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"handshake", size: 9};
         }
         PeerConnectRequest::Route => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"route", size: 5};
         }
         PeerConnectRequest::Paths => {
-            return protonerf::FieldType::Message;
+            next->unpacker = PathUnpacker;
+            return slice::slice::Slice{mem: (u8*)"paths", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -501,22 +517,23 @@ export enum PeerConnectResponse {
   Error = 4,
 }
 
-export fn PeerConnectResponseTypes (usize index) -> protonerf::FieldType {
+export fn PeerConnectResponseUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         PeerConnectResponse::Ok => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ok", size: 2};
         }
         PeerConnectResponse::Handshake => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"handshake", size: 9};
         }
         PeerConnectResponse::Paths => {
-            return protonerf::FieldType::Message;
+            next->unpacker = PathUnpacker;
+            return slice::slice::Slice{mem: (u8*)"paths", size: 5};
         }
         PeerConnectResponse::Error => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"error", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -524,20 +541,20 @@ export enum ProtoHeader {
   Len = 1,
 }
 
-export fn ProtoHeaderTypes (usize index) -> protonerf::FieldType {
+export fn ProtoHeaderUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ProtoHeader::Len => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"len", size: 3};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
-export fn EmptyTypes (usize index) -> protonerf::FieldType {
+export fn EmptyUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -546,16 +563,16 @@ export enum Confirmation {
   Error = 2,
 }
 
-export fn ConfirmationTypes (usize index) -> protonerf::FieldType {
+export fn ConfirmationUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Confirmation::Ok => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ok", size: 2};
         }
         Confirmation::Error => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"error", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -564,16 +581,16 @@ export enum MoveInstruction {
   Xaddr = 2,
 }
 
-export fn MoveInstructionTypes (usize index) -> protonerf::FieldType {
+export fn MoveInstructionUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         MoveInstruction::Ipaddr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ipaddr", size: 6};
         }
         MoveInstruction::Xaddr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"xaddr", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -582,16 +599,16 @@ export enum InnerTraceRequest {
   Ping = 2,
 }
 
-export fn InnerTraceRequestTypes (usize index) -> protonerf::FieldType {
+export fn InnerTraceRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         InnerTraceRequest::Invalid => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"invalid", size: 7};
         }
         InnerTraceRequest::Ping => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ping", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -600,16 +617,16 @@ export enum InnerTraceResponse {
   Pong = 2,
 }
 
-export fn InnerTraceResponseTypes (usize index) -> protonerf::FieldType {
+export fn InnerTraceResponseUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         InnerTraceResponse::Invalid => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"invalid", size: 7};
         }
         InnerTraceResponse::Pong => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"pong", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -618,16 +635,16 @@ export enum ClaimOne {
   Resources = 2,
 }
 
-export fn ClaimOneTypes (usize index) -> protonerf::FieldType {
+export fn ClaimOneUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ClaimOne::Target => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"target", size: 6};
         }
         ClaimOne::Resources => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"resources", size: 9};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -636,16 +653,16 @@ export enum ClaimAll {
   Resources = 2,
 }
 
-export fn ClaimAllTypes (usize index) -> protonerf::FieldType {
+export fn ClaimAllUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ClaimAll::Shadow => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"shadow", size: 6};
         }
         ClaimAll::Resources => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"resources", size: 9};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -653,13 +670,13 @@ export enum Revoker {
   Identity = 1,
 }
 
-export fn RevokerTypes (usize index) -> protonerf::FieldType {
+export fn RevokerUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Revoker::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -670,22 +687,25 @@ export enum Claim {
   Revoker = 4,
 }
 
-export fn ClaimTypes (usize index) -> protonerf::FieldType {
+export fn ClaimUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Claim::Opt => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"opt", size: 3};
         }
         Claim::One => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ClaimOneUnpacker;
+            return slice::slice::Slice{mem: (u8*)"one", size: 3};
         }
         Claim::All => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ClaimAllUnpacker;
+            return slice::slice::Slice{mem: (u8*)"all", size: 3};
         }
         Claim::Revoker => {
-            return protonerf::FieldType::Message;
+            next->unpacker = RevokerUnpacker;
+            return slice::slice::Slice{mem: (u8*)"revoker", size: 7};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -697,25 +717,26 @@ export enum Certificate {
   Claims = 5,
 }
 
-export fn CertificateTypes (usize index) -> protonerf::FieldType {
+export fn CertificateUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Certificate::LastValidEpoch => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"last_valid_epoch", size: 16};
         }
         Certificate::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         Certificate::Authority => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"authority", size: 9};
         }
         Certificate::Serial => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"serial", size: 6};
         }
         Certificate::Claims => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ClaimUnpacker;
+            return slice::slice::Slice{mem: (u8*)"claims", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -725,19 +746,20 @@ export enum CertificateRequest {
   Claims = 3,
 }
 
-export fn CertificateRequestTypes (usize index) -> protonerf::FieldType {
+export fn CertificateRequestUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         CertificateRequest::LastValidEpoch => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"last_valid_epoch", size: 16};
         }
         CertificateRequest::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         CertificateRequest::Claims => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ClaimUnpacker;
+            return slice::slice::Slice{mem: (u8*)"claims", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -746,16 +768,16 @@ export enum Authorization {
   Resource = 2,
 }
 
-export fn AuthorizationTypes (usize index) -> protonerf::FieldType {
+export fn AuthorizationUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Authorization::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         Authorization::Resource => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"resource", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -763,13 +785,14 @@ export enum AuthorizationList {
   A = 1,
 }
 
-export fn AuthorizationListTypes (usize index) -> protonerf::FieldType {
+export fn AuthorizationListUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         AuthorizationList::A => {
-            return protonerf::FieldType::Message;
+            next->unpacker = AuthorizationUnpacker;
+            return slice::slice::Slice{mem: (u8*)"a", size: 1};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -781,25 +804,25 @@ export enum DiscoveryResponse {
   Paths = 5,
 }
 
-export fn DiscoveryResponseTypes (usize index) -> protonerf::FieldType {
+export fn DiscoveryResponseUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         DiscoveryResponse::CarrierRevision => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"carrier_revision", size: 16};
         }
         DiscoveryResponse::CarrierBuildId => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"carrier_build_id", size: 16};
         }
         DiscoveryResponse::Application => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"application", size: 11};
         }
         DiscoveryResponse::ApplicationVersion => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"application_version", size: 19};
         }
         DiscoveryResponse::Paths => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"paths", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -811,25 +834,25 @@ export enum Uname {
   Machine = 5,
 }
 
-export fn UnameTypes (usize index) -> protonerf::FieldType {
+export fn UnameUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Uname::Sysname => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"sysname", size: 7};
         }
         Uname::Nodename => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"nodename", size: 8};
         }
         Uname::Release => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"release", size: 7};
         }
         Uname::Version => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"version", size: 7};
         }
         Uname::Machine => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"machine", size: 7};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -846,40 +869,40 @@ export enum Load {
   Threads = 10,
 }
 
-export fn LoadTypes (usize index) -> protonerf::FieldType {
+export fn LoadUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Load::Avg1 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"avg1", size: 4};
         }
         Load::Avg5 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"avg5", size: 4};
         }
         Load::Avg15 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"avg15", size: 5};
         }
         Load::Clock => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"clock", size: 5};
         }
         Load::Uptime => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"uptime", size: 6};
         }
         Load::Idletime => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"idletime", size: 8};
         }
         Load::ProcActive => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"proc_active", size: 11};
         }
         Load::ProcTotal => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"proc_total", size: 10};
         }
         Load::Cores => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"cores", size: 5};
         }
         Load::Threads => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"threads", size: 7};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -889,19 +912,19 @@ export enum Mem {
   Available = 3,
 }
 
-export fn MemTypes (usize index) -> protonerf::FieldType {
+export fn MemUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Mem::Total => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"total", size: 5};
         }
         Mem::Free => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"free", size: 4};
         }
         Mem::Available => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"available", size: 9};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -912,22 +935,22 @@ export enum FileSystem {
   Free = 4,
 }
 
-export fn FileSystemTypes (usize index) -> protonerf::FieldType {
+export fn FileSystemUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         FileSystem::Path => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"path", size: 4};
         }
         FileSystem::Blocksize => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"blocksize", size: 9};
         }
         FileSystem::Total => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"total", size: 5};
         }
         FileSystem::Free => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"free", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -941,31 +964,31 @@ export enum Firmware {
   AndroidApiLevel = 7,
 }
 
-export fn FirmwareTypes (usize index) -> protonerf::FieldType {
+export fn FirmwareUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Firmware::Board => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"board", size: 5};
         }
         Firmware::Distro => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"distro", size: 6};
         }
         Firmware::Release => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"release", size: 7};
         }
         Firmware::Revision => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"revision", size: 8};
         }
         Firmware::Builder => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"builder", size: 7};
         }
         Firmware::Finger => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"finger", size: 6};
         }
         Firmware::AndroidApiLevel => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"android_api_level", size: 17};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -975,19 +998,19 @@ export enum NetAddress {
   Broadcast = 3,
 }
 
-export fn NetAddressTypes (usize index) -> protonerf::FieldType {
+export fn NetAddressUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         NetAddress::Addr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"addr", size: 4};
         }
         NetAddress::Mask => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"mask", size: 4};
         }
         NetAddress::Broadcast => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"broadcast", size: 9};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1013,49 +1036,50 @@ export enum Netdev {
   LinkDuplex = 13,
 }
 
-export fn NetdevTypes (usize index) -> protonerf::FieldType {
+export fn NetdevUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Netdev::Name => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"name", size: 4};
         }
         Netdev::RxPkt => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_pkt", size: 6};
         }
         Netdev::RxErr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_err", size: 6};
         }
         Netdev::TxPkt => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_pkt", size: 6};
         }
         Netdev::TxErr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_err", size: 6};
         }
         Netdev::Up => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"up", size: 2};
         }
         Netdev::Macaddr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"macaddr", size: 7};
         }
         Netdev::Mtu => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"mtu", size: 3};
         }
         Netdev::Addrs => {
-            return protonerf::FieldType::Message;
+            next->unpacker = NetAddressUnpacker;
+            return slice::slice::Slice{mem: (u8*)"addrs", size: 5};
         }
         Netdev::Link => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"link", size: 4};
         }
         Netdev::LinkChanges => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"link_changes", size: 12};
         }
         Netdev::LinkSpeed => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"link_speed", size: 10};
         }
         Netdev::LinkDuplex => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"link_duplex", size: 11};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1068,28 +1092,28 @@ export enum SwitchPort {
   None = 6,
 }
 
-export fn SwitchPortTypes (usize index) -> protonerf::FieldType {
+export fn SwitchPortUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         SwitchPort::Port => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"port", size: 4};
         }
         SwitchPort::Link => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"link", size: 4};
         }
         SwitchPort::Speed => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"speed", size: 5};
         }
         SwitchPort::Network => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"network", size: 7};
         }
         SwitchPort::Device => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"device", size: 6};
         }
         SwitchPort::None => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"none", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1098,16 +1122,17 @@ export enum Switch {
   Ports = 2,
 }
 
-export fn SwitchTypes (usize index) -> protonerf::FieldType {
+export fn SwitchUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Switch::Name => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"name", size: 4};
         }
         Switch::Ports => {
-            return protonerf::FieldType::Message;
+            next->unpacker = SwitchPortUnpacker;
+            return slice::slice::Slice{mem: (u8*)"ports", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1116,16 +1141,16 @@ export enum Bootloader {
   BootReason = 2,
 }
 
-export fn BootloaderTypes (usize index) -> protonerf::FieldType {
+export fn BootloaderUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Bootloader::ActiveSide => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"active_side", size: 11};
         }
         Bootloader::BootReason => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"boot_reason", size: 11};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1134,16 +1159,16 @@ export enum Belltower {
   Previous = 2,
 }
 
-export fn BelltowerTypes (usize index) -> protonerf::FieldType {
+export fn BelltowerUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Belltower::Current => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"current", size: 7};
         }
         Belltower::Previous => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"previous", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1161,43 +1186,52 @@ export enum Sysinfo {
   Bootloader = 11,
 }
 
-export fn SysinfoTypes (usize index) -> protonerf::FieldType {
+export fn SysinfoUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Sysinfo::Uname => {
-            return protonerf::FieldType::Message;
+            next->unpacker = UnameUnpacker;
+            return slice::slice::Slice{mem: (u8*)"uname", size: 5};
         }
         Sysinfo::Mem => {
-            return protonerf::FieldType::Message;
+            next->unpacker = MemUnpacker;
+            return slice::slice::Slice{mem: (u8*)"mem", size: 3};
         }
         Sysinfo::Load => {
-            return protonerf::FieldType::Message;
+            next->unpacker = LoadUnpacker;
+            return slice::slice::Slice{mem: (u8*)"load", size: 4};
         }
         Sysinfo::Firmware => {
-            return protonerf::FieldType::Message;
+            next->unpacker = FirmwareUnpacker;
+            return slice::slice::Slice{mem: (u8*)"firmware", size: 8};
         }
         Sysinfo::Fs => {
-            return protonerf::FieldType::Message;
+            next->unpacker = FileSystemUnpacker;
+            return slice::slice::Slice{mem: (u8*)"fs", size: 2};
         }
         Sysinfo::Net => {
-            return protonerf::FieldType::Message;
+            next->unpacker = NetdevUnpacker;
+            return slice::slice::Slice{mem: (u8*)"net", size: 3};
         }
         Sysinfo::Switch => {
-            return protonerf::FieldType::Message;
+            next->unpacker = SwitchUnpacker;
+            return slice::slice::Slice{mem: (u8*)"switch", size: 6};
         }
         Sysinfo::BoardId => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"board_id", size: 8};
         }
         Sysinfo::CarrierBuildId => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"carrier_build_id", size: 16};
         }
         Sysinfo::Belltower => {
-            return protonerf::FieldType::Message;
+            next->unpacker = BelltowerUnpacker;
+            return slice::slice::Slice{mem: (u8*)"belltower", size: 9};
         }
         Sysinfo::Bootloader => {
-            return protonerf::FieldType::Message;
+            next->unpacker = BootloaderUnpacker;
+            return slice::slice::Slice{mem: (u8*)"bootloader", size: 10};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1234,100 +1268,100 @@ export enum WifiStation {
   ConnectedTime = 30,
 }
 
-export fn WifiStationTypes (usize index) -> protonerf::FieldType {
+export fn WifiStationUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         WifiStation::Address => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"address", size: 7};
         }
         WifiStation::Inactive => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"inactive", size: 8};
         }
         WifiStation::RxBytes => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_bytes", size: 8};
         }
         WifiStation::RxPackets => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_packets", size: 10};
         }
         WifiStation::TxBytes => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_bytes", size: 8};
         }
         WifiStation::TxPackets => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_packets", size: 10};
         }
         WifiStation::TxRetries => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_retries", size: 10};
         }
         WifiStation::TxFailed => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_failed", size: 9};
         }
         WifiStation::BeaconLoss => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"beacon_loss", size: 11};
         }
         WifiStation::BeaconRx => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"beacon_rx", size: 9};
         }
         WifiStation::RxDropMisc => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_drop_misc", size: 12};
         }
         WifiStation::Signal => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"signal", size: 6};
         }
         WifiStation::SignalAvg => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"signal_avg", size: 10};
         }
         WifiStation::BeaconSignalAvg => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"beacon_signal_avg", size: 17};
         }
         WifiStation::TxBitrate => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tx_bitrate", size: 10};
         }
         WifiStation::RxBitrate => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_bitrate", size: 10};
         }
         WifiStation::RxDuration => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"rx_duration", size: 11};
         }
         WifiStation::Expected => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"expected", size: 8};
         }
         WifiStation::Authorized => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"authorized", size: 10};
         }
         WifiStation::Authenticated => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"authenticated", size: 13};
         }
         WifiStation::Associated => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"associated", size: 10};
         }
         WifiStation::Preamble => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"preamble", size: 8};
         }
         WifiStation::Wmm => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"wmm", size: 3};
         }
         WifiStation::Mfp => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"mfp", size: 3};
         }
         WifiStation::Tdls => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"tdls", size: 4};
         }
         WifiStation::Dtim => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"dtim", size: 4};
         }
         WifiStation::BeaconInterval => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"beacon_interval", size: 15};
         }
         WifiStation::ShortPreamble => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"short_preamble", size: 14};
         }
         WifiStation::ShortSlotTime => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"short_slot_time", size: 15};
         }
         WifiStation::ConnectedTime => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"connected_time", size: 14};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1341,31 +1375,32 @@ export enum WifiInterface {
   Stations = 7,
 }
 
-export fn WifiInterfaceTypes (usize index) -> protonerf::FieldType {
+export fn WifiInterfaceUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         WifiInterface::Name => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"name", size: 4};
         }
         WifiInterface::Typ => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"typ", size: 3};
         }
         WifiInterface::Phy => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"phy", size: 3};
         }
         WifiInterface::Ssid => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ssid", size: 4};
         }
         WifiInterface::Channel => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"channel", size: 7};
         }
         WifiInterface::Txpower => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"txpower", size: 7};
         }
         WifiInterface::Stations => {
-            return protonerf::FieldType::Message;
+            next->unpacker = WifiStationUnpacker;
+            return slice::slice::Slice{mem: (u8*)"stations", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1376,22 +1411,22 @@ export enum DhcpLease {
   Name = 4,
 }
 
-export fn DhcpLeaseTypes (usize index) -> protonerf::FieldType {
+export fn DhcpLeaseUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         DhcpLease::Ts => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ts", size: 2};
         }
         DhcpLease::Mac => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"mac", size: 3};
         }
         DhcpLease::Ip => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ip", size: 2};
         }
         DhcpLease::Name => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"name", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1409,28 +1444,28 @@ export enum Arp {
   Null = 6,
 }
 
-export fn ArpTypes (usize index) -> protonerf::FieldType {
+export fn ArpUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Arp::Ip => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ip", size: 2};
         }
         Arp::Hw => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"hw", size: 2};
         }
         Arp::Mac => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"mac", size: 3};
         }
         Arp::Dev => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"dev", size: 3};
         }
         Arp::Value => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"value", size: 5};
         }
         Arp::Null => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"null", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1440,19 +1475,19 @@ export enum NetRoute {
   Source = 3,
 }
 
-export fn NetRouteTypes (usize index) -> protonerf::FieldType {
+export fn NetRouteUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         NetRoute::Destination => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"destination", size: 11};
         }
         NetRoute::Gateway => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"gateway", size: 7};
         }
         NetRoute::Source => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"source", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1463,22 +1498,26 @@ export enum NetSurvey {
   Routes = 4,
 }
 
-export fn NetSurveyTypes (usize index) -> protonerf::FieldType {
+export fn NetSurveyUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         NetSurvey::Wifi => {
-            return protonerf::FieldType::Message;
+            next->unpacker = WifiInterfaceUnpacker;
+            return slice::slice::Slice{mem: (u8*)"wifi", size: 4};
         }
         NetSurvey::Dhcp => {
-            return protonerf::FieldType::Message;
+            next->unpacker = DhcpLeaseUnpacker;
+            return slice::slice::Slice{mem: (u8*)"dhcp", size: 4};
         }
         NetSurvey::Arp => {
-            return protonerf::FieldType::Message;
+            next->unpacker = ArpUnpacker;
+            return slice::slice::Slice{mem: (u8*)"arp", size: 3};
         }
         NetSurvey::Routes => {
-            return protonerf::FieldType::Message;
+            next->unpacker = NetRouteUnpacker;
+            return slice::slice::Slice{mem: (u8*)"routes", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1488,19 +1527,19 @@ export enum LocationAccuracity {
   Pdop = 3,
 }
 
-export fn LocationAccuracityTypes (usize index) -> protonerf::FieldType {
+export fn LocationAccuracityUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         LocationAccuracity::Hdop => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"hdop", size: 4};
         }
         LocationAccuracity::Vdop => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"vdop", size: 4};
         }
         LocationAccuracity::Pdop => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"pdop", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1520,28 +1559,28 @@ export enum Satellite {
   Fix = 6,
 }
 
-export fn SatelliteTypes (usize index) -> protonerf::FieldType {
+export fn SatelliteUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Satellite::Constellation => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"constellation", size: 13};
         }
         Satellite::Prn => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"prn", size: 3};
         }
         Satellite::Elevation => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"elevation", size: 9};
         }
         Satellite::Azimuth => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"azimuth", size: 7};
         }
         Satellite::Snr => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"snr", size: 3};
         }
         Satellite::Fix => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"fix", size: 3};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1550,16 +1589,16 @@ export enum LocationVelocity {
   Speed = 2,
 }
 
-export fn LocationVelocityTypes (usize index) -> protonerf::FieldType {
+export fn LocationVelocityUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         LocationVelocity::Course => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"course", size: 6};
         }
         LocationVelocity::Speed => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"speed", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1585,31 +1624,34 @@ export enum Location {
   Velocity = 7,
 }
 
-export fn LocationTypes (usize index) -> protonerf::FieldType {
+export fn LocationUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Location::Latitude => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"latitude", size: 8};
         }
         Location::Longitude => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"longitude", size: 9};
         }
         Location::Altitude => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"altitude", size: 8};
         }
         Location::Fix => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"fix", size: 3};
         }
         Location::Accuracity => {
-            return protonerf::FieldType::Message;
+            next->unpacker = LocationAccuracityUnpacker;
+            return slice::slice::Slice{mem: (u8*)"accuracity", size: 10};
         }
         Location::Satellites => {
-            return protonerf::FieldType::Message;
+            next->unpacker = SatelliteUnpacker;
+            return slice::slice::Slice{mem: (u8*)"satellites", size: 10};
         }
         Location::Velocity => {
-            return protonerf::FieldType::Message;
+            next->unpacker = LocationVelocityUnpacker;
+            return slice::slice::Slice{mem: (u8*)"velocity", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1624,19 +1666,19 @@ export enum Sensor {
   Value = 3,
 }
 
-export fn SensorTypes (usize index) -> protonerf::FieldType {
+export fn SensorUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Sensor::Name => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"name", size: 4};
         }
         Sensor::Vtype => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"vtype", size: 5};
         }
         Sensor::Value => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"value", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1644,27 +1686,28 @@ export enum Sensors {
   Sensors = 1,
 }
 
-export fn SensorsTypes (usize index) -> protonerf::FieldType {
+export fn SensorsUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         Sensors::Sensors => {
-            return protonerf::FieldType::Message;
+            next->unpacker = SensorUnpacker;
+            return slice::slice::Slice{mem: (u8*)"sensors", size: 7};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
-export fn NoneTypes (usize index) -> protonerf::FieldType {
+export fn NoneUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
-export fn AuthorizationGetTypes (usize index) -> protonerf::FieldType {
+export fn AuthorizationGetUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1673,16 +1716,16 @@ export enum AuthorizationAdd {
   Path = 2,
 }
 
-export fn AuthorizationAddTypes (usize index) -> protonerf::FieldType {
+export fn AuthorizationAddUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         AuthorizationAdd::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
         AuthorizationAdd::Path => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"path", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1690,13 +1733,13 @@ export enum AuthorizationDel {
   Identity = 1,
 }
 
-export fn AuthorizationDelTypes (usize index) -> protonerf::FieldType {
+export fn AuthorizationDelUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         AuthorizationDel::Identity => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"identity", size: 8};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1704,13 +1747,13 @@ export enum InteractiveAuth {
   Otp = 1,
 }
 
-export fn InteractiveAuthTypes (usize index) -> protonerf::FieldType {
+export fn InteractiveAuthUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         InteractiveAuth::Otp => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"otp", size: 3};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1718,20 +1761,20 @@ export enum NetworkJoin {
   Secret = 1,
 }
 
-export fn NetworkJoinTypes (usize index) -> protonerf::FieldType {
+export fn NetworkJoinUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         NetworkJoin::Secret => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"secret", size: 6};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
-export fn NetworkGetTypes (usize index) -> protonerf::FieldType {
+export fn NetworkGetUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1740,16 +1783,16 @@ export enum ConfigResult {
   Error = 2,
 }
 
-export fn ConfigResultTypes (usize index) -> protonerf::FieldType {
+export fn ConfigResultUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         ConfigResult::Ok => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"ok", size: 2};
         }
         ConfigResult::Error => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"error", size: 5};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1757,13 +1800,14 @@ export enum AuthListResult {
   Auth = 1,
 }
 
-export fn AuthListResultTypes (usize index) -> protonerf::FieldType {
+export fn AuthListResultUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         AuthListResult::Auth => {
-            return protonerf::FieldType::Message;
+            next->unpacker = AuthorizationAddUnpacker;
+            return slice::slice::Slice{mem: (u8*)"auth", size: 4};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
@@ -1771,65 +1815,111 @@ export enum NetworkGetResult {
   Address = 2,
 }
 
-export fn NetworkGetResultTypes (usize index) -> protonerf::FieldType {
+export fn NetworkGetResultUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         NetworkGetResult::Address => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"address", size: 7};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
 export enum GenesisCurrent {
-  Sha256 = 1,
-  Commitmsg = 2,
-  Stable = 3,
-  Contentsize = 4,
+  Sha256 = 1001,
+  Commitmsg = 1002,
+  Stable = 1003,
+  Contentsize = 1004,
 }
 
-export fn GenesisCurrentTypes (usize index) -> protonerf::FieldType {
+export fn GenesisCurrentUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         GenesisCurrent::Sha256 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"sha256", size: 6};
         }
         GenesisCurrent::Commitmsg => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"commitmsg", size: 9};
         }
         GenesisCurrent::Stable => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"stable", size: 6};
         }
         GenesisCurrent::Contentsize => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"contentsize", size: 11};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
 }
 
 
 export enum GenesisUpdate {
-  Sha256 = 1,
-  Commitmsg = 2,
-  Parent = 3,
-  Contentsize = 4,
+  Sha256 = 1001,
+  Commitmsg = 1002,
+  Parent = 1003,
+  Contentsize = 1004,
 }
 
-export fn GenesisUpdateTypes (usize index) -> protonerf::FieldType {
+export fn GenesisUpdateUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
     switch index {
         GenesisUpdate::Sha256 => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"sha256", size: 6};
         }
         GenesisUpdate::Commitmsg => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"commitmsg", size: 9};
         }
         GenesisUpdate::Parent => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"parent", size: 6};
         }
         GenesisUpdate::Contentsize => {
-            return protonerf::FieldType::Message;
+            return slice::slice::Slice{mem: (u8*)"contentsize", size: 11};
         }
     }
-    return protonerf::FieldType::Skip;
+    return slice::slice::Slice{mem: 0}; 
+}
+
+
+export enum OpenHeader__Method {
+  Invalid = 0,
+  Get = 1,
+  Head = 2,
+  Post = 3,
+  Put = 4,
+  Delete = 5,
+  Patch = 6,
+}
+
+export enum OpenHeader {
+  Path = 2,
+  Method = 3,
+}
+
+export fn OpenHeaderUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
+    switch index {
+        OpenHeader::Path => {
+            return slice::slice::Slice{mem: (u8*)"path", size: 4};
+        }
+        OpenHeader::Method => {
+            return slice::slice::Slice{mem: (u8*)"method", size: 6};
+        }
+    }
+    return slice::slice::Slice{mem: 0}; 
+}
+
+
+export enum ResponseHeader {
+  Status = 1,
+  Error = 3,
+}
+
+export fn ResponseHeaderUnpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {
+    switch index {
+        ResponseHeader::Status => {
+            return slice::slice::Slice{mem: (u8*)"status", size: 6};
+        }
+        ResponseHeader::Error => {
+            return slice::slice::Slice{mem: (u8*)"error", size: 5};
+        }
+    }
+    return slice::slice::Slice{mem: 0}; 
 }
 
 

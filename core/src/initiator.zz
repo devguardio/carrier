@@ -324,7 +324,7 @@ pub fn complete (
     pp = pp + 8;
 
 
-    //check handshake signature
+    //check handshakesignature
     u8 mut signme[static(len(endpoint::SIGN_PURPOSE) - 1) + static(len(((self->noise).symm).h))] = {0};
     mem::copy(endpoint::SIGN_PURPOSE, signme, buffer::strlen(endpoint::SIGN_PURPOSE));
     u8 mut* mm = signme + buffer::strlen(endpoint::SIGN_PURPOSE);
@@ -357,14 +357,18 @@ pub fn complete (
 
 
     // move instructions
+    u16 mut instruction_len = 0;
     if flag_mov  && redirect != 0 {
         static_attest(safe(redirect));
 
-        u16 mut instruction_len = 0;
         memcpy(&instruction_len, pp, 2);
         instruction_len = byteorder::from_be16(instruction_len);
         pp = pp + 2;
 
+        if instruction_len > 512 {
+            err::fail(e, channel::InvalidFrame, "oversized instruction");
+            return;
+        }
 
         if cleartext_len < 32 + 2 + 8 + 2 + (usize)instruction_len {
             err::fail(e, channel::InvalidFrame, "too small");
@@ -374,6 +378,7 @@ pub fn complete (
 
         new+300 movinstr = buffer::make();
         movinstr.append_bytes(pp, (usize)instruction_len);
+        pp = pp + instruction_len;
 
         if bootstrap::parse_record(&movinstr, redirect) {
             //log::debug("cluster move %.*s", (int)movinstr.len, movinstr.mem);
@@ -381,9 +386,22 @@ pub fn complete (
         }
     }
 
+
+    // has revision ?
+    u32 mut rev = 0;
+    if cleartext_len >= 32 + 2 + 8 + 2  + 4 + (usize)instruction_len {
+        memcpy(&rev, pp, 4);
+        rev = byteorder::from_be32(rev);
+        pp = pp + 4;
+    }
+
+    log::info("responder revision %u", rev);
+
+
     *chan = channel::transfer_from_symmetric(
         &self->noise.symm,
         version,
+        rev,
         route,
         false
     );

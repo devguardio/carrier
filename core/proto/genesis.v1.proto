@@ -4,15 +4,15 @@ option go_package = ".;protos";
 package genesis.v2;
 
 message GenesisCurrent {
-    bytes   sha256      = 1;
-    string  commitmsg   = 2;
-    bool    stable      = 3;
-    uint64  contentsize = 4;
+    bytes   sha256      = 1001;
+    string  commitmsg   = 1002;
+    bool    stable      = 1003;
+    uint64  contentsize = 1004;
 }
 
 message GenesisUpdate {
-    bytes   sha256      = 1;
-    string  commitmsg   = 2;
-    bytes   parent      = 3;
-    uint64  contentsize = 4;
+    bytes   sha256      = 1001;
+    string  commitmsg   = 1002;
+    bytes   parent      = 1003;
+    uint64  contentsize = 1004;
 }

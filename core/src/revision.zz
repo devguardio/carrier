@@ -28,3 +28,9 @@ export fn build_id() -> char *
     static_attest(safe(r));
     return r;
 }
+
+
+
+
+/// revision since switching to protopack
+export const u32 REV_PROTOPACK = 135;

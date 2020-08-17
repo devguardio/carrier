@@ -15,6 +15,8 @@ using <unistd.h>::{write};
 using buffer;
 using hpack;
 using <stdlib.h>::{atoi};
+using proto;
+using madpack;
 
 fn stream_usage() -> int {
     fprintf(stderr, "USAGE:\n    carrier stream [OPTIONS] <target> <path>\n");
@@ -68,12 +70,20 @@ pub fn cmd(usize mut argc, char ** argv) -> int
     mx.connect(&e, &target);
     e.abort();
 
-    stream::Config config = stream::Config {
+    stream::Config mut config = stream::Config {
         path:       arg_path,
         close:      out_close,
-        stream:     out_stream,
+        stream:     out_stream_v2,
         poll:       out_poll,
     };
+
+    if buffer::strlen(arg_path) > 2 {
+        if arg_path[0] == '/' && arg_path[1] == 'v' && arg_path[2] == '3' {
+            config.stream = out_stream_v3;
+        }
+    }
+
+
 
     stream::Stream mut* streami = mx.chan->open(&e, &config);
     e.abort();
@@ -150,7 +160,7 @@ fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
 
 export symbol OpenResponse;
 
-fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn out_stream_v2(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -176,6 +186,50 @@ fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> 
             return true;
         }
         return true;
+    } else {
+        if msg.size < 1 ||  msg.size > 0xffffff {
+            return true;
+        }
+        write(1, msg.mem , msg.size);
+        return true;
+    }
+}
+
+fn out_stream_v3(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+    where err::checked(*e)
+    where slice::slice::integrity(&msg)
+{
+    if self->state == 0 {
+        self->state = 1;
+
+        u64 mut code = 0;
+        new+10 it = madpack::decode(msg);
+        it.spec(proto::OpenHeaderUnpacker);
+        while it.next(e) {
+            if it.key.eq_cstr("status") {
+                code = it.value.v_uint;
+            }
+        }
+        if err::check(e) { return true; }
+
+        if code != 200 {
+            new+10 it = madpack::decode(msg);
+            it.spec(proto::OpenHeaderUnpacker);
+            fprintf(stderr, "[");
+            while it.next(e) {
+                it.dump(stderr);
+                fprintf(stderr, " ");
+            }
+            fprintf(stderr, "]\n");
+            if err::check(e) { return true; }
+
+            err::fail(e, OpenResponse, "remote channel not accepted");
+            e->abort();
+            self->close();
+            return true;
+        }
+        return true;
+
     } else {
         if msg.size < 1 ||  msg.size > 0xffffff {
             return true;

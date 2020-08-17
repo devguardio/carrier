@@ -2,6 +2,8 @@
 use std::io::Read;
 use pest::Parser;
 use heck::CamelCase;
+use heck::SnakeCase;
+use std::collections::HashSet;
 
 #[derive(Parser)]
 #[grammar = "proto.pest"]
@@ -60,7 +62,24 @@ fn main() {
     let mut file_str = String::new();
     f.read_to_string(&mut file_str).expect(&format!("read {:?}", filename));
     let file_str = Box::leak(Box::new(file_str));
+
+    // collect all possible messages
+    let mut message_names = HashSet::new();
     let file = ProtoParser::parse(Rule::file, file_str).expect("parse error").next().unwrap().into_inner();
+    for p in file {
+        match p.as_rule() {
+            Rule::message => {
+                let mut p = p.into_inner();
+                let name = p.next().unwrap().as_str().to_string();
+                message_names.insert(name);
+            }
+            _ => {},
+        }
+    }
+
+
+    let file = ProtoParser::parse(Rule::file, file_str).expect("parse error").next().unwrap().into_inner();
+
     for p in file {
         match p.as_rule() {
             Rule::message => {
@@ -90,24 +109,65 @@ fn main() {
                     }
                     println!("}}\n");
                 }
+
+
+
+
+                println!("export fn {}Unpacker(usize index, madpack::UnpackSpec mut *next) -> slice::slice::Slice {{", name);
+                println!("    switch index {{");
+                for (repeated, typ, fieldname, val) in &fields {
+
+                    println!("        {}::{} => {{", name, fieldname);
+                    if message_names.contains(typ) {
+                        match typ.as_str() {
+                            "Double"    => {},
+                            "Float"     => {},
+                            "Int32"     => {},
+                            "Uint32"    => {},
+                            "Int64"     => {},
+                            "Uint64"    => {},
+                            "Fixed32"   => {},
+                            "Sfixed32"  => {},
+                            "Fixed64"   => {},
+                            "Sfixed64"  => {},
+                            "String"    => {},
+                            "Bytes"     => {},
+                            "Bool"      => {},
+                            o           => println!("            next->unpacker = {}Unpacker;", o),
+                        };
+                    }
+                    let fieldname = fieldname.to_snake_case();
+                    println!("            return slice::slice::Slice{{mem: (u8*)\"{}\", size: {}}};",
+                             fieldname, fieldname.as_bytes().len(),
+                    );
+                    println!("        }}");
+                }
+                println!("    }}");
+                println!("    return slice::slice::Slice{{mem: 0}}; ");
+                println!("}}\n\n");
+
+
+
+
+                /*
                 println!("export fn {}Types (usize index) -> protonerf::FieldType {{", name);
                 println!("    switch index {{");
                 for (repeated, typ, fieldname, val) in &fields {
                     println!("        {}::{} => {{", name, fieldname);
                     let ztype = match typ.as_str() {
-                        "double"    => "Double",
-                        "float"     => "Float",
-                        "int32"     => "Sint32",
-                        "uint32"    => "Uint32",
-                        "int64"     => "Sint64",
-                        "uint64"    => "Uint64",
-                        "fixed32"   => "Fixed32",
-                        "sfixed32"  => "Sfixed32",
-                        "fixed64"   => "Fixed64",
-                        "sfixed64"  => "Sfixed64",
-                        "string"    => "String",
-                        "bytes"     => "Bytes",
-                        "bool"      => "Bool",
+                        "Double"    => "Double",
+                        "Float"     => "Float",
+                        "Int32"     => "Sint32",
+                        "Uint32"    => "Uint32",
+                        "Int64"     => "Sint64",
+                        "Uint64"    => "Uint64",
+                        "Fixed32"   => "Fixed32",
+                        "Sfixed32"  => "Sfixed32",
+                        "Fixed64"   => "Fixed64",
+                        "Sfixed64"  => "Sfixed64",
+                        "String"    => "String",
+                        "Bytes"     => "Bytes",
+                        "Bool"      => "Bool",
                         _           => "Message",
                     };
                     println!("            return protonerf::FieldType::{};", ztype);
@@ -116,6 +176,7 @@ fn main() {
                 println!("    }}");
                 println!("    return protonerf::FieldType::Skip;");
                 println!("}}\n\n");
+                */
             },
             _ => {}
         }

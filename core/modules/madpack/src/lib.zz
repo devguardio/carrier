@@ -1,0 +1,755 @@
+using <stdio.h>::{printf, fread, stdin, stderr, fprintf, FILE};
+using <stdlib.h>::{atoi};
+using <string.h>::{strcmp, memset, memcpy};
+using err;
+using buffer;
+using slice;
+using mem;
+using byteorder;
+
+export symbol DecodingError;
+
+
+export closure Unpacker(usize index, UnpackSpec mut *next) -> slice::slice::Slice;
+export struct UnpackSpec
+{
+    Unpacker mut unpacker;
+}
+
+export struct Stack {
+    bool        ismap;
+    usize       mut items;
+    bool        skip;
+
+    UnpackSpec  spec;
+    UnpackSpec  next_spec;
+}
+
+export struct Decoder+ {
+    slice::slice::Slice key;
+    ItemType   item;
+    Value      value;
+
+    buffer::Buffer+50   mut conv;
+    MsgpackDecoder    mut m;
+
+    usize               mut stackat;
+    Stack               mut stack[];
+}
+
+export fn decode(Decoder+t new mut *self,  slice::slice::Slice sl)
+    where slice::slice::integrity(&sl)
+    where t > 0
+{
+    mem::zero(self);
+    msgpackdecode(&self->m, sl);
+    self->stackat = 0;
+
+    Stack mut * cur = self->stack + self->stackat;
+    mem::zero(cur);
+
+    // root is always a map
+    cur->ismap = true;
+}
+
+export fn spec(Decoder+t new mut *self, Unpacker spec) {
+    static_attest(self->stackat < len (self->stack));
+    Stack mut * cur = self->stack + self->stackat;
+    cur->spec.unpacker = spec;
+}
+
+export fn descend(Decoder+t new mut *self)
+{
+    static_attest(self->stackat < len (self->stack));
+    Stack mut * cur = self->stack + self->stackat;
+    cur->skip = false;
+}
+
+export fn skip(Decoder mut *self, err::Err+et mut *e, usize count)
+    where err::checked(*e)
+{
+    for (usize mut i = 0; i < count; i++) {
+        if !msgnext(&self->m, e) {
+            return;
+        }
+        if err::check(e) { return; }
+        if self->m.item == ItemType::Array {
+            skip(self, e, self->m.value.v_len);
+            if err::check(e) { return; }
+        } else if self->m.item == ItemType::Map {
+            skip(self, e, self->m.value.v_len * 2);
+            if err::check(e) { return; }
+        }
+    }
+}
+
+export fn next(Decoder+t mut *self, err::Err+et mut *e) -> bool
+    where err::checked(*e)
+    model slice::slice::integrity(&self->key)
+{
+    static_attest(slice::slice::integrity(&self->key));
+    static_attest(self->stackat < len (self->stack));
+    Stack mut * cur = self->stack + self->stackat;
+
+    if cur->skip {
+        if cur->ismap {
+            skip(self, e, cur->items * 2);
+        } else {
+            skip(self, e, cur->items);
+        }
+        if err::check(e) { return false; }
+        self->stackat -= 1;
+        return next(self, e);
+    }
+
+    if cur->items == 0 && self->stackat > 0 {
+        self->stackat -= 1;
+        return next(self, e);
+    }
+
+    if cur->ismap {
+        if !msgnext(&self->m, e) {
+            return false;
+        }
+        if err::check(e) { return false; }
+        switch self->m.item {
+            ItemType::Nil => {
+                e->fail(DecodingError, "unexpected nil as key");
+                return false;
+            }
+            ItemType::Map => {
+                e->fail(DecodingError, "unexpected map as key");
+                return false;
+            }
+            ItemType::Array => {
+                e->fail(DecodingError, "unexpected array as key");
+                return false;
+            }
+            ItemType::Bool => {
+                if self->m.value.v_bool {
+                    self->key = slice::slice::Slice{mem: (u8*)"true", size: 4};
+                } else {
+                    self->key = slice::slice::Slice{mem: (u8*)"false", size: 5};
+                }
+            }
+            ItemType::Str , ItemType::Bin => {
+                self->key = self->m.value.v_slice;
+            }
+            ItemType::Uint => {
+
+                bool mut ok = false;
+                if cur->spec.unpacker.fn != 0 {
+                    static_attest(safe(cur->spec.unpacker));
+                    let mapped_key = cur->spec.unpacker(self->m.value.v_uint, &cur->next_spec);
+                    if mapped_key.mem != 0 {
+                        self->key = mapped_key;
+                        ok = true;
+                    }
+                }
+                if !ok {
+                    self->conv.clear();
+                    self->conv.format("%llu", self->m.value.v_uint);
+                    self->key = self->conv.as_slice();
+                }
+            }
+            ItemType::Sint => {
+                self->conv.clear();
+                self->conv.format("%lld", self->m.value.v_sint);
+                self->key = self->conv.as_slice();
+            }
+            ItemType::Float => {
+                self->conv.clear();
+                self->conv.format("%f", self->m.value.v_float);
+                self->key = self->conv.as_slice();
+            }
+        }
+    }
+
+    if !msgnext(&self->m, e) {
+        return false;
+    }
+    if err::check(e) { return false; }
+    self->item  = self->m.item;
+    self->value = self->m.value;
+
+    if cur->items > 0 {
+        cur->items -= 1;
+    }
+
+    switch self->item {
+        ItemType::Map , ItemType::Array => {
+            if self->stackat + 1 >= t {
+                skip(self, e, self->m.value.v_len);
+                if err::check(e) { return false; }
+                return next(self, e);
+            } else {
+                self->stackat+=1;
+                static_attest(self->stackat < len (self->stack));
+
+                Stack mut * nn = self->stack + self->stackat;
+                mem::zero(nn);
+                nn->ismap = self->item == ItemType::Map;
+                nn->items = self->m.value.v_len;
+                nn->skip  = true;
+                nn->spec = cur->next_spec;
+            }
+        }
+        default => {
+        }
+    }
+
+    return true;
+}
+
+
+export fn dump(Decoder+t mut *self, FILE mut * unsafe fd)
+{
+    static_attest(slice::slice::integrity(&self->key));
+    static_attest(self->stackat < len (self->stack));
+    Stack mut * cur = self->stack + self->stackat;
+
+    if cur->ismap {
+        printf("\"%.*s\": ", self->key.size, self->key.mem);
+
+    }
+
+    switch self->item {
+        ItemType::Nil => {
+            fprintf(fd, "null");
+        }
+        ItemType::Map => {
+            printf("{");
+        }
+        ItemType::Array => {
+            printf("[");
+        }
+        ItemType::Bool => {
+            if self->value.v_bool {
+                printf("true");
+            } else {
+                printf("false");
+            }
+        }
+        ItemType::Str => {
+            printf("\"%.*s\"", self->value.v_slice.size, self->value.v_slice.mem);
+        }
+        ItemType::Bin => {
+            printf("\"<bin %zu>\"", self->value.v_len);
+        }
+        ItemType::Uint => {
+            printf("%llu", self->value.v_uint);
+        }
+        ItemType::Sint => {
+            printf("%lld", self->value.v_sint);
+        }
+        ItemType::Float => {
+            printf("%f", self->value.v_float);
+        }
+    }
+}
+
+
+
+
+using <string.h>::{memmove};
+
+export fn write_uint(slice::mut_slice::MutSlice mut sl, u64  val) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if val <= 0x7f {
+        return sl.push((u8)val);
+    } else if val <= 255 {
+        return sl.push(0xcc) && sl.push((u8)val);
+    } else if val <=  65535 {
+        return sl.push(0xcd) && sl.push16(byteorder::to_be16((u16)val));
+    } else if val <=  4294967295{
+        return sl.push(0xce) && sl.push32(byteorder::to_be32((u32)val));
+    } else {
+        return sl.push(0xcf) && sl.push64(byteorder::to_be64(val));
+    }
+}
+
+export fn write_sint(slice::mut_slice::MutSlice mut sl, i64 mut val) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if val >= 0 {
+        return write_uint(sl, (u64)val);
+    } else if val >= -32 {
+        return sl.push((u8)((i8)val));
+    } else if val >= -128 {
+        return sl.push(0xd0) && sl.push((u8)((i8)val));
+    } else if val >= -32768 {
+        return sl.push(0xd1) && sl.push16(byteorder::to_be16((u16)((i16)val)));
+    } else if val >=  -2147483648 {
+        return sl.push(0xd2) && sl.push32(byteorder::to_be16((u32)((i32)val)));
+    } else {
+        return sl.push(0xd3) && sl.push64(byteorder::to_be64((u64)val));
+    }
+}
+
+export fn write_f32(slice::mut_slice::MutSlice mut sl, f32  val) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    return sl.push(0xca) && sl.push32(val);
+}
+
+export fn write_f64(slice::mut_slice::MutSlice mut sl, f64  val) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    return sl.push(0xcb) && sl.push64(val);
+}
+
+export fn write_nil(slice::mut_slice::MutSlice mut sl) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    return sl.push(0xc0);
+}
+
+export fn write_bool(slice::mut_slice::MutSlice mut sl, bool val) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if val {
+        return sl.push(0xc3);
+    } else {
+        return sl.push(0xc2);
+    }
+}
+
+export fn start_map(slice::mut_slice::MutSlice mut sl, usize count) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if count <= 15 {
+        return sl.push(0b10000000 | (u8)count);
+    } else if count <= 65535 {
+        return sl.push(0xde) && sl.push16(byteorder::to_be16(count));
+    } else {
+        return sl.push(0xdf) && sl.push32(byteorder::to_be32(count));
+    }
+}
+
+export fn start_array(slice::mut_slice::MutSlice mut sl, usize count) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if count <= 15 {
+        return sl.push(0b10010000 | (u8)count);
+    } else if count <= 65535 {
+        return sl.push(0xdc) && sl.push16(byteorder::to_be16(count));
+    } else {
+        return sl.push(0xdd) && sl.push32(byteorder::to_be32(count));
+    }
+}
+
+export fn start_str(slice::mut_slice::MutSlice mut sl, usize count) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if count <= 31 {
+        return sl.push(0b10100000 | (u8)count);
+    } else if count <= 255 {
+        return sl.push(0xd9) && sl.push(count);
+    } else if count <= 65535 {
+        return sl.push(0xda) && sl.push16(byteorder::to_be16(count));
+    } else {
+        return sl.push(0xdb) && sl.push32(byteorder::to_be32(count));
+    }
+}
+
+export fn write_str(slice::mut_slice::MutSlice mut sl, char *str) -> bool
+    where slice::mut_slice::integrity(&sl)
+    where nullterm(str)
+{
+    return start_str(sl, buffer::strlen(str)) && sl.append_cstr(str);
+}
+
+
+export fn start_bin(slice::mut_slice::MutSlice mut sl, usize count) -> bool
+    where slice::mut_slice::integrity(&sl)
+{
+    if count <= 255 {
+        return sl.push(0xc4) && sl.push(count);
+    } else if count <= 65535 {
+        return sl.push(0xc5) && sl.push16(byteorder::to_be16(count));
+    } else {
+        return sl.push(0xc6) && sl.push32(byteorder::to_be32(count));
+    }
+}
+
+
+
+export enum ItemType {
+    Invalid,
+    Nil,
+    Bool,
+    Uint,
+    Sint,
+    Float,
+    Bin,
+    Str,
+    Map,
+    Array,
+}
+
+export union Value {
+    usize           v_len;
+    bool            v_bool;
+    f64             v_float;
+    u64             v_uint;
+    i64             v_sint;
+    slice::Slice    v_slice;
+}
+
+export struct MsgpackDecoder
+{
+    slice::Slice sl;
+    usize at;
+    usize skip_value;
+
+    ItemType    item;
+    Value       value;
+}
+
+export fn msgpackdecode(MsgpackDecoder mut new *self, slice::Slice sl)
+    where slice::slice::integrity(&sl)
+{
+    self->sl = sl;
+    self->at = 0;
+}
+
+export fn msgnext(MsgpackDecoder mut *self, err::Err+et mut *e) -> bool
+    where err::checked(*e)
+{
+    static_attest(slice::slice::integrity(&self->sl));
+
+    if self->skip_value > 0 {
+        unsafe { self->at += self->skip_value; }
+        self->skip_value = 0;
+    }
+
+    if self->at >= self->sl.size {
+        return false;
+    }
+
+
+    u8 c = self->sl.mem[self->at];
+    switch c {
+        0xc0 => {
+            self->item = ItemType::Nil;
+            self->at += 1;
+        }
+        0xc2 => {
+            self->item = ItemType::Bool;
+            self->at += 1;
+            self->value.v_bool = false;
+        }
+        0xc3 => {
+            self->item = ItemType::Bool;
+            self->at += 1;
+            self->value.v_bool = true;
+        }
+
+        // bin
+        0xc4 => {
+            self->item = ItemType::Bin;
+            if self->at + 1 >= self->sl.size || self->at + 2 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            self->at += 1;
+            self->skip_value = (usize)self->sl.mem[self->at];
+            self->at += 1;
+
+            self->value.v_slice = slice::slice::Slice {
+                mem:  unsafe<u8*>(self->sl.mem + self->at),
+                size: self->skip_value,
+            };
+        }
+        0xc5 => {
+            self->item = ItemType::Bin;
+            if self->at + 1 >= self->sl.size || self->at + 3 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u16 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 2);
+            self->skip_value = (usize)byteorder::from_be16(x);
+            self->at += 3;
+
+            self->value.v_slice = slice::slice::Slice {
+                mem:  unsafe<u8*>(self->sl.mem + self->at),
+                size: self->skip_value,
+            };
+        }
+        0xc6 => {
+            self->item = ItemType::Bin;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            self->skip_value = (usize)byteorder::from_be32(x);
+            self->at += 5;
+
+            self->value.v_slice = slice::slice::Slice {
+                mem:  unsafe<u8*>(self->sl.mem + self->at),
+                size: self->skip_value,
+            };
+        }
+
+        // str
+        0xd9 => {
+            self->item = ItemType::Str;
+            if self->at + 1 >= self->sl.size || self->at + 2 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            self->at += 1;
+            self->skip_value = (usize)self->sl.mem[self->at];
+            self->at += 1;
+
+            self->value.v_slice = slice::slice::Slice {
+                mem:  unsafe<u8*>(self->sl.mem + self->at),
+                size: self->skip_value,
+            };
+        }
+        0xda => {
+            self->item = ItemType::Str;
+            if self->at + 1 >= self->sl.size || self->at + 3 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u16 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 2);
+            self->skip_value = (usize)byteorder::from_be16(x);
+            self->at += 3;
+
+            self->value.v_slice = slice::slice::Slice {
+                mem:  unsafe<u8*>(self->sl.mem + self->at),
+                size: self->skip_value,
+            };
+        }
+        0xdb => {
+            self->item = ItemType::Str;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            self->skip_value = (usize)byteorder::from_be32(x);
+            self->at += 5;
+
+            self->value.v_slice = slice::slice::Slice {
+                mem:  unsafe<u8*>(self->sl.mem + self->at),
+                size: self->skip_value,
+            };
+        }
+
+        //float
+        0xca => {
+            self->item = ItemType::Float;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            x  = byteorder::from_be32(x);
+            f32 mut xf = 0;
+            memmove(&xf, &x, 4);
+
+            self->value.v_float = (f64)xf;
+            self->at += 5;
+        }
+        0xcb => {
+            self->item = ItemType::Float;
+            if self->at + 1 >= self->sl.size || self->at + 9 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u64 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 8);
+            self->value.v_uint = byteorder::from_be64(x);
+            self->at += 9;
+        }
+
+        // uint
+        0xcc => {
+            self->item = ItemType::Uint;
+            if self->at + 1 >= self->sl.size || self->at + 2 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u8 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 1);
+            self->value.v_uint = (u64)x;
+            self->at += 2;
+        }
+        0xcd => {
+            self->item = ItemType::Uint;
+            if self->at + 1 >= self->sl.size || self->at + 3 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u16 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 2);
+            self->value.v_uint = (u64)byteorder::from_be16(x);
+            self->at += 3;
+        }
+        0xce => {
+            self->item = ItemType::Uint;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            self->value.v_uint = (u64)byteorder::from_be32(x);
+            self->at += 5;
+        }
+        0xcf => {
+            self->item = ItemType::Uint;
+            if self->at + 1 >= self->sl.size || self->at + 9 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u64 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 8);
+            self->value.v_uint = (u64)byteorder::from_be64(x);
+            self->at += 9;
+        }
+
+        //sint
+        0xd0 => {
+            self->item = ItemType::Sint;
+            if self->at + 1 >= self->sl.size || self->at + 2 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            i8 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 1);
+            self->value.v_sint = (i64)((i8)x);
+            self->at += 2;
+        }
+        0xd1 => {
+            self->item = ItemType::Sint;
+            if self->at + 1 >= self->sl.size || self->at + 3 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            i16 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 2);
+            self->value.v_sint = (i64)((i16)byteorder::from_be16(x));
+            self->at += 3;
+        }
+        0xd2 => {
+            self->item = ItemType::Sint;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            i32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            self->value.v_sint = (i64)((i32)byteorder::from_be32(x));
+            self->at += 5;
+        }
+        0xd3 => {
+            self->item = ItemType::Sint;
+            if self->at + 1 >= self->sl.size || self->at + 9 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            i64 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 8);
+            self->value.v_sint = (i64)byteorder::from_be64(x);
+            self->at += 9;
+        }
+
+        //array
+        0xdc => {
+            self->item = ItemType::Array;
+            if self->at + 1 >= self->sl.size || self->at + 3 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u16 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 2);
+            self->value.v_len = (usize)byteorder::from_be16(x);
+            self->at += 3;
+        }
+        0xdd => {
+            self->item = ItemType::Array;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            self->value.v_len = (usize)byteorder::from_be32(x);
+            self->at += 5;
+        }
+
+        //map
+        0xde => {
+            self->item = ItemType::Map;
+            if self->at + 1 >= self->sl.size || self->at + 3 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u16 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 2);
+            self->value.v_len = (usize)byteorder::from_be16(x);
+            self->at += 3;
+        }
+        0xdf => {
+            self->item = ItemType::Map;
+            if self->at + 1 >= self->sl.size || self->at + 5 > self->sl.size {
+                e->fail(DecodingError, "short read");
+                return false;
+            }
+            u32 mut x = 0;
+            memmove(&x, self->sl.mem + self->at + 1, 4);
+            self->value.v_len = (usize)byteorder::from_be32(x);
+            self->at += 5;
+        }
+        default => {
+            if c >= 0x00 && c <= 0x7f {
+                self->item = ItemType::Uint;
+                self->value.v_uint = (u64)c;
+                self->at += 1;
+            } else if c >= 0x80 && c <= 0x8f {
+                self->item = ItemType::Map;
+                self->value.v_len = (usize)(c & 0b00001111);
+                self->at += 1;
+            } else if c >= 0x90 && c <= 0x9f {
+                self->item = ItemType::Array;
+                self->value.v_len = (usize)(c & 0b00001111);
+                self->at += 1;
+            } else if c >= 0xa0 && c <= 0xbf {
+                self->item = ItemType::Str;
+                self->skip_value = (usize)(c & 0b00011111);
+                self->at += 1;
+
+                self->value.v_slice = slice::slice::Slice {
+                    mem:  unsafe<u8*>(self->sl.mem + self->at),
+                    size: self->skip_value,
+                };
+            } else if c >= 0xe0 && c <= 0xff {
+                self->item = ItemType::Sint;
+                self->value.v_sint = (i64)((i8)c);
+                self->at += 1;
+            } else {
+                e->fail(DecodingError, "unexpected byte 0x%x", c);
+                return false;
+            }
+        }
+    }
+
+    if self->at + self->skip_value > self->sl.size {
+        e->fail(DecodingError, "short read value");
+        return false;
+    }
+
+    return true;
+}
+
+

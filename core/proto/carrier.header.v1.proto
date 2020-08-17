@@ -1,0 +1,28 @@
+syntax = "proto3";
+option go_package = ".;protos";
+
+package carrier.header.v1;
+
+
+
+
+
+message OpenHeader {
+    string  path = 2;
+
+    enum Method {
+        Invalid = 0;
+        Get     = 1;
+        Head    = 2;
+        Post    = 3;
+        Put     = 4;
+        Delete  = 5;
+        Patch   = 6;
+    }
+    Method  method = 3;
+}
+
+message ResponseHeader {
+    uint64  status  = 1;
+    string  error   = 3;
+}

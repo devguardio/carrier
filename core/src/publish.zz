@@ -264,9 +264,13 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg)
 
         self->broker_route = route;
 
-
-
-
+        // get revision, if any
+        u32 mut rev = 0;
+        if handshake.size >= 32 + 32 + 8 + 4 {
+            memcpy(&rev, handshake.mem + 32 + 32 + 8, 4);
+            rev = byteorder::from_be32(rev);
+        }
+        log::info("initiator revision %u", rev);
 
 
 
@@ -405,7 +409,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg)
         log::info("accepted %zu %lu\n", *frame.at, route);
 
 
-        channel::from_transfer(nuchan, channel::transfer_from_symmetric(&rsp.symm, 0x08, route, true));
+        channel::from_transfer(nuchan, channel::transfer_from_symmetric(&rsp.symm, 0x08, rev, route, true));
         nuchan->q.allocator = self->chan->q.allocator;
         nuchan->store       = self->chan->store;
         nuchan->endpoint    = self->chan->endpoint;

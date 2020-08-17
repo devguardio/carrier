@@ -66,6 +66,7 @@ jobs:
 
 
     - name: Push changes
+      if:   matrix.os == 'ubuntu-latest'
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}

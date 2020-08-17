@@ -6,7 +6,6 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:4
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:15

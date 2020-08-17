@@ -24,49 +24,38 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
 extern PyTypeObject py_Type_carrier_vault_Vault;
+extern PyTypeObject py_Type_carrier_identity_Identity;
+extern PyTypeObject py_Type_toml_U;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_toml_Parser;
 extern PyTypeObject py_Type_toml_Value;
+extern PyTypeObject py_Type_carrier_identity_Alias;
 extern PyTypeObject py_Type_toml_U;
-extern PyTypeObject py_Type_pool_Pool;
-extern PyTypeObject py_Type_carrier_identity_Identity;
-extern PyTypeObject py_Type_net_address_Address;
+extern PyTypeObject py_Type_toml_ParserStack;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_toml_Parser;
+extern PyTypeObject py_Type_time_Time;
 extern PyTypeObject py_Type_io_Async;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_carrier_identity_Signature;
-extern PyTypeObject py_Type_hpack_decoder_Iterator;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_carrier_noise_Initiator;
-extern PyTypeObject py_Type_carrier_router_Router;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_identity_Secret;
-extern PyTypeObject py_Type_carrier_peering_Peering;
-extern PyTypeObject py_Type_protonerf_Value;
-extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_io_Io;
-extern PyTypeObject py_Type_carrier_identity_Identity;
-extern PyTypeObject py_Type_io_Context;
-extern PyTypeObject py_Type_net_address_Address;
-extern PyTypeObject py_Type_netio_tcp_Socket;
-extern PyTypeObject py_Type_carrier_vault_Broker;
-extern PyTypeObject py_Type_carrier_identity_Address;
-extern PyTypeObject py_Type_carrier_vault_authorize_open_stream_cb_s;
+extern PyTypeObject py_Type_pool_Pool;
+extern PyTypeObject py_Type_pool_Pool;
 extern PyTypeObject py_Type_protonerf_Decoder;
-extern PyTypeObject py_Type_carrier_vault_toml_Mem;
-extern PyTypeObject py_Type_carrier_stream_Config;
-extern PyTypeObject py_Type_carrier_noise_Responder;
-extern PyTypeObject py_Type_carrier_cipher_CipherState;
-extern PyTypeObject py_Type_netio_udp_Socket;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
+extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
+extern PyTypeObject py_Type_carrier_identity_Signature;
+extern PyTypeObject py_Type_carrier_identity_Address;
+extern PyTypeObject py_Type_carrier_identity_Secret;
+extern PyTypeObject py_Type_carrier_identity_Secret;
 extern PyTypeObject py_Type_carrier_identity_SecretKit;
 extern PyTypeObject py_Type_carrier_vault_Broker;
 extern PyTypeObject py_Type_carrier_vault_Vault;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_carrier_identity_Identity;
+extern PyTypeObject py_Type_carrier_stream_Config;
+extern PyTypeObject py_Type_io_Context;
 extern PyTypeObject py_Type_netio_udp_Socket;
+extern PyTypeObject py_Type_net_address_Address;
+extern PyTypeObject py_Type_netio_tcp_Socket;
 extern PyTypeObject py_Type_io_Io;
 extern PyTypeObject py_Type_carrier_cipher_CipherState;
 extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
@@ -74,6 +63,7 @@ extern PyTypeObject py_Type_carrier_identity_Address;
 extern PyTypeObject py_Type_carrier_noise_Initiator;
 extern PyTypeObject py_Type_carrier_initiator_Initiator;
 extern PyTypeObject py_Type_carrier_endpoint_ConnectingState;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_carrier_pq_Frame;
 extern PyTypeObject py_Type_carrier_pq_Q;
 extern PyTypeObject py_Type_carrier_stream_Stream;
@@ -84,28 +74,29 @@ extern PyTypeObject py_Type_carrier_router_Router;
 extern PyTypeObject py_Type_carrier_endpoint_StateM;
 extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_carrier_stream_Config;
-extern PyTypeObject py_Type_carrier_vault_CheckExistingAuthorizationState;
+extern PyTypeObject py_Type_carrier_bootstrap_Bootstrap;
+extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_io_Async;
+extern PyTypeObject py_Type_carrier_noise_Responder;
 extern PyTypeObject py_Type_carrier_channel_Transfer;
+extern PyTypeObject py_Type_protonerf_Value;
+extern PyTypeObject py_Type_protonerf_Field;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+extern PyTypeObject py_Type_hpack_decoder_Iterator;
 extern PyTypeObject py_Type_carrier_vault_toml_Authorize;
 extern PyTypeObject py_Type_carrier_vault_toml_Mem;
-extern PyTypeObject py_Type_carrier_bootstrap_Bootstrap;
+extern PyTypeObject py_Type_protonerf_Decoder;
 extern PyTypeObject py_Type_hpack_decoder_Entry;
-extern PyTypeObject py_Type_carrier_bootstrap_DnsPacket;
-extern PyTypeObject py_Type_io_Async;
-extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_carrier_noise_Responder;
-extern PyTypeObject py_Type_toml_ParserStack;
-extern PyTypeObject py_Type_toml_Parser;
-extern PyTypeObject py_Type_net_address_OsAddress;
-extern PyTypeObject py_Type_hpack_decoder_Iterator;
+extern PyTypeObject py_Type_carrier_vault_authorize_open_stream_cb_s;
+extern PyTypeObject py_Type_carrier_stream_Config;
 extern PyTypeObject py_Type_carrier_identity_Signature;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_carrier_stream_Stream;
-
-
-
+extern PyTypeObject py_Type_carrier_noise_Responder;
+extern PyTypeObject py_Type_net_address_OsAddress;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+extern PyTypeObject py_Type_carrier_vault_CheckExistingAuthorizationState;
+extern PyTypeObject py_Type_hpack_decoder_Iterator;
+extern PyTypeObject py_Type_carrier_bootstrap_DnsPacket;
 static PyObject * py_get_carrier_endpoint_Endpoint_vault(PyObject *pyself, void *closure) {
 
     carrier_endpoint_Endpoint * self = pyFATGetPtr(pyself, "carrier_endpoint_Endpoint");
@@ -334,49 +325,8 @@ PyTypeObject py_Type_carrier_endpoint_Endpoint  = {
 
 
 
-static PyObject* py_carrier_endpoint_from_carriertoml(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
-    PyObject * arg2 = 0;
-    //file_name
-    char * arg4 = 0;
-    Py_ssize_t arg4_len = 0;
-    if (!PyArg_ParseTuple(args, "OOs#", &arg0,&arg2,&arg4,&arg4_len)) { return NULL; };
-    carrier_endpoint_from_carriertoml(
-        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
-        ((pyFATObject *)arg0)->tail,
-        pyFATGetPtr(arg2, "err_Err"),
-        ((pyFATObject *)arg2)->tail,
-        arg4);
-    Py_RETURN_NONE;
-}
 
-static PyObject* py_carrier_endpoint_register_stream(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //conf
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    carrier_endpoint_register_stream(
-        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
-        pyFATGetPtr(arg1, "carrier_stream_Config"));
-    Py_RETURN_NONE;
-}
 
-static PyObject* py_carrier_endpoint_from_home_carriertoml(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
-    PyObject * arg2 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg2)) { return NULL; };
-    carrier_endpoint_from_home_carriertoml(
-        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
-        ((pyFATObject *)arg0)->tail,
-        pyFATGetPtr(arg2, "err_Err"),
-        ((pyFATObject *)arg2)->tail);
-    Py_RETURN_NONE;
-}
 
 static PyObject* py_carrier_endpoint_native(PyObject *pyself, PyObject *args) {
     //self
@@ -392,25 +342,15 @@ static PyObject* py_carrier_endpoint_native(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_carrier_endpoint_do_not_move(PyObject *pyself, PyObject *args) {
+static PyObject* py_carrier_endpoint_cluster_target(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    carrier_endpoint_do_not_move(
-        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"));
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_carrier_endpoint_shutdown(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
+    //target
     PyObject * arg1 = 0;
     if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    carrier_endpoint_shutdown(
+    carrier_endpoint_cluster_target(
         pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
-        pyFATGetPtr(arg1, "err_Err"),
-        ((pyFATObject *)arg1)->tail);
+        pyFATGetPtr(arg1, "carrier_identity_Identity"));
     Py_RETURN_NONE;
 }
 
@@ -430,32 +370,11 @@ static PyObject* py_carrier_endpoint_start(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_carrier_endpoint_cluster_target(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //target
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    carrier_endpoint_cluster_target(
-        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
-        pyFATGetPtr(arg1, "carrier_identity_Identity"));
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_carrier_endpoint_broker(PyObject *pyself, PyObject *args) {
+static PyObject* py_carrier_endpoint_do_not_move(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
     if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    void * rarg = (void*)(carrier_endpoint_broker(
-        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint")));
-    return PyCapsule_New(rarg, "carrier_channel_Channel", 0);
-}
-
-static PyObject* py_carrier_endpoint_close(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    carrier_endpoint_close(
+    carrier_endpoint_do_not_move(
         pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"));
     Py_RETURN_NONE;
 }
@@ -470,19 +389,94 @@ static PyObject* py_carrier_endpoint_none(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_carrier_endpoint_close(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    carrier_endpoint_close(
+        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"));
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_carrier_endpoint_register_stream(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //conf
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    carrier_endpoint_register_stream(
+        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
+        pyFATGetPtr(arg1, "carrier_stream_Config"));
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_carrier_endpoint_from_carriertoml(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg2 = 0;
+    //file_name
+    char * arg4 = 0;
+    Py_ssize_t arg4_len = 0;
+    if (!PyArg_ParseTuple(args, "OOs#", &arg0,&arg2,&arg4,&arg4_len)) { return NULL; };
+    carrier_endpoint_from_carriertoml(
+        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
+        ((pyFATObject *)arg0)->tail,
+        pyFATGetPtr(arg2, "err_Err"),
+        ((pyFATObject *)arg2)->tail,
+        arg4);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_carrier_endpoint_broker(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    void * rarg = (void*)(carrier_endpoint_broker(
+        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint")));
+    return PyCapsule_New(rarg, "carrier_channel_Channel", 0);
+}
+
+static PyObject* py_carrier_endpoint_shutdown(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    carrier_endpoint_shutdown(
+        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
+        pyFATGetPtr(arg1, "err_Err"),
+        ((pyFATObject *)arg1)->tail);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_carrier_endpoint_from_home_carriertoml(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg2 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg2)) { return NULL; };
+    carrier_endpoint_from_home_carriertoml(
+        pyFATGetPtr(arg0, "carrier_endpoint_Endpoint"),
+        ((pyFATObject *)arg0)->tail,
+        pyFATGetPtr(arg2, "err_Err"),
+        ((pyFATObject *)arg2)->tail);
+    Py_RETURN_NONE;
+}
+
 
 static PyMethodDef methods[] = {
-{"from_carriertoml", py_carrier_endpoint_from_carriertoml, METH_VARARGS,""},
-{"register_stream", py_carrier_endpoint_register_stream, METH_VARARGS,""},
-{"from_home_carriertoml", py_carrier_endpoint_from_home_carriertoml, METH_VARARGS,""},
 {"native", py_carrier_endpoint_native, METH_VARARGS,""},
-{"do_not_move", py_carrier_endpoint_do_not_move, METH_VARARGS,""},
-{"shutdown", py_carrier_endpoint_shutdown, METH_VARARGS,"gracefully disconnect everything and shutdown"},
-{"start", py_carrier_endpoint_start, METH_VARARGS,""},
 {"cluster_target", py_carrier_endpoint_cluster_target, METH_VARARGS,""},
-{"broker", py_carrier_endpoint_broker, METH_VARARGS,""},
-{"close", py_carrier_endpoint_close, METH_VARARGS,"close endpoint immediately"},
+{"start", py_carrier_endpoint_start, METH_VARARGS,""},
+{"do_not_move", py_carrier_endpoint_do_not_move, METH_VARARGS,""},
 {"none", py_carrier_endpoint_none, METH_VARARGS,""},
+{"close", py_carrier_endpoint_close, METH_VARARGS,"close endpoint immediately"},
+{"register_stream", py_carrier_endpoint_register_stream, METH_VARARGS,""},
+{"from_carriertoml", py_carrier_endpoint_from_carriertoml, METH_VARARGS,""},
+{"broker", py_carrier_endpoint_broker, METH_VARARGS,""},
+{"shutdown", py_carrier_endpoint_shutdown, METH_VARARGS,"gracefully disconnect everything and shutdown"},
+{"from_home_carriertoml", py_carrier_endpoint_from_home_carriertoml, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

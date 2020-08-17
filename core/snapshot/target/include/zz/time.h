@@ -1,16 +1,16 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#ifndef ZZ_FORWARD___home_runner_work_carrier_carrier_modules_time_src_native_h_
+#define ZZ_FORWARD___home_runner_work_carrier_carrier_modules_time_src_native_h_
+#endif
 #ifndef ZZ_FORWARD_time_Time
 #define ZZ_FORWARD_time_Time
 struct time_Time_t;
 typedef struct time_Time_t time_Time;
 #endif
-#ifndef ZZ_FORWARD___home_runner_work_carrier_carrier_modules_time_src_native_h_
-#define ZZ_FORWARD___home_runner_work_carrier_carrier_modules_time_src_native_h_
-#endif
-#ifndef ZZ_FORWARD_time_real
-#define ZZ_FORWARD_time_real
+#ifndef ZZ_FORWARD_time_to_seconds
+#define ZZ_FORWARD_time_to_seconds
 #endif
 #ifndef ZZ_FORWARD__stdint_h_
 #define ZZ_FORWARD__stdint_h_
@@ -18,8 +18,10 @@ typedef struct time_Time_t time_Time;
 #ifndef ZZ_FORWARD_time_to_millis
 #define ZZ_FORWARD_time_to_millis
 #endif
-#ifndef ZZ_FORWARD_time_tick
-#define ZZ_FORWARD_time_tick
+#ifndef ZZ_FORWARD_time_Time
+#define ZZ_FORWARD_time_Time
+struct time_Time_t;
+typedef struct time_Time_t time_Time;
 #endif
 #ifndef ZZ_FORWARD_time_from_seconds
 #define ZZ_FORWARD_time_from_seconds
@@ -27,25 +29,17 @@ typedef struct time_Time_t time_Time;
 #ifndef ZZ_FORWARD_time_from_millis
 #define ZZ_FORWARD_time_from_millis
 #endif
-#ifndef ZZ_FORWARD_time_to_seconds
-#define ZZ_FORWARD_time_to_seconds
-#endif
 #ifndef ZZ_FORWARD_time_infinite
 #define ZZ_FORWARD_time_infinite
 #endif
 #ifndef ZZ_FORWARD_time_more_than
 #define ZZ_FORWARD_time_more_than
 #endif
-#ifndef ZZ_EXPORT_time_Time
-#define ZZ_EXPORT_time_Time
-struct time_Time_t {
-   uint64_t secs ;
-   uint64_t nano ;
-   bool finite ;
-}
-;
-size_t sizeof_time_Time();
-
+#ifndef ZZ_FORWARD_time_real
+#define ZZ_FORWARD_time_real
+#endif
+#ifndef ZZ_FORWARD_time_tick
+#define ZZ_FORWARD_time_tick
 #endif
 #ifndef ZZ_EXPORT___home_runner_work_carrier_carrier_modules_time_src_native_h_
 #define ZZ_EXPORT___home_runner_work_carrier_carrier_modules_time_src_native_h_
@@ -183,9 +177,9 @@ size_t sizeof_time_Time();
 #endif
 
 #endif
-#ifndef ZZ_EXPORT_time_real
-#define ZZ_EXPORT_time_real
-time_Time time_real ();
+#ifndef ZZ_EXPORT_time_to_seconds
+#define ZZ_EXPORT_time_to_seconds
+uint64_t time_to_seconds (time_Time const *  const  self);
 
 #endif
 #ifndef ZZ_EXPORT__stdint_h_
@@ -198,9 +192,15 @@ time_Time time_real ();
 uint64_t time_to_millis (time_Time const *  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_time_tick
-#define ZZ_EXPORT_time_tick
-time_Time time_tick ();
+#ifndef ZZ_EXPORT_time_Time
+#define ZZ_EXPORT_time_Time
+struct time_Time_t {
+   uint64_t secs ;
+   uint64_t nano ;
+   bool finite ;
+}
+;
+size_t sizeof_time_Time();
 
 #endif
 #ifndef ZZ_EXPORT_time_from_seconds
@@ -213,11 +213,6 @@ time_Time time_from_seconds (uint64_t const  secs);
 time_Time time_from_millis (uint64_t const  millis);
 
 #endif
-#ifndef ZZ_EXPORT_time_to_seconds
-#define ZZ_EXPORT_time_to_seconds
-uint64_t time_to_seconds (time_Time const *  const  self);
-
-#endif
 #ifndef ZZ_EXPORT_time_infinite
 #define ZZ_EXPORT_time_infinite
 time_Time time_infinite ();
@@ -226,5 +221,15 @@ time_Time time_infinite ();
 #ifndef ZZ_EXPORT_time_more_than
 #define ZZ_EXPORT_time_more_than
 bool time_more_than (time_Time const *  const  self, time_Time const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_time_real
+#define ZZ_EXPORT_time_real
+time_Time time_real ();
+
+#endif
+#ifndef ZZ_EXPORT_time_tick
+#define ZZ_EXPORT_time_tick
+time_Time time_tick ();
 
 #endif

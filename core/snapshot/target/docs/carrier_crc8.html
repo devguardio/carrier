@@ -2,14 +2,14 @@
 <h1> module carrier::crc8 </h1>
 <h4> fn broken_crc8 (
 
-    u8*
-    data,
-
     u8
     crc,
 
     usize
     length,
+
+    u8*
+    data,
 
 )
 
@@ -21,14 +21,14 @@
 
 </p><h4> fn crc8_slow (
 
-    u8
-    crc,
+    usize
+    l,
 
     u8*
     data,
 
-    usize
-    l,
+    u8
+    crc,
 
 )
 
@@ -40,14 +40,14 @@
 
 </p><h4> fn crc8 (
 
-    usize
-    l,
+    u8*
+    data,
 
     u8
     crc,
 
-    u8*
-    data,
+    usize
+    l,
 
 )
 

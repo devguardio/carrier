@@ -1,28 +1,31 @@
 
 <h1> module pool </h1>
-<h4> fn free_bytes (
+<h4> fn free (
+
+    ::ext::&lt;stddef.h&gt;::void*
+    ptr_,
 
     ::pool::Pool*
     self,
 
 )
 
--&gt usize
+
 
 </h4>
 
 <p class='doc_comments'>
- get the number of bytes left in the pool&lt;br&gt;
+ free a pointer previously allocated from this pool&lt;br&gt; requires pointer to be a member()&lt;br&gt;
 </p><h4> fn make (
 
     ::pool::Pool*+pt
     self,
 
     usize
-    blocksize,
+    pt,
 
     usize
-    pt,
+    blocksize,
 
 )
 
@@ -48,6 +51,19 @@
 
 <p class='doc_comments'>
  malloc a zeroed continuous memory block of any size&lt;br&gt; returns null if the pool is full&lt;br&gt; this is alot less efficient than alloc()&lt;br&gt; as alignment requirements can lead to more blocks being allocated than you expect&lt;br&gt;&lt;br&gt;
+</p><h4> fn free_bytes (
+
+    ::pool::Pool*
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ get the number of bytes left in the pool&lt;br&gt;
 </p><h4> fn each (
 
     ::ext::&lt;stddef.h&gt;::void*
@@ -80,22 +96,6 @@
 
 <p class='doc_comments'>
  alloc a zeroed block&lt;br&gt; returns null if the pool is full&lt;br&gt;
-</p><h4> fn free (
-
-    ::pool::Pool*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    ptr_,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- free a pointer previously allocated from this pool&lt;br&gt; requires pointer to be a member()&lt;br&gt;
 </p>
 
 

@@ -1,24 +1,24 @@
 
 <h1> module base32 </h1>
-<h4> fn encode (
-
-    u8*
-    src,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    out,
+<h4> fn decode (
 
     usize
     inlen,
-
-    usize
-    outlen,
 
     usize
     et,
 
     ::err::Err*+et
     e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    src,
+
+    u8*
+    out,
+
+    usize
+    outlen,
 
 )
 
@@ -28,25 +28,25 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decode (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    src,
+</p><h4> fn encode (
 
     ::err::Err*+et
     e,
 
-    usize
-    inlen,
-
     u8*
+    src,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
     out,
 
     usize
     outlen,
 
     usize
-    et,
+    inlen,
 
 )
 

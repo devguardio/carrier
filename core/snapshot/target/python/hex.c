@@ -32,32 +32,6 @@ extern PyTypeObject py_Type_slice_slice_Slice;
 
 
 
-static PyObject* py_hex_dump(PyObject *pyself, PyObject *args) {
-    //data
-    uint8_t * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    //l
-    long long int arg1 = 0;
-    if (!PyArg_ParseTuple(args, "z#l", &arg0,&arg0_len,&arg1)) { return NULL; };
-    hex_dump(
-        arg0,
-        arg1);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_hex_print(PyObject *pyself, PyObject *args) {
-    //data
-    uint8_t * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    //l
-    long long int arg1 = 0;
-    if (!PyArg_ParseTuple(args, "s#l", &arg0,&arg0_len,&arg1)) { return NULL; };
-    hex_print(
-        arg0,
-        arg1);
-    Py_RETURN_NONE;
-}
-
 static PyObject* py_hex_str2bin(PyObject *pyself, PyObject *args) {
     //in
     char * arg0 = 0;
@@ -78,6 +52,32 @@ static PyObject* py_hex_str2bin(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
+static PyObject* py_hex_print(PyObject *pyself, PyObject *args) {
+    //data
+    uint8_t * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    //l
+    long long int arg1 = 0;
+    if (!PyArg_ParseTuple(args, "s#l", &arg0,&arg0_len,&arg1)) { return NULL; };
+    hex_print(
+        arg0,
+        arg1);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_hex_dump(PyObject *pyself, PyObject *args) {
+    //data
+    uint8_t * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    //l
+    long long int arg1 = 0;
+    if (!PyArg_ParseTuple(args, "z#l", &arg0,&arg0_len,&arg1)) { return NULL; };
+    hex_dump(
+        arg0,
+        arg1);
+    Py_RETURN_NONE;
+}
+
 static PyObject* py_hex_fdump(PyObject *pyself, PyObject *args) {
     //f
     PyObject * arg0 = 0;
@@ -96,9 +96,9 @@ static PyObject* py_hex_fdump(PyObject *pyself, PyObject *args) {
 
 
 static PyMethodDef methods[] = {
-{"dump", py_hex_dump, METH_VARARGS,""},
-{"print", py_hex_print, METH_VARARGS,""},
 {"str2bin", py_hex_str2bin, METH_VARARGS,""},
+{"print", py_hex_print, METH_VARARGS,""},
+{"dump", py_hex_dump, METH_VARARGS,""},
 {"fdump", py_hex_fdump, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };

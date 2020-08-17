@@ -13,6 +13,19 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn swap64 (
 
     u64
@@ -39,26 +52,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn publish (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be32 (
+</p><h4> fn from_be32 (
 
     u32
     x,
@@ -73,17 +67,36 @@
 
 </p><h4> fn on_remote_open (
 
-    ::err::Err*+et
-    e,
-
     ::carrier::stream::Stream*
     self,
+
+    ::err::Err*+et
+    e,
 
     ::slice::slice::Slice
     headers,
 
     usize
     et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn publish (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::endpoint::Endpoint*
+    self,
 
 )
 

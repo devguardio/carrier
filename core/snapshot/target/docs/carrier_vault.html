@@ -1,18 +1,12 @@
 
 <h1> module carrier::vault </h1>
-<h4> fn set_network (
-
-    usize
-    et,
+<h4> fn get_local_identity (
 
     ::carrier::vault::Vault*
     self,
 
-    ::err::Err*+et
-    e,
-
-    ::carrier::identity::Secret*
-    network,
+    ::carrier::identity::Identity*
+    id,
 
 )
 
@@ -24,166 +18,11 @@
 
 </p><h4> fn get_principal_identity (
 
+    ::carrier::vault::Vault*
+    self,
+
     ::carrier::identity::Identity*
     id,
-
-    ::carrier::vault::Vault*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn authorize_connect (
-
-    ::carrier::identity::Identity*
-    ii,
-
-    ::carrier::vault::Vault*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn close (
-
-    ::carrier::vault::Vault*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn broker_count (
-
-    ::carrier::vault::Vault*
-    self,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn add_authorization (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::vault::Vault*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    resource,
-
-    usize
-    et,
-
-    ::carrier::identity::Identity*
-    addme,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn get_network_secret (
-
-    ::carrier::vault::Vault*
-    self,
-
-    ::carrier::identity::Secret*
-    addr,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn sign_principal (
-
-    u8*
-    subject,
-
-    ::carrier::vault::Vault*
-    self,
-
-    usize
-    subject_len,
-
-    ::carrier::identity::Signature*
-    s,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn list_authorizations (
-
-    usize
-    et,
-
-    ::carrier::vault::Vault*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    user,
-
-    ::carrier::vault::list_authorizations_cb
-    cb,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn del_authorization (
-
-    ::carrier::vault::Vault*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::identity::Identity*
-    delme,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    resource,
-
-    usize
-    et,
 
 )
 
@@ -206,19 +45,54 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn sign_local (
+</p><h4> fn authorize_connect (
 
     ::carrier::vault::Vault*
     self,
 
+    ::carrier::identity::Identity*
+    ii,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn get_network_secret (
+
+    ::carrier::identity::Secret*
+    addr,
+
+    ::carrier::vault::Vault*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn list_authorizations (
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::vault::list_authorizations_cb
+    cb,
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    user,
+
     usize
-    subject_len,
-
-    u8*
-    subject,
-
-    ::carrier::identity::Signature*
-    s,
+    et,
 
 )
 
@@ -244,13 +118,133 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn authorize_open_stream (
+</p><h4> fn broker_count (
 
     ::carrier::vault::Vault*
     self,
 
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sign_principal (
+
+    u8*
+    subject,
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Signature*
+    s,
+
+    usize
+    subject_len,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn add_authorization (
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    resource,
+
+    usize
+    et,
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Identity*
+    addme,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn sign_local (
+
+    usize
+    subject_len,
+
+    ::carrier::identity::Signature*
+    s,
+
+    u8*
+    subject,
+
+    ::carrier::vault::Vault*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn del_authorization (
+
+    ::carrier::vault::Vault*
+    self,
+
+    ::carrier::identity::Identity*
+    delme,
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    resource,
+
+    usize
+    et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::carrier::vault::Vault*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn authorize_open_stream (
+
     ::ext::&lt;stddef.h&gt;::char*
     path,
+
+    ::carrier::vault::Vault*
+    self,
 
     ::carrier::identity::Identity*
     ii,
@@ -263,13 +257,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn get_local_identity (
+</p><h4> fn set_network (
+
+    usize
+    et,
+
+    ::carrier::identity::Secret*
+    network,
 
     ::carrier::vault::Vault*
     self,
 
-    ::carrier::identity::Identity*
-    id,
+    ::err::Err*+et
+    e,
 
 )
 

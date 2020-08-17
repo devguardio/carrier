@@ -2,14 +2,14 @@
 <h1> module carrier::peering </h1>
 <h4> fn from_proto (
 
+    ::err::Err*+et
+    e,
+
     usize
     et,
 
     ::protonerf::Field
     field,
-
-    ::err::Err*+et
-    e,
 
     ::carrier::peering::Peering*
     self,
@@ -27,14 +27,14 @@
     ::carrier::peering::Transport
     transport,
 
+    ::carrier::peering::Peering*
+    self,
+
     ::carrier::peering::Class
     klass,
 
     ::net::address::Address
     addr,
-
-    ::carrier::peering::Peering*
-    self,
 
 )
 

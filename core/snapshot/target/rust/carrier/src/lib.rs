@@ -1,83 +1,122 @@
 #[path = "../../carrier.rs"]
 pub mod carrier;
 
-#[path = "../../carrier_router.rs"]
-pub mod carrier_router;
-
-#[path = "../../carrier_proto.rs"]
-pub mod carrier_proto;
-
-#[path = "../../carrier_vault_toml.rs"]
-pub mod carrier_vault_toml;
-
-#[path = "../../buffer.rs"]
-pub mod buffer;
-
-#[path = "../../symbols.rs"]
-pub mod symbols;
-
-#[path = "../../byteorder.rs"]
-pub mod byteorder;
-
-#[path = "../../io_unix.rs"]
-pub mod io_unix;
+#[path = "../../carrier_initiator.rs"]
+pub mod carrier_initiator;
 
 #[path = "../../carrier_peering.rs"]
 pub mod carrier_peering;
 
-#[path = "../../carrier_noise.rs"]
-pub mod carrier_noise;
+#[path = "../../carrier_config.rs"]
+pub mod carrier_config;
 
-#[path = "../../mem.rs"]
-pub mod mem;
+#[path = "../../carrier_router.rs"]
+pub mod carrier_router;
 
-#[path = "../../base32.rs"]
-pub mod base32;
+#[path = "../../carrier_pub_sysinfo.rs"]
+pub mod carrier_pub_sysinfo;
 
-#[path = "../../log.rs"]
-pub mod log;
+#[path = "../../carrier_pq.rs"]
+pub mod carrier_pq;
 
-#[path = "../../carrier_symmetric.rs"]
-pub mod carrier_symmetric;
+#[path = "../../io_unix.rs"]
+pub mod io_unix;
 
-#[path = "../../carrier_stream.rs"]
-pub mod carrier_stream;
+#[path = "../../time.rs"]
+pub mod time;
+
+#[path = "../../carrier_proto.rs"]
+pub mod carrier_proto;
+
+#[path = "../../io.rs"]
+pub mod io;
+
+#[path = "../../sysinfo_proto.rs"]
+pub mod sysinfo_proto;
 
 #[path = "../../carrier_bootstrap.rs"]
 pub mod carrier_bootstrap;
 
-#[path = "../../carrier_config.rs"]
-pub mod carrier_config;
+#[path = "../../carrier_sync.rs"]
+pub mod carrier_sync;
 
 #[path = "../../hpack_encoder.rs"]
 pub mod hpack_encoder;
 
-#[path = "../../carrier_cipher.rs"]
-pub mod carrier_cipher;
-
-#[path = "../../carrier_sync.rs"]
-pub mod carrier_sync;
+#[path = "../../carrier_identity.rs"]
+pub mod carrier_identity;
 
 #[path = "../../carrier_sha256.rs"]
 pub mod carrier_sha256;
 
-#[path = "../../carrier_subscribe.rs"]
-pub mod carrier_subscribe;
+#[path = "../../carrier_vault_ik.rs"]
+pub mod carrier_vault_ik;
 
-#[path = "../../err.rs"]
-pub mod err;
+#[path = "../../netio_unix.rs"]
+pub mod netio_unix;
+
+#[path = "../../carrier_noise.rs"]
+pub mod carrier_noise;
+
+#[path = "../../carrier_vault_toml.rs"]
+pub mod carrier_vault_toml;
+
+#[path = "../../symbols.rs"]
+pub mod symbols;
+
+#[path = "../../fs.rs"]
+pub mod fs;
 
 #[path = "../../slice_mut_slice.rs"]
 pub mod slice_mut_slice;
 
-#[path = "../../sysinfo.rs"]
-pub mod sysinfo;
+#[path = "../../carrier_channel.rs"]
+pub mod carrier_channel;
 
-#[path = "../../hpack_decoder.rs"]
-pub mod hpack_decoder;
+#[path = "../../base32.rs"]
+pub mod base32;
 
-#[path = "../../netio_udp.rs"]
-pub mod netio_udp;
+#[path = "../../byteorder.rs"]
+pub mod byteorder;
+
+#[path = "../../carrier_cipher.rs"]
+pub mod carrier_cipher;
+
+#[path = "../../mem.rs"]
+pub mod mem;
+
+#[path = "../../carrier_stream.rs"]
+pub mod carrier_stream;
+
+#[path = "../../pool.rs"]
+pub mod pool;
+
+#[path = "../../toml.rs"]
+pub mod toml;
+
+#[path = "../../carrier_crc8.rs"]
+pub mod carrier_crc8;
+
+#[path = "../../carrier_vault.rs"]
+pub mod carrier_vault;
+
+#[path = "../../carrier_symmetric.rs"]
+pub mod carrier_symmetric;
+
+#[path = "../../net_address.rs"]
+pub mod net_address;
+
+#[path = "../../netio_tcp.rs"]
+pub mod netio_tcp;
+
+#[path = "../../protonerf.rs"]
+pub mod protonerf;
+
+#[path = "../../carrier_sft.rs"]
+pub mod carrier_sft;
+
+#[path = "../../carrier_connect.rs"]
+pub mod carrier_connect;
 
 #[path = "../../slice_slice.rs"]
 pub mod slice_slice;
@@ -85,90 +124,51 @@ pub mod slice_slice;
 #[path = "../../carrier_rand.rs"]
 pub mod carrier_rand;
 
-#[path = "../../netio_tcp.rs"]
-pub mod netio_tcp;
-
-#[path = "../../netio_unix.rs"]
-pub mod netio_unix;
-
-#[path = "../../carrier_identity.rs"]
-pub mod carrier_identity;
-
-#[path = "../../carrier_connect.rs"]
-pub mod carrier_connect;
-
-#[path = "../../carrier_crc8.rs"]
-pub mod carrier_crc8;
-
-#[path = "../../pool.rs"]
-pub mod pool;
-
-#[path = "../../carrier_vault_ik.rs"]
-pub mod carrier_vault_ik;
-
-#[path = "../../carrier_vault.rs"]
-pub mod carrier_vault;
-
-#[path = "../../toml.rs"]
-pub mod toml;
-
-#[path = "../../carrier_initiator.rs"]
-pub mod carrier_initiator;
-
-#[path = "../../carrier_pq.rs"]
-pub mod carrier_pq;
-
-#[path = "../../time.rs"]
-pub mod time;
-
-#[path = "../../sysinfo_proto.rs"]
-pub mod sysinfo_proto;
-
-#[path = "../../carrier_endpoint.rs"]
-pub mod carrier_endpoint;
-
-#[path = "../../fs.rs"]
-pub mod fs;
-
-#[path = "../../carrier_pub_sysinfo.rs"]
-pub mod carrier_pub_sysinfo;
+#[path = "../../err.rs"]
+pub mod err;
 
 #[path = "../../carrier_revision.rs"]
 pub mod carrier_revision;
 
-#[path = "../../io.rs"]
-pub mod io;
+#[path = "../../sysinfo.rs"]
+pub mod sysinfo;
 
-#[path = "../../protonerf.rs"]
-pub mod protonerf;
+#[path = "../../carrier_endpoint.rs"]
+pub mod carrier_endpoint;
 
-#[path = "../../net_address.rs"]
-pub mod net_address;
-
-#[path = "../../carrier_channel.rs"]
-pub mod carrier_channel;
+#[path = "../../carrier_subscribe.rs"]
+pub mod carrier_subscribe;
 
 #[path = "../../hex.rs"]
 pub mod hex;
 
-#[path = "../../carrier_sft.rs"]
-pub mod carrier_sft;
+#[path = "../../log.rs"]
+pub mod log;
 
-#[path = "../../carrier_responder.rs"]
-pub mod carrier_responder;
+#[path = "../../buffer.rs"]
+pub mod buffer;
+
+#[path = "../../hpack_decoder.rs"]
+pub mod hpack_decoder;
+
+#[path = "../../netio_udp.rs"]
+pub mod netio_udp;
 
 #[path = "../../slice.rs"]
 pub mod slice;
 
-#[path = "../../carrier_publish.rs"]
-pub mod carrier_publish;
-
 #[path = "../../hpack.rs"]
 pub mod hpack;
 
-#[path = "../../net.rs"]
-pub mod net;
+#[path = "../../carrier_responder.rs"]
+pub mod carrier_responder;
+
+#[path = "../../carrier_publish.rs"]
+pub mod carrier_publish;
 
 #[path = "../../netio.rs"]
 pub mod netio;
+
+#[path = "../../net.rs"]
+pub mod net;
 

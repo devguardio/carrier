@@ -6,724 +6,626 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:2
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:1
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:2
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:1
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:3
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:1
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:3
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:1
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:2
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:4
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
-(declare-fun theory20___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:64
-(declare-fun var22___err__backtrace__t0 () (_ BitVec 64))
-(declare-fun var23_true__t0 () Bool)
-(assert
-  (= var23_true__t0 (theory1_safe var22___err__backtrace__t0) )
-)
-
-(assert
-  var23_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
-(declare-fun var24___buffer__starts_with_cstr__t0 () (_ BitVec 64))
-(declare-fun var25_true__t0 () Bool)
-(assert
-  (= var25_true__t0 (theory1_safe var24___buffer__starts_with_cstr__t0) )
-)
-
-(assert
-  var25_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:275
-(declare-fun var26___err__assert_safe__t0 () (_ BitVec 64))
-(declare-fun var27_true__t0 () Bool)
-(assert
-  (= var27_true__t0 (theory1_safe var26___err__assert_safe__t0) )
-)
-
-(assert
-  var27_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:16
-(declare-fun var28___err__NotImplemented__t0 () (_ BitVec 64))
-(declare-fun var29_true__t0 () Bool)
-(assert
-  (= var29_true__t0 (theory3_symbol var28___err__NotImplemented__t0) )
-)
-
-(assert
-  var29_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
-(declare-fun theory31___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
-(declare-fun var32___slice__slice__eq_bytes__t0 () (_ BitVec 64))
-(declare-fun var33_true__t0 () Bool)
-(assert
-  (= var33_true__t0 (theory1_safe var32___slice__slice__eq_bytes__t0) )
-)
-
-(assert
-  var33_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/rand.zz:2
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
-(declare-fun theory35___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:65
-(declare-fun var36___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
-(declare-fun var37_true__t0 () Bool)
+(declare-fun theory6___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:161
+(declare-fun var7___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
+(declare-fun var8_true__t0 () Bool)
 (assert
-  (= var37_true__t0 (theory1_safe var36___slice__mut_slice__append_bytes__t0) )
+  (= var8_true__t0 (theory1_safe var7___slice__mut_slice__append_obj__t0) )
 )
 
 (assert
-  var37_true__t0
+  var8_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:92
-(declare-fun var38___slice__mut_slice__push__t0 () (_ BitVec 64))
-(declare-fun var39_true__t0 () Bool)
-(assert
-  (= var39_true__t0 (theory1_safe var38___slice__mut_slice__push__t0) )
-)
-
-(assert
-  var39_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:122
-(declare-fun var40___slice__mut_slice__push32__t0 () (_ BitVec 64))
-(declare-fun var41_true__t0 () Bool)
-(assert
-  (= var41_true__t0 (theory1_safe var40___slice__mut_slice__push32__t0) )
-)
-
-(assert
-  var41_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:209
-(declare-fun var42___err__panic__t0 () (_ BitVec 64))
-(declare-fun var43_true__t0 () Bool)
-(assert
-  (= var43_true__t0 (theory1_safe var42___err__panic__t0) )
-)
-
-(assert
-  var43_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
-(declare-fun var44___slice__slice__eq__t0 () (_ BitVec 64))
-(declare-fun var45_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
+(declare-fun theory11___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
+(declare-fun theory12___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:161
+(declare-fun var13___buffer__append_slice__t0 () (_ BitVec 64))
+(declare-fun var14_true__t0 () Bool)
 (assert
-  (= var45_true__t0 (theory1_safe var44___slice__slice__eq__t0) )
+  (= var14_true__t0 (theory1_safe var13___buffer__append_slice__t0) )
 )
 
 (assert
-  var45_true__t0
+  var14_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
-(declare-fun var46___buffer__ends_with_cstr__t0 () (_ BitVec 64))
-(declare-fun var47_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:11
+(declare-fun theory16___err__checked ((_ BitVec 64)) Bool); theory ::err::checked
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:70
+(declare-fun var17___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var18_true__t0 () Bool)
 (assert
-  (= var47_true__t0 (theory1_safe var46___buffer__ends_with_cstr__t0) )
-)
-
-(assert
-  var47_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:84
-(declare-fun var48___buffer__push__t0 () (_ BitVec 64))
-(declare-fun var49_true__t0 () Bool)
-(assert
-  (= var49_true__t0 (theory1_safe var48___buffer__push__t0) )
+  (= var18_true__t0 (theory1_safe var17___err__fail_with_errno__t0) )
 )
 
 (assert
-  var49_true__t0
+  var18_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
-(declare-fun var50___buffer__copy_slice__t0 () (_ BitVec 64))
-(declare-fun var51_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
+(declare-fun var19___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+(declare-fun var20_true__t0 () Bool)
 (assert
-  (= var51_true__t0 (theory1_safe var50___buffer__copy_slice__t0) )
-)
-
-(assert
-  var51_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/log/src/lib.zz:52
-(declare-fun var52___log__error__t0 () (_ BitVec 64))
-(declare-fun var53_true__t0 () Bool)
-(assert
-  (= var53_true__t0 (theory1_safe var52___log__error__t0) )
+  (= var20_true__t0 (theory1_safe var19___slice__slice__eq_bytes__t0) )
 )
 
 (assert
-  var53_true__t0
+  var20_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:87
-(declare-fun var54___slice__slice__sub__t0 () (_ BitVec 64))
-(declare-fun var55_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
+(declare-fun var21___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var22_true__t0 () Bool)
 (assert
-  (= var55_true__t0 (theory1_safe var54___slice__slice__sub__t0) )
+  (= var22_true__t0 (theory1_safe var21___buffer__clear__t0) )
 )
 
 (assert
-  var55_true__t0
+  var22_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:418
+(declare-fun var23___buffer__copy_cstr__t0 () (_ BitVec 64))
+(declare-fun var24_true__t0 () Bool)
+(assert
+  (= var24_true__t0 (theory1_safe var23___buffer__copy_cstr__t0) )
+)
+
+(assert
+  var24_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var25___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+(declare-fun var26_true__t0 () Bool)
+(assert
+  (= var26_true__t0 (theory1_safe var25___slice__slice__eq_cstr__t0) )
+)
+
+(assert
+  var26_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:199
+(declare-fun var27___err__to_str__t0 () (_ BitVec 64))
+(declare-fun var28_true__t0 () Bool)
+(assert
+  (= var28_true__t0 (theory1_safe var27___err__to_str__t0) )
+)
+
+(assert
+  var28_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
-(declare-fun var56___slice__slice__make__t0 () (_ BitVec 64))
-(declare-fun var57_true__t0 () Bool)
+(declare-fun var29___slice__slice__empty__t0 () (_ BitVec 64))
+(declare-fun var30_true__t0 () Bool)
 (assert
-  (= var57_true__t0 (theory1_safe var56___slice__slice__make__t0) )
+  (= var30_true__t0 (theory1_safe var29___slice__slice__empty__t0) )
 )
 
 (assert
-  var57_true__t0
+  var30_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
-(declare-fun var58___buffer__as_mut_slice__t0 () (_ BitVec 64))
-(declare-fun var59_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
+(declare-fun var31___buffer__vformat__t0 () (_ BitVec 64))
+(declare-fun var32_true__t0 () Bool)
 (assert
-  (= var59_true__t0 (theory1_safe var58___buffer__as_mut_slice__t0) )
+  (= var32_true__t0 (theory1_safe var31___buffer__vformat__t0) )
 )
 
 (assert
-  var59_true__t0
+  var32_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:11
-(declare-fun theory60___err__checked ((_ BitVec 64)) Bool); theory ::err::checked
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:168
-(declare-fun var61___err__abort__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
+(declare-fun var33___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
+(declare-fun var34_true__t0 () Bool)
+(assert
+  (= var34_true__t0 (theory1_safe var33___slice__mut_slice__append_slice__t0) )
+)
+
+(assert
+  var34_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
+(declare-fun var35___buffer__substr__t0 () (_ BitVec 64))
+(declare-fun var36_true__t0 () Bool)
+(assert
+  (= var36_true__t0 (theory1_safe var35___buffer__substr__t0) )
+)
+
+(assert
+  var36_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
+(declare-fun var37___slice__slice__eq__t0 () (_ BitVec 64))
+(declare-fun var38_true__t0 () Bool)
+(assert
+  (= var38_true__t0 (theory1_safe var37___slice__slice__eq__t0) )
+)
+
+(assert
+  var38_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
+(declare-fun var39___buffer__as_slice__t0 () (_ BitVec 64))
+(declare-fun var40_true__t0 () Bool)
+(assert
+  (= var40_true__t0 (theory1_safe var39___buffer__as_slice__t0) )
+)
+
+(assert
+  var40_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:101
+(declare-fun var41___slice__mut_slice__push__t0 () (_ BitVec 64))
+(declare-fun var42_true__t0 () Bool)
+(assert
+  (= var42_true__t0 (theory1_safe var41___slice__mut_slice__push__t0) )
+)
+
+(assert
+  var42_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:178
+(declare-fun var43___buffer__append_bytes__t0 () (_ BitVec 64))
+(declare-fun var44_true__t0 () Bool)
+(assert
+  (= var44_true__t0 (theory1_safe var43___buffer__append_bytes__t0) )
+)
+
+(assert
+  var44_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
+(declare-fun var45___buffer__format__t0 () (_ BitVec 64))
+(declare-fun var46_true__t0 () Bool)
+(assert
+  (= var46_true__t0 (theory1_safe var45___buffer__format__t0) )
+)
+
+(assert
+  var46_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:87
+(declare-fun var47___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var48_true__t0 () Bool)
+(assert
+  (= var48_true__t0 (theory1_safe var47___slice__mut_slice__append_cstr__t0) )
+)
+
+(assert
+  var48_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:133
+(declare-fun var49___err__fail__t0 () (_ BitVec 64))
+(declare-fun var50_true__t0 () Bool)
+(assert
+  (= var50_true__t0 (theory1_safe var49___err__fail__t0) )
+)
+
+(assert
+  var50_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:13
+(declare-fun var51___err__SystemError__t0 () (_ BitVec 64))
+(declare-fun var52_true__t0 () Bool)
+(assert
+  (= var52_true__t0 (theory3_symbol var51___err__SystemError__t0) )
+)
+
+(assert
+  var52_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:64
+(declare-fun var53___err__backtrace__t0 () (_ BitVec 64))
+(declare-fun var54_true__t0 () Bool)
+(assert
+  (= var54_true__t0 (theory1_safe var53___err__backtrace__t0) )
+)
+
+(assert
+  var54_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:70
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
+(declare-fun var55___buffer__pop__t0 () (_ BitVec 64))
+(declare-fun var56_true__t0 () Bool)
+(assert
+  (= var56_true__t0 (theory1_safe var55___buffer__pop__t0) )
+)
+
+(assert
+  var56_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:36
+(declare-fun var57___err__ignore__t0 () (_ BitVec 64))
+(declare-fun var58_true__t0 () Bool)
+(assert
+  (= var58_true__t0 (theory1_safe var57___err__ignore__t0) )
+)
+
+(assert
+  var58_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
+(declare-fun var59___buffer__starts_with_cstr__t0 () (_ BitVec 64))
+(declare-fun var60_true__t0 () Bool)
+(assert
+  (= var60_true__t0 (theory1_safe var59___buffer__starts_with_cstr__t0) )
+)
+
+(assert
+  var60_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:116
+(declare-fun var61___slice__mut_slice__push16__t0 () (_ BitVec 64))
 (declare-fun var62_true__t0 () Bool)
 (assert
-  (= var62_true__t0 (theory1_safe var61___err__abort__t0) )
+  (= var62_true__t0 (theory1_safe var61___slice__mut_slice__push16__t0) )
 )
 
 (assert
   var62_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
-(declare-fun var63___buffer__available__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:168
+(declare-fun var63___err__abort__t0 () (_ BitVec 64))
 (declare-fun var64_true__t0 () Bool)
 (assert
-  (= var64_true__t0 (theory1_safe var63___buffer__available__t0) )
+  (= var64_true__t0 (theory1_safe var63___err__abort__t0) )
 )
 
 (assert
   var64_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:55
-(declare-fun var65___slice__slice__split__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
+(declare-fun var65___buffer__as_mut_slice__t0 () (_ BitVec 64))
 (declare-fun var66_true__t0 () Bool)
 (assert
-  (= var66_true__t0 (theory1_safe var65___slice__slice__split__t0) )
+  (= var66_true__t0 (theory1_safe var65___buffer__as_mut_slice__t0) )
 )
 
 (assert
   var66_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:14
-(declare-fun var67___err__OutOfTail__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:292
+(declare-fun var67___err__fail_with_win32__t0 () (_ BitVec 64))
 (declare-fun var68_true__t0 () Bool)
 (assert
-  (= var68_true__t0 (theory3_symbol var67___err__OutOfTail__t0) )
+  (= var68_true__t0 (theory1_safe var67___err__fail_with_win32__t0) )
 )
 
 (assert
   var68_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:418
-(declare-fun var69___buffer__copy_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
+(declare-fun var69___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
 (declare-fun var70_true__t0 () Bool)
 (assert
-  (= var70_true__t0 (theory1_safe var69___buffer__copy_cstr__t0) )
+  (= var70_true__t0 (theory1_safe var69___slice__mut_slice__as_slice__t0) )
 )
 
 (assert
   var70_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
-(declare-fun var71___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
+(declare-fun var71___slice__slice__atoi__t0 () (_ BitVec 64))
 (declare-fun var72_true__t0 () Bool)
 (assert
-  (= var72_true__t0 (theory1_safe var71___slice__mut_slice__as_slice__t0) )
+  (= var72_true__t0 (theory1_safe var71___slice__slice__atoi__t0) )
 )
 
 (assert
   var72_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:236
-(declare-fun var73___buffer__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
+(declare-fun var73___slice__slice__make__t0 () (_ BitVec 64))
 (declare-fun var74_true__t0 () Bool)
 (assert
-  (= var74_true__t0 (theory1_safe var73___buffer__eq_cstr__t0) )
+  (= var74_true__t0 (theory1_safe var73___slice__slice__make__t0) )
 )
 
 (assert
   var74_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:231
-(declare-fun var75___err__assert__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
+(declare-fun var75___slice__slice__split__t0 () (_ BitVec 64))
 (declare-fun var76_true__t0 () Bool)
 (assert
-  (= var76_true__t0 (theory1_safe var75___err__assert__t0) )
+  (= var76_true__t0 (theory1_safe var75___slice__slice__split__t0) )
 )
 
 (assert
   var76_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
-(declare-fun var77___buffer__clear__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:193
+(declare-fun var77___err__eprintf__t0 () (_ BitVec 64))
 (declare-fun var78_true__t0 () Bool)
 (assert
-  (= var78_true__t0 (theory1_safe var77___buffer__clear__t0) )
+  (= var78_true__t0 (theory1_safe var77___err__eprintf__t0) )
 )
 
 (assert
   var78_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:26
-(declare-fun var79___err__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
+(declare-fun var79___buffer__slen__t0 () (_ BitVec 64))
 (declare-fun var80_true__t0 () Bool)
 (assert
-  (= var80_true__t0 (theory1_safe var79___err__make__t0) )
+  (= var80_true__t0 (theory1_safe var79___buffer__slen__t0) )
 )
 
 (assert
   var80_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:81
-(declare-fun var81___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
+(declare-fun var81___buffer__fgets__t0 () (_ BitVec 64))
 (declare-fun var82_true__t0 () Bool)
 (assert
-  (= var82_true__t0 (theory1_safe var81___slice__mut_slice__append_cstr__t0) )
+  (= var82_true__t0 (theory1_safe var81___buffer__fgets__t0) )
 )
 
 (assert
   var82_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
-(declare-fun var83___buffer__copy_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
+(declare-fun var83___slice__slice__sub__t0 () (_ BitVec 64))
 (declare-fun var84_true__t0 () Bool)
 (assert
-  (= var84_true__t0 (theory1_safe var83___buffer__copy_bytes__t0) )
+  (= var84_true__t0 (theory1_safe var83___slice__slice__sub__t0) )
 )
 
 (assert
   var84_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
-(declare-fun var85___buffer__format__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:236
+(declare-fun var85___buffer__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var86_true__t0 () Bool)
 (assert
-  (= var86_true__t0 (theory1_safe var85___buffer__format__t0) )
+  (= var86_true__t0 (theory1_safe var85___buffer__eq_cstr__t0) )
 )
 
 (assert
   var86_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:48
-(declare-fun var87___err__check__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
+(declare-fun var87___buffer__append_cstr__t0 () (_ BitVec 64))
 (declare-fun var88_true__t0 () Bool)
 (assert
-  (= var88_true__t0 (theory1_safe var87___err__check__t0) )
+  (= var88_true__t0 (theory1_safe var87___buffer__append_cstr__t0) )
 )
 
 (assert
   var88_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
-(declare-fun var89___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
+(declare-fun var89___buffer__ends_with_cstr__t0 () (_ BitVec 64))
 (declare-fun var90_true__t0 () Bool)
 (assert
-  (= var90_true__t0 (theory1_safe var89___slice__slice__eq_cstr__t0) )
+  (= var90_true__t0 (theory1_safe var89___buffer__ends_with_cstr__t0) )
 )
 
 (assert
   var90_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:231
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
-(declare-fun var91___buffer__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:187
+(declare-fun var91___err__elog__t0 () (_ BitVec 64))
 (declare-fun var92_true__t0 () Bool)
 (assert
-  (= var92_true__t0 (theory1_safe var91___buffer__append_cstr__t0) )
+  (= var92_true__t0 (theory1_safe var91___err__elog__t0) )
 )
 
 (assert
   var92_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:11
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:152
-(declare-fun var93___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/rand.zz:4
+(declare-fun var93___carrier__rand__rand__t0 () (_ BitVec 64))
 (declare-fun var94_true__t0 () Bool)
 (assert
-  (= var94_true__t0 (theory1_safe var93___slice__mut_slice__append_obj__t0) )
+  (= var94_true__t0 (theory1_safe var93___carrier__rand__rand__t0) )
 )
 
 (assert
   var94_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
-(declare-fun var95___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:131
+(declare-fun var95___slice__mut_slice__push32__t0 () (_ BitVec 64))
 (declare-fun var96_true__t0 () Bool)
 (assert
-  (= var96_true__t0 (theory1_safe var95___slice__mut_slice__append_slice__t0) )
+  (= var96_true__t0 (theory1_safe var95___slice__mut_slice__push32__t0) )
 )
 
 (assert
   var96_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:137
-(declare-fun var97___slice__mut_slice__push64__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
+(declare-fun var97___buffer__split__t0 () (_ BitVec 64))
 (declare-fun var98_true__t0 () Bool)
 (assert
-  (= var98_true__t0 (theory1_safe var97___slice__mut_slice__push64__t0) )
+  (= var98_true__t0 (theory1_safe var97___buffer__split__t0) )
 )
 
 (assert
   var98_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:187
-(declare-fun var99___err__elog__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
+(declare-fun var99___buffer__copy_bytes__t0 () (_ BitVec 64))
 (declare-fun var100_true__t0 () Bool)
 (assert
-  (= var100_true__t0 (theory1_safe var99___err__elog__t0) )
+  (= var100_true__t0 (theory1_safe var99___buffer__copy_bytes__t0) )
 )
 
 (assert
   var100_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
-(declare-fun var101___buffer__pop__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:101
+(declare-fun var101___err__fail_with_system_error__t0 () (_ BitVec 64))
 (declare-fun var102_true__t0 () Bool)
 (assert
-  (= var102_true__t0 (theory1_safe var101___buffer__pop__t0) )
+  (= var102_true__t0 (theory1_safe var101___err__fail_with_system_error__t0) )
 )
 
 (assert
   var102_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:178
-(declare-fun var103___buffer__append_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:68
+(declare-fun var103___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
 (declare-fun var104_true__t0 () Bool)
 (assert
-  (= var104_true__t0 (theory1_safe var103___buffer__append_bytes__t0) )
+  (= var104_true__t0 (theory1_safe var103___slice__mut_slice__append_bytes__t0) )
 )
 
 (assert
   var104_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:13
-(declare-fun var105___err__SystemError__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:26
+(declare-fun var105___err__make__t0 () (_ BitVec 64))
 (declare-fun var106_true__t0 () Bool)
 (assert
-  (= var106_true__t0 (theory3_symbol var105___err__SystemError__t0) )
+  (= var106_true__t0 (theory1_safe var105___err__make__t0) )
 )
 
 (assert
   var106_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:248
-(declare-fun var107___err__assert2__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
+(declare-fun var107___buffer__cstr__t0 () (_ BitVec 64))
 (declare-fun var108_true__t0 () Bool)
 (assert
-  (= var108_true__t0 (theory1_safe var107___err__assert2__t0) )
+  (= var108_true__t0 (theory1_safe var107___buffer__cstr__t0) )
 )
 
 (assert
   var108_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:14
-(declare-fun var109___symbols__nameof_checked__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
+(declare-fun var109___slice__mut_slice__make__t0 () (_ BitVec 64))
 (declare-fun var110_true__t0 () Bool)
 (assert
-  (= var110_true__t0 (theory1_safe var109___symbols__nameof_checked__t0) )
+  (= var110_true__t0 (theory1_safe var109___slice__mut_slice__make__t0) )
 )
 
 (assert
   var110_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
-(declare-fun var111___buffer__substr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:146
+(declare-fun var111___slice__mut_slice__push64__t0 () (_ BitVec 64))
 (declare-fun var112_true__t0 () Bool)
 (assert
-  (= var112_true__t0 (theory1_safe var111___buffer__substr__t0) )
+  (= var112_true__t0 (theory1_safe var111___slice__mut_slice__push64__t0) )
 )
 
 (assert
   var112_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:127
-(declare-fun var113___slice__slice__atoi__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
+(declare-fun var113___buffer__make__t0 () (_ BitVec 64))
 (declare-fun var114_true__t0 () Bool)
 (assert
-  (= var114_true__t0 (theory1_safe var113___slice__slice__atoi__t0) )
+  (= var114_true__t0 (theory1_safe var113___buffer__make__t0) )
 )
 
 (assert
   var114_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:107
-(declare-fun var115___slice__mut_slice__push16__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:48
+(declare-fun var115___err__check__t0 () (_ BitVec 64))
 (declare-fun var116_true__t0 () Bool)
 (assert
-  (= var116_true__t0 (theory1_safe var115___slice__mut_slice__push16__t0) )
+  (= var116_true__t0 (theory1_safe var115___err__check__t0) )
 )
 
 (assert
   var116_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
-(declare-fun var117___buffer__vformat__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:84
+(declare-fun var117___buffer__push__t0 () (_ BitVec 64))
 (declare-fun var118_true__t0 () Bool)
 (assert
-  (= var118_true__t0 (theory1_safe var117___buffer__vformat__t0) )
+  (= var118_true__t0 (theory1_safe var117___buffer__push__t0) )
 )
 
 (assert
   var118_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:292
-(declare-fun var119___err__fail_with_win32__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
+(declare-fun var119___buffer__available__t0 () (_ BitVec 64))
 (declare-fun var120_true__t0 () Bool)
 (assert
-  (= var120_true__t0 (theory1_safe var119___err__fail_with_win32__t0) )
+  (= var120_true__t0 (theory1_safe var119___buffer__available__t0) )
 )
 
 (assert
   var120_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:15
-(declare-fun var121___err__InvalidArgument__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
+(declare-fun var121___buffer__copy_slice__t0 () (_ BitVec 64))
 (declare-fun var122_true__t0 () Bool)
 (assert
-  (= var122_true__t0 (theory3_symbol var121___err__InvalidArgument__t0) )
+  (= var122_true__t0 (theory1_safe var121___buffer__copy_slice__t0) )
 )
 
 (assert
   var122_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:161
-(declare-fun var123___buffer__append_slice__t0 () (_ BitVec 64))
-(declare-fun var124_true__t0 () Bool)
-(assert
-  (= var124_true__t0 (theory1_safe var123___buffer__append_slice__t0) )
-)
-
-(assert
-  var124_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:101
-(declare-fun var125___err__fail_with_system_error__t0 () (_ BitVec 64))
-(declare-fun var126_true__t0 () Bool)
-(assert
-  (= var126_true__t0 (theory1_safe var125___err__fail_with_system_error__t0) )
-)
-
-(assert
-  var126_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:70
-(declare-fun var127___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var128_true__t0 () Bool)
-(assert
-  (= var128_true__t0 (theory1_safe var127___err__fail_with_errno__t0) )
-)
-
-(assert
-  var128_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:7
-(declare-fun var129___symbols__nameof__t0 () (_ BitVec 64))
-(declare-fun var130_true__t0 () Bool)
-(assert
-  (= var130_true__t0 (theory1_safe var129___symbols__nameof__t0) )
-)
-
-(assert
-  var130_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
-(declare-fun var131___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var132_true__t0 () Bool)
-(assert
-  (= var132_true__t0 (theory1_safe var131___buffer__cstr__t0) )
-)
-
-(assert
-  var132_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
-(declare-fun var133___buffer__fgets__t0 () (_ BitVec 64))
-(declare-fun var134_true__t0 () Bool)
-(assert
-  (= var134_true__t0 (theory1_safe var133___buffer__fgets__t0) )
-)
-
-(assert
-  var134_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:133
-(declare-fun var135___err__fail__t0 () (_ BitVec 64))
-(declare-fun var136_true__t0 () Bool)
-(assert
-  (= var136_true__t0 (theory1_safe var135___err__fail__t0) )
-)
-
-(assert
-  var136_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
-(declare-fun var137___slice__mut_slice__make__t0 () (_ BitVec 64))
-(declare-fun var138_true__t0 () Bool)
-(assert
-  (= var138_true__t0 (theory1_safe var137___slice__mut_slice__make__t0) )
-)
-
-(assert
-  var138_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
-(declare-fun var139___buffer__split__t0 () (_ BitVec 64))
-(declare-fun var140_true__t0 () Bool)
-(assert
-  (= var140_true__t0 (theory1_safe var139___buffer__split__t0) )
-)
-
-(assert
-  var140_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:36
-(declare-fun var141___err__ignore__t0 () (_ BitVec 64))
-(declare-fun var142_true__t0 () Bool)
-(assert
-  (= var142_true__t0 (theory1_safe var141___err__ignore__t0) )
-)
-
-(assert
-  var142_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:193
-(declare-fun var143___err__eprintf__t0 () (_ BitVec 64))
-(declare-fun var144_true__t0 () Bool)
-(assert
-  (= var144_true__t0 (theory1_safe var143___err__eprintf__t0) )
-)
-
-(assert
-  var144_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
-(declare-fun var145___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var146_true__t0 () Bool)
-(assert
-  (= var146_true__t0 (theory1_safe var145___buffer__make__t0) )
-)
-
-(assert
-  var146_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
-(declare-fun var147___buffer__slen__t0 () (_ BitVec 64))
-(declare-fun var148_true__t0 () Bool)
-(assert
-  (= var148_true__t0 (theory1_safe var147___buffer__slen__t0) )
-)
-
-(assert
-  var148_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:199
-(declare-fun var149___err__to_str__t0 () (_ BitVec 64))
-(declare-fun var150_true__t0 () Bool)
-(assert
-  (= var150_true__t0 (theory1_safe var149___err__to_str__t0) )
-)
-
-(assert
-  var150_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
-(declare-fun var151___buffer__as_slice__t0 () (_ BitVec 64))
-(declare-fun var152_true__t0 () Bool)
-(assert
-  (= var152_true__t0 (theory1_safe var151___buffer__as_slice__t0) )
-)
-
-(assert
-  var152_true__t0
 )
 
 ;
@@ -737,14 +639,14 @@
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
-(declare-fun var156_deref_S153_self__trace__t0 () (_ BitVec 64))
-(declare-fun var157_len_deref_S153_self____t0 () (_ BitVec 64))
+(declare-fun var126_deref_S123_self__trace__t0 () (_ BitVec 64))
+(declare-fun var127_len_deref_S123_self____t0 () (_ BitVec 64))
 (assert
-  (= var157_len_deref_S153_self____t0 (theory0_len var156_deref_S153_self__trace__t0) )
+  (= var127_len_deref_S123_self____t0 (theory0_len var126_deref_S123_self__trace__t0) )
 )
 
-(declare-fun var154_tail__t0 () (_ BitVec 64))
-(assert (! (= var157_len_deref_S153_self____t0 var154_tail__t0) :named A0)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
+(declare-fun var124_tail__t0 () (_ BitVec 64))
+(assert (! (= var127_len_deref_S123_self____t0 var124_tail__t0) :named A0)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:75
@@ -752,25 +654,25 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var161_fmt__t0 () (_ BitVec 64))
-(declare-fun var162_interpretation_of_theory_safe_over_fmt__t0 () Bool)
+(declare-fun var131_fmt__t0 () (_ BitVec 64))
+(declare-fun var132_interpretation_of_theory_safe_over_fmt__t0 () Bool)
 (assert
-  (= var162_interpretation_of_theory_safe_over_fmt__t0 (theory1_safe var161_fmt__t0) )
+  (= var132_interpretation_of_theory_safe_over_fmt__t0 (theory1_safe var131_fmt__t0) )
 )
 
-(assert (! var162_interpretation_of_theory_safe_over_fmt__t0 :named A1))(check-sat)
+(assert (! var132_interpretation_of_theory_safe_over_fmt__t0 :named A1))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var153_self__t0 () (_ BitVec 64))
-(declare-fun var163_interpretation_of_theory_safe_over_self__t0 () Bool)
+(declare-fun var123_self__t0 () (_ BitVec 64))
+(declare-fun var133_interpretation_of_theory_safe_over_self__t0 () Bool)
 (assert
-  (= var163_interpretation_of_theory_safe_over_self__t0 (theory1_safe var153_self__t0) )
+  (= var133_interpretation_of_theory_safe_over_self__t0 (theory1_safe var123_self__t0) )
 )
 
-(assert (! var163_interpretation_of_theory_safe_over_self__t0 :named A2))(check-sat)
+(assert (! var133_interpretation_of_theory_safe_over_self__t0 :named A2))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
 ; call of nullterm
@@ -779,12 +681,12 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var164_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
+(declare-fun var134_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
 (assert
-  (= var164_interpretation_of_theory_nullterm_over_fmt__t0 (theory2_nullterm var161_fmt__t0) )
+  (= var134_interpretation_of_theory_nullterm_over_fmt__t0 (theory2_nullterm var131_fmt__t0) )
 )
 
-(assert (! var164_interpretation_of_theory_nullterm_over_fmt__t0 :named A3))(check-sat)
+(assert (! var134_interpretation_of_theory_nullterm_over_fmt__t0 :named A3))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; call of static_attest
@@ -796,93 +698,93 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
-(declare-fun var165_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var166_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var135_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var136_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var166_len_addressof_deref_S153_self__trace____t0 (theory0_len var165_addressof_deref_S153_self__trace___t0) )
+  (= var136_len_addressof_deref_S123_self__trace____t0 (theory0_len var135_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var166_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var136_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var165_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var135_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var167_true__t0 () Bool)
+(declare-fun var137_true__t0 () Bool)
 (assert
-  (= var167_true__t0 (theory1_safe var165_addressof_deref_S153_self__trace___t0) )
+  (= var137_true__t0 (theory1_safe var135_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var167_true__t0
+  var137_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
-(declare-fun var168_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var169_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var138_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var139_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var169_len_addressof_deref_S153_self__trace____t0 (theory0_len var168_addressof_deref_S153_self__trace___t0) )
+  (= var139_len_addressof_deref_S123_self__trace____t0 (theory0_len var138_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var169_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var139_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var168_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var138_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var170_true__t0 () Bool)
+(declare-fun var140_true__t0 () Bool)
 (assert
-  (= var170_true__t0 (theory1_safe var168_addressof_deref_S153_self__trace___t0) )
+  (= var140_true__t0 (theory1_safe var138_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var170_true__t0
+  var140_true__t0
 )
 
-(declare-fun var171_cast_of_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(assert (! (= var171_cast_of_addressof_deref_S153_self__trace___t0 var168_addressof_deref_S153_self__trace___t0) :named A4)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
+(declare-fun var141_cast_of_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(assert (! (= var141_cast_of_addressof_deref_S123_self__trace___t0 var138_addressof_deref_S123_self__trace___t0) :named A4)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
-(declare-fun var172_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var173_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var142_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var143_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var173_len_addressof_deref_S153_self__trace____t0 (theory0_len var172_addressof_deref_S153_self__trace___t0) )
+  (= var143_len_addressof_deref_S123_self__trace____t0 (theory0_len var142_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var173_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var143_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var172_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var142_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var174_true__t0 () Bool)
+(declare-fun var144_true__t0 () Bool)
 (assert
-  (= var174_true__t0 (theory1_safe var172_addressof_deref_S153_self__trace___t0) )
+  (= var144_true__t0 (theory1_safe var142_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var174_true__t0
+  var144_true__t0
 )
 
-(declare-fun var175_cast_of_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(assert (! (= var175_cast_of_addressof_deref_S153_self__trace___t0 var172_addressof_deref_S153_self__trace___t0) :named A5)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
+(declare-fun var145_cast_of_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(assert (! (= var145_cast_of_addressof_deref_S123_self__trace___t0 var142_addressof_deref_S123_self__trace___t0) :named A5)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
 ; end of collecting theory invocation arguments
 ; theory_expression
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -895,9 +797,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var176_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var146_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var176_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var175_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var146_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var145_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -906,14 +808,14 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var177_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var178_true__t0 () Bool)
+(declare-fun var147_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var148_true__t0 () Bool)
 (assert
-  (= var178_true__t0 (theory1_safe var177_deref_S153_self__trace_mem__t0) )
+  (= var148_true__t0 (theory1_safe var147_deref_S123_self__trace_mem__t0) )
 )
 
 (assert
-  var178_true__t0
+  var148_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -924,22 +826,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var179_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var149_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var179_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var149_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var180_infix_expression__t0 () Bool)
+(declare-fun var150_infix_expression__t0 () Bool)
 (assert
-  (=  var180_infix_expression__t0 (bvuge var179_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var150_infix_expression__t0 (bvuge var149_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var181_infix_expression__t0 () Bool)
+(declare-fun var151_infix_expression__t0 () Bool)
 (assert
-  (=  var181_infix_expression__t0 (and var176_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var180_infix_expression__t0))
+  (=  var151_infix_expression__t0 (and var146_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var150_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -958,22 +860,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var183_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var153_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var183_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var153_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var184_infix_expression__t0 () Bool)
-(declare-fun var182_deref_S153_self__trace_at__t0 () (_ BitVec 64))
+(declare-fun var154_infix_expression__t0 () Bool)
+(declare-fun var152_deref_S123_self__trace_at__t0 () (_ BitVec 64))
 (assert
-  (=  var184_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var183_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var154_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var153_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var185_infix_expression__t0 () Bool)
+(declare-fun var155_infix_expression__t0 () Bool)
 (assert
-  (=  var185_infix_expression__t0 (and var181_infix_expression__t0 var184_infix_expression__t0))
+  (=  var155_infix_expression__t0 (and var151_infix_expression__t0 var154_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -986,24 +888,24 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var186_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var156_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var186_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var156_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var187_infix_expression__t0 () Bool)
+(declare-fun var157_infix_expression__t0 () Bool)
 (assert
-  (=  var187_infix_expression__t0 (and var185_infix_expression__t0 var186_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var157_infix_expression__t0 (and var155_infix_expression__t0 var156_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var187_infix_expression__t0 :named A6))(check-sat)
+(assert (! var157_infix_expression__t0 :named A6))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:81
-(declare-fun var188_literal_1__t0 () (_ BitVec 64))
+(declare-fun var158_literal_1__t0 () (_ BitVec 64))
 (assert
-  (= var188_literal_1__t0 (_ bv1 64))
+  (= var158_literal_1__t0 (_ bv1 64))
 
 )
 
@@ -1012,30 +914,30 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:82
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:82
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:13
-(declare-fun var190_implicit_coercion_of___err__SystemError__t0 () (_ BitVec 64))
-(assert (! (= var190_implicit_coercion_of___err__SystemError__t0 var105___err__SystemError__t0) :named A7)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:82
-(declare-fun var191_safe_implicit_coercion_of___err__SystemError_____safe_deref_S153_self__error___t0 () Bool)
+(declare-fun var160_implicit_coercion_of___err__SystemError__t0 () (_ BitVec 64))
+(assert (! (= var160_implicit_coercion_of___err__SystemError__t0 var51___err__SystemError__t0) :named A7)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:82
+(declare-fun var161_safe_implicit_coercion_of___err__SystemError_____safe_deref_S123_self__error___t0 () Bool)
 (assert
-  (= var191_safe_implicit_coercion_of___err__SystemError_____safe_deref_S153_self__error___t0 (theory1_safe var190_implicit_coercion_of___err__SystemError__t0) )
+  (= var161_safe_implicit_coercion_of___err__SystemError_____safe_deref_S123_self__error___t0 (theory1_safe var160_implicit_coercion_of___err__SystemError__t0) )
 )
 
-(declare-fun var189_deref_S153_self__error__t1 () (_ BitVec 64))
+(declare-fun var159_deref_S123_self__error__t1 () (_ BitVec 64))
 (assert
-  (= var191_safe_implicit_coercion_of___err__SystemError_____safe_deref_S153_self__error___t0 (theory1_safe var189_deref_S153_self__error__t1) )
+  (= var161_safe_implicit_coercion_of___err__SystemError_____safe_deref_S123_self__error___t0 (theory1_safe var159_deref_S123_self__error__t1) )
 )
 
-(declare-fun var192_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S153_self__error___t0 () Bool)
+(declare-fun var162_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S123_self__error___t0 () Bool)
 (assert
-  (= var192_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S153_self__error___t0 (theory2_nullterm var190_implicit_coercion_of___err__SystemError__t0) )
+  (= var162_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S123_self__error___t0 (theory2_nullterm var160_implicit_coercion_of___err__SystemError__t0) )
 )
 
 (assert
-  (= var192_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S153_self__error___t0 (theory2_nullterm var189_deref_S153_self__error__t1) )
+  (= var162_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S123_self__error___t0 (theory2_nullterm var159_deref_S123_self__error__t1) )
 )
 
-(declare-fun var189_deref_S153_self__error__t0 () (_ BitVec 64))
+(declare-fun var159_deref_S123_self__error__t0 () (_ BitVec 64))
 (assert
-  (= var189_deref_S153_self__error__t1  (ite true var190_implicit_coercion_of___err__SystemError__t0 var189_deref_S153_self__error__t0)  )
+  (= var159_deref_S123_self__error__t1  (ite true var160_implicit_coercion_of___err__SystemError__t0 var159_deref_S123_self__error__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:83
@@ -1044,12 +946,12 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:83
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:83
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:83
-(declare-fun var194_cast_of___ext___errno_h___errno__t0 () (_ BitVec 64))
-(declare-fun var10___ext___errno_h___errno__t0 () (_ BitVec 64))
-(assert (! (= var194_cast_of___ext___errno_h___errno__t0 var10___ext___errno_h___errno__t0) :named A8))(declare-fun var193_deref_S153_self__system__t1 () (_ BitVec 64))
-(declare-fun var193_deref_S153_self__system__t0 () (_ BitVec 64))
+(declare-fun var165_cast_of___ext___errno_h___errno__t0 () (_ BitVec 64))
+(declare-fun var164___ext___errno_h___errno__t0 () (_ BitVec 64))
+(assert (! (= var165_cast_of___ext___errno_h___errno__t0 var164___ext___errno_h___errno__t0) :named A8))(declare-fun var163_deref_S123_self__system__t1 () (_ BitVec 64))
+(declare-fun var163_deref_S123_self__system__t0 () (_ BitVec 64))
 (assert
-  (= var193_deref_S153_self__system__t1  (ite true var194_cast_of___ext___errno_h___errno__t0 var193_deref_S153_self__system__t0)  )
+  (= var163_deref_S123_self__system__t1  (ite true var165_cast_of___ext___errno_h___errno__t0 var163_deref_S123_self__system__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
@@ -1057,17 +959,17 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
 ; literal expr
-(declare-fun var195_literal_2__t0 () (_ BitVec 64))
+(declare-fun var166_literal_2__t0 () (_ BitVec 64))
 (assert
-  (= var195_literal_2__t0 (_ bv2 64))
+  (= var166_literal_2__t0 (_ bv2 64))
 
 )
 
-(declare-fun var196_implicit_coercion_of_literal_2__t0 () (_ BitVec 64))
-(assert (! (= var196_implicit_coercion_of_literal_2__t0 var195_literal_2__t0) :named A9)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
-(declare-fun var197_infix_expression__t0 () Bool)
+(declare-fun var167_implicit_coercion_of_literal_2__t0 () (_ BitVec 64))
+(assert (! (= var167_implicit_coercion_of_literal_2__t0 var166_literal_2__t0) :named A9)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
+(declare-fun var168_infix_expression__t0 () Bool)
 (assert
-  (=  var197_infix_expression__t0 (bvugt var154_tail__t0 var196_implicit_coercion_of_literal_2__t0))
+  (=  var168_infix_expression__t0 (bvugt var124_tail__t0 var167_implicit_coercion_of_literal_2__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
@@ -1076,30 +978,30 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
 ; literal expr
-(declare-fun var198_literal_0__t0 () (_ BitVec 64))
+(declare-fun var169_literal_0__t0 () (_ BitVec 64))
 (assert
-  (= var198_literal_0__t0 (_ bv0 64))
+  (= var169_literal_0__t0 (_ bv0 64))
 
 )
 
-(declare-fun var199_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var199_implicit_coercion_of_literal_0__t0 var198_literal_0__t0) :named A10)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
-(declare-fun var200_infix_expression__t0 () Bool)
+(declare-fun var170_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
+(assert (! (= var170_implicit_coercion_of_literal_0__t0 var169_literal_0__t0) :named A10)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
+(declare-fun var171_infix_expression__t0 () Bool)
 (assert
-  (=  var200_infix_expression__t0 (bvugt var182_deref_S153_self__trace_at__t0 var199_implicit_coercion_of_literal_0__t0))
+  (=  var171_infix_expression__t0 (bvugt var152_deref_S123_self__trace_at__t0 var170_implicit_coercion_of_literal_0__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:85
-(declare-fun var201_infix_expression__t0 () Bool)
+(declare-fun var172_infix_expression__t0 () Bool)
 (assert
-  (=  var201_infix_expression__t0 (and var197_infix_expression__t0 var200_infix_expression__t0))
+  (=  var172_infix_expression__t0 (and var168_infix_expression__t0 var171_infix_expression__t0))
 )
 
 (check-sat)
 
 (get-value (
 
-  var201_infix_expression__t0
+  var172_infix_expression__t0
 
 ) )
 
@@ -1107,7 +1009,7 @@
 (push 1)
 
 (assert
-  (not (= var201_infix_expression__t0 false))
+  (not (= var172_infix_expression__t0 false))
 )
 
 (check-sat)
@@ -1127,91 +1029,91 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
-(declare-fun var203_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var204_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var174_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var175_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var204_len_addressof_deref_S153_self__trace____t0 (theory0_len var203_addressof_deref_S153_self__trace___t0) )
+  (= var175_len_addressof_deref_S123_self__trace____t0 (theory0_len var174_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var204_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var203_addressof_deref_S153_self__trace___t0 (_ bv156 64))
-
-)
-
-(declare-fun var205_true__t0 () Bool)
-(assert
-  (= var205_true__t0 (theory1_safe var203_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  var205_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
-(declare-fun var206_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var207_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(assert
-  (= var207_len_addressof_deref_S153_self__trace____t0 (theory0_len var206_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  (= var207_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var175_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var206_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var174_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var208_true__t0 () Bool)
+(declare-fun var176_true__t0 () Bool)
 (assert
-  (= var208_true__t0 (theory1_safe var206_addressof_deref_S153_self__trace___t0) )
+  (= var176_true__t0 (theory1_safe var174_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var208_true__t0
+  var176_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
+(declare-fun var177_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var178_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(assert
+  (= var178_len_addressof_deref_S123_self__trace____t0 (theory0_len var177_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  (= var178_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var177_addressof_deref_S123_self__trace___t0 (_ bv126 64))
+
+)
+
+(declare-fun var179_true__t0 () Bool)
+(assert
+  (= var179_true__t0 (theory1_safe var177_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  var179_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
-(declare-fun var210_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var211_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
+(declare-fun var181_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var182_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var211_len_addressof_deref_S153_self__trace____t0 (theory0_len var210_addressof_deref_S153_self__trace___t0) )
+  (= var182_len_addressof_deref_S123_self__trace____t0 (theory0_len var181_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var211_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var182_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var210_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var181_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var212_true__t0 () Bool)
+(declare-fun var183_true__t0 () Bool)
 (assert
-  (= var212_true__t0 (theory1_safe var210_addressof_deref_S153_self__trace___t0) )
+  (= var183_true__t0 (theory1_safe var181_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var212_true__t0
+  var183_true__t0
 )
 
-(declare-fun var213_cast_of_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(assert (! (= var213_cast_of_addressof_deref_S153_self__trace___t0 var210_addressof_deref_S153_self__trace___t0) :named A11)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+(declare-fun var184_cast_of_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(assert (! (= var184_cast_of_addressof_deref_S123_self__trace___t0 var181_addressof_deref_S123_self__trace___t0) :named A11)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ;callsite_assert
 (push 1)
@@ -1220,9 +1122,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var215_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var186_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var215_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var213_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var186_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var184_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:85
@@ -1245,9 +1147,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var216_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var187_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var216_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var213_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var187_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var184_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -1263,22 +1165,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var217_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var188_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var217_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var188_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var218_infix_expression__t0 () Bool)
+(declare-fun var189_infix_expression__t0 () Bool)
 (assert
-  (=  var218_infix_expression__t0 (bvuge var217_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var189_infix_expression__t0 (bvuge var188_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var219_infix_expression__t0 () Bool)
+(declare-fun var190_infix_expression__t0 () Bool)
 (assert
-  (=  var219_infix_expression__t0 (and var216_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var218_infix_expression__t0))
+  (=  var190_infix_expression__t0 (and var187_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var189_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -1296,21 +1198,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var220_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var191_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var220_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var191_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var221_infix_expression__t0 () Bool)
+(declare-fun var192_infix_expression__t0 () Bool)
 (assert
-  (=  var221_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var220_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var192_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var191_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var222_infix_expression__t0 () Bool)
+(declare-fun var193_infix_expression__t0 () Bool)
 (assert
-  (=  var222_infix_expression__t0 (and var219_infix_expression__t0 var221_infix_expression__t0))
+  (=  var193_infix_expression__t0 (and var190_infix_expression__t0 var192_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -1323,22 +1225,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var223_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var194_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var223_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var194_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var224_infix_expression__t0 () Bool)
+(declare-fun var195_infix_expression__t0 () Bool)
 (assert
-  (=  var224_infix_expression__t0 (and var222_infix_expression__t0 var223_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var195_infix_expression__t0 (and var193_infix_expression__t0 var194_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and var201_infix_expression__t0 (or (not var215_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 ) (not var224_infix_expression__t0 ) ))
+  (and var172_infix_expression__t0 (or (not var186_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 ) (not var195_infix_expression__t0 ) ))
 
 )
 
@@ -1350,26 +1252,26 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var215_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var216_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var217_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var220_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var223_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var186_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var187_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var188_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var191_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var194_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 ; borrows after call
-; 156 to temporal +1 because of function borrow
-(declare-fun var156_deref_S153_self__trace__t1 () (_ BitVec 64))
+; 126 to temporal +1 because of function borrow
+(declare-fun var126_deref_S123_self__trace__t1 () (_ BitVec 64))
 (assert
-  (= var156_deref_S153_self__trace__t1  (ite var201_infix_expression__t0 var156_deref_S153_self__trace__t1 var156_deref_S153_self__trace__t0)  )
+  (= var126_deref_S123_self__trace__t1  (ite var172_infix_expression__t0 var126_deref_S123_self__trace__t1 var126_deref_S123_self__trace__t0)  )
 )
 
 ; end of borrows after call
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:86
 ; callsite effects
-(declare-fun var226_return__t1 () Bool)
-(declare-fun var225_return_value_of___buffer__push__t0 () Bool)
-(declare-fun var226_return__t0 () Bool)
+(declare-fun var197_return__t1 () Bool)
+(declare-fun var196_return_value_of___buffer__push__t0 () Bool)
+(declare-fun var197_return__t0 () Bool)
 (assert
-  (= var226_return__t1  (ite var201_infix_expression__t0 var225_return_value_of___buffer__push__t0 var226_return__t0)  )
+  (= var197_return__t1  (ite var172_infix_expression__t0 var196_return_value_of___buffer__push__t0 var197_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:86
@@ -1392,9 +1294,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var227_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var198_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var227_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var213_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var198_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var184_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -1410,22 +1312,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var228_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var199_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var228_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var199_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var229_infix_expression__t0 () Bool)
+(declare-fun var200_infix_expression__t0 () Bool)
 (assert
-  (=  var229_infix_expression__t0 (bvuge var228_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var200_infix_expression__t0 (bvuge var199_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var230_infix_expression__t0 () Bool)
+(declare-fun var201_infix_expression__t0 () Bool)
 (assert
-  (=  var230_infix_expression__t0 (and var227_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var229_infix_expression__t0))
+  (=  var201_infix_expression__t0 (and var198_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var200_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -1443,21 +1345,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var231_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var202_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var231_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var202_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var232_infix_expression__t0 () Bool)
+(declare-fun var203_infix_expression__t0 () Bool)
 (assert
-  (=  var232_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var231_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var203_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var202_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var233_infix_expression__t0 () Bool)
+(declare-fun var204_infix_expression__t0 () Bool)
 (assert
-  (=  var233_infix_expression__t0 (and var230_infix_expression__t0 var232_infix_expression__t0))
+  (=  var204_infix_expression__t0 (and var201_infix_expression__t0 var203_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -1470,23 +1372,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var234_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var205_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var234_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var205_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var235_infix_expression__t0 () Bool)
+(declare-fun var206_infix_expression__t0 () Bool)
 (assert
-  (=  var235_infix_expression__t0 (and var233_infix_expression__t0 var234_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var206_infix_expression__t0 (and var204_infix_expression__t0 var205_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var235_infix_expression__t0 :named A12))(check-sat)
+(assert (! var206_infix_expression__t0 :named A12))(check-sat)
 
-(declare-fun var225_return_value_of___buffer__push__t1 () Bool)
+(declare-fun var196_return_value_of___buffer__push__t1 () Bool)
 (assert
-  (= var225_return_value_of___buffer__push__t1  (ite var201_infix_expression__t0 var226_return__t1 var225_return_value_of___buffer__push__t0)  )
+  (= var196_return_value_of___buffer__push__t1  (ite var172_infix_expression__t0 var197_return__t1 var196_return_value_of___buffer__push__t0)  )
 )
 
 ; end of callsite effects
@@ -1503,128 +1405,128 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-(declare-fun var237_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var238_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var208_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var209_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var238_len_addressof_deref_S153_self__trace____t0 (theory0_len var237_addressof_deref_S153_self__trace___t0) )
+  (= var209_len_addressof_deref_S123_self__trace____t0 (theory0_len var208_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var238_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var237_addressof_deref_S153_self__trace___t0 (_ bv156 64))
-
-)
-
-(declare-fun var239_true__t0 () Bool)
-(assert
-  (= var239_true__t0 (theory1_safe var237_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  var239_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-(declare-fun var240_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var241_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(assert
-  (= var241_len_addressof_deref_S153_self__trace____t0 (theory0_len var240_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  (= var241_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var209_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var240_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var208_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var242_true__t0 () Bool)
+(declare-fun var210_true__t0 () Bool)
 (assert
-  (= var242_true__t0 (theory1_safe var240_addressof_deref_S153_self__trace___t0) )
+  (= var210_true__t0 (theory1_safe var208_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var242_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-(declare-fun var243_literal_string___s______t0 () (_ BitVec 64))
-(declare-fun var244_true__t0 () Bool)
-(assert
-  (= var244_true__t0 (theory1_safe var243_literal_string___s______t0) )
-)
-
-(assert
-  var244_true__t0
-)
-
-(declare-fun var245_true__t0 () Bool)
-(assert
-  (= var245_true__t0 (theory2_nullterm var243_literal_string___s______t0) )
-)
-
-(assert
-  var245_true__t0
+  var210_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
+(declare-fun var211_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var212_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(assert
+  (= var212_len_addressof_deref_S123_self__trace____t0 (theory0_len var211_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  (= var212_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var211_addressof_deref_S123_self__trace___t0 (_ bv126 64))
+
+)
+
+(declare-fun var213_true__t0 () Bool)
+(assert
+  (= var213_true__t0 (theory1_safe var211_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  var213_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-(declare-fun var246_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var247_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var214_literal_string___s______t0 () (_ BitVec 64))
+(declare-fun var215_true__t0 () Bool)
 (assert
-  (= var247_len_addressof_deref_S153_self__trace____t0 (theory0_len var246_addressof_deref_S153_self__trace___t0) )
+  (= var215_true__t0 (theory1_safe var214_literal_string___s______t0) )
 )
 
 (assert
-  (= var247_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  var215_true__t0
+)
 
+(declare-fun var216_true__t0 () Bool)
+(assert
+  (= var216_true__t0 (theory2_nullterm var214_literal_string___s______t0) )
 )
 
 (assert
-  (= var246_addressof_deref_S153_self__trace___t0 (_ bv156 64))
-
+  var216_true__t0
 )
 
-(declare-fun var248_true__t0 () Bool)
-(assert
-  (= var248_true__t0 (theory1_safe var246_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  var248_true__t0
-)
-
-(declare-fun var249_cast_of_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(assert (! (= var249_cast_of_addressof_deref_S153_self__trace___t0 var246_addressof_deref_S153_self__trace___t0) :named A13)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
-(declare-fun var250_literal_string___s______t0 () (_ BitVec 64))
-(declare-fun var251_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
+(declare-fun var217_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var218_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var251_true__t0 (theory1_safe var250_literal_string___s______t0) )
+  (= var218_len_addressof_deref_S123_self__trace____t0 (theory0_len var217_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var251_true__t0
-)
+  (= var218_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
-(declare-fun var252_true__t0 () Bool)
-(assert
-  (= var252_true__t0 (theory2_nullterm var250_literal_string___s______t0) )
 )
 
 (assert
-  var252_true__t0
+  (= var217_addressof_deref_S123_self__trace___t0 (_ bv126 64))
+
+)
+
+(declare-fun var219_true__t0 () Bool)
+(assert
+  (= var219_true__t0 (theory1_safe var217_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  var219_true__t0
+)
+
+(declare-fun var220_cast_of_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(assert (! (= var220_cast_of_addressof_deref_S123_self__trace___t0 var217_addressof_deref_S123_self__trace___t0) :named A13)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
+(declare-fun var221_literal_string___s______t0 () (_ BitVec 64))
+(declare-fun var222_true__t0 () Bool)
+(assert
+  (= var222_true__t0 (theory1_safe var221_literal_string___s______t0) )
+)
+
+(assert
+  var222_true__t0
+)
+
+(declare-fun var223_true__t0 () Bool)
+(assert
+  (= var223_true__t0 (theory2_nullterm var221_literal_string___s______t0) )
+)
+
+(assert
+  var223_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
@@ -1639,18 +1541,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var254_interpretation_of_theory_safe_over_literal_string___s______t0 () Bool)
+(declare-fun var227_interpretation_of_theory_safe_over_literal_string___s______t0 () Bool)
 (assert
-  (= var254_interpretation_of_theory_safe_over_literal_string___s______t0 (theory1_safe var250_literal_string___s______t0) )
+  (= var227_interpretation_of_theory_safe_over_literal_string___s______t0 (theory1_safe var221_literal_string___s______t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var255_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var228_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var255_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var249_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var228_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var220_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:195
@@ -1660,9 +1562,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:195
-(declare-fun var256_interpretation_of_theory_nullterm_over_literal_string___s______t0 () Bool)
+(declare-fun var229_interpretation_of_theory_nullterm_over_literal_string___s______t0 () Bool)
 (assert
-  (= var256_interpretation_of_theory_nullterm_over_literal_string___s______t0 (theory2_nullterm var250_literal_string___s______t0) )
+  (= var229_interpretation_of_theory_nullterm_over_literal_string___s______t0 (theory2_nullterm var221_literal_string___s______t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:196
@@ -1685,9 +1587,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var257_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var230_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var257_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var249_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var230_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var220_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -1703,22 +1605,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var258_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var231_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var258_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var231_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var259_infix_expression__t0 () Bool)
+(declare-fun var232_infix_expression__t0 () Bool)
 (assert
-  (=  var259_infix_expression__t0 (bvuge var258_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var232_infix_expression__t0 (bvuge var231_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var260_infix_expression__t0 () Bool)
+(declare-fun var233_infix_expression__t0 () Bool)
 (assert
-  (=  var260_infix_expression__t0 (and var257_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var259_infix_expression__t0))
+  (=  var233_infix_expression__t0 (and var230_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var232_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -1736,21 +1638,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var261_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var234_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var261_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var234_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var262_infix_expression__t0 () Bool)
+(declare-fun var235_infix_expression__t0 () Bool)
 (assert
-  (=  var262_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var261_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var235_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var234_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var263_infix_expression__t0 () Bool)
+(declare-fun var236_infix_expression__t0 () Bool)
 (assert
-  (=  var263_infix_expression__t0 (and var260_infix_expression__t0 var262_infix_expression__t0))
+  (=  var236_infix_expression__t0 (and var233_infix_expression__t0 var235_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -1763,22 +1665,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var264_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var237_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var264_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var237_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var265_infix_expression__t0 () Bool)
+(declare-fun var238_infix_expression__t0 () Bool)
 (assert
-  (=  var265_infix_expression__t0 (and var263_infix_expression__t0 var264_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var238_infix_expression__t0 (and var236_infix_expression__t0 var237_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and true (or (not var254_interpretation_of_theory_safe_over_literal_string___s______t0 ) (not var255_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 ) (not var256_interpretation_of_theory_nullterm_over_literal_string___s______t0 ) (not var265_infix_expression__t0 ) ))
+  (and true (or (not var227_interpretation_of_theory_safe_over_literal_string___s______t0 ) (not var228_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 ) (not var229_interpretation_of_theory_nullterm_over_literal_string___s______t0 ) (not var238_infix_expression__t0 ) ))
 
 )
 
@@ -1790,28 +1692,28 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var254_interpretation_of_theory_safe_over_literal_string___s______t0 () Bool)
-(declare-fun var255_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var256_interpretation_of_theory_nullterm_over_literal_string___s______t0 () Bool)
-(declare-fun var257_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var258_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var261_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var264_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var227_interpretation_of_theory_safe_over_literal_string___s______t0 () Bool)
+(declare-fun var228_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var229_interpretation_of_theory_nullterm_over_literal_string___s______t0 () Bool)
+(declare-fun var230_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var231_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var234_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var237_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 ; borrows after call
-; 156 to temporal +1 because of function borrow
-(declare-fun var156_deref_S153_self__trace__t2 () (_ BitVec 64))
+; 126 to temporal +1 because of function borrow
+(declare-fun var126_deref_S123_self__trace__t2 () (_ BitVec 64))
 (assert
-  (= var156_deref_S153_self__trace__t2  (ite true var156_deref_S153_self__trace__t2 var156_deref_S153_self__trace__t1)  )
+  (= var126_deref_S123_self__trace__t2  (ite true var126_deref_S123_self__trace__t2 var126_deref_S123_self__trace__t1)  )
 )
 
 ; end of borrows after call
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:88
 ; callsite effects
-(declare-fun var267_return__t1 () (_ BitVec 64))
-(declare-fun var266_return_value_of___buffer__format__t0 () (_ BitVec 64))
-(declare-fun var267_return__t0 () (_ BitVec 64))
+(declare-fun var240_return__t1 () (_ BitVec 64))
+(declare-fun var239_return_value_of___buffer__format__t0 () (_ BitVec 64))
+(declare-fun var240_return__t0 () (_ BitVec 64))
 (assert
-  (= var267_return__t1  (ite true var266_return_value_of___buffer__format__t0 var267_return__t0)  )
+  (= var240_return__t1  (ite true var239_return_value_of___buffer__format__t0 var240_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:197
@@ -1834,9 +1736,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var268_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var241_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var268_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var249_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var241_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var220_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -1852,22 +1754,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var269_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var242_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var269_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var242_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var270_infix_expression__t0 () Bool)
+(declare-fun var243_infix_expression__t0 () Bool)
 (assert
-  (=  var270_infix_expression__t0 (bvuge var269_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var243_infix_expression__t0 (bvuge var242_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var271_infix_expression__t0 () Bool)
+(declare-fun var244_infix_expression__t0 () Bool)
 (assert
-  (=  var271_infix_expression__t0 (and var268_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var270_infix_expression__t0))
+  (=  var244_infix_expression__t0 (and var241_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var243_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -1885,21 +1787,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var272_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var245_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var272_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var245_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var273_infix_expression__t0 () Bool)
+(declare-fun var246_infix_expression__t0 () Bool)
 (assert
-  (=  var273_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var272_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var246_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var245_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var274_infix_expression__t0 () Bool)
+(declare-fun var247_infix_expression__t0 () Bool)
 (assert
-  (=  var274_infix_expression__t0 (and var271_infix_expression__t0 var273_infix_expression__t0))
+  (=  var247_infix_expression__t0 (and var244_infix_expression__t0 var246_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -1912,23 +1814,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var275_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var248_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var275_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var248_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var276_infix_expression__t0 () Bool)
+(declare-fun var249_infix_expression__t0 () Bool)
 (assert
-  (=  var276_infix_expression__t0 (and var274_infix_expression__t0 var275_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var249_infix_expression__t0 (and var247_infix_expression__t0 var248_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var276_infix_expression__t0 :named A14))(check-sat)
+(assert (! var249_infix_expression__t0 :named A14))(check-sat)
 
-(declare-fun var266_return_value_of___buffer__format__t1 () (_ BitVec 64))
+(declare-fun var239_return_value_of___buffer__format__t1 () (_ BitVec 64))
 (assert
-  (= var266_return_value_of___buffer__format__t1  (ite true var267_return__t1 var266_return_value_of___buffer__format__t0)  )
+  (= var239_return_value_of___buffer__format__t1  (ite true var240_return__t1 var239_return_value_of___buffer__format__t0)  )
 )
 
 ; end of callsite effects
@@ -1948,17 +1850,17 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:92
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:92
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:92
-(declare-fun var279_infix_expression__t0 () Bool)
+(declare-fun var253_infix_expression__t0 () Bool)
 (assert
-  (=  var279_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var154_tail__t0))
+  (=  var253_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var124_tail__t0))
 )
 
-(assert (! var279_infix_expression__t0 :named A15))(check-sat)
+(assert (! var253_infix_expression__t0 :named A15))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:92
-(declare-fun var280_literal_1__t0 () (_ BitVec 64))
+(declare-fun var254_literal_1__t0 () (_ BitVec 64))
 (assert
-  (= var280_literal_1__t0 (_ bv1 64))
+  (= var254_literal_1__t0 (_ bv1 64))
 
 )
 
@@ -1974,92 +1876,92 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
-(declare-fun var282_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var283_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var256_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var257_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var283_len_addressof_deref_S153_self__trace____t0 (theory0_len var282_addressof_deref_S153_self__trace___t0) )
+  (= var257_len_addressof_deref_S123_self__trace____t0 (theory0_len var256_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var283_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var282_addressof_deref_S153_self__trace___t0 (_ bv156 64))
-
-)
-
-(declare-fun var284_true__t0 () Bool)
-(assert
-  (= var284_true__t0 (theory1_safe var282_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  var284_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
-(declare-fun var285_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var286_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(assert
-  (= var286_len_addressof_deref_S153_self__trace____t0 (theory0_len var285_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  (= var286_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var257_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var285_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var256_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var287_true__t0 () Bool)
+(declare-fun var258_true__t0 () Bool)
 (assert
-  (= var287_true__t0 (theory1_safe var285_addressof_deref_S153_self__trace___t0) )
+  (= var258_true__t0 (theory1_safe var256_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var287_true__t0
+  var258_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
+(declare-fun var259_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var260_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(assert
+  (= var260_len_addressof_deref_S123_self__trace____t0 (theory0_len var259_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  (= var260_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var259_addressof_deref_S123_self__trace___t0 (_ bv126 64))
+
+)
+
+(declare-fun var261_true__t0 () Bool)
+(assert
+  (= var261_true__t0 (theory1_safe var259_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  var261_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
-(declare-fun var288_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var289_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
+(declare-fun var262_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var263_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var289_len_addressof_deref_S153_self__trace____t0 (theory0_len var288_addressof_deref_S153_self__trace___t0) )
+  (= var263_len_addressof_deref_S123_self__trace____t0 (theory0_len var262_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var289_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var263_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var288_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var262_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var290_true__t0 () Bool)
+(declare-fun var264_true__t0 () Bool)
 (assert
-  (= var290_true__t0 (theory1_safe var288_addressof_deref_S153_self__trace___t0) )
+  (= var264_true__t0 (theory1_safe var262_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var290_true__t0
+  var264_true__t0
 )
 
-(declare-fun var291_cast_of_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(assert (! (= var291_cast_of_addressof_deref_S153_self__trace___t0 var288_addressof_deref_S153_self__trace___t0) :named A16)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+(declare-fun var265_cast_of_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(assert (! (= var265_cast_of_addressof_deref_S123_self__trace___t0 var262_addressof_deref_S123_self__trace___t0) :named A16)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ;callsite_assert
@@ -2069,18 +1971,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var292_interpretation_of_theory_safe_over_fmt__t0 () Bool)
+(declare-fun var266_interpretation_of_theory_safe_over_fmt__t0 () Bool)
 (assert
-  (= var292_interpretation_of_theory_safe_over_fmt__t0 (theory1_safe var161_fmt__t0) )
+  (= var266_interpretation_of_theory_safe_over_fmt__t0 (theory1_safe var131_fmt__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var293_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var267_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var293_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var291_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var267_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var265_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:208
@@ -2090,9 +1992,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:208
-(declare-fun var294_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
+(declare-fun var268_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
 (assert
-  (= var294_interpretation_of_theory_nullterm_over_fmt__t0 (theory2_nullterm var161_fmt__t0) )
+  (= var268_interpretation_of_theory_nullterm_over_fmt__t0 (theory2_nullterm var131_fmt__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:209
@@ -2115,9 +2017,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var295_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var269_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var295_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var291_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var269_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var265_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2133,22 +2035,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var296_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var270_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var296_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var270_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var297_infix_expression__t0 () Bool)
+(declare-fun var271_infix_expression__t0 () Bool)
 (assert
-  (=  var297_infix_expression__t0 (bvuge var296_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var271_infix_expression__t0 (bvuge var270_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var298_infix_expression__t0 () Bool)
+(declare-fun var272_infix_expression__t0 () Bool)
 (assert
-  (=  var298_infix_expression__t0 (and var295_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var297_infix_expression__t0))
+  (=  var272_infix_expression__t0 (and var269_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var271_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2166,21 +2068,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var299_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var273_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var299_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var273_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var300_infix_expression__t0 () Bool)
+(declare-fun var274_infix_expression__t0 () Bool)
 (assert
-  (=  var300_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var299_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var274_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var273_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var301_infix_expression__t0 () Bool)
+(declare-fun var275_infix_expression__t0 () Bool)
 (assert
-  (=  var301_infix_expression__t0 (and var298_infix_expression__t0 var300_infix_expression__t0))
+  (=  var275_infix_expression__t0 (and var272_infix_expression__t0 var274_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2193,22 +2095,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var302_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var276_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var302_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var276_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var303_infix_expression__t0 () Bool)
+(declare-fun var277_infix_expression__t0 () Bool)
 (assert
-  (=  var303_infix_expression__t0 (and var301_infix_expression__t0 var302_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var277_infix_expression__t0 (and var275_infix_expression__t0 var276_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and true (or (not var292_interpretation_of_theory_safe_over_fmt__t0 ) (not var293_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 ) (not var294_interpretation_of_theory_nullterm_over_fmt__t0 ) (not var303_infix_expression__t0 ) ))
+  (and true (or (not var266_interpretation_of_theory_safe_over_fmt__t0 ) (not var267_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 ) (not var268_interpretation_of_theory_nullterm_over_fmt__t0 ) (not var277_infix_expression__t0 ) ))
 
 )
 
@@ -2220,28 +2122,28 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var292_interpretation_of_theory_safe_over_fmt__t0 () Bool)
-(declare-fun var293_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var294_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
-(declare-fun var295_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var296_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var299_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var302_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var266_interpretation_of_theory_safe_over_fmt__t0 () Bool)
+(declare-fun var267_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var268_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
+(declare-fun var269_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var270_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var273_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var276_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 ; borrows after call
-; 156 to temporal +1 because of function borrow
-(declare-fun var156_deref_S153_self__trace__t3 () (_ BitVec 64))
+; 126 to temporal +1 because of function borrow
+(declare-fun var126_deref_S123_self__trace__t3 () (_ BitVec 64))
 (assert
-  (= var156_deref_S153_self__trace__t3  (ite true var156_deref_S153_self__trace__t3 var156_deref_S153_self__trace__t2)  )
+  (= var126_deref_S123_self__trace__t3  (ite true var126_deref_S123_self__trace__t3 var126_deref_S123_self__trace__t2)  )
 )
 
 ; end of borrows after call
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:93
 ; callsite effects
-(declare-fun var305_return__t1 () (_ BitVec 64))
-(declare-fun var304_return_value_of___buffer__vformat__t0 () (_ BitVec 64))
-(declare-fun var305_return__t0 () (_ BitVec 64))
+(declare-fun var279_return__t1 () (_ BitVec 64))
+(declare-fun var278_return_value_of___buffer__vformat__t0 () (_ BitVec 64))
+(declare-fun var279_return__t0 () (_ BitVec 64))
 (assert
-  (= var305_return__t1  (ite true var304_return_value_of___buffer__vformat__t0 var305_return__t0)  )
+  (= var279_return__t1  (ite true var278_return_value_of___buffer__vformat__t0 var279_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:210
@@ -2264,9 +2166,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var306_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var280_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var306_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var291_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var280_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var265_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2282,22 +2184,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var307_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var281_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var307_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var281_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var308_infix_expression__t0 () Bool)
+(declare-fun var282_infix_expression__t0 () Bool)
 (assert
-  (=  var308_infix_expression__t0 (bvuge var307_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var282_infix_expression__t0 (bvuge var281_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var309_infix_expression__t0 () Bool)
+(declare-fun var283_infix_expression__t0 () Bool)
 (assert
-  (=  var309_infix_expression__t0 (and var306_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var308_infix_expression__t0))
+  (=  var283_infix_expression__t0 (and var280_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var282_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2315,21 +2217,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var310_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var284_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var310_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var284_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var311_infix_expression__t0 () Bool)
+(declare-fun var285_infix_expression__t0 () Bool)
 (assert
-  (=  var311_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var310_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var285_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var284_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var312_infix_expression__t0 () Bool)
+(declare-fun var286_infix_expression__t0 () Bool)
 (assert
-  (=  var312_infix_expression__t0 (and var309_infix_expression__t0 var311_infix_expression__t0))
+  (=  var286_infix_expression__t0 (and var283_infix_expression__t0 var285_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2342,23 +2244,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var313_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var287_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var313_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var287_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var314_infix_expression__t0 () Bool)
+(declare-fun var288_infix_expression__t0 () Bool)
 (assert
-  (=  var314_infix_expression__t0 (and var312_infix_expression__t0 var313_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var288_infix_expression__t0 (and var286_infix_expression__t0 var287_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var314_infix_expression__t0 :named A17))(check-sat)
+(assert (! var288_infix_expression__t0 :named A17))(check-sat)
 
-(declare-fun var304_return_value_of___buffer__vformat__t1 () (_ BitVec 64))
+(declare-fun var278_return_value_of___buffer__vformat__t1 () (_ BitVec 64))
 (assert
-  (= var304_return_value_of___buffer__vformat__t1  (ite true var305_return__t1 var304_return_value_of___buffer__vformat__t0)  )
+  (= var278_return_value_of___buffer__vformat__t1  (ite true var279_return__t1 var278_return_value_of___buffer__vformat__t0)  )
 )
 
 ; end of callsite effects
@@ -2379,128 +2281,128 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-(declare-fun var317_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var318_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var292_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var293_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var318_len_addressof_deref_S153_self__trace____t0 (theory0_len var317_addressof_deref_S153_self__trace___t0) )
+  (= var293_len_addressof_deref_S123_self__trace____t0 (theory0_len var292_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  (= var318_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var317_addressof_deref_S153_self__trace___t0 (_ bv156 64))
-
-)
-
-(declare-fun var319_true__t0 () Bool)
-(assert
-  (= var319_true__t0 (theory1_safe var317_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  var319_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-(declare-fun var320_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var321_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(assert
-  (= var321_len_addressof_deref_S153_self__trace____t0 (theory0_len var320_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  (= var321_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  (= var293_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var320_addressof_deref_S153_self__trace___t0 (_ bv156 64))
+  (= var292_addressof_deref_S123_self__trace___t0 (_ bv126 64))
 
 )
 
-(declare-fun var322_true__t0 () Bool)
+(declare-fun var294_true__t0 () Bool)
 (assert
-  (= var322_true__t0 (theory1_safe var320_addressof_deref_S153_self__trace___t0) )
+  (= var294_true__t0 (theory1_safe var292_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var322_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-(declare-fun var323_literal_string______t0 () (_ BitVec 64))
-(declare-fun var324_true__t0 () Bool)
-(assert
-  (= var324_true__t0 (theory1_safe var323_literal_string______t0) )
-)
-
-(assert
-  var324_true__t0
-)
-
-(declare-fun var325_true__t0 () Bool)
-(assert
-  (= var325_true__t0 (theory2_nullterm var323_literal_string______t0) )
-)
-
-(assert
-  var325_true__t0
+  var294_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
+(declare-fun var295_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var296_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(assert
+  (= var296_len_addressof_deref_S123_self__trace____t0 (theory0_len var295_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  (= var296_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var295_addressof_deref_S123_self__trace___t0 (_ bv126 64))
+
+)
+
+(declare-fun var297_true__t0 () Bool)
+(assert
+  (= var297_true__t0 (theory1_safe var295_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  var297_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-(declare-fun var326_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var327_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
+(declare-fun var298_literal_string______t0 () (_ BitVec 64))
+(declare-fun var299_true__t0 () Bool)
 (assert
-  (= var327_len_addressof_deref_S153_self__trace____t0 (theory0_len var326_addressof_deref_S153_self__trace___t0) )
+  (= var299_true__t0 (theory1_safe var298_literal_string______t0) )
 )
 
 (assert
-  (= var327_len_addressof_deref_S153_self__trace____t0 (_ bv1 64))
+  var299_true__t0
+)
 
+(declare-fun var300_true__t0 () Bool)
+(assert
+  (= var300_true__t0 (theory2_nullterm var298_literal_string______t0) )
 )
 
 (assert
-  (= var326_addressof_deref_S153_self__trace___t0 (_ bv156 64))
-
+  var300_true__t0
 )
 
-(declare-fun var328_true__t0 () Bool)
-(assert
-  (= var328_true__t0 (theory1_safe var326_addressof_deref_S153_self__trace___t0) )
-)
-
-(assert
-  var328_true__t0
-)
-
-(declare-fun var329_cast_of_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(assert (! (= var329_cast_of_addressof_deref_S153_self__trace___t0 var326_addressof_deref_S153_self__trace___t0) :named A18)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
-(declare-fun var330_literal_string______t0 () (_ BitVec 64))
-(declare-fun var331_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
+(declare-fun var301_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var302_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
 (assert
-  (= var331_true__t0 (theory1_safe var330_literal_string______t0) )
+  (= var302_len_addressof_deref_S123_self__trace____t0 (theory0_len var301_addressof_deref_S123_self__trace___t0) )
 )
 
 (assert
-  var331_true__t0
-)
+  (= var302_len_addressof_deref_S123_self__trace____t0 (_ bv1 64))
 
-(declare-fun var332_true__t0 () Bool)
-(assert
-  (= var332_true__t0 (theory2_nullterm var330_literal_string______t0) )
 )
 
 (assert
-  var332_true__t0
+  (= var301_addressof_deref_S123_self__trace___t0 (_ bv126 64))
+
+)
+
+(declare-fun var303_true__t0 () Bool)
+(assert
+  (= var303_true__t0 (theory1_safe var301_addressof_deref_S123_self__trace___t0) )
+)
+
+(assert
+  var303_true__t0
+)
+
+(declare-fun var304_cast_of_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(assert (! (= var304_cast_of_addressof_deref_S123_self__trace___t0 var301_addressof_deref_S123_self__trace___t0) :named A18)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
+(declare-fun var305_literal_string______t0 () (_ BitVec 64))
+(declare-fun var306_true__t0 () Bool)
+(assert
+  (= var306_true__t0 (theory1_safe var305_literal_string______t0) )
+)
+
+(assert
+  var306_true__t0
+)
+
+(declare-fun var307_true__t0 () Bool)
+(assert
+  (= var307_true__t0 (theory2_nullterm var305_literal_string______t0) )
+)
+
+(assert
+  var307_true__t0
 )
 
 ;callsite_assert
@@ -2510,18 +2412,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var333_interpretation_of_theory_safe_over_literal_string______t0 () Bool)
+(declare-fun var308_interpretation_of_theory_safe_over_literal_string______t0 () Bool)
 (assert
-  (= var333_interpretation_of_theory_safe_over_literal_string______t0 (theory1_safe var330_literal_string______t0) )
+  (= var308_interpretation_of_theory_safe_over_literal_string______t0 (theory1_safe var305_literal_string______t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var334_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var309_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var334_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var329_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var309_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var304_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:195
@@ -2531,9 +2433,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:195
-(declare-fun var335_interpretation_of_theory_nullterm_over_literal_string______t0 () Bool)
+(declare-fun var310_interpretation_of_theory_nullterm_over_literal_string______t0 () Bool)
 (assert
-  (= var335_interpretation_of_theory_nullterm_over_literal_string______t0 (theory2_nullterm var330_literal_string______t0) )
+  (= var310_interpretation_of_theory_nullterm_over_literal_string______t0 (theory2_nullterm var305_literal_string______t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:196
@@ -2556,9 +2458,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var336_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var311_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var336_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var329_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var311_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var304_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2574,22 +2476,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var337_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var312_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var337_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var312_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var338_infix_expression__t0 () Bool)
+(declare-fun var313_infix_expression__t0 () Bool)
 (assert
-  (=  var338_infix_expression__t0 (bvuge var337_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var313_infix_expression__t0 (bvuge var312_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var339_infix_expression__t0 () Bool)
+(declare-fun var314_infix_expression__t0 () Bool)
 (assert
-  (=  var339_infix_expression__t0 (and var336_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var338_infix_expression__t0))
+  (=  var314_infix_expression__t0 (and var311_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var313_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2607,21 +2509,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var340_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var315_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var340_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var315_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var341_infix_expression__t0 () Bool)
+(declare-fun var316_infix_expression__t0 () Bool)
 (assert
-  (=  var341_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var340_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var316_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var315_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var342_infix_expression__t0 () Bool)
+(declare-fun var317_infix_expression__t0 () Bool)
 (assert
-  (=  var342_infix_expression__t0 (and var339_infix_expression__t0 var341_infix_expression__t0))
+  (=  var317_infix_expression__t0 (and var314_infix_expression__t0 var316_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2634,22 +2536,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var343_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var318_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var343_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var318_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var344_infix_expression__t0 () Bool)
+(declare-fun var319_infix_expression__t0 () Bool)
 (assert
-  (=  var344_infix_expression__t0 (and var342_infix_expression__t0 var343_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var319_infix_expression__t0 (and var317_infix_expression__t0 var318_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and true (or (not var333_interpretation_of_theory_safe_over_literal_string______t0 ) (not var334_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 ) (not var335_interpretation_of_theory_nullterm_over_literal_string______t0 ) (not var344_infix_expression__t0 ) ))
+  (and true (or (not var308_interpretation_of_theory_safe_over_literal_string______t0 ) (not var309_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 ) (not var310_interpretation_of_theory_nullterm_over_literal_string______t0 ) (not var319_infix_expression__t0 ) ))
 
 )
 
@@ -2661,28 +2563,28 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var333_interpretation_of_theory_safe_over_literal_string______t0 () Bool)
-(declare-fun var334_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var335_interpretation_of_theory_nullterm_over_literal_string______t0 () Bool)
-(declare-fun var336_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var337_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var340_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var343_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var308_interpretation_of_theory_safe_over_literal_string______t0 () Bool)
+(declare-fun var309_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var310_interpretation_of_theory_nullterm_over_literal_string______t0 () Bool)
+(declare-fun var311_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var312_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var315_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var318_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 ; borrows after call
-; 156 to temporal +1 because of function borrow
-(declare-fun var156_deref_S153_self__trace__t4 () (_ BitVec 64))
+; 126 to temporal +1 because of function borrow
+(declare-fun var126_deref_S123_self__trace__t4 () (_ BitVec 64))
 (assert
-  (= var156_deref_S153_self__trace__t4  (ite true var156_deref_S153_self__trace__t4 var156_deref_S153_self__trace__t3)  )
+  (= var126_deref_S123_self__trace__t4  (ite true var126_deref_S123_self__trace__t4 var126_deref_S123_self__trace__t3)  )
 )
 
 ; end of borrows after call
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:96
 ; callsite effects
-(declare-fun var346_return__t1 () (_ BitVec 64))
-(declare-fun var345_return_value_of___buffer__format__t0 () (_ BitVec 64))
-(declare-fun var346_return__t0 () (_ BitVec 64))
+(declare-fun var321_return__t1 () (_ BitVec 64))
+(declare-fun var320_return_value_of___buffer__format__t0 () (_ BitVec 64))
+(declare-fun var321_return__t0 () (_ BitVec 64))
 (assert
-  (= var346_return__t1  (ite true var345_return_value_of___buffer__format__t0 var346_return__t0)  )
+  (= var321_return__t1  (ite true var320_return_value_of___buffer__format__t0 var321_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:197
@@ -2705,9 +2607,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var347_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
+(declare-fun var322_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
 (assert
-  (= var347_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 (theory1_safe var329_cast_of_addressof_deref_S153_self__trace___t0) )
+  (= var322_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 (theory1_safe var304_cast_of_addressof_deref_S123_self__trace___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2723,22 +2625,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var348_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var323_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var348_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var323_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var349_infix_expression__t0 () Bool)
+(declare-fun var324_infix_expression__t0 () Bool)
 (assert
-  (=  var349_infix_expression__t0 (bvuge var348_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 var154_tail__t0))
+  (=  var324_infix_expression__t0 (bvuge var323_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 var124_tail__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var350_infix_expression__t0 () Bool)
+(declare-fun var325_infix_expression__t0 () Bool)
 (assert
-  (=  var350_infix_expression__t0 (and var347_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 var349_infix_expression__t0))
+  (=  var325_infix_expression__t0 (and var322_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 var324_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2756,21 +2658,21 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var351_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var326_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
 (assert
-  (= var351_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 (theory0_len var177_deref_S153_self__trace_mem__t0) )
+  (= var326_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 (theory0_len var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var352_infix_expression__t0 () Bool)
+(declare-fun var327_infix_expression__t0 () Bool)
 (assert
-  (=  var352_infix_expression__t0 (bvult var182_deref_S153_self__trace_at__t0 var351_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0))
+  (=  var327_infix_expression__t0 (bvult var152_deref_S123_self__trace_at__t0 var326_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var353_infix_expression__t0 () Bool)
+(declare-fun var328_infix_expression__t0 () Bool)
 (assert
-  (=  var353_infix_expression__t0 (and var350_infix_expression__t0 var352_infix_expression__t0))
+  (=  var328_infix_expression__t0 (and var325_infix_expression__t0 var327_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2783,23 +2685,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var354_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
+(declare-fun var329_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
 (assert
-  (= var354_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 (theory2_nullterm var177_deref_S153_self__trace_mem__t0) )
+  (= var329_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 (theory2_nullterm var147_deref_S123_self__trace_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var355_infix_expression__t0 () Bool)
+(declare-fun var330_infix_expression__t0 () Bool)
 (assert
-  (=  var355_infix_expression__t0 (and var353_infix_expression__t0 var354_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0))
+  (=  var330_infix_expression__t0 (and var328_infix_expression__t0 var329_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var355_infix_expression__t0 :named A19))(check-sat)
+(assert (! var330_infix_expression__t0 :named A19))(check-sat)
 
-(declare-fun var345_return_value_of___buffer__format__t1 () (_ BitVec 64))
+(declare-fun var320_return_value_of___buffer__format__t1 () (_ BitVec 64))
 (assert
-  (= var345_return_value_of___buffer__format__t1  (ite true var346_return__t1 var345_return_value_of___buffer__format__t0)  )
+  (= var320_return_value_of___buffer__format__t1  (ite true var321_return__t1 var320_return_value_of___buffer__format__t0)  )
 )
 
 ; end of callsite effects
@@ -2811,8 +2713,8 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:97
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:97
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:97
-(declare-fun var356_cast_of_self__t0 () (_ BitVec 64))
-(assert (! (= var356_cast_of_self__t0 var153_self__t0) :named A20)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+(declare-fun var331_cast_of_self__t0 () (_ BitVec 64))
+(assert (! (= var331_cast_of_self__t0 var123_self__t0) :named A20)); : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:97
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:97
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:97
@@ -2823,15 +2725,15 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var357_interpretation_of_theory_safe_over_cast_of_self__t0 () Bool)
+(declare-fun var332_interpretation_of_theory_safe_over_cast_of_self__t0 () Bool)
 (assert
-  (= var357_interpretation_of_theory_safe_over_cast_of_self__t0 (theory1_safe var356_cast_of_self__t0) )
+  (= var332_interpretation_of_theory_safe_over_cast_of_self__t0 (theory1_safe var331_cast_of_self__t0) )
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var357_interpretation_of_theory_safe_over_cast_of_self__t0 ) ))
+  (and true (or (not var332_interpretation_of_theory_safe_over_cast_of_self__t0 ) ))
 
 )
 
@@ -2843,13 +2745,13 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var357_interpretation_of_theory_safe_over_cast_of_self__t0 () Bool)
+(declare-fun var332_interpretation_of_theory_safe_over_cast_of_self__t0 () Bool)
 ; borrows after call
-; 155 to temporal +1 because of function borrow
-(declare-fun var155_deref_S153_self___t1 () (_ BitVec 64))
-(declare-fun var155_deref_S153_self___t0 () (_ BitVec 64))
+; 125 to temporal +1 because of function borrow
+(declare-fun var125_deref_S123_self___t1 () (_ BitVec 64))
+(declare-fun var125_deref_S123_self___t0 () (_ BitVec 64))
 (assert
-  (= var155_deref_S153_self___t1  (ite true var155_deref_S153_self___t1 var155_deref_S153_self___t0)  )
+  (= var125_deref_S123_self___t1  (ite true var125_deref_S123_self___t1 var125_deref_S123_self___t0)  )
 )
 
 ; end of borrows after call
@@ -2869,17 +2771,17 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:98
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:98
-(declare-fun var359_interpretation_of_theory___err__checked_over_deref_S153_self___t0 () Bool)
+(declare-fun var334_interpretation_of_theory___err__checked_over_deref_S123_self___t0 () Bool)
 (assert
-  (= var359_interpretation_of_theory___err__checked_over_deref_S153_self___t0 (theory60___err__checked var155_deref_S153_self___t1) )
+  (= var334_interpretation_of_theory___err__checked_over_deref_S123_self___t0 (theory16___err__checked var125_deref_S123_self___t1) )
 )
 
-(assert (! var359_interpretation_of_theory___err__checked_over_deref_S153_self___t0 :named A21))(check-sat)
+(assert (! var334_interpretation_of_theory___err__checked_over_deref_S123_self___t0 :named A21))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:98
-(declare-fun var360_literal_1__t0 () (_ BitVec 64))
+(declare-fun var335_literal_1__t0 () (_ BitVec 64))
 (assert
-  (= var360_literal_1__t0 (_ bv1 64))
+  (= var335_literal_1__t0 (_ bv1 64))
 
 )
 
@@ -2896,15 +2798,15 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var361_interpretation_of_theory___err__checked_over_deref_S153_self___t0 () Bool)
+(declare-fun var336_interpretation_of_theory___err__checked_over_deref_S123_self___t0 () Bool)
 (assert
-  (= var361_interpretation_of_theory___err__checked_over_deref_S153_self___t0 (theory60___err__checked var155_deref_S153_self___t1) )
+  (= var336_interpretation_of_theory___err__checked_over_deref_S123_self___t0 (theory16___err__checked var125_deref_S123_self___t1) )
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var361_interpretation_of_theory___err__checked_over_deref_S153_self___t0 ) ))
+  (and true (or (not var336_interpretation_of_theory___err__checked_over_deref_S123_self___t0 ) ))
 
 )
 
@@ -2916,135 +2818,135 @@
 ;end of model check
 (pop 1)
 
-(declare-fun var361_interpretation_of_theory___err__checked_over_deref_S153_self___t0 () Bool)
+(declare-fun var336_interpretation_of_theory___err__checked_over_deref_S123_self___t0 () Bool)
 ;end of function ::err::fail_with_errno
 
 
 (pop 1)
 
-(declare-fun var156_deref_S153_self__trace__t0 () (_ BitVec 64))
-(declare-fun var157_len_deref_S153_self____t0 () (_ BitVec 64))
-(declare-fun var161_fmt__t0 () (_ BitVec 64))
-(declare-fun var162_interpretation_of_theory_safe_over_fmt__t0 () Bool)
-(declare-fun var153_self__t0 () (_ BitVec 64))
-(declare-fun var163_interpretation_of_theory_safe_over_self__t0 () Bool)
-(declare-fun var164_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
-(declare-fun var165_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var166_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var167_true__t0 () Bool)
-(declare-fun var168_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var169_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var170_true__t0 () Bool)
-(declare-fun var172_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var173_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var174_true__t0 () Bool)
-(declare-fun var176_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var177_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var178_true__t0 () Bool)
-(declare-fun var179_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var183_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var182_deref_S153_self__trace_at__t0 () (_ BitVec 64))
-(declare-fun var186_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var188_literal_1__t0 () (_ BitVec 64))
-(declare-fun var191_safe_implicit_coercion_of___err__SystemError_____safe_deref_S153_self__error___t0 () Bool)
-(declare-fun var189_deref_S153_self__error__t1 () (_ BitVec 64))
-(declare-fun var192_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S153_self__error___t0 () Bool)
-(declare-fun var195_literal_2__t0 () (_ BitVec 64))
-(declare-fun var198_literal_0__t0 () (_ BitVec 64))
-(declare-fun var203_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var204_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var205_true__t0 () Bool)
-(declare-fun var206_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var207_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var208_true__t0 () Bool)
-(declare-fun var210_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var211_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var212_true__t0 () Bool)
-(declare-fun var215_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var216_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var217_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var220_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var223_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var227_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var228_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var231_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var234_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var237_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var238_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var239_true__t0 () Bool)
-(declare-fun var240_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var241_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var242_true__t0 () Bool)
-(declare-fun var243_literal_string___s______t0 () (_ BitVec 64))
-(declare-fun var244_true__t0 () Bool)
-(declare-fun var245_true__t0 () Bool)
-(declare-fun var246_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var247_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var248_true__t0 () Bool)
-(declare-fun var250_literal_string___s______t0 () (_ BitVec 64))
-(declare-fun var251_true__t0 () Bool)
-(declare-fun var252_true__t0 () Bool)
-(declare-fun var254_interpretation_of_theory_safe_over_literal_string___s______t0 () Bool)
-(declare-fun var255_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var256_interpretation_of_theory_nullterm_over_literal_string___s______t0 () Bool)
-(declare-fun var257_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var258_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var261_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var264_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var268_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var269_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var272_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var275_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var280_literal_1__t0 () (_ BitVec 64))
-(declare-fun var282_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var283_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var284_true__t0 () Bool)
-(declare-fun var285_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var286_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var287_true__t0 () Bool)
-(declare-fun var288_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var289_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var290_true__t0 () Bool)
-(declare-fun var292_interpretation_of_theory_safe_over_fmt__t0 () Bool)
-(declare-fun var293_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var294_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
-(declare-fun var295_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var296_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var299_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var302_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var306_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var307_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var310_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var313_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var317_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var318_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var319_true__t0 () Bool)
-(declare-fun var320_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var321_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var322_true__t0 () Bool)
-(declare-fun var323_literal_string______t0 () (_ BitVec 64))
-(declare-fun var324_true__t0 () Bool)
-(declare-fun var325_true__t0 () Bool)
-(declare-fun var326_addressof_deref_S153_self__trace___t0 () (_ BitVec 64))
-(declare-fun var327_len_addressof_deref_S153_self__trace____t0 () (_ BitVec 64))
-(declare-fun var328_true__t0 () Bool)
-(declare-fun var330_literal_string______t0 () (_ BitVec 64))
-(declare-fun var331_true__t0 () Bool)
-(declare-fun var332_true__t0 () Bool)
-(declare-fun var333_interpretation_of_theory_safe_over_literal_string______t0 () Bool)
-(declare-fun var334_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var335_interpretation_of_theory_nullterm_over_literal_string______t0 () Bool)
-(declare-fun var336_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var337_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var340_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var343_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var347_interpretation_of_theory_safe_over_cast_of_addressof_deref_S153_self__trace___t0 () Bool)
-(declare-fun var348_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var351_interpretation_of_theory_len_over_deref_S153_self__trace_mem__t0 () (_ BitVec 64))
-(declare-fun var354_interpretation_of_theory_nullterm_over_deref_S153_self__trace_mem__t0 () Bool)
-(declare-fun var357_interpretation_of_theory_safe_over_cast_of_self__t0 () Bool)
-(declare-fun var359_interpretation_of_theory___err__checked_over_deref_S153_self___t0 () Bool)
-(declare-fun var360_literal_1__t0 () (_ BitVec 64))
-(declare-fun var361_interpretation_of_theory___err__checked_over_deref_S153_self___t0 () Bool)
+(declare-fun var126_deref_S123_self__trace__t0 () (_ BitVec 64))
+(declare-fun var127_len_deref_S123_self____t0 () (_ BitVec 64))
+(declare-fun var131_fmt__t0 () (_ BitVec 64))
+(declare-fun var132_interpretation_of_theory_safe_over_fmt__t0 () Bool)
+(declare-fun var123_self__t0 () (_ BitVec 64))
+(declare-fun var133_interpretation_of_theory_safe_over_self__t0 () Bool)
+(declare-fun var134_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
+(declare-fun var135_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var136_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var137_true__t0 () Bool)
+(declare-fun var138_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var139_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var140_true__t0 () Bool)
+(declare-fun var142_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var143_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var144_true__t0 () Bool)
+(declare-fun var146_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var147_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var148_true__t0 () Bool)
+(declare-fun var149_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var153_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var152_deref_S123_self__trace_at__t0 () (_ BitVec 64))
+(declare-fun var156_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var158_literal_1__t0 () (_ BitVec 64))
+(declare-fun var161_safe_implicit_coercion_of___err__SystemError_____safe_deref_S123_self__error___t0 () Bool)
+(declare-fun var159_deref_S123_self__error__t1 () (_ BitVec 64))
+(declare-fun var162_nullterm_implicit_coercion_of___err__SystemError_____nullterm_deref_S123_self__error___t0 () Bool)
+(declare-fun var166_literal_2__t0 () (_ BitVec 64))
+(declare-fun var169_literal_0__t0 () (_ BitVec 64))
+(declare-fun var174_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var175_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var176_true__t0 () Bool)
+(declare-fun var177_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var178_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var179_true__t0 () Bool)
+(declare-fun var181_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var182_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var183_true__t0 () Bool)
+(declare-fun var186_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var187_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var188_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var191_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var194_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var198_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var199_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var202_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var205_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var208_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var209_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var210_true__t0 () Bool)
+(declare-fun var211_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var212_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var213_true__t0 () Bool)
+(declare-fun var214_literal_string___s______t0 () (_ BitVec 64))
+(declare-fun var215_true__t0 () Bool)
+(declare-fun var216_true__t0 () Bool)
+(declare-fun var217_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var218_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var219_true__t0 () Bool)
+(declare-fun var221_literal_string___s______t0 () (_ BitVec 64))
+(declare-fun var222_true__t0 () Bool)
+(declare-fun var223_true__t0 () Bool)
+(declare-fun var227_interpretation_of_theory_safe_over_literal_string___s______t0 () Bool)
+(declare-fun var228_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var229_interpretation_of_theory_nullterm_over_literal_string___s______t0 () Bool)
+(declare-fun var230_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var231_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var234_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var237_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var241_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var242_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var245_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var248_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var254_literal_1__t0 () (_ BitVec 64))
+(declare-fun var256_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var257_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var258_true__t0 () Bool)
+(declare-fun var259_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var260_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var261_true__t0 () Bool)
+(declare-fun var262_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var263_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var264_true__t0 () Bool)
+(declare-fun var266_interpretation_of_theory_safe_over_fmt__t0 () Bool)
+(declare-fun var267_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var268_interpretation_of_theory_nullterm_over_fmt__t0 () Bool)
+(declare-fun var269_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var270_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var273_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var276_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var280_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var281_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var284_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var287_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var292_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var293_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var294_true__t0 () Bool)
+(declare-fun var295_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var296_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var297_true__t0 () Bool)
+(declare-fun var298_literal_string______t0 () (_ BitVec 64))
+(declare-fun var299_true__t0 () Bool)
+(declare-fun var300_true__t0 () Bool)
+(declare-fun var301_addressof_deref_S123_self__trace___t0 () (_ BitVec 64))
+(declare-fun var302_len_addressof_deref_S123_self__trace____t0 () (_ BitVec 64))
+(declare-fun var303_true__t0 () Bool)
+(declare-fun var305_literal_string______t0 () (_ BitVec 64))
+(declare-fun var306_true__t0 () Bool)
+(declare-fun var307_true__t0 () Bool)
+(declare-fun var308_interpretation_of_theory_safe_over_literal_string______t0 () Bool)
+(declare-fun var309_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var310_interpretation_of_theory_nullterm_over_literal_string______t0 () Bool)
+(declare-fun var311_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var312_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var315_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var318_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var322_interpretation_of_theory_safe_over_cast_of_addressof_deref_S123_self__trace___t0 () Bool)
+(declare-fun var323_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var326_interpretation_of_theory_len_over_deref_S123_self__trace_mem__t0 () (_ BitVec 64))
+(declare-fun var329_interpretation_of_theory_nullterm_over_deref_S123_self__trace_mem__t0 () Bool)
+(declare-fun var332_interpretation_of_theory_safe_over_cast_of_self__t0 () Bool)
+(declare-fun var334_interpretation_of_theory___err__checked_over_deref_S123_self___t0 () Bool)
+(declare-fun var335_literal_1__t0 () (_ BitVec 64))
+(declare-fun var336_interpretation_of_theory___err__checked_over_deref_S123_self___t0 () Bool)
 (check-sat)
 

@@ -26,14 +26,15 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_protonerf_Value;
 extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_protonerf_Decoder;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_protonerf_Decoder;
 static PyObject * py_get_protonerf_Value_v_len(PyObject *pyself, void *closure) {
 
     protonerf_Value * self = pyFATGetPtr(pyself, "protonerf_Value");
@@ -231,8 +232,6 @@ PyTypeObject py_Type_protonerf_Field  = {
 
 
 
-
-
 static PyObject * py_get_protonerf_Decoder_mem(PyObject *pyself, void *closure) {
 
     protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
@@ -314,6 +313,8 @@ PyTypeObject py_Type_protonerf_Decoder  = {
     .tp_getset      = py_getset_protonerf_Decoder,
     .tp_dealloc     = py_free_protonerf_Decoder,
 };
+
+
 
 
 

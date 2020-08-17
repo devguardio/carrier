@@ -24,49 +24,42 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_carrier_cipher_CipherState;
-extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
-extern PyTypeObject py_Type_carrier_identity_Secret;
-extern PyTypeObject py_Type_carrier_identity_Address;
-extern PyTypeObject py_Type_carrier_noise_Responder;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_stream_Stream;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_pool_Pool;
-extern PyTypeObject py_Type_pool_Pool;
-extern PyTypeObject py_Type_carrier_vault_Vault;
-extern PyTypeObject py_Type_carrier_identity_SecretKit;
 extern PyTypeObject py_Type_io_Async;
-extern PyTypeObject py_Type_carrier_router_Router;
-extern PyTypeObject py_Type_carrier_identity_Identity;
-extern PyTypeObject py_Type_carrier_initiator_Initiator;
-extern PyTypeObject py_Type_net_address_Address;
-extern PyTypeObject py_Type_time_Time;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_carrier_noise_Initiator;
-extern PyTypeObject py_Type_toml_U;
-extern PyTypeObject py_Type_toml_Parser;
-extern PyTypeObject py_Type_toml_Value;
-extern PyTypeObject py_Type_carrier_channel_Channel;
 extern PyTypeObject py_Type_io_Context;
-extern PyTypeObject py_Type_io_Io;
-extern PyTypeObject py_Type_time_Time;
-extern PyTypeObject py_Type_carrier_bootstrap_Bootstrap;
 extern PyTypeObject py_Type_netio_udp_Socket;
-extern PyTypeObject py_Type_carrier_pq_Frame;
-extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
+extern PyTypeObject py_Type_carrier_identity_Identity;
+extern PyTypeObject py_Type_carrier_vault_CheckExistingAuthorizationState;
 extern PyTypeObject py_Type_net_address_Address;
-extern PyTypeObject py_Type_netio_udp_Socket;
+extern PyTypeObject py_Type_carrier_channel_Channel;
+extern PyTypeObject py_Type_carrier_cipher_CipherState;
+extern PyTypeObject py_Type_carrier_channel_Transfer;
+extern PyTypeObject py_Type_carrier_stream_Stream;
+extern PyTypeObject py_Type_carrier_vault_Vault;
+extern PyTypeObject py_Type_carrier_identity_Signature;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_carrier_identity_Address;
+extern PyTypeObject py_Type_carrier_identity_Secret;
+extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
+extern PyTypeObject py_Type_protonerf_Decoder;
 extern PyTypeObject py_Type_carrier_bootstrap_Bootstrap;
+extern PyTypeObject py_Type_carrier_identity_Identity;
+extern PyTypeObject py_Type_carrier_stream_Config;
+extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_carrier_stream_Stream;
 extern PyTypeObject py_Type_carrier_peering_Peering;
-extern PyTypeObject py_Type_hpack_decoder_Iterator;
+extern PyTypeObject py_Type_carrier_router_Router;
+extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
+extern PyTypeObject py_Type_carrier_identity_SecretKit;
 extern PyTypeObject py_Type_carrier_vault_Broker;
+extern PyTypeObject py_Type_carrier_vault_Vault;
+extern PyTypeObject py_Type_netio_tcp_Socket;
 extern PyTypeObject py_Type_carrier_noise_Initiator;
 extern PyTypeObject py_Type_carrier_initiator_Initiator;
-extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_carrier_endpoint_ConnectingState;
-extern PyTypeObject py_Type_netio_tcp_Socket;
-extern PyTypeObject py_Type_carrier_identity_Identity;
+extern PyTypeObject py_Type_pool_Pool;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_carrier_pq_Frame;
 extern PyTypeObject py_Type_carrier_pq_Q;
 extern PyTypeObject py_Type_carrier_peering_Path;
@@ -74,37 +67,34 @@ extern PyTypeObject py_Type_carrier_peering_Peering;
 extern PyTypeObject py_Type_carrier_channel_Channel;
 extern PyTypeObject py_Type_carrier_router_Router;
 extern PyTypeObject py_Type_carrier_endpoint_StateM;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_carrier_identity_Signature;
-extern PyTypeObject py_Type_protonerf_Decoder;
-extern PyTypeObject py_Type_protonerf_Field;
+extern PyTypeObject py_Type_pool_Pool;
+extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
+extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_carrier_vault_toml_Authorize;
 extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_carrier_identity_Signature;
-extern PyTypeObject py_Type_carrier_stream_Config;
-extern PyTypeObject py_Type_carrier_stream_Stream;
-extern PyTypeObject py_Type_carrier_stream_Config;
-extern PyTypeObject py_Type_carrier_bootstrap_DnsPacket;
-extern PyTypeObject py_Type_carrier_vault_CheckExistingAuthorizationState;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_protonerf_Value;
 extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_hpack_decoder_Entry;
-extern PyTypeObject py_Type_hpack_decoder_Iterator;
-extern PyTypeObject py_Type_carrier_channel_Transfer;
-extern PyTypeObject py_Type_carrier_vault_Vault;
-extern PyTypeObject py_Type_toml_U;
-extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_toml_Value;
 extern PyTypeObject py_Type_carrier_vault_toml_Mem;
-extern PyTypeObject py_Type_carrier_vault_authorize_open_stream_cb_s;
+extern PyTypeObject py_Type_carrier_noise_Responder;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+extern PyTypeObject py_Type_protonerf_Decoder;
+extern PyTypeObject py_Type_net_address_OsAddress;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_toml_Parser;
+extern PyTypeObject py_Type_toml_U;
+extern PyTypeObject py_Type_io_Async;
+extern PyTypeObject py_Type_hpack_decoder_Iterator;
+extern PyTypeObject py_Type_hpack_decoder_Entry;
+extern PyTypeObject py_Type_carrier_identity_Signature;
 extern PyTypeObject py_Type_toml_ParserStack;
 extern PyTypeObject py_Type_toml_Parser;
-extern PyTypeObject py_Type_net_address_OsAddress;
-extern PyTypeObject py_Type_carrier_endpoint_Endpoint;
-extern PyTypeObject py_Type_io_Async;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_carrier_vault_toml_Authorize;
-extern PyTypeObject py_Type_carrier_vault_toml_Mem;
-extern PyTypeObject py_Type_protonerf_Decoder;
+extern PyTypeObject py_Type_carrier_stream_Config;
+extern PyTypeObject py_Type_carrier_bootstrap_DnsPacket;
+extern PyTypeObject py_Type_carrier_bootstrap_Bootstrap;
+extern PyTypeObject py_Type_hpack_decoder_Iterator;
+extern PyTypeObject py_Type_carrier_vault_authorize_open_stream_cb_s;
+extern PyTypeObject py_Type_carrier_noise_Responder;
 static PyObject * py_get_carrier_pq_Q_count(PyObject *pyself, void *closure) {
 
     carrier_pq_Q * self = pyFATGetPtr(pyself, "carrier_pq_Q");
@@ -284,6 +274,22 @@ PyTypeObject py_Type_carrier_pq_Q  = {
 
 
 
+static PyObject* py_carrier_pq_ack(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //time
+    long long int arg2 = 0;
+    //counter
+    long long int arg3 = 0;
+    if (!PyArg_ParseTuple(args, "Oll", &arg0,&arg2,&arg3)) { return NULL; };
+    carrier_pq_ack(
+        pyFATGetPtr(arg0, "carrier_pq_Q"),
+        ((pyFATObject *)arg0)->tail,
+        arg2,
+        arg3);
+    Py_RETURN_NONE;
+}
+
 static PyObject* py_carrier_pq_cancel(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -317,6 +323,19 @@ static PyObject* py_carrier_pq_send(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
+static PyObject* py_carrier_pq_keepalive(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //now
+    long long int arg2 = 0;
+    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg2)) { return NULL; };
+    long long int rarg = (long long int)(carrier_pq_keepalive(
+        pyFATGetPtr(arg0, "carrier_pq_Q"),
+        ((pyFATObject *)arg0)->tail,
+        arg2));
+    return PyLong_FromLong(rarg);
+}
+
 static PyObject* py_carrier_pq_window(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -337,43 +356,14 @@ static PyObject* py_carrier_pq_clear(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_carrier_pq_ack(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //time
-    long long int arg2 = 0;
-    //counter
-    long long int arg3 = 0;
-    if (!PyArg_ParseTuple(args, "Oll", &arg0,&arg2,&arg3)) { return NULL; };
-    carrier_pq_ack(
-        pyFATGetPtr(arg0, "carrier_pq_Q"),
-        ((pyFATObject *)arg0)->tail,
-        arg2,
-        arg3);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_carrier_pq_keepalive(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //now
-    long long int arg2 = 0;
-    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg2)) { return NULL; };
-    long long int rarg = (long long int)(carrier_pq_keepalive(
-        pyFATGetPtr(arg0, "carrier_pq_Q"),
-        ((pyFATObject *)arg0)->tail,
-        arg2));
-    return PyLong_FromLong(rarg);
-}
-
 
 static PyMethodDef methods[] = {
+{"ack", py_carrier_pq_ack, METH_VARARGS,""},
 {"cancel", py_carrier_pq_cancel, METH_VARARGS,"undo last allocation without sending anything"},
 {"send", py_carrier_pq_send, METH_VARARGS,"send frames out of the queue"},
+{"keepalive", py_carrier_pq_keepalive, METH_VARARGS,"tail loss probe or ping and return the time when we need to call this function again"},
 {"window", py_carrier_pq_window, METH_VARARGS,""},
 {"clear", py_carrier_pq_clear, METH_VARARGS,""},
-{"ack", py_carrier_pq_ack, METH_VARARGS,""},
-{"keepalive", py_carrier_pq_keepalive, METH_VARARGS,"tail loss probe or ping and return the time when we need to call this function again"},
 {NULL, NULL, 0, NULL}
 };
 

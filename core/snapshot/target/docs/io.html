@@ -1,40 +1,9 @@
 
 <h1> module io </h1>
-<h4> fn channel (
-
-    ::io::Io*
-    read,
-
-    ::err::Err*+et
-    e,
-
-    ::io::Async*
-    self,
-
-    ::io::Io*
-    write,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn await (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    poll,
+<h4> fn await (
 
     ::time::Time
     timeout_,
-
-    ::io::Async*
-    self,
 
     usize
     et,
@@ -42,33 +11,14 @@
     ::ext::&lt;stddef.h&gt;::void*
     user,
 
-    ::err::Err*+et
-    e,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn write (
-
-    usize
-    st,
-
-    ::io::Io*
+    ::io::Async*
     self,
 
     ::err::Err*+et
     e,
 
-    ::buffer::Buffer*+st
-    str,
-
-    usize
-    et,
+    ::ext::&lt;stddef.h&gt;::void*
+    poll,
 
 )
 
@@ -86,6 +36,103 @@
 )
 
 -&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn write_cstr (
+
+    usize
+    et,
+
+    ::io::Io*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn readline (
+
+    usize
+    et,
+
+    ::io::Io*
+    self,
+
+    ::buffer::Buffer*+st
+    str,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    st,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn write (
+
+    ::io::Io*
+    self,
+
+    usize
+    et,
+
+    usize
+    st,
+
+    ::buffer::Buffer*+st
+    str,
+
+    ::err::Err*+et
+    e,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn channel (
+
+    usize
+    et,
+
+    ::io::Async*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::io::Io*
+    read,
+
+    ::io::Io*
+    write,
+
+)
+
+
 
 </h4>
 
@@ -116,126 +163,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn write_bytes (
-
-    u8*
-    b,
-
-    usize
-    et,
-
-    usize*
-    blen,
-
-    ::io::Io*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn select (
+</p><h4> fn timeout (
 
     ::io::Async*
     self,
 
-    ::io::Ready
-    w,
-
-    ::io::Context*
-    ctx,
-
-    usize
-    et,
-
     ::err::Err*+et
     e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn close (
-
-    ::io::Io*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn read_slice (
-
-    usize
-    et,
-
-    ::slice::mut_slice::MutSlice*
-    slice,
-
-    ::io::Io*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn readline (
-
-    ::buffer::Buffer*+st
-    str,
-
-    usize
-    st,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    ::io::Io*
-    self,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn timeout (
 
     ::time::Time
     t2,
-
-    ::err::Err*+et
-    e,
-
-    ::io::Async*
-    self,
 
     usize
     et,
@@ -250,11 +187,11 @@
 
 </p><h4> fn read_bytes (
 
-    usize
-    et,
-
     usize*
     memlen,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -273,19 +210,38 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn write_cstr (
+</p><h4> fn wait (
 
     usize
     et,
 
-    ::io::Io*
+    ::err::Err*+et
+    e,
+
+    ::io::Async*
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn read_slice (
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
+
+    ::io::Io*
+    self,
+
+    ::slice::mut_slice::MutSlice*
+    slice,
 
 )
 
@@ -295,16 +251,60 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn wait (
+</p><h4> fn write_bytes (
 
-    ::io::Async*
+    ::err::Err*+et
+    e,
+
+    u8*
+    b,
+
+    usize*
+    blen,
+
+    ::io::Io*
     self,
 
     usize
     et,
 
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select (
+
+    usize
+    et,
+
+    ::io::Ready
+    w,
+
     ::err::Err*+et
     e,
+
+    ::io::Async*
+    self,
+
+    ::io::Context*
+    ctx,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::io::Io*
+    self,
 
 )
 

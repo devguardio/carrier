@@ -1,9 +1,6 @@
 
 <h1> module mem </h1>
-<h4> fn copy (
-
-    usize
-    n,
+<h4> fn move (
 
     ::ext::&lt;stddef.h&gt;::void*
     src,
@@ -11,24 +8,8 @@
     ::ext::&lt;stddef.h&gt;::void*
     dst,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn move (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    src,
-
     usize
     n,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
 
 )
 
@@ -43,11 +24,11 @@
     ::ext::&lt;stddef.h&gt;::void*
     b,
 
-    usize
-    n,
-
     ::ext::&lt;stddef.h&gt;::void*
     a,
+
+    usize
+    n,
 
 )
 
@@ -57,7 +38,26 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn zero (
+
+    ::ext::&lt;stddef.h&gt;::void*+vt
+    dst,
+
+    usize
+    vt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn set (
+
+    u8
+    c,
 
     usize
     n,
@@ -65,8 +65,24 @@
     ::ext::&lt;stddef.h&gt;::void*
     dst,
 
-    u8
-    c,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn copy (
+
+    usize
+    n,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    src,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    dst,
 
 )
 
@@ -77,6 +93,7 @@
 <p class='doc_comments'>
 
 </p>
+
 
 
 

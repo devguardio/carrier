@@ -133,6 +133,12 @@ extern {
     #[link_name = "carrier_noise_accept"]
     pub fn r#accept( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpkt: *mut u8,  Zpktlen: usize,  Zpayload: *const u8,  Zpayload_len: usize)  -> usize;
 
+    #[link_name = "sizeof_carrier_noise_Responder"]
+    pub fn sizeof_Responder() -> libc::size_t;
+
+    #[link_name = "carrier_noise_initiate"]
+    pub fn r#initiate( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpkt: *mut u8,  Zpktlen: usize,  Zprologue: *const u8,  Zprologue_len: usize,  Zpayload: *const u8,  Zpayload_len: usize)  -> usize;
+
     #[link_name = "carrier_noise_receive"]
     pub fn r#receive( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpayload: *mut u8,  Zpayload_len: usize,  Zprologue: *const u8,  Zprologue_len: usize,  Zpacket: *const u8,  Zpacket_len: usize)  -> usize;
 
@@ -141,12 +147,6 @@ extern {
 
     #[link_name = "carrier_noise_receive_insecure"]
     pub fn r#receive_insecure( Zself: *mut u8,  Zprologue: *const u8,  Zprologue_len: usize,  Zpacket: *const u8,  Zpacket_len: usize);
-
-    #[link_name = "carrier_noise_initiate"]
-    pub fn r#initiate( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpkt: *mut u8,  Zpktlen: usize,  Zprologue: *const u8,  Zprologue_len: usize,  Zpayload: *const u8,  Zpayload_len: usize)  -> usize;
-
-    #[link_name = "sizeof_carrier_noise_Responder"]
-    pub fn sizeof_Responder() -> libc::size_t;
 
     #[link_name = "carrier_noise_initiate_insecure"]
     pub fn r#initiate_insecure( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpkt: *mut u8,  Zpktlen: usize,  Zprologue: *const u8,  Zprologue_len: usize,  Zpayload: *const u8,  Zpayload_len: usize)  -> usize;

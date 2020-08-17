@@ -8,23 +8,23 @@
     usize
     et,
 
-    ::err::Err*+et
-    e,
-
     usize
     cipherlen,
 
-    usize
-    plainlen_max,
-
-    u64
-    nonce,
+    u8*
+    plain,
 
     u8*
     ciphertext,
 
-    u8*
-    plain,
+    u64
+    nonce,
+
+    usize
+    plainlen_max,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -34,17 +34,35 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn init (
+</p><h4> fn encrypt (
+
+    u8*
+    ciphertext,
+
+    u8*
+    plain,
 
     ::carrier::cipher::CipherState*
     self,
 
-    u8*
-    k,
+    u64
+    nonce,
+
+    usize
+    cipherlen_max,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    usize
+    plainlen,
 
 )
 
-
+-&gt usize
 
 </h4>
 
@@ -94,11 +112,14 @@
     usize
     et,
 
-    ::err::Err*+et
-    e,
+    usize
+    authtext_len,
 
     u8*
-    plain,
+    ciphertext,
+
+    u8*
+    authtext,
 
     usize
     cipherlen_max,
@@ -106,14 +127,11 @@
     ::carrier::cipher::CipherState*
     self,
 
-    u8*
-    authtext,
-
-    usize
-    authtext_len,
+    ::err::Err*+et
+    e,
 
     u8*
-    ciphertext,
+    plain,
 
     usize
     plainlen,
@@ -124,6 +142,22 @@
 )
 
 -&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn init (
+
+    u8*
+    k,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+)
+
+
 
 </h4>
 
@@ -131,17 +165,11 @@
 
 </p><h4> fn decrypt_ad (
 
-    usize
-    authtext_len,
+    ::err::Err*+et
+    e,
 
     u8*
     plain,
-
-    usize
-    cipherlen,
-
-    u8*
-    ciphertext,
 
     usize
     plainlen_max,
@@ -149,51 +177,23 @@
     usize
     et,
 
-    ::carrier::cipher::CipherState*
-    self,
+    usize
+    authtext_len,
 
     u8*
     authtext,
 
-    ::err::Err*+et
-    e,
-
-    u64
-    nonce,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt (
-
-    usize
-    plainlen,
-
-    usize
-    cipherlen_max,
-
     u8*
     ciphertext,
-
-    u64
-    nonce,
-
-    ::err::Err*+et
-    e,
-
-    u8*
-    plain,
 
     ::carrier::cipher::CipherState*
     self,
 
     usize
-    et,
+    cipherlen,
+
+    u64
+    nonce,
 
 )
 

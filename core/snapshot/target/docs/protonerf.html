@@ -1,21 +1,65 @@
 
 <h1> module protonerf </h1>
-<h4> fn encode_bytes_start (
+<h4> fn encode_varint (
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
-    usize
-    l,
-
     ::slice::mut_slice::MutSlice
     str,
+
+    u64
+    value,
 
     u8
     index,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_bytes (
+
     ::err::Err*+et
     e,
+
+    usize
+    l,
+
+    usize
+    et,
+
+    u8
+    index,
+
+    u8*
+    b,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decode (
+
+    ::protonerf::Decoder*
+    self,
+
+    ::slice::slice::Slice
+    sl,
 
 )
 
@@ -64,91 +108,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn encode_bytes (
-
-    u8*
-    b,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn encode_bytes_start (
 
     u8
     index,
 
     usize
     et,
+
+    ::slice::mut_slice::MutSlice
+    str,
 
     usize
     l,
 
-    ::slice::mut_slice::MutSlice
-    str,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encode_varint (
-
-    u64
-    value,
-
     ::err::Err*+et
     e,
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-    u8
-    index,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encode_f64 (
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-    u8
-    index,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    f64
-    value,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decode (
-
-    ::protonerf::Decoder*
-    self,
-
-    ::slice::slice::Slice
-    sl,
 
 )
 
@@ -160,9 +135,6 @@
 
 </p><h4> fn next (
 
-    ::protonerf::Field*
-    v,
-
     usize
     et,
 
@@ -172,9 +144,37 @@
     ::err::Err*+et
     e,
 
+    ::protonerf::Field*
+    v,
+
 )
 
 -&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_f64 (
+
+    f64
+    value,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+    u8
+    index,
+
+)
+
+
 
 </h4>
 

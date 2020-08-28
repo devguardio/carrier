@@ -1,42 +1,32 @@
 #ifdef __linux__
-#include <sys/utsname.h>
-static bool os_sysinfo_uname(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
-{
-    struct utsname name;
-    if (uname(&name) != 0) {
-        err_fail_with_errno(e, et, __FILE__, __FUNCTION__, __LINE__, "uname");
-        return true;
-    }
 
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Sysname,  (uint8_t*)name.sysname,     strlen(name.sysname));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Nodename, (uint8_t*)name.nodename,    strlen(name.nodename));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Release,  (uint8_t*)name.release,     strlen(name.release));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Version,  (uint8_t*)name.version,     strlen(name.version));
-    protonerf_encode_bytes(sl, e, et, sysinfo_proto_Uname_Machine,  (uint8_t*)name.machine,     strlen(name.machine));
-    return true;
-}
+    #include <sys/utsname.h>
 
-#include <sys/sysinfo.h>
-static bool os_sysinfo_mem(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
-{
-    struct sysinfo info;
-    if (sysinfo(&info) != 0) {
-        err_fail_with_errno(e, et, __FILE__, __FUNCTION__, __LINE__, "uname");
-        return true;
-    }
+    typedef struct utsname utsname_t;
 
-    protonerf_encode_varint(sl, e, et, sysinfo_proto_Mem_Total,  info.totalram);
-    protonerf_encode_varint(sl, e, et, sysinfo_proto_Mem_Free,   info.freeram);
-    return true;
-}
+    #include <sys/sysinfo.h>
+
+    typedef struct sysinfo sysinfo_t;
+
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <stdint.h>
+
+#endif
 
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+
+#if 0
+#ifdef __linux__
+
 uint64_t time_to_millis(time_Time const*self);
 time_Time time_real();
 time_Time time_tick();
+
+
+
+
+
 
 static bool os_sysinfo_load(err_Err *e, size_t et, slice_mut_slice_MutSlice sl)
 {
@@ -362,6 +352,7 @@ static bool os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlic
     return false;
 }
 
+
 #elif defined(ESP_PLATFORM)
 #include <esp_efuse.h>
 #include <esp_system.h>
@@ -536,4 +527,7 @@ bool __attribute__((weak)) os_sysinfo_load(err_Err *e, size_t et, slice_mut_slic
 bool __attribute__((weak)) os_sysinfo_firmware(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
 bool __attribute__((weak)) os_sysinfo_sensors(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
 bool __attribute__((weak)) os_sysinfo_bootloader(err_Err *e, size_t et, slice_mut_slice_MutSlice sl){ return false; }
+#endif
+
+
 #endif

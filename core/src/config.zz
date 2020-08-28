@@ -4,40 +4,41 @@ using endpoint;
 using slice;
 using buffer;
 using identity;
-using hpack;
 using log;
 using channel;
 using byteorder;
-using protonerf;
-using proto;
 using mem;
+using madpack;
+using preshared;
 
 static stream::Config AuthGetConfig = stream::Config {
-    path:       "/v2/carrier.config.v1/auth_list",
+    path:       "/v3/carrier.config.v1/auth_list",
     open:       auth_get,
-};
-
-static stream::Config AuthAddConfig = stream::Config {
-    path:       "/v2/carrier.config.v1/auth_add",
-    open:       open_then_stream,
-    stream:     auth_add_stream,
-};
-
-static stream::Config AuthDelConfig = stream::Config {
-    path:       "/v2/carrier.config.v1/auth_del",
-    open:       open_then_stream,
-    stream:     auth_del_stream,
+    index:      preshared::CONFIG,
 };
 
 static stream::Config NetGetConfig = stream::Config {
-    path:       "/v2/carrier.config.v1/net_get",
+    path:       "/v3/carrier.config.v1/net_get",
     open:       net_get,
+    index:      preshared::CONFIG,
+};
+
+static stream::Config AuthAddConfig = stream::Config {
+    path:       "/v3/carrier.config.v1/auth_add",
+    stream:     auth_add_stream,
+    index:      preshared::CONFIG,
+};
+
+static stream::Config AuthDelConfig = stream::Config {
+    path:       "/v3/carrier.config.v1/auth_del",
+    stream:     auth_del_stream,
+    index:      preshared::CONFIG,
 };
 
 static stream::Config NetJoinConfig = stream::Config {
-    path:       "/v2/carrier.config.v1/net_join",
-    open:       open_then_stream,
+    path:       "/v3/carrier.config.v1/net_join",
     stream:     net_join_stream,
+    index:      preshared::CONFIG,
 };
 
 export fn register(endpoint::Endpoint mut*ep)
@@ -52,8 +53,9 @@ export fn register(endpoint::Endpoint mut*ep)
 fn auth_get_cb(void mut * u, identity::Identity *id, char *resource)
     where nullterm(resource)
 {
-    let frame = (slice::mut_slice::MutSlice mut *)u;
-    static_attest(slice::mut_slice::integrity(frame));
+    let enc = (madpack::Encoder mut *)u;
+    static_attest(safe(enc));
+    static_attest(madpack::integrity(enc));
 
     new+1000 e = err::make();
 
@@ -61,39 +63,27 @@ fn auth_get_cb(void mut * u, identity::Identity *id, char *resource)
     identity::identity_to_str(&e, identity_str, 64, id);
     if err::check(&e) { e.elog();  return; }
 
-    u8 mut buf[256] = {0};
-    usize mut at = 0;
-    new obj = slice::mut_slice::make(buf, static(len(buf)), &at);
-    protonerf::encode_bytes(obj, &e, proto::AuthorizationAdd::Identity, (u8*)identity_str, buffer::strlen(identity_str));
-    if err::check(&e) { e.elog();  return; }
-    protonerf::encode_bytes(obj, &e, proto::AuthorizationAdd::Path,     (u8*)resource, buffer::strlen(resource));
-    if err::check(&e) { e.elog();  return; }
-    protonerf::encode_bytes(*frame, &e, proto::AuthListResult::Auth, obj.mem, *obj.at);
-    if err::check(&e) { e.elog();  return; }
+    enc->v_map();
+    enc->kv_cstr("identity",     identity_str);
+    enc->kv_cstr("path",         resource);
+    enc->end();
 }
 
-fn auth_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn auth_get(stream::Stream mut *self, err::Err+e2 mut*e, slice::Slice headers)
     where err::checked(*e)
     where slice::slice::integrity(&headers)
 {
-    {
-        let mut frame = self->stream(e, 27);
-        if err::check(e) { return; }
-        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200",   3);
-        if err::check(e) { return; }
-        hpack::encoder::encode(frame, e, (u8*)":type",   5, (u8*)"proto", 5);
-        if err::check(e) { return; }
-    }
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
 
-    {
-        static_attest(safe(self->chan));
-        static_attest(safe(self->chan->endpoint));
-        slice::MutSlice mut frame = self->stream(e, 512);
-        if err::check(e) { return; }
+    slice::MutSlice mut frame = self->stream(e, 500);
+    if err::check(e) { return; }
 
-        self->chan->endpoint->vault.list_authorizations(e, auth_get_cb, &frame);
-        if err::check(e) { return; }
-    }
+    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new mad = madpack::encode(frame, &idx);
+    mad.kv_array("auth");
+    self->chan->endpoint->vault.list_authorizations(e, auth_get_cb, &mad);
+    mad.end();
 
     self->close();
 }
@@ -102,51 +92,42 @@ fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where err::checked(*e)
     where slice::slice::integrity(&headers)
 {
-    {
-        let mut frame = self->stream(e, 27);
-        if err::check(e) { return; }
-        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200",   3);
-        if err::check(e) { return; }
-        hpack::encoder::encode(frame, e, (u8*)":type",   5, (u8*)"proto", 5);
-        if err::check(e) { return; }
-    }
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+    let mut frame = self->stream(e, 128);
+    if err::check(e) { return; }
 
-    {
-        static_attest(safe(self->chan));
-        static_attest(safe(self->chan->endpoint));
-        let mut frame = self->stream(e, 128);
-        if err::check(e) { return; }
+    identity::Address mut addr = {0};
+    self->chan->endpoint->vault.get_network(&addr);
+    char mut buf[64] = {0};
+    identity::address_to_str(e, buf, 64, &addr);
+    if err::check(e) { return; }
 
-
-        identity::Address mut addr = {0};
-        self->chan->endpoint->vault.get_network(&addr);
-        char mut buf[64] = {0};
-        identity::address_to_str(e, buf, 64, &addr);
-        if err::check(e) { return; }
-
-        protonerf::encode_bytes(frame, e, proto::NetworkGetResult::Address, (u8*)buf, buffer::strlen(buf));
-        if err::check(e) { return; }
-    }
+    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new mad = madpack::encode(frame, &idx);
+    mad.kv_cstr("address", buf);
 
     self->close();
 }
 
-fn open_then_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn return_ok(stream::Stream mut *self, err::Err+et mut*e) -> bool
     where err::checked(*e)
-    where slice::slice::integrity(&headers)
 {
-    let mut frame = self->stream(e, 27);
-    if err::check(e) { return; }
+    let frame = self->stream(e, 20);
+    if err::check(e) {
+        return false;
+    }
 
-    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
-    if err::check(e) { return; }
+    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new mad = madpack::encode(frame, &idx);
+    mad.kv_bool("ok", true);
+    mad.end();
 
-    hpack::encoder::encode(frame, e, (u8*)":type",   5, (u8*)"proto", 5);
-    if err::check(e) { return; }
+    self->close();
+    return true;
 }
 
 fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
-
 {
     static_attest(buffer::integrity(&e->trace, et));
     let ch  = e->trace.cstr();
@@ -157,30 +138,31 @@ fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
     }
 
     new+100 e2 = err::make();
-
-    let frame = self->stream(&e2, 8 + chl);
+    let frame = self->stream(&e2, 20 + chl);
     if err::check(&e2) {
         e2.elog();
         return false;
     }
 
-    protonerf::encode_varint(frame, &e2, proto::ConfigResult::Ok, 0);
-    if err::check(&e2) {
-        e2.elog();
-        return false;
-    }
+    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new mad = madpack::encode(frame, &idx);
+    mad.kv_bool("ok", false);
+    mad.kv_map("error");
+    mad.kv_uint("code", e->error);
+    mad.kv_array("trace");
+    mad.v_strslice(slice::slice::Slice{
+        mem:    (u8*)ch,
+        size:   chl,
+    });
+    mad.end();
+    mad.end();
 
-    protonerf::encode_bytes(frame, &e2, proto::ConfigResult::Error, (u8*)ch, chl);
-    if err::check(&e2) {
-        e2.elog();
-        return false;
-    }
 
     self->close();
     return true;
 }
 
-fn auth_add_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn auth_add_stream(stream::Stream mut *self, err::Err+ex mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -202,42 +184,27 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice
     new+256 mut path = buffer::make();
     // prover doesnt advance path temporal :(
 
-    new mut decoder = protonerf::decode(msg);
-    for (protonerf::Field mut field;decoder.next(e,&field);) {
-        if err::check(e) { return true; }
-
-        switch field.index {
-            proto::AuthorizationAdd::Identity => {
-                if field.a != 0 {
-                    static_attest(safe(field.a));
-                    static_attest(field.value.v_len <= len(field.a));
-                    identity::identity_from_str(&addme, e, (char*)field.a, field.value.v_len);
-                    if err::check(e) {
-                        return return_err(self, e);
-                    }
-                }
+    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new dc = madpack::decode(msg, &idx);
+    while dc.next_kv() {
+        if dc.key.eq_cstr("identity") && dc.item == madpack::Item::String {
+            static_attest(slice::slice::integrity(&dc.value.v_slice));
+            identity::identity_from_str(&addme, e, (char*)dc.value.v_slice.mem, dc.value.v_slice.size);
+            if err::check(e) {
+                return return_err(self, e);
             }
-            proto::AuthorizationAdd::Path => {
-                if field.a != 0 {
-                    static_attest(safe(field.a));
-                    static_attest(field.value.v_len <= len(field.a));
-                    path.clear();
-                    path.append_bytes(field.a, field.value.v_len);
-                }
-            }
-            default => {
-            }
+        } else if dc.key.eq_cstr("path") && dc.item == madpack::Item::String {
+            static_attest(slice::slice::integrity(&dc.value.v_slice));
+            path.clear();
+            path.append_slice(dc.value.v_slice);
         }
+        dc.skip()
     }
-
-    let frame = self->stream(e, 20);
-    if err::check(e) { return false; }
 
     if path.slen() == 0 || identity::isnull(addme.k) {
-        err::fail(e, err::InvalidArgument, "proto");
+        err::fail(e, err::InvalidArgument, "identity or path is null");
         return return_err(self, e);
     }
-
 
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));
@@ -250,11 +217,7 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice
         return return_err(self, e);
     }
 
-    protonerf::encode_varint(frame, e, proto::ConfigResult::Ok, 1);
-    if err::check(e) { return true; }
-
-    self->close();
-    return true;
+    return return_ok(self, e);
 }
 
 fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
@@ -263,34 +226,23 @@ fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg
 {
     identity::Secret mut nusecret = {0};
 
-    new mut decoder = protonerf::decode(msg);
-    for (protonerf::Field mut field;decoder.next(e, &field);) {
-        if err::check(e) { return true; }
-
-        switch field.index {
-            proto::NetworkJoin::Secret => {
-                if field.a != 0 {
-                    static_attest(safe(field.a));
-                    static_attest(field.value.v_len <= len(field.a));
-                    identity::secret_from_str(&nusecret, e, (char*)field.a, field.value.v_len);
-                    if err::check(e) {
-                        return return_err(self, e);
-                    }
-                }
-            }
-            default => {
+    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new dc = madpack::decode(msg, &idx);
+    while dc.next_kv() {
+        if dc.key.eq_cstr("secret") && dc.item == madpack::Item::String {
+            static_attest(slice::slice::integrity(&dc.value.v_slice));
+            identity::secret_from_str(&nusecret, e, (char*)dc.value.v_slice.mem, dc.value.v_slice.size);
+            if err::check(e) {
+                return return_err(self, e);
             }
         }
+        dc.skip()
     }
-
-    let frame = self->stream(e, 20);
-    if err::check(e) { return false; }
 
     if identity::isnull(nusecret.k) {
-        err::fail(e, err::InvalidArgument, "proto");
+        err::fail(e, err::InvalidArgument, "secret is null");
         return return_err(self, e);
     }
-
 
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));
@@ -301,15 +253,11 @@ fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg
         return return_err(self, e);
     }
 
-    protonerf::encode_varint(frame, e, proto::ConfigResult::Ok, 1);
-    if err::check(e) { return true; }
-
-
-
-    self->close();
-
     log::warn("network changed. restart endpoint to take effect");
     self->chan->endpoint->shutdown(e);
+    if err::check(e) {
+        return return_err(self, e);
+    }
 
-    return true;
+    return return_ok(self, e);
 }

@@ -25,7 +25,8 @@ using vault;
 using identity;
 using pool;
 using <string.h>::{memcpy};
-
+using madpack;
+using preshared;
 
 export symbol InvalidFrame;
 
@@ -531,6 +532,136 @@ pub fn poll(Channel mut* self, err::Err+et mut* e, io::Async mut* async, buffer:
 
 
 
+fn handle_open_frame(Channel mut* self, err::Err+et mut* e, u32 streamid, slice::Slice header_slice) -> bool /*resend*/
+    where err::checked(*e)
+    where slice::slice::integrity(&header_slice)
+{
+    new+128 path = buffer::make();
+    new it = hpack::decoder::decode(header_slice);
+    while it.next(e) {
+        if it.key.eq_cstr(":path") {
+            path.clear();
+            static_attest(safe(it.val.mem));
+            path.append_bytes(it.val.mem, it.val.size);
+        }
+    }
+    if err::check(e) {
+        return false;
+    }
+
+    err::assert_safe(self->endpoint);
+
+    stream::Config ** mut registry = self->endpoint->p2p_stream_registry;
+    usize mut registry_len = static(len(self->endpoint->p2p_stream_registry));
+    if self->this_is_the_broker_channel {
+        registry        = self->endpoint->broker_stream_registry;
+        registry_len    = static(len(self->endpoint->broker_stream_registry));
+    }
+    static_attest(len(registry)         >= registry_len);
+
+    let mut accepted = false;
+
+    let mut response_header = self->q.alloc(e, FrameType::Stream, 30);
+    if err::check(e) {
+        e->elog();
+        e->make();
+        return true;
+    }
+    response_header.push32(byteorder::to_be32(streamid)); // stream
+    response_header.push64(byteorder::to_be64(1)); // order
+    response_header.push16(0); // size placeholder
+
+    if path.eq_cstr("/v3/carrier.discovery.v1/discover") {
+        hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"200",   3);
+        e->abort();
+        accepted = true;
+        self->disco(e, streamid);
+        if err::check(e) {
+            e->elog();
+            e->make();
+            return true;
+        }
+    } else if path.slen() > 0 && (self->this_is_the_broker_channel ||
+            self->endpoint->vault.authorize_open_stream(&self->peer, path.cstr())) {
+
+        for (usize mut i = 0; i < registry_len; i++) {
+            stream::Config * mut conf = registry[i];
+            if conf == 0 {
+                break;
+            }
+            static_attest(safe(conf));
+            err::assert_safe(conf->path);
+            static_attest(nullterm(conf->path));
+
+            static_attest(slice::slice::integrity(&conf->index));
+            // TODO send only when peer doesnt have it
+            if conf->index.size > 0 {
+                self->q.cancel();
+                response_header = self->q.alloc(e, FrameType::Stream, 40 + conf->index.size);
+                if err::check(e) {
+                    e->elog();
+                    e->make();
+                    return true;
+                }
+                response_header.push32(byteorder::to_be32(streamid)); // stream
+                response_header.push64(byteorder::to_be64(1)); // order
+                response_header.push16(0); // size placeholder
+
+                hpack::encoder::encode(response_header, e, (u8*)"index", 5, conf->index.mem, conf->index.size);
+                e->abort();
+            }
+
+            if path.eq_cstr(conf->path) {
+                accepted = true;
+                stream::Stream mut* streami = self->alloc_stream(streamid, conf);
+                if streami == 0 {
+                    hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"500",   3);
+                    e->abort();
+                    self->send_close_frame(e, streamid, 2);
+                    e->ignore();
+                    log::warn("max streams");
+                    return false;
+                } else {
+                    static_attest(safe(streami));
+                    streami->order_incomming = 1;
+
+                    if conf->open.fn != 0  {
+                        static_attest(safe(conf->open));
+                        conf->open(streami, e, header_slice);
+                        if err::check(e) {
+                            e->elog();
+                            e->make();
+                            hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"500",   3);
+                            if err::check(e) { e->make(); }
+                            streami->close();
+                        } else {
+                            hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"200",   3);
+                        }
+                    } else {
+                        hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"200",   3);
+                    }
+
+                }
+                break;
+            }
+        }
+    }
+
+    if !accepted {
+        log::warn("[%u] no service accepts path '%s'", self->route, path.cstr());
+        hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"404", 3);
+        e->abort();
+        self->send_close_frame(e, streamid, 2);
+        if err::check(e) {
+            e->elog();
+            e->make();
+        }
+    }
+
+    return false;
+}
+
+
 pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u64 counter, u8 version)
     where err::checked(*e)
     where len(body) >= l
@@ -677,109 +808,11 @@ pub fn push(Channel mut* self, err::Err+et mut* e, u8 mut* mut body, usize l, u6
                     log::debug("[%lu] received open stream=%u (DUP)", self->route, streamid, size);
                 } else {
                     log::debug("[%lu] received open stream=%u, size=%zu", self->route, streamid, size);
-
-                    new+128 path = buffer::make();
-                    new it = hpack::decoder::decode(header_slice);
-                    while it.next(e) {
-                        if it.key.eq_cstr(":path") {
-                            path.clear();
-                            static_attest(safe(it.val.mem));
-                            path.append_bytes(it.val.mem, it.val.size);
-                        }
+                    if self->handle_open_frame(e, streamid, header_slice) {
+                        please_resend = true;
                     }
                     if err::check(e) {
                         return;
-                    }
-
-                    err::assert_safe(self->endpoint);
-
-                    stream::Config ** mut registry = self->endpoint->p2p_stream_registry;
-                    usize mut registry_len = static(len(self->endpoint->p2p_stream_registry));
-                    if self->this_is_the_broker_channel {
-                        registry        = self->endpoint->broker_stream_registry;
-                        registry_len    = static(len(self->endpoint->broker_stream_registry));
-                    }
-                    static_attest(len(registry)         >= registry_len);
-
-                    let mut accepted = false;
-                    if path.eq_cstr("/v2/carrier.discovery.v1/discover") {
-                        accepted = true;
-                        self->disco(e, streamid);
-                        if err::check(e) {
-                            e->elog();
-                            e->make();
-                            please_resend = true;
-                        }
-                    } else if path.slen() > 0 && (self->this_is_the_broker_channel ||
-                        self->endpoint->vault.authorize_open_stream(&self->peer, path.cstr())) {
-
-                        for (usize mut i = 0; i < registry_len; i++) {
-                            stream::Config * mut conf = registry[i];
-                            if conf == 0 {
-                                break;
-                            }
-                            static_attest(safe(conf));
-                            err::assert_safe(conf->path);
-                            static_attest(nullterm(conf->path));
-
-                            if path.eq_cstr(conf->path) {
-                                accepted = true;
-
-                                stream::Stream mut* streami = self->alloc_stream(streamid, conf);
-                                if streami == 0 {
-                                    log::warn("max streams");
-                                    please_resend = true;
-                                } else {
-                                    static_attest(safe(streami));
-                                    streami->order_incomming = 1;
-                                    streami->order_outgoing = 1;
-                                    err::assert_safe(conf->open.fn);
-                                    static_attest(safe(conf->open));
-                                    conf->open(streami, e, header_slice);
-
-
-                                    if err::check(e) {
-                                        e->elog();
-                                        e->make();
-                                        let mut *frame = streami->stream(e, 14);
-                                        if err::check(e) {
-                                            please_resend = true;
-                                            log::warn("oom while sending 500");
-                                        } else {
-                                            static_attest(err::checked(*e));
-                                            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
-                                            if err::check(e) { e->make(); }
-                                            streami->close();
-                                        }
-                                    }
-
-                                }
-                                break;
-                            }
-                        }
-                    }
-
-                    if !accepted {
-                        //log::warn("[%u] no service accepts path '%s'", self->route, path.cstr());
-
-                        let mut frame = self->q.alloc(e, FrameType::Stream, 28);
-                        if err::check(e) {
-                            e->elog();
-                            e->make();
-                            please_resend = true;
-                        } else {
-                            frame.push32(byteorder::to_be32(streamid)); // stream
-                            frame.push64(byteorder::to_be64(1)); // order
-                            frame.push16(0); // size placeholder
-
-                            hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"404", 3);
-                            if err::check(e) { return ; }
-                            self->send_close_frame(e, streamid, 2);
-                            if err::check(e) {
-                                e->elog();
-                                e->make();
-                            }
-                        }
                     }
                 }
             }
@@ -1045,14 +1078,6 @@ pub fn ack(Channel mut* self, err::Err mut* e, u64 ackd) {
 fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     where err::checked(*e)
 {
-    let mut frame1 = self->q.alloc(e, FrameType::Stream, 14 + 14);
-    if err::check(e) { return; }
-
-    err::assert(frame1.push32(byteorder::to_be32(stream_id)));
-    err::assert(frame1.push64(byteorder::to_be64(1)));
-    err::assert(frame1.push16(0));
-
-
     usize mut memneeded = 0;
     err::assert_safe(self->endpoint);
     for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
@@ -1075,56 +1100,74 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     static_attest(nullterm(revision::build_id()));
     memneeded += 10 + buffer::strlen(revision::build_id());
 
-
-
     let mut frame2 = self->q.alloc(e, FrameType::Stream, memneeded);
     static_attest(frame2.size >= 20);
-    if err::check(e) {
-        e->make();
-        hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"500", 3);
-        if err::check(e) { return; }
-    } else {
-        hpack::encoder::encode(frame1, e, (u8*)":status", 7, (u8*)"200", 3);
-        if err::check(e) { return; }
-
-        err::assert(frame2.push32(byteorder::to_be32(stream_id)));
-        err::assert(frame2.push64(byteorder::to_be64(2)));
-        err::assert(frame2.push16(1));
+    if err::check(e) { return; }
+    err::assert(frame2.push32(byteorder::to_be32(stream_id)));
+    err::assert(frame2.push64(byteorder::to_be64(2)));
+    err::assert(frame2.push16(1));
 
 
-        protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, revision::revision());
-        e->abort();
 
-        let bi = revision::build_id();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,
+    new+512 idx = madpack::from_preshared_index(preshared::discovery());
+    new mad = madpack::encode(frame2, &idx);
+
+    mad.kv_uint("carrier_revision", revision::revision());
+    mad.kv_cstr("carrier_build_id", revision::build_id());
+    mad.kv_array("paths");
+    for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
+        stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];
+        if conf == 0 {
+            break;
+        }
+        static_attest(safe(conf));
+        err::assert_safe(conf->path);
+        static_attest(nullterm(conf->path));
+
+        if self->this_is_the_broker_channel || !self->endpoint->vault.authorize_open_stream(&self->peer, conf->path) {
+            continue;
+        }
+
+        mad.v_cstr(conf->path);
+    }
+    mad.end();
+
+/*
+
+    protonerf::encode_varint(frame2, e, proto::DiscoveryResponse::CarrierRevision, revision::revision());
+    e->abort();
+
+    let bi = revision::build_id();
+    protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::CarrierBuildId,
             (u8*)bi, buffer::strlen(bi)
-        );
-        e->abort();
-        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Application,              (u8*)"zz", 2);
-        e->abort();
-        //protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::ApplicationVersion,      (u8*)"??", 2);
-        //e->abort();
+            );
+    e->abort();
+    protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Application,              (u8*)"zz", 2);
+    e->abort();
+    //protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::ApplicationVersion,      (u8*)"??", 2);
+    //e->abort();
 
-        for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
-            stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];
-            if conf == 0 {
-                break;
-            }
-            static_attest(safe(conf));
-            err::assert_safe(conf->path);
-            static_attest(nullterm(conf->path));
+    for (usize mut i = 0; i < static(len(self->endpoint->p2p_stream_registry)); i++) {
+        stream::Config * mut conf = self->endpoint->p2p_stream_registry[i];
+        if conf == 0 {
+            break;
+        }
+        static_attest(safe(conf));
+        err::assert_safe(conf->path);
+        static_attest(nullterm(conf->path));
 
-            if self->this_is_the_broker_channel || !self->endpoint->vault.authorize_open_stream(&self->peer, conf->path) {
-                continue;
-            }
+        if self->this_is_the_broker_channel || !self->endpoint->vault.authorize_open_stream(&self->peer, conf->path) {
+            continue;
+        }
 
-            protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Paths,
+        protonerf::encode_bytes(frame2, e, proto::DiscoveryResponse::Paths,
                 (u8*)conf->path,
                 buffer::strlen(conf->path)
-            );
-            e->abort();
-        }
+                );
+        e->abort();
     }
+*/
+
 
     slice::MutSlice mut frame3 = self->q.alloc(e, FrameType::Close, 16);
     if err::check(e) {
@@ -1137,4 +1180,5 @@ fn disco(Channel mut* self, err::Err+et mut* e, u32 stream_id)
     if self->version >= 0x09 {
         frame3.push(0); //TODO set reason
     }
+
 }

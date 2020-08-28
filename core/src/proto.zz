@@ -803,6 +803,13 @@ export fn DiscoveryResponseTypes (usize index) -> protonerf::FieldType {
 }
 
 
+export fn SchemaTypes (usize index) -> protonerf::FieldType {
+    switch index {
+    }
+    return protonerf::FieldType::Skip;
+}
+
+
 export enum Uname {
   Sysname = 1,
   Nodename = 2,
@@ -1656,178 +1663,6 @@ export fn SensorsTypes (usize index) -> protonerf::FieldType {
 
 export fn NoneTypes (usize index) -> protonerf::FieldType {
     switch index {
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export fn AuthorizationGetTypes (usize index) -> protonerf::FieldType {
-    switch index {
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum AuthorizationAdd {
-  Identity = 1,
-  Path = 2,
-}
-
-export fn AuthorizationAddTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        AuthorizationAdd::Identity => {
-            return protonerf::FieldType::Message;
-        }
-        AuthorizationAdd::Path => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum AuthorizationDel {
-  Identity = 1,
-}
-
-export fn AuthorizationDelTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        AuthorizationDel::Identity => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum InteractiveAuth {
-  Otp = 1,
-}
-
-export fn InteractiveAuthTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        InteractiveAuth::Otp => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum NetworkJoin {
-  Secret = 1,
-}
-
-export fn NetworkJoinTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        NetworkJoin::Secret => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export fn NetworkGetTypes (usize index) -> protonerf::FieldType {
-    switch index {
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum ConfigResult {
-  Ok = 1,
-  Error = 2,
-}
-
-export fn ConfigResultTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        ConfigResult::Ok => {
-            return protonerf::FieldType::Message;
-        }
-        ConfigResult::Error => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum AuthListResult {
-  Auth = 1,
-}
-
-export fn AuthListResultTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        AuthListResult::Auth => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum NetworkGetResult {
-  Address = 2,
-}
-
-export fn NetworkGetResultTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        NetworkGetResult::Address => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum GenesisCurrent {
-  Sha256 = 1,
-  Commitmsg = 2,
-  Stable = 3,
-  Contentsize = 4,
-}
-
-export fn GenesisCurrentTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        GenesisCurrent::Sha256 => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisCurrent::Commitmsg => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisCurrent::Stable => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisCurrent::Contentsize => {
-            return protonerf::FieldType::Message;
-        }
-    }
-    return protonerf::FieldType::Skip;
-}
-
-
-export enum GenesisUpdate {
-  Sha256 = 1,
-  Commitmsg = 2,
-  Parent = 3,
-  Contentsize = 4,
-}
-
-export fn GenesisUpdateTypes (usize index) -> protonerf::FieldType {
-    switch index {
-        GenesisUpdate::Sha256 => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisUpdate::Commitmsg => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisUpdate::Parent => {
-            return protonerf::FieldType::Message;
-        }
-        GenesisUpdate::Contentsize => {
-            return protonerf::FieldType::Message;
-        }
     }
     return protonerf::FieldType::Skip;
 }

@@ -98,7 +98,7 @@ pub fn main() -> int {
         static_attest(len(buf)>1);
         static_attest(bin <= len(buf));
         new s  = slice::slice::make(buf + 1, bin - 1);
-        new mut it = decoder::decode(&s);
+        new mut it = decoder::decode(s);
 
         static_attest(buf[0] > 0 && buf[0] < 9);
         uint i = it.decode_integer(&e, buf[0]);

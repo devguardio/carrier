@@ -132,7 +132,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                         ep.close();
                         return 0;
                     } else {
-                        cmd_config_auth_list::run_remote(&e, &ep, &target_id);
+                        //cmd_config_auth_list::run_remote(&e, &ep, &target_id);
                         e.abort();
                         ep.close();
                         return 0;
@@ -144,7 +144,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                         ep.close();
                         return 0;
                     } else {
-                        cmd_config_net::run_remote_net_get(&e, &ep, &target_id);
+                        //cmd_config_net::run_remote_net_get(&e, &ep, &target_id);
                         e.abort();
                         ep.close();
                         return 0;
@@ -188,7 +188,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                     ep.close();
                     return 0;
                 } else {
-                    cmd_config_auth_add::run_remote(&e, &ep, &target_id, auth_id, arg, method);
+                    //cmd_config_auth_add::run_remote(&e, &ep, &target_id, auth_id, arg, method);
                     e.abort();
                     ep.close();
                     return 0;
@@ -214,7 +214,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
                 }
             } else {
                 if method == Method::Join {
-                    cmd_config_net::run_remote_net_join(&e, &ep, &target_id, net_secret);
+                    //cmd_config_net::run_remote_net_join(&e, &ep, &target_id, net_secret);
                     e.abort();
                     ep.close();
                     return 0;
@@ -229,6 +229,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
 }
 
 
+/*
 export symbol RemoteOpFailed;
 
 pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
@@ -272,3 +273,4 @@ pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slic
     }
 }
 
+*/

@@ -1,4 +1,4 @@
-using <stdio.h>::{printf};
+using <stdio.h>::{printf, fopen, fclose, FILE};
 using slice;
 using proto;
 using buffer;
@@ -7,144 +7,165 @@ using protonerf;
 using hex;
 using log;
 using time;
+using madpack;
+using time;
 
-inline using (needs
-    protonerf::encode_bytes,
-    protonerf::encode_varint,
-    protonerf::encode_f64,
-    err::Err,
-    proto::Uname,
-    proto::Mem,
-    proto::Load,
-    proto::Firmware,
-    proto::Sensor,
-    proto::Sensors,
-    proto::Sensor__ValueType,
-    proto::Bootloader,
-    slice::mut_slice::MutSlice,
-    slice::slice::Slice,
-    err::fail_with_errno,
-    time::Time,
-) "os.h"::{
-    os_sysinfo_uname,
-    os_sysinfo_mem,
-    os_sysinfo_load,
-    os_sysinfo_firmware,
-    os_sysinfo_sensors,
-};
+inline using "os.h" as os;
 
-fn uname(slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
+export fn uname(madpack::Encoder mut *enc, err::Err+et mut *e)
+    where err::checked(*e)
+    where madpack::integrity(enc)
+    if #(os::defined(os::__linux__))
 {
-    new+300 e       = err::make();
-    new+1000 buf    = buffer::make();
-    let mut sl2     = buf.as_mut_slice();
+    os::utsname_t mut name;
+    if (os::uname(&name) != 0) {
+        e->fail_with_errno("uname");
+        return;
+    }
 
-    if unsafe<bool>(os_sysinfo_uname((err::Err mut*)&e, 300, sl2)) {
-        if err::check(&e) {
-            e.elog();
-            return;
+    unsafe {
+        madpack::kv_cstr(enc, "sysname",   name.sysname);
+        madpack::kv_cstr(enc, "nodename",  name.nodename);
+        madpack::kv_cstr(enc, "release",   name.release);
+        madpack::kv_cstr(enc, "version",   name.version);
+        madpack::kv_cstr(enc, "machine",   name.machine);
+    }
+
+} else {
+}
+
+export fn mem(madpack::Encoder mut *enc, err::Err+et mut *e)
+    where err::checked(*e)
+    where madpack::integrity(enc)
+    if #(os::defined(os::__linux__))
+{
+    os::sysinfo_t mut info;
+    if (os::sysinfo(&info) != 0) {
+        e->fail_with_errno("sysinfo");
+        return;
+    }
+
+    madpack::kv_uint(enc, "total",      (u64)unsafe<int>(info.totalram));
+    madpack::kv_uint(enc, "free",       (u64)unsafe<int>(info.freeram));
+} else {
+}
+
+
+
+
+export fn cpu(madpack::Encoder mut *enc, err::Err+et mut *e)
+    where err::checked(*e)
+    where madpack::integrity(enc)
+    if #(os::defined(os::__linux__))
+{
+    FILE mut *fi = fopen("/proc/loadavg", "r");
+    if fi == 0 { e->fail_with_errno("cannot open /proc/loadavg"); return; };
+
+    new+1000 b = buffer::make();
+    b.fgets(fi);
+
+    new+100 b1 = buffer::make();
+    usize mut iterator = 0;
+    if b.split(' ', &iterator, &b1) {
+        enc->kv_cstr("avg_1", b1.mem);
+    }
+    if b.split(' ', &iterator, &b1) {
+        enc->kv_cstr("avg_5", b1.mem);
+    }
+    if b.split(' ', &iterator, &b1) {
+        enc->kv_cstr("avg_15", b1.mem);
+    }
+    if b.split(' ', &iterator, &b1) {
+        new+100 b2 = buffer::make();
+        usize mut iterator = 0;
+        if b1.split('/', &iterator, &b2) {
+            enc->kv_cstr("proc_active", b2.mem);
         }
-        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Uname, sl2.mem, *sl2.at);
-        if err::check(&e) {
-            e.elog();
-            return;
+        if b1.split('/', &iterator, &b2) {
+            enc->kv_cstr("proc_total", b2.mem);
         }
     }
+
+    fclose(fi);
+
+
+    let t1 = time::real();
+    enc->kv_uint("clock", t1.to_millis());
+    let t2 = time::tick();
+    enc->kv_uint("uptime", t2.to_millis());
+
+
+    cores(enc, e);
+} else {
 }
 
-fn mem(slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
+export fn cores(madpack::Encoder mut *enc, err::Err+et mut *e)
+    where err::checked(*e)
+    where madpack::integrity(enc)
+    if #(os::defined(os::__linux__) && !os::defined(os::__ANDROID__))
 {
-    new+300 e       = err::make();
-    new+1000 buf    = buffer::make();
-    let mut sl2     = buf.as_mut_slice();
+    enc->kv_uint("threads", os::get_nprocs());
+} else {}
 
-    if unsafe<bool>(os_sysinfo_mem((err::Err mut*)&e, 300, sl2)) {
-        if err::check(&e) {
-            e.elog();
-            return;
+
+export fn firmware(madpack::Encoder mut *enc, err::Err+et mut *e)
+    where err::checked(*e)
+    where madpack::integrity(enc)
+    if #(os::defined(os::__linux__) && !os::defined(os::__ANDROID__))
+{
+    FILE mut * mut fi = fopen("/etc/lsb-release", "r");
+    if fi == 0 {
+        fi = fopen("/etc/openwrt_release", "r");
+        if fi == 0 { return; }
+    }
+
+    for (;;) {
+        new+1000 b = buffer::make();
+        if !b.fgets(fi) {
+            break;
         }
-        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Mem, sl2.mem, *sl2.at);
-        if err::check(&e) {
-            e.elog();
-            return;
+
+        new+1000 k = buffer::make();
+        new+1000 v = buffer::make();
+        usize mut iterator = 0;
+        if b.split('=', &iterator, &k) && b.split('=', &iterator, &v){
+            if k.eq_cstr("DISTRIB_ID") && v.at > 1 {
+                enc->kv_cstr("distro", clean(&v));
+            } else if k.eq_cstr("DISTRIB_RELEASE") && v.at > 1 {
+                enc->kv_cstr("release", clean(&v));
+            } else if k.eq_cstr("DISTRIB_REVISION") && v.at > 1 {
+                enc->kv_cstr("revision", clean(&v));
+            } else if k.eq_cstr("DISTRIB_TARGET") && v.at > 1 {
+                enc->kv_cstr("board", clean(&v));
+            }
         }
     }
-}
 
-fn load(slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
+
+    fclose(fi);
+    return;
+
+} else {}
+
+
+
+
+fn clean(buffer::Buffer+bt mut*v) -> char *
+    where buffer::integrity(v, bt)
+    where v->at > 1
+    model safe(return)
+    model nullterm(return)
 {
-    new+300 e   = err::make();
-    new+1000 buf = buffer::make();
-    let mut sl2 = buf.as_mut_slice();
-
-    if unsafe<bool>(os_sysinfo_load((err::Err mut*)&e, 300, sl2)) {
-        if err::check(&e) {
-            e.elog();
-            return;
-        }
-        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Load, sl2.mem, *sl2.at);
-        if err::check(&e) {
-            e.elog();
-            return;
-        }
+    if v->mem[v->at - 1] == '\n' {
+        v->mem[v->at - 1] = 0;
+        unsafe { v->at -= 1; }
     }
-}
-
-fn firmware(slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
-{
-    new+300 e   = err::make();
-    new+1000 buf = buffer::make();
-    let mut sl2 = buf.as_mut_slice();
-
-    if unsafe<bool>(os_sysinfo_firmware((err::Err mut*)&e, 300, sl2)) {
-        if err::check(&e) {
-            e.elog();
-            return;
-        }
-        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Firmware, sl2.mem, *sl2.at);
-        if err::check(&e) {
-            e.elog();
-            return;
-        }
+    if v->mem[v->at - 1] == '"' ||  v->mem[v->at - 1] == '\''{
+        v->mem[v->at - 1] = 0;
     }
-}
-
-fn bootloader(slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
-{
-    new+300 e   = err::make();
-    new+1000 buf = buffer::make();
-    let mut sl2 = buf.as_mut_slice();
-
-    if unsafe<bool>(os_sysinfo_bootloader((err::Err mut*)&e, 300, sl2)) {
-        if err::check(&e) {
-            e.elog();
-            return;
-        }
-        protonerf::encode_bytes(sl, &e, proto::Sysinfo::Bootloader, sl2.mem, *sl2.at);
-        if err::check(&e) {
-            e.elog();
-            return;
-        }
+    char * mut mm = v->mem;
+    if mm[0] == '"' || mm[0] == '\'' {
+        unsafe { mm = mm + 1; }
     }
-}
-
-export fn sysinfo(slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
-{
-    uname(sl);
-    mem(sl);
-    load(sl);
-    firmware(sl);
-    bootloader(sl);
-}
-
-export fn sensors(err::Err+et mut*e, slice::MutSlice mut sl)
-    where slice::mut_slice::integrity(&sl)
-{
-    os_sysinfo_sensors(e, et, sl);
+    return mm;
 }

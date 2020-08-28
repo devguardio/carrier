@@ -56,6 +56,7 @@ export fn run_self_net_join(
     if err::check(e) {return;}
 }
 
+/*
 export fn run_remote_net_join(
     err::Err+et mut *e,
     endpoint::Endpoint mut*endpoint,
@@ -160,3 +161,4 @@ fn on_close(stream::Stream mut* self, err::Err+et mut*e)
     }
 }
 
+    */

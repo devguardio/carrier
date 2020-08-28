@@ -9,9 +9,9 @@ using buffer;
 using time;
 using <stdlib.h>::{exit, calloc, free};
 using sysinfo;
-using proto;
-using protonerf;
 using revision;
+using madpack;
+using preshared;
 
 export fn register(endpoint::Endpoint mut*ep)
 {
@@ -19,30 +19,48 @@ export fn register(endpoint::Endpoint mut*ep)
     ep->register_stream(&ConfigSensors);
 }
 static stream::Config ConfigSysinfo = stream::Config {
-    path:       "/v2/carrier.sysinfo.v1/sysinfo",
+    path:       "/v3/carrier.sysinfo.v1/sysinfo",
     open:       sysinfo_open,
+    index:      preshared::SYSINFO,
 };
 static stream::Config ConfigSensors = stream::Config {
-    path:       "/v2/carrier.sysinfo.v1/sensors",
+    path:       "/v3/carrier.sysinfo.v1/sensors",
     open:       sensors_open,
+    index:      preshared::SENSORS,
 };
 
 fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
-    let mut *frame = self->stream(e, 14);
+    let mut frame = self->stream(e, 1500);
     if err::check(e) { return; }
 
-    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
-    if err::check(e) { return; }
-
-    let mut *frame2 = self->stream(e, 1500);
-    if err::check(e) { return; }
-    sysinfo::sysinfo(frame2);
+    new+512 idx = madpack::from_preshared_index(preshared::sysinfo());
+    new enc = madpack::encode(frame, &idx);
 
     let bi = revision::build_id();
-    protonerf::encode_bytes(frame2, e, proto::Sysinfo::CarrierBuildId, (u8*)bi, buffer::strlen(bi));
+    enc.kv_cstr("build_id", bi);
+
+    enc.kv_map("uname");
+    sysinfo::uname(&enc, e);
+    if err::check(e) {e->elog(); e->make(); }
+    enc.end();
+
+    enc.kv_map("mem");
+    sysinfo::mem(&enc, e);
+    if err::check(e) {e->elog(); e->make(); }
+    enc.end();
+
+    enc.kv_map("cpu");
+    sysinfo::cpu(&enc, e);
+    if err::check(e) {e->elog(); e->make(); }
+    enc.end();
+
+    enc.kv_map("firmware");
+    sysinfo::firmware(&enc, e);
+    if err::check(e) {e->elog(); e->make(); }
+    enc.end();
 
     self->close();
 }
@@ -51,15 +69,5 @@ fn sensors_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice header
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
-    let mut *frame = self->stream(e, 14);
-    if err::check(e) { return; }
-
-    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
-    if err::check(e) { return; }
-
-    let mut *frame2 = self->stream(e, 1500);
-    sysinfo::sensors(e, frame2);
-    if err::check(e) { return; }
-
     self->close();
 }

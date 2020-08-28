@@ -6,6 +6,7 @@ using byteorder;
 using io;
 using time;
 using buffer;
+using madpack;
 
 export closure open_fn       (Stream mut* self, err::Err+et mut *e, slice::Slice headers);
 export closure close_fn      (Stream mut* self, err::Err+et mut *e);
@@ -20,6 +21,7 @@ export struct Config {
     stream_fn       stream;
     fragmented_fn   fragmented;
     poll_fn         poll;
+    slice::Slice    index;
 }
 
 export struct Stream {
@@ -45,6 +47,13 @@ export struct Stream {
     io::Io      memory_pressure_timer_io;
 }
 
+export fn index(Stream *self) -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    err::assert_safe(self->config);
+    static_attest(slice::slice::integrity(&self->config->index));
+    return self->config->index;
+}
 
 /// allocate a frame for sending later
 export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> slice::MutSlice

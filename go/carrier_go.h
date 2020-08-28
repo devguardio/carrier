@@ -39,3 +39,23 @@ static unsigned long real_sizeof_io_Io()
 {
     return sizeof_io_Io();
 }
+
+static unsigned long real_sizeof_madpack_Index(size_t tail)
+{
+    return sizeof_madpack_Index(tail);
+}
+
+static unsigned long real_sizeof_madpack_Decoder()
+{
+    return sizeof_madpack_Decoder();
+}
+
+static unsigned long real_sizeof_madpack_Encoder()
+{
+    return sizeof_madpack_Encoder();
+}
+
+static unsigned long real_sizeof_buffer_Buffer(size_t tail)
+{
+    return sizeof_buffer_Buffer(tail);
+}

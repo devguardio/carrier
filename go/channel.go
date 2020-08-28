@@ -22,8 +22,10 @@ type ConnectOpt struct {
 }
 
 type Channel struct {
-    synx    chan *synx
-    wakeup  *C.io_Io
+    Revision    uint32
+
+    synx        chan *synx
+    wakeup      *C.io_Io
 }
 
 type synxOpen struct {
@@ -114,8 +116,9 @@ func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
 
 
     channel := &Channel{
-        wakeup: interrupt_tx,
-        synx:   make(chan *synx),
+        wakeup:     interrupt_tx,
+        synx:       make(chan *synx),
+        Revision:   (uint32)(mx._chan.revision),
     };
 
     go func() {
@@ -248,6 +251,7 @@ type openAck struct {
 
 type Stream struct {
     ResponseHeaders     map[string][][]byte
+    Index               []byte
     Rx                  chan []byte
     Tx                  chan []byte
     Death               chan bool
@@ -331,9 +335,17 @@ func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, err
 
     select {
         case headers := <- await_headers: {
+            var index = []byte{};
             var status = 999;
             if len(headers[":status"]) > 0 {
                 status, _ = strconv.Atoi(string(headers[":status"][0]));
+            }
+            for k,v := range headers {
+                if k == "index" {
+                    for _,v := range v {
+                        index = append(index, v[:]...);
+                    }
+                }
             }
             if status >= 300 {
                 em := "status: ";
@@ -346,8 +358,10 @@ func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, err
                 //TODO close chan
                 return nil, errors.New(em)
             }
+
             return &Stream{
                 ResponseHeaders:    headers,
+                Index:              index,
                 Rx:                 rx,
                 Tx:                 tx,
                 Death:              death_notifier,

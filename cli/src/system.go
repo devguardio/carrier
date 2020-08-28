@@ -16,11 +16,8 @@ func init() {
 
         Use:    "sysinfo <target>",
         Short:  "Get sysinfo",
+        Args:   cobra.MinimumNArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            if len(args) < 1 {
-                cmd.Help();
-                return;
-            }
 
             con , err := carrier.Connect(args[0]);
             if err != nil { log.Fatal(err); }
@@ -30,6 +27,9 @@ func init() {
             if err != nil { log.Fatal(err); }
 
             for msg := range stream.Rx {
+
+
+                log.Printf("MSG SIZE %d\n", len(msg));
 
                 var dr = &protos.Sysinfo{};
                 err := proto.Unmarshal(msg, dr);
@@ -47,11 +47,8 @@ func init() {
 
         Use:    "sensors <target>",
         Short:  "Get sensors",
+        Args:   cobra.MinimumNArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            if len(args) < 1 {
-                cmd.Help();
-                return;
-            }
 
             con , err := carrier.Connect(args[0]);
             if err != nil { log.Fatal(err); }
@@ -78,23 +75,64 @@ func init() {
 
         Use:    "discovery <target>",
         Short:  "List available remote streams",
+        Args:   cobra.MinimumNArgs(1),
         Aliases: []string{"disco"},
         Run: func(cmd *cobra.Command, args []string) {
-            if len(args) < 1 {
-                cmd.Help();
-                return;
-            }
 
             con , err := carrier.Connect(args[0]);
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
-            stream, err := con.Open("/v2/carrier.discovery.v1/discover");
+            if con.Revision >= 137 {
+                stream, err := con.Open("/v3/carrier.discovery.v1/discover");
+                if err != nil { log.Fatal(err); }
+
+                for msg := range stream.Rx {
+                    v, err := carrier.MadpackDecode(carrier.PresharedDiscovery(), msg)
+                    if err != nil { log.Fatal(err) }
+                    j, err := json.MarshalIndent(v, "", "  ")
+                    if err != nil {log.Fatal(err); }
+                    os.Stdout.Write(j);
+                    os.Stdout.Write([]byte("\n"));
+                }
+
+            } else {
+                stream, err := con.Open("/v2/carrier.discovery.v1/discover");
+                if err != nil { log.Fatal(err); }
+
+                for msg := range stream.Rx {
+                    var dr = &protos.DiscoveryResponse{};
+                    err := proto.Unmarshal(msg, dr);
+                    if err != nil { log.Fatal(err);}
+
+                    j, err := json.MarshalIndent(dr, "", " ")
+                    if err != nil {log.Fatal(err); }
+                    os.Stdout.Write(j);
+                    os.Stdout.Write([]byte("\n"));
+                }
+            }
+
+        },
+    };
+
+    /*
+    getSchemaCmd := &cobra.Command{
+
+        Use:    "schema <target> <path>",
+        Short:  "Retreive encoding schema for api",
+        Args:   cobra.MinimumNArgs(2),
+        Run: func(cmd *cobra.Command, args []string) {
+
+            con , err := carrier.Connect(args[0]);
+            if err != nil { log.Fatal(err); }
+            defer con.Shutdown();
+
+            stream, err := con.Open("/v2/carrier.discovery.v1/schema");
             if err != nil { log.Fatal(err); }
 
             for msg := range stream.Rx {
 
-                var dr = &protos.DiscoveryResponse{};
+                var dr = &protos.Schema{};
                 err := proto.Unmarshal(msg, dr);
                 if err != nil { log.Fatal(err);}
 
@@ -105,6 +143,7 @@ func init() {
             }
         },
     };
+    */
 
     systemCmd := &cobra.Command{
         Use:    "get <subcommand>",
@@ -113,6 +152,7 @@ func init() {
     systemCmd.AddCommand(getInfoCmd);
     systemCmd.AddCommand(getSensorsCmd);
     systemCmd.AddCommand(getDiscoveryCmd);
+    //systemCmd.AddCommand(getSchemaCmd);
 
     rootCmd.AddCommand(systemCmd);
 }

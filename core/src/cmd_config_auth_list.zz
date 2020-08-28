@@ -39,6 +39,7 @@ export fn run_self(
     }
 }
 
+/*
 export fn run_remote(
     err::Err+et mut *e,
     endpoint::Endpoint mut*endpoint,
@@ -135,3 +136,4 @@ fn on_close(stream::Stream mut* self, err::Err+et mut*e)
         err::fail(e, RemoteOpFailed, "closed early");
     }
 }
+*/

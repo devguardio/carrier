@@ -91,7 +91,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
             }
             frame := C.carrier_stream_stream(stream, e, et, (C.ulong)(len(backbuffered[0])));
             if err := ErrCheck(e); err != nil {
-                log.Println(err);
+                log.Println("cannot queue frame (will retry):", err);
                 return;
             }
             if len(backbuffered[0]) > 0 {

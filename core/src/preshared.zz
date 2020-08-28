@@ -1,0 +1,86 @@
+using slice;
+using madpack;
+
+
+export const slice::slice::Slice DISCOVERY = @madpack::preshare({
+    "carrier_revision",
+    "carrier_build_id",
+    "application",
+    "paths",
+});
+
+export fn discovery() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = DISCOVERY;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+
+export const slice::slice::Slice CONFIG = @madpack::preshare({
+    "auth",
+    "identity",
+    "path",
+    "address",
+    "error",
+    "ok",
+    "code",
+    "trace",
+});
+
+export fn config() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = CONFIG;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+
+export const slice::slice::Slice SYSINFO = @madpack::preshare({
+    "uname",
+    "sysname",
+    "nodename",
+    "release",
+    "version",
+    "machine",
+    "mem",
+    "total",
+    "free",
+    "cpu",
+    "avg_1",
+    "avg_5",
+    "avg_15",
+    "proc_active",
+    "proc_total",
+    "clock",
+    "uptime",
+    "cores",
+    "threads",
+    "firmware",
+    "distro",
+    "release",
+    "revision",
+    "board",
+});
+
+export fn sysinfo() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = SYSINFO;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+
+
+export const slice::slice::Slice SENSORS = @madpack::preshare({
+    "",
+});
+
+export fn sensors() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = SENSORS;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+

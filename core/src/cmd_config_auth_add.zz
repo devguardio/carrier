@@ -46,7 +46,7 @@ export fn run_self(
     log::info("done");
 }
 
-
+/*
 export fn run_remote(
     err::Err+et mut *e,
     endpoint::Endpoint mut* ep,
@@ -120,4 +120,7 @@ fn on_close(stream::Stream mut* self, err::Err+et mut*e)
         err::fail(e, cmd_config::RemoteOpFailed, "closed early");
     }
 }
+
+
+*/
 

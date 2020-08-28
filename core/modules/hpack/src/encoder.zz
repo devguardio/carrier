@@ -56,10 +56,9 @@ export fn encode(slice::MutSlice slice, err::Err+et mut *e, u8* key, usize keyle
 
 
 
-pub fn encode_integer(slice::MutSlice slice, err::Err+et mut *e, usize value, u8 prefix_size)
+pub fn encode_integer(slice::MutSlice slice, err::Err+et mut *e, usize mut value, u8 prefix_size)
     where err::checked(*e)
     where mut_slice::integrity(&slice)
-    model mut_slice::integrity(&slice)
 {
     if *slice.at >= slice.size {
         err::fail(e, err::OutOfTail, "eof");
@@ -75,6 +74,26 @@ pub fn encode_integer(slice::MutSlice slice, err::Err+et mut *e, usize value, u8
         return;
     }
 
-    err::fail(e, err::NotImplemented, "large header field not implemented");
+
+
+    slice.mem[*slice.at] = slice.mem[*slice.at] | mask;
+    value -= (usize)mask;
+    *slice.at += 1;
+
+    while value >= 128 {
+        if *slice.at >= slice.size {
+            err::fail(e, err::OutOfTail, "overflow");
+            return;
+        }
+        slice.mem[*slice.at] = (u8)((value % 128) + 128);
+        value = value / 128;
+        *slice.at += 1;
+    }
+
+    if *slice.at >= slice.size {
+        err::fail(e, err::OutOfTail, "overflow");
+        return;
+    }
+    slice.mem[*slice.at] = (u8)value;
 
 }

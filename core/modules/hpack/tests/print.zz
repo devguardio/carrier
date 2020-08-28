@@ -96,7 +96,7 @@ export fn main() -> int {
     usize wirelen = as<usize>(fread(wire, sizeof(char), static(len(wire)), stdin));
     static_attest(len(wire) >= wirelen);
     new s  = slice::slice::make(wire, wirelen);
-    new it = decoder::decode(&s);
+    new it = decoder::decode(s);
     for (; it.next(&e);) {
         if err::check(&e) {
             err::eprintf(&e, stderr);

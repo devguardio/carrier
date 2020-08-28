@@ -3,8 +3,6 @@ PROTOS=\
 	   proto/carrier.certificate.v1.proto \
 	   proto/carrier.discovery.v1.proto \
 	   proto/carrier.sysinfo.v1.proto \
-	   proto/carrier.config.v1.proto \
-	   proto/genesis.v1.proto
 
 
 

@@ -7,7 +7,6 @@ using revision;
 
 using cmd_publish;
 using cmd_shell;
-using cmd_config;
 using cmd_vault;
 using cmd_subscribe;
 using cmd_stream;
@@ -52,8 +51,6 @@ export fn main(int mut argc, char ** argv) -> int
             return cmd_publish::cmd(va, argc, argv);
         } else if buffer::cstr_eq(arg, "shell") {
             return cmd_shell::cmd(argc, argv);
-        } else if buffer::cstr_eq(arg, "config") {
-            return cmd_config::cmd(argc, argv);
         } else if buffer::cstr_eq(arg, "subscribe") {
             return cmd_subscribe::cmd(argc, argv);
         } else if buffer::cstr_eq(arg, "vault") {

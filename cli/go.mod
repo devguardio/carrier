@@ -3,6 +3,7 @@ module github.com/devguardio/carrier/cli
 go 1.14
 
 require (
+	github.com/TylerBrock/colorjson v0.0.0-20200706003622-8a50f05110d2
 	github.com/apex/log v1.4.0
 	github.com/devguardio/carrier/go v0.0.0-20200622134301-9faaa270969d
 	github.com/devguardio/carrier_go v0.0.0-20200730140434-254f7da74b50

@@ -394,7 +394,7 @@ pub fn complete (
         pp = pp + 4;
     }
 
-    log::info("responder revision %u", rev);
+    log::debug("responder revision %u", rev);
 
 
 

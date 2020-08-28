@@ -1,3 +1,6 @@
 [submodule "3rdparty/hacl-star"]
 	path = core/3rdparty/hacl-star
 	url = git@github.com:project-everest/hacl-star.git
+[submodule "core/modules/madpack"]
+	path = core/modules/madpack
+	url = git@github.com:aep/madpack.git

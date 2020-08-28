@@ -4,9 +4,9 @@ import (
     "fmt"
     "github.com/devguardio/carrier/go"
     "github.com/spf13/cobra"
-    protos  "github.com/devguardio/carrier/cli/protos"
-    proto   "github.com/golang/protobuf/proto"
     "log"
+    "encoding/json"
+    "os"
 )
 
 func init() {
@@ -44,17 +44,17 @@ func init() {
                         if err != nil { log.Fatal(err); }
                         defer con.Shutdown();
 
-                        channel , err := con.Open("/v2/carrier.config.v1/auth_list");
+                        channel , err := con.Open("/v3/carrier.config.v1/auth_list");
                         if err != nil { log.Fatal(err); }
 
-                        for msg := range channel.Rx {
-                            var dr = &protos.AuthListResult{};
-                            err2 := proto.Unmarshal(msg, dr);
-                            if err2 != nil { log.Fatal(err2);}
-                            for _,a := range  dr.Auth {
-                                fmt.Println(a.Identity, a.Path);
-                            }
-                        }
+                        msg, err := channel.Receive();
+                        if err != nil { log.Fatal(err);}
+
+                        j, err := json.MarshalIndent(msg, "", "  ")
+                        if err != nil {log.Fatal(err); }
+                        os.Stdout.Write(j);
+                        os.Stdout.Write([]byte("\n"));
+
                         return;
                     }
                 } else if args[2] == "add" {

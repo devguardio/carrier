@@ -13,6 +13,7 @@ import (
     "strconv"
     "log"
     "github.com/pkg/errors"
+    "io"
 )
 
 
@@ -377,23 +378,60 @@ func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, err
     }
 }
 
-func (self *Stream) Receive() ([]byte, bool) {
+func (self *Stream) Receive() (map[string]interface{}, error) {
     msg, ok := <- self.Rx
-    return msg, ok;
+
+    if !ok {
+        return nil, io.EOF;
+    }
+
+    v, err := MadpackDecode(self.Index, msg)
+    if err != nil { return nil, err; }
+
+    return v , nil;
 }
 
-func (self *Stream) Send(msg []byte) error {
-    if len(msg) > 500 {
+func (self *Stream) ReceiveRaw() ([]byte, error) {
+    msg, ok := <- self.Rx
+
+    if !ok {
+        return nil, io.EOF;
+    }
+
+    return msg , nil;
+}
+
+func (self *Stream) Send(msg map[string]interface{}) error {
+
+    v, err := MadpackEncode(self.Index, msg)
+    if err != nil { log.Fatal(err) }
+
+    if len(v) > 500 {
         return errors.New("oversized");
     }
 
     self.channel.dowakeup();
 
     select {
-        case self.Tx <- msg:
+        case self.Tx <- v:
         case <- self.Death: return errors.New("channel disconnected");
     }
 
+    return nil;
+}
+
+func (self *Stream) SendRaw(v []byte) error {
+
+    if len(v) > 500 {
+        return errors.New("oversized");
+    }
+
+    self.channel.dowakeup();
+
+    select {
+        case self.Tx <- v:
+        case <- self.Death: return errors.New("channel disconnected");
+    }
 
     return nil;
 }

@@ -7,6 +7,7 @@ using identity;
 using <stdio.h>::{fopen, fclose, fread, FILE, fgetc, EOF, fprintf, stderr, fputc};
 using <string.h>::{memcpy, memset};
 using <stdlib.h>::{malloc, free};
+using <sys/stat.h>::{mkdir};
 using log;
 using time;
 inline using "os.h" as os;
@@ -40,7 +41,12 @@ else
     new+200 s = buffer::make();
     fs::get_homedir(e, &s);
     if err::check(e) {return;}
-    s.append_cstr("/.devguard/carrier.toml");
+
+    // maybe create
+    s.append_cstr("/.devguard");
+    mkdir(s.mem, unsafe<int>(os::S_IRWXU));
+
+    s.append_cstr("/carrier.toml");
     from_carriertoml(self, e, s.cstr());
 }
 

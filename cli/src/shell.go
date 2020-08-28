@@ -45,7 +45,7 @@ func init() {
                         stream.Close();
                         return;
                     }
-                    stream.Send(b1[:n1+1])
+                    stream.SendRaw(b1[:n1+1])
                 }
             }();
 

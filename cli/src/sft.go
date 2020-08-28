@@ -54,11 +54,11 @@ func init() {
                 var bb = make([]byte, 300);
                 var l, err = f.Read(bb);
                 if l == 0 {
-                    stream.Send(([]byte)(""));
+                    stream.SendRaw(([]byte)(""));
                     break;
                 }
                 if err != nil { log.Fatal(err); }
-                stream.Send(bb[:l]);
+                stream.SendRaw(bb[:l]);
             }
 
 
@@ -128,11 +128,11 @@ func init() {
                 var bb = make([]byte, 300);
                 var l, err = f.Read(bb);
                 if l == 0 {
-                    stream.Send(([]byte)(""));
+                    stream.SendRaw(([]byte)(""));
                     break;
                 }
                 if err != nil { log.Fatal(err); }
-                stream.Send(bb[:l]);
+                stream.SendRaw(bb[:l]);
             }
 
             for msg := range stream.Rx {

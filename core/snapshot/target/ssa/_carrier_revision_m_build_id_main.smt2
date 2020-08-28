@@ -6,8 +6,8 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:4
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:15
 (declare-fun var8___carrier__revision_m_build_id__main__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)

@@ -24,23 +24,24 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_io_Async;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_io_Context;
 extern PyTypeObject py_Type_io_Io;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_io_unix_Async;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_io_Async;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_io_Context;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_io_Context;
 extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_io_unix_Async;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_io_Async;
 extern PyTypeObject py_Type_io_unix_Async;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
-
 static PyObject * py_get_io_unix_Async_base(PyObject *pyself, void *closure) {
 
     io_unix_Async * self = pyFATGetPtr(pyself, "io_unix_Async");
@@ -141,6 +142,7 @@ PyTypeObject py_Type_io_unix_Async  = {
     .tp_getset      = py_getset_io_unix_Async,
     .tp_dealloc     = py_free_io_unix_Async,
 };
+
 
 
 

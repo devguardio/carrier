@@ -8,6 +8,7 @@
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:2
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:1
+; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:2
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:7
 (declare-fun var7___symbols__nameof__t0 () (_ BitVec 64))
 (declare-fun var8_true__t0 () Bool)
@@ -30,7 +31,6 @@
   var10_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:7
 ;
 
 
@@ -50,8 +50,8 @@
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
 (declare-fun var13_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 () (_ BitVec 64))
-(declare-fun var5___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 () (_ BitVec 64))
-(assert (! (= var13_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 var5___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0) :named A0)); : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
+(declare-fun var6___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 () (_ BitVec 64))
+(assert (! (= var13_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 var6___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0) :named A0)); : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
 ; call of len
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
@@ -105,7 +105,7 @@
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 (declare-fun var20_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 () (_ BitVec 64))
-(assert (! (= var20_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 var5___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0) :named A3)); : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
+(assert (! (= var20_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0 var6___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0) :named A3)); : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 (declare-fun var21_infix_expression__t0 () Bool)
 (assert
   (=  var21_infix_expression__t0 (bvuge var11_s__t0 var20_cast_of___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_len__t0))

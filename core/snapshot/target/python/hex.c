@@ -25,31 +25,12 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_slice_Slice;
 
 
 
 
 
-
-static PyObject* py_hex_str2bin(PyObject *pyself, PyObject *args) {
-    //in
-    char * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    //inlen
-    long long int arg1 = 0;
-    //out
-    uint8_t * arg2 = 0;
-    Py_ssize_t arg2_len = 0;
-    //outlen
-    long long int arg3 = 0;
-    if (!PyArg_ParseTuple(args, "s#ls#l", &arg0,&arg0_len,&arg1,&arg2,&arg2_len,&arg3)) { return NULL; };
-    long long int rarg = (long long int)(hex_str2bin(
-        arg0,
-        arg1,
-        arg2,
-        arg3));
-    return PyLong_FromLong(rarg);
-}
 
 static PyObject* py_hex_dump(PyObject *pyself, PyObject *args) {
     //data
@@ -80,6 +61,26 @@ static PyObject* py_hex_fdump(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_hex_str2bin(PyObject *pyself, PyObject *args) {
+    //in
+    char * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    //inlen
+    long long int arg1 = 0;
+    //out
+    uint8_t * arg2 = 0;
+    Py_ssize_t arg2_len = 0;
+    //outlen
+    long long int arg3 = 0;
+    if (!PyArg_ParseTuple(args, "s#ls#l", &arg0,&arg0_len,&arg1,&arg2,&arg2_len,&arg3)) { return NULL; };
+    long long int rarg = (long long int)(hex_str2bin(
+        arg0,
+        arg1,
+        arg2,
+        arg3));
+    return PyLong_FromLong(rarg);
+}
+
 static PyObject* py_hex_print(PyObject *pyself, PyObject *args) {
     //data
     uint8_t * arg0 = 0;
@@ -95,9 +96,9 @@ static PyObject* py_hex_print(PyObject *pyself, PyObject *args) {
 
 
 static PyMethodDef methods[] = {
-{"str2bin", py_hex_str2bin, METH_VARARGS,""},
 {"dump", py_hex_dump, METH_VARARGS,""},
 {"fdump", py_hex_fdump, METH_VARARGS,""},
+{"str2bin", py_hex_str2bin, METH_VARARGS,""},
 {"print", py_hex_print, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };

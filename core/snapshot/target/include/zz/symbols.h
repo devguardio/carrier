@@ -13,9 +13,6 @@
 #ifndef ZZ_FORWARD_symbols_nameof_checked
 #define ZZ_FORWARD_symbols_nameof_checked
 #endif
-#ifndef ZZ_FORWARD_symbols_nameof
-#define ZZ_FORWARD_symbols_nameof
-#endif
 #ifndef ZZ_EXPORT__stddef_h_
 #define ZZ_EXPORT__stddef_h_
 #include <stddef.h>
@@ -40,10 +37,5 @@ char  const * symbols_nameof (uintptr_t const  s);
 #ifndef ZZ_EXPORT_symbols_nameof_checked
 #define ZZ_EXPORT_symbols_nameof_checked
 char  const * symbols_nameof_checked (uintptr_t const  s);
-
-#endif
-#ifndef ZZ_EXPORT_symbols_nameof
-#define ZZ_EXPORT_symbols_nameof
-char  const * symbols_nameof (uintptr_t const  s);
 
 #endif

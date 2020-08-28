@@ -24,16 +24,23 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+extern PyTypeObject py_Type_carrier_cipher_CipherState;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_carrier_cipher_CipherState;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+
+
+
+
+
 static PyObject * py_get_carrier_cipher_CipherState_has_key(PyObject *pyself, void *closure) {
 
     carrier_cipher_CipherState * self = pyFATGetPtr(pyself, "carrier_cipher_CipherState");
@@ -90,10 +97,102 @@ PyTypeObject py_Type_carrier_cipher_CipherState  = {
 
 
 
+static PyObject* py_carrier_cipher_decrypt_ad(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg1 = 0;
+    //authtext
+    uint8_t * arg3 = 0;
+    Py_ssize_t arg3_len = 0;
+    //authtext_len
+    long long int arg4 = 0;
+    //ciphertext
+    uint8_t * arg5 = 0;
+    Py_ssize_t arg5_len = 0;
+    //cipherlen
+    long long int arg6 = 0;
+    //nonce
+    long long int arg7 = 0;
+    //plain
+    uint8_t * arg8 = 0;
+    Py_ssize_t arg8_len = 0;
+    //plainlen_max
+    long long int arg9 = 0;
+    if (!PyArg_ParseTuple(args, "OOz#ls#lls#l", &arg0,&arg1,&arg3,&arg3_len,&arg4,&arg5,&arg5_len,&arg6,&arg7,&arg8,&arg8_len,&arg9)) { return NULL; };
+    long long int rarg = (long long int)(carrier_cipher_decrypt_ad(
+        pyFATGetPtr(arg0, "carrier_cipher_CipherState"),
+        pyFATGetPtr(arg1, "err_Err"),
+        ((pyFATObject *)arg1)->tail,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7,
+        arg8,
+        arg9));
+    return PyLong_FromLong(rarg);
+}
 
+static PyObject* py_carrier_cipher_decrypt(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg1 = 0;
+    //ciphertext
+    uint8_t * arg3 = 0;
+    Py_ssize_t arg3_len = 0;
+    //cipherlen
+    long long int arg4 = 0;
+    //nonce
+    long long int arg5 = 0;
+    //plain
+    uint8_t * arg6 = 0;
+    Py_ssize_t arg6_len = 0;
+    //plainlen_max
+    long long int arg7 = 0;
+    if (!PyArg_ParseTuple(args, "OOs#lls#l", &arg0,&arg1,&arg3,&arg3_len,&arg4,&arg5,&arg6,&arg6_len,&arg7)) { return NULL; };
+    long long int rarg = (long long int)(carrier_cipher_decrypt(
+        pyFATGetPtr(arg0, "carrier_cipher_CipherState"),
+        pyFATGetPtr(arg1, "err_Err"),
+        ((pyFATObject *)arg1)->tail,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7));
+    return PyLong_FromLong(rarg);
+}
 
-
-
+static PyObject* py_carrier_cipher_encrypt(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //e
+    PyObject * arg1 = 0;
+    //plain
+    uint8_t * arg3 = 0;
+    Py_ssize_t arg3_len = 0;
+    //plainlen
+    long long int arg4 = 0;
+    //nonce
+    long long int arg5 = 0;
+    //ciphertext
+    uint8_t * arg6 = 0;
+    Py_ssize_t arg6_len = 0;
+    //cipherlen_max
+    long long int arg7 = 0;
+    if (!PyArg_ParseTuple(args, "OOs#lls#l", &arg0,&arg1,&arg3,&arg3_len,&arg4,&arg5,&arg6,&arg6_len,&arg7)) { return NULL; };
+    long long int rarg = (long long int)(carrier_cipher_encrypt(
+        pyFATGetPtr(arg0, "carrier_cipher_CipherState"),
+        pyFATGetPtr(arg1, "err_Err"),
+        ((pyFATObject *)arg1)->tail,
+        arg3,
+        arg4,
+        arg5,
+        arg6,
+        arg7));
+    return PyLong_FromLong(rarg);
+}
 
 static PyObject* py_carrier_cipher_encrypt_ad(PyObject *pyself, PyObject *args) {
     //self
@@ -145,110 +244,13 @@ static PyObject* py_carrier_cipher_init(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_carrier_cipher_encrypt(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
-    PyObject * arg1 = 0;
-    //plain
-    uint8_t * arg3 = 0;
-    Py_ssize_t arg3_len = 0;
-    //plainlen
-    long long int arg4 = 0;
-    //nonce
-    long long int arg5 = 0;
-    //ciphertext
-    uint8_t * arg6 = 0;
-    Py_ssize_t arg6_len = 0;
-    //cipherlen_max
-    long long int arg7 = 0;
-    if (!PyArg_ParseTuple(args, "OOs#lls#l", &arg0,&arg1,&arg3,&arg3_len,&arg4,&arg5,&arg6,&arg6_len,&arg7)) { return NULL; };
-    long long int rarg = (long long int)(carrier_cipher_encrypt(
-        pyFATGetPtr(arg0, "carrier_cipher_CipherState"),
-        pyFATGetPtr(arg1, "err_Err"),
-        ((pyFATObject *)arg1)->tail,
-        arg3,
-        arg4,
-        arg5,
-        arg6,
-        arg7));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_carrier_cipher_decrypt(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
-    PyObject * arg1 = 0;
-    //ciphertext
-    uint8_t * arg3 = 0;
-    Py_ssize_t arg3_len = 0;
-    //cipherlen
-    long long int arg4 = 0;
-    //nonce
-    long long int arg5 = 0;
-    //plain
-    uint8_t * arg6 = 0;
-    Py_ssize_t arg6_len = 0;
-    //plainlen_max
-    long long int arg7 = 0;
-    if (!PyArg_ParseTuple(args, "OOs#lls#l", &arg0,&arg1,&arg3,&arg3_len,&arg4,&arg5,&arg6,&arg6_len,&arg7)) { return NULL; };
-    long long int rarg = (long long int)(carrier_cipher_decrypt(
-        pyFATGetPtr(arg0, "carrier_cipher_CipherState"),
-        pyFATGetPtr(arg1, "err_Err"),
-        ((pyFATObject *)arg1)->tail,
-        arg3,
-        arg4,
-        arg5,
-        arg6,
-        arg7));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_carrier_cipher_decrypt_ad(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //e
-    PyObject * arg1 = 0;
-    //authtext
-    uint8_t * arg3 = 0;
-    Py_ssize_t arg3_len = 0;
-    //authtext_len
-    long long int arg4 = 0;
-    //ciphertext
-    uint8_t * arg5 = 0;
-    Py_ssize_t arg5_len = 0;
-    //cipherlen
-    long long int arg6 = 0;
-    //nonce
-    long long int arg7 = 0;
-    //plain
-    uint8_t * arg8 = 0;
-    Py_ssize_t arg8_len = 0;
-    //plainlen_max
-    long long int arg9 = 0;
-    if (!PyArg_ParseTuple(args, "OOz#ls#lls#l", &arg0,&arg1,&arg3,&arg3_len,&arg4,&arg5,&arg5_len,&arg6,&arg7,&arg8,&arg8_len,&arg9)) { return NULL; };
-    long long int rarg = (long long int)(carrier_cipher_decrypt_ad(
-        pyFATGetPtr(arg0, "carrier_cipher_CipherState"),
-        pyFATGetPtr(arg1, "err_Err"),
-        ((pyFATObject *)arg1)->tail,
-        arg3,
-        arg4,
-        arg5,
-        arg6,
-        arg7,
-        arg8,
-        arg9));
-    return PyLong_FromLong(rarg);
-}
-
 
 static PyMethodDef methods[] = {
+{"decrypt_ad", py_carrier_cipher_decrypt_ad, METH_VARARGS,""},
+{"decrypt", py_carrier_cipher_decrypt, METH_VARARGS,""},
+{"encrypt", py_carrier_cipher_encrypt, METH_VARARGS,""},
 {"encrypt_ad", py_carrier_cipher_encrypt_ad, METH_VARARGS,""},
 {"init", py_carrier_cipher_init, METH_VARARGS,""},
-{"encrypt", py_carrier_cipher_encrypt, METH_VARARGS,""},
-{"decrypt", py_carrier_cipher_decrypt, METH_VARARGS,""},
-{"decrypt_ad", py_carrier_cipher_decrypt_ad, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

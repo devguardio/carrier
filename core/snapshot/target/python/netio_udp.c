@@ -24,22 +24,31 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_io_Async;
 extern PyTypeObject py_Type_io_Context;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_net_address_Address;
+extern PyTypeObject py_Type_io_Async;
+extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_netio_udp_Socket;
+extern PyTypeObject py_Type_net_address_Address;
+extern PyTypeObject py_Type_io_Context;
+extern PyTypeObject py_Type_net_address_OsAddress;
 extern PyTypeObject py_Type_io_Io;
 extern PyTypeObject py_Type_time_Time;
-extern PyTypeObject py_Type_net_address_Address;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_net_address_OsAddress;
-extern PyTypeObject py_Type_netio_udp_Socket;
-extern PyTypeObject py_Type_io_Async;
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_net_address_Address;
 extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_io_Async;
+extern PyTypeObject py_Type_netio_udp_Socket;
+extern PyTypeObject py_Type_net_address_OsAddress;
+
+
+
+
 static PyObject * py_get_netio_udp_Socket_ctx(PyObject *pyself, void *closure) {
 
     netio_udp_Socket * self = pyFATGetPtr(pyself, "netio_udp_Socket");
@@ -109,10 +118,6 @@ PyTypeObject py_Type_netio_udp_Socket  = {
     .tp_getset      = py_getset_netio_udp_Socket,
     .tp_dealloc     = py_free_netio_udp_Socket,
 };
-
-
-
-
 
 
 static PyObject* py_netio_udp_close(PyObject *pyself, PyObject *args) {

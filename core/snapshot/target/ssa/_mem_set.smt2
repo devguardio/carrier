@@ -6,22 +6,22 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:17
-(declare-fun var4___mem__set__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:3
+(declare-fun var4___mem__copy__t0 () (_ BitVec 64))
 (declare-fun var5_true__t0 () Bool)
 (assert
-  (= var5_true__t0 (theory1_safe var4___mem__set__t0) )
+  (= var5_true__t0 (theory1_safe var4___mem__copy__t0) )
 )
 
 (assert
   var5_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:3
-(declare-fun var6___mem__copy__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:23
+(declare-fun var6___mem__eq__t0 () (_ BitVec 64))
 (declare-fun var7_true__t0 () Bool)
 (assert
-  (= var7_true__t0 (theory1_safe var6___mem__copy__t0) )
+  (= var7_true__t0 (theory1_safe var6___mem__eq__t0) )
 )
 
 (assert
@@ -39,22 +39,22 @@
   var9_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:30
-(declare-fun var10___mem__zero__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:17
+(declare-fun var10___mem__set__t0 () (_ BitVec 64))
 (declare-fun var11_true__t0 () Bool)
 (assert
-  (= var11_true__t0 (theory1_safe var10___mem__zero__t0) )
+  (= var11_true__t0 (theory1_safe var10___mem__set__t0) )
 )
 
 (assert
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:23
-(declare-fun var12___mem__eq__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:30
+(declare-fun var12___mem__zero__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___mem__eq__t0) )
+  (= var13_true__t0 (theory1_safe var12___mem__zero__t0) )
 )
 
 (assert

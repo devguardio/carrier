@@ -8,58 +8,59 @@
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
 ; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:2
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:30
-(declare-fun var6___carrier__sha256__update__t0 () (_ BitVec 64))
-(declare-fun var7_true__t0 () Bool)
-(assert
-  (= var7_true__t0 (theory1_safe var6___carrier__sha256__update__t0) )
-)
-
-(assert
-  var7_true__t0
-)
-
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
 ; literal expr
-(declare-fun var9_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var7_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (= var9_literal_Unsigned_32___t0 (_ bv32 64))
+  (= var7_literal_Unsigned_32___t0 (_ bv32 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-(declare-fun var10_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 () Bool)
+(declare-fun var8_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 () Bool)
 (assert
-  (= var10_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var9_literal_Unsigned_32___t0) )
+  (= var8_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var7_literal_Unsigned_32___t0) )
 )
 
-(declare-fun var8___carrier__sha256__HASHLEN__t1 () (_ BitVec 64))
+(declare-fun var6___carrier__sha256__HASHLEN__t1 () (_ BitVec 64))
 (assert
-  (= var10_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var8___carrier__sha256__HASHLEN__t1) )
+  (= var8_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var6___carrier__sha256__HASHLEN__t1) )
 )
 
-(declare-fun var11_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 () Bool)
+(declare-fun var9_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 () Bool)
 (assert
-  (= var11_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var9_literal_Unsigned_32___t0) )
+  (= var9_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var7_literal_Unsigned_32___t0) )
 )
 
 (assert
-  (= var11_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var8___carrier__sha256__HASHLEN__t1) )
+  (= var9_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var6___carrier__sha256__HASHLEN__t1) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-(declare-fun var12_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
-(assert (! (= var12_implicit_coercion_of_literal_Unsigned_32___t0 var9_literal_Unsigned_32___t0) :named A0))(declare-fun var8___carrier__sha256__HASHLEN__t0 () (_ BitVec 64))
+(declare-fun var10_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
+(assert (! (= var10_implicit_coercion_of_literal_Unsigned_32___t0 var7_literal_Unsigned_32___t0) :named A0))(declare-fun var6___carrier__sha256__HASHLEN__t0 () (_ BitVec 64))
 (assert
-  (= var8___carrier__sha256__HASHLEN__t1  (ite true var12_implicit_coercion_of_literal_Unsigned_32___t0 var8___carrier__sha256__HASHLEN__t0)  )
+  (= var6___carrier__sha256__HASHLEN__t1  (ite true var10_implicit_coercion_of_literal_Unsigned_32___t0 var6___carrier__sha256__HASHLEN__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:25
-(declare-fun var13___carrier__sha256__init__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:60
+(declare-fun var11___carrier__sha256__finish__t0 () (_ BitVec 64))
+(declare-fun var12_true__t0 () Bool)
+(assert
+  (= var12_true__t0 (theory1_safe var11___carrier__sha256__finish__t0) )
+)
+
+(assert
+  var12_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:30
+(declare-fun var13___carrier__sha256__update__t0 () (_ BitVec 64))
 (declare-fun var14_true__t0 () Bool)
 (assert
-  (= var14_true__t0 (theory1_safe var13___carrier__sha256__init__t0) )
+  (= var14_true__t0 (theory1_safe var13___carrier__sha256__update__t0) )
 )
 
 (assert
@@ -77,7 +78,6 @@
   var16_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
 ; : /home/runner/work/carrier/carrier/core/tests/hkdf.zz:4
 (declare-fun var17___carrier__tests__hkdf__main__t0 () (_ BitVec 64))
 (declare-fun var18_true__t0 () Bool)
@@ -89,11 +89,11 @@
   var18_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:60
-(declare-fun var19___carrier__sha256__finish__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:25
+(declare-fun var19___carrier__sha256__init__t0 () (_ BitVec 64))
 (declare-fun var20_true__t0 () Bool)
 (assert
-  (= var20_true__t0 (theory1_safe var19___carrier__sha256__finish__t0) )
+  (= var20_true__t0 (theory1_safe var19___carrier__sha256__init__t0) )
 )
 
 (assert
@@ -1944,7 +1944,7 @@
 (assert (! (= var477_implicit_coercion_of_literal_Unsigned_32___t0 var476_literal_Unsigned_32___t0) :named A1)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:75
 (declare-fun var478_infix_expression__t0 () Bool)
 (assert
-  (=  var478_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var477_implicit_coercion_of_literal_Unsigned_32___t0))
+  (=  var478_infix_expression__t0 (bvule var6___carrier__sha256__HASHLEN__t1 var477_implicit_coercion_of_literal_Unsigned_32___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
@@ -1981,7 +1981,7 @@
 (assert (! (= var483_implicit_coercion_of_literal_Unsigned_32___t0 var482_literal_Unsigned_32___t0) :named A3)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
 (declare-fun var484_infix_expression__t0 () Bool)
 (assert
-  (=  var484_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var483_implicit_coercion_of_literal_Unsigned_32___t0))
+  (=  var484_infix_expression__t0 (bvule var6___carrier__sha256__HASHLEN__t1 var483_implicit_coercion_of_literal_Unsigned_32___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:76
@@ -2024,7 +2024,7 @@
 (assert (! (= var490_implicit_coercion_of_literal_Unsigned_32___t0 var489_literal_Unsigned_32___t0) :named A5)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
 (declare-fun var491_infix_expression__t0 () Bool)
 (assert
-  (=  var491_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var490_implicit_coercion_of_literal_Unsigned_32___t0))
+  (=  var491_infix_expression__t0 (bvule var6___carrier__sha256__HASHLEN__t1 var490_implicit_coercion_of_literal_Unsigned_32___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:77
@@ -2067,7 +2067,7 @@
 (assert (! (= var497_implicit_coercion_of_literal_Unsigned_32___t0 var496_literal_Unsigned_32___t0) :named A7)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:78
 (declare-fun var498_infix_expression__t0 () Bool)
 (assert
-  (=  var498_infix_expression__t0 (bvule var8___carrier__sha256__HASHLEN__t1 var497_implicit_coercion_of_literal_Unsigned_32___t0))
+  (=  var498_infix_expression__t0 (bvule var6___carrier__sha256__HASHLEN__t1 var497_implicit_coercion_of_literal_Unsigned_32___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:78

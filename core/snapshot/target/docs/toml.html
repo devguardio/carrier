@@ -2,20 +2,20 @@
 <h1> module toml </h1>
 <h4> fn parser (
 
-    usize
-    et,
-
     ::err::Err*+et
     e,
+
+    usize
+    et,
 
     ::toml::U
     u,
 
-    ::toml::Parser*+tail
-    self,
-
     usize
     tail,
+
+    ::toml::Parser*+tail
+    self,
 
 )
 
@@ -27,17 +27,17 @@
 
 </p><h4> fn close (
 
-    ::toml::Parser*+tail
-    self,
-
     usize
     tail,
 
-    ::err::Err*+et
-    e,
-
     usize
     et,
+
+    ::toml::Parser*+tail
+    self,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -52,17 +52,17 @@
     ::toml::Parser*+tail
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    str,
-
     usize
-    tail,
+    et,
 
     ::err::Err*+et
     e,
 
     usize
-    et,
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    str,
 
     usize
     strlen,
@@ -81,7 +81,7 @@
     self,
 
     usize
-    et,
+    tail,
 
     ::toml::U
     u,
@@ -90,7 +90,7 @@
     e,
 
     usize
-    tail,
+    et,
 
 )
 

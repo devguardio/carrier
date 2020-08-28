@@ -1,14 +1,6 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
-
-#[derive(Clone)]
-#[repr(C)]
-pub struct Initiator {
-    pub noise :super::carrier_noise::Initiator ,
-    pub tick_time_start :u64 ,
-    pub secure :bool ,
-}
 #[derive(Clone)]
 #[repr(C)]
 pub enum Move {
@@ -18,6 +10,14 @@ pub enum Move {
 
 }
 
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct Initiator {
+    pub noise :super::carrier_noise::Initiator ,
+    pub tick_time_start :u64 ,
+    pub secure :bool ,
+}
 
 pub mod heap {
 
@@ -74,9 +74,9 @@ impl Initiator {
 }
 }
 extern {
+
     #[link_name = "sizeof_carrier_initiator_Initiator"]
     pub fn sizeof_Initiator() -> libc::size_t;
-
 
     #[link_name = "carrier_initiator_complete"]
     pub fn r#complete( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zchan: *mut u8,  Zredirect: *mut u8,  Zpkt: super::slice_slice::Slice,  Zexpect_identity: *const u8);

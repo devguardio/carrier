@@ -10,6 +10,7 @@ extern {
 
 
 
+
     #[link_name = "toml_main_pop_object"]
     pub fn r#pop_object( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize);
 
@@ -18,6 +19,5 @@ extern {
 
     #[link_name = "toml_main_pretty"]
     pub fn r#pretty( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value);
-
 
 }

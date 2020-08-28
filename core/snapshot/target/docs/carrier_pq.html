@@ -1,100 +1,33 @@
 
 <h1> module carrier::pq </h1>
-<h4> fn clear (
-
-    usize
-    qt,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn send (
+<h4> fn alloc (
 
     ::carrier::pq::Q*+qt
     self,
 
     usize
-    qt,
+    et,
 
-    u16
-    buflen,
+    ::err::Err*+et
+    e,
 
-    u64
-    counter,
+    ::carrier::channel::FrameType
+    typ,
 
-    u64
-    time,
-
-    u8*
-    buf,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
- send frames out of the queue&lt;br&gt;
-</p><h4> fn window (
-
-    ::carrier::pq::Q*+qt
-    self,
+    usize
+    size,
 
     usize
     qt,
 
 )
 
--&gt usize
+-&gt ::slice::mut_slice::MutSlice
 
 </h4>
 
 <p class='doc_comments'>
-
-</p><h4> fn cancel (
-
-    usize
-    qt,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- undo last allocation without sending anything&lt;br&gt;
-</p><h4> fn keepalive (
-
-    u64
-    now,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-    usize
-    qt,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
- tail loss probe or ping and return the time when we need to call this function again&lt;br&gt;
+ allocate the next frame in the queue&lt;br&gt;
 </p><h4> fn swap16 (
 
     u16
@@ -121,35 +54,54 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn alloc (
-
-    usize
-    qt,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn send (
 
     ::carrier::pq::Q*+qt
     self,
 
-    usize
-    size,
+    u8*
+    buf,
 
-    ::carrier::channel::FrameType
-    typ,
+    u16
+    buflen,
+
+    usize
+    qt,
+
+    u64
+    counter,
+
+    u64
+    time,
 
 )
 
--&gt ::slice::mut_slice::MutSlice
+-&gt usize
 
 </h4>
 
 <p class='doc_comments'>
- allocate the next frame in the queue&lt;br&gt;
+ send frames out of the queue&lt;br&gt;
+</p><h4> fn clear (
+
+    usize
+    qt,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn ack (
+
+    u64
+    counter,
 
     ::carrier::pq::Q*+qt
     self,
@@ -160,9 +112,6 @@
     u64
     time,
 
-    u64
-    counter,
-
 )
 
 
@@ -171,6 +120,57 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn keepalive (
+
+    usize
+    qt,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    u64
+    now,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+ tail loss probe or ping and return the time when we need to call this function again&lt;br&gt;
+</p><h4> fn window (
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn cancel (
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ undo last allocation without sending anything&lt;br&gt;
 </p>
 
 

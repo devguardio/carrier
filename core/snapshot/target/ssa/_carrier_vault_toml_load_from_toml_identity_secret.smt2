@@ -6,401 +6,381 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:9
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:8
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:7
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:8
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:7
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:9
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:8
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:7
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
-(declare-fun theory18___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
-(declare-fun var19___buffer__pop__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:10
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:7
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:9
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
+(declare-fun var19___time__to_millis__t0 () (_ BitVec 64))
 (declare-fun var20_true__t0 () Bool)
 (assert
-  (= var20_true__t0 (theory1_safe var19___buffer__pop__t0) )
+  (= var20_true__t0 (theory1_safe var19___time__to_millis__t0) )
 )
 
 (assert
   var20_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:476
-(declare-fun var21___carrier__identity__isnull__t0 () (_ BitVec 64))
-(declare-fun var22_true__t0 () Bool)
-(assert
-  (= var22_true__t0 (theory1_safe var21___carrier__identity__isnull__t0) )
-)
-
-(assert
-  var22_true__t0
-)
-
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
-(declare-fun theory24___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
-(declare-fun var25___slice__mut_slice__make__t0 () (_ BitVec 64))
-(declare-fun var26_true__t0 () Bool)
+(declare-fun theory22___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:35
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:137
+(declare-fun var24___carrier__vault__vector_time__t0 () (_ BitVec 64))
+(declare-fun var25_true__t0 () Bool)
 (assert
-  (= var26_true__t0 (theory1_safe var25___slice__mut_slice__make__t0) )
+  (= var25_true__t0 (theory1_safe var24___carrier__vault__vector_time__t0) )
 )
 
 (assert
-  var26_true__t0
+  var25_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:29
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:174
+(declare-fun var27___carrier__vault__broker_count__t0 () (_ BitVec 64))
+(declare-fun var28_true__t0 () Bool)
+(assert
+  (= var28_true__t0 (theory1_safe var27___carrier__vault__broker_count__t0) )
+)
+
+(assert
+  var28_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:26
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:11
+(declare-fun theory31___err__checked ((_ BitVec 64)) Bool); theory ::err::checked
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:374
+(declare-fun var32___carrier__identity__secret_generate__t0 () (_ BitVec 64))
+(declare-fun var33_true__t0 () Bool)
+(assert
+  (= var33_true__t0 (theory1_safe var32___carrier__identity__secret_generate__t0) )
+)
+
+(assert
+  var33_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:28
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:21
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:41
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:56
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:39
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
-; literal expr
-(declare-fun var34_literal_Unsigned_64___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:195
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:488
+(declare-fun var36___carrier__identity__nullcheck__t0 () (_ BitVec 64))
+(declare-fun var37_true__t0 () Bool)
 (assert
-  (= var34_literal_Unsigned_64___t0 (_ bv64 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
-(declare-fun var35_safe_literal_Unsigned_64______safe___toml__MAX_DEPTH___t0 () Bool)
-(assert
-  (= var35_safe_literal_Unsigned_64______safe___toml__MAX_DEPTH___t0 (theory1_safe var34_literal_Unsigned_64___t0) )
-)
-
-(declare-fun var33___toml__MAX_DEPTH__t1 () (_ BitVec 64))
-(assert
-  (= var35_safe_literal_Unsigned_64______safe___toml__MAX_DEPTH___t0 (theory1_safe var33___toml__MAX_DEPTH__t1) )
-)
-
-(declare-fun var36_nullterm_literal_Unsigned_64______nullterm___toml__MAX_DEPTH___t0 () Bool)
-(assert
-  (= var36_nullterm_literal_Unsigned_64______nullterm___toml__MAX_DEPTH___t0 (theory2_nullterm var34_literal_Unsigned_64___t0) )
+  (= var37_true__t0 (theory1_safe var36___carrier__identity__nullcheck__t0) )
 )
 
 (assert
-  (= var36_nullterm_literal_Unsigned_64______nullterm___toml__MAX_DEPTH___t0 (theory2_nullterm var33___toml__MAX_DEPTH__t1) )
+  var37_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
-(declare-fun var37_implicit_coercion_of_literal_Unsigned_64___t0 () (_ BitVec 64))
-(assert (! (= var37_implicit_coercion_of_literal_Unsigned_64___t0 var34_literal_Unsigned_64___t0) :named A0))(declare-fun var33___toml__MAX_DEPTH__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:26
+(declare-fun var38___err__make__t0 () (_ BitVec 64))
+(declare-fun var39_true__t0 () Bool)
 (assert
-  (= var33___toml__MAX_DEPTH__t1  (ite true var37_implicit_coercion_of_literal_Unsigned_64___t0 var33___toml__MAX_DEPTH__t0)  )
+  (= var39_true__t0 (theory1_safe var38___err__make__t0) )
 )
 
+(assert
+  var39_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:292
+(declare-fun var40___err__fail_with_win32__t0 () (_ BitVec 64))
+(declare-fun var41_true__t0 () Bool)
+(assert
+  (= var41_true__t0 (theory1_safe var40___err__fail_with_win32__t0) )
+)
+
+(assert
+  var41_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:20
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:26
-(declare-fun var39___toml__ParserState__Document__t0 () (_ BitVec 64))
+(declare-fun var44___toml__ParserState__Document__t0 () (_ BitVec 64))
 (assert
-  (= var39___toml__ParserState__Document__t0 (_ bv0 64))
+  (= var44___toml__ParserState__Document__t0 (_ bv0 64))
 
 )
 
-(declare-fun var40___toml__ParserState__SectionKey__t0 () (_ BitVec 64))
+(declare-fun var45___toml__ParserState__SectionKey__t0 () (_ BitVec 64))
 (assert
-  (= var40___toml__ParserState__SectionKey__t0 (_ bv1 64))
+  (= var45___toml__ParserState__SectionKey__t0 (_ bv1 64))
 
 )
 
-(declare-fun var41___toml__ParserState__Object__t0 () (_ BitVec 64))
+(declare-fun var46___toml__ParserState__Object__t0 () (_ BitVec 64))
 (assert
-  (= var41___toml__ParserState__Object__t0 (_ bv2 64))
+  (= var46___toml__ParserState__Object__t0 (_ bv2 64))
 
 )
 
-(declare-fun var42___toml__ParserState__Key__t0 () (_ BitVec 64))
+(declare-fun var47___toml__ParserState__Key__t0 () (_ BitVec 64))
 (assert
-  (= var42___toml__ParserState__Key__t0 (_ bv3 64))
+  (= var47___toml__ParserState__Key__t0 (_ bv3 64))
 
 )
 
-(declare-fun var43___toml__ParserState__PostKey__t0 () (_ BitVec 64))
+(declare-fun var48___toml__ParserState__PostKey__t0 () (_ BitVec 64))
 (assert
-  (= var43___toml__ParserState__PostKey__t0 (_ bv4 64))
+  (= var48___toml__ParserState__PostKey__t0 (_ bv4 64))
 
 )
 
-(declare-fun var44___toml__ParserState__PreVal__t0 () (_ BitVec 64))
+(declare-fun var49___toml__ParserState__PreVal__t0 () (_ BitVec 64))
 (assert
-  (= var44___toml__ParserState__PreVal__t0 (_ bv5 64))
+  (= var49___toml__ParserState__PreVal__t0 (_ bv5 64))
 
 )
 
-(declare-fun var45___toml__ParserState__StringVal__t0 () (_ BitVec 64))
+(declare-fun var50___toml__ParserState__StringVal__t0 () (_ BitVec 64))
 (assert
-  (= var45___toml__ParserState__StringVal__t0 (_ bv6 64))
+  (= var50___toml__ParserState__StringVal__t0 (_ bv6 64))
 
 )
 
-(declare-fun var46___toml__ParserState__IntVal__t0 () (_ BitVec 64))
+(declare-fun var51___toml__ParserState__IntVal__t0 () (_ BitVec 64))
 (assert
-  (= var46___toml__ParserState__IntVal__t0 (_ bv7 64))
+  (= var51___toml__ParserState__IntVal__t0 (_ bv7 64))
 
 )
 
-(declare-fun var47___toml__ParserState__PostVal__t0 () (_ BitVec 64))
+(declare-fun var52___toml__ParserState__PostVal__t0 () (_ BitVec 64))
 (assert
-  (= var47___toml__ParserState__PostVal__t0 (_ bv8 64))
+  (= var52___toml__ParserState__PostVal__t0 (_ bv8 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:12
-(declare-fun var49___toml__ValueType__String__t0 () (_ BitVec 64))
+(declare-fun var54___toml__ValueType__String__t0 () (_ BitVec 64))
 (assert
-  (= var49___toml__ValueType__String__t0 (_ bv0 64))
+  (= var54___toml__ValueType__String__t0 (_ bv0 64))
 
 )
 
-(declare-fun var50___toml__ValueType__Object__t0 () (_ BitVec 64))
+(declare-fun var55___toml__ValueType__Object__t0 () (_ BitVec 64))
 (assert
-  (= var50___toml__ValueType__Object__t0 (_ bv1 64))
+  (= var55___toml__ValueType__Object__t0 (_ bv1 64))
 
 )
 
-(declare-fun var51___toml__ValueType__Integer__t0 () (_ BitVec 64))
+(declare-fun var56___toml__ValueType__Integer__t0 () (_ BitVec 64))
 (assert
-  (= var51___toml__ValueType__Integer__t0 (_ bv2 64))
+  (= var56___toml__ValueType__Integer__t0 (_ bv2 64))
 
 )
 
-(declare-fun var52___toml__ValueType__Array__t0 () (_ BitVec 64))
+(declare-fun var57___toml__ValueType__Array__t0 () (_ BitVec 64))
 (assert
-  (= var52___toml__ValueType__Array__t0 (_ bv3 64))
+  (= var57___toml__ValueType__Array__t0 (_ bv3 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:38
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:39
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:41
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:49
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
+; literal expr
+(declare-fun var64_literal_Unsigned_64___t0 () (_ BitVec 64))
+(assert
+  (= var64_literal_Unsigned_64___t0 (_ bv64 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
+(declare-fun var65_safe_literal_Unsigned_64______safe___toml__MAX_DEPTH___t0 () Bool)
+(assert
+  (= var65_safe_literal_Unsigned_64______safe___toml__MAX_DEPTH___t0 (theory1_safe var64_literal_Unsigned_64___t0) )
+)
+
+(declare-fun var63___toml__MAX_DEPTH__t1 () (_ BitVec 64))
+(assert
+  (= var65_safe_literal_Unsigned_64______safe___toml__MAX_DEPTH___t0 (theory1_safe var63___toml__MAX_DEPTH__t1) )
+)
+
+(declare-fun var66_nullterm_literal_Unsigned_64______nullterm___toml__MAX_DEPTH___t0 () Bool)
+(assert
+  (= var66_nullterm_literal_Unsigned_64______nullterm___toml__MAX_DEPTH___t0 (theory2_nullterm var64_literal_Unsigned_64___t0) )
+)
+
+(assert
+  (= var66_nullterm_literal_Unsigned_64______nullterm___toml__MAX_DEPTH___t0 (theory2_nullterm var63___toml__MAX_DEPTH__t1) )
+)
+
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:7
+(declare-fun var67_implicit_coercion_of_literal_Unsigned_64___t0 () (_ BitVec 64))
+(assert (! (= var67_implicit_coercion_of_literal_Unsigned_64___t0 var64_literal_Unsigned_64___t0) :named A0))(declare-fun var63___toml__MAX_DEPTH__t0 () (_ BitVec 64))
+(assert
+  (= var63___toml__MAX_DEPTH__t1  (ite true var67_implicit_coercion_of_literal_Unsigned_64___t0 var63___toml__MAX_DEPTH__t0)  )
+)
+
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
 ; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:56
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:21
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:26
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:30
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:27
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:447
-(declare-fun var59___carrier__identity__address_from_secret__t0 () (_ BitVec 64))
-(declare-fun var60_true__t0 () Bool)
-(assert
-  (= var60_true__t0 (theory1_safe var59___carrier__identity__address_from_secret__t0) )
-)
-
-(assert
-  var60_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:11
-(declare-fun theory61___err__checked ((_ BitVec 64)) Bool); theory ::err::checked
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:378
-(declare-fun var62___carrier__vault_toml__save_to_toml__t0 () (_ BitVec 64))
-(declare-fun var63_true__t0 () Bool)
-(assert
-  (= var63_true__t0 (theory1_safe var62___carrier__vault_toml__save_to_toml__t0) )
-)
-
-(assert
-  var63_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:35
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:482
-(declare-fun var65___carrier__vault_toml__i_set_network__t0 () (_ BitVec 64))
-(declare-fun var66_true__t0 () Bool)
-(assert
-  (= var66_true__t0 (theory1_safe var65___carrier__vault_toml__i_set_network__t0) )
-)
-
-(assert
-  var66_true__t0
-)
-
 ; : /home/runner/work/carrier/carrier/core/src/vault.zz:119
-(declare-fun var67___carrier__vault__get_network__t0 () (_ BitVec 64))
-(declare-fun var68_true__t0 () Bool)
+(declare-fun var72___carrier__vault__get_network__t0 () (_ BitVec 64))
+(declare-fun var73_true__t0 () Bool)
 (assert
-  (= var68_true__t0 (theory1_safe var67___carrier__vault__get_network__t0) )
+  (= var73_true__t0 (theory1_safe var72___carrier__vault__get_network__t0) )
 )
 
 (assert
-  var68_true__t0
+  var73_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:90
+(declare-fun var74___carrier__vault_toml__i_from_carriertoml__t0 () (_ BitVec 64))
+(declare-fun var75_true__t0 () Bool)
+(assert
+  (= var75_true__t0 (theory1_safe var74___carrier__vault_toml__i_from_carriertoml__t0) )
+)
+
+(assert
+  var75_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:48
+(declare-fun var76___err__check__t0 () (_ BitVec 64))
+(declare-fun var77_true__t0 () Bool)
+(assert
+  (= var77_true__t0 (theory1_safe var76___err__check__t0) )
+)
+
+(assert
+  var77_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:22
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:76
+(declare-fun var79___carrier__vault_toml__from_carriertoml__t0 () (_ BitVec 64))
+(declare-fun var80_true__t0 () Bool)
+(assert
+  (= var80_true__t0 (theory1_safe var79___carrier__vault_toml__from_carriertoml__t0) )
+)
+
+(assert
+  var80_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:122
+(declare-fun var81___toml__push__t0 () (_ BitVec 64))
+(declare-fun var82_true__t0 () Bool)
+(assert
+  (= var82_true__t0 (theory1_safe var81___toml__push__t0) )
+)
+
+(assert
+  var82_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
-(declare-fun theory70___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
-(declare-fun var71___buffer__copy_slice__t0 () (_ BitVec 64))
-(declare-fun var72_true__t0 () Bool)
-(assert
-  (= var72_true__t0 (theory1_safe var71___buffer__copy_slice__t0) )
-)
-
-(assert
-  var72_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:330
-(declare-fun var73___carrier__identity__identity_to_string__t0 () (_ BitVec 64))
-(declare-fun var74_true__t0 () Bool)
-(assert
-  (= var74_true__t0 (theory1_safe var73___carrier__identity__identity_to_string__t0) )
-)
-
-(assert
-  var74_true__t0
-)
-
+(declare-fun theory84___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
-(declare-fun var75___slice__slice__eq_bytes__t0 () (_ BitVec 64))
-(declare-fun var76_true__t0 () Bool)
+(declare-fun var85___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+(declare-fun var86_true__t0 () Bool)
 (assert
-  (= var76_true__t0 (theory1_safe var75___slice__slice__eq_bytes__t0) )
+  (= var86_true__t0 (theory1_safe var85___slice__slice__eq_bytes__t0) )
 )
 
 (assert
-  var76_true__t0
+  var86_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:153
-(declare-fun var77___slice__mut_slice__push64__t0 () (_ BitVec 64))
-(declare-fun var78_true__t0 () Bool)
-(assert
-  (= var78_true__t0 (theory1_safe var77___slice__mut_slice__push64__t0) )
-)
-
-(assert
-  var78_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:29
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:460
-(declare-fun var80___carrier__identity__sign__t0 () (_ BitVec 64))
-(declare-fun var81_true__t0 () Bool)
-(assert
-  (= var81_true__t0 (theory1_safe var80___carrier__identity__sign__t0) )
-)
-
-(assert
-  var81_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:428
-(declare-fun var82___carrier__vault_toml__i_sign_local__t0 () (_ BitVec 64))
-(declare-fun var83_true__t0 () Bool)
-(assert
-  (= var83_true__t0 (theory1_safe var82___carrier__vault_toml__i_sign_local__t0) )
-)
-
-(assert
-  var83_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:436
-(declare-fun var84___carrier__identity__identity_from_secret__t0 () (_ BitVec 64))
-(declare-fun var85_true__t0 () Bool)
-(assert
-  (= var85_true__t0 (theory1_safe var84___carrier__identity__identity_from_secret__t0) )
-)
-
-(assert
-  var85_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:420
-(declare-fun var86___carrier__vault_toml__i_get_local_identity__t0 () (_ BitVec 64))
-(declare-fun var87_true__t0 () Bool)
-(assert
-  (= var87_true__t0 (theory1_safe var86___carrier__vault_toml__i_get_local_identity__t0) )
-)
-
-(assert
-  var87_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:154
-(declare-fun var88___carrier__vault__sign_principal__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
+(declare-fun theory87___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
+(declare-fun var88___buffer__slen__t0 () (_ BitVec 64))
 (declare-fun var89_true__t0 () Bool)
 (assert
-  (= var89_true__t0 (theory1_safe var88___carrier__vault__sign_principal__t0) )
+  (= var89_true__t0 (theory1_safe var88___buffer__slen__t0) )
 )
 
 (assert
   var89_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
-(declare-fun var90___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:305
+(declare-fun var90___carrier__identity__secret_from_cstr__t0 () (_ BitVec 64))
 (declare-fun var91_true__t0 () Bool)
 (assert
-  (= var91_true__t0 (theory1_safe var90___slice__slice__eq_cstr__t0) )
+  (= var91_true__t0 (theory1_safe var90___carrier__identity__secret_from_cstr__t0) )
 )
 
 (assert
   var91_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:101
-(declare-fun var92___err__fail_with_system_error__t0 () (_ BitVec 64))
-(declare-fun var93_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:21
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:113
+(declare-fun var93___carrier__vault__list_authorizations__t0 () (_ BitVec 64))
+(declare-fun var94_true__t0 () Bool)
 (assert
-  (= var93_true__t0 (theory1_safe var92___err__fail_with_system_error__t0) )
+  (= var94_true__t0 (theory1_safe var93___carrier__vault__list_authorizations__t0) )
 )
 
 (assert
-  var93_true__t0
+  var94_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:61
-(declare-fun var94___carrier__vault__close__t0 () (_ BitVec 64))
-(declare-fun var95_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:131
+(declare-fun var95___carrier__vault__set_network__t0 () (_ BitVec 64))
+(declare-fun var96_true__t0 () Bool)
 (assert
-  (= var95_true__t0 (theory1_safe var94___carrier__vault__close__t0) )
-)
-
-(assert
-  var95_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/log/src/lib.zz:68
-(declare-fun var96___log__info__t0 () (_ BitVec 64))
-(declare-fun var97_true__t0 () Bool)
-(assert
-  (= var97_true__t0 (theory1_safe var96___log__info__t0) )
+  (= var96_true__t0 (theory1_safe var95___carrier__vault__set_network__t0) )
 )
 
 (assert
-  var97_true__t0
+  var96_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:27
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:11
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:94
-(declare-fun var99___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:90
+(declare-fun var97___carrier__vault__add_authorization__t0 () (_ BitVec 64))
+(declare-fun var98_true__t0 () Bool)
+(assert
+  (= var98_true__t0 (theory1_safe var97___carrier__vault__add_authorization__t0) )
+)
+
+(assert
+  var98_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:14
+(declare-fun var99___err__OutOfTail__t0 () (_ BitVec 64))
 (declare-fun var100_true__t0 () Bool)
 (assert
-  (= var100_true__t0 (theory1_safe var99___slice__mut_slice__append_cstr__t0) )
+  (= var100_true__t0 (theory3_symbol var99___err__OutOfTail__t0) )
 )
 
 (assert
   var100_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:168
-(declare-fun var101___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:59
+(declare-fun var101___time__more_than__t0 () (_ BitVec 64))
 (declare-fun var102_true__t0 () Bool)
 (assert
-  (= var102_true__t0 (theory1_safe var101___slice__mut_slice__append_obj__t0) )
+  (= var102_true__t0 (theory1_safe var101___time__more_than__t0) )
 )
 
 (assert
   var102_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
 (declare-fun var103___slice__slice__eq__t0 () (_ BitVec 64))
 (declare-fun var104_true__t0 () Bool)
@@ -412,1208 +392,1230 @@
   var104_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
-(declare-fun var105___buffer__vformat__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:26
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:252
+(declare-fun var105___buffer__cstr_eq__t0 () (_ BitVec 64))
 (declare-fun var106_true__t0 () Bool)
 (assert
-  (= var106_true__t0 (theory1_safe var105___buffer__vformat__t0) )
+  (= var106_true__t0 (theory1_safe var105___buffer__cstr_eq__t0) )
 )
 
 (assert
   var106_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:341
-(declare-fun var107___carrier__identity__address_to_str__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:178
+(declare-fun var107___buffer__append_bytes__t0 () (_ BitVec 64))
 (declare-fun var108_true__t0 () Bool)
 (assert
-  (= var108_true__t0 (theory1_safe var107___carrier__identity__address_to_str__t0) )
+  (= var108_true__t0 (theory1_safe var107___buffer__append_bytes__t0) )
 )
 
 (assert
   var108_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
-(declare-fun var109___buffer__fgets__t0 () (_ BitVec 64))
-(declare-fun var110_true__t0 () Bool)
-(assert
-  (= var110_true__t0 (theory1_safe var109___buffer__fgets__t0) )
-)
-
-(assert
-  var110_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:222
-(declare-fun var111___carrier__vault__authorize_open_stream__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:8
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:27
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:28
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:15
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:22
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:275
+(declare-fun var111___err__assert_safe__t0 () (_ BitVec 64))
 (declare-fun var112_true__t0 () Bool)
 (assert
-  (= var112_true__t0 (theory1_safe var111___carrier__vault__authorize_open_stream__t0) )
+  (= var112_true__t0 (theory1_safe var111___err__assert_safe__t0) )
 )
 
 (assert
   var112_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
-(declare-fun var113___buffer__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:273
+(declare-fun var113___carrier__identity__identity_from_cstr__t0 () (_ BitVec 64))
 (declare-fun var114_true__t0 () Bool)
 (assert
-  (= var114_true__t0 (theory1_safe var113___buffer__make__t0) )
+  (= var114_true__t0 (theory1_safe var113___carrier__identity__identity_from_cstr__t0) )
 )
 
 (assert
   var114_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:123
-(declare-fun var115___slice__mut_slice__push16__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:476
+(declare-fun var115___carrier__identity__isnull__t0 () (_ BitVec 64))
 (declare-fun var116_true__t0 () Bool)
 (assert
-  (= var116_true__t0 (theory1_safe var115___slice__mut_slice__push16__t0) )
+  (= var116_true__t0 (theory1_safe var115___carrier__identity__isnull__t0) )
 )
 
 (assert
   var116_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:26
-(declare-fun var117___err__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:184
+(declare-fun var117___carrier__vault_toml__load_from_toml_authorize_iter__t0 () (_ BitVec 64))
 (declare-fun var118_true__t0 () Bool)
 (assert
-  (= var118_true__t0 (theory1_safe var117___err__make__t0) )
+  (= var118_true__t0 (theory1_safe var117___carrier__vault_toml__load_from_toml_authorize_iter__t0) )
 )
 
 (assert
   var118_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:14
-(declare-fun var119___err__OutOfTail__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:70
+(declare-fun var119___err__fail_with_errno__t0 () (_ BitVec 64))
 (declare-fun var120_true__t0 () Bool)
 (assert
-  (= var120_true__t0 (theory3_symbol var119___err__OutOfTail__t0) )
+  (= var120_true__t0 (theory1_safe var119___err__fail_with_errno__t0) )
 )
 
 (assert
   var120_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:30
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:394
-(declare-fun var122___carrier__identity__alias_from_str__t0 () (_ BitVec 64))
-(declare-fun var123_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:358
+(declare-fun var121___carrier__identity__secret_to_str__t0 () (_ BitVec 64))
+(declare-fun var122_true__t0 () Bool)
 (assert
-  (= var123_true__t0 (theory1_safe var122___carrier__identity__alias_from_str__t0) )
+  (= var122_true__t0 (theory1_safe var121___carrier__identity__secret_to_str__t0) )
 )
 
 (assert
-  var123_true__t0
+  var122_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:84
-(declare-fun var124___carrier__vault_toml__i_from_carriertoml__t0 () (_ BitVec 64))
-(declare-fun var125_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:341
+(declare-fun var123___carrier__identity__address_to_str__t0 () (_ BitVec 64))
+(declare-fun var124_true__t0 () Bool)
 (assert
-  (= var125_true__t0 (theory1_safe var124___carrier__vault_toml__i_from_carriertoml__t0) )
-)
-
-(assert
-  var125_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:48
-(declare-fun var126___err__check__t0 () (_ BitVec 64))
-(declare-fun var127_true__t0 () Bool)
-(assert
-  (= var127_true__t0 (theory1_safe var126___err__check__t0) )
+  (= var124_true__t0 (theory1_safe var123___carrier__identity__address_to_str__t0) )
 )
 
 (assert
-  var127_true__t0
+  var124_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:488
-(declare-fun var128___carrier__identity__nullcheck__t0 () (_ BitVec 64))
-(declare-fun var129_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:314
+(declare-fun var125___carrier__identity__identity_to_str__t0 () (_ BitVec 64))
+(declare-fun var126_true__t0 () Bool)
 (assert
-  (= var129_true__t0 (theory1_safe var128___carrier__identity__nullcheck__t0) )
-)
-
-(assert
-  var129_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:54
-(declare-fun var130___carrier__vault_toml__from_carriertoml_and_secret__t0 () (_ BitVec 64))
-(declare-fun var131_true__t0 () Bool)
-(assert
-  (= var131_true__t0 (theory1_safe var130___carrier__vault_toml__from_carriertoml_and_secret__t0) )
+  (= var126_true__t0 (theory1_safe var125___carrier__identity__identity_to_str__t0) )
 )
 
 (assert
-  var131_true__t0
+  var126_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:137
-(declare-fun var132___carrier__vault__vector_time__t0 () (_ BitVec 64))
-(declare-fun var133_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:384
+(declare-fun var127___carrier__vault_toml__save_to_toml__t0 () (_ BitVec 64))
+(declare-fun var128_true__t0 () Bool)
 (assert
-  (= var133_true__t0 (theory1_safe var132___carrier__vault__vector_time__t0) )
+  (= var128_true__t0 (theory1_safe var127___carrier__vault_toml__save_to_toml__t0) )
 )
 
 (assert
-  var133_true__t0
+  var128_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:195
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:125
-(declare-fun var135___carrier__vault__get_network_secret__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
+(declare-fun var129___slice__slice__sub__t0 () (_ BitVec 64))
+(declare-fun var130_true__t0 () Bool)
+(assert
+  (= var130_true__t0 (theory1_safe var129___slice__slice__sub__t0) )
+)
+
+(assert
+  var130_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:108
+(declare-fun var131___slice__mut_slice__push__t0 () (_ BitVec 64))
+(declare-fun var132_true__t0 () Bool)
+(assert
+  (= var132_true__t0 (theory1_safe var131___slice__mut_slice__push__t0) )
+)
+
+(assert
+  var132_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:103
+(declare-fun var133___toml__close__t0 () (_ BitVec 64))
+(declare-fun var134_true__t0 () Bool)
+(assert
+  (= var134_true__t0 (theory1_safe var133___toml__close__t0) )
+)
+
+(assert
+  var134_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:164
+(declare-fun var135___carrier__vault__get_principal_identity__t0 () (_ BitVec 64))
 (declare-fun var136_true__t0 () Bool)
 (assert
-  (= var136_true__t0 (theory1_safe var135___carrier__vault__get_network_secret__t0) )
+  (= var136_true__t0 (theory1_safe var135___carrier__vault__get_principal_identity__t0) )
 )
 
 (assert
   var136_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:14
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:252
-(declare-fun var138___buffer__cstr_eq__t0 () (_ BitVec 64))
-(declare-fun var139_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
+(declare-fun var137___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var138_true__t0 () Bool)
 (assert
-  (= var139_true__t0 (theory1_safe var138___buffer__cstr_eq__t0) )
+  (= var138_true__t0 (theory1_safe var137___buffer__make__t0) )
 )
 
 (assert
-  var139_true__t0
+  var138_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:275
-(declare-fun var140___err__assert_safe__t0 () (_ BitVec 64))
-(declare-fun var141_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:15
+(declare-fun var139___err__InvalidArgument__t0 () (_ BitVec 64))
+(declare-fun var140_true__t0 () Bool)
 (assert
-  (= var141_true__t0 (theory1_safe var140___err__assert_safe__t0) )
-)
-
-(assert
-  var141_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:273
-(declare-fun var142___carrier__identity__identity_from_cstr__t0 () (_ BitVec 64))
-(declare-fun var143_true__t0 () Bool)
-(assert
-  (= var143_true__t0 (theory1_safe var142___carrier__identity__identity_from_cstr__t0) )
+  (= var140_true__t0 (theory3_symbol var139___err__InvalidArgument__t0) )
 )
 
 (assert
-  var143_true__t0
+  var140_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:178
-(declare-fun var144___carrier__vault_toml__load_from_toml_authorize_iter__t0 () (_ BitVec 64))
-(declare-fun var145_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:309
+(declare-fun var141___carrier__vault_toml__findmtdindex__t0 () (_ BitVec 64))
+(declare-fun var142_true__t0 () Bool)
 (assert
-  (= var145_true__t0 (theory1_safe var144___carrier__vault_toml__load_from_toml_authorize_iter__t0) )
-)
-
-(assert
-  var145_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:10
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:494
-(declare-fun var147___carrier__vault_toml__i_del_authorization__t0 () (_ BitVec 64))
-(declare-fun var148_true__t0 () Bool)
-(assert
-  (= var148_true__t0 (theory1_safe var147___carrier__vault_toml__i_del_authorization__t0) )
+  (= var142_true__t0 (theory1_safe var141___carrier__vault_toml__findmtdindex__t0) )
 )
 
 (assert
-  var148_true__t0
+  var142_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:8
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:380
-(declare-fun var150___carrier__identity__signature_from_str__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
+(declare-fun var143___slice__mut_slice__space__t0 () (_ BitVec 64))
+(declare-fun var144_true__t0 () Bool)
+(assert
+  (= var144_true__t0 (theory1_safe var143___slice__mut_slice__space__t0) )
+)
+
+(assert
+  var144_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:17
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
+(declare-fun var146___buffer__copy_bytes__t0 () (_ BitVec 64))
+(declare-fun var147_true__t0 () Bool)
+(assert
+  (= var147_true__t0 (theory1_safe var146___buffer__copy_bytes__t0) )
+)
+
+(assert
+  var147_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:91
+(declare-fun var148___time__real__t0 () (_ BitVec 64))
+(declare-fun var149_true__t0 () Bool)
+(assert
+  (= var149_true__t0 (theory1_safe var148___time__real__t0) )
+)
+
+(assert
+  var149_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
+(declare-fun var150___buffer__pop__t0 () (_ BitVec 64))
 (declare-fun var151_true__t0 () Bool)
 (assert
-  (= var151_true__t0 (theory1_safe var150___carrier__identity__signature_from_str__t0) )
+  (= var151_true__t0 (theory1_safe var150___buffer__pop__t0) )
 )
 
 (assert
   var151_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:15
-(declare-fun var152___err__InvalidArgument__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:69
+(declare-fun var152___toml__parser__t0 () (_ BitVec 64))
 (declare-fun var153_true__t0 () Bool)
 (assert
-  (= var153_true__t0 (theory3_symbol var152___err__InvalidArgument__t0) )
+  (= var153_true__t0 (theory1_safe var152___toml__parser__t0) )
 )
 
 (assert
   var153_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:303
-(declare-fun var154___carrier__vault_toml__findmtdindex__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:236
+(declare-fun var154___buffer__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var155_true__t0 () Bool)
 (assert
-  (= var155_true__t0 (theory1_safe var154___carrier__vault_toml__findmtdindex__t0) )
+  (= var155_true__t0 (theory1_safe var154___buffer__eq_cstr__t0) )
 )
 
 (assert
   var155_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:59
-(declare-fun var157___time__more_than__t0 () (_ BitVec 64))
-(declare-fun var158_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
+(declare-fun var156___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
+(declare-fun var157_true__t0 () Bool)
 (assert
-  (= var158_true__t0 (theory1_safe var157___time__more_than__t0) )
+  (= var157_true__t0 (theory1_safe var156___slice__mut_slice__append_bytes__t0) )
 )
 
 (assert
-  var158_true__t0
+  var157_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:83
-(declare-fun var159___toml__next__t0 () (_ BitVec 64))
-(declare-fun var160_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
+(declare-fun var158___buffer__vformat__t0 () (_ BitVec 64))
+(declare-fun var159_true__t0 () Bool)
 (assert
-  (= var160_true__t0 (theory1_safe var159___toml__next__t0) )
+  (= var159_true__t0 (theory1_safe var158___buffer__vformat__t0) )
 )
 
 (assert
-  var160_true__t0
+  var159_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:158
-(declare-fun var161___carrier__vault_toml__load_from_toml_cb_publish__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:14
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
+(declare-fun var161___buffer__starts_with_cstr__t0 () (_ BitVec 64))
 (declare-fun var162_true__t0 () Bool)
 (assert
-  (= var162_true__t0 (theory1_safe var161___carrier__vault_toml__load_from_toml_cb_publish__t0) )
+  (= var162_true__t0 (theory1_safe var161___buffer__starts_with_cstr__t0) )
 )
 
 (assert
   var162_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-(declare-fun var163___carrier__vault_toml__load_from_toml_identity_secret__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:125
+(declare-fun var163___carrier__vault__get_network_secret__t0 () (_ BitVec 64))
 (declare-fun var164_true__t0 () Bool)
 (assert
-  (= var164_true__t0 (theory1_safe var163___carrier__vault_toml__load_from_toml_identity_secret__t0) )
+  (= var164_true__t0 (theory1_safe var163___carrier__vault__get_network_secret__t0) )
 )
 
 (assert
   var164_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:305
-(declare-fun var165___carrier__identity__secret_from_cstr__t0 () (_ BitVec 64))
-(declare-fun var166_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:31
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:409
+(declare-fun var166___carrier__identity__secretkit_from_str__t0 () (_ BitVec 64))
+(declare-fun var167_true__t0 () Bool)
 (assert
-  (= var166_true__t0 (theory1_safe var165___carrier__identity__secret_from_cstr__t0) )
+  (= var167_true__t0 (theory1_safe var166___carrier__identity__secretkit_from_str__t0) )
 )
 
 (assert
-  var166_true__t0
+  var167_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:341
-(declare-fun var167___carrier__vault_toml__load_from_toml_cb__t0 () (_ BitVec 64))
-(declare-fun var168_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
+(declare-fun var168___buffer__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var169_true__t0 () Bool)
 (assert
-  (= var168_true__t0 (theory1_safe var167___carrier__vault_toml__load_from_toml_cb__t0) )
-)
-
-(assert
-  var168_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:69
-(declare-fun var169___toml__parser__t0 () (_ BitVec 64))
-(declare-fun var170_true__t0 () Bool)
-(assert
-  (= var170_true__t0 (theory1_safe var169___toml__parser__t0) )
+  (= var169_true__t0 (theory1_safe var168___buffer__append_cstr__t0) )
 )
 
 (assert
-  var170_true__t0
+  var169_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
-(declare-fun var172___buffer__available__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:380
+(declare-fun var170___carrier__identity__signature_from_str__t0 () (_ BitVec 64))
+(declare-fun var171_true__t0 () Bool)
+(assert
+  (= var171_true__t0 (theory1_safe var170___carrier__identity__signature_from_str__t0) )
+)
+
+(assert
+  var171_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/modules/fs/src/lib.zz:8
+(declare-fun var172___fs__get_homedir__t0 () (_ BitVec 64))
 (declare-fun var173_true__t0 () Bool)
 (assert
-  (= var173_true__t0 (theory1_safe var172___buffer__available__t0) )
+  (= var173_true__t0 (theory1_safe var172___fs__get_homedir__t0) )
 )
 
 (assert
   var173_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:185
-(declare-fun var174___carrier__vault__authorize_connect__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:84
+(declare-fun var174___buffer__push__t0 () (_ BitVec 64))
 (declare-fun var175_true__t0 () Bool)
 (assert
-  (= var175_true__t0 (theory1_safe var174___carrier__vault__authorize_connect__t0) )
+  (= var175_true__t0 (theory1_safe var174___buffer__push__t0) )
 )
 
 (assert
   var175_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
-(declare-fun var176___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:547
+(declare-fun var176___carrier__vault_toml__i_list_authorizations__t0 () (_ BitVec 64))
 (declare-fun var177_true__t0 () Bool)
 (assert
-  (= var177_true__t0 (theory1_safe var176___slice__mut_slice__as_slice__t0) )
+  (= var177_true__t0 (theory1_safe var176___carrier__vault_toml__i_list_authorizations__t0) )
 )
 
 (assert
   var177_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:36
-(declare-fun var178___err__ignore__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:154
+(declare-fun var178___carrier__vault__sign_principal__t0 () (_ BitVec 64))
 (declare-fun var179_true__t0 () Bool)
 (assert
-  (= var179_true__t0 (theory1_safe var178___err__ignore__t0) )
+  (= var179_true__t0 (theory1_safe var178___carrier__vault__sign_principal__t0) )
 )
 
 (assert
   var179_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:17
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:133
-(declare-fun var181___err__fail__t0 () (_ BitVec 64))
-(declare-fun var182_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:36
+(declare-fun var180___err__ignore__t0 () (_ BitVec 64))
+(declare-fun var181_true__t0 () Bool)
 (assert
-  (= var182_true__t0 (theory1_safe var181___err__fail__t0) )
+  (= var181_true__t0 (theory1_safe var180___err__ignore__t0) )
 )
 
 (assert
-  var182_true__t0
+  var181_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:374
-(declare-fun var183___carrier__identity__secret_generate__t0 () (_ BitVec 64))
-(declare-fun var184_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
+(declare-fun var182___buffer__fgets__t0 () (_ BitVec 64))
+(declare-fun var183_true__t0 () Bool)
 (assert
-  (= var184_true__t0 (theory1_safe var183___carrier__identity__secret_generate__t0) )
-)
-
-(assert
-  var184_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
-(declare-fun var185___buffer__slen__t0 () (_ BitVec 64))
-(declare-fun var186_true__t0 () Bool)
-(assert
-  (= var186_true__t0 (theory1_safe var185___buffer__slen__t0) )
+  (= var183_true__t0 (theory1_safe var182___buffer__fgets__t0) )
 )
 
 (assert
-  var186_true__t0
+  var183_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
-(declare-fun var187___buffer__clear__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
+(declare-fun var184___buffer__split__t0 () (_ BitVec 64))
+(declare-fun var185_true__t0 () Bool)
+(assert
+  (= var185_true__t0 (theory1_safe var184___buffer__split__t0) )
+)
+
+(assert
+  var185_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:15
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var187___slice__slice__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var188_true__t0 () Bool)
 (assert
-  (= var188_true__t0 (theory1_safe var187___buffer__clear__t0) )
+  (= var188_true__t0 (theory1_safe var187___slice__slice__eq_cstr__t0) )
 )
 
 (assert
   var188_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:468
-(declare-fun var189___carrier__vault_toml__i_get_network_secret__t0 () (_ BitVec 64))
-(declare-fun var190_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:10
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:53
+(declare-fun var190___carrier__vault_toml__close__t0 () (_ BitVec 64))
+(declare-fun var191_true__t0 () Bool)
 (assert
-  (= var190_true__t0 (theory1_safe var189___carrier__vault_toml__i_get_network_secret__t0) )
+  (= var191_true__t0 (theory1_safe var190___carrier__vault_toml__close__t0) )
 )
 
 (assert
-  var190_true__t0
+  var191_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:113
-(declare-fun var191___carrier__vault__list_authorizations__t0 () (_ BitVec 64))
-(declare-fun var192_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:138
+(declare-fun var192___slice__mut_slice__push32__t0 () (_ BitVec 64))
+(declare-fun var193_true__t0 () Bool)
 (assert
-  (= var192_true__t0 (theory1_safe var191___carrier__vault__list_authorizations__t0) )
-)
-
-(assert
-  var192_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:131
-(declare-fun var193___carrier__vault__set_network__t0 () (_ BitVec 64))
-(declare-fun var194_true__t0 () Bool)
-(assert
-  (= var194_true__t0 (theory1_safe var193___carrier__vault__set_network__t0) )
+  (= var193_true__t0 (theory1_safe var192___slice__mut_slice__push32__t0) )
 )
 
 (assert
-  var194_true__t0
+  var193_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
+(declare-fun var194___buffer__available__t0 () (_ BitVec 64))
+(declare-fun var195_true__t0 () Bool)
+(assert
+  (= var195_true__t0 (theory1_safe var194___buffer__available__t0) )
+)
+
+(assert
+  var195_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:133
+(declare-fun var196___err__fail__t0 () (_ BitVec 64))
+(declare-fun var197_true__t0 () Bool)
+(assert
+  (= var197_true__t0 (theory1_safe var196___err__fail__t0) )
+)
+
+(assert
+  var197_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:187
+(declare-fun var198___err__elog__t0 () (_ BitVec 64))
+(declare-fun var199_true__t0 () Bool)
+(assert
+  (= var199_true__t0 (theory1_safe var198___err__elog__t0) )
+)
+
+(assert
+  var199_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:418
-(declare-fun var195___buffer__copy_cstr__t0 () (_ BitVec 64))
-(declare-fun var196_true__t0 () Bool)
+(declare-fun var200___buffer__copy_cstr__t0 () (_ BitVec 64))
+(declare-fun var201_true__t0 () Bool)
 (assert
-  (= var196_true__t0 (theory1_safe var195___buffer__copy_cstr__t0) )
+  (= var201_true__t0 (theory1_safe var200___buffer__copy_cstr__t0) )
 )
 
 (assert
-  var196_true__t0
+  var201_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:289
-(declare-fun var197___carrier__identity__address_from_cstr__t0 () (_ BitVec 64))
-(declare-fun var198_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:33
+(declare-fun var202___carrier__vault_toml__from_home_carriertoml__t0 () (_ BitVec 64))
+(declare-fun var203_true__t0 () Bool)
 (assert
-  (= var198_true__t0 (theory1_safe var197___carrier__identity__address_from_cstr__t0) )
-)
-
-(assert
-  var198_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
-(declare-fun var199___slice__mut_slice__space__t0 () (_ BitVec 64))
-(declare-fun var200_true__t0 () Bool)
-(assert
-  (= var200_true__t0 (theory1_safe var199___slice__mut_slice__space__t0) )
+  (= var203_true__t0 (theory1_safe var202___carrier__vault_toml__from_home_carriertoml__t0) )
 )
 
 (assert
-  var200_true__t0
+  var203_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:168
-(declare-fun var201___err__abort__t0 () (_ BitVec 64))
-(declare-fun var202_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:266
+(declare-fun var204___carrier__identity__identity_from_str__t0 () (_ BitVec 64))
+(declare-fun var205_true__t0 () Bool)
 (assert
-  (= var202_true__t0 (theory1_safe var201___err__abort__t0) )
-)
-
-(assert
-  var202_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
-(declare-fun var203___buffer__split__t0 () (_ BitVec 64))
-(declare-fun var204_true__t0 () Bool)
-(assert
-  (= var204_true__t0 (theory1_safe var203___buffer__split__t0) )
+  (= var205_true__t0 (theory1_safe var204___carrier__identity__identity_from_str__t0) )
 )
 
 (assert
-  var204_true__t0
+  var205_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:541
-(declare-fun var205___carrier__vault_toml__i_list_authorizations__t0 () (_ BitVec 64))
-(declare-fun var206_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:56
+(declare-fun var206___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
+(declare-fun var207_true__t0 () Bool)
 (assert
-  (= var206_true__t0 (theory1_safe var205___carrier__vault_toml__i_list_authorizations__t0) )
+  (= var207_true__t0 (theory1_safe var206___slice__mut_slice__append_slice__t0) )
 )
 
 (assert
-  var206_true__t0
+  var207_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
-(declare-fun var208___buffer__format__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:123
+(declare-fun var208___slice__mut_slice__push16__t0 () (_ BitVec 64))
 (declare-fun var209_true__t0 () Bool)
 (assert
-  (= var209_true__t0 (theory1_safe var208___buffer__format__t0) )
+  (= var209_true__t0 (theory1_safe var208___slice__mut_slice__push16__t0) )
 )
 
 (assert
   var209_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:178
-(declare-fun var210___buffer__append_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
+(declare-fun var210___slice__slice__split__t0 () (_ BitVec 64))
 (declare-fun var211_true__t0 () Bool)
 (assert
-  (= var211_true__t0 (theory1_safe var210___buffer__append_bytes__t0) )
+  (= var211_true__t0 (theory1_safe var210___slice__slice__split__t0) )
 )
 
 (assert
   var211_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
-(declare-fun var212___buffer__substr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:460
+(declare-fun var212___carrier__identity__sign__t0 () (_ BitVec 64))
 (declare-fun var213_true__t0 () Bool)
 (assert
-  (= var213_true__t0 (theory1_safe var212___buffer__substr__t0) )
+  (= var213_true__t0 (theory1_safe var212___carrier__identity__sign__t0) )
 )
 
 (assert
   var213_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
-(declare-fun var214___slice__slice__empty__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:434
+(declare-fun var214___carrier__vault_toml__i_sign_local__t0 () (_ BitVec 64))
 (declare-fun var215_true__t0 () Bool)
 (assert
-  (= var215_true__t0 (theory1_safe var214___slice__slice__empty__t0) )
+  (= var215_true__t0 (theory1_safe var214___carrier__vault_toml__i_sign_local__t0) )
 )
 
 (assert
   var215_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:143
-(declare-fun var216___carrier__vault__sign_local__t0 () (_ BitVec 64))
-(declare-fun var217_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:19
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:32
+(declare-fun var217___time__to_seconds__t0 () (_ BitVec 64))
+(declare-fun var218_true__t0 () Bool)
 (assert
-  (= var217_true__t0 (theory1_safe var216___carrier__vault__sign_local__t0) )
+  (= var218_true__t0 (theory1_safe var217___time__to_seconds__t0) )
 )
 
 (assert
-  var217_true__t0
+  var218_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:26
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:28
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:14
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:21
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:31
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:426
-(declare-fun var219___carrier__identity__secretkit_generate__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
+(declare-fun var219___slice__slice__make__t0 () (_ BitVec 64))
 (declare-fun var220_true__t0 () Bool)
 (assert
-  (= var220_true__t0 (theory1_safe var219___carrier__identity__secretkit_generate__t0) )
+  (= var220_true__t0 (theory1_safe var219___slice__slice__make__t0) )
 )
 
 (assert
   var220_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
-(declare-fun var221___buffer__as_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:466
+(declare-fun var221___carrier__vault_toml__i_get_network__t0 () (_ BitVec 64))
 (declare-fun var222_true__t0 () Bool)
 (assert
-  (= var222_true__t0 (theory1_safe var221___buffer__as_slice__t0) )
+  (= var222_true__t0 (theory1_safe var221___carrier__vault_toml__i_get_network__t0) )
 )
 
 (assert
   var222_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:70
-(declare-fun var223___carrier__vault_toml__from_carriertoml__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:83
+(declare-fun var223___toml__next__t0 () (_ BitVec 64))
 (declare-fun var224_true__t0 () Bool)
 (assert
-  (= var224_true__t0 (theory1_safe var223___carrier__vault_toml__from_carriertoml__t0) )
+  (= var224_true__t0 (theory1_safe var223___toml__next__t0) )
 )
 
 (assert
   var224_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:298
-(declare-fun var225___carrier__identity__secret_from_str__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
+(declare-fun var225___buffer__copy_slice__t0 () (_ BitVec 64))
 (declare-fun var226_true__t0 () Bool)
 (assert
-  (= var226_true__t0 (theory1_safe var225___carrier__identity__secret_from_str__t0) )
+  (= var226_true__t0 (theory1_safe var225___buffer__copy_slice__t0) )
 )
 
 (assert
   var226_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:30
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:409
-(declare-fun var227___carrier__identity__secretkit_from_str__t0 () (_ BitVec 64))
-(declare-fun var228_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
+; literal expr
+(declare-fun var228_literal_Unsigned_16___t0 () (_ BitVec 64))
 (assert
-  (= var228_true__t0 (theory1_safe var227___carrier__identity__secretkit_from_str__t0) )
+  (= var228_literal_Unsigned_16___t0 (_ bv16 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
+(declare-fun var229_safe_literal_Unsigned_16______safe___carrier__vault__MAX_BROKERS___t0 () Bool)
+(assert
+  (= var229_safe_literal_Unsigned_16______safe___carrier__vault__MAX_BROKERS___t0 (theory1_safe var228_literal_Unsigned_16___t0) )
+)
+
+(declare-fun var227___carrier__vault__MAX_BROKERS__t1 () (_ BitVec 64))
+(assert
+  (= var229_safe_literal_Unsigned_16______safe___carrier__vault__MAX_BROKERS___t0 (theory1_safe var227___carrier__vault__MAX_BROKERS__t1) )
+)
+
+(declare-fun var230_nullterm_literal_Unsigned_16______nullterm___carrier__vault__MAX_BROKERS___t0 () Bool)
+(assert
+  (= var230_nullterm_literal_Unsigned_16______nullterm___carrier__vault__MAX_BROKERS___t0 (theory2_nullterm var228_literal_Unsigned_16___t0) )
 )
 
 (assert
-  var228_true__t0
+  (= var230_nullterm_literal_Unsigned_16______nullterm___carrier__vault__MAX_BROKERS___t0 (theory2_nullterm var227___carrier__vault__MAX_BROKERS__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:91
-(declare-fun var229___time__real__t0 () (_ BitVec 64))
-(declare-fun var230_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
+(declare-fun var231_implicit_coercion_of_literal_Unsigned_16___t0 () (_ BitVec 64))
+(assert (! (= var231_implicit_coercion_of_literal_Unsigned_16___t0 var228_literal_Unsigned_16___t0) :named A1))(declare-fun var227___carrier__vault__MAX_BROKERS__t0 () (_ BitVec 64))
 (assert
-  (= var230_true__t0 (theory1_safe var229___time__real__t0) )
+  (= var227___carrier__vault__MAX_BROKERS__t1  (ite true var231_implicit_coercion_of_literal_Unsigned_16___t0 var227___carrier__vault__MAX_BROKERS__t0)  )
 )
 
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:394
+(declare-fun var232___carrier__identity__alias_from_str__t0 () (_ BitVec 64))
+(declare-fun var233_true__t0 () Bool)
 (assert
-  var230_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:476
-(declare-fun var231___carrier__vault_toml__i_advance_clock__t0 () (_ BitVec 64))
-(declare-fun var232_true__t0 () Bool)
-(assert
-  (= var232_true__t0 (theory1_safe var231___carrier__vault_toml__i_advance_clock__t0) )
+  (= var233_true__t0 (theory1_safe var232___carrier__identity__alias_from_str__t0) )
 )
 
 (assert
-  var232_true__t0
+  var233_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
-(declare-fun var233___slice__slice__make__t0 () (_ BitVec 64))
-(declare-fun var234_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
+(declare-fun var234___slice__slice__atoi__t0 () (_ BitVec 64))
+(declare-fun var235_true__t0 () Bool)
 (assert
-  (= var234_true__t0 (theory1_safe var233___slice__slice__make__t0) )
-)
-
-(assert
-  var234_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:193
-(declare-fun var235___err__eprintf__t0 () (_ BitVec 64))
-(declare-fun var236_true__t0 () Bool)
-(assert
-  (= var236_true__t0 (theory1_safe var235___err__eprintf__t0) )
+  (= var235_true__t0 (theory1_safe var234___slice__slice__atoi__t0) )
 )
 
 (assert
-  var236_true__t0
+  var235_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:47
-(declare-fun var237___carrier__vault_toml__close__t0 () (_ BitVec 64))
-(declare-fun var238_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:426
+(declare-fun var236___carrier__vault_toml__i_get_local_identity__t0 () (_ BitVec 64))
+(declare-fun var237_true__t0 () Bool)
 (assert
-  (= var238_true__t0 (theory1_safe var237___carrier__vault_toml__close__t0) )
-)
-
-(assert
-  var238_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:460
-(declare-fun var239___carrier__vault_toml__i_get_network__t0 () (_ BitVec 64))
-(declare-fun var240_true__t0 () Bool)
-(assert
-  (= var240_true__t0 (theory1_safe var239___carrier__vault_toml__i_get_network__t0) )
+  (= var237_true__t0 (theory1_safe var236___carrier__vault_toml__i_get_local_identity__t0) )
 )
 
 (assert
-  var240_true__t0
+  var237_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:22
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
-(declare-fun var242___buffer__cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:442
+(declare-fun var238___carrier__vault_toml__i_get_principal_identity__t0 () (_ BitVec 64))
+(declare-fun var239_true__t0 () Bool)
+(assert
+  (= var239_true__t0 (theory1_safe var238___carrier__vault_toml__i_get_principal_identity__t0) )
+)
+
+(assert
+  var239_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:454
+(declare-fun var240___carrier__vault_toml__i_sign_principal__t0 () (_ BitVec 64))
+(declare-fun var241_true__t0 () Bool)
+(assert
+  (= var241_true__t0 (theory1_safe var240___carrier__vault_toml__i_sign_principal__t0) )
+)
+
+(assert
+  var241_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:474
+(declare-fun var242___carrier__vault_toml__i_get_network_secret__t0 () (_ BitVec 64))
 (declare-fun var243_true__t0 () Bool)
 (assert
-  (= var243_true__t0 (theory1_safe var242___buffer__cstr__t0) )
+  (= var243_true__t0 (theory1_safe var242___carrier__vault_toml__i_get_network_secret__t0) )
 )
 
 (assert
   var243_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:138
-(declare-fun var244___slice__mut_slice__push32__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:482
+(declare-fun var244___carrier__vault_toml__i_advance_clock__t0 () (_ BitVec 64))
 (declare-fun var245_true__t0 () Bool)
 (assert
-  (= var245_true__t0 (theory1_safe var244___slice__mut_slice__push32__t0) )
+  (= var245_true__t0 (theory1_safe var244___carrier__vault_toml__i_advance_clock__t0) )
 )
 
 (assert
   var245_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
-(declare-fun var246___buffer__starts_with_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:488
+(declare-fun var246___carrier__vault_toml__i_set_network__t0 () (_ BitVec 64))
 (declare-fun var247_true__t0 () Bool)
 (assert
-  (= var247_true__t0 (theory1_safe var246___buffer__starts_with_cstr__t0) )
+  (= var247_true__t0 (theory1_safe var246___carrier__vault_toml__i_set_network__t0) )
 )
 
 (assert
   var247_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:15
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
-(declare-fun var249___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
-(declare-fun var250_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:500
+(declare-fun var248___carrier__vault_toml__i_del_authorization__t0 () (_ BitVec 64))
+(declare-fun var249_true__t0 () Bool)
 (assert
-  (= var250_true__t0 (theory1_safe var249___slice__mut_slice__append_bytes__t0) )
+  (= var249_true__t0 (theory1_safe var248___carrier__vault_toml__i_del_authorization__t0) )
 )
 
 (assert
-  var250_true__t0
+  var249_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:90
-(declare-fun var251___carrier__vault__add_authorization__t0 () (_ BitVec 64))
-(declare-fun var252_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:521
+(declare-fun var250___carrier__vault_toml__i_add_authorization__t0 () (_ BitVec 64))
+(declare-fun var251_true__t0 () Bool)
 (assert
-  (= var252_true__t0 (theory1_safe var251___carrier__vault__add_authorization__t0) )
-)
-
-(assert
-  var252_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:499
-(declare-fun var253___carrier__identity__eq__t0 () (_ BitVec 64))
-(declare-fun var254_true__t0 () Bool)
-(assert
-  (= var254_true__t0 (theory1_safe var253___carrier__identity__eq__t0) )
+  (= var251_true__t0 (theory1_safe var250___carrier__vault_toml__i_add_authorization__t0) )
 )
 
 (assert
-  var254_true__t0
+  var251_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
-(declare-fun var255___slice__slice__atoi__t0 () (_ BitVec 64))
-(declare-fun var256_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:347
+(declare-fun var252___carrier__vault_toml__load_from_toml_cb__t0 () (_ BitVec 64))
+(declare-fun var253_true__t0 () Bool)
 (assert
-  (= var256_true__t0 (theory1_safe var255___slice__slice__atoi__t0) )
-)
-
-(assert
-  var256_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:292
-(declare-fun var257___err__fail_with_win32__t0 () (_ BitVec 64))
-(declare-fun var258_true__t0 () Bool)
-(assert
-  (= var258_true__t0 (theory1_safe var257___err__fail_with_win32__t0) )
+  (= var253_true__t0 (theory1_safe var252___carrier__vault_toml__load_from_toml_cb__t0) )
 )
 
 (assert
-  var258_true__t0
+  var253_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:447
+(declare-fun var254___carrier__identity__address_from_secret__t0 () (_ BitVec 64))
+(declare-fun var255_true__t0 () Bool)
+(assert
+  (= var255_true__t0 (theory1_safe var254___carrier__identity__address_from_secret__t0) )
+)
+
+(assert
+  var255_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/log/src/lib.zz:68
+(declare-fun var256___log__info__t0 () (_ BitVec 64))
+(declare-fun var257_true__t0 () Bool)
+(assert
+  (= var257_true__t0 (theory1_safe var256___log__info__t0) )
+)
+
+(assert
+  var257_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:90
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
+(declare-fun var258___buffer__as_mut_slice__t0 () (_ BitVec 64))
+(declare-fun var259_true__t0 () Bool)
+(assert
+  (= var259_true__t0 (theory1_safe var258___buffer__as_mut_slice__t0) )
+)
+
+(assert
+  var259_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:474
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
+(declare-fun var260___buffer__as_slice__t0 () (_ BitVec 64))
+(declare-fun var261_true__t0 () Bool)
+(assert
+  (= var261_true__t0 (theory1_safe var260___buffer__as_slice__t0) )
+)
+
+(assert
+  var261_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:31
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:161
-(declare-fun var259___buffer__append_slice__t0 () (_ BitVec 64))
-(declare-fun var260_true__t0 () Bool)
-(assert
-  (= var260_true__t0 (theory1_safe var259___buffer__append_slice__t0) )
-)
-
-(assert
-  var260_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:16
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:84
-(declare-fun var262___buffer__push__t0 () (_ BitVec 64))
+(declare-fun var262___buffer__append_slice__t0 () (_ BitVec 64))
 (declare-fun var263_true__t0 () Bool)
 (assert
-  (= var263_true__t0 (theory1_safe var262___buffer__push__t0) )
+  (= var263_true__t0 (theory1_safe var262___buffer__append_slice__t0) )
 )
 
 (assert
   var263_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:56
-(declare-fun var264___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
-(declare-fun var265_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:16
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:222
+(declare-fun var265___carrier__vault__authorize_open_stream__t0 () (_ BitVec 64))
+(declare-fun var266_true__t0 () Bool)
 (assert
-  (= var265_true__t0 (theory1_safe var264___slice__mut_slice__append_slice__t0) )
+  (= var266_true__t0 (theory1_safe var265___carrier__vault__authorize_open_stream__t0) )
 )
 
 (assert
-  var265_true__t0
+  var266_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:71
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:174
-(declare-fun var267___carrier__vault__broker_count__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:164
+(declare-fun var267___carrier__vault_toml__load_from_toml_cb_publish__t0 () (_ BitVec 64))
 (declare-fun var268_true__t0 () Bool)
 (assert
-  (= var268_true__t0 (theory1_safe var267___carrier__vault__broker_count__t0) )
+  (= var268_true__t0 (theory1_safe var267___carrier__vault_toml__load_from_toml_cb_publish__t0) )
 )
 
 (assert
   var268_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:122
-(declare-fun var269___toml__push__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+(declare-fun var269___carrier__vault_toml__load_from_toml_identity_secret__t0 () (_ BitVec 64))
 (declare-fun var270_true__t0 () Bool)
 (assert
-  (= var270_true__t0 (theory1_safe var269___toml__push__t0) )
+  (= var270_true__t0 (theory1_safe var269___carrier__vault_toml__load_from_toml_identity_secret__t0) )
 )
 
 (assert
   var270_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:70
-(declare-fun var271___err__fail_with_errno__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:347
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
+(declare-fun var271___buffer__ends_with_cstr__t0 () (_ BitVec 64))
 (declare-fun var272_true__t0 () Bool)
 (assert
-  (= var272_true__t0 (theory1_safe var271___err__fail_with_errno__t0) )
+  (= var272_true__t0 (theory1_safe var271___buffer__ends_with_cstr__t0) )
 )
 
 (assert
   var272_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:358
-(declare-fun var273___carrier__identity__secret_to_str__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:436
+(declare-fun var273___carrier__identity__identity_from_secret__t0 () (_ BitVec 64))
 (declare-fun var274_true__t0 () Bool)
 (assert
-  (= var274_true__t0 (theory1_safe var273___carrier__identity__secret_to_str__t0) )
+  (= var274_true__t0 (theory1_safe var273___carrier__identity__identity_from_secret__t0) )
 )
 
 (assert
   var274_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:314
-(declare-fun var275___carrier__identity__identity_to_str__t0 () (_ BitVec 64))
-(declare-fun var276_true__t0 () Bool)
-(assert
-  (= var276_true__t0 (theory1_safe var275___carrier__identity__identity_to_str__t0) )
-)
-
-(assert
-  var276_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:378
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:31
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
-(declare-fun var277___buffer__ends_with_cstr__t0 () (_ BitVec 64))
-(declare-fun var278_true__t0 () Bool)
-(assert
-  (= var278_true__t0 (theory1_safe var277___buffer__ends_with_cstr__t0) )
-)
-
-(assert
-  var278_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
-(declare-fun var279___buffer__copy_bytes__t0 () (_ BitVec 64))
-(declare-fun var280_true__t0 () Bool)
-(assert
-  (= var280_true__t0 (theory1_safe var279___buffer__copy_bytes__t0) )
-)
-
-(assert
-  var280_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:448
-(declare-fun var281___carrier__vault_toml__i_sign_principal__t0 () (_ BitVec 64))
-(declare-fun var282_true__t0 () Bool)
-(assert
-  (= var282_true__t0 (theory1_safe var281___carrier__vault_toml__i_sign_principal__t0) )
-)
-
-(assert
-  var282_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
-(declare-fun var283___buffer__append_cstr__t0 () (_ BitVec 64))
-(declare-fun var284_true__t0 () Bool)
-(assert
-  (= var284_true__t0 (theory1_safe var283___buffer__append_cstr__t0) )
-)
-
-(assert
-  var284_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:29
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
-(declare-fun var285___slice__slice__split__t0 () (_ BitVec 64))
-(declare-fun var286_true__t0 () Bool)
-(assert
-  (= var286_true__t0 (theory1_safe var285___slice__slice__split__t0) )
-)
-
-(assert
-  var286_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:164
-(declare-fun var287___carrier__vault__get_principal_identity__t0 () (_ BitVec 64))
-(declare-fun var288_true__t0 () Bool)
-(assert
-  (= var288_true__t0 (theory1_safe var287___carrier__vault__get_principal_identity__t0) )
-)
-
-(assert
-  var288_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
-(declare-fun var289___time__to_millis__t0 () (_ BitVec 64))
-(declare-fun var290_true__t0 () Bool)
-(assert
-  (= var290_true__t0 (theory1_safe var289___time__to_millis__t0) )
-)
-
-(assert
-  var290_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:426
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:11
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:22
 ; : /home/runner/work/carrier/carrier/core/src/vault.zz:26
-; : /home/runner/work/carrier/carrier/core/modules/fs/src/lib.zz:8
-(declare-fun var292___fs__get_homedir__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:35
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:330
+(declare-fun var278___carrier__identity__identity_to_string__t0 () (_ BitVec 64))
+(declare-fun var279_true__t0 () Bool)
+(assert
+  (= var279_true__t0 (theory1_safe var278___carrier__identity__identity_to_string__t0) )
+)
+
+(assert
+  var279_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:289
+(declare-fun var280___carrier__identity__address_from_cstr__t0 () (_ BitVec 64))
+(declare-fun var281_true__t0 () Bool)
+(assert
+  (= var281_true__t0 (theory1_safe var280___carrier__identity__address_from_cstr__t0) )
+)
+
+(assert
+  var281_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
+(declare-fun var282___slice__mut_slice__make__t0 () (_ BitVec 64))
+(declare-fun var283_true__t0 () Bool)
+(assert
+  (= var283_true__t0 (theory1_safe var282___slice__mut_slice__make__t0) )
+)
+
+(assert
+  var283_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:107
+(declare-fun var284___carrier__vault__del_authorization__t0 () (_ BitVec 64))
+(declare-fun var285_true__t0 () Bool)
+(assert
+  (= var285_true__t0 (theory1_safe var284___carrier__vault__del_authorization__t0) )
+)
+
+(assert
+  var285_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:500
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
+(declare-fun var286___slice__slice__empty__t0 () (_ BitVec 64))
+(declare-fun var287_true__t0 () Bool)
+(assert
+  (= var287_true__t0 (theory1_safe var286___slice__slice__empty__t0) )
+)
+
+(assert
+  var287_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:143
+(declare-fun var288___carrier__vault__sign_local__t0 () (_ BitVec 64))
+(declare-fun var289_true__t0 () Bool)
+(assert
+  (= var289_true__t0 (theory1_safe var288___carrier__vault__sign_local__t0) )
+)
+
+(assert
+  var289_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
+(declare-fun var290___buffer__substr__t0 () (_ BitVec 64))
+(declare-fun var291_true__t0 () Bool)
+(assert
+  (= var291_true__t0 (theory1_safe var290___buffer__substr__t0) )
+)
+
+(assert
+  var291_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:482
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:426
+(declare-fun var292___carrier__identity__secretkit_generate__t0 () (_ BitVec 64))
 (declare-fun var293_true__t0 () Bool)
 (assert
-  (= var293_true__t0 (theory1_safe var292___fs__get_homedir__t0) )
+  (= var293_true__t0 (theory1_safe var292___carrier__identity__secretkit_generate__t0) )
 )
 
 (assert
   var293_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:32
-(declare-fun var294___carrier__vault_toml__from_home_carriertoml__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:488
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:153
+(declare-fun var294___slice__mut_slice__push64__t0 () (_ BitVec 64))
 (declare-fun var295_true__t0 () Bool)
 (assert
-  (= var295_true__t0 (theory1_safe var294___carrier__vault_toml__from_home_carriertoml__t0) )
+  (= var295_true__t0 (theory1_safe var294___slice__mut_slice__push64__t0) )
 )
 
 (assert
   var295_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
-(declare-fun var296___slice__slice__sub__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:185
+(declare-fun var296___carrier__vault__authorize_connect__t0 () (_ BitVec 64))
 (declare-fun var297_true__t0 () Bool)
 (assert
-  (= var297_true__t0 (theory1_safe var296___slice__slice__sub__t0) )
+  (= var297_true__t0 (theory1_safe var296___carrier__vault__authorize_connect__t0) )
 )
 
 (assert
   var297_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:199
-(declare-fun var298___err__to_str__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:442
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:61
+(declare-fun var298___carrier__vault__close__t0 () (_ BitVec 64))
 (declare-fun var299_true__t0 () Bool)
 (assert
-  (= var299_true__t0 (theory1_safe var298___err__to_str__t0) )
+  (= var299_true__t0 (theory1_safe var298___carrier__vault__close__t0) )
 )
 
 (assert
   var299_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
-(declare-fun var300___buffer__as_mut_slice__t0 () (_ BitVec 64))
-(declare-fun var301_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:71
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:101
+(declare-fun var301___err__fail_with_system_error__t0 () (_ BitVec 64))
+(declare-fun var302_true__t0 () Bool)
 (assert
-  (= var301_true__t0 (theory1_safe var300___buffer__as_mut_slice__t0) )
+  (= var302_true__t0 (theory1_safe var301___err__fail_with_system_error__t0) )
 )
 
 (assert
-  var301_true__t0
+  var302_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:187
-(declare-fun var302___err__elog__t0 () (_ BitVec 64))
-(declare-fun var303_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:193
+(declare-fun var303___err__eprintf__t0 () (_ BitVec 64))
+(declare-fun var304_true__t0 () Bool)
 (assert
-  (= var303_true__t0 (theory1_safe var302___err__elog__t0) )
-)
-
-(assert
-  var303_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:108
-(declare-fun var304___slice__mut_slice__push__t0 () (_ BitVec 64))
-(declare-fun var305_true__t0 () Bool)
-(assert
-  (= var305_true__t0 (theory1_safe var304___slice__mut_slice__push__t0) )
+  (= var304_true__t0 (theory1_safe var303___err__eprintf__t0) )
 )
 
 (assert
-  var305_true__t0
+  var304_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:236
-(declare-fun var306___buffer__eq_cstr__t0 () (_ BitVec 64))
-(declare-fun var307_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:168
+(declare-fun var305___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
+(declare-fun var306_true__t0 () Bool)
 (assert
-  (= var307_true__t0 (theory1_safe var306___buffer__eq_cstr__t0) )
+  (= var306_true__t0 (theory1_safe var305___slice__mut_slice__append_obj__t0) )
 )
 
 (assert
-  var307_true__t0
+  var306_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
+(declare-fun var307___buffer__format__t0 () (_ BitVec 64))
+(declare-fun var308_true__t0 () Bool)
+(assert
+  (= var308_true__t0 (theory1_safe var307___buffer__format__t0) )
+)
+
+(assert
+  var308_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:64
+(declare-fun var309___err__backtrace__t0 () (_ BitVec 64))
+(declare-fun var310_true__t0 () Bool)
+(assert
+  (= var310_true__t0 (theory1_safe var309___err__backtrace__t0) )
+)
+
+(assert
+  var310_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:282
-(declare-fun var308___carrier__identity__address_from_str__t0 () (_ BitVec 64))
-(declare-fun var309_true__t0 () Bool)
+(declare-fun var311___carrier__identity__address_from_str__t0 () (_ BitVec 64))
+(declare-fun var312_true__t0 () Bool)
 (assert
-  (= var309_true__t0 (theory1_safe var308___carrier__identity__address_from_str__t0) )
+  (= var312_true__t0 (theory1_safe var311___carrier__identity__address_from_str__t0) )
 )
 
 (assert
-  var309_true__t0
+  var312_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:107
-(declare-fun var310___carrier__vault__del_authorization__t0 () (_ BitVec 64))
-(declare-fun var311_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:199
+(declare-fun var313___err__to_str__t0 () (_ BitVec 64))
+(declare-fun var314_true__t0 () Bool)
 (assert
-  (= var311_true__t0 (theory1_safe var310___carrier__vault__del_authorization__t0) )
-)
-
-(assert
-  var311_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:32
-(declare-fun var312___time__to_seconds__t0 () (_ BitVec 64))
-(declare-fun var313_true__t0 () Bool)
-(assert
-  (= var313_true__t0 (theory1_safe var312___time__to_seconds__t0) )
+  (= var314_true__t0 (theory1_safe var313___err__to_str__t0) )
 )
 
 (assert
-  var313_true__t0
+  var314_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:14
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:64
-(declare-fun var315___err__backtrace__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault.zz:148
+(declare-fun var315___carrier__vault__get_local_identity__t0 () (_ BitVec 64))
 (declare-fun var316_true__t0 () Bool)
 (assert
-  (= var316_true__t0 (theory1_safe var315___err__backtrace__t0) )
+  (= var316_true__t0 (theory1_safe var315___carrier__vault__get_local_identity__t0) )
 )
 
 (assert
   var316_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:436
-(declare-fun var317___carrier__vault_toml__i_get_principal_identity__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
+(declare-fun var317___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
 (declare-fun var318_true__t0 () Bool)
 (assert
-  (= var318_true__t0 (theory1_safe var317___carrier__vault_toml__i_get_principal_identity__t0) )
+  (= var318_true__t0 (theory1_safe var317___slice__mut_slice__as_slice__t0) )
 )
 
 (assert
   var318_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:515
-(declare-fun var319___carrier__vault_toml__i_add_authorization__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:168
+(declare-fun var319___err__abort__t0 () (_ BitVec 64))
 (declare-fun var320_true__t0 () Bool)
 (assert
-  (= var320_true__t0 (theory1_safe var319___carrier__vault_toml__i_add_authorization__t0) )
+  (= var320_true__t0 (theory1_safe var319___err__abort__t0) )
 )
 
 (assert
   var320_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:84
-; : /home/runner/work/carrier/carrier/modules/toml/src/lib.zz:103
-(declare-fun var321___toml__close__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
+(declare-fun var321___buffer__cstr__t0 () (_ BitVec 64))
 (declare-fun var322_true__t0 () Bool)
 (assert
-  (= var322_true__t0 (theory1_safe var321___toml__close__t0) )
+  (= var322_true__t0 (theory1_safe var321___buffer__cstr__t0) )
 )
 
 (assert
   var322_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:436
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:158
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
-; literal expr
-(declare-fun var324_literal_Unsigned_16___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:94
+(declare-fun var323___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var324_true__t0 () Bool)
 (assert
-  (= var324_literal_Unsigned_16___t0 (_ bv16 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
-(declare-fun var325_safe_literal_Unsigned_16______safe___carrier__vault__MAX_BROKERS___t0 () Bool)
-(assert
-  (= var325_safe_literal_Unsigned_16______safe___carrier__vault__MAX_BROKERS___t0 (theory1_safe var324_literal_Unsigned_16___t0) )
-)
-
-(declare-fun var323___carrier__vault__MAX_BROKERS__t1 () (_ BitVec 64))
-(assert
-  (= var325_safe_literal_Unsigned_16______safe___carrier__vault__MAX_BROKERS___t0 (theory1_safe var323___carrier__vault__MAX_BROKERS__t1) )
-)
-
-(declare-fun var326_nullterm_literal_Unsigned_16______nullterm___carrier__vault__MAX_BROKERS___t0 () Bool)
-(assert
-  (= var326_nullterm_literal_Unsigned_16______nullterm___carrier__vault__MAX_BROKERS___t0 (theory2_nullterm var324_literal_Unsigned_16___t0) )
+  (= var324_true__t0 (theory1_safe var323___slice__mut_slice__append_cstr__t0) )
 )
 
 (assert
-  (= var326_nullterm_literal_Unsigned_16______nullterm___carrier__vault__MAX_BROKERS___t0 (theory2_nullterm var323___carrier__vault__MAX_BROKERS__t1) )
+  var324_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:25
-(declare-fun var327_implicit_coercion_of_literal_Unsigned_16___t0 () (_ BitVec 64))
-(assert (! (= var327_implicit_coercion_of_literal_Unsigned_16___t0 var324_literal_Unsigned_16___t0) :named A1))(declare-fun var323___carrier__vault__MAX_BROKERS__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:499
+(declare-fun var325___carrier__identity__eq__t0 () (_ BitVec 64))
+(declare-fun var326_true__t0 () Bool)
 (assert
-  (= var323___carrier__vault__MAX_BROKERS__t1  (ite true var327_implicit_coercion_of_literal_Unsigned_16___t0 var323___carrier__vault__MAX_BROKERS__t0)  )
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:35
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:515
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:266
-(declare-fun var328___carrier__identity__identity_from_str__t0 () (_ BitVec 64))
-(declare-fun var329_true__t0 () Bool)
-(assert
-  (= var329_true__t0 (theory1_safe var328___carrier__identity__identity_from_str__t0) )
+  (= var326_true__t0 (theory1_safe var325___carrier__identity__eq__t0) )
 )
 
 (assert
-  var329_true__t0
+  var326_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault.zz:148
-(declare-fun var330___carrier__vault__get_local_identity__t0 () (_ BitVec 64))
-(declare-fun var331_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:454
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:60
+(declare-fun var327___carrier__vault_toml__from_carriertoml_and_secret__t0 () (_ BitVec 64))
+(declare-fun var328_true__t0 () Bool)
 (assert
-  (= var331_true__t0 (theory1_safe var330___carrier__vault__get_local_identity__t0) )
+  (= var328_true__t0 (theory1_safe var327___carrier__vault_toml__from_carriertoml_and_secret__t0) )
 )
 
 (assert
-  var331_true__t0
+  var328_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:521
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:298
+(declare-fun var329___carrier__identity__secret_from_str__t0 () (_ BitVec 64))
+(declare-fun var330_true__t0 () Bool)
+(assert
+  (= var330_true__t0 (theory1_safe var329___carrier__identity__secret_from_str__t0) )
+)
+
+(assert
+  var330_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
+(declare-fun var331___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var332_true__t0 () Bool)
+(assert
+  (= var332_true__t0 (theory1_safe var331___buffer__clear__t0) )
+)
+
+(assert
+  var332_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:164
 ;
 
 
@@ -1623,276 +1625,276 @@
 
 (push 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-(declare-fun var336_deref_S333_e__trace__t0 () (_ BitVec 64))
-(declare-fun var337_len_deref_S333_e____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+(declare-fun var337_deref_S334_e__trace__t0 () (_ BitVec 64))
+(declare-fun var338_len_deref_S334_e____t0 () (_ BitVec 64))
 (assert
-  (= var337_len_deref_S333_e____t0 (theory0_len var336_deref_S333_e__trace__t0) )
+  (= var338_len_deref_S334_e____t0 (theory0_len var337_deref_S334_e__trace__t0) )
 )
 
-(declare-fun var334_et__t0 () (_ BitVec 64))
-(assert (! (= var337_len_deref_S333_e____t0 var334_et__t0) :named A2)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var335_et__t0 () (_ BitVec 64))
+(assert (! (= var338_len_deref_S334_e____t0 var335_et__t0) :named A2)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var333_e__t0 () (_ BitVec 64))
-(declare-fun var339_interpretation_of_theory_safe_over_e__t0 () Bool)
+(declare-fun var334_e__t0 () (_ BitVec 64))
+(declare-fun var340_interpretation_of_theory_safe_over_e__t0 () Bool)
 (assert
-  (= var339_interpretation_of_theory_safe_over_e__t0 (theory1_safe var333_e__t0) )
+  (= var340_interpretation_of_theory_safe_over_e__t0 (theory1_safe var334_e__t0) )
 )
 
-(assert (! var339_interpretation_of_theory_safe_over_e__t0 :named A3))(check-sat)
+(assert (! var340_interpretation_of_theory_safe_over_e__t0 :named A3))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var332_this__t0 () (_ BitVec 64))
-(declare-fun var340_interpretation_of_theory_safe_over_this__t0 () Bool)
+(declare-fun var333_this__t0 () (_ BitVec 64))
+(declare-fun var341_interpretation_of_theory_safe_over_this__t0 () Bool)
 (assert
-  (= var340_interpretation_of_theory_safe_over_this__t0 (theory1_safe var332_this__t0) )
+  (= var341_interpretation_of_theory_safe_over_this__t0 (theory1_safe var333_this__t0) )
 )
 
-(assert (! var340_interpretation_of_theory_safe_over_this__t0 :named A4))(check-sat)
+(assert (! var341_interpretation_of_theory_safe_over_this__t0 :named A4))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
 ; call of ::err::checked
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
-(declare-fun var335_deref_S333_e___t0 () (_ BitVec 64))
-(declare-fun var341_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
+(declare-fun var336_deref_S334_e___t0 () (_ BitVec 64))
+(declare-fun var342_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var341_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t0) )
+  (= var342_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t0) )
 )
 
-(assert (! var341_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A5))(check-sat)
+(assert (! var342_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A5))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
 ; call of static_attest
 ; static_attest
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
 ; call of nullterm
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
-(declare-fun var342_v_string__t0 () (_ BitVec 64))
-(declare-fun var343_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
+(declare-fun var343_v_string__t0 () (_ BitVec 64))
+(declare-fun var344_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
 (assert
-  (= var343_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var342_v_string__t0) )
+  (= var344_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var343_v_string__t0) )
 )
 
-(assert (! var343_interpretation_of_theory_nullterm_over_v_string__t0 :named A6))(check-sat)
+(assert (! var344_interpretation_of_theory_nullterm_over_v_string__t0 :named A6))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:212
-(declare-fun var344_literal_Unsigned_1___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:218
+(declare-fun var345_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var344_literal_Unsigned_1___t0 (_ bv1 64))
+  (= var345_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
 ; call of static_attest
 ; static_attest
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
 ; call of safe
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
-(declare-fun var345_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
+(declare-fun var346_interpretation_of_theory_safe_over_v_string__t0 () Bool)
 (assert
-  (= var345_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var342_v_string__t0) )
+  (= var346_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var343_v_string__t0) )
 )
 
-(assert (! var345_interpretation_of_theory_safe_over_v_string__t0 :named A7))(check-sat)
+(assert (! var346_interpretation_of_theory_safe_over_v_string__t0 :named A7))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
-(declare-fun var346_literal_Unsigned_1___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
+(declare-fun var347_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var346_literal_Unsigned_1___t0 (_ bv1 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
-(declare-fun var348_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert
-  (= var348_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var347_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
-(declare-fun var349_part_mem__t0 () (_ BitVec 64))
-(declare-fun var350_len_part_mem___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+(declare-fun var349_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var350_len_part_mem___t0 (theory0_len var349_part_mem__t0) )
-)
-
-(assert
-  (= var350_len_part_mem___t0 (_ bv400 64))
+  (= var349_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var351_true__t0 () Bool)
+(declare-fun var350_part_mem__t0 () (_ BitVec 64))
+(declare-fun var351_len_part_mem___t0 () (_ BitVec 64))
 (assert
-  (= var351_true__t0 (theory1_safe var349_part_mem__t0) )
+  (= var351_len_part_mem___t0 (theory0_len var350_part_mem__t0) )
 )
 
 (assert
-  var351_true__t0
+  (= var351_len_part_mem___t0 (_ bv400 64))
+
+)
+
+(declare-fun var352_true__t0 () Bool)
+(assert
+  (= var352_true__t0 (theory1_safe var350_part_mem__t0) )
 )
 
 (assert
-  (= var348_literal_Unsigned_400___t0 (theory0_len var349_part_mem__t0) )
+  var352_true__t0
+)
+
+(assert
+  (= var349_literal_Unsigned_400___t0 (theory0_len var350_part_mem__t0) )
 )
 
 ; literal expr
-(declare-fun var352_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var353_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var352_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var353_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var353_literal_array_353__t0 () (_ BitVec 64))
-(declare-fun var354_true__t0 () Bool)
+(declare-fun var354_literal_array_354__t0 () (_ BitVec 64))
+(declare-fun var355_true__t0 () Bool)
 (assert
-  (= var354_true__t0 (theory1_safe var353_literal_array_353__t0) )
+  (= var355_true__t0 (theory1_safe var354_literal_array_354__t0) )
 )
 
 (assert
-  var354_true__t0
+  var355_true__t0
 )
 
-(declare-fun var355_safe_literal_array_353_____safe_part___t0 () Bool)
+(declare-fun var356_safe_literal_array_354_____safe_part___t0 () Bool)
 (assert
-  (= var355_safe_literal_array_353_____safe_part___t0 (theory1_safe var353_literal_array_353__t0) )
+  (= var356_safe_literal_array_354_____safe_part___t0 (theory1_safe var354_literal_array_354__t0) )
 )
 
-(declare-fun var347_part__t1 () (_ BitVec 64))
+(declare-fun var348_part__t1 () (_ BitVec 64))
 (assert
-  (= var355_safe_literal_array_353_____safe_part___t0 (theory1_safe var347_part__t1) )
+  (= var356_safe_literal_array_354_____safe_part___t0 (theory1_safe var348_part__t1) )
 )
 
-(declare-fun var356_nullterm_literal_array_353_____nullterm_part___t0 () Bool)
+(declare-fun var357_nullterm_literal_array_354_____nullterm_part___t0 () Bool)
 (assert
-  (= var356_nullterm_literal_array_353_____nullterm_part___t0 (theory2_nullterm var353_literal_array_353__t0) )
-)
-
-(assert
-  (= var356_nullterm_literal_array_353_____nullterm_part___t0 (theory2_nullterm var347_part__t1) )
-)
-
-(declare-fun var357_len_part___t0 () (_ BitVec 64))
-(assert
-  (= var357_len_part___t0 (theory0_len var347_part__t1) )
+  (= var357_nullterm_literal_array_354_____nullterm_part___t0 (theory2_nullterm var354_literal_array_354__t0) )
 )
 
 (assert
-  (= var357_len_part___t0 (_ bv1 64))
+  (= var357_nullterm_literal_array_354_____nullterm_part___t0 (theory2_nullterm var348_part__t1) )
+)
+
+(declare-fun var358_len_part___t0 () (_ BitVec 64))
+(assert
+  (= var358_len_part___t0 (theory0_len var348_part__t1) )
+)
+
+(assert
+  (= var358_len_part___t0 (_ bv1 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; call of ::buffer::make
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
-(declare-fun var358_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var359_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+(declare-fun var359_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var360_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var359_len_addressof_part____t0 (theory0_len var358_addressof_part___t0) )
+  (= var360_len_addressof_part____t0 (theory0_len var359_addressof_part___t0) )
 )
 
 (assert
-  (= var359_len_addressof_part____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var358_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var360_true__t0 () Bool)
-(assert
-  (= var360_true__t0 (theory1_safe var358_addressof_part___t0) )
-)
-
-(assert
-  var360_true__t0
-)
-
-(declare-fun var361_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var362_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var362_len_addressof_part____t0 (theory0_len var361_addressof_part___t0) )
-)
-
-(assert
-  (= var362_len_addressof_part____t0 (_ bv1 64))
+  (= var360_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var361_addressof_part___t0 (_ bv347 64))
+  (= var359_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var363_true__t0 () Bool)
+(declare-fun var361_true__t0 () Bool)
 (assert
-  (= var363_true__t0 (theory1_safe var361_addressof_part___t0) )
-)
-
-(assert
-  var363_true__t0
-)
-
-(declare-fun var364_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var365_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var365_len_addressof_part____t0 (theory0_len var364_addressof_part___t0) )
+  (= var361_true__t0 (theory1_safe var359_addressof_part___t0) )
 )
 
 (assert
-  (= var365_len_addressof_part____t0 (_ bv1 64))
+  var361_true__t0
+)
+
+(declare-fun var362_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var363_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var363_len_addressof_part____t0 (theory0_len var362_addressof_part___t0) )
+)
+
+(assert
+  (= var363_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var364_addressof_part___t0 (_ bv347 64))
+  (= var362_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var366_true__t0 () Bool)
+(declare-fun var364_true__t0 () Bool)
 (assert
-  (= var366_true__t0 (theory1_safe var364_addressof_part___t0) )
+  (= var364_true__t0 (theory1_safe var362_addressof_part___t0) )
 )
 
 (assert
-  var366_true__t0
+  var364_true__t0
 )
 
-(declare-fun var367_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var367_cast_of_addressof_part___t0 var364_addressof_part___t0) :named A8)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+(declare-fun var365_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var366_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var366_len_addressof_part____t0 (theory0_len var365_addressof_part___t0) )
+)
+
+(assert
+  (= var366_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var365_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var367_true__t0 () Bool)
+(assert
+  (= var367_true__t0 (theory1_safe var365_addressof_part___t0) )
+)
+
+(assert
+  var367_true__t0
+)
+
+(declare-fun var368_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var368_cast_of_addressof_part___t0 var365_addressof_part___t0) :named A8)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var368_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var369_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var368_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var369_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -1903,31 +1905,31 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var369_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var370_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var369_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var367_cast_of_addressof_part___t0) )
+  (= var370_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var368_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; literal expr
-(declare-fun var370_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var371_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var370_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var371_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
-(declare-fun var371_infix_expression__t0 () Bool)
+(declare-fun var372_infix_expression__t0 () Bool)
 (assert
-  (=  var371_infix_expression__t0 (bvugt var368_literal_Unsigned_400___t0 var370_literal_Unsigned_0___t0))
+  (=  var372_infix_expression__t0 (bvugt var369_literal_Unsigned_400___t0 var371_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var369_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var371_infix_expression__t0 ) ))
+  (and true (or (not var370_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var372_infix_expression__t0 ) ))
 
 )
 
@@ -1939,41 +1941,41 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var369_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var370_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var370_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var371_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t2 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t2 () (_ BitVec 64))
 (assert
-  (= var347_part__t2  (ite true var347_part__t2 var347_part__t1)  )
+  (= var348_part__t2  (ite true var348_part__t2 var348_part__t1)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; callsite effects
-(declare-fun var372_return_value_of___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var374_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
+(declare-fun var373_return_value_of___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var375_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
 (assert
-  (= var374_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var372_return_value_of___buffer__make__t0) )
+  (= var375_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var373_return_value_of___buffer__make__t0) )
 )
 
-(declare-fun var373_return__t1 () (_ BitVec 64))
+(declare-fun var374_return__t1 () (_ BitVec 64))
 (assert
-  (= var374_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var373_return__t1) )
+  (= var375_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var374_return__t1) )
 )
 
-(declare-fun var375_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
+(declare-fun var376_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
 (assert
-  (= var375_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var372_return_value_of___buffer__make__t0) )
+  (= var376_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var373_return_value_of___buffer__make__t0) )
 )
 
 (assert
-  (= var375_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var373_return__t1) )
+  (= var376_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var374_return__t1) )
 )
 
-(declare-fun var373_return__t0 () (_ BitVec 64))
+(declare-fun var374_return__t0 () (_ BitVec 64))
 (assert
-  (= var373_return__t1  (ite true var372_return_value_of___buffer__make__t0 var373_return__t0)  )
+  (= var374_return__t1  (ite true var373_return_value_of___buffer__make__t0 var374_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:27
@@ -1996,9 +1998,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var376_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var377_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var376_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var367_cast_of_addressof_part___t0) )
+  (= var377_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var368_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2007,23 +2009,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var377_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var378_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var377_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var378_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var378_infix_expression__t0 () Bool)
-(assert
-  (=  var378_infix_expression__t0 (bvuge var377_literal_Unsigned_400___t0 var368_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var379_infix_expression__t0 () Bool)
 (assert
-  (=  var379_infix_expression__t0 (and var376_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var378_infix_expression__t0))
+  (=  var379_infix_expression__t0 (bvuge var378_literal_Unsigned_400___t0 var369_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var380_infix_expression__t0 () Bool)
+(assert
+  (=  var380_infix_expression__t0 (and var377_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var379_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2035,24 +2037,24 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var381_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var382_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var381_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var382_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var382_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var382_implicit_coercion_of_literal_Unsigned_400___t0 var381_literal_Unsigned_400___t0) :named A9)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var383_infix_expression__t0 () Bool)
-(declare-fun var380_part_at__t0 () (_ BitVec 64))
+(declare-fun var383_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var383_implicit_coercion_of_literal_Unsigned_400___t0 var382_literal_Unsigned_400___t0) :named A9)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var384_infix_expression__t0 () Bool)
+(declare-fun var381_part_at__t0 () (_ BitVec 64))
 (assert
-  (=  var383_infix_expression__t0 (bvult var380_part_at__t0 var382_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var384_infix_expression__t0 (bvult var381_part_at__t0 var383_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var384_infix_expression__t0 () Bool)
+(declare-fun var385_infix_expression__t0 () Bool)
 (assert
-  (=  var384_infix_expression__t0 (and var379_infix_expression__t0 var383_infix_expression__t0))
+  (=  var385_infix_expression__t0 (and var380_infix_expression__t0 var384_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2065,207 +2067,207 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var385_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var386_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var385_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var386_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var386_infix_expression__t0 () Bool)
+(declare-fun var387_infix_expression__t0 () Bool)
 (assert
-  (=  var386_infix_expression__t0 (and var384_infix_expression__t0 var385_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var387_infix_expression__t0 (and var385_infix_expression__t0 var386_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var386_infix_expression__t0 :named A10))(check-sat)
+(assert (! var387_infix_expression__t0 :named A10))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
-(declare-fun var387_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+(declare-fun var388_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
 (assert
-  (= var387_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var373_return__t1) )
+  (= var388_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var374_return__t1) )
 )
 
-(declare-fun var372_return_value_of___buffer__make__t1 () (_ BitVec 64))
+(declare-fun var373_return_value_of___buffer__make__t1 () (_ BitVec 64))
 (assert
-  (= var387_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var372_return_value_of___buffer__make__t1) )
+  (= var388_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var373_return_value_of___buffer__make__t1) )
 )
 
-(declare-fun var388_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var389_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
 (assert
-  (= var388_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var373_return__t1) )
-)
-
-(assert
-  (= var388_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var372_return_value_of___buffer__make__t1) )
+  (= var389_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var374_return__t1) )
 )
 
 (assert
-  (= var372_return_value_of___buffer__make__t1  (ite true var373_return__t1 var372_return_value_of___buffer__make__t0)  )
+  (= var389_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var373_return_value_of___buffer__make__t1) )
+)
+
+(assert
+  (= var373_return_value_of___buffer__make__t1  (ite true var374_return__t1 var373_return_value_of___buffer__make__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
-(declare-fun var390_literal_Unsigned_400___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+(declare-fun var391_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var390_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var391_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var391_vv_mem__t0 () (_ BitVec 64))
-(declare-fun var392_len_vv_mem___t0 () (_ BitVec 64))
+(declare-fun var392_vv_mem__t0 () (_ BitVec 64))
+(declare-fun var393_len_vv_mem___t0 () (_ BitVec 64))
 (assert
-  (= var392_len_vv_mem___t0 (theory0_len var391_vv_mem__t0) )
+  (= var393_len_vv_mem___t0 (theory0_len var392_vv_mem__t0) )
 )
 
 (assert
-  (= var392_len_vv_mem___t0 (_ bv400 64))
+  (= var393_len_vv_mem___t0 (_ bv400 64))
 
 )
 
-(declare-fun var393_true__t0 () Bool)
+(declare-fun var394_true__t0 () Bool)
 (assert
-  (= var393_true__t0 (theory1_safe var391_vv_mem__t0) )
+  (= var394_true__t0 (theory1_safe var392_vv_mem__t0) )
 )
 
 (assert
-  var393_true__t0
+  var394_true__t0
 )
 
 (assert
-  (= var390_literal_Unsigned_400___t0 (theory0_len var391_vv_mem__t0) )
+  (= var391_literal_Unsigned_400___t0 (theory0_len var392_vv_mem__t0) )
 )
 
 ; literal expr
-(declare-fun var394_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var395_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var394_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var395_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var395_literal_array_395__t0 () (_ BitVec 64))
-(declare-fun var396_true__t0 () Bool)
+(declare-fun var396_literal_array_396__t0 () (_ BitVec 64))
+(declare-fun var397_true__t0 () Bool)
 (assert
-  (= var396_true__t0 (theory1_safe var395_literal_array_395__t0) )
+  (= var397_true__t0 (theory1_safe var396_literal_array_396__t0) )
 )
 
 (assert
-  var396_true__t0
+  var397_true__t0
 )
 
-(declare-fun var397_safe_literal_array_395_____safe_vv___t0 () Bool)
+(declare-fun var398_safe_literal_array_396_____safe_vv___t0 () Bool)
 (assert
-  (= var397_safe_literal_array_395_____safe_vv___t0 (theory1_safe var395_literal_array_395__t0) )
+  (= var398_safe_literal_array_396_____safe_vv___t0 (theory1_safe var396_literal_array_396__t0) )
 )
 
-(declare-fun var389_vv__t1 () (_ BitVec 64))
+(declare-fun var390_vv__t1 () (_ BitVec 64))
 (assert
-  (= var397_safe_literal_array_395_____safe_vv___t0 (theory1_safe var389_vv__t1) )
+  (= var398_safe_literal_array_396_____safe_vv___t0 (theory1_safe var390_vv__t1) )
 )
 
-(declare-fun var398_nullterm_literal_array_395_____nullterm_vv___t0 () Bool)
+(declare-fun var399_nullterm_literal_array_396_____nullterm_vv___t0 () Bool)
 (assert
-  (= var398_nullterm_literal_array_395_____nullterm_vv___t0 (theory2_nullterm var395_literal_array_395__t0) )
-)
-
-(assert
-  (= var398_nullterm_literal_array_395_____nullterm_vv___t0 (theory2_nullterm var389_vv__t1) )
-)
-
-(declare-fun var399_len_vv___t0 () (_ BitVec 64))
-(assert
-  (= var399_len_vv___t0 (theory0_len var389_vv__t1) )
+  (= var399_nullterm_literal_array_396_____nullterm_vv___t0 (theory2_nullterm var396_literal_array_396__t0) )
 )
 
 (assert
-  (= var399_len_vv___t0 (_ bv1 64))
+  (= var399_nullterm_literal_array_396_____nullterm_vv___t0 (theory2_nullterm var390_vv__t1) )
+)
+
+(declare-fun var400_len_vv___t0 () (_ BitVec 64))
+(assert
+  (= var400_len_vv___t0 (theory0_len var390_vv__t1) )
+)
+
+(assert
+  (= var400_len_vv___t0 (_ bv1 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; call of ::buffer::make
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
-(declare-fun var400_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var401_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+(declare-fun var401_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var402_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var401_len_addressof_vv____t0 (theory0_len var400_addressof_vv___t0) )
+  (= var402_len_addressof_vv____t0 (theory0_len var401_addressof_vv___t0) )
 )
 
 (assert
-  (= var401_len_addressof_vv____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var400_addressof_vv___t0 (_ bv389 64))
-
-)
-
-(declare-fun var402_true__t0 () Bool)
-(assert
-  (= var402_true__t0 (theory1_safe var400_addressof_vv___t0) )
-)
-
-(assert
-  var402_true__t0
-)
-
-(declare-fun var403_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var404_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var404_len_addressof_vv____t0 (theory0_len var403_addressof_vv___t0) )
-)
-
-(assert
-  (= var404_len_addressof_vv____t0 (_ bv1 64))
+  (= var402_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var403_addressof_vv___t0 (_ bv389 64))
+  (= var401_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var405_true__t0 () Bool)
+(declare-fun var403_true__t0 () Bool)
 (assert
-  (= var405_true__t0 (theory1_safe var403_addressof_vv___t0) )
-)
-
-(assert
-  var405_true__t0
-)
-
-(declare-fun var406_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var407_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var407_len_addressof_vv____t0 (theory0_len var406_addressof_vv___t0) )
+  (= var403_true__t0 (theory1_safe var401_addressof_vv___t0) )
 )
 
 (assert
-  (= var407_len_addressof_vv____t0 (_ bv1 64))
+  var403_true__t0
+)
+
+(declare-fun var404_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var405_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var405_len_addressof_vv____t0 (theory0_len var404_addressof_vv___t0) )
+)
+
+(assert
+  (= var405_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var406_addressof_vv___t0 (_ bv389 64))
+  (= var404_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var408_true__t0 () Bool)
+(declare-fun var406_true__t0 () Bool)
 (assert
-  (= var408_true__t0 (theory1_safe var406_addressof_vv___t0) )
+  (= var406_true__t0 (theory1_safe var404_addressof_vv___t0) )
 )
 
 (assert
-  var408_true__t0
+  var406_true__t0
 )
 
-(declare-fun var409_cast_of_addressof_vv___t0 () (_ BitVec 64))
-(assert (! (= var409_cast_of_addressof_vv___t0 var406_addressof_vv___t0) :named A11)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+(declare-fun var407_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var408_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var408_len_addressof_vv____t0 (theory0_len var407_addressof_vv___t0) )
+)
+
+(assert
+  (= var408_len_addressof_vv____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var407_addressof_vv___t0 (_ bv390 64))
+
+)
+
+(declare-fun var409_true__t0 () Bool)
+(assert
+  (= var409_true__t0 (theory1_safe var407_addressof_vv___t0) )
+)
+
+(assert
+  var409_true__t0
+)
+
+(declare-fun var410_cast_of_addressof_vv___t0 () (_ BitVec 64))
+(assert (! (= var410_cast_of_addressof_vv___t0 var407_addressof_vv___t0) :named A11)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; literal expr
-(declare-fun var410_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var411_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var410_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var411_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -2276,31 +2278,31 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var411_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var412_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var411_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var409_cast_of_addressof_vv___t0) )
+  (= var412_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var410_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; literal expr
-(declare-fun var412_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var413_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var412_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var413_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
-(declare-fun var413_infix_expression__t0 () Bool)
+(declare-fun var414_infix_expression__t0 () Bool)
 (assert
-  (=  var413_infix_expression__t0 (bvugt var410_literal_Unsigned_400___t0 var412_literal_Unsigned_0___t0))
+  (=  var414_infix_expression__t0 (bvugt var411_literal_Unsigned_400___t0 var413_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var411_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var413_infix_expression__t0 ) ))
+  (and true (or (not var412_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var414_infix_expression__t0 ) ))
 
 )
 
@@ -2312,41 +2314,41 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var411_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var412_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var412_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var413_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 389 to temporal +1 because of function borrow
-(declare-fun var389_vv__t2 () (_ BitVec 64))
+; 390 to temporal +1 because of function borrow
+(declare-fun var390_vv__t2 () (_ BitVec 64))
 (assert
-  (= var389_vv__t2  (ite true var389_vv__t2 var389_vv__t1)  )
+  (= var390_vv__t2  (ite true var390_vv__t2 var390_vv__t1)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; callsite effects
-(declare-fun var414_return_value_of___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var416_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
+(declare-fun var415_return_value_of___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var417_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
 (assert
-  (= var416_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var414_return_value_of___buffer__make__t0) )
+  (= var417_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var415_return_value_of___buffer__make__t0) )
 )
 
-(declare-fun var415_return__t1 () (_ BitVec 64))
+(declare-fun var416_return__t1 () (_ BitVec 64))
 (assert
-  (= var416_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var415_return__t1) )
+  (= var417_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var416_return__t1) )
 )
 
-(declare-fun var417_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
+(declare-fun var418_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
 (assert
-  (= var417_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var414_return_value_of___buffer__make__t0) )
+  (= var418_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var415_return_value_of___buffer__make__t0) )
 )
 
 (assert
-  (= var417_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var415_return__t1) )
+  (= var418_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var416_return__t1) )
 )
 
-(declare-fun var415_return__t0 () (_ BitVec 64))
+(declare-fun var416_return__t0 () (_ BitVec 64))
 (assert
-  (= var415_return__t1  (ite true var414_return_value_of___buffer__make__t0 var415_return__t0)  )
+  (= var416_return__t1  (ite true var415_return_value_of___buffer__make__t0 var416_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:27
@@ -2369,9 +2371,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var418_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var419_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var418_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var409_cast_of_addressof_vv___t0) )
+  (= var419_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var410_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2380,23 +2382,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var419_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var420_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var419_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var420_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var420_infix_expression__t0 () Bool)
-(assert
-  (=  var420_infix_expression__t0 (bvuge var419_literal_Unsigned_400___t0 var410_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var421_infix_expression__t0 () Bool)
 (assert
-  (=  var421_infix_expression__t0 (and var418_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var420_infix_expression__t0))
+  (=  var421_infix_expression__t0 (bvuge var420_literal_Unsigned_400___t0 var411_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var422_infix_expression__t0 () Bool)
+(assert
+  (=  var422_infix_expression__t0 (and var419_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var421_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2408,24 +2410,24 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var423_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var424_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var423_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var424_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var424_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var424_implicit_coercion_of_literal_Unsigned_400___t0 var423_literal_Unsigned_400___t0) :named A12)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var425_infix_expression__t0 () Bool)
-(declare-fun var422_vv_at__t0 () (_ BitVec 64))
+(declare-fun var425_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var425_implicit_coercion_of_literal_Unsigned_400___t0 var424_literal_Unsigned_400___t0) :named A12)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var426_infix_expression__t0 () Bool)
+(declare-fun var423_vv_at__t0 () (_ BitVec 64))
 (assert
-  (=  var425_infix_expression__t0 (bvult var422_vv_at__t0 var424_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var426_infix_expression__t0 (bvult var423_vv_at__t0 var425_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var426_infix_expression__t0 () Bool)
+(declare-fun var427_infix_expression__t0 () Bool)
 (assert
-  (=  var426_infix_expression__t0 (and var421_infix_expression__t0 var425_infix_expression__t0))
+  (=  var427_infix_expression__t0 (and var422_infix_expression__t0 var426_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2438,148 +2440,148 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var427_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var428_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var427_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var428_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var428_infix_expression__t0 () Bool)
+(declare-fun var429_infix_expression__t0 () Bool)
 (assert
-  (=  var428_infix_expression__t0 (and var426_infix_expression__t0 var427_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var429_infix_expression__t0 (and var427_infix_expression__t0 var428_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var428_infix_expression__t0 :named A13))(check-sat)
+(assert (! var429_infix_expression__t0 :named A13))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
-(declare-fun var429_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+(declare-fun var430_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
 (assert
-  (= var429_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var415_return__t1) )
+  (= var430_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var416_return__t1) )
 )
 
-(declare-fun var414_return_value_of___buffer__make__t1 () (_ BitVec 64))
+(declare-fun var415_return_value_of___buffer__make__t1 () (_ BitVec 64))
 (assert
-  (= var429_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var414_return_value_of___buffer__make__t1) )
+  (= var430_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var415_return_value_of___buffer__make__t1) )
 )
 
-(declare-fun var430_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var431_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
 (assert
-  (= var430_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var415_return__t1) )
-)
-
-(assert
-  (= var430_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var414_return_value_of___buffer__make__t1) )
+  (= var431_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var416_return__t1) )
 )
 
 (assert
-  (= var414_return_value_of___buffer__make__t1  (ite true var415_return__t1 var414_return_value_of___buffer__make__t0)  )
+  (= var431_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var415_return_value_of___buffer__make__t1) )
+)
+
+(assert
+  (= var415_return_value_of___buffer__make__t1  (ite true var416_return__t1 var415_return_value_of___buffer__make__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
 ; call of ::buffer::append_cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-(declare-fun var432_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var433_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+(declare-fun var433_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var434_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var433_len_addressof_vv____t0 (theory0_len var432_addressof_vv___t0) )
+  (= var434_len_addressof_vv____t0 (theory0_len var433_addressof_vv___t0) )
 )
 
 (assert
-  (= var433_len_addressof_vv____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var432_addressof_vv___t0 (_ bv389 64))
-
-)
-
-(declare-fun var434_true__t0 () Bool)
-(assert
-  (= var434_true__t0 (theory1_safe var432_addressof_vv___t0) )
-)
-
-(assert
-  var434_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-(declare-fun var435_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var436_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var436_len_addressof_vv____t0 (theory0_len var435_addressof_vv___t0) )
-)
-
-(assert
-  (= var436_len_addressof_vv____t0 (_ bv1 64))
+  (= var434_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var435_addressof_vv___t0 (_ bv389 64))
+  (= var433_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var437_true__t0 () Bool)
+(declare-fun var435_true__t0 () Bool)
 (assert
-  (= var437_true__t0 (theory1_safe var435_addressof_vv___t0) )
+  (= var435_true__t0 (theory1_safe var433_addressof_vv___t0) )
 )
 
 (assert
-  var437_true__t0
+  var435_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-(declare-fun var438_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var439_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+(declare-fun var436_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var437_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var439_len_addressof_vv____t0 (theory0_len var438_addressof_vv___t0) )
+  (= var437_len_addressof_vv____t0 (theory0_len var436_addressof_vv___t0) )
 )
 
 (assert
-  (= var439_len_addressof_vv____t0 (_ bv1 64))
+  (= var437_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var438_addressof_vv___t0 (_ bv389 64))
+  (= var436_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var440_true__t0 () Bool)
+(declare-fun var438_true__t0 () Bool)
 (assert
-  (= var440_true__t0 (theory1_safe var438_addressof_vv___t0) )
+  (= var438_true__t0 (theory1_safe var436_addressof_vv___t0) )
 )
 
 (assert
-  var440_true__t0
+  var438_true__t0
 )
 
-(declare-fun var441_cast_of_addressof_vv___t0 () (_ BitVec 64))
-(assert (! (= var441_cast_of_addressof_vv___t0 var438_addressof_vv___t0) :named A14)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+(declare-fun var439_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var440_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var440_len_addressof_vv____t0 (theory0_len var439_addressof_vv___t0) )
+)
+
+(assert
+  (= var440_len_addressof_vv____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var439_addressof_vv___t0 (_ bv390 64))
+
+)
+
+(declare-fun var441_true__t0 () Bool)
+(assert
+  (= var441_true__t0 (theory1_safe var439_addressof_vv___t0) )
+)
+
+(assert
+  var441_true__t0
+)
+
+(declare-fun var442_cast_of_addressof_vv___t0 () (_ BitVec 64))
+(assert (! (= var442_cast_of_addressof_vv___t0 var439_addressof_vv___t0) :named A14)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; literal expr
-(declare-fun var442_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var443_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var442_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var443_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
 ;callsite_assert
 (push 1)
 
@@ -2587,18 +2589,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var443_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var444_interpretation_of_theory_safe_over_v_string__t0 () Bool)
 (assert
-  (= var443_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var342_v_string__t0) )
+  (= var444_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var343_v_string__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var444_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var445_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var444_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var441_cast_of_addressof_vv___t0) )
+  (= var445_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var442_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:144
@@ -2608,9 +2610,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:144
-(declare-fun var445_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var446_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
 (assert
-  (= var445_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var342_v_string__t0) )
+  (= var446_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var343_v_string__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:145
@@ -2633,9 +2635,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var446_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var447_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var446_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var441_cast_of_addressof_vv___t0) )
+  (= var447_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var442_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2644,23 +2646,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var447_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var448_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var447_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var448_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var448_infix_expression__t0 () Bool)
-(assert
-  (=  var448_infix_expression__t0 (bvuge var447_literal_Unsigned_400___t0 var442_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var449_infix_expression__t0 () Bool)
 (assert
-  (=  var449_infix_expression__t0 (and var446_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var448_infix_expression__t0))
+  (=  var449_infix_expression__t0 (bvuge var448_literal_Unsigned_400___t0 var443_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var450_infix_expression__t0 () Bool)
+(assert
+  (=  var450_infix_expression__t0 (and var447_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var449_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2671,23 +2673,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var450_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var451_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var450_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var451_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var451_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var451_implicit_coercion_of_literal_Unsigned_400___t0 var450_literal_Unsigned_400___t0) :named A15)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var452_infix_expression__t0 () Bool)
+(declare-fun var452_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var452_implicit_coercion_of_literal_Unsigned_400___t0 var451_literal_Unsigned_400___t0) :named A15)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var453_infix_expression__t0 () Bool)
 (assert
-  (=  var452_infix_expression__t0 (bvult var422_vv_at__t0 var451_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var453_infix_expression__t0 (bvult var423_vv_at__t0 var452_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var453_infix_expression__t0 () Bool)
+(declare-fun var454_infix_expression__t0 () Bool)
 (assert
-  (=  var453_infix_expression__t0 (and var449_infix_expression__t0 var452_infix_expression__t0))
+  (=  var454_infix_expression__t0 (and var450_infix_expression__t0 var453_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2700,22 +2702,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var454_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var455_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var454_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var455_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var455_infix_expression__t0 () Bool)
+(declare-fun var456_infix_expression__t0 () Bool)
 (assert
-  (=  var455_infix_expression__t0 (and var453_infix_expression__t0 var454_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var456_infix_expression__t0 (and var454_infix_expression__t0 var455_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and true (or (not var443_interpretation_of_theory_safe_over_v_string__t0 ) (not var444_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var445_interpretation_of_theory_nullterm_over_v_string__t0 ) (not var455_infix_expression__t0 ) ))
+  (and true (or (not var444_interpretation_of_theory_safe_over_v_string__t0 ) (not var445_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var446_interpretation_of_theory_nullterm_over_v_string__t0 ) (not var456_infix_expression__t0 ) ))
 
 )
 
@@ -2727,46 +2729,46 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var443_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var444_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var445_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var446_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var447_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var450_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var454_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var444_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var445_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var446_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var447_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var448_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var451_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var455_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 ; borrows after call
-; 389 to temporal +1 because of function borrow
-(declare-fun var389_vv__t3 () (_ BitVec 64))
+; 390 to temporal +1 because of function borrow
+(declare-fun var390_vv__t3 () (_ BitVec 64))
 (assert
-  (= var389_vv__t3  (ite true var389_vv__t3 var389_vv__t2)  )
+  (= var390_vv__t3  (ite true var390_vv__t3 var390_vv__t2)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
 ; callsite effects
-(declare-fun var456_return_value_of___buffer__append_cstr__t0 () (_ BitVec 64))
-(declare-fun var458_safe_return_value_of___buffer__append_cstr_____safe_return___t0 () Bool)
+(declare-fun var457_return_value_of___buffer__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var459_safe_return_value_of___buffer__append_cstr_____safe_return___t0 () Bool)
 (assert
-  (= var458_safe_return_value_of___buffer__append_cstr_____safe_return___t0 (theory1_safe var456_return_value_of___buffer__append_cstr__t0) )
+  (= var459_safe_return_value_of___buffer__append_cstr_____safe_return___t0 (theory1_safe var457_return_value_of___buffer__append_cstr__t0) )
 )
 
-(declare-fun var457_return__t1 () (_ BitVec 64))
+(declare-fun var458_return__t1 () (_ BitVec 64))
 (assert
-  (= var458_safe_return_value_of___buffer__append_cstr_____safe_return___t0 (theory1_safe var457_return__t1) )
+  (= var459_safe_return_value_of___buffer__append_cstr_____safe_return___t0 (theory1_safe var458_return__t1) )
 )
 
-(declare-fun var459_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 () Bool)
+(declare-fun var460_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 () Bool)
 (assert
-  (= var459_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 (theory2_nullterm var456_return_value_of___buffer__append_cstr__t0) )
+  (= var460_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 (theory2_nullterm var457_return_value_of___buffer__append_cstr__t0) )
 )
 
 (assert
-  (= var459_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 (theory2_nullterm var457_return__t1) )
+  (= var460_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 (theory2_nullterm var458_return__t1) )
 )
 
-(declare-fun var457_return__t0 () (_ BitVec 64))
+(declare-fun var458_return__t0 () (_ BitVec 64))
 (assert
-  (= var457_return__t1  (ite true var456_return_value_of___buffer__append_cstr__t0 var457_return__t0)  )
+  (= var458_return__t1  (ite true var457_return_value_of___buffer__append_cstr__t0 var458_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:146
@@ -2789,9 +2791,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var460_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var461_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var460_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var441_cast_of_addressof_vv___t0) )
+  (= var461_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var442_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -2800,23 +2802,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var461_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var462_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var461_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var462_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var462_infix_expression__t0 () Bool)
-(assert
-  (=  var462_infix_expression__t0 (bvuge var461_literal_Unsigned_400___t0 var442_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var463_infix_expression__t0 () Bool)
 (assert
-  (=  var463_infix_expression__t0 (and var460_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var462_infix_expression__t0))
+  (=  var463_infix_expression__t0 (bvuge var462_literal_Unsigned_400___t0 var443_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var464_infix_expression__t0 () Bool)
+(assert
+  (=  var464_infix_expression__t0 (and var461_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var463_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -2827,23 +2829,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var464_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var465_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var464_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var465_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var465_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var465_implicit_coercion_of_literal_Unsigned_400___t0 var464_literal_Unsigned_400___t0) :named A16)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var466_infix_expression__t0 () Bool)
+(declare-fun var466_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var466_implicit_coercion_of_literal_Unsigned_400___t0 var465_literal_Unsigned_400___t0) :named A16)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var467_infix_expression__t0 () Bool)
 (assert
-  (=  var466_infix_expression__t0 (bvult var422_vv_at__t0 var465_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var467_infix_expression__t0 (bvult var423_vv_at__t0 var466_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var467_infix_expression__t0 () Bool)
+(declare-fun var468_infix_expression__t0 () Bool)
 (assert
-  (=  var467_infix_expression__t0 (and var463_infix_expression__t0 var466_infix_expression__t0))
+  (=  var468_infix_expression__t0 (and var464_infix_expression__t0 var467_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -2856,328 +2858,328 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var468_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var469_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var468_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var469_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var469_infix_expression__t0 () Bool)
+(declare-fun var470_infix_expression__t0 () Bool)
 (assert
-  (=  var469_infix_expression__t0 (and var467_infix_expression__t0 var468_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var470_infix_expression__t0 (and var468_infix_expression__t0 var469_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var469_infix_expression__t0 :named A17))(check-sat)
+(assert (! var470_infix_expression__t0 :named A17))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:217
-(declare-fun var470_safe_return_____safe_return_value_of___buffer__append_cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+(declare-fun var471_safe_return_____safe_return_value_of___buffer__append_cstr___t0 () Bool)
 (assert
-  (= var470_safe_return_____safe_return_value_of___buffer__append_cstr___t0 (theory1_safe var457_return__t1) )
+  (= var471_safe_return_____safe_return_value_of___buffer__append_cstr___t0 (theory1_safe var458_return__t1) )
 )
 
-(declare-fun var456_return_value_of___buffer__append_cstr__t1 () (_ BitVec 64))
+(declare-fun var457_return_value_of___buffer__append_cstr__t1 () (_ BitVec 64))
 (assert
-  (= var470_safe_return_____safe_return_value_of___buffer__append_cstr___t0 (theory1_safe var456_return_value_of___buffer__append_cstr__t1) )
+  (= var471_safe_return_____safe_return_value_of___buffer__append_cstr___t0 (theory1_safe var457_return_value_of___buffer__append_cstr__t1) )
 )
 
-(declare-fun var471_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 () Bool)
+(declare-fun var472_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 () Bool)
 (assert
-  (= var471_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 (theory2_nullterm var457_return__t1) )
-)
-
-(assert
-  (= var471_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 (theory2_nullterm var456_return_value_of___buffer__append_cstr__t1) )
+  (= var472_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 (theory2_nullterm var458_return__t1) )
 )
 
 (assert
-  (= var456_return_value_of___buffer__append_cstr__t1  (ite true var457_return__t1 var456_return_value_of___buffer__append_cstr__t0)  )
+  (= var472_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 (theory2_nullterm var457_return_value_of___buffer__append_cstr__t1) )
+)
+
+(assert
+  (= var457_return_value_of___buffer__append_cstr__t1  (ite true var458_return__t1 var457_return_value_of___buffer__append_cstr__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
 ; literal expr
-(declare-fun var473_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var474_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var473_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var474_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
-(declare-fun var474_safe_literal_Unsigned_0______safe_iterator___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+(declare-fun var475_safe_literal_Unsigned_0______safe_iterator___t0 () Bool)
 (assert
-  (= var474_safe_literal_Unsigned_0______safe_iterator___t0 (theory1_safe var473_literal_Unsigned_0___t0) )
+  (= var475_safe_literal_Unsigned_0______safe_iterator___t0 (theory1_safe var474_literal_Unsigned_0___t0) )
 )
 
-(declare-fun var472_iterator__t1 () (_ BitVec 64))
+(declare-fun var473_iterator__t1 () (_ BitVec 64))
 (assert
-  (= var474_safe_literal_Unsigned_0______safe_iterator___t0 (theory1_safe var472_iterator__t1) )
+  (= var475_safe_literal_Unsigned_0______safe_iterator___t0 (theory1_safe var473_iterator__t1) )
 )
 
-(declare-fun var475_nullterm_literal_Unsigned_0______nullterm_iterator___t0 () Bool)
+(declare-fun var476_nullterm_literal_Unsigned_0______nullterm_iterator___t0 () Bool)
 (assert
-  (= var475_nullterm_literal_Unsigned_0______nullterm_iterator___t0 (theory2_nullterm var473_literal_Unsigned_0___t0) )
+  (= var476_nullterm_literal_Unsigned_0______nullterm_iterator___t0 (theory2_nullterm var474_literal_Unsigned_0___t0) )
 )
 
 (assert
-  (= var475_nullterm_literal_Unsigned_0______nullterm_iterator___t0 (theory2_nullterm var472_iterator__t1) )
+  (= var476_nullterm_literal_Unsigned_0______nullterm_iterator___t0 (theory2_nullterm var473_iterator__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:219
-(declare-fun var476_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert (! (= var476_implicit_coercion_of_literal_Unsigned_0___t0 var473_literal_Unsigned_0___t0) :named A18))(declare-fun var472_iterator__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+(declare-fun var477_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var477_implicit_coercion_of_literal_Unsigned_0___t0 var474_literal_Unsigned_0___t0) :named A18))(declare-fun var473_iterator__t0 () (_ BitVec 64))
 (assert
-  (= var472_iterator__t1  (ite true var476_implicit_coercion_of_literal_Unsigned_0___t0 var472_iterator__t0)  )
+  (= var473_iterator__t1  (ite true var477_implicit_coercion_of_literal_Unsigned_0___t0 var473_iterator__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
 ; call of ::buffer::split
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var478_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var479_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var479_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var480_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var479_len_addressof_vv____t0 (theory0_len var478_addressof_vv___t0) )
+  (= var480_len_addressof_vv____t0 (theory0_len var479_addressof_vv___t0) )
 )
 
 (assert
-  (= var479_len_addressof_vv____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var478_addressof_vv___t0 (_ bv389 64))
-
-)
-
-(declare-fun var480_true__t0 () Bool)
-(assert
-  (= var480_true__t0 (theory1_safe var478_addressof_vv___t0) )
-)
-
-(assert
-  var480_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var481_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var482_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var482_len_addressof_vv____t0 (theory0_len var481_addressof_vv___t0) )
-)
-
-(assert
-  (= var482_len_addressof_vv____t0 (_ bv1 64))
+  (= var480_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var481_addressof_vv___t0 (_ bv389 64))
+  (= var479_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var483_true__t0 () Bool)
+(declare-fun var481_true__t0 () Bool)
 (assert
-  (= var483_true__t0 (theory1_safe var481_addressof_vv___t0) )
+  (= var481_true__t0 (theory1_safe var479_addressof_vv___t0) )
 )
 
 (assert
-  var483_true__t0
+  var481_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var485_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var486_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var482_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var483_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var486_len_addressof_iterator____t0 (theory0_len var485_addressof_iterator___t0) )
+  (= var483_len_addressof_vv____t0 (theory0_len var482_addressof_vv___t0) )
 )
 
 (assert
-  (= var486_len_addressof_iterator____t0 (_ bv1 64))
+  (= var483_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var485_addressof_iterator___t0 (_ bv472 64))
+  (= var482_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var487_true__t0 () Bool)
+(declare-fun var484_true__t0 () Bool)
 (assert
-  (= var487_true__t0 (theory1_safe var485_addressof_iterator___t0) )
+  (= var484_true__t0 (theory1_safe var482_addressof_vv___t0) )
 )
 
 (assert
-  var487_true__t0
+  var484_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var488_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var489_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var486_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var487_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var489_len_addressof_part____t0 (theory0_len var488_addressof_part___t0) )
-)
-
-(assert
-  (= var489_len_addressof_part____t0 (_ bv1 64))
-
+  (= var487_len_addressof_iterator____t0 (theory0_len var486_addressof_iterator___t0) )
 )
 
 (assert
-  (= var488_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var490_true__t0 () Bool)
-(assert
-  (= var490_true__t0 (theory1_safe var488_addressof_part___t0) )
-)
-
-(assert
-  var490_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var491_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var492_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var492_len_addressof_part____t0 (theory0_len var491_addressof_part___t0) )
-)
-
-(assert
-  (= var492_len_addressof_part____t0 (_ bv1 64))
+  (= var487_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var491_addressof_part___t0 (_ bv347 64))
+  (= var486_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var493_true__t0 () Bool)
+(declare-fun var488_true__t0 () Bool)
 (assert
-  (= var493_true__t0 (theory1_safe var491_addressof_part___t0) )
-)
-
-(assert
-  var493_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var494_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var495_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var495_len_addressof_vv____t0 (theory0_len var494_addressof_vv___t0) )
+  (= var488_true__t0 (theory1_safe var486_addressof_iterator___t0) )
 )
 
 (assert
-  (= var495_len_addressof_vv____t0 (_ bv1 64))
+  var488_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var489_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var490_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var490_len_addressof_part____t0 (theory0_len var489_addressof_part___t0) )
+)
+
+(assert
+  (= var490_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var494_addressof_vv___t0 (_ bv389 64))
+  (= var489_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var496_true__t0 () Bool)
+(declare-fun var491_true__t0 () Bool)
 (assert
-  (= var496_true__t0 (theory1_safe var494_addressof_vv___t0) )
+  (= var491_true__t0 (theory1_safe var489_addressof_part___t0) )
 )
 
 (assert
-  var496_true__t0
+  var491_true__t0
 )
 
-(declare-fun var497_cast_of_addressof_vv___t0 () (_ BitVec 64))
-(assert (! (= var497_cast_of_addressof_vv___t0 var494_addressof_vv___t0) :named A19)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var492_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var493_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var493_len_addressof_part____t0 (theory0_len var492_addressof_part___t0) )
+)
+
+(assert
+  (= var493_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var492_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var494_true__t0 () Bool)
+(assert
+  (= var494_true__t0 (theory1_safe var492_addressof_part___t0) )
+)
+
+(assert
+  var494_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var495_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var496_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var496_len_addressof_vv____t0 (theory0_len var495_addressof_vv___t0) )
+)
+
+(assert
+  (= var496_len_addressof_vv____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var495_addressof_vv___t0 (_ bv390 64))
+
+)
+
+(declare-fun var497_true__t0 () Bool)
+(assert
+  (= var497_true__t0 (theory1_safe var495_addressof_vv___t0) )
+)
+
+(assert
+  var497_true__t0
+)
+
+(declare-fun var498_cast_of_addressof_vv___t0 () (_ BitVec 64))
+(assert (! (= var498_cast_of_addressof_vv___t0 var495_addressof_vv___t0) :named A19)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; literal expr
-(declare-fun var498_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var499_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var498_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var499_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var500_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var501_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var501_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var502_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var501_len_addressof_iterator____t0 (theory0_len var500_addressof_iterator___t0) )
+  (= var502_len_addressof_iterator____t0 (theory0_len var501_addressof_iterator___t0) )
 )
 
 (assert
-  (= var501_len_addressof_iterator____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var500_addressof_iterator___t0 (_ bv472 64))
-
-)
-
-(declare-fun var502_true__t0 () Bool)
-(assert
-  (= var502_true__t0 (theory1_safe var500_addressof_iterator___t0) )
-)
-
-(assert
-  var502_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var503_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var504_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var504_len_addressof_part____t0 (theory0_len var503_addressof_part___t0) )
-)
-
-(assert
-  (= var504_len_addressof_part____t0 (_ bv1 64))
+  (= var502_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var503_addressof_part___t0 (_ bv347 64))
+  (= var501_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var505_true__t0 () Bool)
+(declare-fun var503_true__t0 () Bool)
 (assert
-  (= var505_true__t0 (theory1_safe var503_addressof_part___t0) )
+  (= var503_true__t0 (theory1_safe var501_addressof_iterator___t0) )
 )
 
 (assert
-  var505_true__t0
+  var503_true__t0
 )
 
-(declare-fun var506_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var506_cast_of_addressof_part___t0 var503_addressof_part___t0) :named A20)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var504_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var505_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var505_len_addressof_part____t0 (theory0_len var504_addressof_part___t0) )
+)
+
+(assert
+  (= var505_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var504_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var506_true__t0 () Bool)
+(assert
+  (= var506_true__t0 (theory1_safe var504_addressof_part___t0) )
+)
+
+(assert
+  var506_true__t0
+)
+
+(declare-fun var507_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var507_cast_of_addressof_part___t0 var504_addressof_part___t0) :named A20)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var507_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var508_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var507_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var508_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -3188,27 +3190,27 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var508_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var509_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var508_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var506_cast_of_addressof_part___t0) )
+  (= var509_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var507_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var509_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
+(declare-fun var510_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (assert
-  (= var509_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var500_addressof_iterator___t0) )
+  (= var510_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var501_addressof_iterator___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var510_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var510_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var497_cast_of_addressof_vv___t0) )
+  (= var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var498_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:368
@@ -3231,9 +3233,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var512_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var497_cast_of_addressof_vv___t0) )
+  (= var512_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var498_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -3242,23 +3244,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var512_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var513_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var512_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var513_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var513_infix_expression__t0 () Bool)
-(assert
-  (=  var513_infix_expression__t0 (bvuge var512_literal_Unsigned_400___t0 var498_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var514_infix_expression__t0 () Bool)
 (assert
-  (=  var514_infix_expression__t0 (and var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var513_infix_expression__t0))
+  (=  var514_infix_expression__t0 (bvuge var513_literal_Unsigned_400___t0 var499_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var515_infix_expression__t0 () Bool)
+(assert
+  (=  var515_infix_expression__t0 (and var512_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var514_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -3269,23 +3271,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var515_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var516_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var515_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var516_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var516_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var516_implicit_coercion_of_literal_Unsigned_400___t0 var515_literal_Unsigned_400___t0) :named A21)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var517_infix_expression__t0 () Bool)
+(declare-fun var517_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var517_implicit_coercion_of_literal_Unsigned_400___t0 var516_literal_Unsigned_400___t0) :named A21)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var518_infix_expression__t0 () Bool)
 (assert
-  (=  var517_infix_expression__t0 (bvult var422_vv_at__t0 var516_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var518_infix_expression__t0 (bvult var423_vv_at__t0 var517_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var518_infix_expression__t0 () Bool)
+(declare-fun var519_infix_expression__t0 () Bool)
 (assert
-  (=  var518_infix_expression__t0 (and var514_infix_expression__t0 var517_infix_expression__t0))
+  (=  var519_infix_expression__t0 (and var515_infix_expression__t0 var518_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -3298,15 +3300,15 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var519_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var520_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var519_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var520_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var520_infix_expression__t0 () Bool)
+(declare-fun var521_infix_expression__t0 () Bool)
 (assert
-  (=  var520_infix_expression__t0 (and var518_infix_expression__t0 var519_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var521_infix_expression__t0 (and var519_infix_expression__t0 var520_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
@@ -3314,22 +3316,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; literal expr
-(declare-fun var521_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var522_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var521_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var522_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
-(declare-fun var522_infix_expression__t0 () Bool)
+(declare-fun var523_infix_expression__t0 () Bool)
 (assert
-  (=  var522_infix_expression__t0 (bvugt var507_literal_Unsigned_400___t0 var521_literal_Unsigned_0___t0))
+  (=  var523_infix_expression__t0 (bvugt var508_literal_Unsigned_400___t0 var522_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var508_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var509_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var510_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var520_infix_expression__t0 ) (not var522_infix_expression__t0 ) ))
+  (and true (or (not var509_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var510_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var521_infix_expression__t0 ) (not var523_infix_expression__t0 ) ))
 
 )
 
@@ -3341,35 +3343,35 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var508_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var509_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var510_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var509_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var510_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var512_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var515_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var519_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var521_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var512_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var513_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var516_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var520_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var522_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 472 to temporal +1 because of function borrow
-(declare-fun var472_iterator__t2 () (_ BitVec 64))
+; 473 to temporal +1 because of function borrow
+(declare-fun var473_iterator__t2 () (_ BitVec 64))
 (assert
-  (= var472_iterator__t2  (ite true var472_iterator__t2 var472_iterator__t1)  )
+  (= var473_iterator__t2  (ite true var473_iterator__t2 var473_iterator__t1)  )
 )
 
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t3 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t3 () (_ BitVec 64))
 (assert
-  (= var347_part__t3  (ite true var347_part__t3 var347_part__t2)  )
+  (= var348_part__t3  (ite true var348_part__t3 var348_part__t2)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
 ; callsite effects
-(declare-fun var524_return__t1 () Bool)
-(declare-fun var523_return_value_of___buffer__split__t0 () Bool)
-(declare-fun var524_return__t0 () Bool)
+(declare-fun var525_return__t1 () Bool)
+(declare-fun var524_return_value_of___buffer__split__t0 () Bool)
+(declare-fun var525_return__t0 () Bool)
 (assert
-  (= var524_return__t1  (ite true var523_return_value_of___buffer__split__t0 var524_return__t0)  )
+  (= var525_return__t1  (ite true var524_return_value_of___buffer__split__t0 var525_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:370
@@ -3392,9 +3394,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var525_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var526_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var525_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var497_cast_of_addressof_vv___t0) )
+  (= var526_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var498_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -3403,23 +3405,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var526_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var527_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var526_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var527_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var527_infix_expression__t0 () Bool)
-(assert
-  (=  var527_infix_expression__t0 (bvuge var526_literal_Unsigned_400___t0 var498_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var528_infix_expression__t0 () Bool)
 (assert
-  (=  var528_infix_expression__t0 (and var525_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var527_infix_expression__t0))
+  (=  var528_infix_expression__t0 (bvuge var527_literal_Unsigned_400___t0 var499_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var529_infix_expression__t0 () Bool)
+(assert
+  (=  var529_infix_expression__t0 (and var526_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var528_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -3430,23 +3432,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var529_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var530_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var529_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var530_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var530_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var530_implicit_coercion_of_literal_Unsigned_400___t0 var529_literal_Unsigned_400___t0) :named A22)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var531_infix_expression__t0 () Bool)
+(declare-fun var531_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var531_implicit_coercion_of_literal_Unsigned_400___t0 var530_literal_Unsigned_400___t0) :named A22)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var532_infix_expression__t0 () Bool)
 (assert
-  (=  var531_infix_expression__t0 (bvult var422_vv_at__t0 var530_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var532_infix_expression__t0 (bvult var423_vv_at__t0 var531_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var532_infix_expression__t0 () Bool)
+(declare-fun var533_infix_expression__t0 () Bool)
 (assert
-  (=  var532_infix_expression__t0 (and var528_infix_expression__t0 var531_infix_expression__t0))
+  (=  var533_infix_expression__t0 (and var529_infix_expression__t0 var532_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -3459,30 +3461,30 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var533_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var534_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var533_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var534_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var534_infix_expression__t0 () Bool)
+(declare-fun var535_infix_expression__t0 () Bool)
 (assert
-  (=  var534_infix_expression__t0 (and var532_infix_expression__t0 var533_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var535_infix_expression__t0 (and var533_infix_expression__t0 var534_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var534_infix_expression__t0 :named A23))(check-sat)
+(assert (! var535_infix_expression__t0 :named A23))(check-sat)
 
-(declare-fun var523_return_value_of___buffer__split__t1 () Bool)
+(declare-fun var524_return_value_of___buffer__split__t1 () Bool)
 (assert
-  (= var523_return_value_of___buffer__split__t1  (ite true var524_return__t1 var523_return_value_of___buffer__split__t0)  )
+  (= var524_return_value_of___buffer__split__t1  (ite true var525_return__t1 var524_return_value_of___buffer__split__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var535_return__t1 () Bool)
-(declare-fun var535_return__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var536_return__t1 () Bool)
+(declare-fun var536_return__t0 () Bool)
 (assert
-  (= var535_return__t1  (ite true var523_return_value_of___buffer__split__t1 var535_return__t0)  )
+  (= var536_return__t1  (ite true var524_return_value_of___buffer__split__t1 var536_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:371
@@ -3505,9 +3507,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var536_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var537_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var536_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var506_cast_of_addressof_part___t0) )
+  (= var537_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var507_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -3516,23 +3518,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var537_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var538_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var537_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var538_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var538_infix_expression__t0 () Bool)
-(assert
-  (=  var538_infix_expression__t0 (bvuge var537_literal_Unsigned_400___t0 var507_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var539_infix_expression__t0 () Bool)
 (assert
-  (=  var539_infix_expression__t0 (and var536_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var538_infix_expression__t0))
+  (=  var539_infix_expression__t0 (bvuge var538_literal_Unsigned_400___t0 var508_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var540_infix_expression__t0 () Bool)
+(assert
+  (=  var540_infix_expression__t0 (and var537_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var539_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -3543,23 +3545,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var540_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var541_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var540_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var541_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var541_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var541_implicit_coercion_of_literal_Unsigned_400___t0 var540_literal_Unsigned_400___t0) :named A24)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var542_infix_expression__t0 () Bool)
+(declare-fun var542_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var542_implicit_coercion_of_literal_Unsigned_400___t0 var541_literal_Unsigned_400___t0) :named A24)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var543_infix_expression__t0 () Bool)
 (assert
-  (=  var542_infix_expression__t0 (bvult var380_part_at__t0 var541_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var543_infix_expression__t0 (bvult var381_part_at__t0 var542_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var543_infix_expression__t0 () Bool)
+(declare-fun var544_infix_expression__t0 () Bool)
 (assert
-  (=  var543_infix_expression__t0 (and var539_infix_expression__t0 var542_infix_expression__t0))
+  (=  var544_infix_expression__t0 (and var540_infix_expression__t0 var543_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -3572,272 +3574,272 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var544_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var545_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var544_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var545_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var545_infix_expression__t0 () Bool)
+(declare-fun var546_infix_expression__t0 () Bool)
 (assert
-  (=  var545_infix_expression__t0 (and var543_infix_expression__t0 var544_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var546_infix_expression__t0 (and var544_infix_expression__t0 var545_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var545_infix_expression__t0 :named A25))(check-sat)
+(assert (! var546_infix_expression__t0 :named A25))(check-sat)
 
-(declare-fun var523_return_value_of___buffer__split__t2 () Bool)
+(declare-fun var524_return_value_of___buffer__split__t2 () Bool)
 (assert
-  (= var523_return_value_of___buffer__split__t2  (ite true var535_return__t1 var523_return_value_of___buffer__split__t1)  )
+  (= var524_return_value_of___buffer__split__t2  (ite true var536_return__t1 var524_return_value_of___buffer__split__t1)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
 ; call of ::buffer::split
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var547_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var548_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var548_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var549_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var548_len_addressof_vv____t0 (theory0_len var547_addressof_vv___t0) )
+  (= var549_len_addressof_vv____t0 (theory0_len var548_addressof_vv___t0) )
 )
 
 (assert
-  (= var548_len_addressof_vv____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var547_addressof_vv___t0 (_ bv389 64))
-
-)
-
-(declare-fun var549_true__t0 () Bool)
-(assert
-  (= var549_true__t0 (theory1_safe var547_addressof_vv___t0) )
-)
-
-(assert
-  var549_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var550_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var551_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var551_len_addressof_vv____t0 (theory0_len var550_addressof_vv___t0) )
-)
-
-(assert
-  (= var551_len_addressof_vv____t0 (_ bv1 64))
+  (= var549_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var550_addressof_vv___t0 (_ bv389 64))
+  (= var548_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var552_true__t0 () Bool)
+(declare-fun var550_true__t0 () Bool)
 (assert
-  (= var552_true__t0 (theory1_safe var550_addressof_vv___t0) )
+  (= var550_true__t0 (theory1_safe var548_addressof_vv___t0) )
 )
 
 (assert
-  var552_true__t0
+  var550_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var554_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var555_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var551_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var552_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var555_len_addressof_iterator____t0 (theory0_len var554_addressof_iterator___t0) )
+  (= var552_len_addressof_vv____t0 (theory0_len var551_addressof_vv___t0) )
 )
 
 (assert
-  (= var555_len_addressof_iterator____t0 (_ bv1 64))
+  (= var552_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var554_addressof_iterator___t0 (_ bv472 64))
+  (= var551_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var556_true__t0 () Bool)
+(declare-fun var553_true__t0 () Bool)
 (assert
-  (= var556_true__t0 (theory1_safe var554_addressof_iterator___t0) )
+  (= var553_true__t0 (theory1_safe var551_addressof_vv___t0) )
 )
 
 (assert
-  var556_true__t0
+  var553_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var557_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var558_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var555_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var556_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var558_len_addressof_part____t0 (theory0_len var557_addressof_part___t0) )
-)
-
-(assert
-  (= var558_len_addressof_part____t0 (_ bv1 64))
-
+  (= var556_len_addressof_iterator____t0 (theory0_len var555_addressof_iterator___t0) )
 )
 
 (assert
-  (= var557_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var559_true__t0 () Bool)
-(assert
-  (= var559_true__t0 (theory1_safe var557_addressof_part___t0) )
-)
-
-(assert
-  var559_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var560_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var561_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var561_len_addressof_part____t0 (theory0_len var560_addressof_part___t0) )
-)
-
-(assert
-  (= var561_len_addressof_part____t0 (_ bv1 64))
+  (= var556_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var560_addressof_part___t0 (_ bv347 64))
+  (= var555_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var562_true__t0 () Bool)
+(declare-fun var557_true__t0 () Bool)
 (assert
-  (= var562_true__t0 (theory1_safe var560_addressof_part___t0) )
-)
-
-(assert
-  var562_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var563_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var564_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var564_len_addressof_vv____t0 (theory0_len var563_addressof_vv___t0) )
+  (= var557_true__t0 (theory1_safe var555_addressof_iterator___t0) )
 )
 
 (assert
-  (= var564_len_addressof_vv____t0 (_ bv1 64))
+  var557_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var558_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var559_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var559_len_addressof_part____t0 (theory0_len var558_addressof_part___t0) )
+)
+
+(assert
+  (= var559_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var563_addressof_vv___t0 (_ bv389 64))
+  (= var558_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var565_true__t0 () Bool)
+(declare-fun var560_true__t0 () Bool)
 (assert
-  (= var565_true__t0 (theory1_safe var563_addressof_vv___t0) )
+  (= var560_true__t0 (theory1_safe var558_addressof_part___t0) )
 )
 
 (assert
-  var565_true__t0
+  var560_true__t0
 )
 
-(declare-fun var566_cast_of_addressof_vv___t0 () (_ BitVec 64))
-(assert (! (= var566_cast_of_addressof_vv___t0 var563_addressof_vv___t0) :named A26)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var561_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var562_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var562_len_addressof_part____t0 (theory0_len var561_addressof_part___t0) )
+)
+
+(assert
+  (= var562_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var561_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var563_true__t0 () Bool)
+(assert
+  (= var563_true__t0 (theory1_safe var561_addressof_part___t0) )
+)
+
+(assert
+  var563_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var564_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var565_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var565_len_addressof_vv____t0 (theory0_len var564_addressof_vv___t0) )
+)
+
+(assert
+  (= var565_len_addressof_vv____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var564_addressof_vv___t0 (_ bv390 64))
+
+)
+
+(declare-fun var566_true__t0 () Bool)
+(assert
+  (= var566_true__t0 (theory1_safe var564_addressof_vv___t0) )
+)
+
+(assert
+  var566_true__t0
+)
+
+(declare-fun var567_cast_of_addressof_vv___t0 () (_ BitVec 64))
+(assert (! (= var567_cast_of_addressof_vv___t0 var564_addressof_vv___t0) :named A26)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; literal expr
-(declare-fun var567_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var568_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var567_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var568_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var569_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var570_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var570_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var571_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var570_len_addressof_iterator____t0 (theory0_len var569_addressof_iterator___t0) )
+  (= var571_len_addressof_iterator____t0 (theory0_len var570_addressof_iterator___t0) )
 )
 
 (assert
-  (= var570_len_addressof_iterator____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var569_addressof_iterator___t0 (_ bv472 64))
-
-)
-
-(declare-fun var571_true__t0 () Bool)
-(assert
-  (= var571_true__t0 (theory1_safe var569_addressof_iterator___t0) )
-)
-
-(assert
-  var571_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var572_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var573_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var573_len_addressof_part____t0 (theory0_len var572_addressof_part___t0) )
-)
-
-(assert
-  (= var573_len_addressof_part____t0 (_ bv1 64))
+  (= var571_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var572_addressof_part___t0 (_ bv347 64))
+  (= var570_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var574_true__t0 () Bool)
+(declare-fun var572_true__t0 () Bool)
 (assert
-  (= var574_true__t0 (theory1_safe var572_addressof_part___t0) )
+  (= var572_true__t0 (theory1_safe var570_addressof_iterator___t0) )
 )
 
 (assert
-  var574_true__t0
+  var572_true__t0
 )
 
-(declare-fun var575_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var575_cast_of_addressof_part___t0 var572_addressof_part___t0) :named A27)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var573_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var574_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var574_len_addressof_part____t0 (theory0_len var573_addressof_part___t0) )
+)
+
+(assert
+  (= var574_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var573_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var575_true__t0 () Bool)
+(assert
+  (= var575_true__t0 (theory1_safe var573_addressof_part___t0) )
+)
+
+(assert
+  var575_true__t0
+)
+
+(declare-fun var576_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var576_cast_of_addressof_part___t0 var573_addressof_part___t0) :named A27)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var576_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var577_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var576_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var577_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -3848,27 +3850,27 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var577_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var578_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var577_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var575_cast_of_addressof_part___t0) )
+  (= var578_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var576_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var578_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
+(declare-fun var579_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (assert
-  (= var578_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var569_addressof_iterator___t0) )
+  (= var579_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var570_addressof_iterator___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var579_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var579_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var566_cast_of_addressof_vv___t0) )
+  (= var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var567_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:368
@@ -3891,9 +3893,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var581_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var566_cast_of_addressof_vv___t0) )
+  (= var581_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var567_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -3902,23 +3904,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var581_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var582_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var581_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var582_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var582_infix_expression__t0 () Bool)
-(assert
-  (=  var582_infix_expression__t0 (bvuge var581_literal_Unsigned_400___t0 var567_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var583_infix_expression__t0 () Bool)
 (assert
-  (=  var583_infix_expression__t0 (and var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var582_infix_expression__t0))
+  (=  var583_infix_expression__t0 (bvuge var582_literal_Unsigned_400___t0 var568_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var584_infix_expression__t0 () Bool)
+(assert
+  (=  var584_infix_expression__t0 (and var581_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var583_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -3929,23 +3931,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var584_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var585_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var584_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var585_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var585_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var585_implicit_coercion_of_literal_Unsigned_400___t0 var584_literal_Unsigned_400___t0) :named A28)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var586_infix_expression__t0 () Bool)
+(declare-fun var586_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var586_implicit_coercion_of_literal_Unsigned_400___t0 var585_literal_Unsigned_400___t0) :named A28)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var587_infix_expression__t0 () Bool)
 (assert
-  (=  var586_infix_expression__t0 (bvult var422_vv_at__t0 var585_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var587_infix_expression__t0 (bvult var423_vv_at__t0 var586_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var587_infix_expression__t0 () Bool)
+(declare-fun var588_infix_expression__t0 () Bool)
 (assert
-  (=  var587_infix_expression__t0 (and var583_infix_expression__t0 var586_infix_expression__t0))
+  (=  var588_infix_expression__t0 (and var584_infix_expression__t0 var587_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -3958,15 +3960,15 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var588_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var589_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var588_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var589_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var589_infix_expression__t0 () Bool)
+(declare-fun var590_infix_expression__t0 () Bool)
 (assert
-  (=  var589_infix_expression__t0 (and var587_infix_expression__t0 var588_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var590_infix_expression__t0 (and var588_infix_expression__t0 var589_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
@@ -3974,22 +3976,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; literal expr
-(declare-fun var590_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var591_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var590_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var591_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
-(declare-fun var591_infix_expression__t0 () Bool)
+(declare-fun var592_infix_expression__t0 () Bool)
 (assert
-  (=  var591_infix_expression__t0 (bvugt var576_literal_Unsigned_400___t0 var590_literal_Unsigned_0___t0))
+  (=  var592_infix_expression__t0 (bvugt var577_literal_Unsigned_400___t0 var591_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var577_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var578_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var579_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var589_infix_expression__t0 ) (not var591_infix_expression__t0 ) ))
+  (and true (or (not var578_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var579_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var590_infix_expression__t0 ) (not var592_infix_expression__t0 ) ))
 
 )
 
@@ -4001,35 +4003,35 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var577_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var578_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var579_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var578_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var579_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var581_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var584_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var588_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var590_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var581_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var582_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var585_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var589_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var591_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 472 to temporal +1 because of function borrow
-(declare-fun var472_iterator__t3 () (_ BitVec 64))
+; 473 to temporal +1 because of function borrow
+(declare-fun var473_iterator__t3 () (_ BitVec 64))
 (assert
-  (= var472_iterator__t3  (ite true var472_iterator__t3 var472_iterator__t2)  )
+  (= var473_iterator__t3  (ite true var473_iterator__t3 var473_iterator__t2)  )
 )
 
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t4 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t4 () (_ BitVec 64))
 (assert
-  (= var347_part__t4  (ite true var347_part__t4 var347_part__t3)  )
+  (= var348_part__t4  (ite true var348_part__t4 var348_part__t3)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
 ; callsite effects
-(declare-fun var593_return__t1 () Bool)
-(declare-fun var592_return_value_of___buffer__split__t0 () Bool)
-(declare-fun var593_return__t0 () Bool)
+(declare-fun var594_return__t1 () Bool)
+(declare-fun var593_return_value_of___buffer__split__t0 () Bool)
+(declare-fun var594_return__t0 () Bool)
 (assert
-  (= var593_return__t1  (ite true var592_return_value_of___buffer__split__t0 var593_return__t0)  )
+  (= var594_return__t1  (ite true var593_return_value_of___buffer__split__t0 var594_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:370
@@ -4052,9 +4054,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var594_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var595_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var594_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var566_cast_of_addressof_vv___t0) )
+  (= var595_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var567_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -4063,23 +4065,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var595_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var596_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var595_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var596_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var596_infix_expression__t0 () Bool)
-(assert
-  (=  var596_infix_expression__t0 (bvuge var595_literal_Unsigned_400___t0 var567_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var597_infix_expression__t0 () Bool)
 (assert
-  (=  var597_infix_expression__t0 (and var594_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var596_infix_expression__t0))
+  (=  var597_infix_expression__t0 (bvuge var596_literal_Unsigned_400___t0 var568_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var598_infix_expression__t0 () Bool)
+(assert
+  (=  var598_infix_expression__t0 (and var595_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var597_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -4090,23 +4092,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var598_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var599_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var598_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var599_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var599_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var599_implicit_coercion_of_literal_Unsigned_400___t0 var598_literal_Unsigned_400___t0) :named A29)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var600_infix_expression__t0 () Bool)
+(declare-fun var600_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var600_implicit_coercion_of_literal_Unsigned_400___t0 var599_literal_Unsigned_400___t0) :named A29)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var601_infix_expression__t0 () Bool)
 (assert
-  (=  var600_infix_expression__t0 (bvult var422_vv_at__t0 var599_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var601_infix_expression__t0 (bvult var423_vv_at__t0 var600_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var601_infix_expression__t0 () Bool)
+(declare-fun var602_infix_expression__t0 () Bool)
 (assert
-  (=  var601_infix_expression__t0 (and var597_infix_expression__t0 var600_infix_expression__t0))
+  (=  var602_infix_expression__t0 (and var598_infix_expression__t0 var601_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -4119,30 +4121,30 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var602_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var603_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var602_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var603_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var603_infix_expression__t0 () Bool)
+(declare-fun var604_infix_expression__t0 () Bool)
 (assert
-  (=  var603_infix_expression__t0 (and var601_infix_expression__t0 var602_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var604_infix_expression__t0 (and var602_infix_expression__t0 var603_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var603_infix_expression__t0 :named A30))(check-sat)
+(assert (! var604_infix_expression__t0 :named A30))(check-sat)
 
-(declare-fun var592_return_value_of___buffer__split__t1 () Bool)
+(declare-fun var593_return_value_of___buffer__split__t1 () Bool)
 (assert
-  (= var592_return_value_of___buffer__split__t1  (ite true var593_return__t1 var592_return_value_of___buffer__split__t0)  )
+  (= var593_return_value_of___buffer__split__t1  (ite true var594_return__t1 var593_return_value_of___buffer__split__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var604_return__t1 () Bool)
-(declare-fun var604_return__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var605_return__t1 () Bool)
+(declare-fun var605_return__t0 () Bool)
 (assert
-  (= var604_return__t1  (ite true var592_return_value_of___buffer__split__t1 var604_return__t0)  )
+  (= var605_return__t1  (ite true var593_return_value_of___buffer__split__t1 var605_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:371
@@ -4165,9 +4167,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var605_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var606_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var605_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var575_cast_of_addressof_part___t0) )
+  (= var606_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var576_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -4176,23 +4178,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var606_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var607_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var606_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var607_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var607_infix_expression__t0 () Bool)
-(assert
-  (=  var607_infix_expression__t0 (bvuge var606_literal_Unsigned_400___t0 var576_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var608_infix_expression__t0 () Bool)
 (assert
-  (=  var608_infix_expression__t0 (and var605_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var607_infix_expression__t0))
+  (=  var608_infix_expression__t0 (bvuge var607_literal_Unsigned_400___t0 var577_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var609_infix_expression__t0 () Bool)
+(assert
+  (=  var609_infix_expression__t0 (and var606_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var608_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -4203,23 +4205,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var609_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var610_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var609_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var610_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var610_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var610_implicit_coercion_of_literal_Unsigned_400___t0 var609_literal_Unsigned_400___t0) :named A31)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var611_infix_expression__t0 () Bool)
+(declare-fun var611_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var611_implicit_coercion_of_literal_Unsigned_400___t0 var610_literal_Unsigned_400___t0) :named A31)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var612_infix_expression__t0 () Bool)
 (assert
-  (=  var611_infix_expression__t0 (bvult var380_part_at__t0 var610_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var612_infix_expression__t0 (bvult var381_part_at__t0 var611_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var612_infix_expression__t0 () Bool)
+(declare-fun var613_infix_expression__t0 () Bool)
 (assert
-  (=  var612_infix_expression__t0 (and var608_infix_expression__t0 var611_infix_expression__t0))
+  (=  var613_infix_expression__t0 (and var609_infix_expression__t0 var612_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -4232,37 +4234,37 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var613_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var614_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var613_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var614_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var614_infix_expression__t0 () Bool)
+(declare-fun var615_infix_expression__t0 () Bool)
 (assert
-  (=  var614_infix_expression__t0 (and var612_infix_expression__t0 var613_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var615_infix_expression__t0 (and var613_infix_expression__t0 var614_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var614_infix_expression__t0 :named A32))(check-sat)
+(assert (! var615_infix_expression__t0 :named A32))(check-sat)
 
-(declare-fun var592_return_value_of___buffer__split__t2 () Bool)
+(declare-fun var593_return_value_of___buffer__split__t2 () Bool)
 (assert
-  (= var592_return_value_of___buffer__split__t2  (ite true var604_return__t1 var592_return_value_of___buffer__split__t1)  )
+  (= var593_return_value_of___buffer__split__t2  (ite true var605_return__t1 var593_return_value_of___buffer__split__t1)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-(declare-fun var615_infix_expression__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+(declare-fun var616_infix_expression__t0 () Bool)
 (assert
-  (=  var615_infix_expression__t0 (and var523_return_value_of___buffer__split__t2 var592_return_value_of___buffer__split__t2))
+  (=  var616_infix_expression__t0 (and var524_return_value_of___buffer__split__t2 var593_return_value_of___buffer__split__t2))
 )
 
 (check-sat)
 
 (get-value (
 
-  var615_infix_expression__t0
+  var616_infix_expression__t0
 
 ) )
 
@@ -4270,151 +4272,151 @@
 (push 1)
 
 (assert
-  (not (= var615_infix_expression__t0 false))
+  (not (= var616_infix_expression__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:220
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
 ; call of ::buffer::eq_cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-(declare-fun var617_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var618_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+(declare-fun var618_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var619_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var618_len_addressof_part____t0 (theory0_len var617_addressof_part___t0) )
+  (= var619_len_addressof_part____t0 (theory0_len var618_addressof_part___t0) )
 )
 
 (assert
-  (= var618_len_addressof_part____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var617_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var619_true__t0 () Bool)
-(assert
-  (= var619_true__t0 (theory1_safe var617_addressof_part___t0) )
-)
-
-(assert
-  var619_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-(declare-fun var620_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var621_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var621_len_addressof_part____t0 (theory0_len var620_addressof_part___t0) )
-)
-
-(assert
-  (= var621_len_addressof_part____t0 (_ bv1 64))
+  (= var619_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var620_addressof_part___t0 (_ bv347 64))
+  (= var618_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var622_true__t0 () Bool)
+(declare-fun var620_true__t0 () Bool)
 (assert
-  (= var622_true__t0 (theory1_safe var620_addressof_part___t0) )
-)
-
-(assert
-  var622_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-(declare-fun var623_literal_string__mtdblock___t0 () (_ BitVec 64))
-(declare-fun var624_true__t0 () Bool)
-(assert
-  (= var624_true__t0 (theory1_safe var623_literal_string__mtdblock___t0) )
+  (= var620_true__t0 (theory1_safe var618_addressof_part___t0) )
 )
 
 (assert
-  var624_true__t0
+  var620_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+(declare-fun var621_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var622_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var622_len_addressof_part____t0 (theory0_len var621_addressof_part___t0) )
+)
+
+(assert
+  (= var622_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var621_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var623_true__t0 () Bool)
+(assert
+  (= var623_true__t0 (theory1_safe var621_addressof_part___t0) )
+)
+
+(assert
+  var623_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+(declare-fun var624_literal_string__mtdblock___t0 () (_ BitVec 64))
 (declare-fun var625_true__t0 () Bool)
 (assert
-  (= var625_true__t0 (theory2_nullterm var623_literal_string__mtdblock___t0) )
+  (= var625_true__t0 (theory1_safe var624_literal_string__mtdblock___t0) )
 )
 
 (assert
   var625_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-(declare-fun var626_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var627_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var626_true__t0 () Bool)
 (assert
-  (= var627_len_addressof_part____t0 (theory0_len var626_addressof_part___t0) )
+  (= var626_true__t0 (theory2_nullterm var624_literal_string__mtdblock___t0) )
 )
 
 (assert
-  (= var627_len_addressof_part____t0 (_ bv1 64))
+  var626_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+(declare-fun var627_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var628_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var628_len_addressof_part____t0 (theory0_len var627_addressof_part___t0) )
+)
+
+(assert
+  (= var628_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var626_addressof_part___t0 (_ bv347 64))
+  (= var627_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var628_true__t0 () Bool)
+(declare-fun var629_true__t0 () Bool)
 (assert
-  (= var628_true__t0 (theory1_safe var626_addressof_part___t0) )
+  (= var629_true__t0 (theory1_safe var627_addressof_part___t0) )
 )
 
 (assert
-  var628_true__t0
+  var629_true__t0
 )
 
-(declare-fun var629_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var629_cast_of_addressof_part___t0 var626_addressof_part___t0) :named A33)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+(declare-fun var630_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var630_cast_of_addressof_part___t0 var627_addressof_part___t0) :named A33)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var630_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var631_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var630_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var631_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-(declare-fun var631_literal_string__mtdblock___t0 () (_ BitVec 64))
-(declare-fun var632_true__t0 () Bool)
-(assert
-  (= var632_true__t0 (theory1_safe var631_literal_string__mtdblock___t0) )
-)
-
-(assert
-  var632_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+(declare-fun var632_literal_string__mtdblock___t0 () (_ BitVec 64))
 (declare-fun var633_true__t0 () Bool)
 (assert
-  (= var633_true__t0 (theory2_nullterm var631_literal_string__mtdblock___t0) )
+  (= var633_true__t0 (theory1_safe var632_literal_string__mtdblock___t0) )
 )
 
 (assert
   var633_true__t0
+)
+
+(declare-fun var634_true__t0 () Bool)
+(assert
+  (= var634_true__t0 (theory2_nullterm var632_literal_string__mtdblock___t0) )
+)
+
+(assert
+  var634_true__t0
 )
 
 ;callsite_assert
@@ -4424,9 +4426,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var634_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var635_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var634_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var629_cast_of_addressof_part___t0) )
+  (= var635_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var630_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:237
@@ -4436,9 +4438,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:237
-(declare-fun var635_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 () Bool)
+(declare-fun var636_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 () Bool)
 (assert
-  (= var635_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 (theory2_nullterm var631_literal_string__mtdblock___t0) )
+  (= var636_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 (theory2_nullterm var632_literal_string__mtdblock___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:238
@@ -4461,9 +4463,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var636_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var637_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var636_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var629_cast_of_addressof_part___t0) )
+  (= var637_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var630_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -4472,23 +4474,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var637_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var638_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var637_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var638_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var638_infix_expression__t0 () Bool)
-(assert
-  (=  var638_infix_expression__t0 (bvuge var637_literal_Unsigned_400___t0 var630_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var639_infix_expression__t0 () Bool)
 (assert
-  (=  var639_infix_expression__t0 (and var636_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var638_infix_expression__t0))
+  (=  var639_infix_expression__t0 (bvuge var638_literal_Unsigned_400___t0 var631_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var640_infix_expression__t0 () Bool)
+(assert
+  (=  var640_infix_expression__t0 (and var637_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var639_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -4499,23 +4501,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var640_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var641_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var640_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var641_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var641_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var641_implicit_coercion_of_literal_Unsigned_400___t0 var640_literal_Unsigned_400___t0) :named A34)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var642_infix_expression__t0 () Bool)
+(declare-fun var642_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var642_implicit_coercion_of_literal_Unsigned_400___t0 var641_literal_Unsigned_400___t0) :named A34)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var643_infix_expression__t0 () Bool)
 (assert
-  (=  var642_infix_expression__t0 (bvult var380_part_at__t0 var641_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var643_infix_expression__t0 (bvult var381_part_at__t0 var642_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var643_infix_expression__t0 () Bool)
+(declare-fun var644_infix_expression__t0 () Bool)
 (assert
-  (=  var643_infix_expression__t0 (and var639_infix_expression__t0 var642_infix_expression__t0))
+  (=  var644_infix_expression__t0 (and var640_infix_expression__t0 var643_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -4528,22 +4530,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var644_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var645_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var644_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var645_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var645_infix_expression__t0 () Bool)
+(declare-fun var646_infix_expression__t0 () Bool)
 (assert
-  (=  var645_infix_expression__t0 (and var643_infix_expression__t0 var644_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var646_infix_expression__t0 (and var644_infix_expression__t0 var645_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and var615_infix_expression__t0 (or (not var634_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var635_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 ) (not var645_infix_expression__t0 ) ))
+  (and var616_infix_expression__t0 (or (not var635_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var636_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 ) (not var646_infix_expression__t0 ) ))
 
 )
 
@@ -4555,23 +4557,23 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var634_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var635_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 () Bool)
-(declare-fun var636_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var637_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var640_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var644_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var635_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var636_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 () Bool)
+(declare-fun var637_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var638_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var641_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var645_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
 ; callsite effects
 ; end of callsite effects
-(declare-fun var646_return_value_of___buffer__eq_cstr__t0 () Bool)
+(declare-fun var647_return_value_of___buffer__eq_cstr__t0 () Bool)
 (check-sat)
 
 (get-value (
 
-  var646_return_value_of___buffer__eq_cstr__t0
+  var647_return_value_of___buffer__eq_cstr__t0
 
 ) )
 
@@ -4579,109 +4581,109 @@
 (push 1)
 
 (assert
-  (not (= var646_return_value_of___buffer__eq_cstr__t0 false))
+  (not (= var647_return_value_of___buffer__eq_cstr__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:227
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
 ; call of ::buffer::clear
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-(declare-fun var648_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var649_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+(declare-fun var649_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var650_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var649_len_addressof_part____t0 (theory0_len var648_addressof_part___t0) )
+  (= var650_len_addressof_part____t0 (theory0_len var649_addressof_part___t0) )
 )
 
 (assert
-  (= var649_len_addressof_part____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var648_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var650_true__t0 () Bool)
-(assert
-  (= var650_true__t0 (theory1_safe var648_addressof_part___t0) )
-)
-
-(assert
-  var650_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-(declare-fun var651_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var652_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var652_len_addressof_part____t0 (theory0_len var651_addressof_part___t0) )
-)
-
-(assert
-  (= var652_len_addressof_part____t0 (_ bv1 64))
+  (= var650_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var651_addressof_part___t0 (_ bv347 64))
+  (= var649_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var653_true__t0 () Bool)
+(declare-fun var651_true__t0 () Bool)
 (assert
-  (= var653_true__t0 (theory1_safe var651_addressof_part___t0) )
-)
-
-(assert
-  var653_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-(declare-fun var654_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var655_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var655_len_addressof_part____t0 (theory0_len var654_addressof_part___t0) )
+  (= var651_true__t0 (theory1_safe var649_addressof_part___t0) )
 )
 
 (assert
-  (= var655_len_addressof_part____t0 (_ bv1 64))
+  var651_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+(declare-fun var652_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var653_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var653_len_addressof_part____t0 (theory0_len var652_addressof_part___t0) )
+)
+
+(assert
+  (= var653_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var654_addressof_part___t0 (_ bv347 64))
+  (= var652_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var656_true__t0 () Bool)
+(declare-fun var654_true__t0 () Bool)
 (assert
-  (= var656_true__t0 (theory1_safe var654_addressof_part___t0) )
+  (= var654_true__t0 (theory1_safe var652_addressof_part___t0) )
 )
 
 (assert
-  var656_true__t0
+  var654_true__t0
 )
 
-(declare-fun var657_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var657_cast_of_addressof_part___t0 var654_addressof_part___t0) :named A35)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+(declare-fun var655_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var656_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var656_len_addressof_part____t0 (theory0_len var655_addressof_part___t0) )
+)
+
+(assert
+  (= var656_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var655_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var657_true__t0 () Bool)
+(assert
+  (= var657_true__t0 (theory1_safe var655_addressof_part___t0) )
+)
+
+(assert
+  var657_true__t0
+)
+
+(declare-fun var658_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var658_cast_of_addressof_part___t0 var655_addressof_part___t0) :named A35)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var658_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var659_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var658_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var659_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -4692,31 +4694,31 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var659_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var660_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var659_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var657_cast_of_addressof_part___t0) )
+  (= var660_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var658_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
 ; literal expr
-(declare-fun var660_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var661_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var660_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var661_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
-(declare-fun var661_infix_expression__t0 () Bool)
+(declare-fun var662_infix_expression__t0 () Bool)
 (assert
-  (=  var661_infix_expression__t0 (bvugt var658_literal_Unsigned_400___t0 var660_literal_Unsigned_0___t0))
+  (=  var662_infix_expression__t0 (bvugt var659_literal_Unsigned_400___t0 var661_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) (or (not var659_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var661_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) (or (not var660_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var662_infix_expression__t0 ) ))
 
 )
 
@@ -4728,41 +4730,41 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var659_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var660_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var660_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var661_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t5 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t5 () (_ BitVec 64))
 (assert
-  (= var347_part__t5  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var347_part__t5 var347_part__t4)  )
+  (= var348_part__t5  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var348_part__t5 var348_part__t4)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
 ; callsite effects
-(declare-fun var662_return_value_of___buffer__clear__t0 () (_ BitVec 64))
-(declare-fun var664_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
+(declare-fun var663_return_value_of___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var665_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
 (assert
-  (= var664_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var662_return_value_of___buffer__clear__t0) )
+  (= var665_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var663_return_value_of___buffer__clear__t0) )
 )
 
-(declare-fun var663_return__t1 () (_ BitVec 64))
+(declare-fun var664_return__t1 () (_ BitVec 64))
 (assert
-  (= var664_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var663_return__t1) )
+  (= var665_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var664_return__t1) )
 )
 
-(declare-fun var665_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
+(declare-fun var666_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
 (assert
-  (= var665_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var662_return_value_of___buffer__clear__t0) )
+  (= var666_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var663_return_value_of___buffer__clear__t0) )
 )
 
 (assert
-  (= var665_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var663_return__t1) )
+  (= var666_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var664_return__t1) )
 )
 
-(declare-fun var663_return__t0 () (_ BitVec 64))
+(declare-fun var664_return__t0 () (_ BitVec 64))
 (assert
-  (= var663_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var662_return_value_of___buffer__clear__t0 var663_return__t0)  )
+  (= var664_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var663_return_value_of___buffer__clear__t0 var664_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:35
@@ -4785,9 +4787,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var666_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var667_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var666_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var657_cast_of_addressof_part___t0) )
+  (= var667_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var658_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -4796,23 +4798,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var667_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var668_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var667_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var668_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var668_infix_expression__t0 () Bool)
-(assert
-  (=  var668_infix_expression__t0 (bvuge var667_literal_Unsigned_400___t0 var658_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var669_infix_expression__t0 () Bool)
 (assert
-  (=  var669_infix_expression__t0 (and var666_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var668_infix_expression__t0))
+  (=  var669_infix_expression__t0 (bvuge var668_literal_Unsigned_400___t0 var659_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var670_infix_expression__t0 () Bool)
+(assert
+  (=  var670_infix_expression__t0 (and var667_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var669_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -4823,23 +4825,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var670_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var671_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var670_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var671_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var671_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var671_implicit_coercion_of_literal_Unsigned_400___t0 var670_literal_Unsigned_400___t0) :named A36)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var672_infix_expression__t0 () Bool)
+(declare-fun var672_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var672_implicit_coercion_of_literal_Unsigned_400___t0 var671_literal_Unsigned_400___t0) :named A36)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var673_infix_expression__t0 () Bool)
 (assert
-  (=  var672_infix_expression__t0 (bvult var380_part_at__t0 var671_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var673_infix_expression__t0 (bvult var381_part_at__t0 var672_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var673_infix_expression__t0 () Bool)
+(declare-fun var674_infix_expression__t0 () Bool)
 (assert
-  (=  var673_infix_expression__t0 (and var669_infix_expression__t0 var672_infix_expression__t0))
+  (=  var674_infix_expression__t0 (and var670_infix_expression__t0 var673_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -4852,291 +4854,291 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var674_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var675_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var674_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var675_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var675_infix_expression__t0 () Bool)
+(declare-fun var676_infix_expression__t0 () Bool)
 (assert
-  (=  var675_infix_expression__t0 (and var673_infix_expression__t0 var674_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var676_infix_expression__t0 (and var674_infix_expression__t0 var675_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var675_infix_expression__t0 :named A37))(check-sat)
+(assert (! var676_infix_expression__t0 :named A37))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
-(declare-fun var676_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+(declare-fun var677_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
 (assert
-  (= var676_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var663_return__t1) )
+  (= var677_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var664_return__t1) )
 )
 
-(declare-fun var662_return_value_of___buffer__clear__t1 () (_ BitVec 64))
+(declare-fun var663_return_value_of___buffer__clear__t1 () (_ BitVec 64))
 (assert
-  (= var676_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var662_return_value_of___buffer__clear__t1) )
+  (= var677_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var663_return_value_of___buffer__clear__t1) )
 )
 
-(declare-fun var677_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
+(declare-fun var678_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
 (assert
-  (= var677_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var663_return__t1) )
-)
-
-(assert
-  (= var677_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var662_return_value_of___buffer__clear__t1) )
+  (= var678_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var664_return__t1) )
 )
 
 (assert
-  (= var662_return_value_of___buffer__clear__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var663_return__t1 var662_return_value_of___buffer__clear__t0)  )
+  (= var678_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var663_return_value_of___buffer__clear__t1) )
+)
+
+(assert
+  (= var663_return_value_of___buffer__clear__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var664_return__t1 var663_return_value_of___buffer__clear__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
 ; call of ::buffer::split
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var679_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var680_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var680_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var681_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var680_len_addressof_vv____t0 (theory0_len var679_addressof_vv___t0) )
+  (= var681_len_addressof_vv____t0 (theory0_len var680_addressof_vv___t0) )
 )
 
 (assert
-  (= var680_len_addressof_vv____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var679_addressof_vv___t0 (_ bv389 64))
-
-)
-
-(declare-fun var681_true__t0 () Bool)
-(assert
-  (= var681_true__t0 (theory1_safe var679_addressof_vv___t0) )
-)
-
-(assert
-  var681_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var682_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var683_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var683_len_addressof_vv____t0 (theory0_len var682_addressof_vv___t0) )
-)
-
-(assert
-  (= var683_len_addressof_vv____t0 (_ bv1 64))
+  (= var681_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var682_addressof_vv___t0 (_ bv389 64))
+  (= var680_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var684_true__t0 () Bool)
+(declare-fun var682_true__t0 () Bool)
 (assert
-  (= var684_true__t0 (theory1_safe var682_addressof_vv___t0) )
+  (= var682_true__t0 (theory1_safe var680_addressof_vv___t0) )
 )
 
 (assert
-  var684_true__t0
+  var682_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var686_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var687_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var683_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var684_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var687_len_addressof_iterator____t0 (theory0_len var686_addressof_iterator___t0) )
+  (= var684_len_addressof_vv____t0 (theory0_len var683_addressof_vv___t0) )
 )
 
 (assert
-  (= var687_len_addressof_iterator____t0 (_ bv1 64))
+  (= var684_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var686_addressof_iterator___t0 (_ bv472 64))
+  (= var683_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var688_true__t0 () Bool)
+(declare-fun var685_true__t0 () Bool)
 (assert
-  (= var688_true__t0 (theory1_safe var686_addressof_iterator___t0) )
+  (= var685_true__t0 (theory1_safe var683_addressof_vv___t0) )
 )
 
 (assert
-  var688_true__t0
+  var685_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var689_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var690_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var687_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var688_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var690_len_addressof_part____t0 (theory0_len var689_addressof_part___t0) )
-)
-
-(assert
-  (= var690_len_addressof_part____t0 (_ bv1 64))
-
+  (= var688_len_addressof_iterator____t0 (theory0_len var687_addressof_iterator___t0) )
 )
 
 (assert
-  (= var689_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var691_true__t0 () Bool)
-(assert
-  (= var691_true__t0 (theory1_safe var689_addressof_part___t0) )
-)
-
-(assert
-  var691_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var692_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var693_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var693_len_addressof_part____t0 (theory0_len var692_addressof_part___t0) )
-)
-
-(assert
-  (= var693_len_addressof_part____t0 (_ bv1 64))
+  (= var688_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var692_addressof_part___t0 (_ bv347 64))
+  (= var687_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var694_true__t0 () Bool)
+(declare-fun var689_true__t0 () Bool)
 (assert
-  (= var694_true__t0 (theory1_safe var692_addressof_part___t0) )
-)
-
-(assert
-  var694_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var695_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var696_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var696_len_addressof_vv____t0 (theory0_len var695_addressof_vv___t0) )
+  (= var689_true__t0 (theory1_safe var687_addressof_iterator___t0) )
 )
 
 (assert
-  (= var696_len_addressof_vv____t0 (_ bv1 64))
+  var689_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var690_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var691_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var691_len_addressof_part____t0 (theory0_len var690_addressof_part___t0) )
+)
+
+(assert
+  (= var691_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var695_addressof_vv___t0 (_ bv389 64))
+  (= var690_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var697_true__t0 () Bool)
+(declare-fun var692_true__t0 () Bool)
 (assert
-  (= var697_true__t0 (theory1_safe var695_addressof_vv___t0) )
+  (= var692_true__t0 (theory1_safe var690_addressof_part___t0) )
 )
 
 (assert
-  var697_true__t0
+  var692_true__t0
 )
 
-(declare-fun var698_cast_of_addressof_vv___t0 () (_ BitVec 64))
-(assert (! (= var698_cast_of_addressof_vv___t0 var695_addressof_vv___t0) :named A38)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var693_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var694_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var694_len_addressof_part____t0 (theory0_len var693_addressof_part___t0) )
+)
+
+(assert
+  (= var694_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var693_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var695_true__t0 () Bool)
+(assert
+  (= var695_true__t0 (theory1_safe var693_addressof_part___t0) )
+)
+
+(assert
+  var695_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var696_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var697_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var697_len_addressof_vv____t0 (theory0_len var696_addressof_vv___t0) )
+)
+
+(assert
+  (= var697_len_addressof_vv____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var696_addressof_vv___t0 (_ bv390 64))
+
+)
+
+(declare-fun var698_true__t0 () Bool)
+(assert
+  (= var698_true__t0 (theory1_safe var696_addressof_vv___t0) )
+)
+
+(assert
+  var698_true__t0
+)
+
+(declare-fun var699_cast_of_addressof_vv___t0 () (_ BitVec 64))
+(assert (! (= var699_cast_of_addressof_vv___t0 var696_addressof_vv___t0) :named A38)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; literal expr
-(declare-fun var699_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var700_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var699_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var700_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var701_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var702_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var702_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var703_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var702_len_addressof_iterator____t0 (theory0_len var701_addressof_iterator___t0) )
+  (= var703_len_addressof_iterator____t0 (theory0_len var702_addressof_iterator___t0) )
 )
 
 (assert
-  (= var702_len_addressof_iterator____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var701_addressof_iterator___t0 (_ bv472 64))
-
-)
-
-(declare-fun var703_true__t0 () Bool)
-(assert
-  (= var703_true__t0 (theory1_safe var701_addressof_iterator___t0) )
-)
-
-(assert
-  var703_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var704_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var705_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var705_len_addressof_part____t0 (theory0_len var704_addressof_part___t0) )
-)
-
-(assert
-  (= var705_len_addressof_part____t0 (_ bv1 64))
+  (= var703_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var704_addressof_part___t0 (_ bv347 64))
+  (= var702_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var706_true__t0 () Bool)
+(declare-fun var704_true__t0 () Bool)
 (assert
-  (= var706_true__t0 (theory1_safe var704_addressof_part___t0) )
+  (= var704_true__t0 (theory1_safe var702_addressof_iterator___t0) )
 )
 
 (assert
-  var706_true__t0
+  var704_true__t0
 )
 
-(declare-fun var707_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var707_cast_of_addressof_part___t0 var704_addressof_part___t0) :named A39)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var705_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var706_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var706_len_addressof_part____t0 (theory0_len var705_addressof_part___t0) )
+)
+
+(assert
+  (= var706_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var705_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var707_true__t0 () Bool)
+(assert
+  (= var707_true__t0 (theory1_safe var705_addressof_part___t0) )
+)
+
+(assert
+  var707_true__t0
+)
+
+(declare-fun var708_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var708_cast_of_addressof_part___t0 var705_addressof_part___t0) :named A39)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var708_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var709_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var708_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var709_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -5147,27 +5149,27 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var709_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var710_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var709_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var707_cast_of_addressof_part___t0) )
+  (= var710_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var708_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var710_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
+(declare-fun var711_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (assert
-  (= var710_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var701_addressof_iterator___t0) )
+  (= var711_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var702_addressof_iterator___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var711_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var711_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var698_cast_of_addressof_vv___t0) )
+  (= var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var699_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:368
@@ -5190,9 +5192,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var713_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var698_cast_of_addressof_vv___t0) )
+  (= var713_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var699_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -5201,23 +5203,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var713_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var714_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var713_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var714_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var714_infix_expression__t0 () Bool)
-(assert
-  (=  var714_infix_expression__t0 (bvuge var713_literal_Unsigned_400___t0 var699_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var715_infix_expression__t0 () Bool)
 (assert
-  (=  var715_infix_expression__t0 (and var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var714_infix_expression__t0))
+  (=  var715_infix_expression__t0 (bvuge var714_literal_Unsigned_400___t0 var700_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var716_infix_expression__t0 () Bool)
+(assert
+  (=  var716_infix_expression__t0 (and var713_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var715_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -5228,23 +5230,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var716_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var717_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var716_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var717_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var717_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var717_implicit_coercion_of_literal_Unsigned_400___t0 var716_literal_Unsigned_400___t0) :named A40)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var718_infix_expression__t0 () Bool)
+(declare-fun var718_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var718_implicit_coercion_of_literal_Unsigned_400___t0 var717_literal_Unsigned_400___t0) :named A40)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var719_infix_expression__t0 () Bool)
 (assert
-  (=  var718_infix_expression__t0 (bvult var422_vv_at__t0 var717_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var719_infix_expression__t0 (bvult var423_vv_at__t0 var718_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var719_infix_expression__t0 () Bool)
+(declare-fun var720_infix_expression__t0 () Bool)
 (assert
-  (=  var719_infix_expression__t0 (and var715_infix_expression__t0 var718_infix_expression__t0))
+  (=  var720_infix_expression__t0 (and var716_infix_expression__t0 var719_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -5257,15 +5259,15 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var720_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var721_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var720_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var721_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var721_infix_expression__t0 () Bool)
+(declare-fun var722_infix_expression__t0 () Bool)
 (assert
-  (=  var721_infix_expression__t0 (and var719_infix_expression__t0 var720_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var722_infix_expression__t0 (and var720_infix_expression__t0 var721_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
@@ -5273,22 +5275,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; literal expr
-(declare-fun var722_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var723_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var722_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var723_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
-(declare-fun var723_infix_expression__t0 () Bool)
+(declare-fun var724_infix_expression__t0 () Bool)
 (assert
-  (=  var723_infix_expression__t0 (bvugt var708_literal_Unsigned_400___t0 var722_literal_Unsigned_0___t0))
+  (=  var724_infix_expression__t0 (bvugt var709_literal_Unsigned_400___t0 var723_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) (or (not var709_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var710_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var711_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var721_infix_expression__t0 ) (not var723_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) (or (not var710_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var711_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var722_infix_expression__t0 ) (not var724_infix_expression__t0 ) ))
 
 )
 
@@ -5300,35 +5302,35 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var709_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var710_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var711_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var710_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var711_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var713_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var716_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var720_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var722_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var713_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var714_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var717_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var721_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var723_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 472 to temporal +1 because of function borrow
-(declare-fun var472_iterator__t4 () (_ BitVec 64))
+; 473 to temporal +1 because of function borrow
+(declare-fun var473_iterator__t4 () (_ BitVec 64))
 (assert
-  (= var472_iterator__t4  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var472_iterator__t4 var472_iterator__t3)  )
+  (= var473_iterator__t4  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var473_iterator__t4 var473_iterator__t3)  )
 )
 
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t6 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t6 () (_ BitVec 64))
 (assert
-  (= var347_part__t6  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var347_part__t6 var347_part__t5)  )
+  (= var348_part__t6  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var348_part__t6 var348_part__t5)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
 ; callsite effects
-(declare-fun var725_return__t1 () Bool)
-(declare-fun var724_return_value_of___buffer__split__t0 () Bool)
-(declare-fun var725_return__t0 () Bool)
+(declare-fun var726_return__t1 () Bool)
+(declare-fun var725_return_value_of___buffer__split__t0 () Bool)
+(declare-fun var726_return__t0 () Bool)
 (assert
-  (= var725_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var724_return_value_of___buffer__split__t0 var725_return__t0)  )
+  (= var726_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var725_return_value_of___buffer__split__t0 var726_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:370
@@ -5351,9 +5353,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var726_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var727_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var726_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var698_cast_of_addressof_vv___t0) )
+  (= var727_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var699_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -5362,23 +5364,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var727_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var728_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var727_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var728_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var728_infix_expression__t0 () Bool)
-(assert
-  (=  var728_infix_expression__t0 (bvuge var727_literal_Unsigned_400___t0 var699_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var729_infix_expression__t0 () Bool)
 (assert
-  (=  var729_infix_expression__t0 (and var726_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var728_infix_expression__t0))
+  (=  var729_infix_expression__t0 (bvuge var728_literal_Unsigned_400___t0 var700_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var730_infix_expression__t0 () Bool)
+(assert
+  (=  var730_infix_expression__t0 (and var727_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var729_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -5389,23 +5391,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var730_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var731_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var730_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var731_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var731_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var731_implicit_coercion_of_literal_Unsigned_400___t0 var730_literal_Unsigned_400___t0) :named A41)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var732_infix_expression__t0 () Bool)
+(declare-fun var732_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var732_implicit_coercion_of_literal_Unsigned_400___t0 var731_literal_Unsigned_400___t0) :named A41)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var733_infix_expression__t0 () Bool)
 (assert
-  (=  var732_infix_expression__t0 (bvult var422_vv_at__t0 var731_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var733_infix_expression__t0 (bvult var423_vv_at__t0 var732_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var733_infix_expression__t0 () Bool)
+(declare-fun var734_infix_expression__t0 () Bool)
 (assert
-  (=  var733_infix_expression__t0 (and var729_infix_expression__t0 var732_infix_expression__t0))
+  (=  var734_infix_expression__t0 (and var730_infix_expression__t0 var733_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -5418,30 +5420,30 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var734_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var735_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var734_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var735_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var735_infix_expression__t0 () Bool)
+(declare-fun var736_infix_expression__t0 () Bool)
 (assert
-  (=  var735_infix_expression__t0 (and var733_infix_expression__t0 var734_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var736_infix_expression__t0 (and var734_infix_expression__t0 var735_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var735_infix_expression__t0 :named A42))(check-sat)
+(assert (! var736_infix_expression__t0 :named A42))(check-sat)
 
-(declare-fun var724_return_value_of___buffer__split__t1 () Bool)
+(declare-fun var725_return_value_of___buffer__split__t1 () Bool)
 (assert
-  (= var724_return_value_of___buffer__split__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var725_return__t1 var724_return_value_of___buffer__split__t0)  )
+  (= var725_return_value_of___buffer__split__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var726_return__t1 var725_return_value_of___buffer__split__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-(declare-fun var736_return__t1 () Bool)
-(declare-fun var736_return__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+(declare-fun var737_return__t1 () Bool)
+(declare-fun var737_return__t0 () Bool)
 (assert
-  (= var736_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var724_return_value_of___buffer__split__t1 var736_return__t0)  )
+  (= var737_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var725_return_value_of___buffer__split__t1 var737_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:371
@@ -5464,9 +5466,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var737_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var738_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var737_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var707_cast_of_addressof_part___t0) )
+  (= var738_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var708_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -5475,23 +5477,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var738_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var739_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var738_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var739_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var739_infix_expression__t0 () Bool)
-(assert
-  (=  var739_infix_expression__t0 (bvuge var738_literal_Unsigned_400___t0 var708_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var740_infix_expression__t0 () Bool)
 (assert
-  (=  var740_infix_expression__t0 (and var737_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var739_infix_expression__t0))
+  (=  var740_infix_expression__t0 (bvuge var739_literal_Unsigned_400___t0 var709_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var741_infix_expression__t0 () Bool)
+(assert
+  (=  var741_infix_expression__t0 (and var738_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var740_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -5502,23 +5504,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var741_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var742_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var741_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var742_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var742_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var742_implicit_coercion_of_literal_Unsigned_400___t0 var741_literal_Unsigned_400___t0) :named A43)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var743_infix_expression__t0 () Bool)
+(declare-fun var743_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var743_implicit_coercion_of_literal_Unsigned_400___t0 var742_literal_Unsigned_400___t0) :named A43)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var744_infix_expression__t0 () Bool)
 (assert
-  (=  var743_infix_expression__t0 (bvult var380_part_at__t0 var742_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var744_infix_expression__t0 (bvult var381_part_at__t0 var743_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var744_infix_expression__t0 () Bool)
+(declare-fun var745_infix_expression__t0 () Bool)
 (assert
-  (=  var744_infix_expression__t0 (and var740_infix_expression__t0 var743_infix_expression__t0))
+  (=  var745_infix_expression__t0 (and var741_infix_expression__t0 var744_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -5531,23 +5533,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var745_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var746_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var745_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var746_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var746_infix_expression__t0 () Bool)
+(declare-fun var747_infix_expression__t0 () Bool)
 (assert
-  (=  var746_infix_expression__t0 (and var744_infix_expression__t0 var745_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var747_infix_expression__t0 (and var745_infix_expression__t0 var746_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var746_infix_expression__t0 :named A44))(check-sat)
+(assert (! var747_infix_expression__t0 :named A44))(check-sat)
 
-(declare-fun var724_return_value_of___buffer__split__t2 () Bool)
+(declare-fun var725_return_value_of___buffer__split__t2 () Bool)
 (assert
-  (= var724_return_value_of___buffer__split__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 ) var736_return__t1 var724_return_value_of___buffer__split__t1)  )
+  (= var725_return_value_of___buffer__split__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 ) var737_return__t1 var725_return_value_of___buffer__split__t1)  )
 )
 
 ; end of callsite effects
@@ -5555,7 +5557,7 @@
 
 (get-value (
 
-  var724_return_value_of___buffer__split__t2
+  var725_return_value_of___buffer__split__t2
 
 ) )
 
@@ -5563,115 +5565,115 @@
 (push 1)
 
 (assert
-  (not (= var724_return_value_of___buffer__split__t2 false))
+  (not (= var725_return_value_of___buffer__split__t2 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:223
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:229
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; call of ::carrier::vault_toml::findmtdindex
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; call of ::buffer::cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var749_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var750_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var750_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var751_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var750_len_addressof_part____t0 (theory0_len var749_addressof_part___t0) )
+  (= var751_len_addressof_part____t0 (theory0_len var750_addressof_part___t0) )
 )
 
 (assert
-  (= var750_len_addressof_part____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var749_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var751_true__t0 () Bool)
-(assert
-  (= var751_true__t0 (theory1_safe var749_addressof_part___t0) )
-)
-
-(assert
-  var751_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var752_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var753_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var753_len_addressof_part____t0 (theory0_len var752_addressof_part___t0) )
-)
-
-(assert
-  (= var753_len_addressof_part____t0 (_ bv1 64))
+  (= var751_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var752_addressof_part___t0 (_ bv347 64))
+  (= var750_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var754_true__t0 () Bool)
+(declare-fun var752_true__t0 () Bool)
 (assert
-  (= var754_true__t0 (theory1_safe var752_addressof_part___t0) )
-)
-
-(assert
-  var754_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var755_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var756_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var756_len_addressof_part____t0 (theory0_len var755_addressof_part___t0) )
+  (= var752_true__t0 (theory1_safe var750_addressof_part___t0) )
 )
 
 (assert
-  (= var756_len_addressof_part____t0 (_ bv1 64))
+  var752_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var753_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var754_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var754_len_addressof_part____t0 (theory0_len var753_addressof_part___t0) )
+)
+
+(assert
+  (= var754_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var755_addressof_part___t0 (_ bv347 64))
+  (= var753_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var757_true__t0 () Bool)
+(declare-fun var755_true__t0 () Bool)
 (assert
-  (= var757_true__t0 (theory1_safe var755_addressof_part___t0) )
+  (= var755_true__t0 (theory1_safe var753_addressof_part___t0) )
 )
 
 (assert
-  var757_true__t0
+  var755_true__t0
 )
 
-(declare-fun var758_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var758_cast_of_addressof_part___t0 var755_addressof_part___t0) :named A45)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var756_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var757_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var757_len_addressof_part____t0 (theory0_len var756_addressof_part___t0) )
+)
+
+(assert
+  (= var757_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var756_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var758_true__t0 () Bool)
+(assert
+  (= var758_true__t0 (theory1_safe var756_addressof_part___t0) )
+)
+
+(assert
+  var758_true__t0
+)
+
+(declare-fun var759_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var759_cast_of_addressof_part___t0 var756_addressof_part___t0) :named A45)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var759_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var760_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var759_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var760_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -5682,9 +5684,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var760_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var760_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var758_cast_of_addressof_part___t0) )
+  (= var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var759_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
@@ -5707,9 +5709,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var762_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var758_cast_of_addressof_part___t0) )
+  (= var762_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var759_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -5718,23 +5720,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var762_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var763_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var762_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var763_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var763_infix_expression__t0 () Bool)
-(assert
-  (=  var763_infix_expression__t0 (bvuge var762_literal_Unsigned_400___t0 var759_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var764_infix_expression__t0 () Bool)
 (assert
-  (=  var764_infix_expression__t0 (and var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var763_infix_expression__t0))
+  (=  var764_infix_expression__t0 (bvuge var763_literal_Unsigned_400___t0 var760_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var765_infix_expression__t0 () Bool)
+(assert
+  (=  var765_infix_expression__t0 (and var762_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var764_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -5745,23 +5747,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var765_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var766_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var765_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var766_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var766_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var766_implicit_coercion_of_literal_Unsigned_400___t0 var765_literal_Unsigned_400___t0) :named A46)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var767_infix_expression__t0 () Bool)
+(declare-fun var767_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var767_implicit_coercion_of_literal_Unsigned_400___t0 var766_literal_Unsigned_400___t0) :named A46)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var768_infix_expression__t0 () Bool)
 (assert
-  (=  var767_infix_expression__t0 (bvult var380_part_at__t0 var766_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var768_infix_expression__t0 (bvult var381_part_at__t0 var767_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var768_infix_expression__t0 () Bool)
+(declare-fun var769_infix_expression__t0 () Bool)
 (assert
-  (=  var768_infix_expression__t0 (and var764_infix_expression__t0 var767_infix_expression__t0))
+  (=  var769_infix_expression__t0 (and var765_infix_expression__t0 var768_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -5774,22 +5776,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var769_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var770_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var769_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var770_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var770_infix_expression__t0 () Bool)
+(declare-fun var771_infix_expression__t0 () Bool)
 (assert
-  (=  var770_infix_expression__t0 (and var768_infix_expression__t0 var769_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var771_infix_expression__t0 (and var769_infix_expression__t0 var770_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var760_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var770_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var771_infix_expression__t0 ) ))
 
 )
 
@@ -5801,38 +5803,38 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var760_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (declare-fun var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var762_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var765_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var769_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var762_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var763_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var766_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var770_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; callsite effects
-(declare-fun var771_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var773_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var772_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var774_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var773_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var771_return_value_of___buffer__cstr__t0) )
+  (= var774_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var772_return_value_of___buffer__cstr__t0) )
 )
 
-(declare-fun var772_return__t1 () (_ BitVec 64))
+(declare-fun var773_return__t1 () (_ BitVec 64))
 (assert
-  (= var773_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var772_return__t1) )
+  (= var774_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var773_return__t1) )
 )
 
-(declare-fun var774_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var775_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
 (assert
-  (= var774_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var771_return_value_of___buffer__cstr__t0) )
+  (= var775_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var772_return_value_of___buffer__cstr__t0) )
 )
 
 (assert
-  (= var774_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var772_return__t1) )
+  (= var775_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var773_return__t1) )
 )
 
-(declare-fun var772_return__t0 () (_ BitVec 64))
+(declare-fun var773_return__t0 () (_ BitVec 64))
 (assert
-  (= var772_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var771_return_value_of___buffer__cstr__t0 var772_return__t0)  )
+  (= var773_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var772_return_value_of___buffer__cstr__t0 var773_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
@@ -5842,59 +5844,59 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-(declare-fun var775_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var776_interpretation_of_theory_safe_over_return__t0 () Bool)
 (assert
-  (= var775_interpretation_of_theory_safe_over_return__t0 (theory1_safe var772_return__t1) )
+  (= var776_interpretation_of_theory_safe_over_return__t0 (theory1_safe var773_return__t1) )
 )
 
-(assert (! var775_interpretation_of_theory_safe_over_return__t0 :named A47))(check-sat)
+(assert (! var776_interpretation_of_theory_safe_over_return__t0 :named A47))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var776_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var777_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var776_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var772_return__t1) )
+  (= var777_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var773_return__t1) )
 )
 
-(declare-fun var771_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var772_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
 (assert
-  (= var776_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var771_return_value_of___buffer__cstr__t1) )
+  (= var777_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var772_return_value_of___buffer__cstr__t1) )
 )
 
-(declare-fun var777_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var778_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var777_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var772_return__t1) )
-)
-
-(assert
-  (= var777_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var771_return_value_of___buffer__cstr__t1) )
+  (= var778_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var773_return__t1) )
 )
 
 (assert
-  (= var771_return_value_of___buffer__cstr__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var772_return__t1 var771_return_value_of___buffer__cstr__t0)  )
-)
-
-(declare-fun var779_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(assert
-  (= var779_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var771_return_value_of___buffer__cstr__t1) )
-)
-
-(declare-fun var778_return__t1 () (_ BitVec 64))
-(assert
-  (= var779_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var778_return__t1) )
-)
-
-(declare-fun var780_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(assert
-  (= var780_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var771_return_value_of___buffer__cstr__t1) )
+  (= var778_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var772_return_value_of___buffer__cstr__t1) )
 )
 
 (assert
-  (= var780_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var778_return__t1) )
+  (= var772_return_value_of___buffer__cstr__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var773_return__t1 var772_return_value_of___buffer__cstr__t0)  )
 )
 
-(declare-fun var778_return__t0 () (_ BitVec 64))
+(declare-fun var780_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var778_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var771_return_value_of___buffer__cstr__t1 var778_return__t0)  )
+  (= var780_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var772_return_value_of___buffer__cstr__t1) )
+)
+
+(declare-fun var779_return__t1 () (_ BitVec 64))
+(assert
+  (= var780_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var779_return__t1) )
+)
+
+(declare-fun var781_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(assert
+  (= var781_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var772_return_value_of___buffer__cstr__t1) )
+)
+
+(assert
+  (= var781_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var779_return__t1) )
+)
+
+(declare-fun var779_return__t0 () (_ BitVec 64))
+(assert
+  (= var779_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var772_return_value_of___buffer__cstr__t1 var779_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
@@ -5904,77 +5906,77 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-(declare-fun var781_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var782_interpretation_of_theory_nullterm_over_return__t0 () Bool)
 (assert
-  (= var781_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var778_return__t1) )
+  (= var782_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var779_return__t1) )
 )
 
-(assert (! var781_interpretation_of_theory_nullterm_over_return__t0 :named A48))(check-sat)
+(assert (! var782_interpretation_of_theory_nullterm_over_return__t0 :named A48))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var782_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var783_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var782_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var778_return__t1) )
+  (= var783_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var779_return__t1) )
 )
 
-(declare-fun var771_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var772_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
 (assert
-  (= var782_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var771_return_value_of___buffer__cstr__t2) )
+  (= var783_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var772_return_value_of___buffer__cstr__t2) )
 )
 
-(declare-fun var783_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var784_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var783_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var778_return__t1) )
-)
-
-(assert
-  (= var783_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var771_return_value_of___buffer__cstr__t2) )
+  (= var784_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var779_return__t1) )
 )
 
 (assert
-  (= var771_return_value_of___buffer__cstr__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var778_return__t1 var771_return_value_of___buffer__cstr__t1)  )
+  (= var784_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var772_return_value_of___buffer__cstr__t2) )
+)
+
+(assert
+  (= var772_return_value_of___buffer__cstr__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var779_return__t1 var772_return_value_of___buffer__cstr__t1)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var784_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var784_cast_of_e__t0 var333_e__t0) :named A49)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var785_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var785_cast_of_e__t0 var334_e__t0) :named A49)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; call of ::buffer::cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var785_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var786_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var786_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var787_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var786_len_addressof_part____t0 (theory0_len var785_addressof_part___t0) )
+  (= var787_len_addressof_part____t0 (theory0_len var786_addressof_part___t0) )
 )
 
 (assert
-  (= var786_len_addressof_part____t0 (_ bv1 64))
+  (= var787_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var785_addressof_part___t0 (_ bv347 64))
+  (= var786_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var787_true__t0 () Bool)
+(declare-fun var788_true__t0 () Bool)
 (assert
-  (= var787_true__t0 (theory1_safe var785_addressof_part___t0) )
+  (= var788_true__t0 (theory1_safe var786_addressof_part___t0) )
 )
 
 (assert
-  var787_true__t0
+  var788_true__t0
 )
 
-(declare-fun var788_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var788_cast_of_addressof_part___t0 var785_addressof_part___t0) :named A50)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+(declare-fun var789_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var789_cast_of_addressof_part___t0 var786_addressof_part___t0) :named A50)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var789_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var790_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var789_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var790_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -5985,9 +5987,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var790_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var790_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var788_cast_of_addressof_part___t0) )
+  (= var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var789_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
@@ -6010,9 +6012,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var792_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var788_cast_of_addressof_part___t0) )
+  (= var792_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var789_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -6021,23 +6023,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var792_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var793_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var792_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var793_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var793_infix_expression__t0 () Bool)
-(assert
-  (=  var793_infix_expression__t0 (bvuge var792_literal_Unsigned_400___t0 var789_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var794_infix_expression__t0 () Bool)
 (assert
-  (=  var794_infix_expression__t0 (and var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var793_infix_expression__t0))
+  (=  var794_infix_expression__t0 (bvuge var793_literal_Unsigned_400___t0 var790_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var795_infix_expression__t0 () Bool)
+(assert
+  (=  var795_infix_expression__t0 (and var792_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var794_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -6048,23 +6050,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var795_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var796_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var795_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var796_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var796_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var796_implicit_coercion_of_literal_Unsigned_400___t0 var795_literal_Unsigned_400___t0) :named A51)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var797_infix_expression__t0 () Bool)
+(declare-fun var797_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var797_implicit_coercion_of_literal_Unsigned_400___t0 var796_literal_Unsigned_400___t0) :named A51)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var798_infix_expression__t0 () Bool)
 (assert
-  (=  var797_infix_expression__t0 (bvult var380_part_at__t0 var796_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var798_infix_expression__t0 (bvult var381_part_at__t0 var797_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var798_infix_expression__t0 () Bool)
+(declare-fun var799_infix_expression__t0 () Bool)
 (assert
-  (=  var798_infix_expression__t0 (and var794_infix_expression__t0 var797_infix_expression__t0))
+  (=  var799_infix_expression__t0 (and var795_infix_expression__t0 var798_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -6077,22 +6079,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var799_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var800_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var799_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var800_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var800_infix_expression__t0 () Bool)
+(declare-fun var801_infix_expression__t0 () Bool)
 (assert
-  (=  var800_infix_expression__t0 (and var798_infix_expression__t0 var799_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var801_infix_expression__t0 (and var799_infix_expression__t0 var800_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var790_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var800_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var801_infix_expression__t0 ) ))
 
 )
 
@@ -6104,38 +6106,38 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var790_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (declare-fun var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var792_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var795_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var799_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var792_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var793_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var796_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var800_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; callsite effects
-(declare-fun var801_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var803_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var802_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var804_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var803_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var801_return_value_of___buffer__cstr__t0) )
+  (= var804_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var802_return_value_of___buffer__cstr__t0) )
 )
 
-(declare-fun var802_return__t1 () (_ BitVec 64))
+(declare-fun var803_return__t1 () (_ BitVec 64))
 (assert
-  (= var803_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var802_return__t1) )
+  (= var804_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var803_return__t1) )
 )
 
-(declare-fun var804_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var805_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
 (assert
-  (= var804_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var801_return_value_of___buffer__cstr__t0) )
+  (= var805_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var802_return_value_of___buffer__cstr__t0) )
 )
 
 (assert
-  (= var804_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var802_return__t1) )
+  (= var805_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var803_return__t1) )
 )
 
-(declare-fun var802_return__t0 () (_ BitVec 64))
+(declare-fun var803_return__t0 () (_ BitVec 64))
 (assert
-  (= var802_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var801_return_value_of___buffer__cstr__t0 var802_return__t0)  )
+  (= var803_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var802_return_value_of___buffer__cstr__t0 var803_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
@@ -6145,59 +6147,59 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-(declare-fun var805_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var806_interpretation_of_theory_safe_over_return__t0 () Bool)
 (assert
-  (= var805_interpretation_of_theory_safe_over_return__t0 (theory1_safe var802_return__t1) )
+  (= var806_interpretation_of_theory_safe_over_return__t0 (theory1_safe var803_return__t1) )
 )
 
-(assert (! var805_interpretation_of_theory_safe_over_return__t0 :named A52))(check-sat)
+(assert (! var806_interpretation_of_theory_safe_over_return__t0 :named A52))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var806_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var807_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var806_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var802_return__t1) )
+  (= var807_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var803_return__t1) )
 )
 
-(declare-fun var801_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var802_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
 (assert
-  (= var806_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var801_return_value_of___buffer__cstr__t1) )
+  (= var807_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var802_return_value_of___buffer__cstr__t1) )
 )
 
-(declare-fun var807_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var808_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var807_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var802_return__t1) )
-)
-
-(assert
-  (= var807_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var801_return_value_of___buffer__cstr__t1) )
+  (= var808_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var803_return__t1) )
 )
 
 (assert
-  (= var801_return_value_of___buffer__cstr__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var802_return__t1 var801_return_value_of___buffer__cstr__t0)  )
-)
-
-(declare-fun var809_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(assert
-  (= var809_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var801_return_value_of___buffer__cstr__t1) )
-)
-
-(declare-fun var808_return__t1 () (_ BitVec 64))
-(assert
-  (= var809_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var808_return__t1) )
-)
-
-(declare-fun var810_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(assert
-  (= var810_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var801_return_value_of___buffer__cstr__t1) )
+  (= var808_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var802_return_value_of___buffer__cstr__t1) )
 )
 
 (assert
-  (= var810_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var808_return__t1) )
+  (= var802_return_value_of___buffer__cstr__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var803_return__t1 var802_return_value_of___buffer__cstr__t0)  )
 )
 
-(declare-fun var808_return__t0 () (_ BitVec 64))
+(declare-fun var810_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var808_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var801_return_value_of___buffer__cstr__t1 var808_return__t0)  )
+  (= var810_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var802_return_value_of___buffer__cstr__t1) )
+)
+
+(declare-fun var809_return__t1 () (_ BitVec 64))
+(assert
+  (= var810_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var809_return__t1) )
+)
+
+(declare-fun var811_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(assert
+  (= var811_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var802_return_value_of___buffer__cstr__t1) )
+)
+
+(assert
+  (= var811_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var809_return__t1) )
+)
+
+(declare-fun var809_return__t0 () (_ BitVec 64))
+(assert
+  (= var809_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var802_return_value_of___buffer__cstr__t1 var809_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
@@ -6207,90 +6209,90 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-(declare-fun var811_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var812_interpretation_of_theory_nullterm_over_return__t0 () Bool)
 (assert
-  (= var811_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var808_return__t1) )
+  (= var812_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var809_return__t1) )
 )
 
-(assert (! var811_interpretation_of_theory_nullterm_over_return__t0 :named A53))(check-sat)
+(assert (! var812_interpretation_of_theory_nullterm_over_return__t0 :named A53))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var812_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var813_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var812_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var808_return__t1) )
+  (= var813_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var809_return__t1) )
 )
 
-(declare-fun var801_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var802_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
 (assert
-  (= var812_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var801_return_value_of___buffer__cstr__t2) )
+  (= var813_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var802_return_value_of___buffer__cstr__t2) )
 )
 
-(declare-fun var813_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var814_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var813_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var808_return__t1) )
-)
-
-(assert
-  (= var813_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var801_return_value_of___buffer__cstr__t2) )
+  (= var814_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var809_return__t1) )
 )
 
 (assert
-  (= var801_return_value_of___buffer__cstr__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var808_return__t1 var801_return_value_of___buffer__cstr__t1)  )
+  (= var814_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var802_return_value_of___buffer__cstr__t2) )
+)
+
+(assert
+  (= var802_return_value_of___buffer__cstr__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var809_return__t1 var802_return_value_of___buffer__cstr__t1)  )
 )
 
 ; end of callsite effects
 ;callsite_assert
 (push 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:303
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:309
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var814_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 () Bool)
+(declare-fun var815_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 () Bool)
 (assert
-  (= var814_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 (theory1_safe var801_return_value_of___buffer__cstr__t2) )
+  (= var815_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 (theory1_safe var802_return_value_of___buffer__cstr__t2) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:303
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:309
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var815_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var816_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var815_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var784_cast_of_e__t0) )
+  (= var816_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var785_cast_of_e__t0) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
 ; call of ::err::checked
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
-(declare-fun var816_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:310
+(declare-fun var817_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var816_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t0) )
+  (= var817_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t0) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:311
 ; call of nullterm
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:311
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:311
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
-(declare-fun var817_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:311
+(declare-fun var818_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 () Bool)
 (assert
-  (= var817_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 (theory2_nullterm var801_return_value_of___buffer__cstr__t2) )
+  (= var818_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 (theory2_nullterm var802_return_value_of___buffer__cstr__t2) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var814_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 ) (not var815_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var816_interpretation_of_theory___err__checked_over_deref_S333_e___t0 ) (not var817_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var815_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 ) (not var816_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var817_interpretation_of_theory___err__checked_over_deref_S334_e___t0 ) (not var818_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 ) ))
 
 )
 
@@ -6302,98 +6304,98 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var814_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 () Bool)
-(declare-fun var815_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var816_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var817_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 () Bool)
+(declare-fun var815_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 () Bool)
+(declare-fun var816_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var817_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var818_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t1 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t1 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var335_deref_S333_e___t1 var335_deref_S333_e___t0)  )
+  (= var336_deref_S334_e___t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var336_deref_S334_e___t1 var336_deref_S334_e___t0)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
 ; callsite effects
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:225
-(declare-fun var818_return_value_of___carrier__vault_toml__findmtdindex__t0 () (_ BitVec 64))
-(declare-fun var819_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+(declare-fun var819_return_value_of___carrier__vault_toml__findmtdindex__t0 () (_ BitVec 64))
+(declare-fun var820_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 () Bool)
 (assert
-  (= var819_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 (theory1_safe var818_return_value_of___carrier__vault_toml__findmtdindex__t0) )
+  (= var820_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 (theory1_safe var819_return_value_of___carrier__vault_toml__findmtdindex__t0) )
 )
 
-(declare-fun var747_mtdindex__t1 () (_ BitVec 64))
+(declare-fun var748_mtdindex__t1 () (_ BitVec 64))
 (assert
-  (= var819_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 (theory1_safe var747_mtdindex__t1) )
+  (= var820_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 (theory1_safe var748_mtdindex__t1) )
 )
 
-(declare-fun var820_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 () Bool)
+(declare-fun var821_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 () Bool)
 (assert
-  (= var820_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 (theory2_nullterm var818_return_value_of___carrier__vault_toml__findmtdindex__t0) )
+  (= var821_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 (theory2_nullterm var819_return_value_of___carrier__vault_toml__findmtdindex__t0) )
 )
 
 (assert
-  (= var820_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 (theory2_nullterm var747_mtdindex__t1) )
+  (= var821_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 (theory2_nullterm var748_mtdindex__t1) )
 )
 
-(declare-fun var747_mtdindex__t0 () (_ BitVec 64))
+(declare-fun var748_mtdindex__t0 () (_ BitVec 64))
 (assert
-  (= var747_mtdindex__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var818_return_value_of___carrier__vault_toml__findmtdindex__t0 var747_mtdindex__t0)  )
+  (= var748_mtdindex__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var819_return_value_of___carrier__vault_toml__findmtdindex__t0 var748_mtdindex__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
 ; call of ::err::check
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
-(declare-fun var821_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var821_cast_of_e__t0 var333_e__t0) :named A54)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
+(declare-fun var822_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var822_cast_of_e__t0 var334_e__t0) :named A54)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:50
-(declare-fun var822_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var823_true__t0 () Bool)
-(assert
-  (= var823_true__t0 (theory1_safe var822_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var823_true__t0
-)
-
+(declare-fun var823_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var824_true__t0 () Bool)
 (assert
-  (= var824_true__t0 (theory2_nullterm var822_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var824_true__t0 (theory1_safe var823_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
   var824_true__t0
 )
 
+(declare-fun var825_true__t0 () Bool)
+(assert
+  (= var825_true__t0 (theory2_nullterm var823_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var825_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:51
-(declare-fun var825_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var826_true__t0 () Bool)
-(assert
-  (= var826_true__t0 (theory1_safe var825_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var826_true__t0
-)
-
+(declare-fun var826_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var827_true__t0 () Bool)
 (assert
-  (= var827_true__t0 (theory2_nullterm var825_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var827_true__t0 (theory1_safe var826_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
   var827_true__t0
 )
 
+(declare-fun var828_true__t0 () Bool)
+(assert
+  (= var828_true__t0 (theory2_nullterm var826_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var828_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:52
 ; literal expr
-(declare-fun var828_literal_Unsigned_226___t0 () (_ BitVec 64))
+(declare-fun var829_literal_Unsigned_232___t0 () (_ BitVec 64))
 (assert
-  (= var828_literal_Unsigned_226___t0 (_ bv226 64))
+  (= var829_literal_Unsigned_232___t0 (_ bv232 64))
 
 )
 
@@ -6404,15 +6406,15 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var829_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var830_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var829_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var821_cast_of_e__t0) )
+  (= var830_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var822_cast_of_e__t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var829_interpretation_of_theory_safe_over_cast_of_e__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var830_interpretation_of_theory_safe_over_cast_of_e__t0 ) ))
 
 )
 
@@ -6424,22 +6426,22 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var829_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var830_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t2 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t2 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var335_deref_S333_e___t2 var335_deref_S333_e___t1)  )
+  (= var336_deref_S334_e___t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var336_deref_S334_e___t2 var336_deref_S334_e___t1)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
 ; callsite effects
-(declare-fun var831_return__t1 () Bool)
-(declare-fun var830_return_value_of___err__check__t0 () Bool)
-(declare-fun var831_return__t0 () Bool)
+(declare-fun var832_return__t1 () Bool)
+(declare-fun var831_return_value_of___err__check__t0 () Bool)
+(declare-fun var832_return__t0 () Bool)
 (assert
-  (= var831_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var830_return_value_of___err__check__t0 var831_return__t0)  )
+  (= var832_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var831_return_value_of___err__check__t0 var832_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
@@ -6447,15 +6449,15 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
 ; literal expr
-(declare-fun var832_literal_Unsigned_4294967295___t0 () Bool)
+(declare-fun var833_literal_Unsigned_4294967295___t0 () Bool)
 (assert
-  var832_literal_Unsigned_4294967295___t0
+  var833_literal_Unsigned_4294967295___t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
-(declare-fun var833_infix_expression__t0 () Bool)
+(declare-fun var834_infix_expression__t0 () Bool)
 (assert
-  (=  var833_infix_expression__t0 (= var831_return__t1 var832_literal_Unsigned_4294967295___t0))
+  (=  var834_infix_expression__t0 (= var832_return__t1 var833_literal_Unsigned_4294967295___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
@@ -6468,22 +6470,22 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
-(declare-fun var834_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var835_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var834_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t2) )
+  (= var835_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t2) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
-(declare-fun var835_infix_expression__t0 () Bool)
+(declare-fun var836_infix_expression__t0 () Bool)
 (assert
-  (=  var835_infix_expression__t0 (or var833_infix_expression__t0 var834_interpretation_of_theory___err__checked_over_deref_S333_e___t0))
+  (=  var836_infix_expression__t0 (or var834_infix_expression__t0 var835_interpretation_of_theory___err__checked_over_deref_S334_e___t0))
 )
 
-(assert (! var835_infix_expression__t0 :named A55))(check-sat)
+(assert (! var836_infix_expression__t0 :named A55))(check-sat)
 
-(declare-fun var830_return_value_of___err__check__t1 () Bool)
+(declare-fun var831_return_value_of___err__check__t1 () Bool)
 (assert
-  (= var830_return_value_of___err__check__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var831_return__t1 var830_return_value_of___err__check__t0)  )
+  (= var831_return_value_of___err__check__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var832_return__t1 var831_return_value_of___err__check__t0)  )
 )
 
 ; end of callsite effects
@@ -6491,7 +6493,7 @@
 
 (get-value (
 
-  var830_return_value_of___err__check__t1
+  var831_return_value_of___err__check__t1
 
 ) )
 
@@ -6499,133 +6501,133 @@
 (push 1)
 
 (assert
-  (not (= var830_return_value_of___err__check__t1 false))
+  (not (= var831_return_value_of___err__check__t1 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:226
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var830_return_value_of___err__check__t1 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var831_return_value_of___err__check__t1 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var830_return_value_of___err__check__t1 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var831_return_value_of___err__check__t1 ))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:228
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:234
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:234
 ; literal expr
-(declare-fun var837_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var838_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var837_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var838_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var838_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert (! (= var838_implicit_coercion_of_literal_Unsigned_0___t0 var837_literal_Unsigned_0___t0) :named A56))(declare-fun var836_offset__t1 () (_ BitVec 64))
-(declare-fun var836_offset__t0 () (_ BitVec 64))
+(declare-fun var839_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var839_implicit_coercion_of_literal_Unsigned_0___t0 var838_literal_Unsigned_0___t0) :named A56))(declare-fun var837_offset__t1 () (_ BitVec 64))
+(declare-fun var837_offset__t0 () (_ BitVec 64))
 (assert
-  (= var836_offset__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var838_implicit_coercion_of_literal_Unsigned_0___t0 var836_offset__t0)  )
+  (= var837_offset__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var839_implicit_coercion_of_literal_Unsigned_0___t0 var837_offset__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
 ; call of ::buffer::clear
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-(declare-fun var840_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var841_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+(declare-fun var841_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var842_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var841_len_addressof_part____t0 (theory0_len var840_addressof_part___t0) )
+  (= var842_len_addressof_part____t0 (theory0_len var841_addressof_part___t0) )
 )
 
 (assert
-  (= var841_len_addressof_part____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var840_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var842_true__t0 () Bool)
-(assert
-  (= var842_true__t0 (theory1_safe var840_addressof_part___t0) )
-)
-
-(assert
-  var842_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-(declare-fun var843_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var844_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var844_len_addressof_part____t0 (theory0_len var843_addressof_part___t0) )
-)
-
-(assert
-  (= var844_len_addressof_part____t0 (_ bv1 64))
+  (= var842_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var843_addressof_part___t0 (_ bv347 64))
+  (= var841_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var845_true__t0 () Bool)
+(declare-fun var843_true__t0 () Bool)
 (assert
-  (= var845_true__t0 (theory1_safe var843_addressof_part___t0) )
-)
-
-(assert
-  var845_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-(declare-fun var846_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var847_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var847_len_addressof_part____t0 (theory0_len var846_addressof_part___t0) )
+  (= var843_true__t0 (theory1_safe var841_addressof_part___t0) )
 )
 
 (assert
-  (= var847_len_addressof_part____t0 (_ bv1 64))
+  var843_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+(declare-fun var844_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var845_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var845_len_addressof_part____t0 (theory0_len var844_addressof_part___t0) )
+)
+
+(assert
+  (= var845_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var846_addressof_part___t0 (_ bv347 64))
+  (= var844_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var848_true__t0 () Bool)
+(declare-fun var846_true__t0 () Bool)
 (assert
-  (= var848_true__t0 (theory1_safe var846_addressof_part___t0) )
+  (= var846_true__t0 (theory1_safe var844_addressof_part___t0) )
 )
 
 (assert
-  var848_true__t0
+  var846_true__t0
 )
 
-(declare-fun var849_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var849_cast_of_addressof_part___t0 var846_addressof_part___t0) :named A57)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+(declare-fun var847_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var848_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var848_len_addressof_part____t0 (theory0_len var847_addressof_part___t0) )
+)
+
+(assert
+  (= var848_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var847_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var849_true__t0 () Bool)
+(assert
+  (= var849_true__t0 (theory1_safe var847_addressof_part___t0) )
+)
+
+(assert
+  var849_true__t0
+)
+
+(declare-fun var850_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var850_cast_of_addressof_part___t0 var847_addressof_part___t0) :named A57)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var850_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var851_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var850_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var851_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -6636,31 +6638,31 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var851_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var852_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var851_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var849_cast_of_addressof_part___t0) )
+  (= var852_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var850_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
 ; literal expr
-(declare-fun var852_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var853_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var852_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var853_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:34
-(declare-fun var853_infix_expression__t0 () Bool)
+(declare-fun var854_infix_expression__t0 () Bool)
 (assert
-  (=  var853_infix_expression__t0 (bvugt var850_literal_Unsigned_400___t0 var852_literal_Unsigned_0___t0))
+  (=  var854_infix_expression__t0 (bvugt var851_literal_Unsigned_400___t0 var853_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var851_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var853_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var852_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var854_infix_expression__t0 ) ))
 
 )
 
@@ -6672,41 +6674,41 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var851_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var852_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var852_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var853_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t7 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t7 () (_ BitVec 64))
 (assert
-  (= var347_part__t7  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var347_part__t7 var347_part__t6)  )
+  (= var348_part__t7  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var348_part__t7 var348_part__t6)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
 ; callsite effects
-(declare-fun var854_return_value_of___buffer__clear__t0 () (_ BitVec 64))
-(declare-fun var856_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
+(declare-fun var855_return_value_of___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var857_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
 (assert
-  (= var856_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var854_return_value_of___buffer__clear__t0) )
+  (= var857_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var855_return_value_of___buffer__clear__t0) )
 )
 
-(declare-fun var855_return__t1 () (_ BitVec 64))
+(declare-fun var856_return__t1 () (_ BitVec 64))
 (assert
-  (= var856_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var855_return__t1) )
+  (= var857_safe_return_value_of___buffer__clear_____safe_return___t0 (theory1_safe var856_return__t1) )
 )
 
-(declare-fun var857_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
+(declare-fun var858_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
 (assert
-  (= var857_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var854_return_value_of___buffer__clear__t0) )
+  (= var858_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var855_return_value_of___buffer__clear__t0) )
 )
 
 (assert
-  (= var857_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var855_return__t1) )
+  (= var858_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 (theory2_nullterm var856_return__t1) )
 )
 
-(declare-fun var855_return__t0 () (_ BitVec 64))
+(declare-fun var856_return__t0 () (_ BitVec 64))
 (assert
-  (= var855_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var854_return_value_of___buffer__clear__t0 var855_return__t0)  )
+  (= var856_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var855_return_value_of___buffer__clear__t0 var856_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:35
@@ -6729,9 +6731,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var858_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var859_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var858_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var849_cast_of_addressof_part___t0) )
+  (= var859_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var850_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -6740,23 +6742,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var859_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var860_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var859_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var860_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var860_infix_expression__t0 () Bool)
-(assert
-  (=  var860_infix_expression__t0 (bvuge var859_literal_Unsigned_400___t0 var850_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var861_infix_expression__t0 () Bool)
 (assert
-  (=  var861_infix_expression__t0 (and var858_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var860_infix_expression__t0))
+  (=  var861_infix_expression__t0 (bvuge var860_literal_Unsigned_400___t0 var851_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var862_infix_expression__t0 () Bool)
+(assert
+  (=  var862_infix_expression__t0 (and var859_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var861_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -6767,23 +6769,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var862_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var863_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var862_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var863_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var863_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var863_implicit_coercion_of_literal_Unsigned_400___t0 var862_literal_Unsigned_400___t0) :named A58)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var864_infix_expression__t0 () Bool)
+(declare-fun var864_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var864_implicit_coercion_of_literal_Unsigned_400___t0 var863_literal_Unsigned_400___t0) :named A58)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var865_infix_expression__t0 () Bool)
 (assert
-  (=  var864_infix_expression__t0 (bvult var380_part_at__t0 var863_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var865_infix_expression__t0 (bvult var381_part_at__t0 var864_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var865_infix_expression__t0 () Bool)
+(declare-fun var866_infix_expression__t0 () Bool)
 (assert
-  (=  var865_infix_expression__t0 (and var861_infix_expression__t0 var864_infix_expression__t0))
+  (=  var866_infix_expression__t0 (and var862_infix_expression__t0 var865_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -6796,291 +6798,291 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var866_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var867_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var866_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var867_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var867_infix_expression__t0 () Bool)
+(declare-fun var868_infix_expression__t0 () Bool)
 (assert
-  (=  var867_infix_expression__t0 (and var865_infix_expression__t0 var866_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var868_infix_expression__t0 (and var866_infix_expression__t0 var867_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var867_infix_expression__t0 :named A59))(check-sat)
+(assert (! var868_infix_expression__t0 :named A59))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:230
-(declare-fun var868_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+(declare-fun var869_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
 (assert
-  (= var868_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var855_return__t1) )
+  (= var869_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var856_return__t1) )
 )
 
-(declare-fun var854_return_value_of___buffer__clear__t1 () (_ BitVec 64))
+(declare-fun var855_return_value_of___buffer__clear__t1 () (_ BitVec 64))
 (assert
-  (= var868_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var854_return_value_of___buffer__clear__t1) )
+  (= var869_safe_return_____safe_return_value_of___buffer__clear___t0 (theory1_safe var855_return_value_of___buffer__clear__t1) )
 )
 
-(declare-fun var869_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
+(declare-fun var870_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
 (assert
-  (= var869_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var855_return__t1) )
-)
-
-(assert
-  (= var869_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var854_return_value_of___buffer__clear__t1) )
+  (= var870_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var856_return__t1) )
 )
 
 (assert
-  (= var854_return_value_of___buffer__clear__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var855_return__t1 var854_return_value_of___buffer__clear__t0)  )
+  (= var870_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 (theory2_nullterm var855_return_value_of___buffer__clear__t1) )
+)
+
+(assert
+  (= var855_return_value_of___buffer__clear__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var856_return__t1 var855_return_value_of___buffer__clear__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
 ; call of ::buffer::split
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var871_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var872_len_addressof_vv____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var872_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var873_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var872_len_addressof_vv____t0 (theory0_len var871_addressof_vv___t0) )
+  (= var873_len_addressof_vv____t0 (theory0_len var872_addressof_vv___t0) )
 )
 
 (assert
-  (= var872_len_addressof_vv____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var871_addressof_vv___t0 (_ bv389 64))
-
-)
-
-(declare-fun var873_true__t0 () Bool)
-(assert
-  (= var873_true__t0 (theory1_safe var871_addressof_vv___t0) )
-)
-
-(assert
-  var873_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var874_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var875_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var875_len_addressof_vv____t0 (theory0_len var874_addressof_vv___t0) )
-)
-
-(assert
-  (= var875_len_addressof_vv____t0 (_ bv1 64))
+  (= var873_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var874_addressof_vv___t0 (_ bv389 64))
+  (= var872_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var876_true__t0 () Bool)
+(declare-fun var874_true__t0 () Bool)
 (assert
-  (= var876_true__t0 (theory1_safe var874_addressof_vv___t0) )
+  (= var874_true__t0 (theory1_safe var872_addressof_vv___t0) )
 )
 
 (assert
-  var876_true__t0
+  var874_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var878_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var879_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var875_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var876_len_addressof_vv____t0 () (_ BitVec 64))
 (assert
-  (= var879_len_addressof_iterator____t0 (theory0_len var878_addressof_iterator___t0) )
+  (= var876_len_addressof_vv____t0 (theory0_len var875_addressof_vv___t0) )
 )
 
 (assert
-  (= var879_len_addressof_iterator____t0 (_ bv1 64))
+  (= var876_len_addressof_vv____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var878_addressof_iterator___t0 (_ bv472 64))
+  (= var875_addressof_vv___t0 (_ bv390 64))
 
 )
 
-(declare-fun var880_true__t0 () Bool)
+(declare-fun var877_true__t0 () Bool)
 (assert
-  (= var880_true__t0 (theory1_safe var878_addressof_iterator___t0) )
+  (= var877_true__t0 (theory1_safe var875_addressof_vv___t0) )
 )
 
 (assert
-  var880_true__t0
+  var877_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var881_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var882_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var879_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var880_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var882_len_addressof_part____t0 (theory0_len var881_addressof_part___t0) )
-)
-
-(assert
-  (= var882_len_addressof_part____t0 (_ bv1 64))
-
+  (= var880_len_addressof_iterator____t0 (theory0_len var879_addressof_iterator___t0) )
 )
 
 (assert
-  (= var881_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var883_true__t0 () Bool)
-(assert
-  (= var883_true__t0 (theory1_safe var881_addressof_part___t0) )
-)
-
-(assert
-  var883_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var884_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var885_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var885_len_addressof_part____t0 (theory0_len var884_addressof_part___t0) )
-)
-
-(assert
-  (= var885_len_addressof_part____t0 (_ bv1 64))
+  (= var880_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var884_addressof_part___t0 (_ bv347 64))
+  (= var879_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var886_true__t0 () Bool)
+(declare-fun var881_true__t0 () Bool)
 (assert
-  (= var886_true__t0 (theory1_safe var884_addressof_part___t0) )
-)
-
-(assert
-  var886_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var887_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var888_len_addressof_vv____t0 () (_ BitVec 64))
-(assert
-  (= var888_len_addressof_vv____t0 (theory0_len var887_addressof_vv___t0) )
+  (= var881_true__t0 (theory1_safe var879_addressof_iterator___t0) )
 )
 
 (assert
-  (= var888_len_addressof_vv____t0 (_ bv1 64))
+  var881_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var882_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var883_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var883_len_addressof_part____t0 (theory0_len var882_addressof_part___t0) )
+)
+
+(assert
+  (= var883_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var887_addressof_vv___t0 (_ bv389 64))
+  (= var882_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var889_true__t0 () Bool)
+(declare-fun var884_true__t0 () Bool)
 (assert
-  (= var889_true__t0 (theory1_safe var887_addressof_vv___t0) )
+  (= var884_true__t0 (theory1_safe var882_addressof_part___t0) )
 )
 
 (assert
-  var889_true__t0
+  var884_true__t0
 )
 
-(declare-fun var890_cast_of_addressof_vv___t0 () (_ BitVec 64))
-(assert (! (= var890_cast_of_addressof_vv___t0 var887_addressof_vv___t0) :named A60)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:216
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var885_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var886_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var886_len_addressof_part____t0 (theory0_len var885_addressof_part___t0) )
+)
+
+(assert
+  (= var886_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var885_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var887_true__t0 () Bool)
+(assert
+  (= var887_true__t0 (theory1_safe var885_addressof_part___t0) )
+)
+
+(assert
+  var887_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var888_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var889_len_addressof_vv____t0 () (_ BitVec 64))
+(assert
+  (= var889_len_addressof_vv____t0 (theory0_len var888_addressof_vv___t0) )
+)
+
+(assert
+  (= var889_len_addressof_vv____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var888_addressof_vv___t0 (_ bv390 64))
+
+)
+
+(declare-fun var890_true__t0 () Bool)
+(assert
+  (= var890_true__t0 (theory1_safe var888_addressof_vv___t0) )
+)
+
+(assert
+  var890_true__t0
+)
+
+(declare-fun var891_cast_of_addressof_vv___t0 () (_ BitVec 64))
+(assert (! (= var891_cast_of_addressof_vv___t0 var888_addressof_vv___t0) :named A60)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:222
 ; literal expr
-(declare-fun var891_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var892_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var891_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var892_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var893_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var894_len_addressof_iterator____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var894_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var895_len_addressof_iterator____t0 () (_ BitVec 64))
 (assert
-  (= var894_len_addressof_iterator____t0 (theory0_len var893_addressof_iterator___t0) )
+  (= var895_len_addressof_iterator____t0 (theory0_len var894_addressof_iterator___t0) )
 )
 
 (assert
-  (= var894_len_addressof_iterator____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var893_addressof_iterator___t0 (_ bv472 64))
-
-)
-
-(declare-fun var895_true__t0 () Bool)
-(assert
-  (= var895_true__t0 (theory1_safe var893_addressof_iterator___t0) )
-)
-
-(assert
-  var895_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var896_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var897_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var897_len_addressof_part____t0 (theory0_len var896_addressof_part___t0) )
-)
-
-(assert
-  (= var897_len_addressof_part____t0 (_ bv1 64))
+  (= var895_len_addressof_iterator____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var896_addressof_part___t0 (_ bv347 64))
+  (= var894_addressof_iterator___t0 (_ bv473 64))
 
 )
 
-(declare-fun var898_true__t0 () Bool)
+(declare-fun var896_true__t0 () Bool)
 (assert
-  (= var898_true__t0 (theory1_safe var896_addressof_part___t0) )
+  (= var896_true__t0 (theory1_safe var894_addressof_iterator___t0) )
 )
 
 (assert
-  var898_true__t0
+  var896_true__t0
 )
 
-(declare-fun var899_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var899_cast_of_addressof_part___t0 var896_addressof_part___t0) :named A61)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var897_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var898_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var898_len_addressof_part____t0 (theory0_len var897_addressof_part___t0) )
+)
+
+(assert
+  (= var898_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var897_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var899_true__t0 () Bool)
+(assert
+  (= var899_true__t0 (theory1_safe var897_addressof_part___t0) )
+)
+
+(assert
+  var899_true__t0
+)
+
+(declare-fun var900_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var900_cast_of_addressof_part___t0 var897_addressof_part___t0) :named A61)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var900_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var901_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var900_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var901_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -7091,27 +7093,27 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var901_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var902_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var901_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var899_cast_of_addressof_part___t0) )
+  (= var902_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var900_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var902_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
+(declare-fun var903_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (assert
-  (= var902_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var893_addressof_iterator___t0) )
+  (= var903_interpretation_of_theory_safe_over_addressof_iterator___t0 (theory1_safe var894_addressof_iterator___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var903_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var903_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var890_cast_of_addressof_vv___t0) )
+  (= var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var891_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:368
@@ -7134,9 +7136,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var905_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var890_cast_of_addressof_vv___t0) )
+  (= var905_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var891_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -7145,23 +7147,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var905_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var906_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var905_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var906_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var906_infix_expression__t0 () Bool)
-(assert
-  (=  var906_infix_expression__t0 (bvuge var905_literal_Unsigned_400___t0 var891_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var907_infix_expression__t0 () Bool)
 (assert
-  (=  var907_infix_expression__t0 (and var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var906_infix_expression__t0))
+  (=  var907_infix_expression__t0 (bvuge var906_literal_Unsigned_400___t0 var892_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var908_infix_expression__t0 () Bool)
+(assert
+  (=  var908_infix_expression__t0 (and var905_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var907_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -7172,23 +7174,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var908_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var909_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var908_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var909_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var909_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var909_implicit_coercion_of_literal_Unsigned_400___t0 var908_literal_Unsigned_400___t0) :named A62)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var910_infix_expression__t0 () Bool)
+(declare-fun var910_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var910_implicit_coercion_of_literal_Unsigned_400___t0 var909_literal_Unsigned_400___t0) :named A62)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var911_infix_expression__t0 () Bool)
 (assert
-  (=  var910_infix_expression__t0 (bvult var422_vv_at__t0 var909_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var911_infix_expression__t0 (bvult var423_vv_at__t0 var910_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var911_infix_expression__t0 () Bool)
+(declare-fun var912_infix_expression__t0 () Bool)
 (assert
-  (=  var911_infix_expression__t0 (and var907_infix_expression__t0 var910_infix_expression__t0))
+  (=  var912_infix_expression__t0 (and var908_infix_expression__t0 var911_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -7201,15 +7203,15 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var912_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var913_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var912_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var913_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var913_infix_expression__t0 () Bool)
+(declare-fun var914_infix_expression__t0 () Bool)
 (assert
-  (=  var913_infix_expression__t0 (and var911_infix_expression__t0 var912_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var914_infix_expression__t0 (and var912_infix_expression__t0 var913_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
@@ -7217,22 +7219,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
 ; literal expr
-(declare-fun var914_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var915_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var914_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var915_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:369
-(declare-fun var915_infix_expression__t0 () Bool)
+(declare-fun var916_infix_expression__t0 () Bool)
 (assert
-  (=  var915_infix_expression__t0 (bvugt var900_literal_Unsigned_400___t0 var914_literal_Unsigned_0___t0))
+  (=  var916_infix_expression__t0 (bvugt var901_literal_Unsigned_400___t0 var915_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var901_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var902_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var903_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var913_infix_expression__t0 ) (not var915_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var902_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var903_interpretation_of_theory_safe_over_addressof_iterator___t0 ) (not var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 ) (not var914_infix_expression__t0 ) (not var916_infix_expression__t0 ) ))
 
 )
 
@@ -7244,35 +7246,35 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var901_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var902_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var903_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var902_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var903_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var905_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var908_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var912_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var914_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var905_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var906_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var909_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var913_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var915_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 472 to temporal +1 because of function borrow
-(declare-fun var472_iterator__t5 () (_ BitVec 64))
+; 473 to temporal +1 because of function borrow
+(declare-fun var473_iterator__t5 () (_ BitVec 64))
 (assert
-  (= var472_iterator__t5  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var472_iterator__t5 var472_iterator__t4)  )
+  (= var473_iterator__t5  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var473_iterator__t5 var473_iterator__t4)  )
 )
 
-; 347 to temporal +1 because of function borrow
-(declare-fun var347_part__t8 () (_ BitVec 64))
+; 348 to temporal +1 because of function borrow
+(declare-fun var348_part__t8 () (_ BitVec 64))
 (assert
-  (= var347_part__t8  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var347_part__t8 var347_part__t7)  )
+  (= var348_part__t8  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var348_part__t8 var348_part__t7)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
 ; callsite effects
-(declare-fun var917_return__t1 () Bool)
-(declare-fun var916_return_value_of___buffer__split__t0 () Bool)
-(declare-fun var917_return__t0 () Bool)
+(declare-fun var918_return__t1 () Bool)
+(declare-fun var917_return_value_of___buffer__split__t0 () Bool)
+(declare-fun var918_return__t0 () Bool)
 (assert
-  (= var917_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var916_return_value_of___buffer__split__t0 var917_return__t0)  )
+  (= var918_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var917_return_value_of___buffer__split__t0 var918_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:370
@@ -7295,9 +7297,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var918_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var919_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
 (assert
-  (= var918_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var890_cast_of_addressof_vv___t0) )
+  (= var919_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 (theory1_safe var891_cast_of_addressof_vv___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -7306,23 +7308,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var919_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var920_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var919_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var920_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var920_infix_expression__t0 () Bool)
-(assert
-  (=  var920_infix_expression__t0 (bvuge var919_literal_Unsigned_400___t0 var891_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var921_infix_expression__t0 () Bool)
 (assert
-  (=  var921_infix_expression__t0 (and var918_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var920_infix_expression__t0))
+  (=  var921_infix_expression__t0 (bvuge var920_literal_Unsigned_400___t0 var892_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var922_infix_expression__t0 () Bool)
+(assert
+  (=  var922_infix_expression__t0 (and var919_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 var921_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -7333,23 +7335,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var922_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var923_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var922_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var923_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var923_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var923_implicit_coercion_of_literal_Unsigned_400___t0 var922_literal_Unsigned_400___t0) :named A63)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var924_infix_expression__t0 () Bool)
+(declare-fun var924_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var924_implicit_coercion_of_literal_Unsigned_400___t0 var923_literal_Unsigned_400___t0) :named A63)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var925_infix_expression__t0 () Bool)
 (assert
-  (=  var924_infix_expression__t0 (bvult var422_vv_at__t0 var923_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var925_infix_expression__t0 (bvult var423_vv_at__t0 var924_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var925_infix_expression__t0 () Bool)
+(declare-fun var926_infix_expression__t0 () Bool)
 (assert
-  (=  var925_infix_expression__t0 (and var921_infix_expression__t0 var924_infix_expression__t0))
+  (=  var926_infix_expression__t0 (and var922_infix_expression__t0 var925_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -7362,30 +7364,30 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var926_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var927_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
 (assert
-  (= var926_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var391_vv_mem__t0) )
+  (= var927_interpretation_of_theory_nullterm_over_vv_mem__t0 (theory2_nullterm var392_vv_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var927_infix_expression__t0 () Bool)
+(declare-fun var928_infix_expression__t0 () Bool)
 (assert
-  (=  var927_infix_expression__t0 (and var925_infix_expression__t0 var926_interpretation_of_theory_nullterm_over_vv_mem__t0))
+  (=  var928_infix_expression__t0 (and var926_infix_expression__t0 var927_interpretation_of_theory_nullterm_over_vv_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var927_infix_expression__t0 :named A64))(check-sat)
+(assert (! var928_infix_expression__t0 :named A64))(check-sat)
 
-(declare-fun var916_return_value_of___buffer__split__t1 () Bool)
+(declare-fun var917_return_value_of___buffer__split__t1 () Bool)
 (assert
-  (= var916_return_value_of___buffer__split__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var917_return__t1 var916_return_value_of___buffer__split__t0)  )
+  (= var917_return_value_of___buffer__split__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var918_return__t1 var917_return_value_of___buffer__split__t0)  )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-(declare-fun var928_return__t1 () Bool)
-(declare-fun var928_return__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+(declare-fun var929_return__t1 () Bool)
+(declare-fun var929_return__t0 () Bool)
 (assert
-  (= var928_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var916_return_value_of___buffer__split__t1 var928_return__t0)  )
+  (= var929_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var917_return_value_of___buffer__split__t1 var929_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:371
@@ -7408,9 +7410,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var929_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var930_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var929_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var899_cast_of_addressof_part___t0) )
+  (= var930_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var900_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -7419,23 +7421,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var930_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var931_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var930_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var931_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var931_infix_expression__t0 () Bool)
-(assert
-  (=  var931_infix_expression__t0 (bvuge var930_literal_Unsigned_400___t0 var900_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var932_infix_expression__t0 () Bool)
 (assert
-  (=  var932_infix_expression__t0 (and var929_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var931_infix_expression__t0))
+  (=  var932_infix_expression__t0 (bvuge var931_literal_Unsigned_400___t0 var901_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var933_infix_expression__t0 () Bool)
+(assert
+  (=  var933_infix_expression__t0 (and var930_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var932_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -7446,23 +7448,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var933_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var934_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var933_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var934_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var934_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var934_implicit_coercion_of_literal_Unsigned_400___t0 var933_literal_Unsigned_400___t0) :named A65)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var935_infix_expression__t0 () Bool)
+(declare-fun var935_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var935_implicit_coercion_of_literal_Unsigned_400___t0 var934_literal_Unsigned_400___t0) :named A65)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var936_infix_expression__t0 () Bool)
 (assert
-  (=  var935_infix_expression__t0 (bvult var380_part_at__t0 var934_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var936_infix_expression__t0 (bvult var381_part_at__t0 var935_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var936_infix_expression__t0 () Bool)
+(declare-fun var937_infix_expression__t0 () Bool)
 (assert
-  (=  var936_infix_expression__t0 (and var932_infix_expression__t0 var935_infix_expression__t0))
+  (=  var937_infix_expression__t0 (and var933_infix_expression__t0 var936_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -7475,23 +7477,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var937_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var938_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var937_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var938_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var938_infix_expression__t0 () Bool)
+(declare-fun var939_infix_expression__t0 () Bool)
 (assert
-  (=  var938_infix_expression__t0 (and var936_infix_expression__t0 var937_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var939_infix_expression__t0 (and var937_infix_expression__t0 var938_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var938_infix_expression__t0 :named A66))(check-sat)
+(assert (! var939_infix_expression__t0 :named A66))(check-sat)
 
-(declare-fun var916_return_value_of___buffer__split__t2 () Bool)
+(declare-fun var917_return_value_of___buffer__split__t2 () Bool)
 (assert
-  (= var916_return_value_of___buffer__split__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var928_return__t1 var916_return_value_of___buffer__split__t1)  )
+  (= var917_return_value_of___buffer__split__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var929_return__t1 var917_return_value_of___buffer__split__t1)  )
 )
 
 ; end of callsite effects
@@ -7499,7 +7501,7 @@
 
 (get-value (
 
-  var916_return_value_of___buffer__split__t2
+  var917_return_value_of___buffer__split__t2
 
 ) )
 
@@ -7507,186 +7509,186 @@
 (push 1)
 
 (assert
-  (not (= var916_return_value_of___buffer__split__t2 false))
+  (not (= var917_return_value_of___buffer__split__t2 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:231
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:232
-(declare-fun var836_offset__t2 () (_ BitVec 64))
-(declare-fun var939_unsafe_expression__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:237
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+(declare-fun var837_offset__t2 () (_ BitVec 64))
+(declare-fun var940_unsafe_expression__t0 () (_ BitVec 64))
 (assert
-  (= var836_offset__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var916_return_value_of___buffer__split__t2 ) var939_unsafe_expression__t0 var836_offset__t1)  )
+  (= var837_offset__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var917_return_value_of___buffer__split__t2 ) var940_unsafe_expression__t0 var837_offset__t1)  )
 )
 
 ; end branch
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
-(declare-fun var941_literal_Unsigned_1000___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
+(declare-fun var942_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var941_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var942_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
-(declare-fun var942_mtdpath_mem__t0 () (_ BitVec 64))
-(declare-fun var943_len_mtdpath_mem___t0 () (_ BitVec 64))
+(declare-fun var943_mtdpath_mem__t0 () (_ BitVec 64))
+(declare-fun var944_len_mtdpath_mem___t0 () (_ BitVec 64))
 (assert
-  (= var943_len_mtdpath_mem___t0 (theory0_len var942_mtdpath_mem__t0) )
+  (= var944_len_mtdpath_mem___t0 (theory0_len var943_mtdpath_mem__t0) )
 )
 
 (assert
-  (= var943_len_mtdpath_mem___t0 (_ bv1000 64))
+  (= var944_len_mtdpath_mem___t0 (_ bv1000 64))
 
 )
 
-(declare-fun var944_true__t0 () Bool)
+(declare-fun var945_true__t0 () Bool)
 (assert
-  (= var944_true__t0 (theory1_safe var942_mtdpath_mem__t0) )
+  (= var945_true__t0 (theory1_safe var943_mtdpath_mem__t0) )
 )
 
 (assert
-  var944_true__t0
+  var945_true__t0
 )
 
 (assert
-  (= var941_literal_Unsigned_1000___t0 (theory0_len var942_mtdpath_mem__t0) )
+  (= var942_literal_Unsigned_1000___t0 (theory0_len var943_mtdpath_mem__t0) )
 )
 
 ; literal expr
-(declare-fun var945_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var946_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var945_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var946_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var946_literal_array_946__t0 () (_ BitVec 64))
-(declare-fun var947_true__t0 () Bool)
+(declare-fun var947_literal_array_947__t0 () (_ BitVec 64))
+(declare-fun var948_true__t0 () Bool)
 (assert
-  (= var947_true__t0 (theory1_safe var946_literal_array_946__t0) )
+  (= var948_true__t0 (theory1_safe var947_literal_array_947__t0) )
 )
 
 (assert
-  var947_true__t0
+  var948_true__t0
 )
 
-(declare-fun var948_safe_literal_array_946_____safe_mtdpath___t0 () Bool)
+(declare-fun var949_safe_literal_array_947_____safe_mtdpath___t0 () Bool)
 (assert
-  (= var948_safe_literal_array_946_____safe_mtdpath___t0 (theory1_safe var946_literal_array_946__t0) )
+  (= var949_safe_literal_array_947_____safe_mtdpath___t0 (theory1_safe var947_literal_array_947__t0) )
 )
 
-(declare-fun var940_mtdpath__t1 () (_ BitVec 64))
+(declare-fun var941_mtdpath__t1 () (_ BitVec 64))
 (assert
-  (= var948_safe_literal_array_946_____safe_mtdpath___t0 (theory1_safe var940_mtdpath__t1) )
+  (= var949_safe_literal_array_947_____safe_mtdpath___t0 (theory1_safe var941_mtdpath__t1) )
 )
 
-(declare-fun var949_nullterm_literal_array_946_____nullterm_mtdpath___t0 () Bool)
+(declare-fun var950_nullterm_literal_array_947_____nullterm_mtdpath___t0 () Bool)
 (assert
-  (= var949_nullterm_literal_array_946_____nullterm_mtdpath___t0 (theory2_nullterm var946_literal_array_946__t0) )
-)
-
-(assert
-  (= var949_nullterm_literal_array_946_____nullterm_mtdpath___t0 (theory2_nullterm var940_mtdpath__t1) )
-)
-
-(declare-fun var950_len_mtdpath___t0 () (_ BitVec 64))
-(assert
-  (= var950_len_mtdpath___t0 (theory0_len var940_mtdpath__t1) )
+  (= var950_nullterm_literal_array_947_____nullterm_mtdpath___t0 (theory2_nullterm var947_literal_array_947__t0) )
 )
 
 (assert
-  (= var950_len_mtdpath___t0 (_ bv1 64))
+  (= var950_nullterm_literal_array_947_____nullterm_mtdpath___t0 (theory2_nullterm var941_mtdpath__t1) )
+)
+
+(declare-fun var951_len_mtdpath___t0 () (_ BitVec 64))
+(assert
+  (= var951_len_mtdpath___t0 (theory0_len var941_mtdpath__t1) )
+)
+
+(assert
+  (= var951_len_mtdpath___t0 (_ bv1 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
 ; call of ::buffer::make
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
-(declare-fun var951_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var952_len_addressof_mtdpath____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
+(declare-fun var952_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var953_len_addressof_mtdpath____t0 () (_ BitVec 64))
 (assert
-  (= var952_len_addressof_mtdpath____t0 (theory0_len var951_addressof_mtdpath___t0) )
+  (= var953_len_addressof_mtdpath____t0 (theory0_len var952_addressof_mtdpath___t0) )
 )
 
 (assert
-  (= var952_len_addressof_mtdpath____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var951_addressof_mtdpath___t0 (_ bv940 64))
-
-)
-
-(declare-fun var953_true__t0 () Bool)
-(assert
-  (= var953_true__t0 (theory1_safe var951_addressof_mtdpath___t0) )
-)
-
-(assert
-  var953_true__t0
-)
-
-(declare-fun var954_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var955_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var955_len_addressof_mtdpath____t0 (theory0_len var954_addressof_mtdpath___t0) )
-)
-
-(assert
-  (= var955_len_addressof_mtdpath____t0 (_ bv1 64))
+  (= var953_len_addressof_mtdpath____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var954_addressof_mtdpath___t0 (_ bv940 64))
+  (= var952_addressof_mtdpath___t0 (_ bv941 64))
 
 )
 
-(declare-fun var956_true__t0 () Bool)
+(declare-fun var954_true__t0 () Bool)
 (assert
-  (= var956_true__t0 (theory1_safe var954_addressof_mtdpath___t0) )
-)
-
-(assert
-  var956_true__t0
-)
-
-(declare-fun var957_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var958_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var958_len_addressof_mtdpath____t0 (theory0_len var957_addressof_mtdpath___t0) )
+  (= var954_true__t0 (theory1_safe var952_addressof_mtdpath___t0) )
 )
 
 (assert
-  (= var958_len_addressof_mtdpath____t0 (_ bv1 64))
+  var954_true__t0
+)
+
+(declare-fun var955_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var956_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var956_len_addressof_mtdpath____t0 (theory0_len var955_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var956_len_addressof_mtdpath____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var957_addressof_mtdpath___t0 (_ bv940 64))
+  (= var955_addressof_mtdpath___t0 (_ bv941 64))
 
 )
 
-(declare-fun var959_true__t0 () Bool)
+(declare-fun var957_true__t0 () Bool)
 (assert
-  (= var959_true__t0 (theory1_safe var957_addressof_mtdpath___t0) )
+  (= var957_true__t0 (theory1_safe var955_addressof_mtdpath___t0) )
 )
 
 (assert
-  var959_true__t0
+  var957_true__t0
 )
 
-(declare-fun var960_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
-(assert (! (= var960_cast_of_addressof_mtdpath___t0 var957_addressof_mtdpath___t0) :named A67)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
+(declare-fun var958_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var959_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var959_len_addressof_mtdpath____t0 (theory0_len var958_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var959_len_addressof_mtdpath____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var958_addressof_mtdpath___t0 (_ bv941 64))
+
+)
+
+(declare-fun var960_true__t0 () Bool)
+(assert
+  (= var960_true__t0 (theory1_safe var958_addressof_mtdpath___t0) )
+)
+
+(assert
+  var960_true__t0
+)
+
+(declare-fun var961_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
+(assert (! (= var961_cast_of_addressof_mtdpath___t0 var958_addressof_mtdpath___t0) :named A67)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
 ; literal expr
-(declare-fun var961_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var962_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var961_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var962_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
@@ -7697,31 +7699,31 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var962_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var963_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var962_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var960_cast_of_addressof_mtdpath___t0) )
+  (= var963_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var961_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
 ; literal expr
-(declare-fun var963_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var964_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var963_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var964_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:26
-(declare-fun var964_infix_expression__t0 () Bool)
+(declare-fun var965_infix_expression__t0 () Bool)
 (assert
-  (=  var964_infix_expression__t0 (bvugt var961_literal_Unsigned_1000___t0 var963_literal_Unsigned_0___t0))
+  (=  var965_infix_expression__t0 (bvugt var962_literal_Unsigned_1000___t0 var964_literal_Unsigned_0___t0))
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var962_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var964_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var963_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var965_infix_expression__t0 ) ))
 
 )
 
@@ -7733,41 +7735,41 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var962_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var963_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var963_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var964_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; borrows after call
-; 940 to temporal +1 because of function borrow
-(declare-fun var940_mtdpath__t2 () (_ BitVec 64))
+; 941 to temporal +1 because of function borrow
+(declare-fun var941_mtdpath__t2 () (_ BitVec 64))
 (assert
-  (= var940_mtdpath__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var940_mtdpath__t2 var940_mtdpath__t1)  )
+  (= var941_mtdpath__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var941_mtdpath__t2 var941_mtdpath__t1)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
 ; callsite effects
-(declare-fun var965_return_value_of___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var967_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
+(declare-fun var966_return_value_of___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var968_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
 (assert
-  (= var967_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var965_return_value_of___buffer__make__t0) )
+  (= var968_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var966_return_value_of___buffer__make__t0) )
 )
 
-(declare-fun var966_return__t1 () (_ BitVec 64))
+(declare-fun var967_return__t1 () (_ BitVec 64))
 (assert
-  (= var967_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var966_return__t1) )
+  (= var968_safe_return_value_of___buffer__make_____safe_return___t0 (theory1_safe var967_return__t1) )
 )
 
-(declare-fun var968_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
+(declare-fun var969_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
 (assert
-  (= var968_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var965_return_value_of___buffer__make__t0) )
+  (= var969_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var966_return_value_of___buffer__make__t0) )
 )
 
 (assert
-  (= var968_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var966_return__t1) )
+  (= var969_nullterm_return_value_of___buffer__make_____nullterm_return___t0 (theory2_nullterm var967_return__t1) )
 )
 
-(declare-fun var966_return__t0 () (_ BitVec 64))
+(declare-fun var967_return__t0 () (_ BitVec 64))
 (assert
-  (= var966_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var965_return_value_of___buffer__make__t0 var966_return__t0)  )
+  (= var967_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var966_return_value_of___buffer__make__t0 var967_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:27
@@ -7790,9 +7792,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var969_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var970_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var969_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var960_cast_of_addressof_mtdpath___t0) )
+  (= var970_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var961_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -7801,23 +7803,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var970_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var971_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var970_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var971_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var971_infix_expression__t0 () Bool)
-(assert
-  (=  var971_infix_expression__t0 (bvuge var970_literal_Unsigned_1000___t0 var961_literal_Unsigned_1000___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var972_infix_expression__t0 () Bool)
 (assert
-  (=  var972_infix_expression__t0 (and var969_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var971_infix_expression__t0))
+  (=  var972_infix_expression__t0 (bvuge var971_literal_Unsigned_1000___t0 var962_literal_Unsigned_1000___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var973_infix_expression__t0 () Bool)
+(assert
+  (=  var973_infix_expression__t0 (and var970_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var972_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -7829,24 +7831,24 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var974_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var975_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var974_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var975_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
-(declare-fun var975_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert (! (= var975_implicit_coercion_of_literal_Unsigned_1000___t0 var974_literal_Unsigned_1000___t0) :named A68)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var976_infix_expression__t0 () Bool)
-(declare-fun var973_mtdpath_at__t0 () (_ BitVec 64))
+(declare-fun var976_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert (! (= var976_implicit_coercion_of_literal_Unsigned_1000___t0 var975_literal_Unsigned_1000___t0) :named A68)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var977_infix_expression__t0 () Bool)
+(declare-fun var974_mtdpath_at__t0 () (_ BitVec 64))
 (assert
-  (=  var976_infix_expression__t0 (bvult var973_mtdpath_at__t0 var975_implicit_coercion_of_literal_Unsigned_1000___t0))
+  (=  var977_infix_expression__t0 (bvult var974_mtdpath_at__t0 var976_implicit_coercion_of_literal_Unsigned_1000___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var977_infix_expression__t0 () Bool)
+(declare-fun var978_infix_expression__t0 () Bool)
 (assert
-  (=  var977_infix_expression__t0 (and var972_infix_expression__t0 var976_infix_expression__t0))
+  (=  var978_infix_expression__t0 (and var973_infix_expression__t0 var977_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -7859,185 +7861,185 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var978_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var979_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 (assert
-  (= var978_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var942_mtdpath_mem__t0) )
+  (= var979_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var943_mtdpath_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var979_infix_expression__t0 () Bool)
+(declare-fun var980_infix_expression__t0 () Bool)
 (assert
-  (=  var979_infix_expression__t0 (and var977_infix_expression__t0 var978_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
+  (=  var980_infix_expression__t0 (and var978_infix_expression__t0 var979_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var979_infix_expression__t0 :named A69))(check-sat)
+(assert (! var980_infix_expression__t0 :named A69))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
-(declare-fun var980_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
+(declare-fun var981_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
 (assert
-  (= var980_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var966_return__t1) )
+  (= var981_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var967_return__t1) )
 )
 
-(declare-fun var965_return_value_of___buffer__make__t1 () (_ BitVec 64))
+(declare-fun var966_return_value_of___buffer__make__t1 () (_ BitVec 64))
 (assert
-  (= var980_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var965_return_value_of___buffer__make__t1) )
+  (= var981_safe_return_____safe_return_value_of___buffer__make___t0 (theory1_safe var966_return_value_of___buffer__make__t1) )
 )
 
-(declare-fun var981_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var982_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
 (assert
-  (= var981_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var966_return__t1) )
-)
-
-(assert
-  (= var981_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var965_return_value_of___buffer__make__t1) )
+  (= var982_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var967_return__t1) )
 )
 
 (assert
-  (= var965_return_value_of___buffer__make__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var966_return__t1 var965_return_value_of___buffer__make__t0)  )
+  (= var982_nullterm_return_____nullterm_return_value_of___buffer__make___t0 (theory2_nullterm var966_return_value_of___buffer__make__t1) )
+)
+
+(assert
+  (= var966_return_value_of___buffer__make__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var967_return__t1 var966_return_value_of___buffer__make__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
 ; call of ::buffer::format
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-(declare-fun var983_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var984_len_addressof_mtdpath____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+(declare-fun var984_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var985_len_addressof_mtdpath____t0 () (_ BitVec 64))
 (assert
-  (= var984_len_addressof_mtdpath____t0 (theory0_len var983_addressof_mtdpath___t0) )
+  (= var985_len_addressof_mtdpath____t0 (theory0_len var984_addressof_mtdpath___t0) )
 )
 
 (assert
-  (= var984_len_addressof_mtdpath____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var983_addressof_mtdpath___t0 (_ bv940 64))
-
-)
-
-(declare-fun var985_true__t0 () Bool)
-(assert
-  (= var985_true__t0 (theory1_safe var983_addressof_mtdpath___t0) )
-)
-
-(assert
-  var985_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-(declare-fun var986_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var987_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var987_len_addressof_mtdpath____t0 (theory0_len var986_addressof_mtdpath___t0) )
-)
-
-(assert
-  (= var987_len_addressof_mtdpath____t0 (_ bv1 64))
+  (= var985_len_addressof_mtdpath____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var986_addressof_mtdpath___t0 (_ bv940 64))
+  (= var984_addressof_mtdpath___t0 (_ bv941 64))
 
 )
 
-(declare-fun var988_true__t0 () Bool)
+(declare-fun var986_true__t0 () Bool)
 (assert
-  (= var988_true__t0 (theory1_safe var986_addressof_mtdpath___t0) )
-)
-
-(assert
-  var988_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-(declare-fun var989_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
-(declare-fun var990_true__t0 () Bool)
-(assert
-  (= var990_true__t0 (theory1_safe var989_literal_string___dev_mtdblock_u___t0) )
+  (= var986_true__t0 (theory1_safe var984_addressof_mtdpath___t0) )
 )
 
 (assert
-  var990_true__t0
+  var986_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+(declare-fun var987_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var988_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var988_len_addressof_mtdpath____t0 (theory0_len var987_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var988_len_addressof_mtdpath____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var987_addressof_mtdpath___t0 (_ bv941 64))
+
+)
+
+(declare-fun var989_true__t0 () Bool)
+(assert
+  (= var989_true__t0 (theory1_safe var987_addressof_mtdpath___t0) )
+)
+
+(assert
+  var989_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+(declare-fun var990_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
 (declare-fun var991_true__t0 () Bool)
 (assert
-  (= var991_true__t0 (theory2_nullterm var989_literal_string___dev_mtdblock_u___t0) )
+  (= var991_true__t0 (theory1_safe var990_literal_string___dev_mtdblock_u___t0) )
 )
 
 (assert
   var991_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-(declare-fun var992_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var993_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var992_true__t0 () Bool)
 (assert
-  (= var993_len_addressof_mtdpath____t0 (theory0_len var992_addressof_mtdpath___t0) )
+  (= var992_true__t0 (theory2_nullterm var990_literal_string___dev_mtdblock_u___t0) )
 )
 
 (assert
-  (= var993_len_addressof_mtdpath____t0 (_ bv1 64))
+  var992_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+(declare-fun var993_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var994_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var994_len_addressof_mtdpath____t0 (theory0_len var993_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var994_len_addressof_mtdpath____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var992_addressof_mtdpath___t0 (_ bv940 64))
+  (= var993_addressof_mtdpath___t0 (_ bv941 64))
 
 )
 
-(declare-fun var994_true__t0 () Bool)
+(declare-fun var995_true__t0 () Bool)
 (assert
-  (= var994_true__t0 (theory1_safe var992_addressof_mtdpath___t0) )
+  (= var995_true__t0 (theory1_safe var993_addressof_mtdpath___t0) )
 )
 
 (assert
-  var994_true__t0
+  var995_true__t0
 )
 
-(declare-fun var995_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
-(assert (! (= var995_cast_of_addressof_mtdpath___t0 var992_addressof_mtdpath___t0) :named A70)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
+(declare-fun var996_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
+(assert (! (= var996_cast_of_addressof_mtdpath___t0 var993_addressof_mtdpath___t0) :named A70)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
 ; literal expr
-(declare-fun var996_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var997_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var996_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var997_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
-(declare-fun var997_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
-(declare-fun var998_true__t0 () Bool)
-(assert
-  (= var998_true__t0 (theory1_safe var997_literal_string___dev_mtdblock_u___t0) )
-)
-
-(assert
-  var998_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
+(declare-fun var998_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
 (declare-fun var999_true__t0 () Bool)
 (assert
-  (= var999_true__t0 (theory2_nullterm var997_literal_string___dev_mtdblock_u___t0) )
+  (= var999_true__t0 (theory1_safe var998_literal_string___dev_mtdblock_u___t0) )
 )
 
 (assert
   var999_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+(declare-fun var1000_true__t0 () Bool)
+(assert
+  (= var1000_true__t0 (theory2_nullterm var998_literal_string___dev_mtdblock_u___t0) )
+)
+
+(assert
+  var1000_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
 ;callsite_assert
 (push 1)
 
@@ -8045,18 +8047,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1000_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 () Bool)
+(declare-fun var1001_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 () Bool)
 (assert
-  (= var1000_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 (theory1_safe var997_literal_string___dev_mtdblock_u___t0) )
+  (= var1001_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 (theory1_safe var998_literal_string___dev_mtdblock_u___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1001_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1002_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1001_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var995_cast_of_addressof_mtdpath___t0) )
+  (= var1002_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var996_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:195
@@ -8066,9 +8068,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:195
-(declare-fun var1002_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 () Bool)
+(declare-fun var1003_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 () Bool)
 (assert
-  (= var1002_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 (theory2_nullterm var997_literal_string___dev_mtdblock_u___t0) )
+  (= var1003_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 (theory2_nullterm var998_literal_string___dev_mtdblock_u___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:196
@@ -8091,9 +8093,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var1003_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1004_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1003_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var995_cast_of_addressof_mtdpath___t0) )
+  (= var1004_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var996_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -8102,23 +8104,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1004_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1005_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1004_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1005_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1005_infix_expression__t0 () Bool)
-(assert
-  (=  var1005_infix_expression__t0 (bvuge var1004_literal_Unsigned_1000___t0 var996_literal_Unsigned_1000___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var1006_infix_expression__t0 () Bool)
 (assert
-  (=  var1006_infix_expression__t0 (and var1003_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1005_infix_expression__t0))
+  (=  var1006_infix_expression__t0 (bvuge var1005_literal_Unsigned_1000___t0 var997_literal_Unsigned_1000___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var1007_infix_expression__t0 () Bool)
+(assert
+  (=  var1007_infix_expression__t0 (and var1004_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1006_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -8129,23 +8131,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1007_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1008_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1007_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1008_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
-(declare-fun var1008_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert (! (= var1008_implicit_coercion_of_literal_Unsigned_1000___t0 var1007_literal_Unsigned_1000___t0) :named A71)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1009_infix_expression__t0 () Bool)
+(declare-fun var1009_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert (! (= var1009_implicit_coercion_of_literal_Unsigned_1000___t0 var1008_literal_Unsigned_1000___t0) :named A71)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1010_infix_expression__t0 () Bool)
 (assert
-  (=  var1009_infix_expression__t0 (bvult var973_mtdpath_at__t0 var1008_implicit_coercion_of_literal_Unsigned_1000___t0))
+  (=  var1010_infix_expression__t0 (bvult var974_mtdpath_at__t0 var1009_implicit_coercion_of_literal_Unsigned_1000___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1010_infix_expression__t0 () Bool)
+(declare-fun var1011_infix_expression__t0 () Bool)
 (assert
-  (=  var1010_infix_expression__t0 (and var1006_infix_expression__t0 var1009_infix_expression__t0))
+  (=  var1011_infix_expression__t0 (and var1007_infix_expression__t0 var1010_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -8158,22 +8160,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1011_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1012_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 (assert
-  (= var1011_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var942_mtdpath_mem__t0) )
+  (= var1012_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var943_mtdpath_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1012_infix_expression__t0 () Bool)
+(declare-fun var1013_infix_expression__t0 () Bool)
 (assert
-  (=  var1012_infix_expression__t0 (and var1010_infix_expression__t0 var1011_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
+  (=  var1013_infix_expression__t0 (and var1011_infix_expression__t0 var1012_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var1000_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 ) (not var1001_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var1002_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 ) (not var1012_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var1001_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 ) (not var1002_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var1003_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 ) (not var1013_infix_expression__t0 ) ))
 
 )
 
@@ -8185,28 +8187,28 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1000_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 () Bool)
-(declare-fun var1001_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1002_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 () Bool)
-(declare-fun var1003_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1004_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1007_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1011_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1001_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 () Bool)
+(declare-fun var1002_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1003_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 () Bool)
+(declare-fun var1004_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1005_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1008_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1012_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 ; borrows after call
-; 940 to temporal +1 because of function borrow
-(declare-fun var940_mtdpath__t3 () (_ BitVec 64))
+; 941 to temporal +1 because of function borrow
+(declare-fun var941_mtdpath__t3 () (_ BitVec 64))
 (assert
-  (= var940_mtdpath__t3  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var940_mtdpath__t3 var940_mtdpath__t2)  )
+  (= var941_mtdpath__t3  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var941_mtdpath__t3 var941_mtdpath__t2)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:236
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
 ; callsite effects
-(declare-fun var1014_return__t1 () (_ BitVec 64))
-(declare-fun var1013_return_value_of___buffer__format__t0 () (_ BitVec 64))
-(declare-fun var1014_return__t0 () (_ BitVec 64))
+(declare-fun var1015_return__t1 () (_ BitVec 64))
+(declare-fun var1014_return_value_of___buffer__format__t0 () (_ BitVec 64))
+(declare-fun var1015_return__t0 () (_ BitVec 64))
 (assert
-  (= var1014_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1013_return_value_of___buffer__format__t0 var1014_return__t0)  )
+  (= var1015_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1014_return_value_of___buffer__format__t0 var1015_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:197
@@ -8229,9 +8231,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var1015_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1016_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1015_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var995_cast_of_addressof_mtdpath___t0) )
+  (= var1016_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var996_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -8240,23 +8242,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1016_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1017_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1016_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1017_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1017_infix_expression__t0 () Bool)
-(assert
-  (=  var1017_infix_expression__t0 (bvuge var1016_literal_Unsigned_1000___t0 var996_literal_Unsigned_1000___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var1018_infix_expression__t0 () Bool)
 (assert
-  (=  var1018_infix_expression__t0 (and var1015_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1017_infix_expression__t0))
+  (=  var1018_infix_expression__t0 (bvuge var1017_literal_Unsigned_1000___t0 var997_literal_Unsigned_1000___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var1019_infix_expression__t0 () Bool)
+(assert
+  (=  var1019_infix_expression__t0 (and var1016_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1018_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -8267,23 +8269,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1019_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1020_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1019_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1020_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
-(declare-fun var1020_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert (! (= var1020_implicit_coercion_of_literal_Unsigned_1000___t0 var1019_literal_Unsigned_1000___t0) :named A72)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1021_infix_expression__t0 () Bool)
+(declare-fun var1021_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert (! (= var1021_implicit_coercion_of_literal_Unsigned_1000___t0 var1020_literal_Unsigned_1000___t0) :named A72)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1022_infix_expression__t0 () Bool)
 (assert
-  (=  var1021_infix_expression__t0 (bvult var973_mtdpath_at__t0 var1020_implicit_coercion_of_literal_Unsigned_1000___t0))
+  (=  var1022_infix_expression__t0 (bvult var974_mtdpath_at__t0 var1021_implicit_coercion_of_literal_Unsigned_1000___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1022_infix_expression__t0 () Bool)
+(declare-fun var1023_infix_expression__t0 () Bool)
 (assert
-  (=  var1022_infix_expression__t0 (and var1018_infix_expression__t0 var1021_infix_expression__t0))
+  (=  var1023_infix_expression__t0 (and var1019_infix_expression__t0 var1022_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -8296,184 +8298,184 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1023_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1024_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 (assert
-  (= var1023_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var942_mtdpath_mem__t0) )
+  (= var1024_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var943_mtdpath_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1024_infix_expression__t0 () Bool)
+(declare-fun var1025_infix_expression__t0 () Bool)
 (assert
-  (=  var1024_infix_expression__t0 (and var1022_infix_expression__t0 var1023_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
+  (=  var1025_infix_expression__t0 (and var1023_infix_expression__t0 var1024_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
 )
 
 ; end of theory_expression
-(assert (! var1024_infix_expression__t0 :named A73))(check-sat)
+(assert (! var1025_infix_expression__t0 :named A73))(check-sat)
 
-(declare-fun var1013_return_value_of___buffer__format__t1 () (_ BitVec 64))
+(declare-fun var1014_return_value_of___buffer__format__t1 () (_ BitVec 64))
 (assert
-  (= var1013_return_value_of___buffer__format__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1014_return__t1 var1013_return_value_of___buffer__format__t0)  )
+  (= var1014_return_value_of___buffer__format__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1015_return__t1 var1014_return_value_of___buffer__format__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
 ; call of ::log::info
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1025_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
-(declare-fun var1026_true__t0 () Bool)
-(assert
-  (= var1026_true__t0 (theory1_safe var1025_literal_string__reading_secrets_from__s__lld___t0) )
-)
-
-(assert
-  var1026_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1026_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
 (declare-fun var1027_true__t0 () Bool)
 (assert
-  (= var1027_true__t0 (theory2_nullterm var1025_literal_string__reading_secrets_from__s__lld___t0) )
+  (= var1027_true__t0 (theory1_safe var1026_literal_string__reading_secrets_from__s__lld___t0) )
 )
 
 (assert
   var1027_true__t0
 )
 
+(declare-fun var1028_true__t0 () Bool)
+(assert
+  (= var1028_true__t0 (theory2_nullterm var1026_literal_string__reading_secrets_from__s__lld___t0) )
+)
+
+(assert
+  var1028_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/log/src/lib.zz:68
-(declare-fun var1028_literal_string__carrier__vault_toml___t0 () (_ BitVec 64))
-(declare-fun var1029_true__t0 () Bool)
-(assert
-  (= var1029_true__t0 (theory1_safe var1028_literal_string__carrier__vault_toml___t0) )
-)
-
-(assert
-  var1029_true__t0
-)
-
+(declare-fun var1029_literal_string__carrier__vault_toml___t0 () (_ BitVec 64))
 (declare-fun var1030_true__t0 () Bool)
 (assert
-  (= var1030_true__t0 (theory2_nullterm var1028_literal_string__carrier__vault_toml___t0) )
+  (= var1030_true__t0 (theory1_safe var1029_literal_string__carrier__vault_toml___t0) )
 )
 
 (assert
   var1030_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1031_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
-(declare-fun var1032_true__t0 () Bool)
+(declare-fun var1031_true__t0 () Bool)
 (assert
-  (= var1032_true__t0 (theory1_safe var1031_literal_string__reading_secrets_from__s__lld___t0) )
+  (= var1031_true__t0 (theory2_nullterm var1029_literal_string__carrier__vault_toml___t0) )
 )
 
 (assert
-  var1032_true__t0
+  var1031_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1032_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
 (declare-fun var1033_true__t0 () Bool)
 (assert
-  (= var1033_true__t0 (theory2_nullterm var1031_literal_string__reading_secrets_from__s__lld___t0) )
+  (= var1033_true__t0 (theory1_safe var1032_literal_string__reading_secrets_from__s__lld___t0) )
 )
 
 (assert
   var1033_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+(declare-fun var1034_true__t0 () Bool)
+(assert
+  (= var1034_true__t0 (theory2_nullterm var1032_literal_string__reading_secrets_from__s__lld___t0) )
+)
+
+(assert
+  var1034_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
 ; call of ::buffer::cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1035_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var1036_len_addressof_part____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1036_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var1037_len_addressof_part____t0 () (_ BitVec 64))
 (assert
-  (= var1036_len_addressof_part____t0 (theory0_len var1035_addressof_part___t0) )
+  (= var1037_len_addressof_part____t0 (theory0_len var1036_addressof_part___t0) )
 )
 
 (assert
-  (= var1036_len_addressof_part____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1035_addressof_part___t0 (_ bv347 64))
-
-)
-
-(declare-fun var1037_true__t0 () Bool)
-(assert
-  (= var1037_true__t0 (theory1_safe var1035_addressof_part___t0) )
-)
-
-(assert
-  var1037_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1038_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var1039_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var1039_len_addressof_part____t0 (theory0_len var1038_addressof_part___t0) )
-)
-
-(assert
-  (= var1039_len_addressof_part____t0 (_ bv1 64))
+  (= var1037_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1038_addressof_part___t0 (_ bv347 64))
+  (= var1036_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var1040_true__t0 () Bool)
+(declare-fun var1038_true__t0 () Bool)
 (assert
-  (= var1040_true__t0 (theory1_safe var1038_addressof_part___t0) )
-)
-
-(assert
-  var1040_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1041_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var1042_len_addressof_part____t0 () (_ BitVec 64))
-(assert
-  (= var1042_len_addressof_part____t0 (theory0_len var1041_addressof_part___t0) )
+  (= var1038_true__t0 (theory1_safe var1036_addressof_part___t0) )
 )
 
 (assert
-  (= var1042_len_addressof_part____t0 (_ bv1 64))
+  var1038_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1039_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var1040_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var1040_len_addressof_part____t0 (theory0_len var1039_addressof_part___t0) )
+)
+
+(assert
+  (= var1040_len_addressof_part____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1041_addressof_part___t0 (_ bv347 64))
+  (= var1039_addressof_part___t0 (_ bv348 64))
 
 )
 
-(declare-fun var1043_true__t0 () Bool)
+(declare-fun var1041_true__t0 () Bool)
 (assert
-  (= var1043_true__t0 (theory1_safe var1041_addressof_part___t0) )
+  (= var1041_true__t0 (theory1_safe var1039_addressof_part___t0) )
 )
 
 (assert
-  var1043_true__t0
+  var1041_true__t0
 )
 
-(declare-fun var1044_cast_of_addressof_part___t0 () (_ BitVec 64))
-(assert (! (= var1044_cast_of_addressof_part___t0 var1041_addressof_part___t0) :named A74)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:215
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1042_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var1043_len_addressof_part____t0 () (_ BitVec 64))
+(assert
+  (= var1043_len_addressof_part____t0 (theory0_len var1042_addressof_part___t0) )
+)
+
+(assert
+  (= var1043_len_addressof_part____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1042_addressof_part___t0 (_ bv348 64))
+
+)
+
+(declare-fun var1044_true__t0 () Bool)
+(assert
+  (= var1044_true__t0 (theory1_safe var1042_addressof_part___t0) )
+)
+
+(assert
+  var1044_true__t0
+)
+
+(declare-fun var1045_cast_of_addressof_part___t0 () (_ BitVec 64))
+(assert (! (= var1045_cast_of_addressof_part___t0 var1042_addressof_part___t0) :named A74)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:221
 ; literal expr
-(declare-fun var1045_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1046_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var1045_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var1046_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
@@ -8484,9 +8486,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1046_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var1046_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var1044_cast_of_addressof_part___t0) )
+  (= var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var1045_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
@@ -8509,9 +8511,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var1048_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (assert
-  (= var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var1044_cast_of_addressof_part___t0) )
+  (= var1048_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 (theory1_safe var1045_cast_of_addressof_part___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -8520,23 +8522,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1048_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1049_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var1048_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var1049_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1049_infix_expression__t0 () Bool)
-(assert
-  (=  var1049_infix_expression__t0 (bvuge var1048_literal_Unsigned_400___t0 var1045_literal_Unsigned_400___t0))
-)
-
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 (declare-fun var1050_infix_expression__t0 () Bool)
 (assert
-  (=  var1050_infix_expression__t0 (and var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var1049_infix_expression__t0))
+  (=  var1050_infix_expression__t0 (bvuge var1049_literal_Unsigned_400___t0 var1046_literal_Unsigned_400___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var1051_infix_expression__t0 () Bool)
+(assert
+  (=  var1051_infix_expression__t0 (and var1048_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 var1050_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -8547,23 +8549,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1051_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1052_literal_Unsigned_400___t0 () (_ BitVec 64))
 (assert
-  (= var1051_literal_Unsigned_400___t0 (_ bv400 64))
+  (= var1052_literal_Unsigned_400___t0 (_ bv400 64))
 
 )
 
-(declare-fun var1052_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
-(assert (! (= var1052_implicit_coercion_of_literal_Unsigned_400___t0 var1051_literal_Unsigned_400___t0) :named A75)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1053_infix_expression__t0 () Bool)
+(declare-fun var1053_implicit_coercion_of_literal_Unsigned_400___t0 () (_ BitVec 64))
+(assert (! (= var1053_implicit_coercion_of_literal_Unsigned_400___t0 var1052_literal_Unsigned_400___t0) :named A75)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1054_infix_expression__t0 () Bool)
 (assert
-  (=  var1053_infix_expression__t0 (bvult var380_part_at__t0 var1052_implicit_coercion_of_literal_Unsigned_400___t0))
+  (=  var1054_infix_expression__t0 (bvult var381_part_at__t0 var1053_implicit_coercion_of_literal_Unsigned_400___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1054_infix_expression__t0 () Bool)
+(declare-fun var1055_infix_expression__t0 () Bool)
 (assert
-  (=  var1054_infix_expression__t0 (and var1050_infix_expression__t0 var1053_infix_expression__t0))
+  (=  var1055_infix_expression__t0 (and var1051_infix_expression__t0 var1054_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -8576,22 +8578,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1055_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var1056_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 (assert
-  (= var1055_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var349_part_mem__t0) )
+  (= var1056_interpretation_of_theory_nullterm_over_part_mem__t0 (theory2_nullterm var350_part_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1056_infix_expression__t0 () Bool)
+(declare-fun var1057_infix_expression__t0 () Bool)
 (assert
-  (=  var1056_infix_expression__t0 (and var1054_infix_expression__t0 var1055_interpretation_of_theory_nullterm_over_part_mem__t0))
+  (=  var1057_infix_expression__t0 (and var1055_infix_expression__t0 var1056_interpretation_of_theory_nullterm_over_part_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var1046_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var1056_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 ) (not var1057_infix_expression__t0 ) ))
 
 )
 
@@ -8603,38 +8605,38 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1046_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
 (declare-fun var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var1048_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var1051_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var1055_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var1048_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var1049_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1052_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1056_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
 ; callsite effects
-(declare-fun var1057_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var1059_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1058_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var1060_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var1059_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1057_return_value_of___buffer__cstr__t0) )
+  (= var1060_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1058_return_value_of___buffer__cstr__t0) )
 )
 
-(declare-fun var1058_return__t1 () (_ BitVec 64))
+(declare-fun var1059_return__t1 () (_ BitVec 64))
 (assert
-  (= var1059_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1058_return__t1) )
+  (= var1060_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1059_return__t1) )
 )
 
-(declare-fun var1060_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1061_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
 (assert
-  (= var1060_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1057_return_value_of___buffer__cstr__t0) )
+  (= var1061_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1058_return_value_of___buffer__cstr__t0) )
 )
 
 (assert
-  (= var1060_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1058_return__t1) )
+  (= var1061_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1059_return__t1) )
 )
 
-(declare-fun var1058_return__t0 () (_ BitVec 64))
+(declare-fun var1059_return__t0 () (_ BitVec 64))
 (assert
-  (= var1058_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1057_return_value_of___buffer__cstr__t0 var1058_return__t0)  )
+  (= var1059_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1058_return_value_of___buffer__cstr__t0 var1059_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
@@ -8644,59 +8646,59 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-(declare-fun var1061_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var1062_interpretation_of_theory_safe_over_return__t0 () Bool)
 (assert
-  (= var1061_interpretation_of_theory_safe_over_return__t0 (theory1_safe var1058_return__t1) )
+  (= var1062_interpretation_of_theory_safe_over_return__t0 (theory1_safe var1059_return__t1) )
 )
 
-(assert (! var1061_interpretation_of_theory_safe_over_return__t0 :named A76))(check-sat)
+(assert (! var1062_interpretation_of_theory_safe_over_return__t0 :named A76))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1062_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1063_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1062_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1058_return__t1) )
+  (= var1063_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1059_return__t1) )
 )
 
-(declare-fun var1057_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var1058_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
 (assert
-  (= var1062_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1057_return_value_of___buffer__cstr__t1) )
+  (= var1063_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1058_return_value_of___buffer__cstr__t1) )
 )
 
-(declare-fun var1063_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1064_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1063_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1058_return__t1) )
-)
-
-(assert
-  (= var1063_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1057_return_value_of___buffer__cstr__t1) )
+  (= var1064_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1059_return__t1) )
 )
 
 (assert
-  (= var1057_return_value_of___buffer__cstr__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1058_return__t1 var1057_return_value_of___buffer__cstr__t0)  )
-)
-
-(declare-fun var1065_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(assert
-  (= var1065_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1057_return_value_of___buffer__cstr__t1) )
-)
-
-(declare-fun var1064_return__t1 () (_ BitVec 64))
-(assert
-  (= var1065_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1064_return__t1) )
-)
-
-(declare-fun var1066_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(assert
-  (= var1066_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1057_return_value_of___buffer__cstr__t1) )
+  (= var1064_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1058_return_value_of___buffer__cstr__t1) )
 )
 
 (assert
-  (= var1066_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1064_return__t1) )
+  (= var1058_return_value_of___buffer__cstr__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1059_return__t1 var1058_return_value_of___buffer__cstr__t0)  )
 )
 
-(declare-fun var1064_return__t0 () (_ BitVec 64))
+(declare-fun var1066_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var1064_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1057_return_value_of___buffer__cstr__t1 var1064_return__t0)  )
+  (= var1066_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1058_return_value_of___buffer__cstr__t1) )
+)
+
+(declare-fun var1065_return__t1 () (_ BitVec 64))
+(assert
+  (= var1066_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1065_return__t1) )
+)
+
+(declare-fun var1067_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(assert
+  (= var1067_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1058_return_value_of___buffer__cstr__t1) )
+)
+
+(assert
+  (= var1067_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1065_return__t1) )
+)
+
+(declare-fun var1065_return__t0 () (_ BitVec 64))
+(assert
+  (= var1065_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1058_return_value_of___buffer__cstr__t1 var1065_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
@@ -8706,39 +8708,39 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-(declare-fun var1067_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var1068_interpretation_of_theory_nullterm_over_return__t0 () Bool)
 (assert
-  (= var1067_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var1064_return__t1) )
+  (= var1068_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var1065_return__t1) )
 )
 
-(assert (! var1067_interpretation_of_theory_nullterm_over_return__t0 :named A77))(check-sat)
+(assert (! var1068_interpretation_of_theory_nullterm_over_return__t0 :named A77))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
-(declare-fun var1068_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
+(declare-fun var1069_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1068_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1064_return__t1) )
+  (= var1069_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1065_return__t1) )
 )
 
-(declare-fun var1057_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var1058_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
 (assert
-  (= var1068_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1057_return_value_of___buffer__cstr__t2) )
+  (= var1069_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1058_return_value_of___buffer__cstr__t2) )
 )
 
-(declare-fun var1069_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1070_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1069_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1064_return__t1) )
-)
-
-(assert
-  (= var1069_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1057_return_value_of___buffer__cstr__t2) )
+  (= var1070_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1065_return__t1) )
 )
 
 (assert
-  (= var1057_return_value_of___buffer__cstr__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1064_return__t1 var1057_return_value_of___buffer__cstr__t1)  )
+  (= var1070_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1058_return_value_of___buffer__cstr__t2) )
+)
+
+(assert
+  (= var1058_return_value_of___buffer__cstr__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1065_return__t1 var1058_return_value_of___buffer__cstr__t1)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
 ;callsite_assert
 (push 1)
 
@@ -8746,24 +8748,24 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1070_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 () Bool)
+(declare-fun var1071_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 () Bool)
 (assert
-  (= var1070_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 (theory1_safe var1031_literal_string__reading_secrets_from__s__lld___t0) )
+  (= var1071_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 (theory1_safe var1032_literal_string__reading_secrets_from__s__lld___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/log/src/lib.zz:68
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1071_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 () Bool)
+(declare-fun var1072_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 () Bool)
 (assert
-  (= var1071_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 (theory1_safe var1028_literal_string__carrier__vault_toml___t0) )
+  (= var1072_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 (theory1_safe var1029_literal_string__carrier__vault_toml___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var1070_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 ) (not var1071_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var1071_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 ) (not var1072_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 ) ))
 
 )
 
@@ -8775,721 +8777,89 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1070_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 () Bool)
-(declare-fun var1071_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 () Bool)
+(declare-fun var1071_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 () Bool)
+(declare-fun var1072_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 () Bool)
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:238
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:244
 ; callsite effects
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
 ; call of ::ext::<stdio.h>::fopen
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-(declare-fun var1074_literal_string__rw___t0 () (_ BitVec 64))
-(declare-fun var1075_true__t0 () Bool)
-(assert
-  (= var1075_true__t0 (theory1_safe var1074_literal_string__rw___t0) )
-)
-
-(assert
-  var1075_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+(declare-fun var1075_literal_string__rw___t0 () (_ BitVec 64))
 (declare-fun var1076_true__t0 () Bool)
 (assert
-  (= var1076_true__t0 (theory2_nullterm var1074_literal_string__rw___t0) )
+  (= var1076_true__t0 (theory1_safe var1075_literal_string__rw___t0) )
 )
 
 (assert
   var1076_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:240
-(declare-fun var1077_return_value_of___ext___stdio_h___fopen__t0 () (_ BitVec 64))
-(declare-fun var1078_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 () Bool)
+(declare-fun var1077_true__t0 () Bool)
 (assert
-  (= var1078_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 (theory1_safe var1077_return_value_of___ext___stdio_h___fopen__t0) )
-)
-
-(declare-fun var1073_f__t1 () (_ BitVec 64))
-(assert
-  (= var1078_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 (theory1_safe var1073_f__t1) )
-)
-
-(declare-fun var1079_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 () Bool)
-(assert
-  (= var1079_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 (theory2_nullterm var1077_return_value_of___ext___stdio_h___fopen__t0) )
+  (= var1077_true__t0 (theory2_nullterm var1075_literal_string__rw___t0) )
 )
 
 (assert
-  (= var1079_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 (theory2_nullterm var1073_f__t1) )
+  var1077_true__t0
 )
 
-(declare-fun var1080_implicit_cast_of_return_value_of___ext___stdio_h___fopen__t0 () (_ BitVec 64))
-(assert (! (= var1080_implicit_cast_of_return_value_of___ext___stdio_h___fopen__t0 var1077_return_value_of___ext___stdio_h___fopen__t0) :named A78))(declare-fun var1073_f__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+(declare-fun var1078_return_value_of___ext___stdio_h___fopen__t0 () (_ BitVec 64))
+(declare-fun var1079_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 () Bool)
 (assert
-  (= var1073_f__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) var1080_implicit_cast_of_return_value_of___ext___stdio_h___fopen__t0 var1073_f__t0)  )
+  (= var1079_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 (theory1_safe var1078_return_value_of___ext___stdio_h___fopen__t0) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
+(declare-fun var1074_f__t1 () (_ BitVec 64))
+(assert
+  (= var1079_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 (theory1_safe var1074_f__t1) )
+)
+
+(declare-fun var1080_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 () Bool)
+(assert
+  (= var1080_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 (theory2_nullterm var1078_return_value_of___ext___stdio_h___fopen__t0) )
+)
+
+(assert
+  (= var1080_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 (theory2_nullterm var1074_f__t1) )
+)
+
+(declare-fun var1081_implicit_cast_of_return_value_of___ext___stdio_h___fopen__t0 () (_ BitVec 64))
+(assert (! (= var1081_implicit_cast_of_return_value_of___ext___stdio_h___fopen__t0 var1078_return_value_of___ext___stdio_h___fopen__t0) :named A78))(declare-fun var1074_f__t0 () (_ BitVec 64))
+(assert
+  (= var1074_f__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) var1081_implicit_cast_of_return_value_of___ext___stdio_h___fopen__t0 var1074_f__t0)  )
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
 ; literal expr
-(declare-fun var1081_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1082_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var1081_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var1082_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var1082_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert (! (= var1082_implicit_coercion_of_literal_Unsigned_0___t0 var1081_literal_Unsigned_0___t0) :named A79)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
-(declare-fun var1083_infix_expression__t0 () Bool)
+(declare-fun var1083_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var1083_implicit_coercion_of_literal_Unsigned_0___t0 var1082_literal_Unsigned_0___t0) :named A79)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
+(declare-fun var1084_infix_expression__t0 () Bool)
 (assert
-  (=  var1083_infix_expression__t0 (= var1073_f__t1 var1082_implicit_coercion_of_literal_Unsigned_0___t0))
+  (=  var1084_infix_expression__t0 (= var1074_f__t1 var1083_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (check-sat)
 
 (get-value (
 
-  var1083_infix_expression__t0
-
-) )
-
-;  = "false"
-(push 1)
-
-(assert
-  (not (= var1083_infix_expression__t0 false))
-)
-
-(check-sat)
-
-(pop 1)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; call of ::err::fail_with_errno
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1085_literal_string__cannot_open__s___t0 () (_ BitVec 64))
-(declare-fun var1086_true__t0 () Bool)
-(assert
-  (= var1086_true__t0 (theory1_safe var1085_literal_string__cannot_open__s___t0) )
-)
-
-(assert
-  var1086_true__t0
-)
-
-(declare-fun var1087_true__t0 () Bool)
-(assert
-  (= var1087_true__t0 (theory2_nullterm var1085_literal_string__cannot_open__s___t0) )
-)
-
-(assert
-  var1087_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1088_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1088_cast_of_e__t0 var333_e__t0) :named A80)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1089_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1090_true__t0 () Bool)
-(assert
-  (= var1090_true__t0 (theory1_safe var1089_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1090_true__t0
-)
-
-(declare-fun var1091_true__t0 () Bool)
-(assert
-  (= var1091_true__t0 (theory2_nullterm var1089_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1091_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1092_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1093_true__t0 () Bool)
-(assert
-  (= var1093_true__t0 (theory1_safe var1092_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1093_true__t0
-)
-
-(declare-fun var1094_true__t0 () Bool)
-(assert
-  (= var1094_true__t0 (theory2_nullterm var1092_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1094_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
-; literal expr
-(declare-fun var1095_literal_Unsigned_242___t0 () (_ BitVec 64))
-(assert
-  (= var1095_literal_Unsigned_242___t0 (_ bv242 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1096_literal_string__cannot_open__s___t0 () (_ BitVec 64))
-(declare-fun var1097_true__t0 () Bool)
-(assert
-  (= var1097_true__t0 (theory1_safe var1096_literal_string__cannot_open__s___t0) )
-)
-
-(assert
-  var1097_true__t0
-)
-
-(declare-fun var1098_true__t0 () Bool)
-(assert
-  (= var1098_true__t0 (theory2_nullterm var1096_literal_string__cannot_open__s___t0) )
-)
-
-(assert
-  var1098_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; call of ::buffer::cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1100_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1101_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var1101_len_addressof_mtdpath____t0 (theory0_len var1100_addressof_mtdpath___t0) )
-)
-
-(assert
-  (= var1101_len_addressof_mtdpath____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1100_addressof_mtdpath___t0 (_ bv940 64))
-
-)
-
-(declare-fun var1102_true__t0 () Bool)
-(assert
-  (= var1102_true__t0 (theory1_safe var1100_addressof_mtdpath___t0) )
-)
-
-(assert
-  var1102_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1103_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1104_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var1104_len_addressof_mtdpath____t0 (theory0_len var1103_addressof_mtdpath___t0) )
-)
-
-(assert
-  (= var1104_len_addressof_mtdpath____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1103_addressof_mtdpath___t0 (_ bv940 64))
-
-)
-
-(declare-fun var1105_true__t0 () Bool)
-(assert
-  (= var1105_true__t0 (theory1_safe var1103_addressof_mtdpath___t0) )
-)
-
-(assert
-  var1105_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1106_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1107_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var1107_len_addressof_mtdpath____t0 (theory0_len var1106_addressof_mtdpath___t0) )
-)
-
-(assert
-  (= var1107_len_addressof_mtdpath____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1106_addressof_mtdpath___t0 (_ bv940 64))
-
-)
-
-(declare-fun var1108_true__t0 () Bool)
-(assert
-  (= var1108_true__t0 (theory1_safe var1106_addressof_mtdpath___t0) )
-)
-
-(assert
-  var1108_true__t0
-)
-
-(declare-fun var1109_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
-(assert (! (= var1109_cast_of_addressof_mtdpath___t0 var1106_addressof_mtdpath___t0) :named A81)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
-; literal expr
-(declare-fun var1110_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert
-  (= var1110_literal_Unsigned_1000___t0 (_ bv1000 64))
-
-)
-
-;callsite_assert
-(push 1)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
-; call of safe
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-(declare-fun var1111_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(assert
-  (= var1111_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1109_cast_of_addressof_mtdpath___t0) )
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
-; call of ::buffer::integrity
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
-; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
-; end of collecting theory invocation arguments
-; theory_expression
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-; call of safe
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(assert
-  (= var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1109_cast_of_addressof_mtdpath___t0) )
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; call of len
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1113_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert
-  (= var1113_literal_Unsigned_1000___t0 (_ bv1000 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1114_infix_expression__t0 () Bool)
-(assert
-  (=  var1114_infix_expression__t0 (bvuge var1113_literal_Unsigned_1000___t0 var1110_literal_Unsigned_1000___t0))
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1115_infix_expression__t0 () Bool)
-(assert
-  (=  var1115_infix_expression__t0 (and var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1114_infix_expression__t0))
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; call of len
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1116_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert
-  (= var1116_literal_Unsigned_1000___t0 (_ bv1000 64))
-
-)
-
-(declare-fun var1117_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert (! (= var1117_implicit_coercion_of_literal_Unsigned_1000___t0 var1116_literal_Unsigned_1000___t0) :named A82)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1118_infix_expression__t0 () Bool)
-(assert
-  (=  var1118_infix_expression__t0 (bvult var973_mtdpath_at__t0 var1117_implicit_coercion_of_literal_Unsigned_1000___t0))
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1119_infix_expression__t0 () Bool)
-(assert
-  (=  var1119_infix_expression__t0 (and var1115_infix_expression__t0 var1118_infix_expression__t0))
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; call of nullterm
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1120_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-(assert
-  (= var1120_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var942_mtdpath_mem__t0) )
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1121_infix_expression__t0 () Bool)
-(assert
-  (=  var1121_infix_expression__t0 (and var1119_infix_expression__t0 var1120_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
-)
-
-; end of theory_expression
-(push 1)
-
-(assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) (or (not var1111_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var1121_infix_expression__t0 ) ))
-
-)
-
-(check-sat)
-
-; unsat / pass
-(pop 1)
-
-;end of callsite_assert
-(pop 1)
-
-(declare-fun var1111_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1113_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1116_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1120_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-; borrows after call
-; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; callsite effects
-(declare-fun var1122_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var1124_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(assert
-  (= var1124_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1122_return_value_of___buffer__cstr__t0) )
-)
-
-(declare-fun var1123_return__t1 () (_ BitVec 64))
-(assert
-  (= var1124_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1123_return__t1) )
-)
-
-(declare-fun var1125_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(assert
-  (= var1125_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1122_return_value_of___buffer__cstr__t0) )
-)
-
-(assert
-  (= var1125_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1123_return__t1) )
-)
-
-(declare-fun var1123_return__t0 () (_ BitVec 64))
-(assert
-  (= var1123_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var1122_return_value_of___buffer__cstr__t0 var1123_return__t0)  )
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-; call of safe
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-(declare-fun var1126_interpretation_of_theory_safe_over_return__t0 () Bool)
-(assert
-  (= var1126_interpretation_of_theory_safe_over_return__t0 (theory1_safe var1123_return__t1) )
-)
-
-(assert (! var1126_interpretation_of_theory_safe_over_return__t0 :named A83))(check-sat)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1127_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(assert
-  (= var1127_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1123_return__t1) )
-)
-
-(declare-fun var1122_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
-(assert
-  (= var1127_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1122_return_value_of___buffer__cstr__t1) )
-)
-
-(declare-fun var1128_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(assert
-  (= var1128_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1123_return__t1) )
-)
-
-(assert
-  (= var1128_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1122_return_value_of___buffer__cstr__t1) )
-)
-
-(assert
-  (= var1122_return_value_of___buffer__cstr__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var1123_return__t1 var1122_return_value_of___buffer__cstr__t0)  )
-)
-
-(declare-fun var1130_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(assert
-  (= var1130_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1122_return_value_of___buffer__cstr__t1) )
-)
-
-(declare-fun var1129_return__t1 () (_ BitVec 64))
-(assert
-  (= var1130_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1129_return__t1) )
-)
-
-(declare-fun var1131_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(assert
-  (= var1131_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1122_return_value_of___buffer__cstr__t1) )
-)
-
-(assert
-  (= var1131_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1129_return__t1) )
-)
-
-(declare-fun var1129_return__t0 () (_ BitVec 64))
-(assert
-  (= var1129_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var1122_return_value_of___buffer__cstr__t1 var1129_return__t0)  )
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-; call of nullterm
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-(declare-fun var1132_interpretation_of_theory_nullterm_over_return__t0 () Bool)
-(assert
-  (= var1132_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var1129_return__t1) )
-)
-
-(assert (! var1132_interpretation_of_theory_nullterm_over_return__t0 :named A84))(check-sat)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1133_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(assert
-  (= var1133_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1129_return__t1) )
-)
-
-(declare-fun var1122_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
-(assert
-  (= var1133_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1122_return_value_of___buffer__cstr__t2) )
-)
-
-(declare-fun var1134_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(assert
-  (= var1134_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1129_return__t1) )
-)
-
-(assert
-  (= var1134_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1122_return_value_of___buffer__cstr__t2) )
-)
-
-(assert
-  (= var1122_return_value_of___buffer__cstr__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var1129_return__t1 var1122_return_value_of___buffer__cstr__t1)  )
-)
-
-; end of callsite effects
-;callsite_assert
-(push 1)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:75
-; call of safe
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-(declare-fun var1135_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 () Bool)
-(assert
-  (= var1135_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 (theory1_safe var1096_literal_string__cannot_open__s___t0) )
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
-; call of safe
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-(declare-fun var1136_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(assert
-  (= var1136_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1088_cast_of_e__t0) )
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-; call of nullterm
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-; collecting theory invocation arguments
-; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1137_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 () Bool)
-(assert
-  (= var1137_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 (theory2_nullterm var1096_literal_string__cannot_open__s___t0) )
-)
-
-(push 1)
-
-(assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) (or (not var1135_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 ) (not var1136_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1137_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 ) ))
-
-)
-
-(check-sat)
-
-; unsat / pass
-(pop 1)
-
-;end of callsite_assert
-(pop 1)
-
-(declare-fun var1135_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 () Bool)
-(declare-fun var1136_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1137_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 () Bool)
-; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t3 () (_ BitVec 64))
-(assert
-  (= var335_deref_S333_e___t3  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var335_deref_S333_e___t3 var335_deref_S333_e___t2)  )
-)
-
-; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-; callsite effects
-(declare-fun var1138_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1140_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(assert
-  (= var1140_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1138_return_value_of___err__fail_with_errno__t0) )
-)
-
-(declare-fun var1139_return__t1 () (_ BitVec 64))
-(assert
-  (= var1140_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1139_return__t1) )
-)
-
-(declare-fun var1141_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(assert
-  (= var1141_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1138_return_value_of___err__fail_with_errno__t0) )
-)
-
-(assert
-  (= var1141_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1139_return__t1) )
-)
-
-(declare-fun var1139_return__t0 () (_ BitVec 64))
-(assert
-  (= var1139_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var1138_return_value_of___err__fail_with_errno__t0 var1139_return__t0)  )
-)
-
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-; call of ::err::checked
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1142_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(assert
-  (= var1142_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t3) )
-)
-
-(assert (! var1142_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A85))(check-sat)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:242
-(declare-fun var1143_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(assert
-  (= var1143_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1139_return__t1) )
-)
-
-(declare-fun var1138_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(assert
-  (= var1143_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1138_return_value_of___err__fail_with_errno__t1) )
-)
-
-(declare-fun var1144_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(assert
-  (= var1144_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1139_return__t1) )
-)
-
-(assert
-  (= var1144_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1138_return_value_of___err__fail_with_errno__t1) )
-)
-
-(assert
-  (= var1138_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ) var1139_return__t1 var1138_return_value_of___err__fail_with_errno__t0)  )
-)
-
-; end of callsite effects
-; end branch
-; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ))
-(assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1083_infix_expression__t0 ))
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:245
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:245
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:245
-; literal expr
-(declare-fun var1146_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert
-  (= var1146_literal_Unsigned_0___t0 (_ bv0 64))
-
-)
-
-(declare-fun var1147_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert (! (= var1147_implicit_coercion_of_literal_Unsigned_0___t0 var1146_literal_Unsigned_0___t0) :named A86)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:245
-(declare-fun var1148_infix_expression__t0 () Bool)
-(declare-fun var1145_unsafe_expression__t0 () (_ BitVec 64))
-(assert
-  (= var1148_infix_expression__t0 (bvslt var1145_unsafe_expression__t0 var1147_implicit_coercion_of_literal_Unsigned_0___t0))
-)
-
-(check-sat)
-
-(get-value (
-
-  var1148_infix_expression__t0
+  var1084_infix_expression__t0
 
 ) )
 
@@ -9497,209 +8867,209 @@
 (push 1)
 
 (assert
-  (not (= var1148_infix_expression__t0 true))
+  (not (= var1084_infix_expression__t0 true))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:245
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
 ; call of ::err::fail_with_errno
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1150_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1151_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1086_literal_string__cannot_open__s___t0 () (_ BitVec 64))
+(declare-fun var1087_true__t0 () Bool)
 (assert
-  (= var1151_true__t0 (theory1_safe var1150_literal_string__cannot_seek__s___t0) )
+  (= var1087_true__t0 (theory1_safe var1086_literal_string__cannot_open__s___t0) )
 )
 
 (assert
-  var1151_true__t0
+  var1087_true__t0
 )
 
-(declare-fun var1152_true__t0 () Bool)
+(declare-fun var1088_true__t0 () Bool)
 (assert
-  (= var1152_true__t0 (theory2_nullterm var1150_literal_string__cannot_seek__s___t0) )
+  (= var1088_true__t0 (theory2_nullterm var1086_literal_string__cannot_open__s___t0) )
 )
 
 (assert
-  var1152_true__t0
+  var1088_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1153_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1153_cast_of_e__t0 var333_e__t0) :named A87)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1089_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1089_cast_of_e__t0 var334_e__t0) :named A80)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1154_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1155_true__t0 () Bool)
+(declare-fun var1090_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
+(declare-fun var1091_true__t0 () Bool)
 (assert
-  (= var1155_true__t0 (theory1_safe var1154_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1091_true__t0 (theory1_safe var1090_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
-  var1155_true__t0
+  var1091_true__t0
 )
 
-(declare-fun var1156_true__t0 () Bool)
+(declare-fun var1092_true__t0 () Bool)
 (assert
-  (= var1156_true__t0 (theory2_nullterm var1154_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1092_true__t0 (theory2_nullterm var1090_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
-  var1156_true__t0
+  var1092_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1157_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1158_true__t0 () Bool)
+(declare-fun var1093_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
+(declare-fun var1094_true__t0 () Bool)
 (assert
-  (= var1158_true__t0 (theory1_safe var1157_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1094_true__t0 (theory1_safe var1093_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
-  var1158_true__t0
+  var1094_true__t0
 )
 
-(declare-fun var1159_true__t0 () Bool)
+(declare-fun var1095_true__t0 () Bool)
 (assert
-  (= var1159_true__t0 (theory2_nullterm var1157_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1095_true__t0 (theory2_nullterm var1093_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
-  var1159_true__t0
+  var1095_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; literal expr
-(declare-fun var1160_literal_Unsigned_246___t0 () (_ BitVec 64))
+(declare-fun var1096_literal_Unsigned_248___t0 () (_ BitVec 64))
 (assert
-  (= var1160_literal_Unsigned_246___t0 (_ bv246 64))
+  (= var1096_literal_Unsigned_248___t0 (_ bv248 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1161_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1162_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1097_literal_string__cannot_open__s___t0 () (_ BitVec 64))
+(declare-fun var1098_true__t0 () Bool)
 (assert
-  (= var1162_true__t0 (theory1_safe var1161_literal_string__cannot_seek__s___t0) )
+  (= var1098_true__t0 (theory1_safe var1097_literal_string__cannot_open__s___t0) )
 )
 
 (assert
-  var1162_true__t0
+  var1098_true__t0
 )
 
-(declare-fun var1163_true__t0 () Bool)
+(declare-fun var1099_true__t0 () Bool)
 (assert
-  (= var1163_true__t0 (theory2_nullterm var1161_literal_string__cannot_seek__s___t0) )
+  (= var1099_true__t0 (theory2_nullterm var1097_literal_string__cannot_open__s___t0) )
 )
 
 (assert
-  var1163_true__t0
+  var1099_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
 ; call of ::buffer::cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1165_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1166_len_addressof_mtdpath____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1101_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1102_len_addressof_mtdpath____t0 () (_ BitVec 64))
 (assert
-  (= var1166_len_addressof_mtdpath____t0 (theory0_len var1165_addressof_mtdpath___t0) )
+  (= var1102_len_addressof_mtdpath____t0 (theory0_len var1101_addressof_mtdpath___t0) )
 )
 
 (assert
-  (= var1166_len_addressof_mtdpath____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1165_addressof_mtdpath___t0 (_ bv940 64))
-
-)
-
-(declare-fun var1167_true__t0 () Bool)
-(assert
-  (= var1167_true__t0 (theory1_safe var1165_addressof_mtdpath___t0) )
-)
-
-(assert
-  var1167_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1168_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1169_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var1169_len_addressof_mtdpath____t0 (theory0_len var1168_addressof_mtdpath___t0) )
-)
-
-(assert
-  (= var1169_len_addressof_mtdpath____t0 (_ bv1 64))
+  (= var1102_len_addressof_mtdpath____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1168_addressof_mtdpath___t0 (_ bv940 64))
+  (= var1101_addressof_mtdpath___t0 (_ bv941 64))
 
 )
 
-(declare-fun var1170_true__t0 () Bool)
+(declare-fun var1103_true__t0 () Bool)
 (assert
-  (= var1170_true__t0 (theory1_safe var1168_addressof_mtdpath___t0) )
-)
-
-(assert
-  var1170_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1171_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1172_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(assert
-  (= var1172_len_addressof_mtdpath____t0 (theory0_len var1171_addressof_mtdpath___t0) )
+  (= var1103_true__t0 (theory1_safe var1101_addressof_mtdpath___t0) )
 )
 
 (assert
-  (= var1172_len_addressof_mtdpath____t0 (_ bv1 64))
+  var1103_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1104_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1105_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var1105_len_addressof_mtdpath____t0 (theory0_len var1104_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var1105_len_addressof_mtdpath____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1171_addressof_mtdpath___t0 (_ bv940 64))
+  (= var1104_addressof_mtdpath___t0 (_ bv941 64))
 
 )
 
-(declare-fun var1173_true__t0 () Bool)
+(declare-fun var1106_true__t0 () Bool)
 (assert
-  (= var1173_true__t0 (theory1_safe var1171_addressof_mtdpath___t0) )
+  (= var1106_true__t0 (theory1_safe var1104_addressof_mtdpath___t0) )
 )
 
 (assert
-  var1173_true__t0
+  var1106_true__t0
 )
 
-(declare-fun var1174_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
-(assert (! (= var1174_cast_of_addressof_mtdpath___t0 var1171_addressof_mtdpath___t0) :named A88)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:235
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1107_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1108_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var1108_len_addressof_mtdpath____t0 (theory0_len var1107_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var1108_len_addressof_mtdpath____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1107_addressof_mtdpath___t0 (_ bv941 64))
+
+)
+
+(declare-fun var1109_true__t0 () Bool)
+(assert
+  (= var1109_true__t0 (theory1_safe var1107_addressof_mtdpath___t0) )
+)
+
+(assert
+  var1109_true__t0
+)
+
+(declare-fun var1110_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
+(assert (! (= var1110_cast_of_addressof_mtdpath___t0 var1107_addressof_mtdpath___t0) :named A81)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
 ; literal expr
-(declare-fun var1175_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1111_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1175_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1111_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
@@ -9710,9 +9080,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1176_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1176_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1174_cast_of_addressof_mtdpath___t0) )
+  (= var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1110_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
@@ -9735,9 +9105,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
-(declare-fun var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1113_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1174_cast_of_addressof_mtdpath___t0) )
+  (= var1113_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1110_cast_of_addressof_mtdpath___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
@@ -9746,23 +9116,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1178_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1114_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1178_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1114_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1179_infix_expression__t0 () Bool)
+(declare-fun var1115_infix_expression__t0 () Bool)
 (assert
-  (=  var1179_infix_expression__t0 (bvuge var1178_literal_Unsigned_1000___t0 var1175_literal_Unsigned_1000___t0))
+  (=  var1115_infix_expression__t0 (bvuge var1114_literal_Unsigned_1000___t0 var1111_literal_Unsigned_1000___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
-(declare-fun var1180_infix_expression__t0 () Bool)
+(declare-fun var1116_infix_expression__t0 () Bool)
 (assert
-  (=  var1180_infix_expression__t0 (and var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1179_infix_expression__t0))
+  (=  var1116_infix_expression__t0 (and var1113_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1115_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
@@ -9773,23 +9143,23 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1181_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1117_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (assert
-  (= var1181_literal_Unsigned_1000___t0 (_ bv1000 64))
+  (= var1117_literal_Unsigned_1000___t0 (_ bv1000 64))
 
 )
 
-(declare-fun var1182_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(assert (! (= var1182_implicit_coercion_of_literal_Unsigned_1000___t0 var1181_literal_Unsigned_1000___t0) :named A89)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1183_infix_expression__t0 () Bool)
+(declare-fun var1118_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert (! (= var1118_implicit_coercion_of_literal_Unsigned_1000___t0 var1117_literal_Unsigned_1000___t0) :named A82)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1119_infix_expression__t0 () Bool)
 (assert
-  (=  var1183_infix_expression__t0 (bvult var973_mtdpath_at__t0 var1182_implicit_coercion_of_literal_Unsigned_1000___t0))
+  (=  var1119_infix_expression__t0 (bvult var974_mtdpath_at__t0 var1118_implicit_coercion_of_literal_Unsigned_1000___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
-(declare-fun var1184_infix_expression__t0 () Bool)
+(declare-fun var1120_infix_expression__t0 () Bool)
 (assert
-  (=  var1184_infix_expression__t0 (and var1180_infix_expression__t0 var1183_infix_expression__t0))
+  (=  var1120_infix_expression__t0 (and var1116_infix_expression__t0 var1119_infix_expression__t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
@@ -9802,22 +9172,22 @@
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1185_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1121_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 (assert
-  (= var1185_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var942_mtdpath_mem__t0) )
+  (= var1121_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var943_mtdpath_mem__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
-(declare-fun var1186_infix_expression__t0 () Bool)
+(declare-fun var1122_infix_expression__t0 () Bool)
 (assert
-  (=  var1186_infix_expression__t0 (and var1184_infix_expression__t0 var1185_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
+  (=  var1122_infix_expression__t0 (and var1120_infix_expression__t0 var1121_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
 )
 
 ; end of theory_expression
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) (or (not var1176_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var1186_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) (or (not var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var1122_infix_expression__t0 ) ))
 
 )
 
@@ -9829,38 +9199,38 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1176_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1178_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1181_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1185_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1113_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1114_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1117_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1121_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
 ; callsite effects
-(declare-fun var1187_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var1189_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1123_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var1125_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var1189_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1187_return_value_of___buffer__cstr__t0) )
+  (= var1125_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1123_return_value_of___buffer__cstr__t0) )
 )
 
-(declare-fun var1188_return__t1 () (_ BitVec 64))
+(declare-fun var1124_return__t1 () (_ BitVec 64))
 (assert
-  (= var1189_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1188_return__t1) )
+  (= var1125_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1124_return__t1) )
 )
 
-(declare-fun var1190_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1126_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
 (assert
-  (= var1190_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1187_return_value_of___buffer__cstr__t0) )
+  (= var1126_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1123_return_value_of___buffer__cstr__t0) )
 )
 
 (assert
-  (= var1190_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1188_return__t1) )
+  (= var1126_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1124_return__t1) )
 )
 
-(declare-fun var1188_return__t0 () (_ BitVec 64))
+(declare-fun var1124_return__t0 () (_ BitVec 64))
 (assert
-  (= var1188_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var1187_return_value_of___buffer__cstr__t0 var1188_return__t0)  )
+  (= var1124_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var1123_return_value_of___buffer__cstr__t0 var1124_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
@@ -9870,59 +9240,59 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
-(declare-fun var1191_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var1127_interpretation_of_theory_safe_over_return__t0 () Bool)
 (assert
-  (= var1191_interpretation_of_theory_safe_over_return__t0 (theory1_safe var1188_return__t1) )
+  (= var1127_interpretation_of_theory_safe_over_return__t0 (theory1_safe var1124_return__t1) )
 )
 
-(assert (! var1191_interpretation_of_theory_safe_over_return__t0 :named A90))(check-sat)
+(assert (! var1127_interpretation_of_theory_safe_over_return__t0 :named A83))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1192_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1128_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1192_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1188_return__t1) )
+  (= var1128_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1124_return__t1) )
 )
 
-(declare-fun var1187_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var1123_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
 (assert
-  (= var1192_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1187_return_value_of___buffer__cstr__t1) )
+  (= var1128_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1123_return_value_of___buffer__cstr__t1) )
 )
 
-(declare-fun var1193_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1129_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1193_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1188_return__t1) )
-)
-
-(assert
-  (= var1193_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1187_return_value_of___buffer__cstr__t1) )
+  (= var1129_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1124_return__t1) )
 )
 
 (assert
-  (= var1187_return_value_of___buffer__cstr__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var1188_return__t1 var1187_return_value_of___buffer__cstr__t0)  )
-)
-
-(declare-fun var1195_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(assert
-  (= var1195_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1187_return_value_of___buffer__cstr__t1) )
-)
-
-(declare-fun var1194_return__t1 () (_ BitVec 64))
-(assert
-  (= var1195_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1194_return__t1) )
-)
-
-(declare-fun var1196_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(assert
-  (= var1196_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1187_return_value_of___buffer__cstr__t1) )
+  (= var1129_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1123_return_value_of___buffer__cstr__t1) )
 )
 
 (assert
-  (= var1196_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1194_return__t1) )
+  (= var1123_return_value_of___buffer__cstr__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var1124_return__t1 var1123_return_value_of___buffer__cstr__t0)  )
 )
 
-(declare-fun var1194_return__t0 () (_ BitVec 64))
+(declare-fun var1131_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var1194_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var1187_return_value_of___buffer__cstr__t1 var1194_return__t0)  )
+  (= var1131_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1123_return_value_of___buffer__cstr__t1) )
+)
+
+(declare-fun var1130_return__t1 () (_ BitVec 64))
+(assert
+  (= var1131_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1130_return__t1) )
+)
+
+(declare-fun var1132_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(assert
+  (= var1132_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1123_return_value_of___buffer__cstr__t1) )
+)
+
+(assert
+  (= var1132_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1130_return__t1) )
+)
+
+(declare-fun var1130_return__t0 () (_ BitVec 64))
+(assert
+  (= var1130_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var1123_return_value_of___buffer__cstr__t1 var1130_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
@@ -9932,35 +9302,35 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
-(declare-fun var1197_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var1133_interpretation_of_theory_nullterm_over_return__t0 () Bool)
 (assert
-  (= var1197_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var1194_return__t1) )
+  (= var1133_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var1130_return__t1) )
 )
 
-(assert (! var1197_interpretation_of_theory_nullterm_over_return__t0 :named A91))(check-sat)
+(assert (! var1133_interpretation_of_theory_nullterm_over_return__t0 :named A84))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1198_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1134_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1198_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1194_return__t1) )
+  (= var1134_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1130_return__t1) )
 )
 
-(declare-fun var1187_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var1123_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
 (assert
-  (= var1198_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1187_return_value_of___buffer__cstr__t2) )
+  (= var1134_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1123_return_value_of___buffer__cstr__t2) )
 )
 
-(declare-fun var1199_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1135_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
 (assert
-  (= var1199_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1194_return__t1) )
-)
-
-(assert
-  (= var1199_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1187_return_value_of___buffer__cstr__t2) )
+  (= var1135_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1130_return__t1) )
 )
 
 (assert
-  (= var1187_return_value_of___buffer__cstr__t2  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var1194_return__t1 var1187_return_value_of___buffer__cstr__t1)  )
+  (= var1135_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1123_return_value_of___buffer__cstr__t2) )
+)
+
+(assert
+  (= var1123_return_value_of___buffer__cstr__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var1130_return__t1 var1123_return_value_of___buffer__cstr__t1)  )
 )
 
 ; end of callsite effects
@@ -9971,18 +9341,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1200_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1136_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 () Bool)
 (assert
-  (= var1200_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 (theory1_safe var1161_literal_string__cannot_seek__s___t0) )
+  (= var1136_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 (theory1_safe var1097_literal_string__cannot_open__s___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1201_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1137_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1201_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1153_cast_of_e__t0) )
+  (= var1137_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1089_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
@@ -9992,15 +9362,15 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1202_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1138_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 () Bool)
 (assert
-  (= var1202_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 (theory2_nullterm var1161_literal_string__cannot_seek__s___t0) )
+  (= var1138_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 (theory2_nullterm var1097_literal_string__cannot_open__s___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) (or (not var1200_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 ) (not var1201_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1202_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) (or (not var1136_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 ) (not var1137_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1138_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 ) ))
 
 )
 
@@ -10012,42 +9382,42 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1200_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1201_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1202_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1136_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 () Bool)
+(declare-fun var1137_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1138_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t4 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t3 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t4  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var335_deref_S333_e___t4 var335_deref_S333_e___t3)  )
+  (= var336_deref_S334_e___t3  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var336_deref_S334_e___t3 var336_deref_S334_e___t2)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
 ; callsite effects
-(declare-fun var1203_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1205_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1139_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1141_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
 (assert
-  (= var1205_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1203_return_value_of___err__fail_with_errno__t0) )
+  (= var1141_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1139_return_value_of___err__fail_with_errno__t0) )
 )
 
-(declare-fun var1204_return__t1 () (_ BitVec 64))
+(declare-fun var1140_return__t1 () (_ BitVec 64))
 (assert
-  (= var1205_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1204_return__t1) )
+  (= var1141_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1140_return__t1) )
 )
 
-(declare-fun var1206_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1142_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
 (assert
-  (= var1206_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1203_return_value_of___err__fail_with_errno__t0) )
+  (= var1142_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1139_return_value_of___err__fail_with_errno__t0) )
 )
 
 (assert
-  (= var1206_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1204_return__t1) )
+  (= var1142_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1140_return__t1) )
 )
 
-(declare-fun var1204_return__t0 () (_ BitVec 64))
+(declare-fun var1140_return__t0 () (_ BitVec 64))
 (assert
-  (= var1204_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var1203_return_value_of___err__fail_with_errno__t0 var1204_return__t0)  )
+  (= var1140_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var1139_return_value_of___err__fail_with_errno__t0 var1140_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
@@ -10060,73 +9430,68 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1207_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1143_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1207_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t4) )
+  (= var1143_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t3) )
 )
 
-(assert (! var1207_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A92))(check-sat)
+(assert (! var1143_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A85))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:246
-(declare-fun var1208_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:248
+(declare-fun var1144_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1208_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1204_return__t1) )
+  (= var1144_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1140_return__t1) )
 )
 
-(declare-fun var1203_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1139_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
 (assert
-  (= var1208_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1203_return_value_of___err__fail_with_errno__t1) )
+  (= var1144_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1139_return_value_of___err__fail_with_errno__t1) )
 )
 
-(declare-fun var1209_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1145_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1209_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1204_return__t1) )
-)
-
-(assert
-  (= var1209_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1203_return_value_of___err__fail_with_errno__t1) )
+  (= var1145_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1140_return__t1) )
 )
 
 (assert
-  (= var1203_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ) var1204_return__t1 var1203_return_value_of___err__fail_with_errno__t0)  )
+  (= var1145_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1139_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1139_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ) var1140_return__t1 var1139_return_value_of___err__fail_with_errno__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
-; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:247
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1148_infix_expression__t0 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1084_infix_expression__t0 ))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:251
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:251
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:251
 ; literal expr
-(declare-fun var1212_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1147_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var1212_literal_Unsigned_32___t0 (_ bv32 64))
+  (= var1147_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var1213_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
-(assert (! (= var1213_implicit_coercion_of_literal_Unsigned_32___t0 var1212_literal_Unsigned_32___t0) :named A93)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:251
-(declare-fun var1214_infix_expression__t0 () Bool)
-(declare-fun var1211_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1148_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var1148_implicit_coercion_of_literal_Unsigned_0___t0 var1147_literal_Unsigned_0___t0) :named A86)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:251
+(declare-fun var1149_infix_expression__t0 () Bool)
+(declare-fun var1146_unsafe_expression__t0 () (_ BitVec 64))
 (assert
-  (=  var1214_infix_expression__t0 (not (= var1211_unsafe_expression__t0 var1213_implicit_coercion_of_literal_Unsigned_32___t0)))
+  (= var1149_infix_expression__t0 (bvslt var1146_unsafe_expression__t0 var1148_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (check-sat)
 
 (get-value (
 
-  var1214_infix_expression__t0
+  var1149_infix_expression__t0
 
 ) )
 
@@ -10134,7 +9499,7 @@
 (push 1)
 
 (assert
-  (not (= var1214_infix_expression__t0 false))
+  (not (= var1149_infix_expression__t0 false))
 )
 
 (check-sat)
@@ -10152,135 +9517,309 @@
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
-(declare-fun var1216_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1217_true__t0 () Bool)
+(declare-fun var1151_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
+(declare-fun var1152_true__t0 () Bool)
 (assert
-  (= var1217_true__t0 (theory1_safe var1216_literal_string__cannot_read__s___t0) )
+  (= var1152_true__t0 (theory1_safe var1151_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
-  var1217_true__t0
+  var1152_true__t0
 )
 
-(declare-fun var1218_true__t0 () Bool)
+(declare-fun var1153_true__t0 () Bool)
 (assert
-  (= var1218_true__t0 (theory2_nullterm var1216_literal_string__cannot_read__s___t0) )
+  (= var1153_true__t0 (theory2_nullterm var1151_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
-  var1218_true__t0
+  var1153_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
-(declare-fun var1219_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1219_cast_of_e__t0 var333_e__t0) :named A94)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var1154_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1154_cast_of_e__t0 var334_e__t0) :named A87)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1220_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1221_true__t0 () Bool)
+(declare-fun var1155_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
+(declare-fun var1156_true__t0 () Bool)
 (assert
-  (= var1221_true__t0 (theory1_safe var1220_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1156_true__t0 (theory1_safe var1155_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
-  var1221_true__t0
+  var1156_true__t0
 )
 
-(declare-fun var1222_true__t0 () Bool)
+(declare-fun var1157_true__t0 () Bool)
 (assert
-  (= var1222_true__t0 (theory2_nullterm var1220_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1157_true__t0 (theory2_nullterm var1155_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
-  var1222_true__t0
+  var1157_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1223_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1224_true__t0 () Bool)
+(declare-fun var1158_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
+(declare-fun var1159_true__t0 () Bool)
 (assert
-  (= var1224_true__t0 (theory1_safe var1223_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1159_true__t0 (theory1_safe var1158_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
-  var1224_true__t0
+  var1159_true__t0
 )
 
-(declare-fun var1225_true__t0 () Bool)
+(declare-fun var1160_true__t0 () Bool)
 (assert
-  (= var1225_true__t0 (theory2_nullterm var1223_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1160_true__t0 (theory2_nullterm var1158_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
-  var1225_true__t0
+  var1160_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; literal expr
-(declare-fun var1226_literal_Unsigned_252___t0 () (_ BitVec 64))
+(declare-fun var1161_literal_Unsigned_252___t0 () (_ BitVec 64))
 (assert
-  (= var1226_literal_Unsigned_252___t0 (_ bv252 64))
+  (= var1161_literal_Unsigned_252___t0 (_ bv252 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
-(declare-fun var1227_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1228_true__t0 () Bool)
+(declare-fun var1162_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
+(declare-fun var1163_true__t0 () Bool)
 (assert
-  (= var1228_true__t0 (theory1_safe var1227_literal_string__cannot_read__s___t0) )
+  (= var1163_true__t0 (theory1_safe var1162_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
-  var1228_true__t0
+  var1163_true__t0
 )
 
-(declare-fun var1229_true__t0 () Bool)
+(declare-fun var1164_true__t0 () Bool)
 (assert
-  (= var1229_true__t0 (theory2_nullterm var1227_literal_string__cannot_read__s___t0) )
+  (= var1164_true__t0 (theory2_nullterm var1162_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
-  var1229_true__t0
+  var1164_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; call
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; call of ::buffer::cstr
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+(declare-fun var1166_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1167_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var1167_len_addressof_mtdpath____t0 (theory0_len var1166_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var1167_len_addressof_mtdpath____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1166_addressof_mtdpath___t0 (_ bv941 64))
+
+)
+
+(declare-fun var1168_true__t0 () Bool)
+(assert
+  (= var1168_true__t0 (theory1_safe var1166_addressof_mtdpath___t0) )
+)
+
+(assert
+  var1168_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+(declare-fun var1169_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1170_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var1170_len_addressof_mtdpath____t0 (theory0_len var1169_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var1170_len_addressof_mtdpath____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1169_addressof_mtdpath___t0 (_ bv941 64))
+
+)
+
+(declare-fun var1171_true__t0 () Bool)
+(assert
+  (= var1171_true__t0 (theory1_safe var1169_addressof_mtdpath___t0) )
+)
+
+(assert
+  var1171_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+(declare-fun var1172_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1173_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(assert
+  (= var1173_len_addressof_mtdpath____t0 (theory0_len var1172_addressof_mtdpath___t0) )
+)
+
+(assert
+  (= var1173_len_addressof_mtdpath____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1172_addressof_mtdpath___t0 (_ bv941 64))
+
+)
+
+(declare-fun var1174_true__t0 () Bool)
+(assert
+  (= var1174_true__t0 (theory1_safe var1172_addressof_mtdpath___t0) )
+)
+
+(assert
+  var1174_true__t0
+)
+
+(declare-fun var1175_cast_of_addressof_mtdpath___t0 () (_ BitVec 64))
+(assert (! (= var1175_cast_of_addressof_mtdpath___t0 var1172_addressof_mtdpath___t0) :named A88)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:241
+; literal expr
+(declare-fun var1176_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert
+  (= var1176_literal_Unsigned_1000___t0 (_ bv1000 64))
+
+)
+
 ;callsite_assert
 (push 1)
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:75
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1230_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1230_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 (theory1_safe var1227_literal_string__cannot_read__s___t0) )
+  (= var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1175_cast_of_addressof_mtdpath___t0) )
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
+; call of ::buffer::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
+; collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:51
+; end of collecting theory invocation arguments
+; theory_expression
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
 ; call of safe
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1231_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:18
+(declare-fun var1178_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
 (assert
-  (= var1231_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1219_cast_of_e__t0) )
+  (= var1178_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 (theory1_safe var1175_cast_of_addressof_mtdpath___t0) )
 )
 
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+; call of len
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var1179_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert
+  (= var1179_literal_Unsigned_1000___t0 (_ bv1000 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var1180_infix_expression__t0 () Bool)
+(assert
+  (=  var1180_infix_expression__t0 (bvuge var1179_literal_Unsigned_1000___t0 var1176_literal_Unsigned_1000___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:19
+(declare-fun var1181_infix_expression__t0 () Bool)
+(assert
+  (=  var1181_infix_expression__t0 (and var1178_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 var1180_infix_expression__t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; call of len
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1182_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert
+  (= var1182_literal_Unsigned_1000___t0 (_ bv1000 64))
+
+)
+
+(declare-fun var1183_implicit_coercion_of_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(assert (! (= var1183_implicit_coercion_of_literal_Unsigned_1000___t0 var1182_literal_Unsigned_1000___t0) :named A89)); : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1184_infix_expression__t0 () Bool)
+(assert
+  (=  var1184_infix_expression__t0 (bvult var974_mtdpath_at__t0 var1183_implicit_coercion_of_literal_Unsigned_1000___t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:20
+(declare-fun var1185_infix_expression__t0 () Bool)
+(assert
+  (=  var1185_infix_expression__t0 (and var1181_infix_expression__t0 var1184_infix_expression__t0))
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; call of nullterm
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1232_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
+(declare-fun var1186_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 (assert
-  (= var1232_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 (theory2_nullterm var1227_literal_string__cannot_read__s___t0) )
+  (= var1186_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 (theory2_nullterm var943_mtdpath_mem__t0) )
 )
 
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:21
+(declare-fun var1187_infix_expression__t0 () Bool)
+(assert
+  (=  var1187_infix_expression__t0 (and var1185_infix_expression__t0 var1186_interpretation_of_theory_nullterm_over_mtdpath_mem__t0))
+)
+
+; end of theory_expression
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1214_infix_expression__t0 ) (or (not var1230_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 ) (not var1231_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1232_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) (or (not var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 ) (not var1187_infix_expression__t0 ) ))
 
 )
 
@@ -10292,42 +9831,225 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1230_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
-(declare-fun var1231_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1232_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1178_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1179_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1182_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1186_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t5 () (_ BitVec 64))
+; end of borrows after call
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+; callsite effects
+(declare-fun var1188_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var1190_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
 (assert
-  (= var335_deref_S333_e___t5  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1214_infix_expression__t0 ) var335_deref_S333_e___t5 var335_deref_S333_e___t4)  )
+  (= var1190_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1188_return_value_of___buffer__cstr__t0) )
+)
+
+(declare-fun var1189_return__t1 () (_ BitVec 64))
+(assert
+  (= var1190_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1189_return__t1) )
+)
+
+(declare-fun var1191_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(assert
+  (= var1191_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1188_return_value_of___buffer__cstr__t0) )
+)
+
+(assert
+  (= var1191_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1189_return__t1) )
+)
+
+(declare-fun var1189_return__t0 () (_ BitVec 64))
+(assert
+  (= var1189_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var1188_return_value_of___buffer__cstr__t0 var1189_return__t0)  )
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
+; call of safe
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:52
+(declare-fun var1192_interpretation_of_theory_safe_over_return__t0 () Bool)
+(assert
+  (= var1192_interpretation_of_theory_safe_over_return__t0 (theory1_safe var1189_return__t1) )
+)
+
+(assert (! var1192_interpretation_of_theory_safe_over_return__t0 :named A90))(check-sat)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+(declare-fun var1193_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(assert
+  (= var1193_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1189_return__t1) )
+)
+
+(declare-fun var1188_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(assert
+  (= var1193_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1188_return_value_of___buffer__cstr__t1) )
+)
+
+(declare-fun var1194_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(assert
+  (= var1194_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1189_return__t1) )
+)
+
+(assert
+  (= var1194_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1188_return_value_of___buffer__cstr__t1) )
+)
+
+(assert
+  (= var1188_return_value_of___buffer__cstr__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var1189_return__t1 var1188_return_value_of___buffer__cstr__t0)  )
+)
+
+(declare-fun var1196_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(assert
+  (= var1196_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1188_return_value_of___buffer__cstr__t1) )
+)
+
+(declare-fun var1195_return__t1 () (_ BitVec 64))
+(assert
+  (= var1196_safe_return_value_of___buffer__cstr_____safe_return___t0 (theory1_safe var1195_return__t1) )
+)
+
+(declare-fun var1197_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(assert
+  (= var1197_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1188_return_value_of___buffer__cstr__t1) )
+)
+
+(assert
+  (= var1197_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 (theory2_nullterm var1195_return__t1) )
+)
+
+(declare-fun var1195_return__t0 () (_ BitVec 64))
+(assert
+  (= var1195_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var1188_return_value_of___buffer__cstr__t1 var1195_return__t0)  )
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
+; call of nullterm
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:53
+(declare-fun var1198_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(assert
+  (= var1198_interpretation_of_theory_nullterm_over_return__t0 (theory2_nullterm var1195_return__t1) )
+)
+
+(assert (! var1198_interpretation_of_theory_nullterm_over_return__t0 :named A91))(check-sat)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
+(declare-fun var1199_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(assert
+  (= var1199_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1195_return__t1) )
+)
+
+(declare-fun var1188_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(assert
+  (= var1199_safe_return_____safe_return_value_of___buffer__cstr___t0 (theory1_safe var1188_return_value_of___buffer__cstr__t2) )
+)
+
+(declare-fun var1200_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(assert
+  (= var1200_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1195_return__t1) )
+)
+
+(assert
+  (= var1200_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 (theory2_nullterm var1188_return_value_of___buffer__cstr__t2) )
+)
+
+(assert
+  (= var1188_return_value_of___buffer__cstr__t2  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var1195_return__t1 var1188_return_value_of___buffer__cstr__t1)  )
+)
+
+; end of callsite effects
+;callsite_assert
+(push 1)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:75
+; call of safe
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+(declare-fun var1201_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(assert
+  (= var1201_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 (theory1_safe var1162_literal_string__cannot_seek__s___t0) )
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+; call of safe
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+(declare-fun var1202_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(assert
+  (= var1202_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1154_cast_of_e__t0) )
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; call of nullterm
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+(declare-fun var1203_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(assert
+  (= var1203_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 (theory2_nullterm var1162_literal_string__cannot_seek__s___t0) )
+)
+
+(push 1)
+
+(assert
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) (or (not var1201_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 ) (not var1202_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1203_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 ) ))
+
+)
+
+(check-sat)
+
+; unsat / pass
+(pop 1)
+
+;end of callsite_assert
+(pop 1)
+
+(declare-fun var1201_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1202_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1203_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+; borrows after call
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t4 () (_ BitVec 64))
+(assert
+  (= var336_deref_S334_e___t4  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var336_deref_S334_e___t4 var336_deref_S334_e___t3)  )
 )
 
 ; end of borrows after call
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
 ; callsite effects
-(declare-fun var1233_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1235_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1204_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1206_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
 (assert
-  (= var1235_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1233_return_value_of___err__fail_with_errno__t0) )
+  (= var1206_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1204_return_value_of___err__fail_with_errno__t0) )
 )
 
-(declare-fun var1234_return__t1 () (_ BitVec 64))
+(declare-fun var1205_return__t1 () (_ BitVec 64))
 (assert
-  (= var1235_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1234_return__t1) )
+  (= var1206_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1205_return__t1) )
 )
 
-(declare-fun var1236_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1207_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
 (assert
-  (= var1236_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1233_return_value_of___err__fail_with_errno__t0) )
+  (= var1207_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1204_return_value_of___err__fail_with_errno__t0) )
 )
 
 (assert
-  (= var1236_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1234_return__t1) )
+  (= var1207_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1205_return__t1) )
 )
 
-(declare-fun var1234_return__t0 () (_ BitVec 64))
+(declare-fun var1205_return__t0 () (_ BitVec 64))
 (assert
-  (= var1234_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1214_infix_expression__t0 ) var1233_return_value_of___err__fail_with_errno__t0 var1234_return__t0)  )
+  (= var1205_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var1204_return_value_of___err__fail_with_errno__t0 var1205_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
@@ -10340,35 +10062,35 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1237_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1208_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1237_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t5) )
+  (= var1208_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t4) )
 )
 
-(assert (! var1237_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A95))(check-sat)
+(assert (! var1208_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A92))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:252
-(declare-fun var1238_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1209_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1238_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1234_return__t1) )
+  (= var1209_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1205_return__t1) )
 )
 
-(declare-fun var1233_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1204_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
 (assert
-  (= var1238_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1233_return_value_of___err__fail_with_errno__t1) )
+  (= var1209_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1204_return_value_of___err__fail_with_errno__t1) )
 )
 
-(declare-fun var1239_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1210_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1239_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1234_return__t1) )
-)
-
-(assert
-  (= var1239_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1233_return_value_of___err__fail_with_errno__t1) )
+  (= var1210_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1205_return__t1) )
 )
 
 (assert
-  (= var1233_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1214_infix_expression__t0 ) var1234_return__t1 var1233_return_value_of___err__fail_with_errno__t0)  )
+  (= var1210_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1204_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1204_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ) var1205_return__t1 var1204_return_value_of___err__fail_with_errno__t0)  )
 )
 
 ; end of callsite effects
@@ -10379,28 +10101,308 @@
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:253
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1214_infix_expression__t0 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1214_infix_expression__t0 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1149_infix_expression__t0 ))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; call of ::carrier::identity::isnull
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
 ; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; begin safe ptr check
-(declare-fun var1242_safe_this___t0 () Bool)
+; literal expr
+(declare-fun var1213_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (= var1242_safe_this___t0 (theory1_safe var332_this__t0) )
+  (= var1213_literal_Unsigned_32___t0 (_ bv32 64))
+
+)
+
+(declare-fun var1214_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
+(assert (! (= var1214_implicit_coercion_of_literal_Unsigned_32___t0 var1213_literal_Unsigned_32___t0) :named A93)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
+(declare-fun var1215_infix_expression__t0 () Bool)
+(declare-fun var1212_unsafe_expression__t0 () (_ BitVec 64))
+(assert
+  (=  var1215_infix_expression__t0 (not (= var1212_unsafe_expression__t0 var1214_implicit_coercion_of_literal_Unsigned_32___t0)))
+)
+
+(check-sat)
+
+(get-value (
+
+  var1215_infix_expression__t0
+
+) )
+
+;  = "true"
+(push 1)
+
+(assert
+  (not (= var1215_infix_expression__t0 true))
+)
+
+(check-sat)
+
+(pop 1)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; call
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; call of ::err::fail_with_errno
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+(declare-fun var1217_literal_string__cannot_read__s___t0 () (_ BitVec 64))
+(declare-fun var1218_true__t0 () Bool)
+(assert
+  (= var1218_true__t0 (theory1_safe var1217_literal_string__cannot_read__s___t0) )
+)
+
+(assert
+  var1218_true__t0
+)
+
+(declare-fun var1219_true__t0 () Bool)
+(assert
+  (= var1219_true__t0 (theory2_nullterm var1217_literal_string__cannot_read__s___t0) )
+)
+
+(assert
+  var1219_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+(declare-fun var1220_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1220_cast_of_e__t0 var334_e__t0) :named A94)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
+(declare-fun var1221_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
+(declare-fun var1222_true__t0 () Bool)
+(assert
+  (= var1222_true__t0 (theory1_safe var1221_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1222_true__t0
+)
+
+(declare-fun var1223_true__t0 () Bool)
+(assert
+  (= var1223_true__t0 (theory2_nullterm var1221_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1223_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
+(declare-fun var1224_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
+(declare-fun var1225_true__t0 () Bool)
+(assert
+  (= var1225_true__t0 (theory1_safe var1224_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1225_true__t0
+)
+
+(declare-fun var1226_true__t0 () Bool)
+(assert
+  (= var1226_true__t0 (theory2_nullterm var1224_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1226_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
+; literal expr
+(declare-fun var1227_literal_Unsigned_258___t0 () (_ BitVec 64))
+(assert
+  (= var1227_literal_Unsigned_258___t0 (_ bv258 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+(declare-fun var1228_literal_string__cannot_read__s___t0 () (_ BitVec 64))
+(declare-fun var1229_true__t0 () Bool)
+(assert
+  (= var1229_true__t0 (theory1_safe var1228_literal_string__cannot_read__s___t0) )
+)
+
+(assert
+  var1229_true__t0
+)
+
+(declare-fun var1230_true__t0 () Bool)
+(assert
+  (= var1230_true__t0 (theory2_nullterm var1228_literal_string__cannot_read__s___t0) )
+)
+
+(assert
+  var1230_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+;callsite_assert
+(push 1)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:75
+; call of safe
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+(declare-fun var1231_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(assert
+  (= var1231_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 (theory1_safe var1228_literal_string__cannot_read__s___t0) )
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
+; call of safe
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+(declare-fun var1232_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(assert
+  (= var1232_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1220_cast_of_e__t0) )
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; call of nullterm
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+; collecting theory invocation arguments
+; end of collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
+(declare-fun var1233_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+(assert
+  (= var1233_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 (theory2_nullterm var1228_literal_string__cannot_read__s___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var1242_safe_this___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1215_infix_expression__t0 ) (or (not var1231_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 ) (not var1232_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1233_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 ) ))
+
+)
+
+(check-sat)
+
+; unsat / pass
+(pop 1)
+
+;end of callsite_assert
+(pop 1)
+
+(declare-fun var1231_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1232_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1233_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+; borrows after call
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t5 () (_ BitVec 64))
+(assert
+  (= var336_deref_S334_e___t5  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1215_infix_expression__t0 ) var336_deref_S334_e___t5 var336_deref_S334_e___t4)  )
+)
+
+; end of borrows after call
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; callsite effects
+(declare-fun var1234_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1236_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(assert
+  (= var1236_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1234_return_value_of___err__fail_with_errno__t0) )
+)
+
+(declare-fun var1235_return__t1 () (_ BitVec 64))
+(assert
+  (= var1236_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1235_return__t1) )
+)
+
+(declare-fun var1237_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(assert
+  (= var1237_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1234_return_value_of___err__fail_with_errno__t0) )
+)
+
+(assert
+  (= var1237_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1235_return__t1) )
+)
+
+(declare-fun var1235_return__t0 () (_ BitVec 64))
+(assert
+  (= var1235_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1215_infix_expression__t0 ) var1234_return_value_of___err__fail_with_errno__t0 var1235_return__t0)  )
+)
+
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+; call of ::err::checked
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+; collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+; end of collecting theory invocation arguments
+; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
+(declare-fun var1238_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(assert
+  (= var1238_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t5) )
+)
+
+(assert (! var1238_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A95))(check-sat)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+(declare-fun var1239_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(assert
+  (= var1239_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1235_return__t1) )
+)
+
+(declare-fun var1234_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(assert
+  (= var1239_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1234_return_value_of___err__fail_with_errno__t1) )
+)
+
+(declare-fun var1240_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(assert
+  (= var1240_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1235_return__t1) )
+)
+
+(assert
+  (= var1240_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1234_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1234_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1215_infix_expression__t0 ) var1235_return__t1 var1234_return_value_of___err__fail_with_errno__t0)  )
+)
+
+; end of callsite effects
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
+; call of ::ext::<stdio.h>::fclose
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
+; end branch
+; branch returned. the rest of the function only happens if the condition leading to return never happened
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1215_infix_expression__t0 ))
+(assert
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1215_infix_expression__t0 ))
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; call of ::carrier::identity::isnull
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; begin safe ptr check
+(declare-fun var1243_safe_this___t0 () Bool)
+(assert
+  (= var1243_safe_this___t0 (theory1_safe var333_this__t0) )
+)
+
+(push 1)
+
+(assert
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var1243_safe_this___t0 ) ))
 
 )
 
@@ -10411,9 +10413,9 @@
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:26
 ; literal expr
-(declare-fun var1244_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1245_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (= var1244_literal_Unsigned_32___t0 (_ bv32 64))
+  (= var1245_literal_Unsigned_32___t0 (_ bv32 64))
 
 )
 
@@ -10421,7 +10423,7 @@
 
 (get-value (
 
-  var1244_literal_Unsigned_32___t0
+  var1245_literal_Unsigned_32___t0
 
 ) )
 
@@ -10429,7 +10431,7 @@
 (push 1)
 
 (assert
-  (not (= var1244_literal_Unsigned_32___t0 #x0000000000000020))
+  (not (= var1245_literal_Unsigned_32___t0 #x0000000000000020))
 )
 
 (check-sat)
@@ -10442,29 +10444,29 @@
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-(declare-fun var1245_deref_var332_this__secret_k__t0 () (_ BitVec 64))
-(declare-fun var1246_len_deref_var332_this__secret_k___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+(declare-fun var1246_deref_var333_this__secret_k__t0 () (_ BitVec 64))
+(declare-fun var1247_len_deref_var333_this__secret_k___t0 () (_ BitVec 64))
 (assert
-  (= var1246_len_deref_var332_this__secret_k___t0 (theory0_len var1245_deref_var332_this__secret_k__t0) )
+  (= var1247_len_deref_var333_this__secret_k___t0 (theory0_len var1246_deref_var333_this__secret_k__t0) )
 )
 
 (assert
-  (= var1246_len_deref_var332_this__secret_k___t0 (_ bv32 64))
+  (= var1247_len_deref_var333_this__secret_k___t0 (_ bv32 64))
 
 )
 
-(declare-fun var1247_true__t0 () Bool)
+(declare-fun var1248_true__t0 () Bool)
 (assert
-  (= var1247_true__t0 (theory1_safe var1245_deref_var332_this__secret_k__t0) )
+  (= var1248_true__t0 (theory1_safe var1246_deref_var333_this__secret_k__t0) )
 )
 
 (assert
-  var1247_true__t0
+  var1248_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
 ;callsite_assert
 (push 1)
 
@@ -10472,9 +10474,9 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1248_interpretation_of_theory_safe_over_deref_var332_this__secret_k__t0 () Bool)
+(declare-fun var1249_interpretation_of_theory_safe_over_deref_var333_this__secret_k__t0 () Bool)
 (assert
-  (= var1248_interpretation_of_theory_safe_over_deref_var332_this__secret_k__t0 (theory1_safe var1245_deref_var332_this__secret_k__t0) )
+  (= var1249_interpretation_of_theory_safe_over_deref_var333_this__secret_k__t0 (theory1_safe var1246_deref_var333_this__secret_k__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:477
@@ -10482,14 +10484,6 @@
 ; call of len
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:477
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:477
-(declare-fun var1249_literal_Unsigned_32___t0 () (_ BitVec 64))
-(assert
-  (= var1249_literal_Unsigned_32___t0 (_ bv32 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/core/src/identity.zz:477
-; literal expr
 (declare-fun var1250_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
   (= var1250_literal_Unsigned_32___t0 (_ bv32 64))
@@ -10497,15 +10491,23 @@
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:477
-(declare-fun var1251_infix_expression__t0 () Bool)
+; literal expr
+(declare-fun var1251_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (=  var1251_infix_expression__t0 (bvuge var1249_literal_Unsigned_32___t0 var1250_literal_Unsigned_32___t0))
+  (= var1251_literal_Unsigned_32___t0 (_ bv32 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/core/src/identity.zz:477
+(declare-fun var1252_infix_expression__t0 () Bool)
+(assert
+  (=  var1252_infix_expression__t0 (bvuge var1250_literal_Unsigned_32___t0 var1251_literal_Unsigned_32___t0))
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ) (or (not var1248_interpretation_of_theory_safe_over_deref_var332_this__secret_k__t0 ) (not var1251_infix_expression__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ) (or (not var1249_interpretation_of_theory_safe_over_deref_var333_this__secret_k__t0 ) (not var1252_infix_expression__t0 ) ))
 
 )
 
@@ -10517,20 +10519,20 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1248_interpretation_of_theory_safe_over_deref_var332_this__secret_k__t0 () Bool)
-(declare-fun var1249_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1249_interpretation_of_theory_safe_over_deref_var333_this__secret_k__t0 () Bool)
 (declare-fun var1250_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1251_literal_Unsigned_32___t0 () (_ BitVec 64))
 ; borrows after call
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
 ; callsite effects
 ; end of callsite effects
-(declare-fun var1252_return_value_of___carrier__identity__isnull__t0 () Bool)
+(declare-fun var1253_return_value_of___carrier__identity__isnull__t0 () Bool)
 (check-sat)
 
 (get-value (
 
-  var1252_return_value_of___carrier__identity__isnull__t0
+  var1253_return_value_of___carrier__identity__isnull__t0
 
 ) )
 
@@ -10538,79 +10540,79 @@
 (push 1)
 
 (assert
-  (not (= var1252_return_value_of___carrier__identity__isnull__t0 false))
+  (not (= var1253_return_value_of___carrier__identity__isnull__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:257
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
 ; call of ::carrier::identity::secret_generate
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-(declare-fun var1253_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1254_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+(declare-fun var1254_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1255_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
 (assert
-  (= var1254_len_addressof_deref_var332_this__secret____t0 (theory0_len var1253_addressof_deref_var332_this__secret___t0) )
+  (= var1255_len_addressof_deref_var333_this__secret____t0 (theory0_len var1254_addressof_deref_var333_this__secret___t0) )
 )
 
 (assert
-  (= var1254_len_addressof_deref_var332_this__secret____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1253_addressof_deref_var332_this__secret___t0 (_ bv1243 64))
-
-)
-
-(declare-fun var1255_true__t0 () Bool)
-(assert
-  (= var1255_true__t0 (theory1_safe var1253_addressof_deref_var332_this__secret___t0) )
-)
-
-(assert
-  var1255_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-(declare-fun var1256_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1257_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
-(assert
-  (= var1257_len_addressof_deref_var332_this__secret____t0 (theory0_len var1256_addressof_deref_var332_this__secret___t0) )
-)
-
-(assert
-  (= var1257_len_addressof_deref_var332_this__secret____t0 (_ bv1 64))
+  (= var1255_len_addressof_deref_var333_this__secret____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1256_addressof_deref_var332_this__secret___t0 (_ bv1243 64))
+  (= var1254_addressof_deref_var333_this__secret___t0 (_ bv1244 64))
 
 )
 
-(declare-fun var1258_true__t0 () Bool)
+(declare-fun var1256_true__t0 () Bool)
 (assert
-  (= var1258_true__t0 (theory1_safe var1256_addressof_deref_var332_this__secret___t0) )
+  (= var1256_true__t0 (theory1_safe var1254_addressof_deref_var333_this__secret___t0) )
 )
 
 (assert
-  var1258_true__t0
+  var1256_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
-(declare-fun var1259_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1259_cast_of_e__t0 var333_e__t0) :named A96)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+(declare-fun var1257_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1258_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
+(assert
+  (= var1258_len_addressof_deref_var333_this__secret____t0 (theory0_len var1257_addressof_deref_var333_this__secret___t0) )
+)
+
+(assert
+  (= var1258_len_addressof_deref_var333_this__secret____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1257_addressof_deref_var333_this__secret___t0 (_ bv1244 64))
+
+)
+
+(declare-fun var1259_true__t0 () Bool)
+(assert
+  (= var1259_true__t0 (theory1_safe var1257_addressof_deref_var333_this__secret___t0) )
+)
+
+(assert
+  var1259_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+(declare-fun var1260_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1260_cast_of_e__t0 var334_e__t0) :named A96)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ;callsite_assert
 (push 1)
 
@@ -10618,18 +10620,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1260_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1261_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1260_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1259_cast_of_e__t0) )
+  (= var1261_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1260_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:374
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1261_interpretation_of_theory_safe_over_addressof_deref_var332_this__secret___t0 () Bool)
+(declare-fun var1262_interpretation_of_theory_safe_over_addressof_deref_var333_this__secret___t0 () Bool)
 (assert
-  (= var1261_interpretation_of_theory_safe_over_addressof_deref_var332_this__secret___t0 (theory1_safe var1256_addressof_deref_var332_this__secret___t0) )
+  (= var1262_interpretation_of_theory_safe_over_addressof_deref_var333_this__secret___t0 (theory1_safe var1257_addressof_deref_var333_this__secret___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:375
@@ -10642,15 +10644,15 @@
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:375
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:375
-(declare-fun var1262_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1263_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1262_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t5) )
+  (= var1263_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t5) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) (or (not var1260_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1261_interpretation_of_theory_safe_over_addressof_deref_var332_this__secret___t0 ) (not var1262_interpretation_of_theory___err__checked_over_deref_S333_e___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) (or (not var1261_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1262_interpretation_of_theory_safe_over_addressof_deref_var333_this__secret___t0 ) (not var1263_interpretation_of_theory___err__checked_over_deref_S334_e___t0 ) ))
 
 )
 
@@ -10662,78 +10664,78 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1260_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1261_interpretation_of_theory_safe_over_addressof_deref_var332_this__secret___t0 () Bool)
-(declare-fun var1262_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1261_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1262_interpretation_of_theory_safe_over_addressof_deref_var333_this__secret___t0 () Bool)
+(declare-fun var1263_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 ; borrows after call
-; 1243 to temporal +1 because of function borrow
-(declare-fun var1243_deref_var332_this__secret__t1 () (_ BitVec 64))
-(declare-fun var1243_deref_var332_this__secret__t0 () (_ BitVec 64))
+; 1244 to temporal +1 because of function borrow
+(declare-fun var1244_deref_var333_this__secret__t1 () (_ BitVec 64))
+(declare-fun var1244_deref_var333_this__secret__t0 () (_ BitVec 64))
 (assert
-  (= var1243_deref_var332_this__secret__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) var1243_deref_var332_this__secret__t1 var1243_deref_var332_this__secret__t0)  )
+  (= var1244_deref_var333_this__secret__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) var1244_deref_var333_this__secret__t1 var1244_deref_var333_this__secret__t0)  )
 )
 
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t6 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t6 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t6  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) var335_deref_S333_e___t6 var335_deref_S333_e___t5)  )
+  (= var336_deref_S334_e___t6  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) var336_deref_S334_e___t6 var336_deref_S334_e___t5)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:258
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
 ; callsite effects
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
 ; call of ::err::check
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
-(declare-fun var1264_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1264_cast_of_e__t0 var333_e__t0) :named A97)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
+(declare-fun var1265_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1265_cast_of_e__t0 var334_e__t0) :named A97)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:50
-(declare-fun var1265_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1266_true__t0 () Bool)
-(assert
-  (= var1266_true__t0 (theory1_safe var1265_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1266_true__t0
-)
-
+(declare-fun var1266_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1267_true__t0 () Bool)
 (assert
-  (= var1267_true__t0 (theory2_nullterm var1265_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1267_true__t0 (theory1_safe var1266_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
   var1267_true__t0
 )
 
+(declare-fun var1268_true__t0 () Bool)
+(assert
+  (= var1268_true__t0 (theory2_nullterm var1266_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1268_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:51
-(declare-fun var1268_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1269_true__t0 () Bool)
-(assert
-  (= var1269_true__t0 (theory1_safe var1268_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1269_true__t0
-)
-
+(declare-fun var1269_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1270_true__t0 () Bool)
 (assert
-  (= var1270_true__t0 (theory2_nullterm var1268_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1270_true__t0 (theory1_safe var1269_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
   var1270_true__t0
 )
 
+(declare-fun var1271_true__t0 () Bool)
+(assert
+  (= var1271_true__t0 (theory2_nullterm var1269_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1271_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:52
 ; literal expr
-(declare-fun var1271_literal_Unsigned_259___t0 () (_ BitVec 64))
+(declare-fun var1272_literal_Unsigned_265___t0 () (_ BitVec 64))
 (assert
-  (= var1271_literal_Unsigned_259___t0 (_ bv259 64))
+  (= var1272_literal_Unsigned_265___t0 (_ bv265 64))
 
 )
 
@@ -10744,15 +10746,15 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1272_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1273_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1272_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1264_cast_of_e__t0) )
+  (= var1273_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1265_cast_of_e__t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) (or (not var1272_interpretation_of_theory_safe_over_cast_of_e__t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) (or (not var1273_interpretation_of_theory_safe_over_cast_of_e__t0 ) ))
 
 )
 
@@ -10764,22 +10766,22 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1272_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1273_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t7 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t7 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t7  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) var335_deref_S333_e___t7 var335_deref_S333_e___t6)  )
+  (= var336_deref_S334_e___t7  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) var336_deref_S334_e___t7 var336_deref_S334_e___t6)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
 ; callsite effects
-(declare-fun var1274_return__t1 () Bool)
-(declare-fun var1273_return_value_of___err__check__t0 () Bool)
-(declare-fun var1274_return__t0 () Bool)
+(declare-fun var1275_return__t1 () Bool)
+(declare-fun var1274_return_value_of___err__check__t0 () Bool)
+(declare-fun var1275_return__t0 () Bool)
 (assert
-  (= var1274_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) var1273_return_value_of___err__check__t0 var1274_return__t0)  )
+  (= var1275_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) var1274_return_value_of___err__check__t0 var1275_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
@@ -10787,15 +10789,15 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
 ; literal expr
-(declare-fun var1275_literal_Unsigned_4294967295___t0 () Bool)
+(declare-fun var1276_literal_Unsigned_4294967295___t0 () Bool)
 (assert
-  var1275_literal_Unsigned_4294967295___t0
+  var1276_literal_Unsigned_4294967295___t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
-(declare-fun var1276_infix_expression__t0 () Bool)
+(declare-fun var1277_infix_expression__t0 () Bool)
 (assert
-  (=  var1276_infix_expression__t0 (= var1274_return__t1 var1275_literal_Unsigned_4294967295___t0))
+  (=  var1277_infix_expression__t0 (= var1275_return__t1 var1276_literal_Unsigned_4294967295___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
@@ -10808,22 +10810,22 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
-(declare-fun var1277_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1278_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1277_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t7) )
+  (= var1278_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t7) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:54
-(declare-fun var1278_infix_expression__t0 () Bool)
+(declare-fun var1279_infix_expression__t0 () Bool)
 (assert
-  (=  var1278_infix_expression__t0 (or var1276_infix_expression__t0 var1277_interpretation_of_theory___err__checked_over_deref_S333_e___t0))
+  (=  var1279_infix_expression__t0 (or var1277_infix_expression__t0 var1278_interpretation_of_theory___err__checked_over_deref_S334_e___t0))
 )
 
-(assert (! var1278_infix_expression__t0 :named A98))(check-sat)
+(assert (! var1279_infix_expression__t0 :named A98))(check-sat)
 
-(declare-fun var1273_return_value_of___err__check__t1 () Bool)
+(declare-fun var1274_return_value_of___err__check__t1 () Bool)
 (assert
-  (= var1273_return_value_of___err__check__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 ) var1274_return__t1 var1273_return_value_of___err__check__t0)  )
+  (= var1274_return_value_of___err__check__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 ) var1275_return__t1 var1274_return_value_of___err__check__t0)  )
 )
 
 ; end of callsite effects
@@ -10831,7 +10833,7 @@
 
 (get-value (
 
-  var1273_return_value_of___err__check__t1
+  var1274_return_value_of___err__check__t1
 
 ) )
 
@@ -10839,50 +10841,50 @@
 (push 1)
 
 (assert
-  (not (= var1273_return_value_of___err__check__t1 false))
+  (not (= var1274_return_value_of___err__check__t1 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:259
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:260
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:266
 ; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:260
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:260
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:260
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:266
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:266
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:266
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1273_return_value_of___err__check__t1 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1274_return_value_of___err__check__t1 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1273_return_value_of___err__check__t1 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1274_return_value_of___err__check__t1 ))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
 ; literal expr
-(declare-fun var1281_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1282_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var1281_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var1282_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var1282_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert (! (= var1282_implicit_coercion_of_literal_Unsigned_0___t0 var1281_literal_Unsigned_0___t0) :named A99)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
-(declare-fun var1283_infix_expression__t0 () Bool)
-(declare-fun var1280_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1283_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var1283_implicit_coercion_of_literal_Unsigned_0___t0 var1282_literal_Unsigned_0___t0) :named A99)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
+(declare-fun var1284_infix_expression__t0 () Bool)
+(declare-fun var1281_unsafe_expression__t0 () (_ BitVec 64))
 (assert
-  (= var1283_infix_expression__t0 (bvslt var1280_unsafe_expression__t0 var1282_implicit_coercion_of_literal_Unsigned_0___t0))
+  (= var1284_infix_expression__t0 (bvslt var1281_unsafe_expression__t0 var1283_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (check-sat)
 
 (get-value (
 
-  var1283_infix_expression__t0
+  var1284_infix_expression__t0
 
 ) )
 
@@ -10890,116 +10892,116 @@
 (push 1)
 
 (assert
-  (not (= var1283_infix_expression__t0 true))
+  (not (= var1284_infix_expression__t0 true))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:263
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
 ; call of ::err::fail_with_errno
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-(declare-fun var1285_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1286_true__t0 () Bool)
-(assert
-  (= var1286_true__t0 (theory1_safe var1285_literal_string__cannot_seek__s___t0) )
-)
-
-(assert
-  var1286_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+(declare-fun var1286_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1287_true__t0 () Bool)
 (assert
-  (= var1287_true__t0 (theory2_nullterm var1285_literal_string__cannot_seek__s___t0) )
+  (= var1287_true__t0 (theory1_safe var1286_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
   var1287_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-(declare-fun var1288_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1288_cast_of_e__t0 var333_e__t0) :named A100)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var1288_true__t0 () Bool)
+(assert
+  (= var1288_true__t0 (theory2_nullterm var1286_literal_string__cannot_seek__s___t0) )
+)
+
+(assert
+  var1288_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+(declare-fun var1289_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1289_cast_of_e__t0 var334_e__t0) :named A100)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1289_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1290_true__t0 () Bool)
-(assert
-  (= var1290_true__t0 (theory1_safe var1289_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1290_true__t0
-)
-
+(declare-fun var1290_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1291_true__t0 () Bool)
 (assert
-  (= var1291_true__t0 (theory2_nullterm var1289_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1291_true__t0 (theory1_safe var1290_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
   var1291_true__t0
 )
 
+(declare-fun var1292_true__t0 () Bool)
+(assert
+  (= var1292_true__t0 (theory2_nullterm var1290_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1292_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1292_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1293_true__t0 () Bool)
-(assert
-  (= var1293_true__t0 (theory1_safe var1292_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1293_true__t0
-)
-
+(declare-fun var1293_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1294_true__t0 () Bool)
 (assert
-  (= var1294_true__t0 (theory2_nullterm var1292_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1294_true__t0 (theory1_safe var1293_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
   var1294_true__t0
 )
 
+(declare-fun var1295_true__t0 () Bool)
+(assert
+  (= var1295_true__t0 (theory2_nullterm var1293_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1295_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; literal expr
-(declare-fun var1295_literal_Unsigned_264___t0 () (_ BitVec 64))
+(declare-fun var1296_literal_Unsigned_270___t0 () (_ BitVec 64))
 (assert
-  (= var1295_literal_Unsigned_264___t0 (_ bv264 64))
+  (= var1296_literal_Unsigned_270___t0 (_ bv270 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-(declare-fun var1296_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1297_true__t0 () Bool)
-(assert
-  (= var1297_true__t0 (theory1_safe var1296_literal_string__cannot_seek__s___t0) )
-)
-
-(assert
-  var1297_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+(declare-fun var1297_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1298_true__t0 () Bool)
 (assert
-  (= var1298_true__t0 (theory2_nullterm var1296_literal_string__cannot_seek__s___t0) )
+  (= var1298_true__t0 (theory1_safe var1297_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
   var1298_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+(declare-fun var1299_true__t0 () Bool)
+(assert
+  (= var1299_true__t0 (theory2_nullterm var1297_literal_string__cannot_seek__s___t0) )
+)
+
+(assert
+  var1299_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
 ;callsite_assert
 (push 1)
 
@@ -11007,18 +11009,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1299_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1300_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
 (assert
-  (= var1299_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 (theory1_safe var1296_literal_string__cannot_seek__s___t0) )
+  (= var1300_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 (theory1_safe var1297_literal_string__cannot_seek__s___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1300_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1301_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1300_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1288_cast_of_e__t0) )
+  (= var1301_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1289_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
@@ -11028,15 +11030,15 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1301_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1302_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
 (assert
-  (= var1301_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 (theory2_nullterm var1296_literal_string__cannot_seek__s___t0) )
+  (= var1302_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 (theory2_nullterm var1297_literal_string__cannot_seek__s___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1283_infix_expression__t0 ) (or (not var1299_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 ) (not var1300_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1301_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1284_infix_expression__t0 ) (or (not var1300_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 ) (not var1301_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1302_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 ) ))
 
 )
 
@@ -11048,42 +11050,42 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1299_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1300_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1301_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1300_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1301_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1302_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t8 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t8 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t8  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1283_infix_expression__t0 ) var335_deref_S333_e___t8 var335_deref_S333_e___t7)  )
+  (= var336_deref_S334_e___t8  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1284_infix_expression__t0 ) var336_deref_S334_e___t8 var336_deref_S334_e___t7)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
 ; callsite effects
-(declare-fun var1302_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1304_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1303_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1305_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
 (assert
-  (= var1304_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1302_return_value_of___err__fail_with_errno__t0) )
+  (= var1305_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1303_return_value_of___err__fail_with_errno__t0) )
 )
 
-(declare-fun var1303_return__t1 () (_ BitVec 64))
+(declare-fun var1304_return__t1 () (_ BitVec 64))
 (assert
-  (= var1304_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1303_return__t1) )
+  (= var1305_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1304_return__t1) )
 )
 
-(declare-fun var1305_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1306_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
 (assert
-  (= var1305_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1302_return_value_of___err__fail_with_errno__t0) )
+  (= var1306_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1303_return_value_of___err__fail_with_errno__t0) )
 )
 
 (assert
-  (= var1305_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1303_return__t1) )
+  (= var1306_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1304_return__t1) )
 )
 
-(declare-fun var1303_return__t0 () (_ BitVec 64))
+(declare-fun var1304_return__t0 () (_ BitVec 64))
 (assert
-  (= var1303_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1283_infix_expression__t0 ) var1302_return_value_of___err__fail_with_errno__t0 var1303_return__t0)  )
+  (= var1304_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1284_infix_expression__t0 ) var1303_return_value_of___err__fail_with_errno__t0 var1304_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
@@ -11096,73 +11098,73 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1306_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1307_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1306_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t8) )
+  (= var1307_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t8) )
 )
 
-(assert (! var1306_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A101))(check-sat)
+(assert (! var1307_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A101))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:264
-(declare-fun var1307_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+(declare-fun var1308_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1307_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1303_return__t1) )
+  (= var1308_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1304_return__t1) )
 )
 
-(declare-fun var1302_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1303_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
 (assert
-  (= var1307_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1302_return_value_of___err__fail_with_errno__t1) )
+  (= var1308_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1303_return_value_of___err__fail_with_errno__t1) )
 )
 
-(declare-fun var1308_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1309_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1308_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1303_return__t1) )
-)
-
-(assert
-  (= var1308_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1302_return_value_of___err__fail_with_errno__t1) )
+  (= var1309_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1304_return__t1) )
 )
 
 (assert
-  (= var1302_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1283_infix_expression__t0 ) var1303_return__t1 var1302_return_value_of___err__fail_with_errno__t0)  )
+  (= var1309_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1303_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1303_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1284_infix_expression__t0 ) var1304_return__t1 var1303_return_value_of___err__fail_with_errno__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
 ; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:265
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1283_infix_expression__t0 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1284_infix_expression__t0 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1283_infix_expression__t0 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1284_infix_expression__t0 ))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
 ; literal expr
-(declare-fun var1311_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1312_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (= var1311_literal_Unsigned_32___t0 (_ bv32 64))
+  (= var1312_literal_Unsigned_32___t0 (_ bv32 64))
 
 )
 
-(declare-fun var1312_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
-(assert (! (= var1312_implicit_coercion_of_literal_Unsigned_32___t0 var1311_literal_Unsigned_32___t0) :named A102)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
-(declare-fun var1313_infix_expression__t0 () Bool)
-(declare-fun var1310_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1313_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
+(assert (! (= var1313_implicit_coercion_of_literal_Unsigned_32___t0 var1312_literal_Unsigned_32___t0) :named A102)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+(declare-fun var1314_infix_expression__t0 () Bool)
+(declare-fun var1311_unsafe_expression__t0 () (_ BitVec 64))
 (assert
-  (=  var1313_infix_expression__t0 (not (= var1310_unsafe_expression__t0 var1312_implicit_coercion_of_literal_Unsigned_32___t0)))
+  (=  var1314_infix_expression__t0 (not (= var1311_unsafe_expression__t0 var1313_implicit_coercion_of_literal_Unsigned_32___t0)))
 )
 
 (check-sat)
 
 (get-value (
 
-  var1313_infix_expression__t0
+  var1314_infix_expression__t0
 
 ) )
 
@@ -11170,116 +11172,116 @@
 (push 1)
 
 (assert
-  (not (= var1313_infix_expression__t0 true))
+  (not (= var1314_infix_expression__t0 true))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:269
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
 ; call of ::err::fail_with_errno
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-(declare-fun var1315_literal_string__cannot_write__s___t0 () (_ BitVec 64))
-(declare-fun var1316_true__t0 () Bool)
-(assert
-  (= var1316_true__t0 (theory1_safe var1315_literal_string__cannot_write__s___t0) )
-)
-
-(assert
-  var1316_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+(declare-fun var1316_literal_string__cannot_write__s___t0 () (_ BitVec 64))
 (declare-fun var1317_true__t0 () Bool)
 (assert
-  (= var1317_true__t0 (theory2_nullterm var1315_literal_string__cannot_write__s___t0) )
+  (= var1317_true__t0 (theory1_safe var1316_literal_string__cannot_write__s___t0) )
 )
 
 (assert
   var1317_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-(declare-fun var1318_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1318_cast_of_e__t0 var333_e__t0) :named A103)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var1318_true__t0 () Bool)
+(assert
+  (= var1318_true__t0 (theory2_nullterm var1316_literal_string__cannot_write__s___t0) )
+)
+
+(assert
+  var1318_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+(declare-fun var1319_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1319_cast_of_e__t0 var334_e__t0) :named A103)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1319_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1320_true__t0 () Bool)
-(assert
-  (= var1320_true__t0 (theory1_safe var1319_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1320_true__t0
-)
-
+(declare-fun var1320_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1321_true__t0 () Bool)
 (assert
-  (= var1321_true__t0 (theory2_nullterm var1319_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1321_true__t0 (theory1_safe var1320_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
   var1321_true__t0
 )
 
+(declare-fun var1322_true__t0 () Bool)
+(assert
+  (= var1322_true__t0 (theory2_nullterm var1320_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1322_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1322_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1323_true__t0 () Bool)
-(assert
-  (= var1323_true__t0 (theory1_safe var1322_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1323_true__t0
-)
-
+(declare-fun var1323_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1324_true__t0 () Bool)
 (assert
-  (= var1324_true__t0 (theory2_nullterm var1322_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1324_true__t0 (theory1_safe var1323_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
   var1324_true__t0
 )
 
+(declare-fun var1325_true__t0 () Bool)
+(assert
+  (= var1325_true__t0 (theory2_nullterm var1323_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1325_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; literal expr
-(declare-fun var1325_literal_Unsigned_270___t0 () (_ BitVec 64))
+(declare-fun var1326_literal_Unsigned_276___t0 () (_ BitVec 64))
 (assert
-  (= var1325_literal_Unsigned_270___t0 (_ bv270 64))
+  (= var1326_literal_Unsigned_276___t0 (_ bv276 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-(declare-fun var1326_literal_string__cannot_write__s___t0 () (_ BitVec 64))
-(declare-fun var1327_true__t0 () Bool)
-(assert
-  (= var1327_true__t0 (theory1_safe var1326_literal_string__cannot_write__s___t0) )
-)
-
-(assert
-  var1327_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+(declare-fun var1327_literal_string__cannot_write__s___t0 () (_ BitVec 64))
 (declare-fun var1328_true__t0 () Bool)
 (assert
-  (= var1328_true__t0 (theory2_nullterm var1326_literal_string__cannot_write__s___t0) )
+  (= var1328_true__t0 (theory1_safe var1327_literal_string__cannot_write__s___t0) )
 )
 
 (assert
   var1328_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+(declare-fun var1329_true__t0 () Bool)
+(assert
+  (= var1329_true__t0 (theory2_nullterm var1327_literal_string__cannot_write__s___t0) )
+)
+
+(assert
+  var1329_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
 ;callsite_assert
 (push 1)
 
@@ -11287,18 +11289,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1329_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 () Bool)
+(declare-fun var1330_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 () Bool)
 (assert
-  (= var1329_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 (theory1_safe var1326_literal_string__cannot_write__s___t0) )
+  (= var1330_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 (theory1_safe var1327_literal_string__cannot_write__s___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1330_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1331_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1330_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1318_cast_of_e__t0) )
+  (= var1331_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1319_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
@@ -11308,15 +11310,15 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1331_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 () Bool)
+(declare-fun var1332_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 () Bool)
 (assert
-  (= var1331_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 (theory2_nullterm var1326_literal_string__cannot_write__s___t0) )
+  (= var1332_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 (theory2_nullterm var1327_literal_string__cannot_write__s___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1313_infix_expression__t0 ) (or (not var1329_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 ) (not var1330_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1331_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1314_infix_expression__t0 ) (or (not var1330_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 ) (not var1331_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1332_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 ) ))
 
 )
 
@@ -11328,42 +11330,42 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1329_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 () Bool)
-(declare-fun var1330_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1331_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 () Bool)
+(declare-fun var1330_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 () Bool)
+(declare-fun var1331_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1332_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t9 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t9 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t9  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1313_infix_expression__t0 ) var335_deref_S333_e___t9 var335_deref_S333_e___t8)  )
+  (= var336_deref_S334_e___t9  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1314_infix_expression__t0 ) var336_deref_S334_e___t9 var336_deref_S334_e___t8)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
 ; callsite effects
-(declare-fun var1332_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1334_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1333_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1335_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
 (assert
-  (= var1334_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1332_return_value_of___err__fail_with_errno__t0) )
+  (= var1335_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1333_return_value_of___err__fail_with_errno__t0) )
 )
 
-(declare-fun var1333_return__t1 () (_ BitVec 64))
+(declare-fun var1334_return__t1 () (_ BitVec 64))
 (assert
-  (= var1334_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1333_return__t1) )
+  (= var1335_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1334_return__t1) )
 )
 
-(declare-fun var1335_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1336_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
 (assert
-  (= var1335_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1332_return_value_of___err__fail_with_errno__t0) )
+  (= var1336_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1333_return_value_of___err__fail_with_errno__t0) )
 )
 
 (assert
-  (= var1335_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1333_return__t1) )
+  (= var1336_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1334_return__t1) )
 )
 
-(declare-fun var1333_return__t0 () (_ BitVec 64))
+(declare-fun var1334_return__t0 () (_ BitVec 64))
 (assert
-  (= var1333_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1313_infix_expression__t0 ) var1332_return_value_of___err__fail_with_errno__t0 var1333_return__t0)  )
+  (= var1334_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1314_infix_expression__t0 ) var1333_return_value_of___err__fail_with_errno__t0 var1334_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
@@ -11376,73 +11378,73 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1336_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1337_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1336_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t9) )
+  (= var1337_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t9) )
 )
 
-(assert (! var1336_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A104))(check-sat)
+(assert (! var1337_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A104))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:270
-(declare-fun var1337_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+(declare-fun var1338_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1337_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1333_return__t1) )
+  (= var1338_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1334_return__t1) )
 )
 
-(declare-fun var1332_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1333_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
 (assert
-  (= var1337_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1332_return_value_of___err__fail_with_errno__t1) )
+  (= var1338_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1333_return_value_of___err__fail_with_errno__t1) )
 )
 
-(declare-fun var1338_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1339_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1338_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1333_return__t1) )
-)
-
-(assert
-  (= var1338_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1332_return_value_of___err__fail_with_errno__t1) )
+  (= var1339_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1334_return__t1) )
 )
 
 (assert
-  (= var1332_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1313_infix_expression__t0 ) var1333_return__t1 var1332_return_value_of___err__fail_with_errno__t0)  )
+  (= var1339_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1333_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1333_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1314_infix_expression__t0 ) var1334_return__t1 var1333_return_value_of___err__fail_with_errno__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:277
 ; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:271
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:277
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:277
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:277
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1313_infix_expression__t0 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1314_infix_expression__t0 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1313_infix_expression__t0 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1314_infix_expression__t0 ))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:274
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:274
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:274
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
 ; literal expr
-(declare-fun var1341_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1342_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var1341_literal_Unsigned_0___t0 (_ bv0 64))
+  (= var1342_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var1342_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert (! (= var1342_implicit_coercion_of_literal_Unsigned_0___t0 var1341_literal_Unsigned_0___t0) :named A105)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:274
-(declare-fun var1343_infix_expression__t0 () Bool)
-(declare-fun var1340_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1343_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var1343_implicit_coercion_of_literal_Unsigned_0___t0 var1342_literal_Unsigned_0___t0) :named A105)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
+(declare-fun var1344_infix_expression__t0 () Bool)
+(declare-fun var1341_unsafe_expression__t0 () (_ BitVec 64))
 (assert
-  (= var1343_infix_expression__t0 (bvslt var1340_unsafe_expression__t0 var1342_implicit_coercion_of_literal_Unsigned_0___t0))
+  (= var1344_infix_expression__t0 (bvslt var1341_unsafe_expression__t0 var1343_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (check-sat)
 
 (get-value (
 
-  var1343_infix_expression__t0
+  var1344_infix_expression__t0
 
 ) )
 
@@ -11450,116 +11452,116 @@
 (push 1)
 
 (assert
-  (not (= var1343_infix_expression__t0 true))
+  (not (= var1344_infix_expression__t0 true))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:274
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
 ; call of ::err::fail_with_errno
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-(declare-fun var1345_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1346_true__t0 () Bool)
-(assert
-  (= var1346_true__t0 (theory1_safe var1345_literal_string__cannot_seek__s___t0) )
-)
-
-(assert
-  var1346_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+(declare-fun var1346_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1347_true__t0 () Bool)
 (assert
-  (= var1347_true__t0 (theory2_nullterm var1345_literal_string__cannot_seek__s___t0) )
+  (= var1347_true__t0 (theory1_safe var1346_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
   var1347_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-(declare-fun var1348_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1348_cast_of_e__t0 var333_e__t0) :named A106)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var1348_true__t0 () Bool)
+(assert
+  (= var1348_true__t0 (theory2_nullterm var1346_literal_string__cannot_seek__s___t0) )
+)
+
+(assert
+  var1348_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+(declare-fun var1349_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1349_cast_of_e__t0 var334_e__t0) :named A106)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1349_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1350_true__t0 () Bool)
-(assert
-  (= var1350_true__t0 (theory1_safe var1349_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1350_true__t0
-)
-
+(declare-fun var1350_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1351_true__t0 () Bool)
 (assert
-  (= var1351_true__t0 (theory2_nullterm var1349_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1351_true__t0 (theory1_safe var1350_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
   var1351_true__t0
 )
 
+(declare-fun var1352_true__t0 () Bool)
+(assert
+  (= var1352_true__t0 (theory2_nullterm var1350_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1352_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1352_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1353_true__t0 () Bool)
-(assert
-  (= var1353_true__t0 (theory1_safe var1352_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1353_true__t0
-)
-
+(declare-fun var1353_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1354_true__t0 () Bool)
 (assert
-  (= var1354_true__t0 (theory2_nullterm var1352_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1354_true__t0 (theory1_safe var1353_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
   var1354_true__t0
 )
 
+(declare-fun var1355_true__t0 () Bool)
+(assert
+  (= var1355_true__t0 (theory2_nullterm var1353_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1355_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; literal expr
-(declare-fun var1355_literal_Unsigned_275___t0 () (_ BitVec 64))
+(declare-fun var1356_literal_Unsigned_281___t0 () (_ BitVec 64))
 (assert
-  (= var1355_literal_Unsigned_275___t0 (_ bv275 64))
+  (= var1356_literal_Unsigned_281___t0 (_ bv281 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-(declare-fun var1356_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1357_true__t0 () Bool)
-(assert
-  (= var1357_true__t0 (theory1_safe var1356_literal_string__cannot_seek__s___t0) )
-)
-
-(assert
-  var1357_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+(declare-fun var1357_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1358_true__t0 () Bool)
 (assert
-  (= var1358_true__t0 (theory2_nullterm var1356_literal_string__cannot_seek__s___t0) )
+  (= var1358_true__t0 (theory1_safe var1357_literal_string__cannot_seek__s___t0) )
 )
 
 (assert
   var1358_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+(declare-fun var1359_true__t0 () Bool)
+(assert
+  (= var1359_true__t0 (theory2_nullterm var1357_literal_string__cannot_seek__s___t0) )
+)
+
+(assert
+  var1359_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
 ;callsite_assert
 (push 1)
 
@@ -11567,18 +11569,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1359_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1360_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
 (assert
-  (= var1359_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 (theory1_safe var1356_literal_string__cannot_seek__s___t0) )
+  (= var1360_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 (theory1_safe var1357_literal_string__cannot_seek__s___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1360_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1361_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1360_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1348_cast_of_e__t0) )
+  (= var1361_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1349_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
@@ -11588,15 +11590,15 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1361_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1362_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
 (assert
-  (= var1361_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 (theory2_nullterm var1356_literal_string__cannot_seek__s___t0) )
+  (= var1362_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 (theory2_nullterm var1357_literal_string__cannot_seek__s___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1343_infix_expression__t0 ) (or (not var1359_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 ) (not var1360_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1361_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1344_infix_expression__t0 ) (or (not var1360_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 ) (not var1361_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1362_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 ) ))
 
 )
 
@@ -11608,42 +11610,42 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1359_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1360_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1361_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1360_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1361_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1362_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t10 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t10 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t10  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1343_infix_expression__t0 ) var335_deref_S333_e___t10 var335_deref_S333_e___t9)  )
+  (= var336_deref_S334_e___t10  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1344_infix_expression__t0 ) var336_deref_S334_e___t10 var336_deref_S334_e___t9)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
 ; callsite effects
-(declare-fun var1362_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1364_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1363_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1365_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
 (assert
-  (= var1364_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1362_return_value_of___err__fail_with_errno__t0) )
+  (= var1365_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1363_return_value_of___err__fail_with_errno__t0) )
 )
 
-(declare-fun var1363_return__t1 () (_ BitVec 64))
+(declare-fun var1364_return__t1 () (_ BitVec 64))
 (assert
-  (= var1364_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1363_return__t1) )
+  (= var1365_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1364_return__t1) )
 )
 
-(declare-fun var1365_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1366_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
 (assert
-  (= var1365_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1362_return_value_of___err__fail_with_errno__t0) )
+  (= var1366_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1363_return_value_of___err__fail_with_errno__t0) )
 )
 
 (assert
-  (= var1365_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1363_return__t1) )
+  (= var1366_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1364_return__t1) )
 )
 
-(declare-fun var1363_return__t0 () (_ BitVec 64))
+(declare-fun var1364_return__t0 () (_ BitVec 64))
 (assert
-  (= var1363_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1343_infix_expression__t0 ) var1362_return_value_of___err__fail_with_errno__t0 var1363_return__t0)  )
+  (= var1364_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1344_infix_expression__t0 ) var1363_return_value_of___err__fail_with_errno__t0 var1364_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
@@ -11656,73 +11658,73 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1366_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1367_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1366_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t10) )
+  (= var1367_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t10) )
 )
 
-(assert (! var1366_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A107))(check-sat)
+(assert (! var1367_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A107))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:275
-(declare-fun var1367_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+(declare-fun var1368_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1367_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1363_return__t1) )
+  (= var1368_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1364_return__t1) )
 )
 
-(declare-fun var1362_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1363_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
 (assert
-  (= var1367_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1362_return_value_of___err__fail_with_errno__t1) )
+  (= var1368_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1363_return_value_of___err__fail_with_errno__t1) )
 )
 
-(declare-fun var1368_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1369_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1368_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1363_return__t1) )
-)
-
-(assert
-  (= var1368_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1362_return_value_of___err__fail_with_errno__t1) )
+  (= var1369_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1364_return__t1) )
 )
 
 (assert
-  (= var1362_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1343_infix_expression__t0 ) var1363_return__t1 var1362_return_value_of___err__fail_with_errno__t0)  )
+  (= var1369_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1363_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1363_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1344_infix_expression__t0 ) var1364_return__t1 var1363_return_value_of___err__fail_with_errno__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
 ; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:276
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1343_infix_expression__t0 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1344_infix_expression__t0 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1343_infix_expression__t0 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1344_infix_expression__t0 ))
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:286
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:286
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:286
 ; literal expr
-(declare-fun var1371_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1372_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (= var1371_literal_Unsigned_32___t0 (_ bv32 64))
+  (= var1372_literal_Unsigned_32___t0 (_ bv32 64))
 
 )
 
-(declare-fun var1372_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
-(assert (! (= var1372_implicit_coercion_of_literal_Unsigned_32___t0 var1371_literal_Unsigned_32___t0) :named A108)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
-(declare-fun var1373_infix_expression__t0 () Bool)
-(declare-fun var1370_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1373_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
+(assert (! (= var1373_implicit_coercion_of_literal_Unsigned_32___t0 var1372_literal_Unsigned_32___t0) :named A108)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:286
+(declare-fun var1374_infix_expression__t0 () Bool)
+(declare-fun var1371_unsafe_expression__t0 () (_ BitVec 64))
 (assert
-  (=  var1373_infix_expression__t0 (not (= var1370_unsafe_expression__t0 var1372_implicit_coercion_of_literal_Unsigned_32___t0)))
+  (=  var1374_infix_expression__t0 (not (= var1371_unsafe_expression__t0 var1373_implicit_coercion_of_literal_Unsigned_32___t0)))
 )
 
 (check-sat)
 
 (get-value (
 
-  var1373_infix_expression__t0
+  var1374_infix_expression__t0
 
 ) )
 
@@ -11730,116 +11732,116 @@
 (push 1)
 
 (assert
-  (not (= var1373_infix_expression__t0 false))
+  (not (= var1374_infix_expression__t0 false))
 )
 
 (check-sat)
 
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:280
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:286
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
 ; call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
 ; call of ::err::fail_with_errno
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-(declare-fun var1375_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1376_true__t0 () Bool)
-(assert
-  (= var1376_true__t0 (theory1_safe var1375_literal_string__cannot_read__s___t0) )
-)
-
-(assert
-  var1376_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+(declare-fun var1376_literal_string__cannot_read__s___t0 () (_ BitVec 64))
 (declare-fun var1377_true__t0 () Bool)
 (assert
-  (= var1377_true__t0 (theory2_nullterm var1375_literal_string__cannot_read__s___t0) )
+  (= var1377_true__t0 (theory1_safe var1376_literal_string__cannot_read__s___t0) )
 )
 
 (assert
   var1377_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-(declare-fun var1378_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1378_cast_of_e__t0 var333_e__t0) :named A109)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var1378_true__t0 () Bool)
+(assert
+  (= var1378_true__t0 (theory2_nullterm var1376_literal_string__cannot_read__s___t0) )
+)
+
+(assert
+  var1378_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+(declare-fun var1379_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1379_cast_of_e__t0 var334_e__t0) :named A109)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:72
-(declare-fun var1379_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1380_true__t0 () Bool)
-(assert
-  (= var1380_true__t0 (theory1_safe var1379_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
-)
-
-(assert
-  var1380_true__t0
-)
-
+(declare-fun var1380_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1381_true__t0 () Bool)
 (assert
-  (= var1381_true__t0 (theory2_nullterm var1379_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+  (= var1381_true__t0 (theory1_safe var1380_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
 )
 
 (assert
   var1381_true__t0
 )
 
+(declare-fun var1382_true__t0 () Bool)
+(assert
+  (= var1382_true__t0 (theory2_nullterm var1380_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0) )
+)
+
+(assert
+  var1382_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:73
-(declare-fun var1382_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1383_true__t0 () Bool)
-(assert
-  (= var1383_true__t0 (theory1_safe var1382_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
-)
-
-(assert
-  var1383_true__t0
-)
-
+(declare-fun var1383_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1384_true__t0 () Bool)
 (assert
-  (= var1384_true__t0 (theory2_nullterm var1382_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+  (= var1384_true__t0 (theory1_safe var1383_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
 )
 
 (assert
   var1384_true__t0
 )
 
+(declare-fun var1385_true__t0 () Bool)
+(assert
+  (= var1385_true__t0 (theory2_nullterm var1383_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0) )
+)
+
+(assert
+  var1385_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:74
 ; literal expr
-(declare-fun var1385_literal_Unsigned_281___t0 () (_ BitVec 64))
+(declare-fun var1386_literal_Unsigned_287___t0 () (_ BitVec 64))
 (assert
-  (= var1385_literal_Unsigned_281___t0 (_ bv281 64))
+  (= var1386_literal_Unsigned_287___t0 (_ bv287 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-(declare-fun var1386_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1387_true__t0 () Bool)
-(assert
-  (= var1387_true__t0 (theory1_safe var1386_literal_string__cannot_read__s___t0) )
-)
-
-(assert
-  var1387_true__t0
-)
-
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+(declare-fun var1387_literal_string__cannot_read__s___t0 () (_ BitVec 64))
 (declare-fun var1388_true__t0 () Bool)
 (assert
-  (= var1388_true__t0 (theory2_nullterm var1386_literal_string__cannot_read__s___t0) )
+  (= var1388_true__t0 (theory1_safe var1387_literal_string__cannot_read__s___t0) )
 )
 
 (assert
   var1388_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+(declare-fun var1389_true__t0 () Bool)
+(assert
+  (= var1389_true__t0 (theory2_nullterm var1387_literal_string__cannot_read__s___t0) )
+)
+
+(assert
+  var1389_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
 ;callsite_assert
 (push 1)
 
@@ -11847,18 +11849,18 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1389_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1390_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
 (assert
-  (= var1389_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 (theory1_safe var1386_literal_string__cannot_read__s___t0) )
+  (= var1390_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 (theory1_safe var1387_literal_string__cannot_read__s___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:71
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1390_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1391_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1390_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1378_cast_of_e__t0) )
+  (= var1391_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1379_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
@@ -11868,15 +11870,15 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:78
-(declare-fun var1391_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1392_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
 (assert
-  (= var1391_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 (theory2_nullterm var1386_literal_string__cannot_read__s___t0) )
+  (= var1392_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 (theory2_nullterm var1387_literal_string__cannot_read__s___t0) )
 )
 
 (push 1)
 
 (assert
-  (and ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1373_infix_expression__t0 ) (or (not var1389_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 ) (not var1390_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1391_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 ) ))
+  (and ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1374_infix_expression__t0 ) (or (not var1390_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 ) (not var1391_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1392_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 ) ))
 
 )
 
@@ -11888,42 +11890,42 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1389_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
-(declare-fun var1390_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1391_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1390_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1391_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1392_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
 ; borrows after call
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t11 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t11 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t11  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1373_infix_expression__t0 ) var335_deref_S333_e___t11 var335_deref_S333_e___t10)  )
+  (= var336_deref_S334_e___t11  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1374_infix_expression__t0 ) var336_deref_S334_e___t11 var336_deref_S334_e___t10)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
 ; callsite effects
-(declare-fun var1392_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1394_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1393_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1395_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
 (assert
-  (= var1394_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1392_return_value_of___err__fail_with_errno__t0) )
+  (= var1395_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1393_return_value_of___err__fail_with_errno__t0) )
 )
 
-(declare-fun var1393_return__t1 () (_ BitVec 64))
+(declare-fun var1394_return__t1 () (_ BitVec 64))
 (assert
-  (= var1394_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1393_return__t1) )
+  (= var1395_safe_return_value_of___err__fail_with_errno_____safe_return___t0 (theory1_safe var1394_return__t1) )
 )
 
-(declare-fun var1395_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1396_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
 (assert
-  (= var1395_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1392_return_value_of___err__fail_with_errno__t0) )
+  (= var1396_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1393_return_value_of___err__fail_with_errno__t0) )
 )
 
 (assert
-  (= var1395_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1393_return__t1) )
+  (= var1396_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 (theory2_nullterm var1394_return__t1) )
 )
 
-(declare-fun var1393_return__t0 () (_ BitVec 64))
+(declare-fun var1394_return__t0 () (_ BitVec 64))
 (assert
-  (= var1393_return__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1373_infix_expression__t0 ) var1392_return_value_of___err__fail_with_errno__t0 var1393_return__t0)  )
+  (= var1394_return__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1374_infix_expression__t0 ) var1393_return_value_of___err__fail_with_errno__t0 var1394_return__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
@@ -11936,140 +11938,140 @@
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/err/src/lib.zz:79
-(declare-fun var1396_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1397_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1396_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t11) )
+  (= var1397_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t11) )
 )
 
-(assert (! var1396_interpretation_of_theory___err__checked_over_deref_S333_e___t0 :named A110))(check-sat)
+(assert (! var1397_interpretation_of_theory___err__checked_over_deref_S334_e___t0 :named A110))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:281
-(declare-fun var1397_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+(declare-fun var1398_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1397_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1393_return__t1) )
+  (= var1398_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1394_return__t1) )
 )
 
-(declare-fun var1392_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1393_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
 (assert
-  (= var1397_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1392_return_value_of___err__fail_with_errno__t1) )
+  (= var1398_safe_return_____safe_return_value_of___err__fail_with_errno___t0 (theory1_safe var1393_return_value_of___err__fail_with_errno__t1) )
 )
 
-(declare-fun var1398_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1399_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
 (assert
-  (= var1398_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1393_return__t1) )
-)
-
-(assert
-  (= var1398_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1392_return_value_of___err__fail_with_errno__t1) )
+  (= var1399_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1394_return__t1) )
 )
 
 (assert
-  (= var1392_return_value_of___err__fail_with_errno__t1  (ite ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1373_infix_expression__t0 ) var1393_return__t1 var1392_return_value_of___err__fail_with_errno__t0)  )
+  (= var1399_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 (theory2_nullterm var1393_return_value_of___err__fail_with_errno__t1) )
+)
+
+(assert
+  (= var1393_return_value_of___err__fail_with_errno__t1  (ite ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1374_infix_expression__t0 ) var1394_return__t1 var1393_return_value_of___err__fail_with_errno__t0)  )
 )
 
 ; end of callsite effects
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:288
 ; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:282
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:288
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:288
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:288
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1373_infix_expression__t0 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1374_infix_expression__t0 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 var1252_return_value_of___carrier__identity__isnull__t0 var1373_infix_expression__t0 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 var1253_return_value_of___carrier__identity__isnull__t0 var1374_infix_expression__t0 ))
 )
 
 ; end branch
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:293
 ; call of ::ext::<stdio.h>::fclose
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:287
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:293
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:293
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:293
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
-; (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ))
+; (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ))
 (assert
-  (not ( and var615_infix_expression__t0 var646_return_value_of___buffer__eq_cstr__t0 var724_return_value_of___buffer__split__t2 ))
+  (not ( and var616_infix_expression__t0 var647_return_value_of___buffer__eq_cstr__t0 var725_return_value_of___buffer__split__t2 ))
 )
 
 ; end branch
 ; end branch
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
 ; call of ::carrier::identity::secret_from_cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-(declare-fun var1401_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1402_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+(declare-fun var1402_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1403_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
 (assert
-  (= var1402_len_addressof_deref_var332_this__secret____t0 (theory0_len var1401_addressof_deref_var332_this__secret___t0) )
+  (= var1403_len_addressof_deref_var333_this__secret____t0 (theory0_len var1402_addressof_deref_var333_this__secret___t0) )
 )
 
 (assert
-  (= var1402_len_addressof_deref_var332_this__secret____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1401_addressof_deref_var332_this__secret___t0 (_ bv1243 64))
-
-)
-
-(declare-fun var1403_true__t0 () Bool)
-(assert
-  (= var1403_true__t0 (theory1_safe var1401_addressof_deref_var332_this__secret___t0) )
-)
-
-(assert
-  var1403_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-(declare-fun var1404_cast_of_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(assert (! (= var1404_cast_of_addressof_deref_var332_this__secret___t0 var1401_addressof_deref_var332_this__secret___t0) :named A111)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-(declare-fun var1405_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1406_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
-(assert
-  (= var1406_len_addressof_deref_var332_this__secret____t0 (theory0_len var1405_addressof_deref_var332_this__secret___t0) )
-)
-
-(assert
-  (= var1406_len_addressof_deref_var332_this__secret____t0 (_ bv1 64))
+  (= var1403_len_addressof_deref_var333_this__secret____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1405_addressof_deref_var332_this__secret___t0 (_ bv1243 64))
+  (= var1402_addressof_deref_var333_this__secret___t0 (_ bv1244 64))
 
 )
 
-(declare-fun var1407_true__t0 () Bool)
+(declare-fun var1404_true__t0 () Bool)
 (assert
-  (= var1407_true__t0 (theory1_safe var1405_addressof_deref_var332_this__secret___t0) )
+  (= var1404_true__t0 (theory1_safe var1402_addressof_deref_var333_this__secret___t0) )
 )
 
 (assert
-  var1407_true__t0
+  var1404_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-(declare-fun var1408_cast_of_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(assert (! (= var1408_cast_of_addressof_deref_var332_this__secret___t0 var1405_addressof_deref_var332_this__secret___t0) :named A112)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-(declare-fun var1409_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1409_cast_of_e__t0 var333_e__t0) :named A113)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+(declare-fun var1405_cast_of_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(assert (! (= var1405_cast_of_addressof_deref_var333_this__secret___t0 var1402_addressof_deref_var333_this__secret___t0) :named A111)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+(declare-fun var1406_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1407_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
+(assert
+  (= var1407_len_addressof_deref_var333_this__secret____t0 (theory0_len var1406_addressof_deref_var333_this__secret___t0) )
+)
+
+(assert
+  (= var1407_len_addressof_deref_var333_this__secret____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1406_addressof_deref_var333_this__secret___t0 (_ bv1244 64))
+
+)
+
+(declare-fun var1408_true__t0 () Bool)
+(assert
+  (= var1408_true__t0 (theory1_safe var1406_addressof_deref_var333_this__secret___t0) )
+)
+
+(assert
+  var1408_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+(declare-fun var1409_cast_of_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(assert (! (= var1409_cast_of_addressof_deref_var333_this__secret___t0 var1406_addressof_deref_var333_this__secret___t0) :named A112)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+(declare-fun var1410_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1410_cast_of_e__t0 var334_e__t0) :named A113)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
 ;callsite_assert
 (push 1)
 
@@ -12077,27 +12079,27 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1410_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1411_interpretation_of_theory_safe_over_v_string__t0 () Bool)
 (assert
-  (= var1410_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var342_v_string__t0) )
+  (= var1411_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var343_v_string__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:305
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1411_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1412_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1411_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1409_cast_of_e__t0) )
+  (= var1412_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1410_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:305
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1412_interpretation_of_theory_safe_over_cast_of_addressof_deref_var332_this__secret___t0 () Bool)
+(declare-fun var1413_interpretation_of_theory_safe_over_cast_of_addressof_deref_var333_this__secret___t0 () Bool)
 (assert
-  (= var1412_interpretation_of_theory_safe_over_cast_of_addressof_deref_var332_this__secret___t0 (theory1_safe var1408_cast_of_addressof_deref_var332_this__secret___t0) )
+  (= var1413_interpretation_of_theory_safe_over_cast_of_addressof_deref_var333_this__secret___t0 (theory1_safe var1409_cast_of_addressof_deref_var333_this__secret___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:306
@@ -12107,9 +12109,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:306
-(declare-fun var1413_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1414_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
 (assert
-  (= var1413_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var342_v_string__t0) )
+  (= var1414_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var343_v_string__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:307
@@ -12122,15 +12124,15 @@
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:307
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:307
-(declare-fun var1414_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1415_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (assert
-  (= var1414_interpretation_of_theory___err__checked_over_deref_S333_e___t0 (theory61___err__checked var335_deref_S333_e___t11) )
+  (= var1415_interpretation_of_theory___err__checked_over_deref_S334_e___t0 (theory31___err__checked var336_deref_S334_e___t11) )
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var1410_interpretation_of_theory_safe_over_v_string__t0 ) (not var1411_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1412_interpretation_of_theory_safe_over_cast_of_addressof_deref_var332_this__secret___t0 ) (not var1413_interpretation_of_theory_nullterm_over_v_string__t0 ) (not var1414_interpretation_of_theory___err__checked_over_deref_S333_e___t0 ) ))
+  (and true (or (not var1411_interpretation_of_theory_safe_over_v_string__t0 ) (not var1412_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1413_interpretation_of_theory_safe_over_cast_of_addressof_deref_var333_this__secret___t0 ) (not var1414_interpretation_of_theory_nullterm_over_v_string__t0 ) (not var1415_interpretation_of_theory___err__checked_over_deref_S334_e___t0 ) ))
 
 )
 
@@ -12142,26 +12144,26 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1410_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var1411_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1412_interpretation_of_theory_safe_over_cast_of_addressof_deref_var332_this__secret___t0 () Bool)
-(declare-fun var1413_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var1414_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1411_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1412_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1413_interpretation_of_theory_safe_over_cast_of_addressof_deref_var333_this__secret___t0 () Bool)
+(declare-fun var1414_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1415_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 ; borrows after call
-; 1243 to temporal +1 because of function borrow
-(declare-fun var1243_deref_var332_this__secret__t2 () (_ BitVec 64))
+; 1244 to temporal +1 because of function borrow
+(declare-fun var1244_deref_var333_this__secret__t2 () (_ BitVec 64))
 (assert
-  (= var1243_deref_var332_this__secret__t2  (ite true var1243_deref_var332_this__secret__t2 var1243_deref_var332_this__secret__t1)  )
+  (= var1244_deref_var333_this__secret__t2  (ite true var1244_deref_var333_this__secret__t2 var1244_deref_var333_this__secret__t1)  )
 )
 
-; 335 to temporal +1 because of function borrow
-(declare-fun var335_deref_S333_e___t12 () (_ BitVec 64))
+; 336 to temporal +1 because of function borrow
+(declare-fun var336_deref_S334_e___t12 () (_ BitVec 64))
 (assert
-  (= var335_deref_S333_e___t12  (ite true var335_deref_S333_e___t12 var335_deref_S333_e___t11)  )
+  (= var336_deref_S334_e___t12  (ite true var336_deref_S334_e___t12 var336_deref_S334_e___t11)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:294
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
 ; callsite effects
 ; end of callsite effects
 ;end of function ::carrier::vault_toml::load_from_toml_identity_secret
@@ -12169,821 +12171,821 @@
 
 (pop 1)
 
-(declare-fun var336_deref_S333_e__trace__t0 () (_ BitVec 64))
-(declare-fun var337_len_deref_S333_e____t0 () (_ BitVec 64))
-(declare-fun var333_e__t0 () (_ BitVec 64))
-(declare-fun var339_interpretation_of_theory_safe_over_e__t0 () Bool)
-(declare-fun var332_this__t0 () (_ BitVec 64))
-(declare-fun var340_interpretation_of_theory_safe_over_this__t0 () Bool)
-(declare-fun var335_deref_S333_e___t0 () (_ BitVec 64))
-(declare-fun var341_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var342_v_string__t0 () (_ BitVec 64))
-(declare-fun var343_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var344_literal_Unsigned_1___t0 () (_ BitVec 64))
-(declare-fun var345_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var346_literal_Unsigned_1___t0 () (_ BitVec 64))
-(declare-fun var348_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var349_part_mem__t0 () (_ BitVec 64))
-(declare-fun var350_len_part_mem___t0 () (_ BitVec 64))
-(declare-fun var351_true__t0 () Bool)
-(declare-fun var352_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var353_literal_array_353__t0 () (_ BitVec 64))
-(declare-fun var354_true__t0 () Bool)
-(declare-fun var355_safe_literal_array_353_____safe_part___t0 () Bool)
-(declare-fun var347_part__t1 () (_ BitVec 64))
-(declare-fun var356_nullterm_literal_array_353_____nullterm_part___t0 () Bool)
-(declare-fun var357_len_part___t0 () (_ BitVec 64))
-(declare-fun var358_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var359_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var360_true__t0 () Bool)
-(declare-fun var361_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var362_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var363_true__t0 () Bool)
-(declare-fun var364_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var365_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var366_true__t0 () Bool)
-(declare-fun var368_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var369_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var370_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var372_return_value_of___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var374_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
-(declare-fun var373_return__t1 () (_ BitVec 64))
-(declare-fun var375_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
-(declare-fun var376_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var377_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var381_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var380_part_at__t0 () (_ BitVec 64))
-(declare-fun var385_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var387_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
-(declare-fun var372_return_value_of___buffer__make__t1 () (_ BitVec 64))
-(declare-fun var388_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
-(declare-fun var390_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var391_vv_mem__t0 () (_ BitVec 64))
-(declare-fun var392_len_vv_mem___t0 () (_ BitVec 64))
-(declare-fun var393_true__t0 () Bool)
-(declare-fun var394_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var395_literal_array_395__t0 () (_ BitVec 64))
-(declare-fun var396_true__t0 () Bool)
-(declare-fun var397_safe_literal_array_395_____safe_vv___t0 () Bool)
-(declare-fun var389_vv__t1 () (_ BitVec 64))
-(declare-fun var398_nullterm_literal_array_395_____nullterm_vv___t0 () Bool)
-(declare-fun var399_len_vv___t0 () (_ BitVec 64))
-(declare-fun var400_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var401_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var402_true__t0 () Bool)
-(declare-fun var403_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var404_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var405_true__t0 () Bool)
-(declare-fun var406_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var407_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var408_true__t0 () Bool)
-(declare-fun var410_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var411_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var412_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var414_return_value_of___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var416_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
-(declare-fun var415_return__t1 () (_ BitVec 64))
-(declare-fun var417_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
-(declare-fun var418_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var419_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var423_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var422_vv_at__t0 () (_ BitVec 64))
-(declare-fun var427_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var429_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
-(declare-fun var414_return_value_of___buffer__make__t1 () (_ BitVec 64))
-(declare-fun var430_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
-(declare-fun var432_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var433_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var434_true__t0 () Bool)
-(declare-fun var435_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var436_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var437_true__t0 () Bool)
-(declare-fun var438_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var439_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var440_true__t0 () Bool)
-(declare-fun var442_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var443_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var444_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var445_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var446_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var447_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var450_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var454_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var456_return_value_of___buffer__append_cstr__t0 () (_ BitVec 64))
-(declare-fun var458_safe_return_value_of___buffer__append_cstr_____safe_return___t0 () Bool)
-(declare-fun var457_return__t1 () (_ BitVec 64))
-(declare-fun var459_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 () Bool)
-(declare-fun var460_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var461_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var464_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var468_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var470_safe_return_____safe_return_value_of___buffer__append_cstr___t0 () Bool)
-(declare-fun var456_return_value_of___buffer__append_cstr__t1 () (_ BitVec 64))
-(declare-fun var471_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 () Bool)
-(declare-fun var473_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var474_safe_literal_Unsigned_0______safe_iterator___t0 () Bool)
-(declare-fun var472_iterator__t1 () (_ BitVec 64))
-(declare-fun var475_nullterm_literal_Unsigned_0______nullterm_iterator___t0 () Bool)
-(declare-fun var478_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var479_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var480_true__t0 () Bool)
-(declare-fun var481_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var482_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var483_true__t0 () Bool)
-(declare-fun var485_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var486_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var487_true__t0 () Bool)
-(declare-fun var488_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var489_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var490_true__t0 () Bool)
-(declare-fun var491_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var492_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var493_true__t0 () Bool)
-(declare-fun var494_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var495_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var496_true__t0 () Bool)
-(declare-fun var498_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var500_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var501_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var502_true__t0 () Bool)
-(declare-fun var503_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var504_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var505_true__t0 () Bool)
-(declare-fun var507_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var508_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var509_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var510_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var337_deref_S334_e__trace__t0 () (_ BitVec 64))
+(declare-fun var338_len_deref_S334_e____t0 () (_ BitVec 64))
+(declare-fun var334_e__t0 () (_ BitVec 64))
+(declare-fun var340_interpretation_of_theory_safe_over_e__t0 () Bool)
+(declare-fun var333_this__t0 () (_ BitVec 64))
+(declare-fun var341_interpretation_of_theory_safe_over_this__t0 () Bool)
+(declare-fun var336_deref_S334_e___t0 () (_ BitVec 64))
+(declare-fun var342_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var343_v_string__t0 () (_ BitVec 64))
+(declare-fun var344_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var345_literal_Unsigned_1___t0 () (_ BitVec 64))
+(declare-fun var346_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var347_literal_Unsigned_1___t0 () (_ BitVec 64))
+(declare-fun var349_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var350_part_mem__t0 () (_ BitVec 64))
+(declare-fun var351_len_part_mem___t0 () (_ BitVec 64))
+(declare-fun var352_true__t0 () Bool)
+(declare-fun var353_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var354_literal_array_354__t0 () (_ BitVec 64))
+(declare-fun var355_true__t0 () Bool)
+(declare-fun var356_safe_literal_array_354_____safe_part___t0 () Bool)
+(declare-fun var348_part__t1 () (_ BitVec 64))
+(declare-fun var357_nullterm_literal_array_354_____nullterm_part___t0 () Bool)
+(declare-fun var358_len_part___t0 () (_ BitVec 64))
+(declare-fun var359_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var360_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var361_true__t0 () Bool)
+(declare-fun var362_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var363_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var364_true__t0 () Bool)
+(declare-fun var365_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var366_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var367_true__t0 () Bool)
+(declare-fun var369_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var370_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var371_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var373_return_value_of___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var375_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
+(declare-fun var374_return__t1 () (_ BitVec 64))
+(declare-fun var376_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
+(declare-fun var377_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var378_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var382_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var381_part_at__t0 () (_ BitVec 64))
+(declare-fun var386_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var388_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var373_return_value_of___buffer__make__t1 () (_ BitVec 64))
+(declare-fun var389_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var391_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var392_vv_mem__t0 () (_ BitVec 64))
+(declare-fun var393_len_vv_mem___t0 () (_ BitVec 64))
+(declare-fun var394_true__t0 () Bool)
+(declare-fun var395_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var396_literal_array_396__t0 () (_ BitVec 64))
+(declare-fun var397_true__t0 () Bool)
+(declare-fun var398_safe_literal_array_396_____safe_vv___t0 () Bool)
+(declare-fun var390_vv__t1 () (_ BitVec 64))
+(declare-fun var399_nullterm_literal_array_396_____nullterm_vv___t0 () Bool)
+(declare-fun var400_len_vv___t0 () (_ BitVec 64))
+(declare-fun var401_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var402_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var403_true__t0 () Bool)
+(declare-fun var404_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var405_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var406_true__t0 () Bool)
+(declare-fun var407_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var408_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var409_true__t0 () Bool)
+(declare-fun var411_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var412_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var413_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var415_return_value_of___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var417_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
+(declare-fun var416_return__t1 () (_ BitVec 64))
+(declare-fun var418_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
+(declare-fun var419_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var420_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var424_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var423_vv_at__t0 () (_ BitVec 64))
+(declare-fun var428_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var430_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var415_return_value_of___buffer__make__t1 () (_ BitVec 64))
+(declare-fun var431_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var433_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var434_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var435_true__t0 () Bool)
+(declare-fun var436_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var437_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var438_true__t0 () Bool)
+(declare-fun var439_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var440_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var441_true__t0 () Bool)
+(declare-fun var443_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var444_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var445_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var446_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var447_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var448_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var451_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var455_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var457_return_value_of___buffer__append_cstr__t0 () (_ BitVec 64))
+(declare-fun var459_safe_return_value_of___buffer__append_cstr_____safe_return___t0 () Bool)
+(declare-fun var458_return__t1 () (_ BitVec 64))
+(declare-fun var460_nullterm_return_value_of___buffer__append_cstr_____nullterm_return___t0 () Bool)
+(declare-fun var461_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var462_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var465_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var469_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var471_safe_return_____safe_return_value_of___buffer__append_cstr___t0 () Bool)
+(declare-fun var457_return_value_of___buffer__append_cstr__t1 () (_ BitVec 64))
+(declare-fun var472_nullterm_return_____nullterm_return_value_of___buffer__append_cstr___t0 () Bool)
+(declare-fun var474_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var475_safe_literal_Unsigned_0______safe_iterator___t0 () Bool)
+(declare-fun var473_iterator__t1 () (_ BitVec 64))
+(declare-fun var476_nullterm_literal_Unsigned_0______nullterm_iterator___t0 () Bool)
+(declare-fun var479_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var480_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var481_true__t0 () Bool)
+(declare-fun var482_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var483_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var484_true__t0 () Bool)
+(declare-fun var486_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var487_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var488_true__t0 () Bool)
+(declare-fun var489_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var490_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var491_true__t0 () Bool)
+(declare-fun var492_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var493_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var494_true__t0 () Bool)
+(declare-fun var495_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var496_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var497_true__t0 () Bool)
+(declare-fun var499_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var501_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var502_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var503_true__t0 () Bool)
+(declare-fun var504_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var505_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var506_true__t0 () Bool)
+(declare-fun var508_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var509_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var510_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var511_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var512_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var515_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var519_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var521_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var525_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var526_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var529_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var533_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var536_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var537_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var540_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var544_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var547_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var548_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var549_true__t0 () Bool)
-(declare-fun var550_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var551_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var552_true__t0 () Bool)
-(declare-fun var554_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var555_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var556_true__t0 () Bool)
-(declare-fun var557_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var558_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var559_true__t0 () Bool)
-(declare-fun var560_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var561_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var562_true__t0 () Bool)
-(declare-fun var563_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var564_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var565_true__t0 () Bool)
-(declare-fun var567_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var569_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var570_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var571_true__t0 () Bool)
-(declare-fun var572_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var573_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var574_true__t0 () Bool)
-(declare-fun var576_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var577_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var578_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var579_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var512_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var513_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var516_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var520_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var522_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var526_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var527_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var530_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var534_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var537_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var538_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var541_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var545_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var548_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var549_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var550_true__t0 () Bool)
+(declare-fun var551_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var552_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var553_true__t0 () Bool)
+(declare-fun var555_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var556_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var557_true__t0 () Bool)
+(declare-fun var558_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var559_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var560_true__t0 () Bool)
+(declare-fun var561_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var562_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var563_true__t0 () Bool)
+(declare-fun var564_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var565_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var566_true__t0 () Bool)
+(declare-fun var568_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var570_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var571_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var572_true__t0 () Bool)
+(declare-fun var573_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var574_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var575_true__t0 () Bool)
+(declare-fun var577_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var578_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var579_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var580_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var581_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var584_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var588_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var590_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var594_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var595_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var598_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var602_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var605_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var606_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var609_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var613_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var617_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var618_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var619_true__t0 () Bool)
-(declare-fun var620_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var621_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var622_true__t0 () Bool)
-(declare-fun var623_literal_string__mtdblock___t0 () (_ BitVec 64))
-(declare-fun var624_true__t0 () Bool)
+(declare-fun var581_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var582_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var585_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var589_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var591_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var595_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var596_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var599_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var603_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var606_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var607_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var610_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var614_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var618_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var619_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var620_true__t0 () Bool)
+(declare-fun var621_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var622_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var623_true__t0 () Bool)
+(declare-fun var624_literal_string__mtdblock___t0 () (_ BitVec 64))
 (declare-fun var625_true__t0 () Bool)
-(declare-fun var626_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var627_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var628_true__t0 () Bool)
-(declare-fun var630_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var631_literal_string__mtdblock___t0 () (_ BitVec 64))
-(declare-fun var632_true__t0 () Bool)
+(declare-fun var626_true__t0 () Bool)
+(declare-fun var627_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var628_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var629_true__t0 () Bool)
+(declare-fun var631_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var632_literal_string__mtdblock___t0 () (_ BitVec 64))
 (declare-fun var633_true__t0 () Bool)
-(declare-fun var634_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var635_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 () Bool)
-(declare-fun var636_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var637_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var640_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var644_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var646_return_value_of___buffer__eq_cstr__t0 () Bool)
-(declare-fun var648_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var649_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var650_true__t0 () Bool)
-(declare-fun var651_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var652_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var653_true__t0 () Bool)
-(declare-fun var654_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var655_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var656_true__t0 () Bool)
-(declare-fun var658_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var659_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var660_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var662_return_value_of___buffer__clear__t0 () (_ BitVec 64))
-(declare-fun var664_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
-(declare-fun var663_return__t1 () (_ BitVec 64))
-(declare-fun var665_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
-(declare-fun var666_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var667_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var670_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var674_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var676_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
-(declare-fun var662_return_value_of___buffer__clear__t1 () (_ BitVec 64))
-(declare-fun var677_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
-(declare-fun var679_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var680_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var681_true__t0 () Bool)
-(declare-fun var682_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var683_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var684_true__t0 () Bool)
-(declare-fun var686_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var687_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var688_true__t0 () Bool)
-(declare-fun var689_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var690_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var691_true__t0 () Bool)
-(declare-fun var692_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var693_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var694_true__t0 () Bool)
-(declare-fun var695_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var696_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var697_true__t0 () Bool)
-(declare-fun var699_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var701_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var702_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var703_true__t0 () Bool)
-(declare-fun var704_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var705_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var706_true__t0 () Bool)
-(declare-fun var708_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var709_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var710_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var711_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var634_true__t0 () Bool)
+(declare-fun var635_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var636_interpretation_of_theory_nullterm_over_literal_string__mtdblock___t0 () Bool)
+(declare-fun var637_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var638_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var641_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var645_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var647_return_value_of___buffer__eq_cstr__t0 () Bool)
+(declare-fun var649_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var650_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var651_true__t0 () Bool)
+(declare-fun var652_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var653_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var654_true__t0 () Bool)
+(declare-fun var655_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var656_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var657_true__t0 () Bool)
+(declare-fun var659_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var660_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var661_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var663_return_value_of___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var665_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
+(declare-fun var664_return__t1 () (_ BitVec 64))
+(declare-fun var666_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
+(declare-fun var667_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var668_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var671_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var675_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var677_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
+(declare-fun var663_return_value_of___buffer__clear__t1 () (_ BitVec 64))
+(declare-fun var678_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
+(declare-fun var680_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var681_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var682_true__t0 () Bool)
+(declare-fun var683_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var684_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var685_true__t0 () Bool)
+(declare-fun var687_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var688_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var689_true__t0 () Bool)
+(declare-fun var690_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var691_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var692_true__t0 () Bool)
+(declare-fun var693_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var694_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var695_true__t0 () Bool)
+(declare-fun var696_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var697_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var698_true__t0 () Bool)
+(declare-fun var700_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var702_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var703_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var704_true__t0 () Bool)
+(declare-fun var705_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var706_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var707_true__t0 () Bool)
+(declare-fun var709_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var710_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var711_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var712_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var713_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var716_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var720_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var722_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var726_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var727_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var730_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var734_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var737_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var738_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var741_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var745_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var749_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var750_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var751_true__t0 () Bool)
-(declare-fun var752_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var753_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var754_true__t0 () Bool)
-(declare-fun var755_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var756_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var757_true__t0 () Bool)
-(declare-fun var759_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var760_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var713_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var714_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var717_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var721_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var723_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var727_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var728_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var731_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var735_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var738_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var739_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var742_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var746_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var750_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var751_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var752_true__t0 () Bool)
+(declare-fun var753_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var754_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var755_true__t0 () Bool)
+(declare-fun var756_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var757_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var758_true__t0 () Bool)
+(declare-fun var760_literal_Unsigned_400___t0 () (_ BitVec 64))
 (declare-fun var761_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var762_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var765_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var769_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var771_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var773_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var772_return__t1 () (_ BitVec 64))
-(declare-fun var774_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var775_interpretation_of_theory_safe_over_return__t0 () Bool)
-(declare-fun var776_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var771_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
-(declare-fun var777_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var779_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var778_return__t1 () (_ BitVec 64))
-(declare-fun var780_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var781_interpretation_of_theory_nullterm_over_return__t0 () Bool)
-(declare-fun var782_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var771_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
-(declare-fun var783_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var785_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var786_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var787_true__t0 () Bool)
-(declare-fun var789_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var790_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var762_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var763_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var766_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var770_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var772_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var774_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var773_return__t1 () (_ BitVec 64))
+(declare-fun var775_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var776_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var777_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var772_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var778_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var780_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var779_return__t1 () (_ BitVec 64))
+(declare-fun var781_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var782_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var783_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var772_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var784_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var786_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var787_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var788_true__t0 () Bool)
+(declare-fun var790_literal_Unsigned_400___t0 () (_ BitVec 64))
 (declare-fun var791_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var792_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var795_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var799_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var801_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var803_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var802_return__t1 () (_ BitVec 64))
-(declare-fun var804_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var805_interpretation_of_theory_safe_over_return__t0 () Bool)
-(declare-fun var806_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var801_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
-(declare-fun var807_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var809_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var808_return__t1 () (_ BitVec 64))
-(declare-fun var810_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var811_interpretation_of_theory_nullterm_over_return__t0 () Bool)
-(declare-fun var812_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var801_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
-(declare-fun var813_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var814_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 () Bool)
-(declare-fun var815_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var816_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var817_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 () Bool)
-(declare-fun var818_return_value_of___carrier__vault_toml__findmtdindex__t0 () (_ BitVec 64))
-(declare-fun var819_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 () Bool)
-(declare-fun var747_mtdindex__t1 () (_ BitVec 64))
-(declare-fun var820_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 () Bool)
-(declare-fun var822_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var823_true__t0 () Bool)
+(declare-fun var792_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var793_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var796_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var800_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var802_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var804_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var803_return__t1 () (_ BitVec 64))
+(declare-fun var805_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var806_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var807_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var802_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var808_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var810_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var809_return__t1 () (_ BitVec 64))
+(declare-fun var811_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var812_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var813_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var802_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var814_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var815_interpretation_of_theory_safe_over_return_value_of___buffer__cstr__t0 () Bool)
+(declare-fun var816_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var817_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var818_interpretation_of_theory_nullterm_over_return_value_of___buffer__cstr__t0 () Bool)
+(declare-fun var819_return_value_of___carrier__vault_toml__findmtdindex__t0 () (_ BitVec 64))
+(declare-fun var820_safe_return_value_of___carrier__vault_toml__findmtdindex_____safe_mtdindex___t0 () Bool)
+(declare-fun var748_mtdindex__t1 () (_ BitVec 64))
+(declare-fun var821_nullterm_return_value_of___carrier__vault_toml__findmtdindex_____nullterm_mtdindex___t0 () Bool)
+(declare-fun var823_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var824_true__t0 () Bool)
-(declare-fun var825_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var826_true__t0 () Bool)
+(declare-fun var825_true__t0 () Bool)
+(declare-fun var826_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var827_true__t0 () Bool)
-(declare-fun var828_literal_Unsigned_226___t0 () (_ BitVec 64))
-(declare-fun var829_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var832_literal_Unsigned_4294967295___t0 () Bool)
-(declare-fun var834_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var837_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var840_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var841_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var842_true__t0 () Bool)
-(declare-fun var843_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var844_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var845_true__t0 () Bool)
-(declare-fun var846_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var847_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var848_true__t0 () Bool)
-(declare-fun var850_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var851_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var852_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var854_return_value_of___buffer__clear__t0 () (_ BitVec 64))
-(declare-fun var856_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
-(declare-fun var855_return__t1 () (_ BitVec 64))
-(declare-fun var857_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
-(declare-fun var858_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var859_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var862_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var866_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var868_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
-(declare-fun var854_return_value_of___buffer__clear__t1 () (_ BitVec 64))
-(declare-fun var869_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
-(declare-fun var871_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var872_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var873_true__t0 () Bool)
-(declare-fun var874_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var875_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var876_true__t0 () Bool)
-(declare-fun var878_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var879_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var880_true__t0 () Bool)
-(declare-fun var881_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var882_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var883_true__t0 () Bool)
-(declare-fun var884_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var885_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var886_true__t0 () Bool)
-(declare-fun var887_addressof_vv___t0 () (_ BitVec 64))
-(declare-fun var888_len_addressof_vv____t0 () (_ BitVec 64))
-(declare-fun var889_true__t0 () Bool)
-(declare-fun var891_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var893_addressof_iterator___t0 () (_ BitVec 64))
-(declare-fun var894_len_addressof_iterator____t0 () (_ BitVec 64))
-(declare-fun var895_true__t0 () Bool)
-(declare-fun var896_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var897_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var898_true__t0 () Bool)
-(declare-fun var900_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var901_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var902_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
-(declare-fun var903_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var828_true__t0 () Bool)
+(declare-fun var829_literal_Unsigned_232___t0 () (_ BitVec 64))
+(declare-fun var830_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var833_literal_Unsigned_4294967295___t0 () Bool)
+(declare-fun var835_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var838_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var841_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var842_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var843_true__t0 () Bool)
+(declare-fun var844_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var845_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var846_true__t0 () Bool)
+(declare-fun var847_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var848_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var849_true__t0 () Bool)
+(declare-fun var851_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var852_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var853_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var855_return_value_of___buffer__clear__t0 () (_ BitVec 64))
+(declare-fun var857_safe_return_value_of___buffer__clear_____safe_return___t0 () Bool)
+(declare-fun var856_return__t1 () (_ BitVec 64))
+(declare-fun var858_nullterm_return_value_of___buffer__clear_____nullterm_return___t0 () Bool)
+(declare-fun var859_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var860_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var863_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var867_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var869_safe_return_____safe_return_value_of___buffer__clear___t0 () Bool)
+(declare-fun var855_return_value_of___buffer__clear__t1 () (_ BitVec 64))
+(declare-fun var870_nullterm_return_____nullterm_return_value_of___buffer__clear___t0 () Bool)
+(declare-fun var872_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var873_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var874_true__t0 () Bool)
+(declare-fun var875_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var876_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var877_true__t0 () Bool)
+(declare-fun var879_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var880_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var881_true__t0 () Bool)
+(declare-fun var882_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var883_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var884_true__t0 () Bool)
+(declare-fun var885_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var886_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var887_true__t0 () Bool)
+(declare-fun var888_addressof_vv___t0 () (_ BitVec 64))
+(declare-fun var889_len_addressof_vv____t0 () (_ BitVec 64))
+(declare-fun var890_true__t0 () Bool)
+(declare-fun var892_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var894_addressof_iterator___t0 () (_ BitVec 64))
+(declare-fun var895_len_addressof_iterator____t0 () (_ BitVec 64))
+(declare-fun var896_true__t0 () Bool)
+(declare-fun var897_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var898_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var899_true__t0 () Bool)
+(declare-fun var901_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var902_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var903_interpretation_of_theory_safe_over_addressof_iterator___t0 () Bool)
 (declare-fun var904_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var905_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var908_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var912_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var914_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var918_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
-(declare-fun var919_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var922_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var926_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
-(declare-fun var929_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var930_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var933_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var937_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var941_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var942_mtdpath_mem__t0 () (_ BitVec 64))
-(declare-fun var943_len_mtdpath_mem___t0 () (_ BitVec 64))
-(declare-fun var944_true__t0 () Bool)
-(declare-fun var945_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var946_literal_array_946__t0 () (_ BitVec 64))
-(declare-fun var947_true__t0 () Bool)
-(declare-fun var948_safe_literal_array_946_____safe_mtdpath___t0 () Bool)
-(declare-fun var940_mtdpath__t1 () (_ BitVec 64))
-(declare-fun var949_nullterm_literal_array_946_____nullterm_mtdpath___t0 () Bool)
-(declare-fun var950_len_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var951_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var952_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var953_true__t0 () Bool)
-(declare-fun var954_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var955_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var956_true__t0 () Bool)
-(declare-fun var957_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var958_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var959_true__t0 () Bool)
-(declare-fun var961_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var962_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var963_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var965_return_value_of___buffer__make__t0 () (_ BitVec 64))
-(declare-fun var967_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
-(declare-fun var966_return__t1 () (_ BitVec 64))
-(declare-fun var968_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
-(declare-fun var969_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var970_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var974_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var973_mtdpath_at__t0 () (_ BitVec 64))
-(declare-fun var978_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-(declare-fun var980_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
-(declare-fun var965_return_value_of___buffer__make__t1 () (_ BitVec 64))
-(declare-fun var981_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
-(declare-fun var983_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var984_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var985_true__t0 () Bool)
-(declare-fun var986_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var987_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var988_true__t0 () Bool)
-(declare-fun var989_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
-(declare-fun var990_true__t0 () Bool)
+(declare-fun var905_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var906_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var909_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var913_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var915_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var919_interpretation_of_theory_safe_over_cast_of_addressof_vv___t0 () Bool)
+(declare-fun var920_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var923_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var927_interpretation_of_theory_nullterm_over_vv_mem__t0 () Bool)
+(declare-fun var930_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var931_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var934_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var938_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var942_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var943_mtdpath_mem__t0 () (_ BitVec 64))
+(declare-fun var944_len_mtdpath_mem___t0 () (_ BitVec 64))
+(declare-fun var945_true__t0 () Bool)
+(declare-fun var946_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var947_literal_array_947__t0 () (_ BitVec 64))
+(declare-fun var948_true__t0 () Bool)
+(declare-fun var949_safe_literal_array_947_____safe_mtdpath___t0 () Bool)
+(declare-fun var941_mtdpath__t1 () (_ BitVec 64))
+(declare-fun var950_nullterm_literal_array_947_____nullterm_mtdpath___t0 () Bool)
+(declare-fun var951_len_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var952_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var953_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var954_true__t0 () Bool)
+(declare-fun var955_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var956_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var957_true__t0 () Bool)
+(declare-fun var958_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var959_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var960_true__t0 () Bool)
+(declare-fun var962_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var963_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var964_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var966_return_value_of___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var968_safe_return_value_of___buffer__make_____safe_return___t0 () Bool)
+(declare-fun var967_return__t1 () (_ BitVec 64))
+(declare-fun var969_nullterm_return_value_of___buffer__make_____nullterm_return___t0 () Bool)
+(declare-fun var970_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var971_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var975_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var974_mtdpath_at__t0 () (_ BitVec 64))
+(declare-fun var979_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var981_safe_return_____safe_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var966_return_value_of___buffer__make__t1 () (_ BitVec 64))
+(declare-fun var982_nullterm_return_____nullterm_return_value_of___buffer__make___t0 () Bool)
+(declare-fun var984_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var985_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var986_true__t0 () Bool)
+(declare-fun var987_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var988_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var989_true__t0 () Bool)
+(declare-fun var990_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
 (declare-fun var991_true__t0 () Bool)
-(declare-fun var992_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var993_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var994_true__t0 () Bool)
-(declare-fun var996_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var997_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
-(declare-fun var998_true__t0 () Bool)
+(declare-fun var992_true__t0 () Bool)
+(declare-fun var993_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var994_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var995_true__t0 () Bool)
+(declare-fun var997_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var998_literal_string___dev_mtdblock_u___t0 () (_ BitVec 64))
 (declare-fun var999_true__t0 () Bool)
-(declare-fun var1000_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 () Bool)
-(declare-fun var1001_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1002_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 () Bool)
-(declare-fun var1003_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1004_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1007_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1011_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-(declare-fun var1015_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1016_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1019_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1023_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-(declare-fun var1025_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
-(declare-fun var1026_true__t0 () Bool)
+(declare-fun var1000_true__t0 () Bool)
+(declare-fun var1001_interpretation_of_theory_safe_over_literal_string___dev_mtdblock_u___t0 () Bool)
+(declare-fun var1002_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1003_interpretation_of_theory_nullterm_over_literal_string___dev_mtdblock_u___t0 () Bool)
+(declare-fun var1004_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1005_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1008_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1012_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1016_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1017_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1020_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1024_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1026_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
 (declare-fun var1027_true__t0 () Bool)
-(declare-fun var1028_literal_string__carrier__vault_toml___t0 () (_ BitVec 64))
-(declare-fun var1029_true__t0 () Bool)
+(declare-fun var1028_true__t0 () Bool)
+(declare-fun var1029_literal_string__carrier__vault_toml___t0 () (_ BitVec 64))
 (declare-fun var1030_true__t0 () Bool)
-(declare-fun var1031_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
-(declare-fun var1032_true__t0 () Bool)
+(declare-fun var1031_true__t0 () Bool)
+(declare-fun var1032_literal_string__reading_secrets_from__s__lld___t0 () (_ BitVec 64))
 (declare-fun var1033_true__t0 () Bool)
-(declare-fun var1035_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var1036_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var1037_true__t0 () Bool)
-(declare-fun var1038_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var1039_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var1040_true__t0 () Bool)
-(declare-fun var1041_addressof_part___t0 () (_ BitVec 64))
-(declare-fun var1042_len_addressof_part____t0 () (_ BitVec 64))
-(declare-fun var1043_true__t0 () Bool)
-(declare-fun var1045_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var1046_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var1034_true__t0 () Bool)
+(declare-fun var1036_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var1037_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var1038_true__t0 () Bool)
+(declare-fun var1039_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var1040_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var1041_true__t0 () Bool)
+(declare-fun var1042_addressof_part___t0 () (_ BitVec 64))
+(declare-fun var1043_len_addressof_part____t0 () (_ BitVec 64))
+(declare-fun var1044_true__t0 () Bool)
+(declare-fun var1046_literal_Unsigned_400___t0 () (_ BitVec 64))
 (declare-fun var1047_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
-(declare-fun var1048_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var1051_literal_Unsigned_400___t0 () (_ BitVec 64))
-(declare-fun var1055_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
-(declare-fun var1057_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var1059_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var1058_return__t1 () (_ BitVec 64))
-(declare-fun var1060_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var1061_interpretation_of_theory_safe_over_return__t0 () Bool)
-(declare-fun var1062_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1057_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
-(declare-fun var1063_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1065_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var1064_return__t1 () (_ BitVec 64))
-(declare-fun var1066_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var1067_interpretation_of_theory_nullterm_over_return__t0 () Bool)
-(declare-fun var1068_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1057_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
-(declare-fun var1069_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1070_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 () Bool)
-(declare-fun var1071_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 () Bool)
-(declare-fun var1074_literal_string__rw___t0 () (_ BitVec 64))
-(declare-fun var1075_true__t0 () Bool)
+(declare-fun var1048_interpretation_of_theory_safe_over_cast_of_addressof_part___t0 () Bool)
+(declare-fun var1049_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1052_literal_Unsigned_400___t0 () (_ BitVec 64))
+(declare-fun var1056_interpretation_of_theory_nullterm_over_part_mem__t0 () Bool)
+(declare-fun var1058_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var1060_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1059_return__t1 () (_ BitVec 64))
+(declare-fun var1061_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1062_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var1063_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1058_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var1064_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1066_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1065_return__t1 () (_ BitVec 64))
+(declare-fun var1067_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1068_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var1069_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1058_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var1070_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1071_interpretation_of_theory_safe_over_literal_string__reading_secrets_from__s__lld___t0 () Bool)
+(declare-fun var1072_interpretation_of_theory_safe_over_literal_string__carrier__vault_toml___t0 () Bool)
+(declare-fun var1075_literal_string__rw___t0 () (_ BitVec 64))
 (declare-fun var1076_true__t0 () Bool)
-(declare-fun var1077_return_value_of___ext___stdio_h___fopen__t0 () (_ BitVec 64))
-(declare-fun var1078_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 () Bool)
-(declare-fun var1073_f__t1 () (_ BitVec 64))
-(declare-fun var1079_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 () Bool)
-(declare-fun var1081_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var1085_literal_string__cannot_open__s___t0 () (_ BitVec 64))
-(declare-fun var1086_true__t0 () Bool)
+(declare-fun var1077_true__t0 () Bool)
+(declare-fun var1078_return_value_of___ext___stdio_h___fopen__t0 () (_ BitVec 64))
+(declare-fun var1079_safe_return_value_of___ext___stdio_h___fopen_____safe_f___t0 () Bool)
+(declare-fun var1074_f__t1 () (_ BitVec 64))
+(declare-fun var1080_nullterm_return_value_of___ext___stdio_h___fopen_____nullterm_f___t0 () Bool)
+(declare-fun var1082_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1086_literal_string__cannot_open__s___t0 () (_ BitVec 64))
 (declare-fun var1087_true__t0 () Bool)
-(declare-fun var1089_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1090_true__t0 () Bool)
+(declare-fun var1088_true__t0 () Bool)
+(declare-fun var1090_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1091_true__t0 () Bool)
-(declare-fun var1092_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1093_true__t0 () Bool)
+(declare-fun var1092_true__t0 () Bool)
+(declare-fun var1093_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1094_true__t0 () Bool)
-(declare-fun var1095_literal_Unsigned_242___t0 () (_ BitVec 64))
-(declare-fun var1096_literal_string__cannot_open__s___t0 () (_ BitVec 64))
-(declare-fun var1097_true__t0 () Bool)
+(declare-fun var1095_true__t0 () Bool)
+(declare-fun var1096_literal_Unsigned_248___t0 () (_ BitVec 64))
+(declare-fun var1097_literal_string__cannot_open__s___t0 () (_ BitVec 64))
 (declare-fun var1098_true__t0 () Bool)
-(declare-fun var1100_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1101_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var1102_true__t0 () Bool)
-(declare-fun var1103_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1104_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var1105_true__t0 () Bool)
-(declare-fun var1106_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1107_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var1108_true__t0 () Bool)
-(declare-fun var1110_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1111_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1099_true__t0 () Bool)
+(declare-fun var1101_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1102_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var1103_true__t0 () Bool)
+(declare-fun var1104_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1105_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var1106_true__t0 () Bool)
+(declare-fun var1107_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1108_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var1109_true__t0 () Bool)
+(declare-fun var1111_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (declare-fun var1112_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1113_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1116_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1120_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-(declare-fun var1122_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var1124_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var1123_return__t1 () (_ BitVec 64))
-(declare-fun var1125_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var1126_interpretation_of_theory_safe_over_return__t0 () Bool)
-(declare-fun var1127_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1122_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
-(declare-fun var1128_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1130_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var1129_return__t1 () (_ BitVec 64))
-(declare-fun var1131_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var1132_interpretation_of_theory_nullterm_over_return__t0 () Bool)
-(declare-fun var1133_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1122_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
-(declare-fun var1134_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1135_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 () Bool)
-(declare-fun var1136_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1137_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 () Bool)
-(declare-fun var1138_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1140_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1139_return__t1 () (_ BitVec 64))
-(declare-fun var1141_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1142_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1143_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1138_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1144_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1146_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var1145_unsafe_expression__t0 () (_ BitVec 64))
-(declare-fun var1150_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1151_true__t0 () Bool)
+(declare-fun var1113_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1114_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1117_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1121_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1123_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var1125_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1124_return__t1 () (_ BitVec 64))
+(declare-fun var1126_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1127_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var1128_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1123_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var1129_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1131_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1130_return__t1 () (_ BitVec 64))
+(declare-fun var1132_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1133_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var1134_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1123_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var1135_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1136_interpretation_of_theory_safe_over_literal_string__cannot_open__s___t0 () Bool)
+(declare-fun var1137_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1138_interpretation_of_theory_nullterm_over_literal_string__cannot_open__s___t0 () Bool)
+(declare-fun var1139_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1141_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1140_return__t1 () (_ BitVec 64))
+(declare-fun var1142_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1143_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1144_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1139_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1145_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1147_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1146_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1151_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1152_true__t0 () Bool)
-(declare-fun var1154_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1155_true__t0 () Bool)
+(declare-fun var1153_true__t0 () Bool)
+(declare-fun var1155_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1156_true__t0 () Bool)
-(declare-fun var1157_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1158_true__t0 () Bool)
+(declare-fun var1157_true__t0 () Bool)
+(declare-fun var1158_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1159_true__t0 () Bool)
-(declare-fun var1160_literal_Unsigned_246___t0 () (_ BitVec 64))
-(declare-fun var1161_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1162_true__t0 () Bool)
+(declare-fun var1160_true__t0 () Bool)
+(declare-fun var1161_literal_Unsigned_252___t0 () (_ BitVec 64))
+(declare-fun var1162_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1163_true__t0 () Bool)
-(declare-fun var1165_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1166_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var1167_true__t0 () Bool)
-(declare-fun var1168_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1169_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var1170_true__t0 () Bool)
-(declare-fun var1171_addressof_mtdpath___t0 () (_ BitVec 64))
-(declare-fun var1172_len_addressof_mtdpath____t0 () (_ BitVec 64))
-(declare-fun var1173_true__t0 () Bool)
-(declare-fun var1175_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1176_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1164_true__t0 () Bool)
+(declare-fun var1166_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1167_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var1168_true__t0 () Bool)
+(declare-fun var1169_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1170_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var1171_true__t0 () Bool)
+(declare-fun var1172_addressof_mtdpath___t0 () (_ BitVec 64))
+(declare-fun var1173_len_addressof_mtdpath____t0 () (_ BitVec 64))
+(declare-fun var1174_true__t0 () Bool)
+(declare-fun var1176_literal_Unsigned_1000___t0 () (_ BitVec 64))
 (declare-fun var1177_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
-(declare-fun var1178_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1181_literal_Unsigned_1000___t0 () (_ BitVec 64))
-(declare-fun var1185_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
-(declare-fun var1187_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var1189_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var1188_return__t1 () (_ BitVec 64))
-(declare-fun var1190_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var1191_interpretation_of_theory_safe_over_return__t0 () Bool)
-(declare-fun var1192_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1187_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
-(declare-fun var1193_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1195_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
-(declare-fun var1194_return__t1 () (_ BitVec 64))
-(declare-fun var1196_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
-(declare-fun var1197_interpretation_of_theory_nullterm_over_return__t0 () Bool)
-(declare-fun var1198_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1187_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
-(declare-fun var1199_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
-(declare-fun var1200_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1201_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1202_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1203_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1205_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1204_return__t1 () (_ BitVec 64))
-(declare-fun var1206_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1207_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1208_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1203_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1209_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1212_literal_Unsigned_32___t0 () (_ BitVec 64))
-(declare-fun var1211_unsafe_expression__t0 () (_ BitVec 64))
-(declare-fun var1216_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1217_true__t0 () Bool)
+(declare-fun var1178_interpretation_of_theory_safe_over_cast_of_addressof_mtdpath___t0 () Bool)
+(declare-fun var1179_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1182_literal_Unsigned_1000___t0 () (_ BitVec 64))
+(declare-fun var1186_interpretation_of_theory_nullterm_over_mtdpath_mem__t0 () Bool)
+(declare-fun var1188_return_value_of___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var1190_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1189_return__t1 () (_ BitVec 64))
+(declare-fun var1191_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1192_interpretation_of_theory_safe_over_return__t0 () Bool)
+(declare-fun var1193_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1188_return_value_of___buffer__cstr__t1 () (_ BitVec 64))
+(declare-fun var1194_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1196_safe_return_value_of___buffer__cstr_____safe_return___t0 () Bool)
+(declare-fun var1195_return__t1 () (_ BitVec 64))
+(declare-fun var1197_nullterm_return_value_of___buffer__cstr_____nullterm_return___t0 () Bool)
+(declare-fun var1198_interpretation_of_theory_nullterm_over_return__t0 () Bool)
+(declare-fun var1199_safe_return_____safe_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1188_return_value_of___buffer__cstr__t2 () (_ BitVec 64))
+(declare-fun var1200_nullterm_return_____nullterm_return_value_of___buffer__cstr___t0 () Bool)
+(declare-fun var1201_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1202_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1203_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1204_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1206_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1205_return__t1 () (_ BitVec 64))
+(declare-fun var1207_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1208_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1209_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1204_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1210_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1213_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1212_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1217_literal_string__cannot_read__s___t0 () (_ BitVec 64))
 (declare-fun var1218_true__t0 () Bool)
-(declare-fun var1220_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1221_true__t0 () Bool)
+(declare-fun var1219_true__t0 () Bool)
+(declare-fun var1221_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1222_true__t0 () Bool)
-(declare-fun var1223_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1224_true__t0 () Bool)
+(declare-fun var1223_true__t0 () Bool)
+(declare-fun var1224_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1225_true__t0 () Bool)
-(declare-fun var1226_literal_Unsigned_252___t0 () (_ BitVec 64))
-(declare-fun var1227_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1228_true__t0 () Bool)
+(declare-fun var1226_true__t0 () Bool)
+(declare-fun var1227_literal_Unsigned_258___t0 () (_ BitVec 64))
+(declare-fun var1228_literal_string__cannot_read__s___t0 () (_ BitVec 64))
 (declare-fun var1229_true__t0 () Bool)
-(declare-fun var1230_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
-(declare-fun var1231_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1232_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
-(declare-fun var1233_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1235_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1234_return__t1 () (_ BitVec 64))
-(declare-fun var1236_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1237_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1238_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1233_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1239_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1242_safe_this___t0 () Bool)
-(declare-fun var1244_literal_Unsigned_32___t0 () (_ BitVec 64))
-(declare-fun var1245_deref_var332_this__secret_k__t0 () (_ BitVec 64))
-(declare-fun var1246_len_deref_var332_this__secret_k___t0 () (_ BitVec 64))
-(declare-fun var1247_true__t0 () Bool)
-(declare-fun var1248_interpretation_of_theory_safe_over_deref_var332_this__secret_k__t0 () Bool)
-(declare-fun var1249_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1230_true__t0 () Bool)
+(declare-fun var1231_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1232_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1233_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1234_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1236_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1235_return__t1 () (_ BitVec 64))
+(declare-fun var1237_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1238_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1239_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1234_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1240_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1243_safe_this___t0 () Bool)
+(declare-fun var1245_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1246_deref_var333_this__secret_k__t0 () (_ BitVec 64))
+(declare-fun var1247_len_deref_var333_this__secret_k___t0 () (_ BitVec 64))
+(declare-fun var1248_true__t0 () Bool)
+(declare-fun var1249_interpretation_of_theory_safe_over_deref_var333_this__secret_k__t0 () Bool)
 (declare-fun var1250_literal_Unsigned_32___t0 () (_ BitVec 64))
-(declare-fun var1252_return_value_of___carrier__identity__isnull__t0 () Bool)
-(declare-fun var1253_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1254_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
-(declare-fun var1255_true__t0 () Bool)
-(declare-fun var1256_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1257_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
-(declare-fun var1258_true__t0 () Bool)
-(declare-fun var1260_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1261_interpretation_of_theory_safe_over_addressof_deref_var332_this__secret___t0 () Bool)
-(declare-fun var1262_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1265_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1266_true__t0 () Bool)
+(declare-fun var1251_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1253_return_value_of___carrier__identity__isnull__t0 () Bool)
+(declare-fun var1254_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1255_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
+(declare-fun var1256_true__t0 () Bool)
+(declare-fun var1257_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1258_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
+(declare-fun var1259_true__t0 () Bool)
+(declare-fun var1261_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1262_interpretation_of_theory_safe_over_addressof_deref_var333_this__secret___t0 () Bool)
+(declare-fun var1263_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1266_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1267_true__t0 () Bool)
-(declare-fun var1268_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1269_true__t0 () Bool)
+(declare-fun var1268_true__t0 () Bool)
+(declare-fun var1269_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1270_true__t0 () Bool)
-(declare-fun var1271_literal_Unsigned_259___t0 () (_ BitVec 64))
-(declare-fun var1272_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1275_literal_Unsigned_4294967295___t0 () Bool)
-(declare-fun var1277_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1281_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var1280_unsafe_expression__t0 () (_ BitVec 64))
-(declare-fun var1285_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1286_true__t0 () Bool)
+(declare-fun var1271_true__t0 () Bool)
+(declare-fun var1272_literal_Unsigned_265___t0 () (_ BitVec 64))
+(declare-fun var1273_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1276_literal_Unsigned_4294967295___t0 () Bool)
+(declare-fun var1278_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1282_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1281_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1286_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1287_true__t0 () Bool)
-(declare-fun var1289_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1290_true__t0 () Bool)
+(declare-fun var1288_true__t0 () Bool)
+(declare-fun var1290_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1291_true__t0 () Bool)
-(declare-fun var1292_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1293_true__t0 () Bool)
+(declare-fun var1292_true__t0 () Bool)
+(declare-fun var1293_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1294_true__t0 () Bool)
-(declare-fun var1295_literal_Unsigned_264___t0 () (_ BitVec 64))
-(declare-fun var1296_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1297_true__t0 () Bool)
+(declare-fun var1295_true__t0 () Bool)
+(declare-fun var1296_literal_Unsigned_270___t0 () (_ BitVec 64))
+(declare-fun var1297_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1298_true__t0 () Bool)
-(declare-fun var1299_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1300_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1301_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1302_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1304_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1303_return__t1 () (_ BitVec 64))
-(declare-fun var1305_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1306_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1307_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1302_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1308_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1311_literal_Unsigned_32___t0 () (_ BitVec 64))
-(declare-fun var1310_unsafe_expression__t0 () (_ BitVec 64))
-(declare-fun var1315_literal_string__cannot_write__s___t0 () (_ BitVec 64))
-(declare-fun var1316_true__t0 () Bool)
+(declare-fun var1299_true__t0 () Bool)
+(declare-fun var1300_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1301_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1302_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1303_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1305_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1304_return__t1 () (_ BitVec 64))
+(declare-fun var1306_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1307_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1308_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1303_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1309_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1312_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1311_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1316_literal_string__cannot_write__s___t0 () (_ BitVec 64))
 (declare-fun var1317_true__t0 () Bool)
-(declare-fun var1319_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1320_true__t0 () Bool)
+(declare-fun var1318_true__t0 () Bool)
+(declare-fun var1320_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1321_true__t0 () Bool)
-(declare-fun var1322_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1323_true__t0 () Bool)
+(declare-fun var1322_true__t0 () Bool)
+(declare-fun var1323_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1324_true__t0 () Bool)
-(declare-fun var1325_literal_Unsigned_270___t0 () (_ BitVec 64))
-(declare-fun var1326_literal_string__cannot_write__s___t0 () (_ BitVec 64))
-(declare-fun var1327_true__t0 () Bool)
+(declare-fun var1325_true__t0 () Bool)
+(declare-fun var1326_literal_Unsigned_276___t0 () (_ BitVec 64))
+(declare-fun var1327_literal_string__cannot_write__s___t0 () (_ BitVec 64))
 (declare-fun var1328_true__t0 () Bool)
-(declare-fun var1329_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 () Bool)
-(declare-fun var1330_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1331_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 () Bool)
-(declare-fun var1332_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1334_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1333_return__t1 () (_ BitVec 64))
-(declare-fun var1335_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1336_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1337_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1332_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1338_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1341_literal_Unsigned_0___t0 () (_ BitVec 64))
-(declare-fun var1340_unsafe_expression__t0 () (_ BitVec 64))
-(declare-fun var1345_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1346_true__t0 () Bool)
+(declare-fun var1329_true__t0 () Bool)
+(declare-fun var1330_interpretation_of_theory_safe_over_literal_string__cannot_write__s___t0 () Bool)
+(declare-fun var1331_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1332_interpretation_of_theory_nullterm_over_literal_string__cannot_write__s___t0 () Bool)
+(declare-fun var1333_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1335_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1334_return__t1 () (_ BitVec 64))
+(declare-fun var1336_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1337_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1338_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1333_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1339_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1342_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var1341_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1346_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1347_true__t0 () Bool)
-(declare-fun var1349_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1350_true__t0 () Bool)
+(declare-fun var1348_true__t0 () Bool)
+(declare-fun var1350_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1351_true__t0 () Bool)
-(declare-fun var1352_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1353_true__t0 () Bool)
+(declare-fun var1352_true__t0 () Bool)
+(declare-fun var1353_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1354_true__t0 () Bool)
-(declare-fun var1355_literal_Unsigned_275___t0 () (_ BitVec 64))
-(declare-fun var1356_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
-(declare-fun var1357_true__t0 () Bool)
+(declare-fun var1355_true__t0 () Bool)
+(declare-fun var1356_literal_Unsigned_281___t0 () (_ BitVec 64))
+(declare-fun var1357_literal_string__cannot_seek__s___t0 () (_ BitVec 64))
 (declare-fun var1358_true__t0 () Bool)
-(declare-fun var1359_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1360_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1361_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
-(declare-fun var1362_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1364_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1363_return__t1 () (_ BitVec 64))
-(declare-fun var1365_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1366_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1367_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1362_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1368_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1371_literal_Unsigned_32___t0 () (_ BitVec 64))
-(declare-fun var1370_unsafe_expression__t0 () (_ BitVec 64))
-(declare-fun var1375_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1376_true__t0 () Bool)
+(declare-fun var1359_true__t0 () Bool)
+(declare-fun var1360_interpretation_of_theory_safe_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1361_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1362_interpretation_of_theory_nullterm_over_literal_string__cannot_seek__s___t0 () Bool)
+(declare-fun var1363_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1365_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1364_return__t1 () (_ BitVec 64))
+(declare-fun var1366_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1367_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1368_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1363_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1369_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1372_literal_Unsigned_32___t0 () (_ BitVec 64))
+(declare-fun var1371_unsafe_expression__t0 () (_ BitVec 64))
+(declare-fun var1376_literal_string__cannot_read__s___t0 () (_ BitVec 64))
 (declare-fun var1377_true__t0 () Bool)
-(declare-fun var1379_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
-(declare-fun var1380_true__t0 () Bool)
+(declare-fun var1378_true__t0 () Bool)
+(declare-fun var1380_literal_string___home_runner_work_carrier_carrier_core_src_vault_toml_zz___t0 () (_ BitVec 64))
 (declare-fun var1381_true__t0 () Bool)
-(declare-fun var1382_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
-(declare-fun var1383_true__t0 () Bool)
+(declare-fun var1382_true__t0 () Bool)
+(declare-fun var1383_literal_string____carrier__vault_toml__load_from_toml_identity_secret___t0 () (_ BitVec 64))
 (declare-fun var1384_true__t0 () Bool)
-(declare-fun var1385_literal_Unsigned_281___t0 () (_ BitVec 64))
-(declare-fun var1386_literal_string__cannot_read__s___t0 () (_ BitVec 64))
-(declare-fun var1387_true__t0 () Bool)
+(declare-fun var1385_true__t0 () Bool)
+(declare-fun var1386_literal_Unsigned_287___t0 () (_ BitVec 64))
+(declare-fun var1387_literal_string__cannot_read__s___t0 () (_ BitVec 64))
 (declare-fun var1388_true__t0 () Bool)
-(declare-fun var1389_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
-(declare-fun var1390_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1391_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
-(declare-fun var1392_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
-(declare-fun var1394_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
-(declare-fun var1393_return__t1 () (_ BitVec 64))
-(declare-fun var1395_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
-(declare-fun var1396_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
-(declare-fun var1397_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1392_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
-(declare-fun var1398_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
-(declare-fun var1401_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1402_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
-(declare-fun var1403_true__t0 () Bool)
-(declare-fun var1405_addressof_deref_var332_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1406_len_addressof_deref_var332_this__secret____t0 () (_ BitVec 64))
-(declare-fun var1407_true__t0 () Bool)
-(declare-fun var1410_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var1411_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1412_interpretation_of_theory_safe_over_cast_of_addressof_deref_var332_this__secret___t0 () Bool)
-(declare-fun var1413_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var1414_interpretation_of_theory___err__checked_over_deref_S333_e___t0 () Bool)
+(declare-fun var1389_true__t0 () Bool)
+(declare-fun var1390_interpretation_of_theory_safe_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1391_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1392_interpretation_of_theory_nullterm_over_literal_string__cannot_read__s___t0 () Bool)
+(declare-fun var1393_return_value_of___err__fail_with_errno__t0 () (_ BitVec 64))
+(declare-fun var1395_safe_return_value_of___err__fail_with_errno_____safe_return___t0 () Bool)
+(declare-fun var1394_return__t1 () (_ BitVec 64))
+(declare-fun var1396_nullterm_return_value_of___err__fail_with_errno_____nullterm_return___t0 () Bool)
+(declare-fun var1397_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
+(declare-fun var1398_safe_return_____safe_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1393_return_value_of___err__fail_with_errno__t1 () (_ BitVec 64))
+(declare-fun var1399_nullterm_return_____nullterm_return_value_of___err__fail_with_errno___t0 () Bool)
+(declare-fun var1402_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1403_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
+(declare-fun var1404_true__t0 () Bool)
+(declare-fun var1406_addressof_deref_var333_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1407_len_addressof_deref_var333_this__secret____t0 () (_ BitVec 64))
+(declare-fun var1408_true__t0 () Bool)
+(declare-fun var1411_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1412_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1413_interpretation_of_theory_safe_over_cast_of_addressof_deref_var333_this__secret___t0 () Bool)
+(declare-fun var1414_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1415_interpretation_of_theory___err__checked_over_deref_S334_e___t0 () Bool)
 (check-sat)
 
 ;
@@ -12995,130 +12997,130 @@
 
 (push 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-(declare-fun var1420_deref_S1417_e__trace__t0 () (_ BitVec 64))
-(declare-fun var1421_len_deref_S1417_e____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+(declare-fun var1421_deref_S1418_e__trace__t0 () (_ BitVec 64))
+(declare-fun var1422_len_deref_S1418_e____t0 () (_ BitVec 64))
 (assert
-  (= var1421_len_deref_S1417_e____t0 (theory0_len var1420_deref_S1417_e__trace__t0) )
+  (= var1422_len_deref_S1418_e____t0 (theory0_len var1421_deref_S1418_e__trace__t0) )
 )
 
-(declare-fun var1418_et__t0 () (_ BitVec 64))
-(assert (! (= var1421_len_deref_S1417_e____t0 var1418_et__t0) :named A114)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+(declare-fun var1419_et__t0 () (_ BitVec 64))
+(assert (! (= var1422_len_deref_S1418_e____t0 var1419_et__t0) :named A114)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1417_e__t0 () (_ BitVec 64))
-(declare-fun var1423_interpretation_of_theory_safe_over_e__t0 () Bool)
+(declare-fun var1418_e__t0 () (_ BitVec 64))
+(declare-fun var1424_interpretation_of_theory_safe_over_e__t0 () Bool)
 (assert
-  (= var1423_interpretation_of_theory_safe_over_e__t0 (theory1_safe var1417_e__t0) )
+  (= var1424_interpretation_of_theory_safe_over_e__t0 (theory1_safe var1418_e__t0) )
 )
 
-(assert (! var1423_interpretation_of_theory_safe_over_e__t0 :named A115))(check-sat)
+(assert (! var1424_interpretation_of_theory_safe_over_e__t0 :named A115))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1416_this__t0 () (_ BitVec 64))
-(declare-fun var1424_interpretation_of_theory_safe_over_this__t0 () Bool)
+(declare-fun var1417_this__t0 () (_ BitVec 64))
+(declare-fun var1425_interpretation_of_theory_safe_over_this__t0 () Bool)
 (assert
-  (= var1424_interpretation_of_theory_safe_over_this__t0 (theory1_safe var1416_this__t0) )
+  (= var1425_interpretation_of_theory_safe_over_this__t0 (theory1_safe var1417_this__t0) )
 )
 
-(assert (! var1424_interpretation_of_theory_safe_over_this__t0 :named A116))(check-sat)
+(assert (! var1425_interpretation_of_theory_safe_over_this__t0 :named A116))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
 ; call of ::err::checked
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:208
-(declare-fun var1419_deref_S1417_e___t0 () (_ BitVec 64))
-(declare-fun var1425_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:214
+(declare-fun var1420_deref_S1418_e___t0 () (_ BitVec 64))
+(declare-fun var1426_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 () Bool)
 (assert
-  (= var1425_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 (theory61___err__checked var1419_deref_S1417_e___t0) )
+  (= var1426_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 (theory31___err__checked var1420_deref_S1418_e___t0) )
 )
 
-(assert (! var1425_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 :named A117))(check-sat)
+(assert (! var1426_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 :named A117))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
 ; call of static_attest
 ; static_attest
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
 ; call of nullterm
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
-(declare-fun var1426_v_string__t0 () (_ BitVec 64))
-(declare-fun var1427_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+(declare-fun var1427_v_string__t0 () (_ BitVec 64))
+(declare-fun var1428_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
 (assert
-  (= var1427_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var1426_v_string__t0) )
+  (= var1428_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var1427_v_string__t0) )
 )
 
-(assert (! var1427_interpretation_of_theory_nullterm_over_v_string__t0 :named A118))(check-sat)
+(assert (! var1428_interpretation_of_theory_nullterm_over_v_string__t0 :named A118))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:298
-(declare-fun var1428_literal_Unsigned_1___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:304
+(declare-fun var1429_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var1428_literal_Unsigned_1___t0 (_ bv1 64))
+  (= var1429_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
 ; call of static_attest
 ; static_attest
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
 ; call of safe
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
 ; collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
 ; end of collecting theory invocation arguments
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
-(declare-fun var1429_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+(declare-fun var1430_interpretation_of_theory_safe_over_v_string__t0 () Bool)
 (assert
-  (= var1429_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var1426_v_string__t0) )
+  (= var1430_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var1427_v_string__t0) )
 )
 
-(assert (! var1429_interpretation_of_theory_safe_over_v_string__t0 :named A119))(check-sat)
+(assert (! var1430_interpretation_of_theory_safe_over_v_string__t0 :named A119))(check-sat)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:299
-(declare-fun var1430_literal_Unsigned_1___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:305
+(declare-fun var1431_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var1430_literal_Unsigned_1___t0 (_ bv1 64))
+  (= var1431_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
 ; call of ::carrier::identity::secret_from_cstr
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
 ; begin safe ptr check
-(declare-fun var1432_safe_this___t0 () Bool)
+(declare-fun var1433_safe_this___t0 () Bool)
 (assert
-  (= var1432_safe_this___t0 (theory1_safe var1416_this__t0) )
+  (= var1433_safe_this___t0 (theory1_safe var1417_this__t0) )
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var1432_safe_this___t0 ) ))
+  (and true (or (not var1433_safe_this___t0 ) ))
 
 )
 
@@ -13127,74 +13129,74 @@
 ; unsat / pass
 (pop 1)
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-(declare-fun var1434_addressof_deref_var1416_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1435_len_addressof_deref_var1416_this__secret____t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+(declare-fun var1435_addressof_deref_var1417_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1436_len_addressof_deref_var1417_this__secret____t0 () (_ BitVec 64))
 (assert
-  (= var1435_len_addressof_deref_var1416_this__secret____t0 (theory0_len var1434_addressof_deref_var1416_this__secret___t0) )
+  (= var1436_len_addressof_deref_var1417_this__secret____t0 (theory0_len var1435_addressof_deref_var1417_this__secret___t0) )
 )
 
 (assert
-  (= var1435_len_addressof_deref_var1416_this__secret____t0 (_ bv1 64))
-
-)
-
-(assert
-  (= var1434_addressof_deref_var1416_this__secret___t0 (_ bv1433 64))
-
-)
-
-(declare-fun var1436_true__t0 () Bool)
-(assert
-  (= var1436_true__t0 (theory1_safe var1434_addressof_deref_var1416_this__secret___t0) )
-)
-
-(assert
-  var1436_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-(declare-fun var1437_cast_of_addressof_deref_var1416_this__secret___t0 () (_ BitVec 64))
-(assert (! (= var1437_cast_of_addressof_deref_var1416_this__secret___t0 var1434_addressof_deref_var1416_this__secret___t0) :named A120)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-(declare-fun var1438_addressof_deref_var1416_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1439_len_addressof_deref_var1416_this__secret____t0 () (_ BitVec 64))
-(assert
-  (= var1439_len_addressof_deref_var1416_this__secret____t0 (theory0_len var1438_addressof_deref_var1416_this__secret___t0) )
-)
-
-(assert
-  (= var1439_len_addressof_deref_var1416_this__secret____t0 (_ bv1 64))
+  (= var1436_len_addressof_deref_var1417_this__secret____t0 (_ bv1 64))
 
 )
 
 (assert
-  (= var1438_addressof_deref_var1416_this__secret___t0 (_ bv1433 64))
+  (= var1435_addressof_deref_var1417_this__secret___t0 (_ bv1434 64))
 
 )
 
-(declare-fun var1440_true__t0 () Bool)
+(declare-fun var1437_true__t0 () Bool)
 (assert
-  (= var1440_true__t0 (theory1_safe var1438_addressof_deref_var1416_this__secret___t0) )
+  (= var1437_true__t0 (theory1_safe var1435_addressof_deref_var1417_this__secret___t0) )
 )
 
 (assert
-  var1440_true__t0
+  var1437_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-(declare-fun var1441_cast_of_addressof_deref_var1416_this__secret___t0 () (_ BitVec 64))
-(assert (! (= var1441_cast_of_addressof_deref_var1416_this__secret___t0 var1438_addressof_deref_var1416_this__secret___t0) :named A121)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-(declare-fun var1442_cast_of_e__t0 () (_ BitVec 64))
-(assert (! (= var1442_cast_of_e__t0 var1417_e__t0) :named A122)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:207
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+(declare-fun var1438_cast_of_addressof_deref_var1417_this__secret___t0 () (_ BitVec 64))
+(assert (! (= var1438_cast_of_addressof_deref_var1417_this__secret___t0 var1435_addressof_deref_var1417_this__secret___t0) :named A120)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+(declare-fun var1439_addressof_deref_var1417_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1440_len_addressof_deref_var1417_this__secret____t0 () (_ BitVec 64))
+(assert
+  (= var1440_len_addressof_deref_var1417_this__secret____t0 (theory0_len var1439_addressof_deref_var1417_this__secret___t0) )
+)
+
+(assert
+  (= var1440_len_addressof_deref_var1417_this__secret____t0 (_ bv1 64))
+
+)
+
+(assert
+  (= var1439_addressof_deref_var1417_this__secret___t0 (_ bv1434 64))
+
+)
+
+(declare-fun var1441_true__t0 () Bool)
+(assert
+  (= var1441_true__t0 (theory1_safe var1439_addressof_deref_var1417_this__secret___t0) )
+)
+
+(assert
+  var1441_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+(declare-fun var1442_cast_of_addressof_deref_var1417_this__secret___t0 () (_ BitVec 64))
+(assert (! (= var1442_cast_of_addressof_deref_var1417_this__secret___t0 var1439_addressof_deref_var1417_this__secret___t0) :named A121)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+(declare-fun var1443_cast_of_e__t0 () (_ BitVec 64))
+(assert (! (= var1443_cast_of_e__t0 var1418_e__t0) :named A122)); : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:213
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
 ;callsite_assert
 (push 1)
 
@@ -13202,27 +13204,27 @@
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1443_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1444_interpretation_of_theory_safe_over_v_string__t0 () Bool)
 (assert
-  (= var1443_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var1426_v_string__t0) )
+  (= var1444_interpretation_of_theory_safe_over_v_string__t0 (theory1_safe var1427_v_string__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:305
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1444_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1445_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
 (assert
-  (= var1444_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1442_cast_of_e__t0) )
+  (= var1445_interpretation_of_theory_safe_over_cast_of_e__t0 (theory1_safe var1443_cast_of_e__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:305
 ; call of safe
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
-(declare-fun var1445_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1416_this__secret___t0 () Bool)
+(declare-fun var1446_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1417_this__secret___t0 () Bool)
 (assert
-  (= var1445_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1416_this__secret___t0 (theory1_safe var1441_cast_of_addressof_deref_var1416_this__secret___t0) )
+  (= var1446_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1417_this__secret___t0 (theory1_safe var1442_cast_of_addressof_deref_var1417_this__secret___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:306
@@ -13232,9 +13234,9 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:306
-(declare-fun var1446_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1447_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
 (assert
-  (= var1446_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var1426_v_string__t0) )
+  (= var1447_interpretation_of_theory_nullterm_over_v_string__t0 (theory2_nullterm var1427_v_string__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:307
@@ -13247,15 +13249,15 @@
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:307
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/core/src/identity.zz:307
-(declare-fun var1447_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 () Bool)
+(declare-fun var1448_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 () Bool)
 (assert
-  (= var1447_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 (theory61___err__checked var1419_deref_S1417_e___t0) )
+  (= var1448_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 (theory31___err__checked var1420_deref_S1418_e___t0) )
 )
 
 (push 1)
 
 (assert
-  (and true (or (not var1443_interpretation_of_theory_safe_over_v_string__t0 ) (not var1444_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1445_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1416_this__secret___t0 ) (not var1446_interpretation_of_theory_nullterm_over_v_string__t0 ) (not var1447_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 ) ))
+  (and true (or (not var1444_interpretation_of_theory_safe_over_v_string__t0 ) (not var1445_interpretation_of_theory_safe_over_cast_of_e__t0 ) (not var1446_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1417_this__secret___t0 ) (not var1447_interpretation_of_theory_nullterm_over_v_string__t0 ) (not var1448_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 ) ))
 
 )
 
@@ -13267,27 +13269,27 @@
 ;end of callsite_assert
 (pop 1)
 
-(declare-fun var1443_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var1444_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1445_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1416_this__secret___t0 () Bool)
-(declare-fun var1446_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var1447_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 () Bool)
+(declare-fun var1444_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1445_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1446_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1417_this__secret___t0 () Bool)
+(declare-fun var1447_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1448_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 () Bool)
 ; borrows after call
-; 1433 to temporal +1 because of function borrow
-(declare-fun var1433_deref_var1416_this__secret__t1 () (_ BitVec 64))
-(declare-fun var1433_deref_var1416_this__secret__t0 () (_ BitVec 64))
+; 1434 to temporal +1 because of function borrow
+(declare-fun var1434_deref_var1417_this__secret__t1 () (_ BitVec 64))
+(declare-fun var1434_deref_var1417_this__secret__t0 () (_ BitVec 64))
 (assert
-  (= var1433_deref_var1416_this__secret__t1  (ite true var1433_deref_var1416_this__secret__t1 var1433_deref_var1416_this__secret__t0)  )
+  (= var1434_deref_var1417_this__secret__t1  (ite true var1434_deref_var1417_this__secret__t1 var1434_deref_var1417_this__secret__t0)  )
 )
 
-; 1419 to temporal +1 because of function borrow
-(declare-fun var1419_deref_S1417_e___t1 () (_ BitVec 64))
+; 1420 to temporal +1 because of function borrow
+(declare-fun var1420_deref_S1418_e___t1 () (_ BitVec 64))
 (assert
-  (= var1419_deref_S1417_e___t1  (ite true var1419_deref_S1417_e___t1 var1419_deref_S1417_e___t0)  )
+  (= var1420_deref_S1418_e___t1  (ite true var1420_deref_S1418_e___t1 var1420_deref_S1418_e___t0)  )
 )
 
 ; end of borrows after call
-; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:300
+; : /home/runner/work/carrier/carrier/core/src/vault_toml.zz:306
 ; callsite effects
 ; end of callsite effects
 ;end of function ::carrier::vault_toml::load_from_toml_identity_secret
@@ -13295,30 +13297,30 @@
 
 (pop 1)
 
-(declare-fun var1420_deref_S1417_e__trace__t0 () (_ BitVec 64))
-(declare-fun var1421_len_deref_S1417_e____t0 () (_ BitVec 64))
-(declare-fun var1417_e__t0 () (_ BitVec 64))
-(declare-fun var1423_interpretation_of_theory_safe_over_e__t0 () Bool)
-(declare-fun var1416_this__t0 () (_ BitVec 64))
-(declare-fun var1424_interpretation_of_theory_safe_over_this__t0 () Bool)
-(declare-fun var1419_deref_S1417_e___t0 () (_ BitVec 64))
-(declare-fun var1425_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 () Bool)
-(declare-fun var1426_v_string__t0 () (_ BitVec 64))
-(declare-fun var1427_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var1428_literal_Unsigned_1___t0 () (_ BitVec 64))
-(declare-fun var1429_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var1430_literal_Unsigned_1___t0 () (_ BitVec 64))
-(declare-fun var1432_safe_this___t0 () Bool)
-(declare-fun var1434_addressof_deref_var1416_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1435_len_addressof_deref_var1416_this__secret____t0 () (_ BitVec 64))
-(declare-fun var1436_true__t0 () Bool)
-(declare-fun var1438_addressof_deref_var1416_this__secret___t0 () (_ BitVec 64))
-(declare-fun var1439_len_addressof_deref_var1416_this__secret____t0 () (_ BitVec 64))
-(declare-fun var1440_true__t0 () Bool)
-(declare-fun var1443_interpretation_of_theory_safe_over_v_string__t0 () Bool)
-(declare-fun var1444_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
-(declare-fun var1445_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1416_this__secret___t0 () Bool)
-(declare-fun var1446_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
-(declare-fun var1447_interpretation_of_theory___err__checked_over_deref_S1417_e___t0 () Bool)
+(declare-fun var1421_deref_S1418_e__trace__t0 () (_ BitVec 64))
+(declare-fun var1422_len_deref_S1418_e____t0 () (_ BitVec 64))
+(declare-fun var1418_e__t0 () (_ BitVec 64))
+(declare-fun var1424_interpretation_of_theory_safe_over_e__t0 () Bool)
+(declare-fun var1417_this__t0 () (_ BitVec 64))
+(declare-fun var1425_interpretation_of_theory_safe_over_this__t0 () Bool)
+(declare-fun var1420_deref_S1418_e___t0 () (_ BitVec 64))
+(declare-fun var1426_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 () Bool)
+(declare-fun var1427_v_string__t0 () (_ BitVec 64))
+(declare-fun var1428_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1429_literal_Unsigned_1___t0 () (_ BitVec 64))
+(declare-fun var1430_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1431_literal_Unsigned_1___t0 () (_ BitVec 64))
+(declare-fun var1433_safe_this___t0 () Bool)
+(declare-fun var1435_addressof_deref_var1417_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1436_len_addressof_deref_var1417_this__secret____t0 () (_ BitVec 64))
+(declare-fun var1437_true__t0 () Bool)
+(declare-fun var1439_addressof_deref_var1417_this__secret___t0 () (_ BitVec 64))
+(declare-fun var1440_len_addressof_deref_var1417_this__secret____t0 () (_ BitVec 64))
+(declare-fun var1441_true__t0 () Bool)
+(declare-fun var1444_interpretation_of_theory_safe_over_v_string__t0 () Bool)
+(declare-fun var1445_interpretation_of_theory_safe_over_cast_of_e__t0 () Bool)
+(declare-fun var1446_interpretation_of_theory_safe_over_cast_of_addressof_deref_var1417_this__secret___t0 () Bool)
+(declare-fun var1447_interpretation_of_theory_nullterm_over_v_string__t0 () Bool)
+(declare-fun var1448_interpretation_of_theory___err__checked_over_deref_S1418_e___t0 () Bool)
 (check-sat)
 

@@ -24,34 +24,36 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_carrier_identity_Identity;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_carrier_vault_Vault;
+extern PyTypeObject py_Type_carrier_identity_Identity;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_identity_Address;
 extern PyTypeObject py_Type_carrier_identity_Secret;
-extern PyTypeObject py_Type_carrier_identity_Signature;
+extern PyTypeObject py_Type_carrier_identity_Alias;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_carrier_identity_Identity;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_carrier_vault_esp32_Authorize;
 extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_carrier_vault_Broker;
+extern PyTypeObject py_Type_carrier_identity_Signature;
+extern PyTypeObject py_Type_toml_Parser;
 extern PyTypeObject py_Type_toml_Value;
 extern PyTypeObject py_Type_toml_U;
 extern PyTypeObject py_Type_toml_ParserStack;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_toml_Parser;
-extern PyTypeObject py_Type_carrier_vault_Vault;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_carrier_identity_Secret;
+extern PyTypeObject py_Type_time_Time;
 extern PyTypeObject py_Type_carrier_identity_Address;
-extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_carrier_vault_CheckExistingAuthorizationState;
-extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_carrier_vault_authorize_open_stream_cb_s;
-extern PyTypeObject py_Type_carrier_identity_Signature;
-extern PyTypeObject py_Type_carrier_vault_Broker;
-extern PyTypeObject py_Type_carrier_identity_Identity;
-extern PyTypeObject py_Type_carrier_vault_esp32_Authorize;
 extern PyTypeObject py_Type_carrier_identity_SecretKit;
 extern PyTypeObject py_Type_carrier_vault_Vault;
+extern PyTypeObject py_Type_carrier_identity_Signature;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_carrier_vault_CheckExistingAuthorizationState;
+extern PyTypeObject py_Type_toml_Parser;
+extern PyTypeObject py_Type_carrier_vault_authorize_open_stream_cb_s;
+extern PyTypeObject py_Type_carrier_identity_Alias;
+extern PyTypeObject py_Type_carrier_identity_Address;
 
 
 static PyObject* py_carrier_vault_esp32_open(PyObject *pyself, PyObject *args) {

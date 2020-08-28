@@ -1,6 +1,38 @@
 
 <h1> module io::select </h1>
-<h4> fn select_write_fd (
+<h4> fn make_read_async (
+
+    ::io::Async*
+    async,
+
+    ::io::Io*
+    i,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select_read_fd (
+
+    int
+    fd,
+
+    ::io::select::Async*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select_write_fd (
 
     ::io::select::Async*
     self,
@@ -29,17 +61,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn select_read_fd (
+</p><h4> fn make (
 
     ::io::select::Async*
     self,
 
-    int
-    fd,
-
 )
 
--&gt bool
+
 
 </h4>
 
@@ -50,35 +79,6 @@
 )
 
 -&gt ::io::Io
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn make_read_async (
-
-    ::io::Io*
-    i,
-
-    ::io::Async*
-    async,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn make (
-
-    ::io::select::Async*
-    self,
-
-)
-
-
 
 </h4>
 

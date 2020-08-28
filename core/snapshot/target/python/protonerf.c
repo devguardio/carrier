@@ -24,16 +24,104 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_protonerf_Value;
-extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_protonerf_Decoder;
+extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_protonerf_Decoder;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_protonerf_Value;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_protonerf_Field;
+
+
+static PyObject * py_get_protonerf_Decoder_mem(PyObject *pyself, void *closure) {
+
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self == 0) { return 0; }
+            return PyLong_FromUnsignedLongLong(self->mem);
+}
+static int py_set_protonerf_Decoder_mem(PyObject *pyself, PyObject *value, void *closure) {
+
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self == 0) { return 0; }
+            self->mem = PyLong_AsUnsignedLongLong(value);
+    return 0;
+}
+static PyObject * py_get_protonerf_Decoder_size(PyObject *pyself, void *closure) {
+
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self == 0) { return 0; }
+            return PyLong_FromUnsignedLongLong(self->size);
+}
+static int py_set_protonerf_Decoder_size(PyObject *pyself, PyObject *value, void *closure) {
+
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self == 0) { return 0; }
+            self->size = PyLong_AsUnsignedLongLong(value);
+    return 0;
+}
+static PyObject * py_get_protonerf_Decoder_at(PyObject *pyself, void *closure) {
+
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self == 0) { return 0; }
+            return PyLong_FromUnsignedLongLong(self->at);
+}
+static int py_set_protonerf_Decoder_at(PyObject *pyself, PyObject *value, void *closure) {
+
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self == 0) { return 0; }
+            self->at = PyLong_AsUnsignedLongLong(value);
+    return 0;
+}
+
+static void py_free_protonerf_Decoder(PyObject *pyself)
+{
+    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
+    if (self != 0) {
+        pyFATObject * fat = (pyFATObject *)pyself;
+        if (!fat->borrowed) {
+            PyMem_Free(self);
+        }
+    }
+    PyMem_Free(pyself);
+}
+
+static PyObject* py_new_protonerf_Decoder(PyTypeObject *type, PyObject *args, PyObject *kwds) {
+    void *mem = PyMem_Calloc(1, sizeof_protonerf_Decoder());
+    if (mem == 0) {
+        PyErr_SetString(PyExc_ValueError, "calloc failed");
+        return 0;
+    }
+
+    pyFATObject *fat = (pyFATObject *)type->tp_alloc(type, 0);
+    fat->ptr    = mem;
+    fat->tail   = 0;
+    return (PyObject*)fat;
+}
+static PyGetSetDef py_getset_protonerf_Decoder[]  = {
+{"mem", py_get_protonerf_Decoder_mem, py_set_protonerf_Decoder_mem,NULL,NULL},
+{"size", py_get_protonerf_Decoder_size, py_set_protonerf_Decoder_size,NULL,NULL},
+{"at", py_get_protonerf_Decoder_at, py_set_protonerf_Decoder_at,NULL,NULL},
+{NULL, NULL, NULL,NULL,NULL}
+};
+
+PyTypeObject py_Type_protonerf_Decoder  = {
+    PyVarObject_HEAD_INIT(NULL,0)
+    .tp_name        = "protonerf_Decoder",
+    .tp_doc         = "",
+    .tp_basicsize   = sizeof(pyFATObject),
+    .tp_flags       = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .tp_new         = py_new_protonerf_Decoder,
+    .tp_getset      = py_getset_protonerf_Decoder,
+    .tp_dealloc     = py_free_protonerf_Decoder,
+};
+
+
+
+
 static PyObject * py_get_protonerf_Value_v_len(PyObject *pyself, void *closure) {
 
     protonerf_Value * self = pyFATGetPtr(pyself, "protonerf_Value");
@@ -129,6 +217,7 @@ PyTypeObject py_Type_protonerf_Value  = {
     .tp_getset      = py_getset_protonerf_Value,
     .tp_dealloc     = py_free_protonerf_Value,
 };
+
 
 static PyObject * py_get_protonerf_Field_valid(PyObject *pyself, void *closure) {
 
@@ -231,94 +320,6 @@ PyTypeObject py_Type_protonerf_Field  = {
 
 
 
-
-static PyObject * py_get_protonerf_Decoder_mem(PyObject *pyself, void *closure) {
-
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self == 0) { return 0; }
-            return PyLong_FromUnsignedLongLong(self->mem);
-}
-static int py_set_protonerf_Decoder_mem(PyObject *pyself, PyObject *value, void *closure) {
-
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self == 0) { return 0; }
-            self->mem = PyLong_AsUnsignedLongLong(value);
-    return 0;
-}
-static PyObject * py_get_protonerf_Decoder_size(PyObject *pyself, void *closure) {
-
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self == 0) { return 0; }
-            return PyLong_FromUnsignedLongLong(self->size);
-}
-static int py_set_protonerf_Decoder_size(PyObject *pyself, PyObject *value, void *closure) {
-
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self == 0) { return 0; }
-            self->size = PyLong_AsUnsignedLongLong(value);
-    return 0;
-}
-static PyObject * py_get_protonerf_Decoder_at(PyObject *pyself, void *closure) {
-
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self == 0) { return 0; }
-            return PyLong_FromUnsignedLongLong(self->at);
-}
-static int py_set_protonerf_Decoder_at(PyObject *pyself, PyObject *value, void *closure) {
-
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self == 0) { return 0; }
-            self->at = PyLong_AsUnsignedLongLong(value);
-    return 0;
-}
-
-static void py_free_protonerf_Decoder(PyObject *pyself)
-{
-    protonerf_Decoder * self = pyFATGetPtr(pyself, "protonerf_Decoder");
-    if (self != 0) {
-        pyFATObject * fat = (pyFATObject *)pyself;
-        if (!fat->borrowed) {
-            PyMem_Free(self);
-        }
-    }
-    PyMem_Free(pyself);
-}
-
-static PyObject* py_new_protonerf_Decoder(PyTypeObject *type, PyObject *args, PyObject *kwds) {
-    void *mem = PyMem_Calloc(1, sizeof_protonerf_Decoder());
-    if (mem == 0) {
-        PyErr_SetString(PyExc_ValueError, "calloc failed");
-        return 0;
-    }
-
-    pyFATObject *fat = (pyFATObject *)type->tp_alloc(type, 0);
-    fat->ptr    = mem;
-    fat->tail   = 0;
-    return (PyObject*)fat;
-}
-static PyGetSetDef py_getset_protonerf_Decoder[]  = {
-{"mem", py_get_protonerf_Decoder_mem, py_set_protonerf_Decoder_mem,NULL,NULL},
-{"size", py_get_protonerf_Decoder_size, py_set_protonerf_Decoder_size,NULL,NULL},
-{"at", py_get_protonerf_Decoder_at, py_set_protonerf_Decoder_at,NULL,NULL},
-{NULL, NULL, NULL,NULL,NULL}
-};
-
-PyTypeObject py_Type_protonerf_Decoder  = {
-    PyVarObject_HEAD_INIT(NULL,0)
-    .tp_name        = "protonerf_Decoder",
-    .tp_doc         = "",
-    .tp_basicsize   = sizeof(pyFATObject),
-    .tp_flags       = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
-    .tp_new         = py_new_protonerf_Decoder,
-    .tp_getset      = py_getset_protonerf_Decoder,
-    .tp_dealloc     = py_free_protonerf_Decoder,
-};
-
-
-
-
-
-
 static PyObject* py_protonerf_next(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -346,11 +347,11 @@ static struct PyModuleDef mod_definition = {PyModuleDef_HEAD_INIT, "protonerf", 
 PyObject*  py_mod_protonerf_Init()
 {
     PyObject* exports = PyModule_Create(&mod_definition);
+    if (PyType_Ready(&py_Type_protonerf_Decoder) < 0) { return NULL; } 
+    PyModule_AddObject(exports, "Decoder", (PyObject *)&py_Type_protonerf_Decoder);
     if (PyType_Ready(&py_Type_protonerf_Value) < 0) { return NULL; } 
     PyModule_AddObject(exports, "Value", (PyObject *)&py_Type_protonerf_Value);
     if (PyType_Ready(&py_Type_protonerf_Field) < 0) { return NULL; } 
     PyModule_AddObject(exports, "Field", (PyObject *)&py_Type_protonerf_Field);
-    if (PyType_Ready(&py_Type_protonerf_Decoder) < 0) { return NULL; } 
-    PyModule_AddObject(exports, "Decoder", (PyObject *)&py_Type_protonerf_Decoder);
     return exports;
 }

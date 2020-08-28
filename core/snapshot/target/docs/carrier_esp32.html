@@ -2,14 +2,8 @@
 <h1> module carrier::esp32 </h1>
 <h4> fn check_err (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-    ::ext::&lt;esp_err.h&gt;::esp_err_t
-    ec,
+    usize
+    tail,
 
     usize
     line,
@@ -17,8 +11,14 @@
     ::err::Err*+tail
     self,
 
-    usize
-    tail,
+    ::ext::&lt;esp_err.h&gt;::esp_err_t
+    ec,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
 )
 

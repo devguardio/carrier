@@ -8,66 +8,66 @@ set(carrier_SOURCES
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Poly1305_32_c.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Chacha20_c.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_identity.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/io_unix.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_endpoint.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/log.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/err.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_config.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_noise.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_proto.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_preshared.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/mem.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/madpack_macrohelper.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_initiator.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hex.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hpack_encoder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/slice_mut_slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_subscribe.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/json.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_rand.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/symbols.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_toml.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_crc8.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/fs.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_pub_sysinfo.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_bootstrap.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/madpack.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hpack_decoder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/netio_udp.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_cipher.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/byteorder.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_symmetric.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_ik.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_stream.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/slice_slice.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/time.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_connect.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/err.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_sha256.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_sft.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/fs.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/slice_slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_config.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_ik.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/io_unix.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_crc8.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/netio_udp.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/netio_tcp.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/protonerf.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/pool.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/net_address.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/io.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_peering.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_pq.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_router.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_revision.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/netio_unix.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_channel.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/buffer.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_sync.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/base32.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/json.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hex.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/net_address.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/protonerf.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/madpack.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/sysinfo.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_responder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_initiator.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/log.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_router.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/slice_mut_slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_revision.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_noise.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_identity.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hpack_decoder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_subscribe.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_symmetric.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_connect.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_rand.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hpack_encoder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_pub_sysinfo.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_stream.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_endpoint.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/byteorder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_channel.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/netio_unix.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_pq.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_sync.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_sft.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/base32.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_preshared.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/time.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_toml.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_bootstrap.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/mem.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/io.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_proto.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/madpack_macrohelper.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/pool.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/slice.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/sysinfo_proto.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_responder.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_publish.c
+     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/net.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/hpack.c
      ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/netio.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/net.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/carrier_publish.c
-     ${CMAKE_CURRENT_LIST_DIR}/../../..//home/runner/work/carrier/carrier/core/target/release/zz/sysinfo_proto.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/gen/zz_builtins_carrier_carrier_CMake.c
 )

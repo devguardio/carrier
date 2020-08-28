@@ -8,6 +8,7 @@
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:2
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:1
+; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:2
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:7
 (declare-fun var7___symbols__nameof__t0 () (_ BitVec 64))
 (declare-fun var8_true__t0 () Bool)
@@ -30,7 +31,6 @@
   var10_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:7
 ;
 
 

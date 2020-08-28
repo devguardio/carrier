@@ -1,24 +1,15 @@
 
 <h1> module carrier::sha256 </h1>
-<h4> fn hkdf (
+<h4> fn update (
 
     u8*
-    out1,
-
-    u8*
-    out3,
+    data,
 
     usize
-    input_key_material_len,
+    l,
 
-    u8*
-    out2,
-
-    u8*
-    chaining_key,
-
-    u8*
-    input_key_material,
+    ::carrier::sha256::Sha256*
+    self,
 
 )
 
@@ -28,19 +19,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn hmac (
+</p><h4> fn finish (
 
-    usize
-    datalen,
-
-    u8*
-    key,
-
-    u8*
-    data,
-
-    usize
-    keylen,
+    ::carrier::sha256::Sha256*
+    self,
 
     u8*
     out,
@@ -66,22 +48,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn finish (
-
-    u8*
-    out,
-
-    ::carrier::sha256::Sha256*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn blocklen (
 
 )
@@ -92,16 +58,50 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn update (
+</p><h4> fn hmac (
 
-    ::carrier::sha256::Sha256*
-    self,
+    u8*
+    key,
 
     usize
-    l,
+    datalen,
 
     u8*
     data,
+
+    u8*
+    out,
+
+    usize
+    keylen,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn hkdf (
+
+    u8*
+    out3,
+
+    u8*
+    chaining_key,
+
+    u8*
+    out2,
+
+    usize
+    input_key_material_len,
+
+    u8*
+    out1,
+
+    u8*
+    input_key_material,
 
 )
 

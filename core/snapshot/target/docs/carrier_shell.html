@@ -1,59 +1,28 @@
 
 <h1> module carrier::shell </h1>
-<h4> fn in_shell_poll (
-
-    ::carrier::stream::Stream*
-    self,
-
-    usize
-    et,
+<h4> fn open (
 
     ::err::Err*+et
     e,
 
-    ::io::Async*
-    async,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn in_shell_open (
-
-    ::carrier::stream::Stream*
-    self,
-
     usize
     et,
-
-    ::err::Err*+et
-    e,
-
-    ::slice::slice::Slice
-    headers,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn open (
 
     ::carrier::channel::Channel*
     chan,
 
-    ::err::Err*+et
-    e,
+)
 
-    usize
-    et,
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn register (
+
+    ::carrier::endpoint::Endpoint*
+    ep,
 
 )
 
@@ -65,14 +34,14 @@
 
 </p><h4> fn in_shell_stream (
 
-    ::carrier::stream::Stream*
-    self,
-
     ::err::Err*+et
     e,
 
     usize
     et,
+
+    ::carrier::stream::Stream*
+    self,
 
     ::slice::slice::Slice
     msg,
@@ -80,6 +49,28 @@
 )
 
 -&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn in_shell_open (
+
+    usize
+    et,
+
+    ::carrier::stream::Stream*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    ::slice::slice::Slice
+    headers,
+
+)
+
+
 
 </h4>
 
@@ -104,10 +95,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn register (
+</p><h4> fn in_shell_poll (
 
-    ::carrier::endpoint::Endpoint*
-    ep,
+    ::err::Err*+et
+    e,
+
+    ::carrier::stream::Stream*
+    self,
+
+    usize
+    et,
+
+    ::io::Async*
+    async,
 
 )
 

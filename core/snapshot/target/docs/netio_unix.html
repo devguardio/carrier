@@ -2,8 +2,27 @@
 <h1> module netio::unix </h1>
 <h4> fn socket (
 
+    ::net::address::Address*
+    addr,
+
+    int
+    typ,
+
+    usize
+    et,
+
     ::err::Err*+et
     e,
+
+)
+
+-&gt int
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn alen (
 
     ::net::address::Address*
     addr,
@@ -11,12 +30,12 @@
     usize
     et,
 
-    int
-    typ,
+    ::err::Err*+et
+    e,
 
 )
 
--&gt int
+-&gt usize
 
 </h4>
 
@@ -36,25 +55,6 @@
 )
 
 
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn alen (
-
-    ::net::address::Address*
-    addr,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
--&gt usize
 
 </h4>
 

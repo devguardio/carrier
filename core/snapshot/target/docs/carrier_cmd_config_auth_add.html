@@ -2,54 +2,23 @@
 <h1> module carrier::cmd_config_auth_add </h1>
 <h4> fn run_self (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    addme_s,
-
     ::err::Err*+et
     e,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    resource,
-
     usize
     et,
-
-    ::carrier::cmd_config::Method
-    method,
 
     ::carrier::endpoint::Endpoint*
     endpoint,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn run_remote (
-
-    usize
-    et,
-
     ::ext::&lt;stddef.h&gt;::char*
-    addme,
-
-    ::carrier::identity::Identity*
-    target,
-
-    ::carrier::cmd_config::Method
-    method,
-
-    ::err::Err*+et
-    e,
+    addme_s,
 
     ::ext::&lt;stddef.h&gt;::char*
     resource,
 
-    ::carrier::endpoint::Endpoint*
-    ep,
+    ::carrier::cmd_config::Method
+    method,
 
 )
 
@@ -60,4 +29,3 @@
 <p class='doc_comments'>
 
 </p>
-

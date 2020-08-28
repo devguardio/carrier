@@ -5,14 +5,14 @@
     ::err::Err*+et
     e,
 
-    usize
-    et,
-
     ::protonerf::Field
     field,
 
     ::carrier::peering::Peering*
     self,
+
+    usize
+    et,
 
 )
 
@@ -24,17 +24,17 @@
 
 </p><h4> fn received (
 
-    ::carrier::peering::Transport
-    transport,
-
     ::carrier::peering::Peering*
     self,
+
+    ::net::address::Address
+    addr,
 
     ::carrier::peering::Class
     klass,
 
-    ::net::address::Address
-    addr,
+    ::carrier::peering::Transport
+    transport,
 
 )
 

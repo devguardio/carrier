@@ -85,9 +85,9 @@
 (assert (! var15_infix_expression__t0 :named A1))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:10
-(declare-fun var16_literal_1__t0 () (_ BitVec 64))
+(declare-fun var16_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var16_literal_1__t0 (_ bv1 64))
+  (= var16_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -173,7 +173,7 @@
 (declare-fun var12_interpretation_of_theory_symbol_over_s__t0 () Bool)
 (declare-fun var4___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
 (declare-fun var14_interpretation_of_theory_len_over___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
-(declare-fun var16_literal_1__t0 () (_ BitVec 64))
+(declare-fun var16_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var17_len___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names___t0 () (_ BitVec 64))
 (declare-fun var19_array_member___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_s___t0 () (_ BitVec 64))
 (declare-fun var20_safe_array_member___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names_s______safe_return___t0 () Bool)

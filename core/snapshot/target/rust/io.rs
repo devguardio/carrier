@@ -3,9 +3,27 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
-pub struct wait_fn {
+pub enum Ready {
+    io_Ready_Read = 0,
+    io_Ready_Write = 1,
+
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub enum Result {
+    io_Result_Ready = 0,
+    io_Result_Later = 1,
+    io_Result_Error = 2,
+    io_Result_Eof = 3,
+
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct wake_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zasync: *mut u8,  Ze: *mut u8,  Zet: usize, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zasync: *mut u8, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -17,16 +35,6 @@ pub struct Context {
     pub fd :std::os::raw::c_int ,
     pub handle :*mut u8 ,
 }
-#[derive(Clone)]
-#[repr(C)]
-pub enum Result {
-    io_Result_Ready = 0,
-    io_Result_Later = 1,
-    io_Result_Error = 2,
-    io_Result_Eof = 3,
-
-}
-
 #[derive(Clone)]
 #[repr(C)]
 pub struct read_fn {
@@ -74,23 +82,15 @@ pub struct make_channel_fn {
 }
 #[derive(Clone)]
 #[repr(C)]
-pub enum Ready {
-    io_Ready_Read = 0,
-    io_Ready_Write = 1,
-
-}
-
-#[derive(Clone)]
-#[repr(C)]
 pub struct select_fn {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zasync: *mut u8,  Ze: *mut u8,  Zet: usize,  Zctx: *mut u8,  Zw: super::io::Ready, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
-pub struct wake_fn {
+pub struct wait_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zasync: *mut u8, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zasync: *mut u8,  Ze: *mut u8,  Zet: usize, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -263,6 +263,18 @@ impl Async {
 }
 }
 extern {
+    #[link_name = "io_wake"]
+    pub fn r#wake( Zself: *mut u8);
+
+
+    #[link_name = "io_select"]
+    pub fn r#select( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zctx: *mut u8,  Zw: super::io::Ready);
+
+
+    #[link_name = "io_wait"]
+    pub fn r#wait( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+
+
 
     #[link_name = "sizeof_io_Context"]
     pub fn sizeof_Context() -> libc::size_t;
@@ -270,18 +282,31 @@ extern {
 
 
 
-
     #[link_name = "sizeof_io_Io"]
     pub fn sizeof_Io() -> libc::size_t;
-
-
-
-    #[link_name = "io_await"]
-    pub fn r#await( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpoll: *const u8,  Zuser: *mut u8,  Ztimeout_: super::time::Time)  -> super::io::Result;
 
     #[link_name = "io_valid"]
     pub fn r#valid( Zself: *const u8)  -> bool;
 
+
+    #[link_name = "io_write"]
+    pub fn r#write( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstr: *mut u8,  Zst: usize)  -> super::io::Result;
+
+    #[link_name = "io_read"]
+    pub fn r#read( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstr: *mut u8,  Zst: usize)  -> super::io::Result;
+
+    #[link_name = "io_close"]
+    pub fn r#close( Zself: *mut u8);
+
+    #[link_name = "io_write_bytes"]
+    pub fn r#write_bytes( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zb: *const u8,  Zblen: *mut usize)  -> super::io::Result;
+
+    #[link_name = "io_read_bytes"]
+    pub fn r#read_bytes( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *mut u8,  Zmemlen: *mut usize)  -> super::io::Result;
+
+
+    #[link_name = "io_await"]
+    pub fn r#await( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zpoll: *const u8,  Zuser: *mut u8,  Ztimeout_: super::time::Time)  -> super::io::Result;
 
 
 
@@ -290,44 +315,19 @@ extern {
     #[link_name = "sizeof_io_Async"]
     pub fn sizeof_Async() -> libc::size_t;
 
+    #[link_name = "io_channel"]
+    pub fn r#channel( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zread: *mut u8,  Zwrite: *mut u8);
+
+    #[link_name = "io_read_slice"]
+    pub fn r#read_slice( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zslice: *mut u8)  -> super::io::Result;
+
+    #[link_name = "io_timeout"]
+    pub fn r#timeout( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zt2: super::time::Time)  -> super::io::Io;
 
     #[link_name = "io_write_cstr"]
     pub fn r#write_cstr( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zb: *const u8)  -> super::io::Result;
 
     #[link_name = "io_readline"]
     pub fn r#readline( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstr: *mut u8,  Zst: usize)  -> super::io::Result;
-
-    #[link_name = "io_write"]
-    pub fn r#write( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstr: *mut u8,  Zst: usize)  -> super::io::Result;
-
-    #[link_name = "io_channel"]
-    pub fn r#channel( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zread: *mut u8,  Zwrite: *mut u8);
-
-    #[link_name = "io_read"]
-    pub fn r#read( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstr: *mut u8,  Zst: usize)  -> super::io::Result;
-
-    #[link_name = "io_timeout"]
-    pub fn r#timeout( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zt2: super::time::Time)  -> super::io::Io;
-
-    #[link_name = "io_read_bytes"]
-    pub fn r#read_bytes( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmem: *mut u8,  Zmemlen: *mut usize)  -> super::io::Result;
-
-    #[link_name = "io_wait"]
-    pub fn r#wait( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
-
-    #[link_name = "io_read_slice"]
-    pub fn r#read_slice( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zslice: *mut u8)  -> super::io::Result;
-
-    #[link_name = "io_write_bytes"]
-    pub fn r#write_bytes( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zb: *const u8,  Zblen: *mut usize)  -> super::io::Result;
-
-    #[link_name = "io_select"]
-    pub fn r#select( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zctx: *mut u8,  Zw: super::io::Ready);
-
-    #[link_name = "io_close"]
-    pub fn r#close( Zself: *mut u8);
-
-    #[link_name = "io_wake"]
-    pub fn r#wake( Zself: *mut u8);
 
 }

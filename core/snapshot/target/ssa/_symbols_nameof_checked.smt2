@@ -74,9 +74,9 @@
 (assert (! var15_infix_expression__t0 :named A1))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
-(declare-fun var16_literal_1__t0 () (_ BitVec 64))
+(declare-fun var16_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var16_literal_1__t0 (_ bv1 64))
+  (= var16_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -85,18 +85,18 @@
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 ; literal expr
-(declare-fun var17_literal_0__t0 () (_ BitVec 64))
+(declare-fun var17_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var17_literal_0__t0 (_ bv0 64))
+  (= var17_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var18_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var18_implicit_coercion_of_literal_0__t0 var17_literal_0__t0) :named A2)); : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
+(declare-fun var18_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var18_implicit_coercion_of_literal_Unsigned_0___t0 var17_literal_Unsigned_0___t0) :named A2)); : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 (declare-fun var19_infix_expression__t0 () Bool)
 (declare-fun var11_s__t0 () (_ BitVec 64))
 (assert
-  (=  var19_infix_expression__t0 (bvule var11_s__t0 var18_implicit_coercion_of_literal_0__t0))
+  (=  var19_infix_expression__t0 (bvule var11_s__t0 var18_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
@@ -139,35 +139,35 @@
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:17
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:18
 ; literal expr
-(declare-fun var23_literal_0__t0 () (_ BitVec 64))
+(declare-fun var23_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var23_literal_0__t0 (_ bv0 64))
+  (= var23_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var24_safe_literal_0_____safe_return___t0 () Bool)
+(declare-fun var24_safe_literal_Unsigned_0______safe_return___t0 () Bool)
 (assert
-  (= var24_safe_literal_0_____safe_return___t0 (theory1_safe var23_literal_0__t0) )
+  (= var24_safe_literal_Unsigned_0______safe_return___t0 (theory1_safe var23_literal_Unsigned_0___t0) )
 )
 
 (declare-fun var12_return__t1 () (_ BitVec 64))
 (assert
-  (= var24_safe_literal_0_____safe_return___t0 (theory1_safe var12_return__t1) )
+  (= var24_safe_literal_Unsigned_0______safe_return___t0 (theory1_safe var12_return__t1) )
 )
 
-(declare-fun var25_nullterm_literal_0_____nullterm_return___t0 () Bool)
+(declare-fun var25_nullterm_literal_Unsigned_0______nullterm_return___t0 () Bool)
 (assert
-  (= var25_nullterm_literal_0_____nullterm_return___t0 (theory2_nullterm var23_literal_0__t0) )
+  (= var25_nullterm_literal_Unsigned_0______nullterm_return___t0 (theory2_nullterm var23_literal_Unsigned_0___t0) )
 )
 
 (assert
-  (= var25_nullterm_literal_0_____nullterm_return___t0 (theory2_nullterm var12_return__t1) )
+  (= var25_nullterm_literal_Unsigned_0______nullterm_return___t0 (theory2_nullterm var12_return__t1) )
 )
 
-(declare-fun var26_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var26_implicit_coercion_of_literal_0__t0 var23_literal_0__t0) :named A4))(declare-fun var12_return__t0 () (_ BitVec 64))
+(declare-fun var26_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var26_implicit_coercion_of_literal_Unsigned_0___t0 var23_literal_Unsigned_0___t0) :named A4))(declare-fun var12_return__t0 () (_ BitVec 64))
 (assert
-  (= var12_return__t1  (ite var22_infix_expression__t0 var26_implicit_coercion_of_literal_0__t0 var12_return__t0)  )
+  (= var12_return__t1  (ite var22_infix_expression__t0 var26_implicit_coercion_of_literal_Unsigned_0___t0 var12_return__t0)  )
 )
 
 ; end branch
@@ -195,9 +195,9 @@
 (assert (! var27_interpretation_of_theory_symbol_over_s__t0 :named A5))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:20
-(declare-fun var28_literal_1__t0 () (_ BitVec 64))
+(declare-fun var28_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var28_literal_1__t0 (_ bv1 64))
+  (= var28_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -272,15 +272,15 @@
 
 (declare-fun var4___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
 (declare-fun var14_interpretation_of_theory_len_over___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
-(declare-fun var16_literal_1__t0 () (_ BitVec 64))
-(declare-fun var17_literal_0__t0 () (_ BitVec 64))
+(declare-fun var16_literal_Unsigned_1___t0 () (_ BitVec 64))
+(declare-fun var17_literal_Unsigned_0___t0 () (_ BitVec 64))
 (declare-fun var11_s__t0 () (_ BitVec 64))
-(declare-fun var23_literal_0__t0 () (_ BitVec 64))
-(declare-fun var24_safe_literal_0_____safe_return___t0 () Bool)
+(declare-fun var23_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var24_safe_literal_Unsigned_0______safe_return___t0 () Bool)
 (declare-fun var12_return__t1 () (_ BitVec 64))
-(declare-fun var25_nullterm_literal_0_____nullterm_return___t0 () Bool)
+(declare-fun var25_nullterm_literal_Unsigned_0______nullterm_return___t0 () Bool)
 (declare-fun var27_interpretation_of_theory_symbol_over_s__t0 () Bool)
-(declare-fun var28_literal_1__t0 () (_ BitVec 64))
+(declare-fun var28_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var29_interpretation_of_theory_symbol_over_s__t0 () Bool)
 (declare-fun var30_return_value_of___symbols__nameof__t0 () (_ BitVec 64))
 (declare-fun var31_safe_return_value_of___symbols__nameof_____safe_return___t0 () Bool)

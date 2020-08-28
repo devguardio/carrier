@@ -56,7 +56,6 @@ pub struct U {
     pub user1 :*mut u8 ,
     pub user2 :usize ,
 }
-pub const MAX_DEPTH : usize = 64;
 
 #[derive(Clone)]
 #[repr(C)]
@@ -66,6 +65,7 @@ pub struct ParserStack {
     pub in_array :bool ,
     pub index :usize ,
 }
+pub const MAX_DEPTH : usize = 64;
 
 #[derive(Clone)]
 #[repr(C)]
@@ -300,22 +300,22 @@ extern {
     #[link_name = "sizeof_toml_U"]
     pub fn sizeof_U() -> libc::size_t;
 
+    #[link_name = "sizeof_toml_ParserStack"]
+    pub fn sizeof_ParserStack() -> libc::size_t;
+
 
     #[link_name = "toml_parser"]
     pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
 
-
-    #[link_name = "toml_push"]
-    pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
-
     #[link_name = "toml_close"]
     pub fn r#close( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize);
 
-    #[link_name = "sizeof_toml_ParserStack"]
-    pub fn sizeof_ParserStack() -> libc::size_t;
 
     #[link_name = "sizeof_toml_Parser"]
     pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
+
+    #[link_name = "toml_push"]
+    pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
 
     #[link_name = "toml_next"]
     pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);

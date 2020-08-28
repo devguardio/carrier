@@ -1,18 +1,112 @@
 
 <h1> module err </h1>
-<h4> fn assert_safe (
+<h4> fn fail_with_errno (
 
-    ::ext::&lt;stddef.h&gt;::void*
-    a,
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    ::err::Err*+tail
+    self,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
+
+    usize
+    line,
+
+    usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn fail (
+
+    usize
+    line,
 
     ::ext::&lt;stddef.h&gt;::char*
     scope,
 
     usize
+    tail,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn elog (
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn eprintf (
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    tail,
+
+    ::ext::&lt;stdio.h&gt;::FILE*
+    out,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn assert_safe (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    a,
+
+    usize
     line,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
 )
 
@@ -23,6 +117,34 @@
 <p class='doc_comments'>
 
 </p><h4> fn check (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    line,
+
+    usize
+    tail,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ check if error was set.&lt;br&gt;&lt;br&gt; returns true if error was set&lt;br&gt;
+</p><h4> fn abort (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
     ::err::Err*+tail
     self,
@@ -36,21 +158,21 @@
     usize
     line,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
 )
 
--&gt bool
+
 
 </h4>
 
 <p class='doc_comments'>
- check if error was set.&lt;br&gt;&lt;br&gt; returns true if error was set&lt;br&gt;
+
 </p><h4> fn assert2 (
 
     bool
     a,
+
+    usize
+    line,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
@@ -58,11 +180,49 @@
     ::ext::&lt;stddef.h&gt;::char*
     scope,
 
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn ignore (
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    tail,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ ignore any previous errors and reset error state&lt;br&gt;
+</p><h4> fn backtrace (
+
     usize
     line,
 
     ::ext::&lt;stddef.h&gt;::char*
-    fmt,
+    file,
+
+    usize
+    tail,
+
+    ::err::Err*+tail
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
 )
 
@@ -77,20 +237,20 @@
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
-    ::err::Err*+tail
-    self,
-
     usize
     tail,
-
-    usize
-    line,
 
     ::ext::&lt;stddef.h&gt;::char*
     scope,
 
+    ::err::Err*+tail
+    self,
+
     ::ext::&lt;stddef.h&gt;::char*
     fmt,
+
+    usize
+    line,
 
 )
 
@@ -100,35 +260,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn elog (
+</p><h4> fn to_str (
 
     usize
-    tail,
+    et,
 
-    ::err::Err*+tail
+    usize
+    dest_len,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    dest,
+
+    ::err::Err*+et
     self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn panic (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
-
-    usize
-    line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
 
 )
 
@@ -140,26 +284,26 @@
 
 </p><h4> fn fail_with_system_error (
 
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
     usize
     line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
 
     int
     merrno,
 
     ::ext::&lt;stddef.h&gt;::char*
-    scope,
+    fmt,
 
-    ::err::Err*+tail
-    self,
+    usize
+    tail,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
-    usize
-    tail,
+    ::err::Err*+tail
+    self,
 
 )
 
@@ -185,106 +329,19 @@
 
 <p class='doc_comments'>
  create a new error&lt;br&gt;
-</p><h4> fn backtrace (
-
-    usize
-    tail,
-
-    ::err::Err*+tail
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-    usize
-    line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn fail_with_errno (
-
-    usize
-    tail,
-
-    usize
-    line,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
+</p><h4> fn panic (
 
     ::ext::&lt;stddef.h&gt;::char*
     fmt,
 
-    ::err::Err*+tail
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn fail (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
-
-    usize
-    e,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-    usize
-    tail,
-
     ::ext::&lt;stddef.h&gt;::char*
     file,
-
-    ::err::Err*+tail
-    self,
-
-    usize
-    line,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn abort (
-
-    usize
-    tail,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
 
     usize
     line,
 
     ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-    ::err::Err*+tail
-    self,
+    scope,
 
 )
 
@@ -294,76 +351,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn eprintf (
-
-    ::err::Err*+tail
-    self,
-
-    ::ext::&lt;stdio.h&gt;::FILE*
-    out,
-
-    usize
-    tail,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn ignore (
-
-    usize
-    tail,
-
-    ::err::Err*+tail
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- ignore any previous errors and reset error state&lt;br&gt;
 </p><h4> fn assert (
+
+    usize
+    line,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
 
     bool
     a,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-    usize
-    line,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_str (
-
-    usize
-    dest_len,
-
-    ::err::Err*+et
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    dest,
-
-    usize
-    et,
 
 )
 

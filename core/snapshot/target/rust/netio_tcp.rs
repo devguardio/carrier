@@ -64,17 +64,17 @@ impl Socket {
 }
 }
 extern {
+    #[link_name = "netio_tcp_send"]
+    pub fn r#send( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: super::slice_slice::Slice)  -> super::io::Result;
+
     #[link_name = "netio_tcp_close"]
     pub fn r#close( Zself: *mut u8);
-
-    #[link_name = "sizeof_netio_tcp_Socket"]
-    pub fn sizeof_Socket() -> libc::size_t;
 
     #[link_name = "netio_tcp_recv"]
     pub fn r#recv( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: *mut u8,  Zst: usize)  -> super::io::Result;
 
-    #[link_name = "netio_tcp_send"]
-    pub fn r#send( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: super::slice_slice::Slice)  -> super::io::Result;
+    #[link_name = "sizeof_netio_tcp_Socket"]
+    pub fn sizeof_Socket() -> libc::size_t;
 
     #[link_name = "netio_tcp_connect"]
     pub fn r#connect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddr: super::net_address::Address,  Zasync: *mut u8);

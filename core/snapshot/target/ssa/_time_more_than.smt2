@@ -6,92 +6,91 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:1
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:80
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:1
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:32
-(declare-fun var8___time__to_seconds__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:91
+(declare-fun var8___time__real__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
-  (= var9_true__t0 (theory1_safe var8___time__to_seconds__t0) )
+  (= var9_true__t0 (theory1_safe var8___time__real__t0) )
 )
 
 (assert
   var9_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
-(declare-fun var10___time__to_millis__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:19
+(declare-fun var10___time__infinite__t0 () (_ BitVec 64))
 (declare-fun var11_true__t0 () Bool)
 (assert
-  (= var11_true__t0 (theory1_safe var10___time__to_millis__t0) )
+  (= var11_true__t0 (theory1_safe var10___time__infinite__t0) )
 )
 
 (assert
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:13
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:25
-(declare-fun var12___time__from_seconds__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:36
+(declare-fun var12___time__to_millis__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___time__from_seconds__t0) )
+  (= var13_true__t0 (theory1_safe var12___time__to_millis__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:50
-(declare-fun var14___time__from_millis__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:83
+(declare-fun var14___time__tick__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___time__from_millis__t0) )
+  (= var15_true__t0 (theory1_safe var14___time__tick__t0) )
 )
 
 (assert
   var15_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:19
-(declare-fun var16___time__infinite__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:59
+(declare-fun var16___time__more_than__t0 () (_ BitVec 64))
 (declare-fun var17_true__t0 () Bool)
 (assert
-  (= var17_true__t0 (theory1_safe var16___time__infinite__t0) )
+  (= var17_true__t0 (theory1_safe var16___time__more_than__t0) )
 )
 
 (assert
   var17_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:59
-(declare-fun var18___time__more_than__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:50
+(declare-fun var18___time__from_millis__t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (assert
-  (= var19_true__t0 (theory1_safe var18___time__more_than__t0) )
+  (= var19_true__t0 (theory1_safe var18___time__from_millis__t0) )
 )
 
 (assert
   var19_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:91
-(declare-fun var20___time__real__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:32
+(declare-fun var20___time__to_seconds__t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
-  (= var21_true__t0 (theory1_safe var20___time__real__t0) )
+  (= var21_true__t0 (theory1_safe var20___time__to_seconds__t0) )
 )
 
 (assert
   var21_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:83
-(declare-fun var22___time__tick__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:25
+(declare-fun var22___time__from_seconds__t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
-  (= var23_true__t0 (theory1_safe var22___time__tick__t0) )
+  (= var23_true__t0 (theory1_safe var22___time__from_seconds__t0) )
 )
 
 (assert
@@ -234,15 +233,15 @@
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:62
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:63
 ; literal expr
-(declare-fun var37_literal_0__t0 () Bool)
+(declare-fun var37_literal_Unsigned_0___t0 () Bool)
 (assert
-  (not var37_literal_0__t0)
+  (not var37_literal_Unsigned_0___t0)
 )
 
 (declare-fun var28_return__t1 () Bool)
 (declare-fun var28_return__t0 () Bool)
 (assert
-  (= var28_return__t1  (ite ( and var32_unary_expression__t0 var36_unary_expression__t0 ) var37_literal_0__t0 var28_return__t0)  )
+  (= var28_return__t1  (ite ( and var32_unary_expression__t0 var36_unary_expression__t0 ) var37_literal_Unsigned_0___t0 var28_return__t0)  )
 )
 
 ; end branch
@@ -255,14 +254,14 @@
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:64
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:65
 ; literal expr
-(declare-fun var38_literal_4294967295__t0 () Bool)
+(declare-fun var38_literal_Unsigned_4294967295___t0 () Bool)
 (assert
-  var38_literal_4294967295__t0
+  var38_literal_Unsigned_4294967295___t0
 )
 
 (declare-fun var28_return__t2 () Bool)
 (assert
-  (= var28_return__t2  (ite ( and var32_unary_expression__t0 (not var36_unary_expression__t0) ) var38_literal_4294967295__t0 var28_return__t1)  )
+  (= var28_return__t2  (ite ( and var32_unary_expression__t0 (not var36_unary_expression__t0) ) var38_literal_Unsigned_4294967295___t0 var28_return__t1)  )
 )
 
 ; end branch
@@ -345,14 +344,14 @@
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:70
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:71
 ; literal expr
-(declare-fun var45_literal_4294967295__t0 () Bool)
+(declare-fun var45_literal_Unsigned_4294967295___t0 () Bool)
 (assert
-  var45_literal_4294967295__t0
+  var45_literal_Unsigned_4294967295___t0
 )
 
 (declare-fun var28_return__t3 () Bool)
 (assert
-  (= var28_return__t3  (ite ( and var41_infix_expression__t0 var44_infix_expression__t0 ) var45_literal_4294967295__t0 var28_return__t2)  )
+  (= var28_return__t3  (ite ( and var41_infix_expression__t0 var44_infix_expression__t0 ) var45_literal_Unsigned_4294967295___t0 var28_return__t2)  )
 )
 
 ; end branch
@@ -364,14 +363,14 @@
 
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:73
 ; literal expr
-(declare-fun var46_literal_0__t0 () Bool)
+(declare-fun var46_literal_Unsigned_0___t0 () Bool)
 (assert
-  (not var46_literal_0__t0)
+  (not var46_literal_Unsigned_0___t0)
 )
 
 (declare-fun var28_return__t4 () Bool)
 (assert
-  (= var28_return__t4  (ite var41_infix_expression__t0 var46_literal_0__t0 var28_return__t3)  )
+  (= var28_return__t4  (ite var41_infix_expression__t0 var46_literal_Unsigned_0___t0 var28_return__t3)  )
 )
 
 ; end branch
@@ -414,14 +413,14 @@
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:74
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:75
 ; literal expr
-(declare-fun var48_literal_4294967295__t0 () Bool)
+(declare-fun var48_literal_Unsigned_4294967295___t0 () Bool)
 (assert
-  var48_literal_4294967295__t0
+  var48_literal_Unsigned_4294967295___t0
 )
 
 (declare-fun var28_return__t5 () Bool)
 (assert
-  (= var28_return__t5  (ite ( and var47_infix_expression__t0 (not var41_infix_expression__t0) ) var48_literal_4294967295__t0 var28_return__t4)  )
+  (= var28_return__t5  (ite ( and var47_infix_expression__t0 (not var41_infix_expression__t0) ) var48_literal_Unsigned_4294967295___t0 var28_return__t4)  )
 )
 
 ; end branch
@@ -433,14 +432,14 @@
 
 ; : /home/runner/work/carrier/carrier/modules/time/src/lib.zz:77
 ; literal expr
-(declare-fun var49_literal_0__t0 () Bool)
+(declare-fun var49_literal_Unsigned_0___t0 () Bool)
 (assert
-  (not var49_literal_0__t0)
+  (not var49_literal_Unsigned_0___t0)
 )
 
 (declare-fun var28_return__t6 () Bool)
 (assert
-  (= var28_return__t6  (ite true var49_literal_0__t0 var28_return__t5)  )
+  (= var28_return__t6  (ite true var49_literal_Unsigned_0___t0 var28_return__t5)  )
 )
 
 ;end of function ::time::more_than
@@ -454,15 +453,15 @@
 (declare-fun var27_interpretation_of_theory_safe_over_self__t0 () Bool)
 (declare-fun var30_safe_self___t0 () Bool)
 (declare-fun var34_safe_other___t0 () Bool)
-(declare-fun var37_literal_0__t0 () Bool)
-(declare-fun var38_literal_4294967295__t0 () Bool)
+(declare-fun var37_literal_Unsigned_0___t0 () Bool)
+(declare-fun var38_literal_Unsigned_4294967295___t0 () Bool)
 (declare-fun var39_deref_var24_self__secs__t0 () (_ BitVec 64))
 (declare-fun var40_deref_var25_other__secs__t0 () (_ BitVec 64))
 (declare-fun var42_deref_var24_self__nano__t0 () (_ BitVec 64))
 (declare-fun var43_deref_var25_other__nano__t0 () (_ BitVec 64))
-(declare-fun var45_literal_4294967295__t0 () Bool)
-(declare-fun var46_literal_0__t0 () Bool)
-(declare-fun var48_literal_4294967295__t0 () Bool)
-(declare-fun var49_literal_0__t0 () Bool)
+(declare-fun var45_literal_Unsigned_4294967295___t0 () Bool)
+(declare-fun var46_literal_Unsigned_0___t0 () Bool)
+(declare-fun var48_literal_Unsigned_4294967295___t0 () Bool)
+(declare-fun var49_literal_Unsigned_0___t0 () Bool)
 (check-sat)
 

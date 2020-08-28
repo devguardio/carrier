@@ -13,19 +13,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn swap64 (
 
     u64
@@ -52,6 +39,19 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn revision (
 
 )
@@ -67,23 +67,23 @@
     u64
     route,
 
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    u64
+    timestamp,
+
+    ::slice::mut_slice::MutSlice*
+    frame,
+
     ::carrier::vault::Vault*
     store,
 
     ::carrier::noise::Responder*
     self,
-
-    ::slice::mut_slice::MutSlice*
-    frame,
-
-    u64
-    timestamp,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
 
 )
 

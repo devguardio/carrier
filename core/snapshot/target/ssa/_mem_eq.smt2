@@ -6,55 +6,55 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:10
-(declare-fun var4___mem__move__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:17
+(declare-fun var4___mem__set__t0 () (_ BitVec 64))
 (declare-fun var5_true__t0 () Bool)
 (assert
-  (= var5_true__t0 (theory1_safe var4___mem__move__t0) )
+  (= var5_true__t0 (theory1_safe var4___mem__set__t0) )
 )
 
 (assert
   var5_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:23
-(declare-fun var6___mem__eq__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:3
+(declare-fun var6___mem__copy__t0 () (_ BitVec 64))
 (declare-fun var7_true__t0 () Bool)
 (assert
-  (= var7_true__t0 (theory1_safe var6___mem__eq__t0) )
+  (= var7_true__t0 (theory1_safe var6___mem__copy__t0) )
 )
 
 (assert
   var7_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:30
-(declare-fun var8___mem__zero__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:10
+(declare-fun var8___mem__move__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
-  (= var9_true__t0 (theory1_safe var8___mem__zero__t0) )
+  (= var9_true__t0 (theory1_safe var8___mem__move__t0) )
 )
 
 (assert
   var9_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:17
-(declare-fun var10___mem__set__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:30
+(declare-fun var10___mem__zero__t0 () (_ BitVec 64))
 (declare-fun var11_true__t0 () Bool)
 (assert
-  (= var11_true__t0 (theory1_safe var10___mem__set__t0) )
+  (= var11_true__t0 (theory1_safe var10___mem__zero__t0) )
 )
 
 (assert
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:3
-(declare-fun var12___mem__copy__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:23
+(declare-fun var12___mem__eq__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___mem__copy__t0) )
+  (= var13_true__t0 (theory1_safe var12___mem__eq__t0) )
 )
 
 (assert
@@ -155,18 +155,18 @@
 ; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:27
 ; : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:27
 ; literal expr
-(declare-fun var26_literal_0__t0 () (_ BitVec 64))
+(declare-fun var26_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var26_literal_0__t0 (_ bv0 64))
+  (= var26_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var27_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var27_implicit_coercion_of_literal_0__t0 var26_literal_0__t0) :named A4)); : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:27
+(declare-fun var27_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var27_implicit_coercion_of_literal_Unsigned_0___t0 var26_literal_Unsigned_0___t0) :named A4)); : /home/runner/work/carrier/carrier/modules/mem/src/lib.zz:27
 (declare-fun var28_infix_expression__t0 () Bool)
 (declare-fun var25_return_value_of___ext____home_runner_work_carrier_carrier_modules_mem_src_lib_h___memcmp__t0 () (_ BitVec 64))
 (assert
-  (=  var28_infix_expression__t0 (= var25_return_value_of___ext____home_runner_work_carrier_carrier_modules_mem_src_lib_h___memcmp__t0 var27_implicit_coercion_of_literal_0__t0))
+  (=  var28_infix_expression__t0 (= var25_return_value_of___ext____home_runner_work_carrier_carrier_modules_mem_src_lib_h___memcmp__t0 var27_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (declare-fun var23_return__t1 () Bool)
@@ -187,7 +187,7 @@
 (declare-fun var19_interpretation_of_theory_len_over_a__t0 () (_ BitVec 64))
 (declare-fun var16_n__t0 () (_ BitVec 64))
 (declare-fun var21_interpretation_of_theory_len_over_b__t0 () (_ BitVec 64))
-(declare-fun var26_literal_0__t0 () (_ BitVec 64))
+(declare-fun var26_literal_Unsigned_0___t0 () (_ BitVec 64))
 (declare-fun var25_return_value_of___ext____home_runner_work_carrier_carrier_modules_mem_src_lib_h___memcmp__t0 () (_ BitVec 64))
 (check-sat)
 

@@ -1,74 +1,6 @@
 
 <h1> module carrier::cipher </h1>
-<h4> fn decrypt (
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    usize
-    et,
-
-    usize
-    cipherlen,
-
-    u8*
-    plain,
-
-    u8*
-    ciphertext,
-
-    u64
-    nonce,
-
-    usize
-    plainlen_max,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt (
-
-    u8*
-    ciphertext,
-
-    u8*
-    plain,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    u64
-    nonce,
-
-    usize
-    cipherlen_max,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    usize
-    plainlen,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap32 (
+<h4> fn swap32 (
 
     u32
     x,
@@ -110,34 +42,34 @@
 </p><h4> fn encrypt_ad (
 
     usize
-    et,
-
-    usize
-    authtext_len,
-
-    u8*
-    ciphertext,
-
-    u8*
-    authtext,
-
-    usize
     cipherlen_max,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    ::err::Err*+et
-    e,
 
     u8*
     plain,
 
+    u64
+    nonce,
+
+    usize
+    authtext_len,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    u8*
+    authtext,
+
+    u8*
+    ciphertext,
+
+    usize
+    et,
+
     usize
     plainlen,
 
-    u64
-    nonce,
+    ::err::Err*+et
+    e,
 
 )
 
@@ -163,7 +95,47 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decrypt_ad (
+</p><h4> fn encrypt (
+
+    usize
+    plainlen,
+
+    u64
+    nonce,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    ciphertext,
+
+    usize
+    cipherlen_max,
+
+    u8*
+    plain,
+
+    usize
+    et,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt (
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -172,7 +144,44 @@
     plain,
 
     usize
+    cipherlen,
+
+    u8*
+    ciphertext,
+
+    u64
+    nonce,
+
+    usize
     plainlen_max,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt_ad (
+
+    u8*
+    plain,
+
+    u64
+    nonce,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    usize
+    plainlen_max,
+
+    u8*
+    authtext,
+
+    usize
+    cipherlen,
 
     usize
     et,
@@ -181,19 +190,10 @@
     authtext_len,
 
     u8*
-    authtext,
-
-    u8*
     ciphertext,
 
-    ::carrier::cipher::CipherState*
-    self,
-
-    usize
-    cipherlen,
-
-    u64
-    nonce,
+    ::err::Err*+et
+    e,
 
 )
 

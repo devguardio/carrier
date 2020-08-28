@@ -6,61 +6,65 @@ idf_component_register(SRCS
      /home/runner/work/carrier/carrier/core/target/c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Poly1305_32_c.c
      /home/runner/work/carrier/carrier/core/target/c/3rdparty_hacl_star_dist_gcc_compatible_Hacl_Chacha20_c.c
      /home/runner/work/carrier/carrier/core/target/release/zz/carrier_esp32.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/base32.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/netio_tcp.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_toml.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_pub_sysinfo.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/hpack_encoder.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_config.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_esp32.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_stream.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/log.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/toml.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_sft.c
      /home/runner/work/carrier/carrier/core/target/release/zz/carrier_proto.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_peering.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_noise.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/buffer.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_ik.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_router.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/io.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/net_address.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/symbols.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/protonerf.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_sha256.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_rand.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_initiator.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/time.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_symmetric.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/netio_udp.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/sysinfo_proto.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_config.c
      /home/runner/work/carrier/carrier/core/target/release/zz/carrier_endpoint.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/net.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/sysinfo.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_cmd_common.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/hpack.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/slice.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_bootstrap.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/netio_unix.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_pq.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_crc8.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_publish.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_revision.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/slice_slice.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_responder.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/hex.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/hpack_decoder.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/pool.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/mem.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_identity.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/madpack.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_symmetric.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_toml.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_noise.c
      /home/runner/work/carrier/carrier/core/target/release/zz/carrier_cipher.c
      /home/runner/work/carrier/carrier/core/target/release/zz/carrier_channel.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/byteorder.c
      /home/runner/work/carrier/carrier/core/target/release/zz/slice_mut_slice.c
-     /home/runner/work/carrier/carrier/core/target/release/zz/fs.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_pub_sysinfo.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/netio_tcp.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/hpack.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/byteorder.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_preshared.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/slice_slice.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/log.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_identity.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/pool.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/hex.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/toml.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_publish.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/time.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_peering.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_pq.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_router.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/net.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_initiator.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_sha256.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_responder.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/madpack_macrohelper.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/slice.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_crc8.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/buffer.c
      /home/runner/work/carrier/carrier/core/target/release/zz/err.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_esp32.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_stream.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/netio_udp.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/io.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/symbols.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/net_address.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/hpack_decoder.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_cmd_common.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/json.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_rand.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault_ik.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/mem.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_sft.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/hpack_encoder.c
      /home/runner/work/carrier/carrier/core/target/release/zz/carrier_vault.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/base32.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/protonerf.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_bootstrap.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/carrier_revision.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/netio_unix.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/fs.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/sysinfo.c
      /home/runner/work/carrier/carrier/core/target/release/zz/netio.c
+     /home/runner/work/carrier/carrier/core/target/release/zz/sysinfo_proto.c
      ${CMAKE_CURRENT_LIST_DIR}/../../../target/gen/zz_builtins_carrier_carrier_Esp32.c
 INCLUDE_DIRS ${CMAKE_CURRENT_LIST_DIR}/../../include/
  REQUIRES  spi_flash 

@@ -24,20 +24,20 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_io_Async;
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_io_Context;
 extern PyTypeObject py_Type_io_Context;
 extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_io_unix_Async;
 extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_io_Context;
+extern PyTypeObject py_Type_io_Io;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_io_Async;
 extern PyTypeObject py_Type_io_unix_Async;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
 
@@ -146,6 +146,16 @@ PyTypeObject py_Type_io_unix_Async  = {
 
 
 
+static PyObject* py_io_unix_make(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    io_unix_make(
+        pyFATGetPtr(arg0, "io_unix_Async"),
+        ((pyFATObject *)arg0)->tail);
+    Py_RETURN_NONE;
+}
+
 static PyObject* py_io_unix_make_read_async(PyObject *pyself, PyObject *args) {
     //i
     PyObject * arg0 = 0;
@@ -158,20 +168,10 @@ static PyObject* py_io_unix_make_read_async(PyObject *pyself, PyObject *args) {
     return PyBool_FromLong(rarg);
 }
 
-static PyObject* py_io_unix_make(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    io_unix_make(
-        pyFATGetPtr(arg0, "io_unix_Async"),
-        ((pyFATObject *)arg0)->tail);
-    Py_RETURN_NONE;
-}
-
 
 static PyMethodDef methods[] = {
-{"make_read_async", py_io_unix_make_read_async, METH_VARARGS,""},
 {"make", py_io_unix_make, METH_VARARGS,""},
+{"make_read_async", py_io_unix_make_read_async, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

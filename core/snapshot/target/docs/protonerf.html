@@ -1,75 +1,6 @@
 
 <h1> module protonerf </h1>
-<h4> fn encode_varint (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-    u64
-    value,
-
-    u8
-    index,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encode_bytes (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    l,
-
-    usize
-    et,
-
-    u8
-    index,
-
-    u8*
-    b,
-
-    ::slice::mut_slice::MutSlice
-    str,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decode (
-
-    ::protonerf::Decoder*
-    self,
-
-    ::slice::slice::Slice
-    sl,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap32 (
+<h4> fn swap32 (
 
     u32
     x,
@@ -113,14 +44,14 @@
     u8
     index,
 
-    usize
-    et,
-
     ::slice::mut_slice::MutSlice
     str,
 
     usize
     l,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -155,10 +86,38 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn encode_f64 (
+</p><h4> fn encode_bytes (
 
-    f64
-    value,
+    u8
+    index,
+
+    usize
+    et,
+
+    usize
+    l,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    b,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_varint (
+
+    u8
+    index,
 
     ::err::Err*+et
     e,
@@ -166,11 +125,52 @@
     usize
     et,
 
+    u64
+    value,
+
+    ::slice::mut_slice::MutSlice
+    str,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encode_f64 (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
     ::slice::mut_slice::MutSlice
     str,
 
     u8
     index,
+
+    f64
+    value,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decode (
+
+    ::protonerf::Decoder*
+    self,
+
+    ::slice::slice::Slice
+    sl,
 
 )
 

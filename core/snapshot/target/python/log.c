@@ -28,26 +28,12 @@ extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_buffer_Buffer;
 
 
 
 
-
-static PyObject* py_log_debug(PyObject *pyself, PyObject *args) {
-    //module
-    char * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    //fmt
-    char * arg1 = 0;
-    Py_ssize_t arg1_len = 0;
-    if (!PyArg_ParseTuple(args, "s#s#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
-    log_debug(
-        arg0,
-        arg1);
-    Py_RETURN_NONE;
-}
 
 static PyObject* py_log_warn(PyObject *pyself, PyObject *args) {
     //module
@@ -58,20 +44,6 @@ static PyObject* py_log_warn(PyObject *pyself, PyObject *args) {
     Py_ssize_t arg1_len = 0;
     if (!PyArg_ParseTuple(args, "s#s#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
     log_warn(
-        arg0,
-        arg1);
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_log_info(PyObject *pyself, PyObject *args) {
-    //module
-    char * arg0 = 0;
-    Py_ssize_t arg0_len = 0;
-    //fmt
-    char * arg1 = 0;
-    Py_ssize_t arg1_len = 0;
-    if (!PyArg_ParseTuple(args, "s#s#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
-    log_info(
         arg0,
         arg1);
     Py_RETURN_NONE;
@@ -91,12 +63,40 @@ static PyObject* py_log_error(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_log_debug(PyObject *pyself, PyObject *args) {
+    //module
+    char * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    //fmt
+    char * arg1 = 0;
+    Py_ssize_t arg1_len = 0;
+    if (!PyArg_ParseTuple(args, "s#s#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
+    log_debug(
+        arg0,
+        arg1);
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_log_info(PyObject *pyself, PyObject *args) {
+    //module
+    char * arg0 = 0;
+    Py_ssize_t arg0_len = 0;
+    //fmt
+    char * arg1 = 0;
+    Py_ssize_t arg1_len = 0;
+    if (!PyArg_ParseTuple(args, "s#s#", &arg0,&arg0_len,&arg1,&arg1_len)) { return NULL; };
+    log_info(
+        arg0,
+        arg1);
+    Py_RETURN_NONE;
+}
+
 
 static PyMethodDef methods[] = {
-{"debug", py_log_debug, METH_VARARGS,""},
 {"warn", py_log_warn, METH_VARARGS,""},
-{"info", py_log_info, METH_VARARGS,""},
 {"error", py_log_error, METH_VARARGS,""},
+{"debug", py_log_debug, METH_VARARGS,""},
+{"info", py_log_info, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

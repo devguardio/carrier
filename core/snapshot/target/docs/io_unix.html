@@ -1,35 +1,16 @@
 
 <h1> module io::unix </h1>
-<h4> fn make_read_async (
+<h4> fn make (
 
-    ::io::Io*
-    i,
+    usize
+    tail,
 
-    ::io::Async*
-    async,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn select_fd (
-
-    int
-    fd,
-
-    ::io::unix::Async*
+    ::io::unix::Async*+tail
     self,
 
-    int
-    events,
-
 )
 
--&gt bool
+
 
 </h4>
 
@@ -58,17 +39,36 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn make (
+</p><h4> fn make_read_async (
 
-    usize
-    tail,
+    ::io::Io*
+    i,
 
-    ::io::unix::Async*+tail
-    self,
+    ::io::Async*
+    async,
 
 )
 
+-&gt bool
 
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select_fd (
+
+    ::io::unix::Async*
+    self,
+
+    int
+    fd,
+
+    int
+    events,
+
+)
+
+-&gt bool
 
 </h4>
 

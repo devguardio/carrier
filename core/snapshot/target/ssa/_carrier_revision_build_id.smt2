@@ -8,11 +8,11 @@
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:4
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:5
-; : /home/runner/work/carrier/carrier/core/src/revision.zz:7
-(declare-fun var8___carrier__revision__m_revision__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:15
+(declare-fun var8___carrier__revision__m_build_id__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
-  (= var9_true__t0 (theory1_safe var8___carrier__revision__m_revision__t0) )
+  (= var9_true__t0 (theory1_safe var8___carrier__revision__m_build_id__t0) )
 )
 
 (assert
@@ -30,22 +30,22 @@
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/revision.zz:15
-(declare-fun var12___carrier__revision__m_build_id__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:22
+(declare-fun var12___carrier__revision__build_id__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___carrier__revision__m_build_id__t0) )
+  (= var13_true__t0 (theory1_safe var12___carrier__revision__build_id__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/revision.zz:22
-(declare-fun var14___carrier__revision__build_id__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/revision.zz:7
+(declare-fun var14___carrier__revision__m_revision__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___carrier__revision__build_id__t0) )
+  (= var15_true__t0 (theory1_safe var14___carrier__revision__m_revision__t0) )
 )
 
 (assert
@@ -63,11 +63,11 @@
 
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:22
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:26
-; : generated<dd91a0fcc7da9733c0d95f0477c1967e5ff0246cb291feaeb2e445d970d18ef2> from /home/runner/work/carrier/carrier/core/src/revision.zz:26:1
-(declare-fun var18_literal_string__0_13_7_gc1cc577___t0 () (_ BitVec 64))
+; : generated<68b889ed44ffedf58f5fe8a3b12232d7d2b70c2135dc2f71221a24153ee15988> from /home/runner/work/carrier/carrier/core/src/revision.zz:26:1
+(declare-fun var18_literal_string__0_13_9_gacca8e3_dirty___t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (assert
-  (= var19_true__t0 (theory1_safe var18_literal_string__0_13_7_gc1cc577___t0) )
+  (= var19_true__t0 (theory1_safe var18_literal_string__0_13_9_gacca8e3_dirty___t0) )
 )
 
 (assert
@@ -76,7 +76,7 @@
 
 (declare-fun var20_true__t0 () Bool)
 (assert
-  (= var20_true__t0 (theory2_nullterm var18_literal_string__0_13_7_gc1cc577___t0) )
+  (= var20_true__t0 (theory2_nullterm var18_literal_string__0_13_9_gacca8e3_dirty___t0) )
 )
 
 (assert
@@ -84,23 +84,23 @@
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:26
-(declare-fun var21_safe_literal_string__0_13_7_gc1cc577______safe_r___t0 () Bool)
+(declare-fun var21_safe_literal_string__0_13_9_gacca8e3_dirty______safe_r___t0 () Bool)
 (assert
-  (= var21_safe_literal_string__0_13_7_gc1cc577______safe_r___t0 (theory1_safe var18_literal_string__0_13_7_gc1cc577___t0) )
+  (= var21_safe_literal_string__0_13_9_gacca8e3_dirty______safe_r___t0 (theory1_safe var18_literal_string__0_13_9_gacca8e3_dirty___t0) )
 )
 
 (declare-fun var17_r__t1 () (_ BitVec 64))
 (assert
-  (= var21_safe_literal_string__0_13_7_gc1cc577______safe_r___t0 (theory1_safe var17_r__t1) )
+  (= var21_safe_literal_string__0_13_9_gacca8e3_dirty______safe_r___t0 (theory1_safe var17_r__t1) )
 )
 
-(declare-fun var22_nullterm_literal_string__0_13_7_gc1cc577______nullterm_r___t0 () Bool)
+(declare-fun var22_nullterm_literal_string__0_13_9_gacca8e3_dirty______nullterm_r___t0 () Bool)
 (assert
-  (= var22_nullterm_literal_string__0_13_7_gc1cc577______nullterm_r___t0 (theory2_nullterm var18_literal_string__0_13_7_gc1cc577___t0) )
+  (= var22_nullterm_literal_string__0_13_9_gacca8e3_dirty______nullterm_r___t0 (theory2_nullterm var18_literal_string__0_13_9_gacca8e3_dirty___t0) )
 )
 
 (assert
-  (= var22_nullterm_literal_string__0_13_7_gc1cc577______nullterm_r___t0 (theory2_nullterm var17_r__t1) )
+  (= var22_nullterm_literal_string__0_13_9_gacca8e3_dirty______nullterm_r___t0 (theory2_nullterm var17_r__t1) )
 )
 
 (declare-fun var23_len_r___t0 () (_ BitVec 64))
@@ -109,7 +109,7 @@
 )
 
 (assert
-  (= var23_len_r___t0 (_ bv16 64))
+  (= var23_len_r___t0 (_ bv22 64))
 
 )
 
@@ -131,9 +131,9 @@
 (assert (! var24_interpretation_of_theory_nullterm_over_r__t0 :named A0))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:27
-(declare-fun var25_literal_1__t0 () (_ BitVec 64))
+(declare-fun var25_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var25_literal_1__t0 (_ bv1 64))
+  (= var25_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -155,9 +155,9 @@
 (assert (! var26_interpretation_of_theory_safe_over_r__t0 :named A1))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/core/src/revision.zz:28
-(declare-fun var27_literal_1__t0 () (_ BitVec 64))
+(declare-fun var27_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var27_literal_1__t0 (_ bv1 64))
+  (= var27_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -279,17 +279,17 @@
 
 (pop 1)
 
-(declare-fun var18_literal_string__0_13_7_gc1cc577___t0 () (_ BitVec 64))
+(declare-fun var18_literal_string__0_13_9_gacca8e3_dirty___t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (declare-fun var20_true__t0 () Bool)
-(declare-fun var21_safe_literal_string__0_13_7_gc1cc577______safe_r___t0 () Bool)
+(declare-fun var21_safe_literal_string__0_13_9_gacca8e3_dirty______safe_r___t0 () Bool)
 (declare-fun var17_r__t1 () (_ BitVec 64))
-(declare-fun var22_nullterm_literal_string__0_13_7_gc1cc577______nullterm_r___t0 () Bool)
+(declare-fun var22_nullterm_literal_string__0_13_9_gacca8e3_dirty______nullterm_r___t0 () Bool)
 (declare-fun var23_len_r___t0 () (_ BitVec 64))
 (declare-fun var24_interpretation_of_theory_nullterm_over_r__t0 () Bool)
-(declare-fun var25_literal_1__t0 () (_ BitVec 64))
+(declare-fun var25_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var26_interpretation_of_theory_safe_over_r__t0 () Bool)
-(declare-fun var27_literal_1__t0 () (_ BitVec 64))
+(declare-fun var27_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var28_safe_r_____safe_return___t0 () Bool)
 (declare-fun var16_return__t1 () (_ BitVec 64))
 (declare-fun var29_nullterm_r_____nullterm_return___t0 () Bool)

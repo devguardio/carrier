@@ -3,7 +3,13 @@
 <h4> fn hkdf (
 
     u8*
+    out1,
+
+    u8*
     out3,
+
+    usize
+    input_key_material_len,
 
     u8*
     out2,
@@ -11,14 +17,46 @@
     u8*
     chaining_key,
 
-    usize
-    input_key_material_len,
-
-    u8*
-    out1,
-
     u8*
     input_key_material,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn hmac (
+
+    usize
+    datalen,
+
+    u8*
+    key,
+
+    u8*
+    data,
+
+    usize
+    keylen,
+
+    u8*
+    out,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn init (
+
+    ::carrier::sha256::Sha256*
+    self,
 
 )
 
@@ -44,7 +82,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn hashlen (
+</p><h4> fn blocklen (
 
 )
 
@@ -56,15 +94,15 @@
 
 </p><h4> fn update (
 
-    u8*
-    data,
-
     ::carrier::sha256::Sha256*
     self,
 
     usize
     l,
 
+    u8*
+    data,
+
 )
 
 
@@ -73,49 +111,11 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn blocklen (
+</p><h4> fn hashlen (
 
 )
 
 -&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn init (
-
-    ::carrier::sha256::Sha256*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn hmac (
-
-    u8*
-    key,
-
-    u8*
-    data,
-
-    usize
-    datalen,
-
-    u8*
-    out,
-
-    usize
-    keylen,
-
-)
-
-
 
 </h4>
 

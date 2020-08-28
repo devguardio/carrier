@@ -1,12 +1,12 @@
 
 <h1> module slice::mut_slice </h1>
-<h4> fn append_cstr (
+<h4> fn push (
+
+    u8
+    b,
 
     ::slice::mut_slice::MutSlice*
     self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
 
 )
 
@@ -15,7 +15,20 @@
 </h4>
 
 <p class='doc_comments'>
- append a null terminated cstring, excluding its null terminator&lt;br&gt;
+ push a single character&lt;br&gt;
+</p><h4> fn as_slice (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+)
+
+-&gt ::slice::slice::Slice
+
+</h4>
+
+<p class='doc_comments'>
+ obtain the used memory as read only slice&lt;br&gt;
 </p><h4> fn push16 (
 
     ::slice::mut_slice::MutSlice*
@@ -32,22 +45,6 @@
 
 <p class='doc_comments'>
  append a 16 bit integer as 2 bytes&lt;br&gt;
-</p><h4> fn push (
-
-    u8
-    b,
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
- push a single character&lt;br&gt;
 </p><h4> fn push32 (
 
     u32
@@ -64,26 +61,26 @@
 
 <p class='doc_comments'>
  append a 32 bit integer as 4 bytes&lt;br&gt;
-</p><h4> fn as_slice (
+</p><h4> fn space (
 
     ::slice::mut_slice::MutSlice*
     self,
 
 )
 
--&gt ::slice::slice::Slice
+-&gt usize
 
 </h4>
 
 <p class='doc_comments'>
- obtain the used memory as read only slice&lt;br&gt;
+ return remaining free bytes&lt;br&gt;
 </p><h4> fn push64 (
-
-    u64
-    b,
 
     ::slice::mut_slice::MutSlice*
     self,
+
+    u64
+    b,
 
 )
 
@@ -93,38 +90,16 @@
 
 <p class='doc_comments'>
  append a 64 bit integer as 8 bytes&lt;br&gt;
-</p><h4> fn make (
-
-    usize
-    size,
-
-    ::slice::mut_slice::MutSlice*
-    self,
-
-    usize*
-    at,
-
-    u8*
-    mem,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- create new mutable slice from its components&lt;br&gt;
 </p><h4> fn append_obj (
 
     ::slice::mut_slice::MutSlice*
     self,
 
-    ::ext::&lt;stddef.h&gt;::void*+vt
-    b,
-
     usize
     vt,
+
+    ::ext::&lt;stddef.h&gt;::void*+vt
+    b,
 
 )
 
@@ -136,11 +111,11 @@
  append any sized objects as raw bytes&lt;br&gt;
 </p><h4> fn append_bytes (
 
-    usize
-    l,
-
     ::slice::mut_slice::MutSlice*
     self,
+
+    usize
+    l,
 
     u8*
     b,
@@ -153,13 +128,35 @@
 
 <p class='doc_comments'>
  append raw bytes&lt;br&gt;
-</p><h4> fn append_slice (
+</p><h4> fn make (
+
+    usize*
+    at,
+
+    u8*
+    mem,
 
     ::slice::mut_slice::MutSlice*
     self,
 
+    usize
+    size,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ create new mutable slice from its components&lt;br&gt;
+</p><h4> fn append_slice (
+
     ::slice::slice::Slice
     other,
+
+    ::slice::mut_slice::MutSlice*
+    self,
 
 )
 
@@ -169,7 +166,24 @@
 
 <p class='doc_comments'>
  append the contents of another slice&lt;br&gt;
+</p><h4> fn append_cstr (
+
+    ::slice::mut_slice::MutSlice*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+ append a null terminated cstring, excluding its null terminator&lt;br&gt;
 </p>
+
 
 
 

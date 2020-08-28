@@ -5,20 +5,20 @@
     ::err::Err*+tail
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
     usize
     tail,
 
     ::ext::&lt;stddef.h&gt;::char*
-    fmt,
+    scope,
+
+    usize
+    line,
 
     ::ext::&lt;stddef.h&gt;::char*
     file,
 
-    usize
-    line,
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
 
 )
 
@@ -30,14 +30,14 @@
 
 </p><h4> fn rand (
 
-    u8*
-    bytes,
+    usize
+    size,
 
     ::err::Err*+et
     e,
 
-    usize
-    size,
+    u8*
+    bytes,
 
     usize
     et,

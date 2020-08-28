@@ -6,116 +6,117 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:126
+(declare-fun var4___slice__slice__isspace__t0 () (_ BitVec 64))
+(declare-fun var5_true__t0 () Bool)
+(assert
+  (= var5_true__t0 (theory1_safe var4___slice__slice__isspace__t0) )
+)
+
+(assert
+  var5_true__t0
+)
+
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
-(declare-fun theory5___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
-(declare-fun var6___slice__slice__sub__t0 () (_ BitVec 64))
-(declare-fun var7_true__t0 () Bool)
-(assert
-  (= var7_true__t0 (theory1_safe var6___slice__slice__sub__t0) )
-)
-
-(assert
-  var7_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
-(declare-fun var8___slice__slice__split__t0 () (_ BitVec 64))
+(declare-fun theory7___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
+(declare-fun var8___slice__slice__empty__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
-  (= var9_true__t0 (theory1_safe var8___slice__slice__split__t0) )
+  (= var9_true__t0 (theory1_safe var8___slice__slice__empty__t0) )
 )
 
 (assert
   var9_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:126
-(declare-fun var10___slice__slice__isspace__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:129
+(declare-fun var10___slice__slice__isdigit__t0 () (_ BitVec 64))
 (declare-fun var11_true__t0 () Bool)
 (assert
-  (= var11_true__t0 (theory1_safe var10___slice__slice__isspace__t0) )
+  (= var11_true__t0 (theory1_safe var10___slice__slice__isdigit__t0) )
 )
 
 (assert
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:129
-(declare-fun var12___slice__slice__isdigit__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
+(declare-fun var12___slice__slice__atoi__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___slice__slice__isdigit__t0) )
+  (= var13_true__t0 (theory1_safe var12___slice__slice__atoi__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
-(declare-fun var14___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
+(declare-fun var14___slice__slice__eq__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___slice__slice__eq_bytes__t0) )
+  (= var15_true__t0 (theory1_safe var14___slice__slice__eq__t0) )
 )
 
 (assert
   var15_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
-(declare-fun var16___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
+(declare-fun var16___slice__slice__eq_bytes__t0 () (_ BitVec 64))
 (declare-fun var17_true__t0 () Bool)
 (assert
-  (= var17_true__t0 (theory1_safe var16___slice__slice__eq_cstr__t0) )
+  (= var17_true__t0 (theory1_safe var16___slice__slice__eq_bytes__t0) )
 )
 
 (assert
   var17_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
-(declare-fun var18___slice__slice__eq__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var18___slice__slice__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (assert
-  (= var19_true__t0 (theory1_safe var18___slice__slice__eq__t0) )
+  (= var19_true__t0 (theory1_safe var18___slice__slice__eq_cstr__t0) )
 )
 
 (assert
   var19_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
-(declare-fun var20___slice__slice__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
+(declare-fun var20___slice__slice__sub__t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
-  (= var21_true__t0 (theory1_safe var20___slice__slice__make__t0) )
+  (= var21_true__t0 (theory1_safe var20___slice__slice__sub__t0) )
 )
 
 (assert
   var21_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
-(declare-fun var22___slice__slice__empty__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:129
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
+(declare-fun var22___slice__slice__split__t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
-  (= var23_true__t0 (theory1_safe var22___slice__slice__empty__t0) )
+  (= var23_true__t0 (theory1_safe var22___slice__slice__split__t0) )
 )
 
 (assert
   var23_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
-(declare-fun var24___slice__slice__atoi__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
+(declare-fun var24___slice__slice__make__t0 () (_ BitVec 64))
 (declare-fun var25_true__t0 () Bool)
 (assert
-  (= var25_true__t0 (theory1_safe var24___slice__slice__atoi__t0) )
+  (= var25_true__t0 (theory1_safe var24___slice__slice__make__t0) )
 )
 
 (assert
@@ -213,17 +214,17 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:99
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:99
 ; literal expr
-(declare-fun var38_literal_0__t0 () (_ BitVec 64))
+(declare-fun var38_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var38_literal_0__t0 (_ bv0 64))
+  (= var38_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var39_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var39_implicit_coercion_of_literal_0__t0 var38_literal_0__t0) :named A2)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:99
+(declare-fun var39_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var39_implicit_coercion_of_literal_Unsigned_0___t0 var38_literal_Unsigned_0___t0) :named A2)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:99
 (declare-fun var40_infix_expression__t0 () Bool)
 (assert
-  (=  var40_infix_expression__t0 (= var34_deref_var26_self__size__t0 var39_implicit_coercion_of_literal_0__t0))
+  (=  var40_infix_expression__t0 (= var34_deref_var26_self__size__t0 var39_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (check-sat)
@@ -452,17 +453,17 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:103
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:103
 ; literal expr
-(declare-fun var56_literal_0__t0 () (_ BitVec 64))
+(declare-fun var56_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var56_literal_0__t0 (_ bv0 64))
+  (= var56_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:103
 ; literal expr
-(declare-fun var57_literal_0__t0 () (_ BitVec 64))
+(declare-fun var57_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var57_literal_0__t0 (_ bv0 64))
+  (= var57_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
@@ -567,9 +568,9 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:10
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:10
-(declare-fun var66_interpretation_of_theory_safe_over_literal_0__t0 () Bool)
+(declare-fun var66_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 () Bool)
 (assert
-  (= var66_interpretation_of_theory_safe_over_literal_0__t0 (theory1_safe var56_literal_0__t0) )
+  (= var66_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 (theory1_safe var56_literal_Unsigned_0___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
@@ -585,34 +586,34 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
-(declare-fun var67_interpretation_of_theory_len_over_literal_0__t0 () (_ BitVec 64))
+(declare-fun var67_interpretation_of_theory_len_over_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var67_interpretation_of_theory_len_over_literal_0__t0 (theory0_len var56_literal_0__t0) )
+  (= var67_interpretation_of_theory_len_over_literal_Unsigned_0___t0 (theory0_len var56_literal_Unsigned_0___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:103
-(declare-fun var68_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var68_implicit_coercion_of_literal_0__t0 var57_literal_0__t0) :named A3)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
+(declare-fun var68_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var68_implicit_coercion_of_literal_Unsigned_0___t0 var57_literal_Unsigned_0___t0) :named A3)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 (declare-fun var69_infix_expression__t0 () Bool)
 (assert
-  (=  var69_infix_expression__t0 (bvuge var67_interpretation_of_theory_len_over_literal_0__t0 var68_implicit_coercion_of_literal_0__t0))
+  (=  var69_infix_expression__t0 (bvuge var67_interpretation_of_theory_len_over_literal_Unsigned_0___t0 var68_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 (declare-fun var70_infix_expression__t0 () Bool)
 (assert
-  (=  var70_infix_expression__t0 (and var66_interpretation_of_theory_safe_over_literal_0__t0 var69_infix_expression__t0))
+  (=  var70_infix_expression__t0 (and var66_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 var69_infix_expression__t0))
 )
 
 ; end of theory_expression
 (assert (! var70_infix_expression__t0 :named A4))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:104
-(declare-fun var71_literal_1__t0 () (_ BitVec 64))
+(declare-fun var71_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var71_literal_1__t0 (_ bv1 64))
+  (= var71_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -715,9 +716,9 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:10
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:10
-(declare-fun var80_interpretation_of_theory_safe_over_literal_0__t0 () Bool)
+(declare-fun var80_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 () Bool)
 (assert
-  (= var80_interpretation_of_theory_safe_over_literal_0__t0 (theory1_safe var56_literal_0__t0) )
+  (= var80_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 (theory1_safe var56_literal_Unsigned_0___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
@@ -733,25 +734,25 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
-(declare-fun var81_interpretation_of_theory_len_over_literal_0__t0 () (_ BitVec 64))
+(declare-fun var81_interpretation_of_theory_len_over_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var81_interpretation_of_theory_len_over_literal_0__t0 (theory0_len var56_literal_0__t0) )
+  (= var81_interpretation_of_theory_len_over_literal_Unsigned_0___t0 (theory0_len var56_literal_Unsigned_0___t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:103
-(declare-fun var82_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var82_implicit_coercion_of_literal_0__t0 var57_literal_0__t0) :named A5)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
+(declare-fun var82_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var82_implicit_coercion_of_literal_Unsigned_0___t0 var57_literal_Unsigned_0___t0) :named A5)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 (declare-fun var83_infix_expression__t0 () Bool)
 (assert
-  (=  var83_infix_expression__t0 (bvuge var81_interpretation_of_theory_len_over_literal_0__t0 var82_implicit_coercion_of_literal_0__t0))
+  (=  var83_infix_expression__t0 (bvuge var81_interpretation_of_theory_len_over_literal_Unsigned_0___t0 var82_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:11
 (declare-fun var84_infix_expression__t0 () Bool)
 (assert
-  (=  var84_infix_expression__t0 (and var80_interpretation_of_theory_safe_over_literal_0__t0 var83_infix_expression__t0))
+  (=  var84_infix_expression__t0 (and var80_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 var83_infix_expression__t0))
 )
 
 ; end of theory_expression
@@ -776,8 +777,8 @@
 (declare-fun var77_addressof_return___t0 () (_ BitVec 64))
 (declare-fun var78_len_addressof_return____t0 () (_ BitVec 64))
 (declare-fun var79_true__t0 () Bool)
-(declare-fun var80_interpretation_of_theory_safe_over_literal_0__t0 () Bool)
-(declare-fun var81_interpretation_of_theory_len_over_literal_0__t0 () (_ BitVec 64))
+(declare-fun var80_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 () Bool)
+(declare-fun var81_interpretation_of_theory_len_over_literal_Unsigned_0___t0 () (_ BitVec 64))
 ; end branch
 ; branch returned. the rest of the function only happens if the condition leading to return never happened
 ; (not var53_infix_expression__t0)
@@ -789,18 +790,18 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:107
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:107
 ; literal expr
-(declare-fun var85_literal_0__t0 () (_ BitVec 64))
+(declare-fun var85_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var85_literal_0__t0 (_ bv0 64))
+  (= var85_literal_Unsigned_0___t0 (_ bv0 64))
 
 )
 
-(declare-fun var86_implicit_coercion_of_literal_0__t0 () (_ BitVec 64))
-(assert (! (= var86_implicit_coercion_of_literal_0__t0 var85_literal_0__t0) :named A6)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:107
+(declare-fun var86_implicit_coercion_of_literal_Unsigned_0___t0 () (_ BitVec 64))
+(assert (! (= var86_implicit_coercion_of_literal_Unsigned_0___t0 var85_literal_Unsigned_0___t0) :named A6)); : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:107
 (declare-fun var87_infix_expression__t0 () Bool)
 (declare-fun var28_size__t0 () (_ BitVec 64))
 (assert
-  (=  var87_infix_expression__t0 (= var28_size__t0 var86_implicit_coercion_of_literal_0__t0))
+  (=  var87_infix_expression__t0 (= var28_size__t0 var86_implicit_coercion_of_literal_Unsigned_0___t0))
 )
 
 (check-sat)
@@ -1119,9 +1120,9 @@
 (assert (! var114_infix_expression__t0 :named A8))(check-sat)
 
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:120
-(declare-fun var115_literal_1__t0 () (_ BitVec 64))
+(declare-fun var115_literal_Unsigned_1___t0 () (_ BitVec 64))
 (assert
-  (= var115_literal_1__t0 (_ bv1 64))
+  (= var115_literal_Unsigned_1___t0 (_ bv1 64))
 
 )
 
@@ -1432,7 +1433,7 @@
 (declare-fun var32_interpretation_of_theory_safe_over_deref_var26_self__mem__t0 () Bool)
 (declare-fun var33_interpretation_of_theory_len_over_deref_var26_self__mem__t0 () (_ BitVec 64))
 (declare-fun var34_deref_var26_self__size__t0 () (_ BitVec 64))
-(declare-fun var38_literal_0__t0 () (_ BitVec 64))
+(declare-fun var38_literal_Unsigned_0___t0 () (_ BitVec 64))
 (declare-fun var30_deref_var26_self___t0 () (_ BitVec 64))
 (declare-fun var41_safe_deref_var26_self______safe_return___t0 () Bool)
 (declare-fun var37_return__t1 () (_ BitVec 64))
@@ -1446,8 +1447,8 @@
 (declare-fun var49_interpretation_of_theory_safe_over_deref_var26_self__mem__t0 () Bool)
 (declare-fun var50_interpretation_of_theory_len_over_deref_var26_self__mem__t0 () (_ BitVec 64))
 (declare-fun var27_from__t0 () (_ BitVec 64))
-(declare-fun var56_literal_0__t0 () (_ BitVec 64))
-(declare-fun var57_literal_0__t0 () (_ BitVec 64))
+(declare-fun var56_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var57_literal_Unsigned_0___t0 () (_ BitVec 64))
 (declare-fun var55_literal_struct_55__t0 () (_ BitVec 64))
 (declare-fun var58_safe_literal_struct_55_____safe_r___t0 () Bool)
 (declare-fun var54_r__t1 () (_ BitVec 64))
@@ -1458,9 +1459,9 @@
 (declare-fun var63_addressof_r___t0 () (_ BitVec 64))
 (declare-fun var64_len_addressof_r____t0 () (_ BitVec 64))
 (declare-fun var65_true__t0 () Bool)
-(declare-fun var66_interpretation_of_theory_safe_over_literal_0__t0 () Bool)
-(declare-fun var67_interpretation_of_theory_len_over_literal_0__t0 () (_ BitVec 64))
-(declare-fun var71_literal_1__t0 () (_ BitVec 64))
+(declare-fun var66_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 () Bool)
+(declare-fun var67_interpretation_of_theory_len_over_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var71_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var72_safe_r_____safe_return___t0 () Bool)
 (declare-fun var37_return__t2 () (_ BitVec 64))
 (declare-fun var73_nullterm_r_____nullterm_return___t0 () Bool)
@@ -1470,9 +1471,9 @@
 (declare-fun var77_addressof_return___t0 () (_ BitVec 64))
 (declare-fun var78_len_addressof_return____t0 () (_ BitVec 64))
 (declare-fun var79_true__t0 () Bool)
-(declare-fun var80_interpretation_of_theory_safe_over_literal_0__t0 () Bool)
-(declare-fun var81_interpretation_of_theory_len_over_literal_0__t0 () (_ BitVec 64))
-(declare-fun var85_literal_0__t0 () (_ BitVec 64))
+(declare-fun var80_interpretation_of_theory_safe_over_literal_Unsigned_0___t0 () Bool)
+(declare-fun var81_interpretation_of_theory_len_over_literal_Unsigned_0___t0 () (_ BitVec 64))
+(declare-fun var85_literal_Unsigned_0___t0 () (_ BitVec 64))
 (declare-fun var28_size__t0 () (_ BitVec 64))
 (declare-fun var88_safe_deref_var26_self__size_____safe_size___t0 () Bool)
 (declare-fun var28_size__t1 () (_ BitVec 64))
@@ -1496,7 +1497,7 @@
 (declare-fun var110_true__t0 () Bool)
 (declare-fun var111_interpretation_of_theory_safe_over_infix_expression__t0 () Bool)
 (declare-fun var112_interpretation_of_theory_len_over_infix_expression__t0 () (_ BitVec 64))
-(declare-fun var115_literal_1__t0 () (_ BitVec 64))
+(declare-fun var115_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var116_safe_r_____safe_return___t0 () Bool)
 (declare-fun var37_return__t3 () (_ BitVec 64))
 (declare-fun var117_nullterm_r_____nullterm_return___t0 () Bool)

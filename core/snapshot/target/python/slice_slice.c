@@ -25,6 +25,9 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_slice_Slice;
+
+
 static PyObject * py_get_slice_slice_Slice_mem(PyObject *pyself, void *closure) {
 
     slice_slice_Slice * self = pyFATGetPtr(pyself, "slice_slice_Slice");
@@ -100,24 +103,25 @@ PyTypeObject py_Type_slice_slice_Slice  = {
 
 
 
-
-
-static PyObject* py_slice_slice_split(PyObject *pyself, PyObject *args) {
+static PyObject* py_slice_slice_empty(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
-    //token
-    uint8_t arg1 = 0;
-    //iterator
-    PyObject * arg2 = 0;
-    //other
-    PyObject * arg3 = 0;
-    if (!PyArg_ParseTuple(args, "ObOO", &arg0,&arg1,&arg2,&arg3)) { return NULL; };
-    long long rarg = (long long int)(slice_slice_split(
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    slice_slice_empty(
+        pyFATGetPtr(arg0, "slice_slice_Slice"));
+    Py_RETURN_NONE;
+}
+
+static PyObject* py_slice_slice_atoi(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //base
+    long long int arg1 = 0;
+    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg1)) { return NULL; };
+    long long int rarg = (long long int)(slice_slice_atoi(
         pyFATGetPtr(arg0, "slice_slice_Slice"),
-        arg1,
-        pyFATGetPtr(arg2, "uintptr_t"),
-        pyFATGetPtr(arg3, "slice_slice_Slice")));
-    return PyBool_FromLong(rarg);
+        arg1));
+    return PyLong_FromLong(rarg);
 }
 
 static PyObject* py_slice_slice_eq_cstr(PyObject *pyself, PyObject *args) {
@@ -149,6 +153,24 @@ static PyObject* py_slice_slice_eq_bytes(PyObject *pyself, PyObject *args) {
     return PyBool_FromLong(rarg);
 }
 
+static PyObject* py_slice_slice_split(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //token
+    uint8_t arg1 = 0;
+    //iterator
+    PyObject * arg2 = 0;
+    //other
+    PyObject * arg3 = 0;
+    if (!PyArg_ParseTuple(args, "ObOO", &arg0,&arg1,&arg2,&arg3)) { return NULL; };
+    long long rarg = (long long int)(slice_slice_split(
+        pyFATGetPtr(arg0, "slice_slice_Slice"),
+        arg1,
+        pyFATGetPtr(arg2, "uintptr_t"),
+        pyFATGetPtr(arg3, "slice_slice_Slice")));
+    return PyBool_FromLong(rarg);
+}
+
 static PyObject* py_slice_slice_make(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -165,35 +187,14 @@ static PyObject* py_slice_slice_make(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_slice_slice_empty(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    slice_slice_empty(
-        pyFATGetPtr(arg0, "slice_slice_Slice"));
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_slice_slice_atoi(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //base
-    long long int arg1 = 0;
-    if (!PyArg_ParseTuple(args, "Ol", &arg0,&arg1)) { return NULL; };
-    long long int rarg = (long long int)(slice_slice_atoi(
-        pyFATGetPtr(arg0, "slice_slice_Slice"),
-        arg1));
-    return PyLong_FromLong(rarg);
-}
-
 
 static PyMethodDef methods[] = {
-{"split", py_slice_slice_split, METH_VARARGS,"split this slice by a token"},
-{"eq_cstr", py_slice_slice_eq_cstr, METH_VARARGS,""},
-{"eq_bytes", py_slice_slice_eq_bytes, METH_VARARGS,""},
-{"make", py_slice_slice_make, METH_VARARGS,""},
 {"empty", py_slice_slice_empty, METH_VARARGS,""},
 {"atoi", py_slice_slice_atoi, METH_VARARGS,"parse slice as a number string"},
+{"eq_cstr", py_slice_slice_eq_cstr, METH_VARARGS,""},
+{"eq_bytes", py_slice_slice_eq_bytes, METH_VARARGS,""},
+{"split", py_slice_slice_split, METH_VARARGS,"split this slice by a token"},
+{"make", py_slice_slice_make, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

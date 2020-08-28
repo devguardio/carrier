@@ -1,6 +1,28 @@
 
 <h1> module hpack::decoder </h1>
-<h4> fn next (
+<h4> fn decode_integer (
+
+    ::hpack::decoder::Iterator*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    u8
+    prefix_size,
+
+)
+
+-&gt uint
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn next (
 
     ::err::Err*+et
     e,
@@ -30,28 +52,6 @@
 )
 
 
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decode_integer (
-
-    ::hpack::decoder::Iterator*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    u8
-    prefix_size,
-
-)
-
--&gt uint
 
 </h4>
 

@@ -73,25 +73,25 @@ extern {
     #[link_name = "carrier_sha256_hkdf"]
     pub fn r#hkdf( Zchaining_key: *const u8,  Zinput_key_material: *const u8,  Zinput_key_material_len: usize,  Zout1: *mut u8,  Zout2: *mut u8,  Zout3: *mut u8);
 
-    #[link_name = "carrier_sha256_finish"]
-    pub fn r#finish( Zself: *mut u8,  Zout: *mut u8);
-
-    #[link_name = "carrier_sha256_hashlen"]
-    pub fn r#hashlen()  -> usize;
-
-    #[link_name = "carrier_sha256_update"]
-    pub fn r#update( Zself: *mut u8,  Zdata: *const u8,  Zl: usize);
-
-    #[link_name = "carrier_sha256_blocklen"]
-    pub fn r#blocklen()  -> usize;
-
     #[link_name = "sizeof_carrier_sha256_Sha256"]
     pub fn sizeof_Sha256() -> libc::size_t;
+
+    #[link_name = "carrier_sha256_hmac"]
+    pub fn r#hmac( Zkey: *const u8,  Zkeylen: usize,  Zdata: *const u8,  Zdatalen: usize,  Zout: *mut u8);
 
     #[link_name = "carrier_sha256_init"]
     pub fn r#init( Zself: *mut u8);
 
-    #[link_name = "carrier_sha256_hmac"]
-    pub fn r#hmac( Zkey: *const u8,  Zkeylen: usize,  Zdata: *const u8,  Zdatalen: usize,  Zout: *mut u8);
+    #[link_name = "carrier_sha256_finish"]
+    pub fn r#finish( Zself: *mut u8,  Zout: *mut u8);
+
+    #[link_name = "carrier_sha256_blocklen"]
+    pub fn r#blocklen()  -> usize;
+
+    #[link_name = "carrier_sha256_update"]
+    pub fn r#update( Zself: *mut u8,  Zdata: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_sha256_hashlen"]
+    pub fn r#hashlen()  -> usize;
 
 }

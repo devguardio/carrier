@@ -1,12 +1,25 @@
 
 <h1> module pool </h1>
-<h4> fn free (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    ptr_,
+<h4> fn free_bytes (
 
     ::pool::Pool*
     self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ get the number of bytes left in the pool&lt;br&gt;
+</p><h4> fn free (
+
+    ::pool::Pool*
+    self,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    ptr_,
 
 )
 
@@ -16,6 +29,25 @@
 
 <p class='doc_comments'>
  free a pointer previously allocated from this pool&lt;br&gt; requires pointer to be a member()&lt;br&gt;
+</p><h4> fn each (
+
+    ::pool::Pool*
+    self,
+
+    ::pool::iterator
+    it,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    user,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ run an iterator on every allocated block&lt;br&gt; this is useful when you want to use the pool as a vector&lt;br&gt; but cannot be used if you ever malloc()&#x27;d from this pool&lt;br&gt;&lt;br&gt; it is safe to call free() and alloc() from iterator, because they are implemented as markers&lt;br&gt;
 </p><h4> fn make (
 
     ::pool::Pool*+pt
@@ -51,38 +83,6 @@
 
 <p class='doc_comments'>
  malloc a zeroed continuous memory block of any size&lt;br&gt; returns null if the pool is full&lt;br&gt; this is alot less efficient than alloc()&lt;br&gt; as alignment requirements can lead to more blocks being allocated than you expect&lt;br&gt;&lt;br&gt;
-</p><h4> fn free_bytes (
-
-    ::pool::Pool*
-    self,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
- get the number of bytes left in the pool&lt;br&gt;
-</p><h4> fn each (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    user,
-
-    ::pool::iterator
-    it,
-
-    ::pool::Pool*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- run an iterator on every allocated block&lt;br&gt; this is useful when you want to use the pool as a vector&lt;br&gt; but cannot be used if you ever malloc()&#x27;d from this pool&lt;br&gt;&lt;br&gt; it is safe to call free() and alloc() from iterator, because they are implemented as markers&lt;br&gt;
 </p><h4> fn alloc (
 
     ::pool::Pool*

@@ -2,11 +2,11 @@
 <h1> module io::select </h1>
 <h4> fn make_read_async (
 
-    ::io::Async*
-    async,
-
     ::io::Io*
     i,
+
+    ::io::Async*
+    async,
 
 )
 
@@ -18,11 +18,11 @@
 
 </p><h4> fn select_read_fd (
 
-    int
-    fd,
-
     ::io::select::Async*
     self,
+
+    int
+    fd,
 
 )
 
@@ -32,13 +32,23 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn select_write_fd (
+</p><h4> fn stdin (
 
-    ::io::select::Async*
-    self,
+)
+
+-&gt ::io::Io
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select_write_fd (
 
     int
     fd,
+
+    ::io::select::Async*
+    self,
 
 )
 
@@ -69,16 +79,6 @@
 )
 
 
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn stdin (
-
-)
-
--&gt ::io::Io
 
 </h4>
 

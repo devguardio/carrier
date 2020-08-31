@@ -6,939 +6,938 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:2
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:5
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:2
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:4
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:2
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
-(declare-fun theory10___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
-(declare-fun theory11___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
-(declare-fun var12___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
+(declare-fun theory10___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
+(declare-fun theory11___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:161
+(declare-fun var12___buffer__append_slice__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___slice__mut_slice__as_slice__t0) )
+  (= var13_true__t0 (theory1_safe var12___buffer__append_slice__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:94
-(declare-fun var14___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
+(declare-fun var14___buffer__starts_with_cstr__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___slice__mut_slice__append_cstr__t0) )
+  (= var15_true__t0 (theory1_safe var14___buffer__starts_with_cstr__t0) )
 )
 
 (assert
   var15_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:16
-(declare-fun theory17___buffer__integrity ((_ BitVec 64) (_ BitVec 64)) Bool); theory ::buffer::integrity
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
-(declare-fun var18___buffer__as_mut_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
+(declare-fun var16___buffer__fgets__t0 () (_ BitVec 64))
+(declare-fun var17_true__t0 () Bool)
+(assert
+  (= var17_true__t0 (theory1_safe var16___buffer__fgets__t0) )
+)
+
+(assert
+  var17_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
+(declare-fun var18___buffer__append_cstr__t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (assert
-  (= var19_true__t0 (theory1_safe var18___buffer__as_mut_slice__t0) )
+  (= var19_true__t0 (theory1_safe var18___buffer__append_cstr__t0) )
 )
 
 (assert
   var19_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
-(declare-fun var20___slice__slice__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
+(declare-fun var20___buffer__clear__t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
-  (= var21_true__t0 (theory1_safe var20___slice__slice__make__t0) )
+  (= var21_true__t0 (theory1_safe var20___buffer__clear__t0) )
 )
 
 (assert
   var21_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
+(declare-fun theory23___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:108
-(declare-fun var22___slice__mut_slice__push__t0 () (_ BitVec 64))
-(declare-fun var23_true__t0 () Bool)
-(assert
-  (= var23_true__t0 (theory1_safe var22___slice__mut_slice__push__t0) )
-)
-
-(assert
-  var23_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
-(declare-fun var24___buffer__as_slice__t0 () (_ BitVec 64))
+(declare-fun var24___slice__mut_slice__push__t0 () (_ BitVec 64))
 (declare-fun var25_true__t0 () Bool)
 (assert
-  (= var25_true__t0 (theory1_safe var24___buffer__as_slice__t0) )
+  (= var25_true__t0 (theory1_safe var24___slice__mut_slice__push__t0) )
 )
 
 (assert
   var25_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-; literal expr
-(declare-fun var28_literal_Unsigned_32___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
+(declare-fun var26___slice__slice__split__t0 () (_ BitVec 64))
+(declare-fun var27_true__t0 () Bool)
 (assert
-  (= var28_literal_Unsigned_32___t0 (_ bv32 64))
-
-)
-
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-(declare-fun var29_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 () Bool)
-(assert
-  (= var29_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var28_literal_Unsigned_32___t0) )
-)
-
-(declare-fun var27___carrier__sha256__HASHLEN__t1 () (_ BitVec 64))
-(assert
-  (= var29_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var27___carrier__sha256__HASHLEN__t1) )
-)
-
-(declare-fun var30_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 () Bool)
-(assert
-  (= var30_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var28_literal_Unsigned_32___t0) )
+  (= var27_true__t0 (theory1_safe var26___slice__slice__split__t0) )
 )
 
 (assert
-  (= var30_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var27___carrier__sha256__HASHLEN__t1) )
+  var27_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
-(declare-fun var31_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
-(assert (! (= var31_implicit_coercion_of_literal_Unsigned_32___t0 var28_literal_Unsigned_32___t0) :named A0))(declare-fun var27___carrier__sha256__HASHLEN__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
+(declare-fun var28___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+(declare-fun var29_true__t0 () Bool)
 (assert
-  (= var27___carrier__sha256__HASHLEN__t1  (ite true var31_implicit_coercion_of_literal_Unsigned_32___t0 var27___carrier__sha256__HASHLEN__t0)  )
+  (= var29_true__t0 (theory1_safe var28___slice__slice__eq_bytes__t0) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:60
-(declare-fun var32___carrier__sha256__finish__t0 () (_ BitVec 64))
+(assert
+  var29_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:75
+(declare-fun var30___buffer__as_mut_slice__t0 () (_ BitVec 64))
+(declare-fun var31_true__t0 () Bool)
+(assert
+  (= var31_true__t0 (theory1_safe var30___buffer__as_mut_slice__t0) )
+)
+
+(assert
+  var31_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
+(declare-fun var32___buffer__vformat__t0 () (_ BitVec 64))
 (declare-fun var33_true__t0 () Bool)
 (assert
-  (= var33_true__t0 (theory1_safe var32___carrier__sha256__finish__t0) )
+  (= var33_true__t0 (theory1_safe var32___buffer__vformat__t0) )
 )
 
 (assert
   var33_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:161
-(declare-fun var34___buffer__append_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
+(declare-fun var34___slice__slice__eq__t0 () (_ BitVec 64))
 (declare-fun var35_true__t0 () Bool)
 (assert
-  (= var35_true__t0 (theory1_safe var34___buffer__append_slice__t0) )
+  (= var35_true__t0 (theory1_safe var34___slice__slice__eq__t0) )
 )
 
 (assert
   var35_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:138
-(declare-fun var36___slice__mut_slice__push32__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
+(declare-fun var36___buffer__copy_bytes__t0 () (_ BitVec 64))
 (declare-fun var37_true__t0 () Bool)
 (assert
-  (= var37_true__t0 (theory1_safe var36___slice__mut_slice__push32__t0) )
+  (= var37_true__t0 (theory1_safe var36___buffer__copy_bytes__t0) )
 )
 
 (assert
   var37_true__t0
 )
 
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
+; literal expr
+(declare-fun var39_literal_Unsigned_64___t0 () (_ BitVec 64))
+(assert
+  (= var39_literal_Unsigned_64___t0 (_ bv64 64))
+
+)
+
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
+(declare-fun var40_safe_literal_Unsigned_64______safe___carrier__sha256__BLOCKLEN___t0 () Bool)
+(assert
+  (= var40_safe_literal_Unsigned_64______safe___carrier__sha256__BLOCKLEN___t0 (theory1_safe var39_literal_Unsigned_64___t0) )
+)
+
+(declare-fun var38___carrier__sha256__BLOCKLEN__t1 () (_ BitVec 64))
+(assert
+  (= var40_safe_literal_Unsigned_64______safe___carrier__sha256__BLOCKLEN___t0 (theory1_safe var38___carrier__sha256__BLOCKLEN__t1) )
+)
+
+(declare-fun var41_nullterm_literal_Unsigned_64______nullterm___carrier__sha256__BLOCKLEN___t0 () Bool)
+(assert
+  (= var41_nullterm_literal_Unsigned_64______nullterm___carrier__sha256__BLOCKLEN___t0 (theory2_nullterm var39_literal_Unsigned_64___t0) )
+)
+
+(assert
+  (= var41_nullterm_literal_Unsigned_64______nullterm___carrier__sha256__BLOCKLEN___t0 (theory2_nullterm var38___carrier__sha256__BLOCKLEN__t1) )
+)
+
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
+(declare-fun var42_implicit_coercion_of_literal_Unsigned_64___t0 () (_ BitVec 64))
+(assert (! (= var42_implicit_coercion_of_literal_Unsigned_64___t0 var39_literal_Unsigned_64___t0) :named A0))(declare-fun var38___carrier__sha256__BLOCKLEN__t0 () (_ BitVec 64))
+(assert
+  (= var38___carrier__sha256__BLOCKLEN__t1  (ite true var42_implicit_coercion_of_literal_Unsigned_64___t0 var38___carrier__sha256__BLOCKLEN__t0)  )
+)
+
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:84
-(declare-fun var38___buffer__push__t0 () (_ BitVec 64))
-(declare-fun var39_true__t0 () Bool)
+(declare-fun var43___buffer__push__t0 () (_ BitVec 64))
+(declare-fun var44_true__t0 () Bool)
 (assert
-  (= var39_true__t0 (theory1_safe var38___buffer__push__t0) )
+  (= var44_true__t0 (theory1_safe var43___buffer__push__t0) )
 )
 
 (assert
-  var39_true__t0
+  var44_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:207
-(declare-fun var40___buffer__vformat__t0 () (_ BitVec 64))
-(declare-fun var41_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
+(declare-fun var45___slice__mut_slice__space__t0 () (_ BitVec 64))
+(declare-fun var46_true__t0 () Bool)
 (assert
-  (= var41_true__t0 (theory1_safe var40___buffer__vformat__t0) )
-)
-
-(assert
-  var41_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:30
-(declare-fun var42___carrier__sha256__update__t0 () (_ BitVec 64))
-(declare-fun var43_true__t0 () Bool)
-(assert
-  (= var43_true__t0 (theory1_safe var42___carrier__sha256__update__t0) )
+  (= var46_true__t0 (theory1_safe var45___slice__mut_slice__space__t0) )
 )
 
 (assert
-  var43_true__t0
+  var46_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:153
-(declare-fun var44___slice__mut_slice__push64__t0 () (_ BitVec 64))
-(declare-fun var45_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
+(declare-fun var47___buffer__make__t0 () (_ BitVec 64))
+(declare-fun var48_true__t0 () Bool)
 (assert
-  (= var45_true__t0 (theory1_safe var44___slice__mut_slice__push64__t0) )
-)
-
-(assert
-  var45_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:114
-(declare-fun var46___buffer__strlen__t0 () (_ BitVec 64))
-(declare-fun var47_true__t0 () Bool)
-(assert
-  (= var47_true__t0 (theory1_safe var46___buffer__strlen__t0) )
+  (= var48_true__t0 (theory1_safe var47___buffer__make__t0) )
 )
 
 (assert
-  var47_true__t0
+  var48_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
-(declare-fun var48___slice__slice__sub__t0 () (_ BitVec 64))
-(declare-fun var49_true__t0 () Bool)
-(assert
-  (= var49_true__t0 (theory1_safe var48___slice__slice__sub__t0) )
-)
-
-(assert
-  var49_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
-(declare-fun var50___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:10
+(declare-fun var50_literal_string__09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a___t0 () (_ BitVec 64))
 (declare-fun var51_true__t0 () Bool)
 (assert
-  (= var51_true__t0 (theory1_safe var50___slice__slice__eq_cstr__t0) )
+  (= var51_true__t0 (theory1_safe var50_literal_string__09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a___t0) )
 )
 
 (assert
   var51_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:56
-(declare-fun var52___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
-(declare-fun var53_true__t0 () Bool)
+(declare-fun var52_true__t0 () Bool)
 (assert
-  (= var53_true__t0 (theory1_safe var52___slice__mut_slice__append_slice__t0) )
+  (= var52_true__t0 (theory2_nullterm var50_literal_string__09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a___t0) )
 )
 
 (assert
-  var53_true__t0
+  var52_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
-(declare-fun var54___slice__mut_slice__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:11
+(declare-fun var53_literal_string__0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef___t0 () (_ BitVec 64))
+(declare-fun var54_true__t0 () Bool)
+(assert
+  (= var54_true__t0 (theory1_safe var53_literal_string__0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef___t0) )
+)
+
+(assert
+  var54_true__t0
+)
+
 (declare-fun var55_true__t0 () Bool)
 (assert
-  (= var55_true__t0 (theory1_safe var54___slice__mut_slice__make__t0) )
+  (= var55_true__t0 (theory2_nullterm var53_literal_string__0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef___t0) )
 )
 
 (assert
   var55_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
-(declare-fun var56___slice__slice__atoi__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:12
+(declare-fun var56_literal_string__6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca___t0 () (_ BitVec 64))
 (declare-fun var57_true__t0 () Bool)
 (assert
-  (= var57_true__t0 (theory1_safe var56___slice__slice__atoi__t0) )
+  (= var57_true__t0 (theory1_safe var56_literal_string__6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca___t0) )
 )
 
 (assert
   var57_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
-(declare-fun var58___buffer__ends_with_cstr__t0 () (_ BitVec 64))
-(declare-fun var59_true__t0 () Bool)
+(declare-fun var58_true__t0 () Bool)
 (assert
-  (= var59_true__t0 (theory1_safe var58___buffer__ends_with_cstr__t0) )
+  (= var58_true__t0 (theory2_nullterm var56_literal_string__6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca___t0) )
 )
 
 (assert
-  var59_true__t0
+  var58_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
-(declare-fun var60___buffer__format__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:14
+(declare-fun var59_literal_string__2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b___t0 () (_ BitVec 64))
+(declare-fun var60_true__t0 () Bool)
+(assert
+  (= var60_true__t0 (theory1_safe var59_literal_string__2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b___t0) )
+)
+
+(assert
+  var60_true__t0
+)
+
 (declare-fun var61_true__t0 () Bool)
 (assert
-  (= var61_true__t0 (theory1_safe var60___buffer__format__t0) )
+  (= var61_true__t0 (theory2_nullterm var59_literal_string__2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b___t0) )
 )
 
 (assert
   var61_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
-(declare-fun var62___slice__mut_slice__space__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:15
+(declare-fun var62_literal_string__14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204___t0 () (_ BitVec 64))
 (declare-fun var63_true__t0 () Bool)
 (assert
-  (= var63_true__t0 (theory1_safe var62___slice__mut_slice__space__t0) )
+  (= var63_true__t0 (theory1_safe var62_literal_string__14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204___t0) )
 )
 
 (assert
   var63_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
-(declare-fun var64___buffer__split__t0 () (_ BitVec 64))
-(declare-fun var65_true__t0 () Bool)
+(declare-fun var64_true__t0 () Bool)
 (assert
-  (= var65_true__t0 (theory1_safe var64___buffer__split__t0) )
+  (= var64_true__t0 (theory2_nullterm var62_literal_string__14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204___t0) )
 )
 
 (assert
-  var65_true__t0
+  var64_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:143
-(declare-fun var66___buffer__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:16
+(declare-fun var65_literal_string__468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0___t0 () (_ BitVec 64))
+(declare-fun var66_true__t0 () Bool)
+(assert
+  (= var66_true__t0 (theory1_safe var65_literal_string__468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0___t0) )
+)
+
+(assert
+  var66_true__t0
+)
+
 (declare-fun var67_true__t0 () Bool)
 (assert
-  (= var67_true__t0 (theory1_safe var66___buffer__append_cstr__t0) )
+  (= var67_true__t0 (theory2_nullterm var65_literal_string__468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0___t0) )
 )
 
 (assert
   var67_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:270
-(declare-fun var68___buffer__starts_with_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:18
+(declare-fun var68_literal_string__3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97___t0 () (_ BitVec 64))
 (declare-fun var69_true__t0 () Bool)
 (assert
-  (= var69_true__t0 (theory1_safe var68___buffer__starts_with_cstr__t0) )
+  (= var69_true__t0 (theory1_safe var68_literal_string__3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97___t0) )
 )
 
 (assert
   var69_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
-(declare-fun var70___slice__slice__eq__t0 () (_ BitVec 64))
-(declare-fun var71_true__t0 () Bool)
+(declare-fun var70_true__t0 () Bool)
 (assert
-  (= var71_true__t0 (theory1_safe var70___slice__slice__eq__t0) )
+  (= var70_true__t0 (theory2_nullterm var68_literal_string__3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97___t0) )
 )
 
 (assert
-  var71_true__t0
+  var70_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
-(declare-fun var72___buffer__available__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:19
+(declare-fun var71_literal_string__f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2___t0 () (_ BitVec 64))
+(declare-fun var72_true__t0 () Bool)
+(assert
+  (= var72_true__t0 (theory1_safe var71_literal_string__f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2___t0) )
+)
+
+(assert
+  var72_true__t0
+)
+
 (declare-fun var73_true__t0 () Bool)
 (assert
-  (= var73_true__t0 (theory1_safe var72___buffer__available__t0) )
+  (= var73_true__t0 (theory2_nullterm var71_literal_string__f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2___t0) )
 )
 
 (assert
   var73_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:10
-(declare-fun var75_literal_string__09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:20
+(declare-fun var74_literal_string__dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1___t0 () (_ BitVec 64))
+(declare-fun var75_true__t0 () Bool)
+(assert
+  (= var75_true__t0 (theory1_safe var74_literal_string__dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1___t0) )
+)
+
+(assert
+  var75_true__t0
+)
+
 (declare-fun var76_true__t0 () Bool)
 (assert
-  (= var76_true__t0 (theory1_safe var75_literal_string__09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a___t0) )
+  (= var76_true__t0 (theory2_nullterm var74_literal_string__dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1___t0) )
 )
 
 (assert
   var76_true__t0
 )
 
-(declare-fun var77_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:22
+(declare-fun var77_literal_string__9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04___t0 () (_ BitVec 64))
+(declare-fun var78_true__t0 () Bool)
 (assert
-  (= var77_true__t0 (theory2_nullterm var75_literal_string__09675f2dcc4783b599f18fb765583668a0fd8ae4096f6fcdc60d4f35b4130fbefcd542ffe7459d2a___t0) )
+  (= var78_true__t0 (theory1_safe var77_literal_string__9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04___t0) )
 )
 
 (assert
-  var77_true__t0
+  var78_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:11
-(declare-fun var78_literal_string__0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef___t0 () (_ BitVec 64))
 (declare-fun var79_true__t0 () Bool)
 (assert
-  (= var79_true__t0 (theory1_safe var78_literal_string__0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef___t0) )
+  (= var79_true__t0 (theory2_nullterm var77_literal_string__9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04___t0) )
 )
 
 (assert
   var79_true__t0
 )
 
-(declare-fun var80_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:23
+(declare-fun var80_literal_string__4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371___t0 () (_ BitVec 64))
+(declare-fun var81_true__t0 () Bool)
 (assert
-  (= var80_true__t0 (theory2_nullterm var78_literal_string__0cf2198c31376f5c8915660137725f2bbc180a986e5a7bda27fa81593a4a339bab92cbc39fb2b8581108ee48c794812d845a72ce8008c9e915d9e330bbb90e9136aa53ba0e6693dd4046d6b03362dfb9edfa04c887153cc5de677aab8c7839d517035879679c29727e96c5426324a2575fbe678d6cc7fef5eb6cebd595cfddef___t0) )
+  (= var81_true__t0 (theory1_safe var80_literal_string__4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371___t0) )
 )
 
 (assert
-  var80_true__t0
+  var81_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:12
-(declare-fun var81_literal_string__6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca___t0 () (_ BitVec 64))
 (declare-fun var82_true__t0 () Bool)
 (assert
-  (= var82_true__t0 (theory1_safe var81_literal_string__6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca___t0) )
+  (= var82_true__t0 (theory2_nullterm var80_literal_string__4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371___t0) )
 )
 
 (assert
   var82_true__t0
 )
 
-(declare-fun var83_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:24
+(declare-fun var83_literal_string__cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2___t0 () (_ BitVec 64))
+(declare-fun var84_true__t0 () Bool)
 (assert
-  (= var83_true__t0 (theory2_nullterm var81_literal_string__6b142d4dfe217f1881aa0e6483b271dd5d43f70b85605953a0fef272ddde46ca___t0) )
+  (= var84_true__t0 (theory1_safe var83_literal_string__cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2___t0) )
 )
 
 (assert
-  var83_true__t0
+  var84_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:14
-(declare-fun var84_literal_string__2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b___t0 () (_ BitVec 64))
 (declare-fun var85_true__t0 () Bool)
 (assert
-  (= var85_true__t0 (theory1_safe var84_literal_string__2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b___t0) )
+  (= var85_true__t0 (theory2_nullterm var83_literal_string__cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2___t0) )
 )
 
 (assert
   var85_true__t0
 )
 
-(declare-fun var86_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:26
+(declare-fun var86_literal_string__9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9___t0 () (_ BitVec 64))
+(declare-fun var87_true__t0 () Bool)
 (assert
-  (= var86_true__t0 (theory2_nullterm var84_literal_string__2dff35c2fe5039123d4c5d9feb7d5167e3e959b31841abec1e5b18b0ece2ef25e04d1f8d030d9b1b___t0) )
+  (= var87_true__t0 (theory1_safe var86_literal_string__9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9___t0) )
 )
 
 (assert
-  var86_true__t0
+  var87_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:15
-(declare-fun var87_literal_string__14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204___t0 () (_ BitVec 64))
 (declare-fun var88_true__t0 () Bool)
 (assert
-  (= var88_true__t0 (theory1_safe var87_literal_string__14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204___t0) )
+  (= var88_true__t0 (theory2_nullterm var86_literal_string__9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9___t0) )
 )
 
 (assert
   var88_true__t0
 )
 
-(declare-fun var89_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:27
+(declare-fun var89_literal_string__3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c___t0 () (_ BitVec 64))
+(declare-fun var90_true__t0 () Bool)
 (assert
-  (= var89_true__t0 (theory2_nullterm var87_literal_string__14890f3b2ee63746c8249909013571a403eb54273760090db5959b06ff59acfaee6d0c4aece58b5964d10b4b771dd90cf1b63d947bee4f6a12220d67b79aabbd68b02a3850352cc33b10072d4c28182df2855aa418b236239c659dad036155be6b9c908bc09dc38c3329b538e81ed710ef9fd3de7671673f3da5745f4a785204___t0) )
+  (= var90_true__t0 (theory1_safe var89_literal_string__3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c___t0) )
 )
 
 (assert
-  var89_true__t0
+  var90_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:16
-(declare-fun var90_literal_string__468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0___t0 () (_ BitVec 64))
 (declare-fun var91_true__t0 () Bool)
 (assert
-  (= var91_true__t0 (theory1_safe var90_literal_string__468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0___t0) )
+  (= var91_true__t0 (theory2_nullterm var89_literal_string__3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c___t0) )
 )
 
 (assert
   var91_true__t0
 )
 
-(declare-fun var92_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:28
+(declare-fun var92_literal_string__29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e___t0 () (_ BitVec 64))
+(declare-fun var93_true__t0 () Bool)
 (assert
-  (= var92_true__t0 (theory2_nullterm var90_literal_string__468d8498d46afe74a0ffb541b847bac724faeabd48c41322bf534b284c4e9fe0___t0) )
+  (= var93_true__t0 (theory1_safe var92_literal_string__29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e___t0) )
 )
 
 (assert
-  var92_true__t0
+  var93_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:18
-(declare-fun var93_literal_string__3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97___t0 () (_ BitVec 64))
 (declare-fun var94_true__t0 () Bool)
 (assert
-  (= var94_true__t0 (theory1_safe var93_literal_string__3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97___t0) )
+  (= var94_true__t0 (theory2_nullterm var92_literal_string__29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e___t0) )
 )
 
 (assert
   var94_true__t0
 )
 
-(declare-fun var95_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:31
+(declare-fun var95_literal_string__c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5___t0 () (_ BitVec 64))
+(declare-fun var96_true__t0 () Bool)
 (assert
-  (= var95_true__t0 (theory2_nullterm var93_literal_string__3270b4e48d575f0312659a6202adbc4e877d69298de4090ed47278b4433fff95802e844fbd73fd4ad5532b9b97___t0) )
+  (= var96_true__t0 (theory1_safe var95_literal_string__c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5___t0) )
 )
 
 (assert
-  var95_true__t0
+  var96_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:19
-(declare-fun var96_literal_string__f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2___t0 () (_ BitVec 64))
 (declare-fun var97_true__t0 () Bool)
 (assert
-  (= var97_true__t0 (theory1_safe var96_literal_string__f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2___t0) )
+  (= var97_true__t0 (theory2_nullterm var95_literal_string__c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5___t0) )
 )
 
 (assert
   var97_true__t0
 )
 
-(declare-fun var98_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:32
+(declare-fun var98_literal_string__97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720___t0 () (_ BitVec 64))
+(declare-fun var99_true__t0 () Bool)
 (assert
-  (= var98_true__t0 (theory2_nullterm var96_literal_string__f407f815a33cd450c0b72a378f00762788f91bc44f09f93de67a41d2222088935b3c1b6a689f935bca13a90b28f64b7ffc28ef278b28271b1a7975a45f4b61fe3657ca5c950b7a2dc2e7fd9ec327b26017a222aba3f29183efd5d33a92d36136eb21acf412c6b14d0efccef849d9d451412e5d587fb060fdcd55029ba401afc2___t0) )
+  (= var99_true__t0 (theory1_safe var98_literal_string__97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720___t0) )
 )
 
 (assert
-  var98_true__t0
+  var99_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:20
-(declare-fun var99_literal_string__dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1___t0 () (_ BitVec 64))
 (declare-fun var100_true__t0 () Bool)
 (assert
-  (= var100_true__t0 (theory1_safe var99_literal_string__dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1___t0) )
+  (= var100_true__t0 (theory2_nullterm var98_literal_string__97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720___t0) )
 )
 
 (assert
   var100_true__t0
 )
 
-(declare-fun var101_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:33
+(declare-fun var101_literal_string__50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c___t0 () (_ BitVec 64))
+(declare-fun var102_true__t0 () Bool)
 (assert
-  (= var101_true__t0 (theory2_nullterm var99_literal_string__dd1a8105ab753d83d90ab39adbc748940fefda05bedea7eeebdbdf54b02d9ae1___t0) )
+  (= var102_true__t0 (theory1_safe var101_literal_string__50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c___t0) )
 )
 
 (assert
-  var101_true__t0
+  var102_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:22
-(declare-fun var102_literal_string__9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04___t0 () (_ BitVec 64))
 (declare-fun var103_true__t0 () Bool)
 (assert
-  (= var103_true__t0 (theory1_safe var102_literal_string__9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04___t0) )
+  (= var103_true__t0 (theory2_nullterm var101_literal_string__50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c___t0) )
 )
 
 (assert
   var103_true__t0
 )
 
-(declare-fun var104_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:35
+; literal expr
+(declare-fun var104_literal_Unsigned_0___t0 () (_ BitVec 64))
 (assert
-  (= var104_true__t0 (theory2_nullterm var102_literal_string__9da0c114682f82c1d1e9b54430580b9c569489ca16b92ee10498d55d7cad5db5e652063439311e04___t0) )
+  (= var104_literal_Unsigned_0___t0 (_ bv0 64))
+
 )
 
-(assert
-  var104_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:23
-(declare-fun var105_literal_string__4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371___t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
+(declare-fun var105_literal_array_105__t0 () (_ BitVec 64))
 (declare-fun var106_true__t0 () Bool)
 (assert
-  (= var106_true__t0 (theory1_safe var105_literal_string__4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371___t0) )
+  (= var106_true__t0 (theory1_safe var105_literal_array_105__t0) )
 )
 
 (assert
   var106_true__t0
 )
 
-(declare-fun var107_true__t0 () Bool)
-(assert
-  (= var107_true__t0 (theory2_nullterm var105_literal_string__4953408be3ddde42521eb625a37af0d2cf9ed184f5b627e5e7e0e824e8e11648b418e5c4c1b0204bc519c9e578b800439bdd254f39f641082d03a28de44ac677644c7b6c8df743f29f1dfd80fd25c2db31010ea02f60201cde24a364d4168da261d848aed01c10dee9149c1ebb29004398f0d29c605a8bca032b31d241ad3371___t0) )
-)
-
-(assert
-  var107_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:24
-(declare-fun var108_literal_string__cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2___t0 () (_ BitVec 64))
-(declare-fun var109_true__t0 () Bool)
-(assert
-  (= var109_true__t0 (theory1_safe var108_literal_string__cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2___t0) )
-)
-
-(assert
-  var109_true__t0
-)
-
-(declare-fun var110_true__t0 () Bool)
-(assert
-  (= var110_true__t0 (theory2_nullterm var108_literal_string__cdeacfcebf46cc9d7e4d4175e5d8d267c23a64cde83e867e5001ecf26fbd30d2___t0) )
-)
-
-(assert
-  var110_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:26
-(declare-fun var111_literal_string__9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9___t0 () (_ BitVec 64))
-(declare-fun var112_true__t0 () Bool)
-(assert
-  (= var112_true__t0 (theory1_safe var111_literal_string__9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9___t0) )
-)
-
-(assert
-  var112_true__t0
-)
-
-(declare-fun var113_true__t0 () Bool)
-(assert
-  (= var113_true__t0 (theory2_nullterm var111_literal_string__9794cf76aeef22963fa40a09a86bf0e2ba9f54f30f43bff09d44f9d28cfd7b7a45002797cc1437c9___t0) )
-)
-
-(assert
-  var113_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:27
-(declare-fun var114_literal_string__3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c___t0 () (_ BitVec 64))
-(declare-fun var115_true__t0 () Bool)
-(assert
-  (= var115_true__t0 (theory1_safe var114_literal_string__3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c___t0) )
-)
-
-(assert
-  var115_true__t0
-)
-
-(declare-fun var116_true__t0 () Bool)
-(assert
-  (= var116_true__t0 (theory2_nullterm var114_literal_string__3e8a9030eae1bb6084cffdb577623c4cf94b7aee3d3ca994ea94c12acd3e1194cad6d2ef190e0219af517073f9a613e5d0d69f23aad15a2f0d4e2c204ab2f621673325bc5d3d875984145d014bbcb1682c16ea2bdf4b9d56ce6da629ca5c781cfce7b1201e34f228eb62ede8d36cbfdcf451818d46721910153b56cfb5053d8c___t0) )
-)
-
-(assert
-  var116_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:28
-(declare-fun var117_literal_string__29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e___t0 () (_ BitVec 64))
-(declare-fun var118_true__t0 () Bool)
-(assert
-  (= var118_true__t0 (theory1_safe var117_literal_string__29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e___t0) )
-)
-
-(assert
-  var118_true__t0
-)
-
-(declare-fun var119_true__t0 () Bool)
-(assert
-  (= var119_true__t0 (theory2_nullterm var117_literal_string__29973999c4ec891154b83ebe5b0201cf29205d68e7be2c1d59bbc81658d6668e___t0) )
-)
-
-(assert
-  var119_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:31
-(declare-fun var120_literal_string__c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5___t0 () (_ BitVec 64))
-(declare-fun var121_true__t0 () Bool)
-(assert
-  (= var121_true__t0 (theory1_safe var120_literal_string__c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5___t0) )
-)
-
-(assert
-  var121_true__t0
-)
-
-(declare-fun var122_true__t0 () Bool)
-(assert
-  (= var122_true__t0 (theory2_nullterm var120_literal_string__c1d60814376aae39c4111246353485958f95558fa38ffc14e4a0981d76249b9f8763c4b3e2ce4ef5___t0) )
-)
-
-(assert
-  var122_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:32
-(declare-fun var123_literal_string__97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720___t0 () (_ BitVec 64))
-(declare-fun var124_true__t0 () Bool)
-(assert
-  (= var124_true__t0 (theory1_safe var123_literal_string__97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720___t0) )
-)
-
-(assert
-  var124_true__t0
-)
-
-(declare-fun var125_true__t0 () Bool)
-(assert
-  (= var125_true__t0 (theory2_nullterm var123_literal_string__97d29ac5ede94c0a5071e0095e6102123d1726132f9dc102672ab87b1cec18abdb04096c21d3fdb129742d250389460fe63b5f79c77c2f912a8f7d4f39cbd758139c872366cac35a40fe248322825adf57481d92832e66057f80e08964be993de6a0fe31e45806cb3c17ad6ae4d2a44a374647a88c3acf260d04c970c74ec720___t0) )
-)
-
-(assert
-  var125_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:33
-(declare-fun var126_literal_string__50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c___t0 () (_ BitVec 64))
-(declare-fun var127_true__t0 () Bool)
-(assert
-  (= var127_true__t0 (theory1_safe var126_literal_string__50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c___t0) )
-)
-
-(assert
-  var127_true__t0
-)
-
-(declare-fun var128_true__t0 () Bool)
-(assert
-  (= var128_true__t0 (theory2_nullterm var126_literal_string__50db0ecb5b31524a6914264930abccae0da07f01a2bbb9408207156f8e8a340c___t0) )
-)
-
-(assert
-  var128_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:35
-; literal expr
-(declare-fun var129_literal_Unsigned_0___t0 () (_ BitVec 64))
-(assert
-  (= var129_literal_Unsigned_0___t0 (_ bv0 64))
-
-)
-
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
-(declare-fun var130_literal_array_130__t0 () (_ BitVec 64))
-(declare-fun var131_true__t0 () Bool)
+(declare-fun var107_safe_literal_array_105_____safe___carrier__tests__hmac__vectors___t0 () Bool)
 (assert
-  (= var131_true__t0 (theory1_safe var130_literal_array_130__t0) )
+  (= var107_safe_literal_array_105_____safe___carrier__tests__hmac__vectors___t0 (theory1_safe var105_literal_array_105__t0) )
+)
+
+(declare-fun var49___carrier__tests__hmac__vectors__t1 () (_ BitVec 64))
+(assert
+  (= var107_safe_literal_array_105_____safe___carrier__tests__hmac__vectors___t0 (theory1_safe var49___carrier__tests__hmac__vectors__t1) )
+)
+
+(declare-fun var108_nullterm_literal_array_105_____nullterm___carrier__tests__hmac__vectors___t0 () Bool)
+(assert
+  (= var108_nullterm_literal_array_105_____nullterm___carrier__tests__hmac__vectors___t0 (theory2_nullterm var105_literal_array_105__t0) )
 )
 
 (assert
-  var131_true__t0
+  (= var108_nullterm_literal_array_105_____nullterm___carrier__tests__hmac__vectors___t0 (theory2_nullterm var49___carrier__tests__hmac__vectors__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:9
-(declare-fun var132_safe_literal_array_130_____safe___carrier__tests__hmac__vectors___t0 () Bool)
+(declare-fun var128_len___carrier__tests__hmac__vectors___t0 () (_ BitVec 64))
 (assert
-  (= var132_safe_literal_array_130_____safe___carrier__tests__hmac__vectors___t0 (theory1_safe var130_literal_array_130__t0) )
-)
-
-(declare-fun var74___carrier__tests__hmac__vectors__t1 () (_ BitVec 64))
-(assert
-  (= var132_safe_literal_array_130_____safe___carrier__tests__hmac__vectors___t0 (theory1_safe var74___carrier__tests__hmac__vectors__t1) )
-)
-
-(declare-fun var133_nullterm_literal_array_130_____nullterm___carrier__tests__hmac__vectors___t0 () Bool)
-(assert
-  (= var133_nullterm_literal_array_130_____nullterm___carrier__tests__hmac__vectors___t0 (theory2_nullterm var130_literal_array_130__t0) )
+  (= var128_len___carrier__tests__hmac__vectors___t0 (theory0_len var49___carrier__tests__hmac__vectors__t1) )
 )
 
 (assert
-  (= var133_nullterm_literal_array_130_____nullterm___carrier__tests__hmac__vectors___t0 (theory2_nullterm var74___carrier__tests__hmac__vectors__t1) )
-)
-
-(declare-fun var153_len___carrier__tests__hmac__vectors___t0 () (_ BitVec 64))
-(assert
-  (= var153_len___carrier__tests__hmac__vectors___t0 (theory0_len var74___carrier__tests__hmac__vectors__t1) )
-)
-
-(assert
-  (= var153_len___carrier__tests__hmac__vectors___t0 (_ bv19 64))
+  (= var128_len___carrier__tests__hmac__vectors___t0 (_ bv19 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
-(declare-fun var154___buffer__substr__t0 () (_ BitVec 64))
-(declare-fun var155_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:123
+(declare-fun var129___slice__mut_slice__push16__t0 () (_ BitVec 64))
+(declare-fun var130_true__t0 () Bool)
 (assert
-  (= var155_true__t0 (theory1_safe var154___buffer__substr__t0) )
+  (= var130_true__t0 (theory1_safe var129___slice__mut_slice__push16__t0) )
 )
 
 (assert
-  var155_true__t0
+  var130_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/hex/src/lib.zz:12
-(declare-fun var156___hex__str2bin__t0 () (_ BitVec 64))
-(declare-fun var157_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
+(declare-fun var131___slice__slice__atoi__t0 () (_ BitVec 64))
+(declare-fun var132_true__t0 () Bool)
 (assert
-  (= var157_true__t0 (theory1_safe var156___hex__str2bin__t0) )
-)
-
-(assert
-  var157_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
-(declare-fun var158___slice__slice__split__t0 () (_ BitVec 64))
-(declare-fun var159_true__t0 () Bool)
-(assert
-  (= var159_true__t0 (theory1_safe var158___slice__slice__split__t0) )
+  (= var132_true__t0 (theory1_safe var131___slice__slice__atoi__t0) )
 )
 
 (assert
-  var159_true__t0
+  var132_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
-(declare-fun var160___slice__slice__empty__t0 () (_ BitVec 64))
-(declare-fun var161_true__t0 () Bool)
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:59
+(declare-fun var133___buffer__as_slice__t0 () (_ BitVec 64))
+(declare-fun var134_true__t0 () Bool)
 (assert
-  (= var161_true__t0 (theory1_safe var160___slice__slice__empty__t0) )
-)
-
-(assert
-  var161_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:168
-(declare-fun var162___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
-(declare-fun var163_true__t0 () Bool)
-(assert
-  (= var163_true__t0 (theory1_safe var162___slice__mut_slice__append_obj__t0) )
+  (= var134_true__t0 (theory1_safe var133___buffer__as_slice__t0) )
 )
 
 (assert
-  var163_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
-(declare-fun var164___buffer__cstr__t0 () (_ BitVec 64))
-(declare-fun var165_true__t0 () Bool)
-(assert
-  (= var165_true__t0 (theory1_safe var164___buffer__cstr__t0) )
-)
-
-(assert
-  var165_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:304
-(declare-fun var166___buffer__fgets__t0 () (_ BitVec 64))
-(declare-fun var167_true__t0 () Bool)
-(assert
-  (= var167_true__t0 (theory1_safe var166___buffer__fgets__t0) )
-)
-
-(assert
-  var167_true__t0
+  var134_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:178
-(declare-fun var168___buffer__append_bytes__t0 () (_ BitVec 64))
-(declare-fun var169_true__t0 () Bool)
+(declare-fun var135___buffer__append_bytes__t0 () (_ BitVec 64))
+(declare-fun var136_true__t0 () Bool)
 (assert
-  (= var169_true__t0 (theory1_safe var168___buffer__append_bytes__t0) )
+  (= var136_true__t0 (theory1_safe var135___buffer__append_bytes__t0) )
 )
 
 (assert
-  var169_true__t0
+  var136_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:50
+(declare-fun var137___buffer__cstr__t0 () (_ BitVec 64))
+(declare-fun var138_true__t0 () Bool)
+(assert
+  (= var138_true__t0 (theory1_safe var137___buffer__cstr__t0) )
+)
+
+(assert
+  var138_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:30
+(declare-fun var140___carrier__sha256__update__t0 () (_ BitVec 64))
+(declare-fun var141_true__t0 () Bool)
+(assert
+  (= var141_true__t0 (theory1_safe var140___carrier__sha256__update__t0) )
+)
+
+(assert
+  var141_true__t0
 )
 
 ; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:236
-(declare-fun var170___buffer__eq_cstr__t0 () (_ BitVec 64))
-(declare-fun var171_true__t0 () Bool)
+(declare-fun var142___buffer__eq_cstr__t0 () (_ BitVec 64))
+(declare-fun var143_true__t0 () Bool)
 (assert
-  (= var171_true__t0 (theory1_safe var170___buffer__eq_cstr__t0) )
+  (= var143_true__t0 (theory1_safe var142___buffer__eq_cstr__t0) )
 )
 
 (assert
-  var171_true__t0
+  var143_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
+(declare-fun var144___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
+(declare-fun var145_true__t0 () Bool)
+(assert
+  (= var145_true__t0 (theory1_safe var144___slice__mut_slice__append_bytes__t0) )
+)
+
+(assert
+  var145_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/hex/src/lib.zz:12
+(declare-fun var146___hex__str2bin__t0 () (_ BitVec 64))
+(declare-fun var147_true__t0 () Bool)
+(assert
+  (= var147_true__t0 (theory1_safe var146___hex__str2bin__t0) )
+)
+
+(assert
+  var147_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
 ; literal expr
-(declare-fun var173_literal_Unsigned_64___t0 () (_ BitVec 64))
+(declare-fun var149_literal_Unsigned_32___t0 () (_ BitVec 64))
 (assert
-  (= var173_literal_Unsigned_64___t0 (_ bv64 64))
+  (= var149_literal_Unsigned_32___t0 (_ bv32 64))
 
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
-(declare-fun var174_safe_literal_Unsigned_64______safe___carrier__sha256__BLOCKLEN___t0 () Bool)
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
+(declare-fun var150_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 () Bool)
 (assert
-  (= var174_safe_literal_Unsigned_64______safe___carrier__sha256__BLOCKLEN___t0 (theory1_safe var173_literal_Unsigned_64___t0) )
+  (= var150_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var149_literal_Unsigned_32___t0) )
 )
 
-(declare-fun var172___carrier__sha256__BLOCKLEN__t1 () (_ BitVec 64))
+(declare-fun var148___carrier__sha256__HASHLEN__t1 () (_ BitVec 64))
 (assert
-  (= var174_safe_literal_Unsigned_64______safe___carrier__sha256__BLOCKLEN___t0 (theory1_safe var172___carrier__sha256__BLOCKLEN__t1) )
+  (= var150_safe_literal_Unsigned_32______safe___carrier__sha256__HASHLEN___t0 (theory1_safe var148___carrier__sha256__HASHLEN__t1) )
 )
 
-(declare-fun var175_nullterm_literal_Unsigned_64______nullterm___carrier__sha256__BLOCKLEN___t0 () Bool)
+(declare-fun var151_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 () Bool)
 (assert
-  (= var175_nullterm_literal_Unsigned_64______nullterm___carrier__sha256__BLOCKLEN___t0 (theory2_nullterm var173_literal_Unsigned_64___t0) )
+  (= var151_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var149_literal_Unsigned_32___t0) )
 )
 
 (assert
-  (= var175_nullterm_literal_Unsigned_64______nullterm___carrier__sha256__BLOCKLEN___t0 (theory2_nullterm var172___carrier__sha256__BLOCKLEN__t1) )
+  (= var151_nullterm_literal_Unsigned_32______nullterm___carrier__sha256__HASHLEN___t0 (theory2_nullterm var148___carrier__sha256__HASHLEN__t1) )
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:8
-(declare-fun var176_implicit_coercion_of_literal_Unsigned_64___t0 () (_ BitVec 64))
-(assert (! (= var176_implicit_coercion_of_literal_Unsigned_64___t0 var173_literal_Unsigned_64___t0) :named A1))(declare-fun var172___carrier__sha256__BLOCKLEN__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:7
+(declare-fun var152_implicit_coercion_of_literal_Unsigned_32___t0 () (_ BitVec 64))
+(assert (! (= var152_implicit_coercion_of_literal_Unsigned_32___t0 var149_literal_Unsigned_32___t0) :named A1))(declare-fun var148___carrier__sha256__HASHLEN__t0 () (_ BitVec 64))
 (assert
-  (= var172___carrier__sha256__BLOCKLEN__t1  (ite true var176_implicit_coercion_of_literal_Unsigned_64___t0 var172___carrier__sha256__BLOCKLEN__t0)  )
+  (= var148___carrier__sha256__HASHLEN__t1  (ite true var152_implicit_coercion_of_literal_Unsigned_32___t0 var148___carrier__sha256__HASHLEN__t0)  )
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:116
-(declare-fun var177___carrier__sha256__hmac__t0 () (_ BitVec 64))
+(declare-fun var153___carrier__sha256__hmac__t0 () (_ BitVec 64))
+(declare-fun var154_true__t0 () Bool)
+(assert
+  (= var154_true__t0 (theory1_safe var153___carrier__sha256__hmac__t0) )
+)
+
+(assert
+  var154_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:367
+(declare-fun var155___buffer__split__t0 () (_ BitVec 64))
+(declare-fun var156_true__t0 () Bool)
+(assert
+  (= var156_true__t0 (theory1_safe var155___buffer__split__t0) )
+)
+
+(assert
+  var156_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
+(declare-fun var157___buffer__copy_slice__t0 () (_ BitVec 64))
+(declare-fun var158_true__t0 () Bool)
+(assert
+  (= var158_true__t0 (theory1_safe var157___buffer__copy_slice__t0) )
+)
+
+(assert
+  var158_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
+(declare-fun var159___buffer__pop__t0 () (_ BitVec 64))
+(declare-fun var160_true__t0 () Bool)
+(assert
+  (= var160_true__t0 (theory1_safe var159___buffer__pop__t0) )
+)
+
+(assert
+  var160_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:320
+(declare-fun var161___buffer__substr__t0 () (_ BitVec 64))
+(declare-fun var162_true__t0 () Bool)
+(assert
+  (= var162_true__t0 (theory1_safe var161___buffer__substr__t0) )
+)
+
+(assert
+  var162_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
+(declare-fun var163___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
+(declare-fun var164_true__t0 () Bool)
+(assert
+  (= var164_true__t0 (theory1_safe var163___slice__mut_slice__as_slice__t0) )
+)
+
+(assert
+  var164_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:60
+(declare-fun var165___carrier__sha256__finish__t0 () (_ BitVec 64))
+(declare-fun var166_true__t0 () Bool)
+(assert
+  (= var166_true__t0 (theory1_safe var165___carrier__sha256__finish__t0) )
+)
+
+(assert
+  var166_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:134
+(declare-fun var167___buffer__available__t0 () (_ BitVec 64))
+(declare-fun var168_true__t0 () Bool)
+(assert
+  (= var168_true__t0 (theory1_safe var167___buffer__available__t0) )
+)
+
+(assert
+  var168_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:194
+(declare-fun var169___buffer__format__t0 () (_ BitVec 64))
+(declare-fun var170_true__t0 () Bool)
+(assert
+  (= var170_true__t0 (theory1_safe var169___buffer__format__t0) )
+)
+
+(assert
+  var170_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
+(declare-fun var171___buffer__slen__t0 () (_ BitVec 64))
+(declare-fun var172_true__t0 () Bool)
+(assert
+  (= var172_true__t0 (theory1_safe var171___buffer__slen__t0) )
+)
+
+(assert
+  var172_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:418
+(declare-fun var173___buffer__copy_cstr__t0 () (_ BitVec 64))
+(declare-fun var174_true__t0 () Bool)
+(assert
+  (= var174_true__t0 (theory1_safe var173___buffer__copy_cstr__t0) )
+)
+
+(assert
+  var174_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:138
+(declare-fun var175___slice__mut_slice__push32__t0 () (_ BitVec 64))
+(declare-fun var176_true__t0 () Bool)
+(assert
+  (= var176_true__t0 (theory1_safe var175___slice__mut_slice__push32__t0) )
+)
+
+(assert
+  var176_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
+(declare-fun var177___slice__mut_slice__make__t0 () (_ BitVec 64))
 (declare-fun var178_true__t0 () Bool)
 (assert
-  (= var178_true__t0 (theory1_safe var177___carrier__sha256__hmac__t0) )
+  (= var178_true__t0 (theory1_safe var177___slice__mut_slice__make__t0) )
 )
 
 (assert
   var178_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:11
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:33
-(declare-fun var179___buffer__clear__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/core/src/sha256.zz:25
+(declare-fun var179___carrier__sha256__init__t0 () (_ BitVec 64))
 (declare-fun var180_true__t0 () Bool)
 (assert
-  (= var180_true__t0 (theory1_safe var179___buffer__clear__t0) )
+  (= var180_true__t0 (theory1_safe var179___carrier__sha256__init__t0) )
 )
 
 (assert
   var180_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:101
-(declare-fun var181___buffer__pop__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:286
+(declare-fun var181___buffer__ends_with_cstr__t0 () (_ BitVec 64))
 (declare-fun var182_true__t0 () Bool)
 (assert
-  (= var182_true__t0 (theory1_safe var181___buffer__pop__t0) )
+  (= var182_true__t0 (theory1_safe var181___buffer__ends_with_cstr__t0) )
 )
 
 (assert
   var182_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:25
-(declare-fun var183___buffer__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:114
+(declare-fun var183___buffer__strlen__t0 () (_ BitVec 64))
 (declare-fun var184_true__t0 () Bool)
 (assert
-  (= var184_true__t0 (theory1_safe var183___buffer__make__t0) )
+  (= var184_true__t0 (theory1_safe var183___buffer__strlen__t0) )
 )
 
 (assert
@@ -956,89 +955,88 @@
   var186_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:408
-(declare-fun var187___buffer__copy_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
+(declare-fun var187___slice__slice__empty__t0 () (_ BitVec 64))
 (declare-fun var188_true__t0 () Bool)
 (assert
-  (= var188_true__t0 (theory1_safe var187___buffer__copy_slice__t0) )
+  (= var188_true__t0 (theory1_safe var187___slice__slice__empty__t0) )
 )
 
 (assert
   var188_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
-(declare-fun var189___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:94
+(declare-fun var189___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
 (declare-fun var190_true__t0 () Bool)
 (assert
-  (= var190_true__t0 (theory1_safe var189___slice__slice__eq_bytes__t0) )
+  (= var190_true__t0 (theory1_safe var189___slice__mut_slice__append_cstr__t0) )
 )
 
 (assert
   var190_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:418
-(declare-fun var191___buffer__copy_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
+(declare-fun var191___slice__slice__sub__t0 () (_ BitVec 64))
 (declare-fun var192_true__t0 () Bool)
 (assert
-  (= var192_true__t0 (theory1_safe var191___buffer__copy_cstr__t0) )
+  (= var192_true__t0 (theory1_safe var191___slice__slice__sub__t0) )
 )
 
 (assert
   var192_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:123
-(declare-fun var193___slice__mut_slice__push16__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:153
+(declare-fun var193___slice__mut_slice__push64__t0 () (_ BitVec 64))
 (declare-fun var194_true__t0 () Bool)
 (assert
-  (= var194_true__t0 (theory1_safe var193___slice__mut_slice__push16__t0) )
+  (= var194_true__t0 (theory1_safe var193___slice__mut_slice__push64__t0) )
 )
 
 (assert
   var194_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:18
-; : /home/runner/work/carrier/carrier/core/src/sha256.zz:25
-(declare-fun var195___carrier__sha256__init__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:168
+(declare-fun var195___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
 (declare-fun var196_true__t0 () Bool)
 (assert
-  (= var196_true__t0 (theory1_safe var195___carrier__sha256__init__t0) )
+  (= var196_true__t0 (theory1_safe var195___slice__mut_slice__append_obj__t0) )
 )
 
 (assert
   var196_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
-(declare-fun var197___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:56
+(declare-fun var197___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
 (declare-fun var198_true__t0 () Bool)
 (assert
-  (= var198_true__t0 (theory1_safe var197___slice__mut_slice__append_bytes__t0) )
+  (= var198_true__t0 (theory1_safe var197___slice__mut_slice__append_slice__t0) )
 )
 
 (assert
   var198_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:43
-(declare-fun var199___buffer__slen__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var199___slice__slice__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var200_true__t0 () Bool)
 (assert
-  (= var200_true__t0 (theory1_safe var199___buffer__slen__t0) )
+  (= var200_true__t0 (theory1_safe var199___slice__slice__eq_cstr__t0) )
 )
 
 (assert
   var200_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/buffer/src/lib.zz:398
-(declare-fun var201___buffer__copy_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
+(declare-fun var201___slice__slice__make__t0 () (_ BitVec 64))
 (declare-fun var202_true__t0 () Bool)
 (assert
-  (= var202_true__t0 (theory1_safe var201___buffer__copy_bytes__t0) )
+  (= var202_true__t0 (theory1_safe var201___slice__slice__make__t0) )
 )
 
 (assert
@@ -1166,7 +1164,7 @@
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:41
 (declare-fun var216_len___carrier__tests__hmac__vectors___t0 () (_ BitVec 64))
 (assert
-  (= var216_len___carrier__tests__hmac__vectors___t0 (theory0_len var74___carrier__tests__hmac__vectors__t1) )
+  (= var216_len___carrier__tests__hmac__vectors___t0 (theory0_len var49___carrier__tests__hmac__vectors__t1) )
 )
 
 (declare-fun var217_i___len___carrier__tests__hmac__vectors___t0 () Bool)
@@ -1290,11 +1288,11 @@
 
 ) )
 
-;  = "#x0000000000000002"
+;  = "#x0000000000000000"
 (push 1)
 
 (assert
-  (not (= var204_i__t2 #x0000000000000002))
+  (not (= var204_i__t2 #x0000000000000000))
 )
 
 (check-sat)
@@ -1305,7 +1303,7 @@
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:47
 (declare-fun var230_len___carrier__tests__hmac__vectors___t0 () (_ BitVec 64))
 (assert
-  (= var230_len___carrier__tests__hmac__vectors___t0 (theory0_len var74___carrier__tests__hmac__vectors__t1) )
+  (= var230_len___carrier__tests__hmac__vectors___t0 (theory0_len var49___carrier__tests__hmac__vectors__t1) )
 )
 
 (declare-fun var231_i___len___carrier__tests__hmac__vectors___t0 () Bool)
@@ -2056,7 +2054,7 @@
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:53
 (declare-fun var1320_infix_expression__t0 () Bool)
 (assert
-  (=  var1320_infix_expression__t0 (bvugt var172___carrier__sha256__BLOCKLEN__t1 var1273_keylen__t1))
+  (=  var1320_infix_expression__t0 (bvugt var38___carrier__sha256__BLOCKLEN__t1 var1273_keylen__t1))
 )
 
 (assert (! var1320_infix_expression__t0 :named A17))(check-sat)
@@ -2111,7 +2109,7 @@
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:55
 (declare-fun var1326_len___carrier__tests__hmac__vectors___t0 () (_ BitVec 64))
 (assert
-  (= var1326_len___carrier__tests__hmac__vectors___t0 (theory0_len var74___carrier__tests__hmac__vectors__t1) )
+  (= var1326_len___carrier__tests__hmac__vectors___t0 (theory0_len var49___carrier__tests__hmac__vectors__t1) )
 )
 
 (declare-fun var1327_infix_expression___len___carrier__tests__hmac__vectors___t0 () Bool)
@@ -2896,7 +2894,7 @@
 ; : /home/runner/work/carrier/carrier/core/tests/hmac.zz:61
 (declare-fun var2420_len___carrier__tests__hmac__vectors___t0 () (_ BitVec 64))
 (assert
-  (= var2420_len___carrier__tests__hmac__vectors___t0 (theory0_len var74___carrier__tests__hmac__vectors__t1) )
+  (= var2420_len___carrier__tests__hmac__vectors___t0 (theory0_len var49___carrier__tests__hmac__vectors__t1) )
 )
 
 (declare-fun var2421_infix_expression___len___carrier__tests__hmac__vectors___t0 () Bool)
@@ -3858,7 +3856,7 @@
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:117
 (declare-fun var3566_infix_expression__t0 () Bool)
 (assert
-  (=  var3566_infix_expression__t0 (bvult var1273_keylen__t1 var172___carrier__sha256__BLOCKLEN__t1))
+  (=  var3566_infix_expression__t0 (bvult var1273_keylen__t1 var38___carrier__sha256__BLOCKLEN__t1))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:117
@@ -3893,7 +3891,7 @@
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:118
 (declare-fun var3571_infix_expression__t0 () Bool)
 (assert
-  (=  var3571_infix_expression__t0 (bvult var1273_keylen__t1 var172___carrier__sha256__BLOCKLEN__t1))
+  (=  var3571_infix_expression__t0 (bvult var1273_keylen__t1 var38___carrier__sha256__BLOCKLEN__t1))
 )
 
 ; : /home/runner/work/carrier/carrier/core/src/sha256.zz:118
@@ -3919,7 +3917,7 @@
 (assert (! (= var3574_implicit_coercion_of_literal_Unsigned_32___t0 var3573_literal_Unsigned_32___t0) :named A37)); : /home/runner/work/carrier/carrier/core/src/sha256.zz:119
 (declare-fun var3575_infix_expression__t0 () Bool)
 (assert
-  (=  var3575_infix_expression__t0 (bvuge var3574_implicit_coercion_of_literal_Unsigned_32___t0 var27___carrier__sha256__HASHLEN__t1))
+  (=  var3575_infix_expression__t0 (bvuge var3574_implicit_coercion_of_literal_Unsigned_32___t0 var148___carrier__sha256__HASHLEN__t1))
 )
 
 (push 1)
@@ -3987,11 +3985,11 @@
 
 ) )
 
-;  = "true"
+;  = "false"
 (push 1)
 
 (assert
-  (not (= var3581_infix_expression__t0 true))
+  (not (= var3581_infix_expression__t0 false))
 )
 
 (check-sat)

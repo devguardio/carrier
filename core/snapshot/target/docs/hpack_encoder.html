@@ -3,7 +3,10 @@
 <h4> fn encode_integer (
 
     usize
-    value,
+    et,
+
+    ::slice::mut_slice::MutSlice
+    slice,
 
     u8
     prefix_size,
@@ -11,11 +14,8 @@
     ::err::Err*+et
     e,
 
-    ::slice::mut_slice::MutSlice
-    slice,
-
     usize
-    et,
+    value,
 
 )
 
@@ -27,23 +27,23 @@
 
 </p><h4> fn encode (
 
-    ::slice::mut_slice::MutSlice
-    slice,
+    u8*
+    val,
 
     u8*
     key,
 
-    u8*
-    val,
-
     usize
     vallen,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
-    ::err::Err*+et
-    e,
+    ::slice::mut_slice::MutSlice
+    slice,
 
     usize
     keylen,

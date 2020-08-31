@@ -64,38 +64,38 @@ impl Slice {
 }
 }
 extern {
-    #[link_name = "slice_slice_eq_bytes"]
-    pub fn r#eq_bytes( Zself: *const u8,  Zother: *const u8,  Zothersize: usize)  -> bool;
-
-    #[link_name = "slice_slice_empty"]
-    pub fn r#empty( Zself: *mut u8);
-
-    #[link_name = "sizeof_slice_slice_Slice"]
-    pub fn sizeof_Slice() -> libc::size_t;
-
-    #[link_name = "slice_slice_split"]
-    pub fn r#split( Zself: *const u8,  Ztoken: u8,  Ziterator: *mut usize,  Zother: *mut u8)  -> bool;
-
-    #[link_name = "slice_slice_sub"]
-    pub fn r#sub( Zself: *const u8,  Zfrom: usize,  Zsize: usize)  -> super::slice_slice::Slice;
+    #[link_name = "slice_slice_isdigit"]
+    pub fn r#isdigit( Zc: u8)  -> bool;
 
     #[link_name = "slice_slice_isspace"]
     pub fn r#isspace( Zc: u8)  -> bool;
 
+    #[link_name = "slice_slice_eq_cstr"]
+    pub fn r#eq_cstr( Zself: *const u8,  Zother: *const u8)  -> bool;
 
-    #[link_name = "slice_slice_atoi"]
-    pub fn r#atoi( Zself: *const u8,  Zbase: usize)  -> i64;
-
-    #[link_name = "slice_slice_isdigit"]
-    pub fn r#isdigit( Zc: u8)  -> bool;
+    #[link_name = "sizeof_slice_slice_Slice"]
+    pub fn sizeof_Slice() -> libc::size_t;
 
     #[link_name = "slice_slice_eq"]
     pub fn r#eq( Zself: *const u8,  Zother: super::slice_slice::Slice)  -> bool;
 
+    #[link_name = "slice_slice_sub"]
+    pub fn r#sub( Zself: *const u8,  Zfrom: usize,  Zsize: usize)  -> super::slice_slice::Slice;
+
     #[link_name = "slice_slice_make"]
     pub fn r#make( Zself: *mut u8,  Zmem: *const u8,  Zsize: usize);
 
-    #[link_name = "slice_slice_eq_cstr"]
-    pub fn r#eq_cstr( Zself: *const u8,  Zother: *const u8)  -> bool;
+    #[link_name = "slice_slice_empty"]
+    pub fn r#empty( Zself: *mut u8);
+
+    #[link_name = "slice_slice_atoi"]
+    pub fn r#atoi( Zself: *const u8,  Zbase: usize)  -> i64;
+
+    #[link_name = "slice_slice_eq_bytes"]
+    pub fn r#eq_bytes( Zself: *const u8,  Zother: *const u8,  Zothersize: usize)  -> bool;
+
+    #[link_name = "slice_slice_split"]
+    pub fn r#split( Zself: *const u8,  Ztoken: u8,  Ziterator: *mut usize,  Zother: *mut u8)  -> bool;
+
 
 }

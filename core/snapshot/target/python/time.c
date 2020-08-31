@@ -25,6 +25,8 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_time_Time;
+extern PyTypeObject py_Type_time_Time;
+
 static PyObject * py_get_time_Time_secs(PyObject *pyself, void *closure) {
 
     time_Time * self = pyFATGetPtr(pyself, "time_Time");
@@ -115,19 +117,6 @@ PyTypeObject py_Type_time_Time  = {
 
 
 
-
-static PyObject* py_time_more_than(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    //other
-    PyObject * arg1 = 0;
-    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
-    long long rarg = (long long int)(time_more_than(
-        pyFATGetPtr(arg0, "time_Time"),
-        pyFATGetPtr(arg1, "time_Time")));
-    return PyBool_FromLong(rarg);
-}
-
 static PyObject* py_time_to_millis(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -146,11 +135,23 @@ static PyObject* py_time_to_seconds(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
+static PyObject* py_time_more_than(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    //other
+    PyObject * arg1 = 0;
+    if (!PyArg_ParseTuple(args, "OO", &arg0,&arg1)) { return NULL; };
+    long long rarg = (long long int)(time_more_than(
+        pyFATGetPtr(arg0, "time_Time"),
+        pyFATGetPtr(arg1, "time_Time")));
+    return PyBool_FromLong(rarg);
+}
+
 
 static PyMethodDef methods[] = {
-{"more_than", py_time_more_than, METH_VARARGS,""},
 {"to_millis", py_time_to_millis, METH_VARARGS,""},
 {"to_seconds", py_time_to_seconds, METH_VARARGS,""},
+{"more_than", py_time_more_than, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

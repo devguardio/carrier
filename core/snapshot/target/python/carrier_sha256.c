@@ -24,16 +24,13 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
 extern PyTypeObject py_Type_buffer_Buffer;
-
-
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_slice_slice_Slice;
 static PyObject * py_get_carrier_sha256_Sha256_at(PyObject *pyself, void *closure) {
 
     carrier_sha256_Sha256 * self = pyFATGetPtr(pyself, "carrier_sha256_Sha256");
@@ -106,6 +103,20 @@ PyTypeObject py_Type_carrier_sha256_Sha256  = {
 
 
 
+
+
+static PyObject* py_carrier_sha256_blocklen(PyObject *pyself, PyObject *args) {
+    long long int rarg = (long long int)(carrier_sha256_blocklen(
+        ));
+    return PyLong_FromLong(rarg);
+}
+
+static PyObject* py_carrier_sha256_hashlen(PyObject *pyself, PyObject *args) {
+    long long int rarg = (long long int)(carrier_sha256_hashlen(
+        ));
+    return PyLong_FromLong(rarg);
+}
+
 static PyObject* py_carrier_sha256_update(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -122,6 +133,15 @@ static PyObject* py_carrier_sha256_update(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject* py_carrier_sha256_init(PyObject *pyself, PyObject *args) {
+    //self
+    PyObject * arg0 = 0;
+    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
+    carrier_sha256_init(
+        pyFATGetPtr(arg0, "carrier_sha256_Sha256"));
+    Py_RETURN_NONE;
+}
+
 static PyObject* py_carrier_sha256_finish(PyObject *pyself, PyObject *args) {
     //self
     PyObject * arg0 = 0;
@@ -135,34 +155,13 @@ static PyObject* py_carrier_sha256_finish(PyObject *pyself, PyObject *args) {
     Py_RETURN_NONE;
 }
 
-static PyObject* py_carrier_sha256_init(PyObject *pyself, PyObject *args) {
-    //self
-    PyObject * arg0 = 0;
-    if (!PyArg_ParseTuple(args, "O", &arg0)) { return NULL; };
-    carrier_sha256_init(
-        pyFATGetPtr(arg0, "carrier_sha256_Sha256"));
-    Py_RETURN_NONE;
-}
-
-static PyObject* py_carrier_sha256_blocklen(PyObject *pyself, PyObject *args) {
-    long long int rarg = (long long int)(carrier_sha256_blocklen(
-        ));
-    return PyLong_FromLong(rarg);
-}
-
-static PyObject* py_carrier_sha256_hashlen(PyObject *pyself, PyObject *args) {
-    long long int rarg = (long long int)(carrier_sha256_hashlen(
-        ));
-    return PyLong_FromLong(rarg);
-}
-
 
 static PyMethodDef methods[] = {
-{"update", py_carrier_sha256_update, METH_VARARGS,""},
-{"finish", py_carrier_sha256_finish, METH_VARARGS,""},
-{"init", py_carrier_sha256_init, METH_VARARGS,""},
 {"blocklen", py_carrier_sha256_blocklen, METH_NOARGS,""},
 {"hashlen", py_carrier_sha256_hashlen, METH_NOARGS,""},
+{"update", py_carrier_sha256_update, METH_VARARGS,""},
+{"init", py_carrier_sha256_init, METH_VARARGS,""},
+{"finish", py_carrier_sha256_finish, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

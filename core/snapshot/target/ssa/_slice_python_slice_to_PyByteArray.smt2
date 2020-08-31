@@ -9,23 +9,22 @@
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
 (declare-fun theory5___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
-(declare-fun var6___slice__slice__empty__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var6___slice__slice__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var7_true__t0 () Bool)
 (assert
-  (= var7_true__t0 (theory1_safe var6___slice__slice__empty__t0) )
+  (= var7_true__t0 (theory1_safe var6___slice__slice__eq_cstr__t0) )
 )
 
 (assert
   var7_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
-(declare-fun var8___slice__slice__sub__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/python.zz:4
+(declare-fun var8___slice__python__slice_to_PyByteArray__t0 () (_ BitVec 64))
 (declare-fun var9_true__t0 () Bool)
 (assert
-  (= var9_true__t0 (theory1_safe var8___slice__slice__sub__t0) )
+  (= var9_true__t0 (theory1_safe var8___slice__python__slice_to_PyByteArray__t0) )
 )
 
 (assert
@@ -43,33 +42,34 @@
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
-(declare-fun var12___slice__slice__atoi__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
+(declare-fun var12___slice__slice__split__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___slice__slice__atoi__t0) )
+  (= var13_true__t0 (theory1_safe var12___slice__slice__split__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
-(declare-fun var14___slice__slice__eq__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
+(declare-fun var14___slice__slice__sub__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___slice__slice__eq__t0) )
+  (= var15_true__t0 (theory1_safe var14___slice__slice__sub__t0) )
 )
 
 (assert
   var15_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/python.zz:4
-(declare-fun var16___slice__python__slice_to_PyByteArray__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
+(declare-fun var16___slice__slice__atoi__t0 () (_ BitVec 64))
 (declare-fun var17_true__t0 () Bool)
 (assert
-  (= var17_true__t0 (theory1_safe var16___slice__python__slice_to_PyByteArray__t0) )
+  (= var17_true__t0 (theory1_safe var16___slice__slice__atoi__t0) )
 )
 
 (assert
@@ -87,22 +87,22 @@
   var19_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
-(declare-fun var20___slice__slice__split__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
+(declare-fun var20___slice__slice__empty__t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
-  (= var21_true__t0 (theory1_safe var20___slice__slice__split__t0) )
+  (= var21_true__t0 (theory1_safe var20___slice__slice__empty__t0) )
 )
 
 (assert
   var21_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
-(declare-fun var22___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
+(declare-fun var22___slice__slice__eq__t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
-  (= var23_true__t0 (theory1_safe var22___slice__slice__eq_cstr__t0) )
+  (= var23_true__t0 (theory1_safe var22___slice__slice__eq__t0) )
 )
 
 (assert

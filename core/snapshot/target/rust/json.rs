@@ -313,13 +313,13 @@ extern {
     pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
 
+    #[link_name = "json_next"]
+    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
+
     #[link_name = "json_push"]
     pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
 
     #[link_name = "json_advance"]
     pub fn r#advance( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Ztoken: u8);
-
-    #[link_name = "json_next"]
-    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
 }

@@ -1,6 +1,40 @@
 
 <h1> module carrier::cipher </h1>
-<h4> fn swap32 (
+<h4> fn decrypt (
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    plainlen_max,
+
+    u64
+    nonce,
+
+    usize
+    et,
+
+    u8*
+    plain,
+
+    usize
+    cipherlen,
+
+    u8*
+    ciphertext,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -41,20 +75,26 @@
 
 </p><h4> fn decrypt_ad (
 
-    usize
-    plainlen_max,
-
-    ::err::Err*+et
-    e,
-
-    u8*
-    plain,
-
     ::carrier::cipher::CipherState*
     self,
 
     usize
-    et,
+    authtext_len,
+
+    ::err::Err*+et
+    e,
+
+    u64
+    nonce,
+
+    u8*
+    plain,
+
+    usize
+    cipherlen,
+
+    usize
+    plainlen_max,
 
     u8*
     authtext,
@@ -63,13 +103,7 @@
     ciphertext,
 
     usize
-    cipherlen,
-
-    usize
-    authtext_len,
-
-    u64
-    nonce,
+    et,
 
 )
 
@@ -79,22 +113,28 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decrypt (
+</p><h4> fn encrypt_ad (
 
-    usize
-    et,
+    u8*
+    plain,
+
+    u8*
+    authtext,
 
     u8*
     ciphertext,
 
     usize
-    plainlen_max,
+    authtext_len,
 
     usize
-    cipherlen,
+    plainlen,
 
-    u8*
-    plain,
+    usize
+    cipherlen_max,
+
+    usize
+    et,
 
     ::carrier::cipher::CipherState*
     self,
@@ -116,10 +156,7 @@
 </p><h4> fn encrypt (
 
     usize
-    plainlen,
-
-    ::err::Err*+et
-    e,
+    et,
 
     u8*
     ciphertext,
@@ -130,54 +167,17 @@
     usize
     cipherlen_max,
 
-    u8*
-    plain,
-
-    u64
-    nonce,
-
-    usize
-    et,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt_ad (
-
-    usize
-    et,
-
-    usize
-    plainlen,
-
-    usize
-    cipherlen_max,
-
-    u8*
-    plain,
-
     ::err::Err*+et
     e,
 
-    usize
-    authtext_len,
+    u8*
+    plain,
 
     u64
     nonce,
 
-    u8*
-    ciphertext,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    u8*
-    authtext,
+    usize
+    plainlen,
 
 )
 

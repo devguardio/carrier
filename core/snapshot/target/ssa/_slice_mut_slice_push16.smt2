@@ -7,217 +7,216 @@
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
 ; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
-(declare-fun theory6___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
+(declare-fun theory5___slice__mut_slice__integrity ((_ BitVec 64)) Bool); theory ::slice::mut_slice::integrity
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
+(declare-fun var6___slice__mut_slice__make__t0 () (_ BitVec 64))
+(declare-fun var7_true__t0 () Bool)
+(assert
+  (= var7_true__t0 (theory1_safe var6___slice__mut_slice__make__t0) )
+)
+
+(assert
+  var7_true__t0
+)
+
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:3
 ; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:8
-(declare-fun theory7___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:56
-(declare-fun var8___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
-(declare-fun var9_true__t0 () Bool)
-(assert
-  (= var9_true__t0 (theory1_safe var8___slice__mut_slice__append_slice__t0) )
-)
-
-(assert
-  var9_true__t0
-)
-
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
-(declare-fun var10___slice__slice__eq__t0 () (_ BitVec 64))
+(declare-fun theory9___slice__slice__integrity ((_ BitVec 64)) Bool); theory ::slice::slice::integrity
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
+(declare-fun var10___slice__slice__sub__t0 () (_ BitVec 64))
 (declare-fun var11_true__t0 () Bool)
 (assert
-  (= var11_true__t0 (theory1_safe var10___slice__slice__eq__t0) )
+  (= var11_true__t0 (theory1_safe var10___slice__slice__sub__t0) )
 )
 
 (assert
   var11_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:153
-(declare-fun var12___slice__mut_slice__push64__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
+(declare-fun var12___slice__slice__eq_bytes__t0 () (_ BitVec 64))
 (declare-fun var13_true__t0 () Bool)
 (assert
-  (= var13_true__t0 (theory1_safe var12___slice__mut_slice__push64__t0) )
+  (= var13_true__t0 (theory1_safe var12___slice__slice__eq_bytes__t0) )
 )
 
 (assert
   var13_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:20
-(declare-fun var14___slice__mut_slice__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
+(declare-fun var14___slice__slice__atoi__t0 () (_ BitVec 64))
 (declare-fun var15_true__t0 () Bool)
 (assert
-  (= var15_true__t0 (theory1_safe var14___slice__mut_slice__make__t0) )
+  (= var15_true__t0 (theory1_safe var14___slice__slice__atoi__t0) )
 )
 
 (assert
   var15_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
-(declare-fun var16___slice__slice__make__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
+(declare-fun var16___slice__mut_slice__space__t0 () (_ BitVec 64))
 (declare-fun var17_true__t0 () Bool)
 (assert
-  (= var17_true__t0 (theory1_safe var16___slice__slice__make__t0) )
+  (= var17_true__t0 (theory1_safe var16___slice__mut_slice__space__t0) )
 )
 
 (assert
   var17_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
-(declare-fun var18___slice__slice__eq_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
+(declare-fun var18___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
 (declare-fun var19_true__t0 () Bool)
 (assert
-  (= var19_true__t0 (theory1_safe var18___slice__slice__eq_cstr__t0) )
+  (= var19_true__t0 (theory1_safe var18___slice__mut_slice__as_slice__t0) )
 )
 
 (assert
   var19_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:168
-(declare-fun var20___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
+(declare-fun var20___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
 (declare-fun var21_true__t0 () Bool)
 (assert
-  (= var21_true__t0 (theory1_safe var20___slice__mut_slice__append_obj__t0) )
+  (= var21_true__t0 (theory1_safe var20___slice__mut_slice__append_bytes__t0) )
 )
 
 (assert
   var21_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:123
-(declare-fun var22___slice__mut_slice__push16__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:108
+(declare-fun var22___slice__mut_slice__push__t0 () (_ BitVec 64))
 (declare-fun var23_true__t0 () Bool)
 (assert
-  (= var23_true__t0 (theory1_safe var22___slice__mut_slice__push16__t0) )
+  (= var23_true__t0 (theory1_safe var22___slice__mut_slice__push__t0) )
 )
 
 (assert
   var23_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:49
-(declare-fun var24___slice__mut_slice__space__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
+(declare-fun var24___slice__slice__split__t0 () (_ BitVec 64))
 (declare-fun var25_true__t0 () Bool)
 (assert
-  (= var25_true__t0 (theory1_safe var24___slice__mut_slice__space__t0) )
+  (= var25_true__t0 (theory1_safe var24___slice__slice__split__t0) )
 )
 
 (assert
   var25_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:33
-(declare-fun var26___slice__slice__eq_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:24
+(declare-fun var26___slice__slice__eq_cstr__t0 () (_ BitVec 64))
 (declare-fun var27_true__t0 () Bool)
 (assert
-  (= var27_true__t0 (theory1_safe var26___slice__slice__eq_bytes__t0) )
+  (= var27_true__t0 (theory1_safe var26___slice__slice__eq_cstr__t0) )
 )
 
 (assert
   var27_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:5
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:138
-(declare-fun var28___slice__mut_slice__push32__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:56
+(declare-fun var28___slice__mut_slice__append_slice__t0 () (_ BitVec 64))
 (declare-fun var29_true__t0 () Bool)
 (assert
-  (= var29_true__t0 (theory1_safe var28___slice__mut_slice__push32__t0) )
+  (= var29_true__t0 (theory1_safe var28___slice__mut_slice__append_slice__t0) )
 )
 
 (assert
   var29_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:63
-(declare-fun var30___slice__slice__split__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:51
+(declare-fun var30___slice__slice__make__t0 () (_ BitVec 64))
 (declare-fun var31_true__t0 () Bool)
 (assert
-  (= var31_true__t0 (theory1_safe var30___slice__slice__split__t0) )
+  (= var31_true__t0 (theory1_safe var30___slice__slice__make__t0) )
 )
 
 (assert
   var31_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:95
-(declare-fun var32___slice__slice__sub__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
+(declare-fun var32___slice__slice__empty__t0 () (_ BitVec 64))
 (declare-fun var33_true__t0 () Bool)
 (assert
-  (= var33_true__t0 (theory1_safe var32___slice__slice__sub__t0) )
+  (= var33_true__t0 (theory1_safe var32___slice__slice__empty__t0) )
 )
 
 (assert
   var33_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:135
-(declare-fun var34___slice__slice__atoi__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:138
+(declare-fun var34___slice__mut_slice__push32__t0 () (_ BitVec 64))
 (declare-fun var35_true__t0 () Bool)
 (assert
-  (= var35_true__t0 (theory1_safe var34___slice__slice__atoi__t0) )
+  (= var35_true__t0 (theory1_safe var34___slice__mut_slice__push32__t0) )
 )
 
 (assert
   var35_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:11
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
-(declare-fun var36___slice__mut_slice__append_bytes__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:123
+(declare-fun var36___slice__mut_slice__push16__t0 () (_ BitVec 64))
 (declare-fun var37_true__t0 () Bool)
 (assert
-  (= var37_true__t0 (theory1_safe var36___slice__mut_slice__append_bytes__t0) )
+  (= var37_true__t0 (theory1_safe var36___slice__mut_slice__push16__t0) )
 )
 
 (assert
   var37_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:94
-(declare-fun var38___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:153
+(declare-fun var38___slice__mut_slice__push64__t0 () (_ BitVec 64))
 (declare-fun var39_true__t0 () Bool)
 (assert
-  (= var39_true__t0 (theory1_safe var38___slice__mut_slice__append_cstr__t0) )
+  (= var39_true__t0 (theory1_safe var38___slice__mut_slice__push64__t0) )
 )
 
 (assert
   var39_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:75
-; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:43
-(declare-fun var40___slice__slice__empty__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:168
+(declare-fun var40___slice__mut_slice__append_obj__t0 () (_ BitVec 64))
 (declare-fun var41_true__t0 () Bool)
 (assert
-  (= var41_true__t0 (theory1_safe var40___slice__slice__empty__t0) )
+  (= var41_true__t0 (theory1_safe var40___slice__mut_slice__append_obj__t0) )
 )
 
 (assert
   var41_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:36
-(declare-fun var42___slice__mut_slice__as_slice__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/slice.zz:14
+(declare-fun var42___slice__slice__eq__t0 () (_ BitVec 64))
 (declare-fun var43_true__t0 () Bool)
 (assert
-  (= var43_true__t0 (theory1_safe var42___slice__mut_slice__as_slice__t0) )
+  (= var43_true__t0 (theory1_safe var42___slice__slice__eq__t0) )
 )
 
 (assert
   var43_true__t0
 )
 
-; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:108
-(declare-fun var44___slice__mut_slice__push__t0 () (_ BitVec 64))
+; : /home/runner/work/carrier/carrier/modules/slice/src/mut_slice.zz:94
+(declare-fun var44___slice__mut_slice__append_cstr__t0 () (_ BitVec 64))
 (declare-fun var45_true__t0 () Bool)
 (assert
-  (= var45_true__t0 (theory1_safe var44___slice__mut_slice__push__t0) )
+  (= var45_true__t0 (theory1_safe var44___slice__mut_slice__append_cstr__t0) )
 )
 
 (assert

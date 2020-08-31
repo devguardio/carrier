@@ -1,35 +1,22 @@
 
 <h1> module carrier::stream </h1>
-<h4> fn index (
+<h4> fn do_poll (
 
     ::carrier::stream::Stream*
     self,
-
-)
-
--&gt ::slice::slice::Slice
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn incomming_close (
 
     ::err::Err*+et
     e,
 
+    ::io::Async*
+    async,
+
     usize
     et,
 
-    ::carrier::stream::Stream*
-    self,
-
-    u64
-    order,
-
 )
 
--&gt bool
+
 
 </h4>
 
@@ -89,17 +76,17 @@
 
 </p><h4> fn stream (
 
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
     ::carrier::stream::Stream*
     self,
 
     usize
+    et,
+
+    usize
     reserved_size,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -111,17 +98,52 @@
  allocate a frame for sending later&lt;br&gt;
 </p><h4> fn incomming_fragmented (
 
+    ::err::Err*+et
+    e,
+
     ::carrier::stream::Stream*
     self,
 
-    u32
-    fragments,
+    u64
+    order,
 
     usize
     et,
 
+    u32
+    fragments,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn index (
+
+    ::carrier::stream::Stream*
+    self,
+
+)
+
+-&gt ::slice::slice::Slice
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn incomming_close (
+
     ::err::Err*+et
     e,
+
+    usize
+    et,
+
+    ::carrier::stream::Stream*
+    self,
 
     u64
     order,
@@ -134,57 +156,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
-
-    ::carrier::stream::Stream*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn do_poll (
-
-    ::io::Async*
-    async,
-
-    usize
-    et,
-
-    ::carrier::stream::Stream*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn incomming_stream (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
 
     ::slice::slice::Slice
     b,
 
+    u64
+    order,
+
     ::carrier::stream::Stream*
     self,
 
-    u64
-    order,
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -207,6 +194,19 @@
 
 <p class='doc_comments'>
  undo last allocation without sending.&lt;br&gt; CAN ONLY UNDO THE LAST ALLOC&lt;br&gt;
+</p><h4> fn close (
+
+    ::carrier::stream::Stream*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
 </p>
 
 

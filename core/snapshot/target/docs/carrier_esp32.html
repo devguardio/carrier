@@ -1,34 +1,6 @@
 
 <h1> module carrier::esp32 </h1>
-<h4> fn check_err (
-
-    usize
-    tail,
-
-    usize
-    line,
-
-    ::err::Err*+tail
-    self,
-
-    ::ext::&lt;esp_err.h&gt;::esp_err_t
-    ec,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    scope,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn register_ota (
+<h4> fn register_reboot (
 
     ::carrier::endpoint::Endpoint*
     ep,
@@ -41,7 +13,35 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn register_reboot (
+</p><h4> fn check_err (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    scope,
+
+    ::err::Err*+tail
+    self,
+
+    usize
+    line,
+
+    ::ext::&lt;esp_err.h&gt;::esp_err_t
+    ec,
+
+    usize
+    tail,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn register_ota (
 
     ::carrier::endpoint::Endpoint*
     ep,

@@ -39,33 +39,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_be64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_be32 (
 
     u32
     x,
@@ -83,6 +57,59 @@
 )
 
 -&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::vault::Vault*
+    vault,
+
+    u64
+    vector_time,
+
+    ::slice::mut_slice::MutSlice
+    pkt,
+
+    ::carrier::initiator::Move
+    move,
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::carrier::identity::Address*
+    xaddr,
+
+    bool
+    secure,
+
+    usize
+    et,
+
+    ::carrier::identity::Identity*
+    cluster_target,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
 
 </h4>
 
@@ -127,68 +154,41 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn complete (
+</p><h4> fn from_be32 (
 
-    ::err::Err*+et
-    e,
-
-    ::carrier::channel::Transfer*
-    chan,
-
-    usize
-    et,
-
-    ::slice::slice::Slice
-    pkt,
-
-    ::carrier::vault::Broker*
-    redirect,
-
-    ::carrier::identity::Identity*
-    expect_identity,
-
-    ::carrier::initiator::Initiator*
-    self,
+    u32
+    x,
 
 )
 
-
+-&gt u32
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn initiate (
+</p><h4> fn complete (
 
-    ::carrier::vault::Vault*
-    vault,
+    ::carrier::channel::Transfer*
+    chan,
 
-    bool
-    secure,
+    ::carrier::vault::Broker*
+    redirect,
 
-    ::carrier::identity::Identity*
-    cluster_target,
-
-    ::carrier::identity::Address*
-    xaddr,
-
-    u64
-    vector_time,
-
-    ::slice::mut_slice::MutSlice
+    ::slice::slice::Slice
     pkt,
 
-    ::carrier::initiator::Move
-    move,
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::carrier::identity::Identity*
+    expect_identity,
 
     ::err::Err*+et
     e,
 
     usize
     et,
-
-    ::carrier::initiator::Initiator*
-    self,
 
 )
 

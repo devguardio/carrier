@@ -3,6 +3,26 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
+pub struct get_network_secret_fn {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zself: *const u8,  Zaddress: *mut u8, ctx: *mut std::ffi::c_void),
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct CheckExistingAuthorizationState {
+    pub addme :*const u8 ,
+    pub resource :*const u8 ,
+    pub found :bool ,
+}
+#[derive(Clone)]
+#[repr(C)]
+pub struct get_identity_fn {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zself: *const u8,  Zid: *mut u8, ctx: *mut std::ffi::c_void),
+}
+#[derive(Clone)]
+#[repr(C)]
 pub struct get_secret_fn {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zself: *const u8,  Zsecret: *mut u8, ctx: *mut std::ffi::c_void),
@@ -10,21 +30,15 @@ pub struct get_secret_fn {
 pub const MAX_BROKERS : usize = 16;
 #[derive(Clone)]
 #[repr(C)]
-pub struct list_authorizations_cb {
+pub struct add_authorization_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zuser: *mut u8,  Zid: *const u8,  Zresource: *const u8, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddme: *const u8,  Zresource: *const u8, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
-pub struct list_authorizations_fn {
+pub struct get_network_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zcb: super::carrier_vault::list_authorizations_cb,  Zuser: *mut u8, ctx: *mut std::ffi::c_void),
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct advance_clock_fn {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *const u8, ctx: *mut std::ffi::c_void) -> u64,
+    pub f: extern fn ( Zself: *const u8,  Zaddress: *mut u8, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -37,9 +51,9 @@ pub struct authorize_open_stream_cb_s {
 }
 #[derive(Clone)]
 #[repr(C)]
-pub struct get_network_secret_fn {
+pub struct del_authorization_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *const u8,  Zaddress: *mut u8, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zdelme: *const u8,  Zresource: *const u8, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
@@ -47,19 +61,17 @@ pub struct close_fn {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zself: *mut u8, ctx: *mut std::ffi::c_void),
 }
-
 #[derive(Clone)]
 #[repr(C)]
-pub struct CheckExistingAuthorizationState {
-    pub addme :*const u8 ,
-    pub resource :*const u8 ,
-    pub found :bool ,
+pub struct sign_fn {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize, ctx: *mut std::ffi::c_void),
 }
 #[derive(Clone)]
 #[repr(C)]
-pub struct get_network_fn {
+pub struct advance_clock_fn {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *const u8,  Zaddress: *mut u8, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zself: *const u8, ctx: *mut std::ffi::c_void) -> u64,
 }
 #[derive(Clone)]
 #[repr(C)]
@@ -69,9 +81,15 @@ pub struct set_network_fn {
 }
 #[derive(Clone)]
 #[repr(C)]
-pub struct get_identity_fn {
+pub struct list_authorizations_cb {
     pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *const u8,  Zid: *mut u8, ctx: *mut std::ffi::c_void),
+    pub f: extern fn ( Zuser: *mut u8,  Zid: *const u8,  Zresource: *const u8, ctx: *mut std::ffi::c_void),
+}
+#[derive(Clone)]
+#[repr(C)]
+pub struct list_authorizations_fn {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zself: *const u8,  Ze: *mut u8,  Zet: usize,  Zcb: super::carrier_vault::list_authorizations_cb,  Zuser: *mut u8, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -82,24 +100,6 @@ pub struct Broker {
     pub xaddr : [u8;    32] ,
     pub ip4addr : [u8;    4] ,
     pub ip6addr : [u8;    16] ,
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct add_authorization_fn {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddme: *const u8,  Zresource: *const u8, ctx: *mut std::ffi::c_void),
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct sign_fn {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize, ctx: *mut std::ffi::c_void),
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct del_authorization_fn {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zdelme: *const u8,  Zresource: *const u8, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -123,58 +123,6 @@ pub struct Vault {
 }
 
 pub mod heap {
-
-pub struct authorize_open_stream_cb_s {
-    pub inner:  Box<super::authorize_open_stream_cb_s>,
-    pub tail:   usize,
-}
-
-impl std::ops::Deref for authorize_open_stream_cb_s {
-    type Target = super::authorize_open_stream_cb_s;
-
-    fn deref(&self) -> &super::authorize_open_stream_cb_s {
-        self.inner.deref()
-    }
-}
-
-impl std::clone::Clone for authorize_open_stream_cb_s {
-    fn clone(&self) -> Self {
-        unsafe {
-            let size = super::sizeof_authorize_open_stream_cb_s();
-
-            let mut s = Box::new(vec![0u8; size]);
-            std::ptr::copy_nonoverlapping(self._self(), s.as_mut_ptr(), size);
-
-            let ss : *mut super::authorize_open_stream_cb_s = std::mem::transmute(Box::leak(s).as_mut_ptr());
-
-            Self { inner: Box::from_raw(ss), tail: self.tail }
-        }
-    }
-}
-
-impl authorize_open_stream_cb_s {
-    pub fn _tail(&mut self) -> usize {
-        self.tail
-    }
-    pub fn _self_mut(&mut self) -> *mut u8 {
-        unsafe { std::mem::transmute(self.inner.as_mut() as *mut super::authorize_open_stream_cb_s) }
-    }
-    pub fn _self(&self) -> *const u8 {
-        unsafe { std::mem::transmute(self.inner.as_ref() as *const super::authorize_open_stream_cb_s) }
-    }
-}
-
-impl authorize_open_stream_cb_s {
-    pub fn new() -> Self {
-        let tail = 0;
-        let size = unsafe{super::sizeof_authorize_open_stream_cb_s()};
-        unsafe {
-            let s = Box::new(vec![0u8; size]);
-            let ss : *mut super::authorize_open_stream_cb_s = std::mem::transmute(Box::leak(s).as_mut_ptr());
-            Self { inner: Box::from_raw(ss), tail } 
-        }
-    }
-}
 
 pub struct CheckExistingAuthorizationState {
     pub inner:  Box<super::CheckExistingAuthorizationState>,
@@ -223,6 +171,58 @@ impl CheckExistingAuthorizationState {
         unsafe {
             let s = Box::new(vec![0u8; size]);
             let ss : *mut super::CheckExistingAuthorizationState = std::mem::transmute(Box::leak(s).as_mut_ptr());
+            Self { inner: Box::from_raw(ss), tail } 
+        }
+    }
+}
+
+pub struct authorize_open_stream_cb_s {
+    pub inner:  Box<super::authorize_open_stream_cb_s>,
+    pub tail:   usize,
+}
+
+impl std::ops::Deref for authorize_open_stream_cb_s {
+    type Target = super::authorize_open_stream_cb_s;
+
+    fn deref(&self) -> &super::authorize_open_stream_cb_s {
+        self.inner.deref()
+    }
+}
+
+impl std::clone::Clone for authorize_open_stream_cb_s {
+    fn clone(&self) -> Self {
+        unsafe {
+            let size = super::sizeof_authorize_open_stream_cb_s();
+
+            let mut s = Box::new(vec![0u8; size]);
+            std::ptr::copy_nonoverlapping(self._self(), s.as_mut_ptr(), size);
+
+            let ss : *mut super::authorize_open_stream_cb_s = std::mem::transmute(Box::leak(s).as_mut_ptr());
+
+            Self { inner: Box::from_raw(ss), tail: self.tail }
+        }
+    }
+}
+
+impl authorize_open_stream_cb_s {
+    pub fn _tail(&mut self) -> usize {
+        self.tail
+    }
+    pub fn _self_mut(&mut self) -> *mut u8 {
+        unsafe { std::mem::transmute(self.inner.as_mut() as *mut super::authorize_open_stream_cb_s) }
+    }
+    pub fn _self(&self) -> *const u8 {
+        unsafe { std::mem::transmute(self.inner.as_ref() as *const super::authorize_open_stream_cb_s) }
+    }
+}
+
+impl authorize_open_stream_cb_s {
+    pub fn new() -> Self {
+        let tail = 0;
+        let size = unsafe{super::sizeof_authorize_open_stream_cb_s()};
+        unsafe {
+            let s = Box::new(vec![0u8; size]);
+            let ss : *mut super::authorize_open_stream_cb_s = std::mem::transmute(Box::leak(s).as_mut_ptr());
             Self { inner: Box::from_raw(ss), tail } 
         }
     }
@@ -334,59 +334,35 @@ impl Vault {
 }
 extern {
 
-    #[link_name = "carrier_vault_list_authorizations_cb_i"]
-    pub fn r#list_authorizations_cb_i( Zuser: *mut u8,  Zid: *const u8,  Zresource: *const u8);
-
-    #[link_name = "carrier_vault_check_existing_authorizations_cb"]
-    pub fn r#check_existing_authorizations_cb( Zuser: *mut u8,  Zid: *const u8,  Zresource: *const u8);
+    #[link_name = "sizeof_carrier_vault_CheckExistingAuthorizationState"]
+    pub fn sizeof_CheckExistingAuthorizationState() -> libc::size_t;
 
 
 
+    #[link_name = "carrier_vault_get_principal_identity"]
+    pub fn r#get_principal_identity( Zself: *const u8,  Zid: *mut u8);
 
-    #[link_name = "carrier_vault_get_local_identity"]
-    pub fn r#get_local_identity( Zself: *const u8,  Zid: *mut u8);
-
-    #[link_name = "carrier_vault_list_authorizations"]
-    pub fn r#list_authorizations( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zcb: super::carrier_vault::list_authorizations_cb,  Zuser: *mut u8);
-
-    #[link_name = "carrier_vault_close"]
-    pub fn r#close( Zself: *mut u8);
-
-    #[link_name = "carrier_vault_sign_principal"]
-    pub fn r#sign_principal( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
-
-
-    #[link_name = "carrier_vault_get_network_secret"]
-    pub fn r#get_network_secret( Zself: *const u8,  Zaddr: *mut u8);
-
-    #[link_name = "carrier_vault_vector_time"]
-    pub fn r#vector_time( Zself: *const u8)  -> u64;
-
-    #[link_name = "sizeof_carrier_vault_authorize_open_stream_cb_s"]
-    pub fn sizeof_authorize_open_stream_cb_s() -> libc::size_t;
-
-    #[link_name = "carrier_vault_authorize_open_stream"]
-    pub fn r#authorize_open_stream( Zself: *const u8,  Zii: *const u8,  Zpath: *const u8)  -> bool;
 
     #[link_name = "carrier_vault_broker_count"]
     pub fn r#broker_count( Zself: *const u8)  -> usize;
 
-    #[link_name = "carrier_vault_del_authorization"]
-    pub fn r#del_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zdelme: *const u8,  Zresource: *const u8);
 
-    #[link_name = "carrier_vault_set_network"]
-    pub fn r#set_network( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Znetwork: *const u8);
+    #[link_name = "carrier_vault_sign_local"]
+    pub fn r#sign_local( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
 
 
+    #[link_name = "carrier_vault_sign_principal"]
+    pub fn r#sign_principal( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
 
-    #[link_name = "carrier_vault_authorize_connect"]
-    pub fn r#authorize_connect( Zself: *const u8,  Zii: *const u8)  -> bool;
+    #[link_name = "sizeof_carrier_vault_authorize_open_stream_cb_s"]
+    pub fn sizeof_authorize_open_stream_cb_s() -> libc::size_t;
 
-    #[link_name = "sizeof_carrier_vault_CheckExistingAuthorizationState"]
-    pub fn sizeof_CheckExistingAuthorizationState() -> libc::size_t;
+    #[link_name = "carrier_vault_get_network_secret"]
+    pub fn r#get_network_secret( Zself: *const u8,  Zaddr: *mut u8);
 
-    #[link_name = "carrier_vault_get_network"]
-    pub fn r#get_network( Zself: *const u8,  Zaddr: *mut u8);
+
+
+
 
 
 
@@ -394,19 +370,43 @@ extern {
     #[link_name = "sizeof_carrier_vault_Broker"]
     pub fn sizeof_Broker() -> libc::size_t;
 
-
-
-
     #[link_name = "sizeof_carrier_vault_Vault"]
     pub fn sizeof_Vault() -> libc::size_t;
-
-    #[link_name = "carrier_vault_get_principal_identity"]
-    pub fn r#get_principal_identity( Zself: *const u8,  Zid: *mut u8);
 
     #[link_name = "carrier_vault_add_authorization"]
     pub fn r#add_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddme: *const u8,  Zresource: *const u8);
 
-    #[link_name = "carrier_vault_sign_local"]
-    pub fn r#sign_local( Zself: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
+    #[link_name = "carrier_vault_del_authorization"]
+    pub fn r#del_authorization( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zdelme: *const u8,  Zresource: *const u8);
+
+    #[link_name = "carrier_vault_authorize_open_stream"]
+    pub fn r#authorize_open_stream( Zself: *const u8,  Zii: *const u8,  Zpath: *const u8)  -> bool;
+
+    #[link_name = "carrier_vault_list_authorizations_cb_i"]
+    pub fn r#list_authorizations_cb_i( Zuser: *mut u8,  Zid: *const u8,  Zresource: *const u8);
+
+    #[link_name = "carrier_vault_get_local_identity"]
+    pub fn r#get_local_identity( Zself: *const u8,  Zid: *mut u8);
+
+    #[link_name = "carrier_vault_vector_time"]
+    pub fn r#vector_time( Zself: *const u8)  -> u64;
+
+    #[link_name = "carrier_vault_get_network"]
+    pub fn r#get_network( Zself: *const u8,  Zaddr: *mut u8);
+
+    #[link_name = "carrier_vault_set_network"]
+    pub fn r#set_network( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Znetwork: *const u8);
+
+    #[link_name = "carrier_vault_close"]
+    pub fn r#close( Zself: *mut u8);
+
+    #[link_name = "carrier_vault_list_authorizations"]
+    pub fn r#list_authorizations( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zcb: super::carrier_vault::list_authorizations_cb,  Zuser: *mut u8);
+
+    #[link_name = "carrier_vault_check_existing_authorizations_cb"]
+    pub fn r#check_existing_authorizations_cb( Zuser: *mut u8,  Zid: *const u8,  Zresource: *const u8);
+
+    #[link_name = "carrier_vault_authorize_connect"]
+    pub fn r#authorize_connect( Zself: *const u8,  Zii: *const u8)  -> bool;
 
 }

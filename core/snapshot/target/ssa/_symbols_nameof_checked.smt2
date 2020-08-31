@@ -6,7 +6,6 @@
 (declare-fun theory1_safe ((_ BitVec 64)) Bool); theory safe
 (declare-fun theory2_nullterm ((_ BitVec 64)) Bool); theory nullterm
 (declare-fun theory3_symbol ((_ BitVec 64)) Bool); theory symbol
-; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:2
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:1
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:2
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:7
@@ -59,10 +58,10 @@
 ; collecting theory invocation arguments
 ; end of collecting theory invocation arguments
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
-(declare-fun var4___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
+(declare-fun var5___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
 (declare-fun var14_interpretation_of_theory_len_over___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
 (assert
-  (= var14_interpretation_of_theory_len_over___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 (theory0_len var4___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0) )
+  (= var14_interpretation_of_theory_len_over___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 (theory0_len var5___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0) )
 )
 
 ; : /home/runner/work/carrier/carrier/modules/symbols/src/lib.zz:16
@@ -270,7 +269,7 @@
 
 (pop 1)
 
-(declare-fun var4___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
+(declare-fun var5___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
 (declare-fun var14_interpretation_of_theory_len_over___ext____home_runner_work_carrier_carrier_modules_symbols_src_lib_h_____zz_symbol_names__t0 () (_ BitVec 64))
 (declare-fun var16_literal_Unsigned_1___t0 () (_ BitVec 64))
 (declare-fun var17_literal_Unsigned_0___t0 () (_ BitVec 64))

@@ -65,41 +65,41 @@ impl MutSlice {
 }
 }
 extern {
-    #[link_name = "slice_mut_slice_append_slice"]
-    pub fn r#append_slice( Zself: *mut u8,  Zother: super::slice_slice::Slice)  -> bool;
-
-    #[link_name = "slice_mut_slice_push64"]
-    pub fn r#push64( Zself: *mut u8,  Zb: u64)  -> bool;
-
     #[link_name = "slice_mut_slice_make"]
     pub fn r#make( Zself: *mut u8,  Zmem: *mut u8,  Zsize: usize,  Zat: *mut usize);
 
-    #[link_name = "slice_mut_slice_append_obj"]
-    pub fn r#append_obj( Zself: *mut u8,  Zb: *const u8,  Zvt: usize)  -> bool;
-
-    #[link_name = "slice_mut_slice_push16"]
-    pub fn r#push16( Zself: *mut u8,  Zb: u16)  -> bool;
 
     #[link_name = "slice_mut_slice_space"]
     pub fn r#space( Zself: *mut u8)  -> usize;
 
-    #[link_name = "sizeof_slice_mut_slice_MutSlice"]
-    pub fn sizeof_MutSlice() -> libc::size_t;
-
-    #[link_name = "slice_mut_slice_push32"]
-    pub fn r#push32( Zself: *mut u8,  Zb: u32)  -> bool;
-
-
-    #[link_name = "slice_mut_slice_append_cstr"]
-    pub fn r#append_cstr( Zself: *mut u8,  Zb: *const u8)  -> bool;
+    #[link_name = "slice_mut_slice_as_slice"]
+    pub fn r#as_slice( Zself: *const u8)  -> super::slice_slice::Slice;
 
     #[link_name = "slice_mut_slice_append_bytes"]
     pub fn r#append_bytes( Zself: *mut u8,  Zb: *const u8,  Zl: usize)  -> bool;
 
-    #[link_name = "slice_mut_slice_as_slice"]
-    pub fn r#as_slice( Zself: *const u8)  -> super::slice_slice::Slice;
+    #[link_name = "sizeof_slice_mut_slice_MutSlice"]
+    pub fn sizeof_MutSlice() -> libc::size_t;
 
     #[link_name = "slice_mut_slice_push"]
     pub fn r#push( Zself: *mut u8,  Zb: u8)  -> bool;
+
+    #[link_name = "slice_mut_slice_append_slice"]
+    pub fn r#append_slice( Zself: *mut u8,  Zother: super::slice_slice::Slice)  -> bool;
+
+    #[link_name = "slice_mut_slice_push32"]
+    pub fn r#push32( Zself: *mut u8,  Zb: u32)  -> bool;
+
+    #[link_name = "slice_mut_slice_push16"]
+    pub fn r#push16( Zself: *mut u8,  Zb: u16)  -> bool;
+
+    #[link_name = "slice_mut_slice_push64"]
+    pub fn r#push64( Zself: *mut u8,  Zb: u64)  -> bool;
+
+    #[link_name = "slice_mut_slice_append_obj"]
+    pub fn r#append_obj( Zself: *mut u8,  Zb: *const u8,  Zvt: usize)  -> bool;
+
+    #[link_name = "slice_mut_slice_append_cstr"]
+    pub fn r#append_cstr( Zself: *mut u8,  Zb: *const u8)  -> bool;
 
 }

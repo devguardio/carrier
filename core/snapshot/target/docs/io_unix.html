@@ -1,22 +1,12 @@
 
 <h1> module io::unix </h1>
-<h4> fn stdin (
-
-)
-
--&gt ::io::Io
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn make (
-
-    ::io::unix::Async*+tail
-    self,
+<h4> fn make (
 
     usize
     tail,
+
+    ::io::unix::Async*+tail
+    self,
 
 )
 
@@ -39,16 +29,26 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn stdin (
+
+)
+
+-&gt ::io::Io
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn select_fd (
 
     int
     fd,
 
-    int
-    events,
-
     ::io::unix::Async*
     self,
+
+    int
+    events,
 
 )
 

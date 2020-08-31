@@ -64,11 +64,11 @@ impl Socket {
 }
 }
 extern {
-    #[link_name = "netio_udp_close"]
-    pub fn r#close( Zself: *mut u8);
-
     #[link_name = "netio_udp_bind"]
     pub fn r#bind( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zaddr: super::net_address::Address,  Zasync: *mut u8);
+
+    #[link_name = "netio_udp_close"]
+    pub fn r#close( Zself: *mut u8);
 
     #[link_name = "netio_udp_recvfrom"]
     pub fn r#recvfrom( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbuf: *mut u8,  Zst: usize,  Zfrom: *mut u8)  -> super::io::Result;

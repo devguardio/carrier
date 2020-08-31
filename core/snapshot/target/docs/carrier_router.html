@@ -1,6 +1,38 @@
 
 <h1> module carrier::router </h1>
-<h4> fn swap16 (
+<h4> fn shutdown (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::router::Router*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn next_channel (
+
+    ::carrier::router::Router*
+    self,
+
+)
+
+-&gt ::carrier::channel::Channel*
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap16 (
 
     u16
     x,
@@ -34,76 +66,6 @@
 )
 
 -&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn poll (
-
-    ::carrier::router::Router*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    ::io::Async*
-    async,
-
-    usize
-    et,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn next_channel (
-
-    ::carrier::router::Router*
-    self,
-
-)
-
--&gt ::carrier::channel::Channel*
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn shutdown (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::carrier::router::Router*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn read_routing_key (
-
-    u8*
-    i,
-
-    ::carrier::router::Direction*
-    direction,
-
-)
-
--&gt u64
 
 </h4>
 
@@ -163,17 +125,17 @@
 
 </p><h4> fn push (
 
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
     ::carrier::router::Router*
     self,
 
     ::slice::slice::Slice
     pkt,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -183,10 +145,19 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
+</p><h4> fn disconnect (
+
+    u64
+    route,
 
     ::carrier::router::Router*
     self,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
 
 )
 
@@ -196,7 +167,23 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn disconnect (
+</p><h4> fn read_routing_key (
+
+    u8*
+    i,
+
+    ::carrier::router::Direction*
+    direction,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn poll (
 
     ::err::Err*+et
     e,
@@ -204,11 +191,24 @@
     usize
     et,
 
+    ::io::Async*
+    async,
+
     ::carrier::router::Router*
     self,
 
-    u64
-    route,
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::carrier::router::Router*
+    self,
 
 )
 

@@ -1,9 +1,47 @@
 
 <h1> module madpack </h1>
-<h4> fn skip (
+<h4> fn v_bool (
+
+    bool
+    value,
+
+    ::madpack::Encoder*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn v_strslice (
+
+    ::slice::slice::Slice
+    value,
+
+    ::madpack::Encoder*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decode (
 
     ::madpack::Decoder*
     self,
+
+    ::madpack::Index*
+    index,
+
+    ::slice::slice::Slice
+    sl,
 
 )
 
@@ -12,8 +50,37 @@
 </h4>
 
 <p class='doc_comments'>
- skip over current field and all children&lt;br&gt;
-</p><h4> fn v_null (
+
+</p><h4> fn end (
+
+    ::madpack::Encoder*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn v_map (
+
+    ::madpack::Encoder*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn kv_array (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    key,
 
     ::madpack::Encoder*
     self,
@@ -39,16 +106,29 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn kv_strslice (
+</p><h4> fn encode (
+
+    ::madpack::Index*
+    index,
 
     ::madpack::Encoder*
     self,
 
-    ::ext::&lt;stddef.h&gt;::char*
-    key,
+    ::slice::mut_slice::MutSlice
+    sl,
 
-    ::slice::slice::Slice
-    value,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn v_array (
+
+    ::madpack::Encoder*
+    self,
 
 )
 
@@ -97,20 +177,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn as_slice (
-
-    ::madpack::Encoder*
-    self,
-
-)
-
--&gt ::slice::slice::Slice
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn v_map (
+</p><h4> fn v_null (
 
     ::madpack::Encoder*
     self,
@@ -123,45 +190,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_preshared_index (
-
-    usize
-    t,
-
-    ::madpack::Index*+t
-    self,
-
-    ::slice::slice::Slice
-    v,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn decode (
-
-    ::madpack::Decoder*
-    self,
-
-    ::slice::slice::Slice
-    sl,
-
-    ::madpack::Index*
-    index,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn kv_map (
+</p><h4> fn kv_null (
 
     ::madpack::Encoder*
     self,
@@ -177,13 +206,84 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn v_strslice (
+</p><h4> fn from_preshared_index (
+
+    ::madpack::Index*+t
+    self,
+
+    usize
+    t,
 
     ::slice::slice::Slice
-    value,
+    v,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_le16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_le16 (
+
+    u16
+    x,
+
+)
+
+-&gt u16
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn next_kv (
+
+    ::madpack::Decoder*
+    self,
+
+)
+
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn kv_map (
 
     ::madpack::Encoder*
     self,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    key,
 
 )
 
@@ -219,7 +319,20 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn kv_bool (
+</p><h4> fn from_le64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn kv_uint (
 
     ::ext::&lt;stddef.h&gt;::char*
     key,
@@ -227,7 +340,7 @@
     ::madpack::Encoder*
     self,
 
-    bool
+    u64
     value,
 
 )
@@ -254,126 +367,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn v_bool (
-
-    bool
-    value,
-
-    ::madpack::Encoder*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn v_array (
-
-    ::madpack::Encoder*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_le64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn kv_array (
+</p><h4> fn v_cstr (
 
     ::madpack::Encoder*
     self,
 
     ::ext::&lt;stddef.h&gt;::char*
-    key,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_le16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn kv_uint (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    key,
-
-    u64
     value,
-
-    ::madpack::Encoder*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_le16 (
-
-    u16
-    x,
-
-)
-
--&gt u16
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn next_v (
-
-    ::madpack::Decoder*
-    self,
 
 )
 
@@ -399,26 +399,29 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn encode (
+</p><h4> fn kv_strslice (
+
+    ::slice::slice::Slice
+    value,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    key,
 
     ::madpack::Encoder*
     self,
 
-    ::madpack::Index*
-    index,
-
-    ::slice::mut_slice::MutSlice
-    sl,
-
 )
 
-
+-&gt bool
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn kv_byteslice (
+</p><h4> fn kv_bool (
+
+    bool
+    value,
 
     ::madpack::Encoder*
     self,
@@ -426,9 +429,6 @@
     ::ext::&lt;stddef.h&gt;::char*
     key,
 
-    ::slice::slice::Slice
-    value,
-
 )
 
 -&gt bool
@@ -437,11 +437,17 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn end (
+</p><h4> fn kv_cstr (
 
     ::madpack::Encoder*
     self,
 
+    ::ext::&lt;stddef.h&gt;::char*
+    value,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    key,
+
 )
 
 -&gt bool
@@ -450,6 +456,19 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn skip (
+
+    ::madpack::Decoder*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ skip over current field and all children&lt;br&gt;
 </p><h4> fn empty_index (
 
     ::madpack::Index*+t
@@ -466,13 +485,29 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn v_cstr (
+</p><h4> fn as_slice (
+
+    ::madpack::Encoder*
+    self,
+
+)
+
+-&gt ::slice::slice::Slice
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn kv_byteslice (
+
+    ::slice::slice::Slice
+    value,
 
     ::madpack::Encoder*
     self,
 
     ::ext::&lt;stddef.h&gt;::char*
-    value,
+    key,
 
 )
 
@@ -482,45 +517,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn next_kv (
+</p><h4> fn next_v (
 
     ::madpack::Decoder*
     self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn kv_null (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    key,
-
-    ::madpack::Encoder*
-    self,
-
-)
-
--&gt bool
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn kv_cstr (
-
-    ::madpack::Encoder*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    key,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    value,
 
 )
 

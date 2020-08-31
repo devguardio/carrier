@@ -9,6 +9,24 @@ pub struct Decoder {
     pub size :usize ,
     pub at :usize ,
 }
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct Value {
+    pub v_len :usize ,
+    pub v_u64 :u64 ,
+    pub v_i64 :i64 ,
+    pub v_bool :bool ,
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct Field {
+    pub valid :bool ,
+    pub index :u64 ,
+    pub value :super::protonerf::Value ,
+    pub a :*const u8 ,
+}
 #[derive(Clone)]
 #[repr(C)]
 pub enum FieldType {
@@ -34,24 +52,6 @@ pub enum FieldType {
 
 }
 
-
-#[derive(Clone)]
-#[repr(C)]
-pub struct Value {
-    pub v_len :usize ,
-    pub v_u64 :u64 ,
-    pub v_i64 :i64 ,
-    pub v_bool :bool ,
-}
-
-#[derive(Clone)]
-#[repr(C)]
-pub struct Field {
-    pub valid :bool ,
-    pub index :u64 ,
-    pub value :super::protonerf::Value ,
-    pub a :*const u8 ,
-}
 
 pub mod heap {
 
@@ -212,37 +212,37 @@ impl Field {
 }
 }
 extern {
-    #[link_name = "protonerf_encode_bytes"]
-    pub fn r#encode_bytes( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zb: *const u8,  Zl: usize);
-
-    #[link_name = "protonerf_write_varint"]
-    pub fn r#write_varint( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zlow: u32,  Zhigh: u32);
-
     #[link_name = "protonerf_encode_varint"]
     pub fn r#encode_varint( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: u64);
 
     #[link_name = "sizeof_protonerf_Decoder"]
     pub fn sizeof_Decoder() -> libc::size_t;
 
-    #[link_name = "protonerf_decode"]
-    pub fn r#decode( Zself: *mut u8,  Zsl: super::slice_slice::Slice);
-
-
-
     #[link_name = "sizeof_protonerf_Value"]
     pub fn sizeof_Value() -> libc::size_t;
-
-    #[link_name = "protonerf_read_varint"]
-    pub fn r#read_varint( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> u64;
-
-    #[link_name = "protonerf_encode_bytes_start"]
-    pub fn r#encode_bytes_start( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zl: usize);
 
     #[link_name = "sizeof_protonerf_Field"]
     pub fn sizeof_Field() -> libc::size_t;
 
+
     #[link_name = "protonerf_next"]
     pub fn r#next( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zv: *mut u8)  -> bool;
+
+    #[link_name = "protonerf_encode_bytes_start"]
+    pub fn r#encode_bytes_start( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zl: usize);
+
+    #[link_name = "protonerf_read_varint"]
+    pub fn r#read_varint( Zself: *mut u8,  Ze: *mut u8,  Zet: usize)  -> u64;
+
+
+    #[link_name = "protonerf_decode"]
+    pub fn r#decode( Zself: *mut u8,  Zsl: super::slice_slice::Slice);
+
+    #[link_name = "protonerf_write_varint"]
+    pub fn r#write_varint( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zlow: u32,  Zhigh: u32);
+
+    #[link_name = "protonerf_encode_bytes"]
+    pub fn r#encode_bytes( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zb: *const u8,  Zl: usize);
 
     #[link_name = "protonerf_encode_f64"]
     pub fn r#encode_f64( Zstr: super::slice_mut_slice::MutSlice,  Ze: *mut u8,  Zet: usize,  Zindex: u8,  Zvalue: f64);

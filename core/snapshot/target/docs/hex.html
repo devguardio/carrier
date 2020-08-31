@@ -1,6 +1,6 @@
 
 <h1> module hex </h1>
-<h4> fn dump (
+<h4> fn print (
 
     usize
     l,
@@ -18,11 +18,11 @@
 
 </p><h4> fn fdump (
 
-    ::ext::&lt;stdio.h&gt;::FILE*
-    f,
-
     u8*
     data,
+
+    ::ext::&lt;stdio.h&gt;::FILE*
+    f,
 
     usize
     l,
@@ -37,17 +37,17 @@
 
 </p><h4> fn str2bin (
 
+    u8*
+    out,
+
     ::ext::&lt;stddef.h&gt;::char*
     in,
 
     usize
-    inlen,
-
-    usize
     outlen,
 
-    u8*
-    out,
+    usize
+    inlen,
 
 )
 
@@ -57,13 +57,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn print (
+</p><h4> fn dump_slice (
 
-    usize
-    l,
-
-    u8*
-    data,
+    ::slice::slice::Slice
+    s,
 
 )
 
@@ -73,10 +70,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn dump_slice (
+</p><h4> fn dump (
 
-    ::slice::slice::Slice
-    s,
+    usize
+    l,
+
+    u8*
+    data,
 
 )
 

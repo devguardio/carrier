@@ -3,15 +3,6 @@
 extern crate libc;
 #[derive(Clone)]
 #[repr(C)]
-pub enum Service {
-    carrier_cmd_config_Service_None = 0,
-    carrier_cmd_config_Service_Auth = 1,
-    carrier_cmd_config_Service_Net = 2,
-
-}
-
-#[derive(Clone)]
-#[repr(C)]
 pub enum Method {
     carrier_cmd_config_Method_None = 0,
     carrier_cmd_config_Method_Get = 1,
@@ -27,6 +18,15 @@ pub enum Target {
     carrier_cmd_config_Target_None = 0,
     carrier_cmd_config_Target_Self = 1,
     carrier_cmd_config_Target_Identity = 2,
+
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub enum Service {
+    carrier_cmd_config_Service_None = 0,
+    carrier_cmd_config_Service_Auth = 1,
+    carrier_cmd_config_Service_Net = 2,
 
 }
 

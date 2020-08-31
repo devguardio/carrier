@@ -1,12 +1,49 @@
 
 <h1> module carrier::symmetric </h1>
-<h4> fn init (
+<h4> fn encrypt_and_mix_hash (
 
-    ::ext::&lt;stddef.h&gt;::char*
-    protocolname,
+    u8*
+    ciphertext,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
     ::carrier::symmetric::SymmetricState*
     self,
+
+    u8*
+    plain,
+
+    u64
+    nonce,
+
+    usize
+    cipher_len_max,
+
+    usize
+    plain_len,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn mix_hash (
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+    usize
+    l,
+
+    u8*
+    data,
 
 )
 
@@ -19,51 +56,32 @@
 </p><h4> fn decrypt_and_mix_hash (
 
     usize
+    cipher_len,
+
+    usize
     et,
-
-    u64
-    nonce,
-
-    ::err::Err*+et
-    e,
 
     u8*
     plain,
 
-    usize
-    cipher_len,
-
     u8*
     ciphertext,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
 
     usize
     plain_len_max,
 
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn split (
-
-    ::carrier::cipher::CipherState*
-    resp,
-
-    ::carrier::cipher::CipherState*
-    ini,
-
     ::carrier::symmetric::SymmetricState*
     self,
 
+    ::err::Err*+et
+    e,
+
+    u64
+    nonce,
+
 )
 
-
+-&gt usize
 
 </h4>
 
@@ -74,25 +92,6 @@
     ::carrier::symmetric::SymmetricState*
     self,
 
-    usize
-    l,
-
-    u8*
-    data,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn mix_hash (
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
     u8*
     data,
 
@@ -107,35 +106,36 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn encrypt_and_mix_hash (
-
-    u64
-    nonce,
-
-    usize
-    plain_len,
+</p><h4> fn split (
 
     ::carrier::symmetric::SymmetricState*
     self,
 
-    ::err::Err*+et
-    e,
+    ::carrier::cipher::CipherState*
+    ini,
 
-    usize
-    et,
-
-    u8*
-    plain,
-
-    u8*
-    ciphertext,
-
-    usize
-    cipher_len_max,
+    ::carrier::cipher::CipherState*
+    resp,
 
 )
 
--&gt usize
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn init (
+
+    ::ext::&lt;stddef.h&gt;::char*
+    protocolname,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+)
+
+
 
 </h4>
 

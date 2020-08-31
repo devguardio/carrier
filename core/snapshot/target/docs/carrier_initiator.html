@@ -39,64 +39,11 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn revision (
 
 )
 
 -&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn initiate (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::vault::Vault*
-    vault,
-
-    u64
-    vector_time,
-
-    ::slice::mut_slice::MutSlice
-    pkt,
-
-    ::carrier::initiator::Move
-    move,
-
-    ::carrier::initiator::Initiator*
-    self,
-
-    ::carrier::identity::Address*
-    xaddr,
-
-    bool
-    secure,
-
-    usize
-    et,
-
-    ::carrier::identity::Identity*
-    cluster_target,
-
-)
-
-
 
 </h4>
 
@@ -154,6 +101,19 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn to_be32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn from_be32 (
 
     u32
@@ -169,17 +129,20 @@
 
 </p><h4> fn complete (
 
-    ::carrier::channel::Transfer*
-    chan,
-
-    ::carrier::vault::Broker*
-    redirect,
-
     ::slice::slice::Slice
     pkt,
 
+    ::carrier::channel::Transfer*
+    chan,
+
     ::carrier::initiator::Initiator*
     self,
+
+    usize
+    et,
+
+    ::carrier::vault::Broker*
+    redirect,
 
     ::carrier::identity::Identity*
     expect_identity,
@@ -187,8 +150,45 @@
     ::err::Err*+et
     e,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn initiate (
+
+    ::carrier::initiator::Initiator*
+    self,
+
+    ::slice::mut_slice::MutSlice
+    pkt,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::identity::Address*
+    xaddr,
+
+    bool
+    secure,
+
+    ::carrier::initiator::Move
+    move,
+
+    ::carrier::identity::Identity*
+    cluster_target,
+
+    ::carrier::vault::Vault*
+    vault,
+
     usize
     et,
+
+    u64
+    vector_time,
 
 )
 

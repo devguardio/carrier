@@ -5,14 +5,14 @@
     ::carrier::stream::Stream*
     self,
 
+    usize
+    et,
+
     ::err::Err*+et
     e,
 
     ::slice::slice::Slice
     msg,
-
-    usize
-    et,
 
 )
 
@@ -37,17 +37,17 @@
 
 </p><h4> fn on_printer_stream (
 
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
     ::slice::slice::Slice
     msg,
 
     ::carrier::stream::Stream*
     self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 

@@ -1,12 +1,50 @@
 
 <h1> module sysinfo </h1>
-<h4> fn firmware (
+<h4> fn cpu (
+
+    ::madpack::Encoder*
+    enc,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn mem (
+
     ::madpack::Encoder*
     enc,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn cores (
+
+    ::madpack::Encoder*
+    enc,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -24,25 +62,6 @@
     ::madpack::Encoder*
     enc,
 
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn mem (
-
-    ::madpack::Encoder*
-    enc,
-
     ::err::Err*+et
     e,
 
@@ -57,35 +76,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn cpu (
-
-    ::err::Err*+et
-    e,
+</p><h4> fn firmware (
 
     ::madpack::Encoder*
     enc,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn cores (
 
     ::err::Err*+et
     e,
 
     usize
     et,
-
-    ::madpack::Encoder*
-    enc,
 
 )
 

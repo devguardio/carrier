@@ -39,6 +39,16 @@
 
 <p class='doc_comments'>
 
+</p><h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn to_be32 (
 
     u32
@@ -52,38 +62,28 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn revision (
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn accept_insecure (
-
-    usize
-    et,
 
     ::carrier::vault::Vault*
     store,
-
-    ::slice::mut_slice::MutSlice*
-    frame,
 
     ::err::Err*+et
     e,
 
     u64
-    route,
+    timestamp,
+
+    ::slice::mut_slice::MutSlice*
+    frame,
 
     ::carrier::noise::Responder*
     self,
 
+    usize
+    et,
+
     u64
-    timestamp,
+    route,
 
 )
 

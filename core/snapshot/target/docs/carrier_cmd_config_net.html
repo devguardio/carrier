@@ -1,15 +1,18 @@
 
 <h1> module carrier::cmd_config_net </h1>
-<h4> fn run_self_net_get (
+<h4> fn run_self_net_join (
+
+    ::carrier::endpoint::Endpoint*
+    endpoint,
 
     usize
     et,
 
+    ::ext::&lt;stddef.h&gt;::char*
+    net_secret_s,
+
     ::err::Err*+et
     e,
-
-    ::carrier::endpoint::Endpoint*
-    endpoint,
 
 )
 
@@ -19,16 +22,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn run_self_net_join (
-
-    ::err::Err*+et
-    e,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    net_secret_s,
+</p><h4> fn run_self_net_get (
 
     ::carrier::endpoint::Endpoint*
     endpoint,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,

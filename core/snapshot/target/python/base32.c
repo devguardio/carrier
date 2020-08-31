@@ -25,39 +25,14 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 
 
-
-static PyObject* py_base32_encode(PyObject *pyself, PyObject *args) {
-    //e
-    PyObject * arg0 = 0;
-    //src
-    uint8_t * arg2 = 0;
-    Py_ssize_t arg2_len = 0;
-    //inlen
-    long long int arg3 = 0;
-    //out
-    char * arg4 = 0;
-    Py_ssize_t arg4_len = 0;
-    //outlen
-    long long int arg5 = 0;
-    if (!PyArg_ParseTuple(args, "Os#ls#l", &arg0,&arg2,&arg2_len,&arg3,&arg4,&arg4_len,&arg5)) { return NULL; };
-    long long int rarg = (long long int)(base32_encode(
-        pyFATGetPtr(arg0, "err_Err"),
-        ((pyFATObject *)arg0)->tail,
-        arg2,
-        arg3,
-        arg4,
-        arg5));
-    return PyLong_FromLong(rarg);
-}
 
 static PyObject* py_base32_decode(PyObject *pyself, PyObject *args) {
     //e
@@ -83,10 +58,34 @@ static PyObject* py_base32_decode(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
+static PyObject* py_base32_encode(PyObject *pyself, PyObject *args) {
+    //e
+    PyObject * arg0 = 0;
+    //src
+    uint8_t * arg2 = 0;
+    Py_ssize_t arg2_len = 0;
+    //inlen
+    long long int arg3 = 0;
+    //out
+    char * arg4 = 0;
+    Py_ssize_t arg4_len = 0;
+    //outlen
+    long long int arg5 = 0;
+    if (!PyArg_ParseTuple(args, "Os#ls#l", &arg0,&arg2,&arg2_len,&arg3,&arg4,&arg4_len,&arg5)) { return NULL; };
+    long long int rarg = (long long int)(base32_encode(
+        pyFATGetPtr(arg0, "err_Err"),
+        ((pyFATObject *)arg0)->tail,
+        arg2,
+        arg3,
+        arg4,
+        arg5));
+    return PyLong_FromLong(rarg);
+}
+
 
 static PyMethodDef methods[] = {
-{"encode", py_base32_encode, METH_VARARGS,""},
 {"decode", py_base32_decode, METH_VARARGS,""},
+{"encode", py_base32_encode, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

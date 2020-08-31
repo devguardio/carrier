@@ -1,11 +1,19 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#ifndef ZZ_FORWARD_carrier_sha256_HASHLEN
+#define ZZ_FORWARD_carrier_sha256_HASHLEN
+#endif
 #ifndef ZZ_FORWARD__string_h_
 #define ZZ_FORWARD__string_h_
 #endif
-#ifndef ZZ_FORWARD_carrier_sha256_HASHLEN
-#define ZZ_FORWARD_carrier_sha256_HASHLEN
+#ifndef ZZ_FORWARD_carrier_sha256_Sha256
+#define ZZ_FORWARD_carrier_sha256_Sha256
+struct carrier_sha256_Sha256_t;
+typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
+#endif
+#ifndef ZZ_FORWARD_carrier_sha256_update
+#define ZZ_FORWARD_carrier_sha256_update
 #endif
 #ifndef ZZ_FORWARD_carrier_sha256_hkdf
 #define ZZ_FORWARD_carrier_sha256_hkdf
@@ -18,23 +26,25 @@
 struct carrier_sha256_Sha256_t;
 typedef struct carrier_sha256_Sha256_t carrier_sha256_Sha256;
 #endif
-#ifndef ZZ_FORWARD_carrier_sha256_update
-#define ZZ_FORWARD_carrier_sha256_update
-#endif
 #ifndef ZZ_FORWARD_carrier_sha256_finish
 #define ZZ_FORWARD_carrier_sha256_finish
 #endif
 #ifndef ZZ_FORWARD_carrier_sha256_init
 #define ZZ_FORWARD_carrier_sha256_init
 #endif
+#ifndef ZZ_EXPORT_carrier_sha256_HASHLEN
+#define ZZ_EXPORT_carrier_sha256_HASHLEN
+#define carrier_sha256_HASHLEN (    32)
+
+#endif
 #ifndef ZZ_EXPORT__string_h_
 #define ZZ_EXPORT__string_h_
 #include <string.h>
 
 #endif
-#ifndef ZZ_EXPORT_carrier_sha256_HASHLEN
-#define ZZ_EXPORT_carrier_sha256_HASHLEN
-#define carrier_sha256_HASHLEN (    32)
+#ifndef ZZ_EXPORT_carrier_sha256_update
+#define ZZ_EXPORT_carrier_sha256_update
+void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_sha256_hkdf
@@ -57,11 +67,6 @@ struct carrier_sha256_Sha256_t {
 }
 ;
 size_t sizeof_carrier_sha256_Sha256();
-
-#endif
-#ifndef ZZ_EXPORT_carrier_sha256_update
-#define ZZ_EXPORT_carrier_sha256_update
-void carrier_sha256_update (carrier_sha256_Sha256*  const  self, uint8_t const *  data, uintptr_t l);
 
 #endif
 #ifndef ZZ_EXPORT_carrier_sha256_finish

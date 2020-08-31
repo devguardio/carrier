@@ -1,6 +1,14 @@
 #![allow(non_camel_case_types)]
 #![allow(dead_code)]
 extern crate libc;
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct Initiator {
+    pub noise :super::carrier_noise::Initiator ,
+    pub tick_time_start :u64 ,
+    pub secure :bool ,
+}
 #[derive(Clone)]
 #[repr(C)]
 pub enum Move {
@@ -10,14 +18,6 @@ pub enum Move {
 
 }
 
-
-#[derive(Clone)]
-#[repr(C)]
-pub struct Initiator {
-    pub noise :super::carrier_noise::Initiator ,
-    pub tick_time_start :u64 ,
-    pub secure :bool ,
-}
 
 pub mod heap {
 
@@ -74,14 +74,14 @@ impl Initiator {
 }
 }
 extern {
-
-    #[link_name = "carrier_initiator_initiate"]
-    pub fn r#initiate( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zsecure: bool,  Zvault: *const u8,  Zmove: super::carrier_initiator::Move,  Zcluster_target: *const u8,  Zxaddr: *const u8,  Zvector_time: u64,  Zpkt: super::slice_mut_slice::MutSlice);
+    #[link_name = "sizeof_carrier_initiator_Initiator"]
+    pub fn sizeof_Initiator() -> libc::size_t;
 
     #[link_name = "carrier_initiator_complete"]
     pub fn r#complete( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zchan: *mut u8,  Zredirect: *mut u8,  Zpkt: super::slice_slice::Slice,  Zexpect_identity: *const u8);
 
-    #[link_name = "sizeof_carrier_initiator_Initiator"]
-    pub fn sizeof_Initiator() -> libc::size_t;
+
+    #[link_name = "carrier_initiator_initiate"]
+    pub fn r#initiate( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zsecure: bool,  Zvault: *const u8,  Zmove: super::carrier_initiator::Move,  Zcluster_target: *const u8,  Zxaddr: *const u8,  Zvector_time: u64,  Zpkt: super::slice_mut_slice::MutSlice);
 
 }

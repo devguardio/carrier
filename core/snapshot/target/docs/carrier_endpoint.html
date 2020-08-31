@@ -1,95 +1,6 @@
 
 <h1> module carrier::endpoint </h1>
-<h4> fn close (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- close endpoint immediately&lt;br&gt;
-</p><h4> fn do_not_move (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_home_carriertoml (
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    usize
-    et,
-
-    usize
-    xt,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_vault (
-
-    usize
-    xt,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    usize
-    et,
-
-    ::carrier::vault::Vault
-    vault,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn register_stream (
-
-    ::carrier::stream::Config*
-    conf,
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn broker (
+<h4> fn broker (
 
     ::carrier::endpoint::Endpoint*
     self,
@@ -102,66 +13,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn shutdown (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- gracefully disconnect everything and shutdown&lt;br&gt;
-</p><h4> fn from_carriertoml (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file_name,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    usize
-    xt,
+</p><h4> fn none (
 
     ::carrier::endpoint::Endpoint*+xt
     self,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_secretkit (
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    ::carrier::identity::SecretKit
-    ik,
-
     usize
     xt,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -199,14 +57,14 @@
 
 </p><h4> fn poll (
 
-    ::err::Err*+et
-    e,
+    usize
+    et,
 
     ::carrier::endpoint::Endpoint*
     self,
 
-    usize
-    et,
+    ::err::Err*+et
+    e,
 
     ::io::Async*
     async,
@@ -219,36 +77,39 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn native (
+</p><h4> fn register_stream (
 
-    usize
-    xt,
-
-    ::carrier::endpoint::Endpoint*+xt
+    ::carrier::endpoint::Endpoint*
     self,
 
-    ::err::Err*+et
-    e,
+    ::carrier::stream::Config*
+    conf,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_carriertoml (
 
     usize
     et,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn none (
-
-    usize
-    xt,
+    ::err::Err*+et
+    e,
 
     ::carrier::endpoint::Endpoint*+xt
     self,
 
+    usize
+    xt,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file_name,
+
 )
 
 
@@ -257,13 +118,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn cluster_target (
+</p><h4> fn from_secretkit (
 
-    ::carrier::identity::Identity*
-    target,
+    ::err::Err*+et
+    e,
 
-    ::carrier::endpoint::Endpoint*
+    ::carrier::identity::SecretKit
+    ik,
+
+    ::carrier::endpoint::Endpoint*+xt
     self,
+
+    usize
+    xt,
+
+    usize
+    et,
 
 )
 
@@ -281,11 +151,141 @@
     ::err::Err*+et
     e,
 
+    ::io::Async*
+    async,
+
     usize
     et,
 
-    ::io::Async*
-    async,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn close (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ close endpoint immediately&lt;br&gt;
+</p><h4> fn do_not_move (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn native (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    usize
+    xt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn shutdown (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ gracefully disconnect everything and shutdown&lt;br&gt;
+</p><h4> fn cluster_target (
+
+    ::carrier::identity::Identity*
+    target,
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_home_carriertoml (
+
+    usize
+    et,
+
+    ::err::Err*+et
+    e,
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    usize
+    xt,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_vault (
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    usize
+    xt,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::vault::Vault
+    vault,
 
 )
 

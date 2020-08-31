@@ -1,6 +1,15 @@
 
 <h1> module json </h1>
-<h4> fn parser (
+<h4> fn push (
+
+    usize
+    strlen,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    str,
 
     ::json::Parser*+tail
     self,
@@ -8,14 +17,33 @@
     usize
     tail,
 
+    ::err::Err*+et
+    e,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn parser (
+
     usize
-    et,
+    tail,
 
     ::json::U
     u,
 
     ::err::Err*+et
     e,
+
+    usize
+    et,
+
+    ::json::Parser*+tail
+    self,
 
 )
 
@@ -27,48 +55,20 @@
 
 </p><h4> fn next (
 
-    usize
-    et,
-
-    ::json::Parser*+tail
-    self,
-
-    usize
-    tail,
-
-    ::err::Err*+et
-    e,
-
     ::json::U
     u,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn push (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    str,
-
-    usize
-    strlen,
-
     ::json::Parser*+tail
     self,
 
     usize
     et,
 
-    usize
-    tail,
-
     ::err::Err*+et
     e,
+
+    usize
+    tail,
 
 )
 

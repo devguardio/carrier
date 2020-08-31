@@ -1,15 +1,34 @@
 
 <h1> module netio::unix </h1>
-<h4> fn socket (
+<h4> fn make_async (
+
+    int
+    fd,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
 
-    int
-    typ,
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn socket (
 
     ::net::address::Address*
     addr,
+
+    int
+    typ,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -24,11 +43,11 @@
 
 </p><h4> fn alen (
 
-    ::err::Err*+et
-    e,
-
     ::net::address::Address*
     addr,
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
@@ -36,25 +55,6 @@
 )
 
 -&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn make_async (
-
-    int
-    fd,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
 
 </h4>
 

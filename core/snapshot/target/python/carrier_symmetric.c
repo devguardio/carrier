@@ -24,18 +24,19 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_carrier_sha256_Sha256;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_carrier_cipher_CipherState;
-extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
-extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_carrier_cipher_CipherState;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
 extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_carrier_cipher_CipherState;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
+extern PyTypeObject py_Type_carrier_cipher_CipherState;
+extern PyTypeObject py_Type_carrier_sha256_Sha256;
+extern PyTypeObject py_Type_carrier_symmetric_SymmetricState;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_err_Err;
 static PyObject * py_get_carrier_symmetric_SymmetricState_cipher(PyObject *pyself, void *closure) {
 
     carrier_symmetric_SymmetricState * self = pyFATGetPtr(pyself, "carrier_symmetric_SymmetricState");

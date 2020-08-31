@@ -1,15 +1,31 @@
 
 <h1> module mem </h1>
-<h4> fn set (
+<h4> fn zero (
+
+    usize
+    vt,
+
+    ::ext::&lt;stddef.h&gt;::void*+vt
+    dst,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn set (
+
+    u8
+    c,
 
     ::ext::&lt;stddef.h&gt;::void*
     dst,
 
     usize
     n,
-
-    u8
-    c,
 
 )
 
@@ -21,14 +37,14 @@
 
 </p><h4> fn move (
 
+    usize
+    n,
+
     ::ext::&lt;stddef.h&gt;::void*
     src,
 
     ::ext::&lt;stddef.h&gt;::void*
     dst,
-
-    usize
-    n,
 
 )
 
@@ -40,14 +56,14 @@
 
 </p><h4> fn eq (
 
-    usize
-    n,
+    ::ext::&lt;stddef.h&gt;::void*
+    b,
 
     ::ext::&lt;stddef.h&gt;::void*
     a,
 
-    ::ext::&lt;stddef.h&gt;::void*
-    b,
+    usize
+    n,
 
 )
 
@@ -62,27 +78,11 @@
     ::ext::&lt;stddef.h&gt;::void*
     src,
 
-    ::ext::&lt;stddef.h&gt;::void*
-    dst,
-
     usize
     n,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn zero (
-
-    ::ext::&lt;stddef.h&gt;::void*+vt
+    ::ext::&lt;stddef.h&gt;::void*
     dst,
-
-    usize
-    vt,
 
 )
 

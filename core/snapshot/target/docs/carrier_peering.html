@@ -2,14 +2,14 @@
 <h1> module carrier::peering </h1>
 <h4> fn received (
 
+    ::carrier::peering::Peering*
+    self,
+
     ::carrier::peering::Transport
     transport,
 
     ::carrier::peering::Class
     klass,
-
-    ::carrier::peering::Peering*
-    self,
 
     ::net::address::Address
     addr,
@@ -30,11 +30,11 @@
     ::protonerf::Field
     field,
 
-    usize
-    et,
-
     ::carrier::peering::Peering*
     self,
+
+    usize
+    et,
 
 )
 

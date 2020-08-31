@@ -17,6 +17,7 @@ pub enum ParserState {
 
 }
 
+pub const MAX_DEPTH : usize = 64;
 #[derive(Clone)]
 #[repr(C)]
 pub enum ValueType {
@@ -68,7 +69,6 @@ pub struct ParserStack {
     pub in_array :bool ,
     pub index :usize ,
 }
-pub const MAX_DEPTH : usize = 64;
 
 #[derive(Clone)]
 #[repr(C)]
@@ -294,9 +294,14 @@ impl Parser {
 extern {
 
 
+
+
     #[link_name = "sizeof_json_Value"]
     pub fn sizeof_Value() -> libc::size_t;
 
+
+    #[link_name = "json_advance"]
+    pub fn r#advance( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Ztoken: u8);
 
 
     #[link_name = "sizeof_json_U"]
@@ -305,21 +310,16 @@ extern {
     #[link_name = "sizeof_json_ParserStack"]
     pub fn sizeof_ParserStack() -> libc::size_t;
 
-
     #[link_name = "sizeof_json_Parser"]
     pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
-
-    #[link_name = "json_parser"]
-    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
-
-
-    #[link_name = "json_next"]
-    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
     #[link_name = "json_push"]
     pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
 
-    #[link_name = "json_advance"]
-    pub fn r#advance( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Ztoken: u8);
+    #[link_name = "json_parser"]
+    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
+
+    #[link_name = "json_next"]
+    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::json::U);
 
 }

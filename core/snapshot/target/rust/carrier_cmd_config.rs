@@ -12,21 +12,21 @@ pub enum Target {
 
 #[derive(Clone)]
 #[repr(C)]
-pub enum Service {
-    carrier_cmd_config_Service_None = 0,
-    carrier_cmd_config_Service_Auth = 1,
-    carrier_cmd_config_Service_Net = 2,
-
-}
-
-#[derive(Clone)]
-#[repr(C)]
 pub enum Method {
     carrier_cmd_config_Method_None = 0,
     carrier_cmd_config_Method_Get = 1,
     carrier_cmd_config_Method_Add = 2,
     carrier_cmd_config_Method_Remove = 3,
     carrier_cmd_config_Method_Join = 4,
+
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub enum Service {
+    carrier_cmd_config_Service_None = 0,
+    carrier_cmd_config_Service_Auth = 1,
+    carrier_cmd_config_Service_Net = 2,
 
 }
 

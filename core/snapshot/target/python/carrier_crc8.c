@@ -27,22 +27,6 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 
 
 
-static PyObject* py_carrier_crc8_broken_crc8(PyObject *pyself, PyObject *args) {
-    //crc
-    uint8_t arg0 = 0;
-    //data
-    uint8_t * arg1 = 0;
-    Py_ssize_t arg1_len = 0;
-    //length
-    long long int arg2 = 0;
-    if (!PyArg_ParseTuple(args, "bz#l", &arg0,&arg1,&arg1_len,&arg2)) { return NULL; };
-    long long int rarg = (long long int)(carrier_crc8_broken_crc8(
-        arg0,
-        arg1,
-        arg2));
-    return PyLong_FromLong(rarg);
-}
-
 static PyObject* py_carrier_crc8_crc8(PyObject *pyself, PyObject *args) {
     //crc
     uint8_t arg0 = 0;
@@ -59,10 +43,26 @@ static PyObject* py_carrier_crc8_crc8(PyObject *pyself, PyObject *args) {
     return PyLong_FromLong(rarg);
 }
 
+static PyObject* py_carrier_crc8_broken_crc8(PyObject *pyself, PyObject *args) {
+    //crc
+    uint8_t arg0 = 0;
+    //data
+    uint8_t * arg1 = 0;
+    Py_ssize_t arg1_len = 0;
+    //length
+    long long int arg2 = 0;
+    if (!PyArg_ParseTuple(args, "bz#l", &arg0,&arg1,&arg1_len,&arg2)) { return NULL; };
+    long long int rarg = (long long int)(carrier_crc8_broken_crc8(
+        arg0,
+        arg1,
+        arg2));
+    return PyLong_FromLong(rarg);
+}
+
 
 static PyMethodDef methods[] = {
-{"broken_crc8", py_carrier_crc8_broken_crc8, METH_VARARGS,""},
 {"crc8", py_carrier_crc8_crc8, METH_VARARGS,""},
+{"broken_crc8", py_carrier_crc8_broken_crc8, METH_VARARGS,""},
 {NULL, NULL, 0, NULL}
 };
 

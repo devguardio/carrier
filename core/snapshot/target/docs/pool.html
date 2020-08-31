@@ -16,19 +16,38 @@
 
 <p class='doc_comments'>
  malloc a zeroed continuous memory block of any size&lt;br&gt; returns null if the pool is full&lt;br&gt; this is alot less efficient than alloc()&lt;br&gt; as alignment requirements can lead to more blocks being allocated than you expect&lt;br&gt;&lt;br&gt;
-</p><h4> fn free_bytes (
+</p><h4> fn alloc (
 
     ::pool::Pool*
     self,
 
 )
 
--&gt usize
+-&gt ::ext::&lt;stddef.h&gt;::void*
 
 </h4>
 
 <p class='doc_comments'>
- get the number of bytes left in the pool&lt;br&gt;
+ alloc a zeroed block&lt;br&gt; returns null if the pool is full&lt;br&gt;
+</p><h4> fn each (
+
+    ::pool::iterator
+    it,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    user,
+
+    ::pool::Pool*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ run an iterator on every allocated block&lt;br&gt; this is useful when you want to use the pool as a vector&lt;br&gt; but cannot be used if you ever malloc()&#x27;d from this pool&lt;br&gt;&lt;br&gt; it is safe to call free() and alloc() from iterator, because they are implemented as markers&lt;br&gt;
 </p><h4> fn free (
 
     ::ext::&lt;stddef.h&gt;::void*
@@ -45,48 +64,16 @@
 
 <p class='doc_comments'>
  free a pointer previously allocated from this pool&lt;br&gt; requires pointer to be a member()&lt;br&gt;
-</p><h4> fn each (
-
-    ::pool::Pool*
-    self,
-
-    ::pool::iterator
-    it,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    user,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- run an iterator on every allocated block&lt;br&gt; this is useful when you want to use the pool as a vector&lt;br&gt; but cannot be used if you ever malloc()&#x27;d from this pool&lt;br&gt;&lt;br&gt; it is safe to call free() and alloc() from iterator, because they are implemented as markers&lt;br&gt;
-</p><h4> fn alloc (
-
-    ::pool::Pool*
-    self,
-
-)
-
--&gt ::ext::&lt;stddef.h&gt;::void*
-
-</h4>
-
-<p class='doc_comments'>
- alloc a zeroed block&lt;br&gt; returns null if the pool is full&lt;br&gt;
 </p><h4> fn make (
 
-    usize
-    blocksize,
+    ::pool::Pool*+pt
+    self,
 
     usize
     pt,
 
-    ::pool::Pool*+pt
-    self,
+    usize
+    blocksize,
 
 )
 
@@ -96,6 +83,19 @@
 
 <p class='doc_comments'>
  creates a new pool with blocksize&lt;br&gt;&lt;br&gt; new+1000 mypool = pool::make(10);&lt;br&gt; mypool.alloc(); &#x2f;&#x2f; get a single block of 10 bytes&lt;br&gt; mypool.malloc(22); &#x2f;&#x2f; get a continuous memory span of 22 bytes (less efficient)&lt;br&gt;&lt;br&gt;
+</p><h4> fn free_bytes (
+
+    ::pool::Pool*
+    self,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+ get the number of bytes left in the pool&lt;br&gt;
 </p>
 
 

@@ -25,13 +25,11 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_err_Err;
 
 
 static PyObject* py_fs_get_homedir(PyObject *pyself, PyObject *args) {

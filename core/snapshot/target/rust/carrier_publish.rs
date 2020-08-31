@@ -5,12 +5,6 @@ extern crate libc;
 pub mod heap {
 }
 extern {
-    #[link_name = "carrier_publish_stream_connect"]
-    pub fn r#stream_connect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmsg: super::slice_slice::Slice)  -> bool;
-
-
-    #[link_name = "carrier_publish_close_publish"]
-    pub fn r#close_publish( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
 
     #[link_name = "carrier_publish_publish"]
@@ -18,5 +12,11 @@ extern {
 
     #[link_name = "carrier_publish_stream_to_publish"]
     pub fn r#stream_to_publish( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbs: super::slice_slice::Slice)  -> bool;
+
+    #[link_name = "carrier_publish_stream_connect"]
+    pub fn r#stream_connect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zmsg: super::slice_slice::Slice)  -> bool;
+
+    #[link_name = "carrier_publish_close_publish"]
+    pub fn r#close_publish( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
 }

@@ -25,23 +25,20 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
 }
 
 extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_carrier_identity_Identity;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_carrier_identity_Secret;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_carrier_identity_SecretKit;
 extern PyTypeObject py_Type_carrier_identity_Identity;
-extern PyTypeObject py_Type_carrier_identity_Signature;
 extern PyTypeObject py_Type_carrier_identity_Address;
-extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_carrier_identity_Secret;
 extern PyTypeObject py_Type_carrier_identity_Alias;
-extern PyTypeObject py_Type_carrier_identity_SecretKit;
+extern PyTypeObject py_Type_carrier_identity_Signature;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_carrier_identity_Secret;
+extern PyTypeObject py_Type_carrier_identity_SecretKit;
 
 
 static PyObject* py_carrier_tests_identity_main(PyObject *pyself, PyObject *args) {

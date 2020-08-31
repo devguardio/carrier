@@ -65,25 +65,25 @@ impl SymmetricState {
 }
 }
 extern {
-    #[link_name = "carrier_symmetric_encrypt_and_mix_hash"]
-    pub fn r#encrypt_and_mix_hash( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zplain: *const u8,  Zplain_len: usize,  Znonce: u64,  Zciphertext: *mut u8,  Zcipher_len_max: usize)  -> usize;
+    #[link_name = "sizeof_carrier_symmetric_SymmetricState"]
+    pub fn sizeof_SymmetricState() -> libc::size_t;
+
+    #[link_name = "carrier_symmetric_mix_hash"]
+    pub fn r#mix_hash( Zself: *mut u8,  Zdata: *const u8,  Zl: usize);
 
     #[link_name = "carrier_symmetric_decrypt_and_mix_hash"]
     pub fn r#decrypt_and_mix_hash( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zciphertext: *const u8,  Zcipher_len: usize,  Znonce: u64,  Zplain: *mut u8,  Zplain_len_max: usize)  -> usize;
 
-    #[link_name = "carrier_symmetric_split"]
-    pub fn r#split( Zself: *const u8,  Zini: *mut u8,  Zresp: *mut u8);
-
-    #[link_name = "sizeof_carrier_symmetric_SymmetricState"]
-    pub fn sizeof_SymmetricState() -> libc::size_t;
-
     #[link_name = "carrier_symmetric_init"]
     pub fn r#init( Zself: *mut u8,  Zprotocolname: *const u8);
 
+    #[link_name = "carrier_symmetric_encrypt_and_mix_hash"]
+    pub fn r#encrypt_and_mix_hash( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zplain: *const u8,  Zplain_len: usize,  Znonce: u64,  Zciphertext: *mut u8,  Zcipher_len_max: usize)  -> usize;
+
+    #[link_name = "carrier_symmetric_split"]
+    pub fn r#split( Zself: *const u8,  Zini: *mut u8,  Zresp: *mut u8);
+
     #[link_name = "carrier_symmetric_mix_key"]
     pub fn r#mix_key( Zself: *mut u8,  Zdata: *const u8,  Zl: usize);
-
-    #[link_name = "carrier_symmetric_mix_hash"]
-    pub fn r#mix_hash( Zself: *mut u8,  Zdata: *const u8,  Zl: usize);
 
 }

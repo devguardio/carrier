@@ -1,6 +1,16 @@
 
 <h1> module carrier::initiator </h1>
-<h4> fn swap32 (
+<h4> fn revision (
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
 
     u32
     x,
@@ -13,33 +23,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn swap64 (
+</p><h4> fn to_be32 (
 
-    u64
+    u32
     x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn to_be64 (
-
-    u64
-    x,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn revision (
 
 )
 
@@ -49,14 +36,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_be64 (
+</p><h4> fn from_be32 (
 
-    u64
+    u32
     x,
 
 )
 
--&gt u64
+-&gt u32
 
 </h4>
 
@@ -101,27 +88,40 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
+</p><h4> fn swap64 (
 
-    u32
+    u64
     x,
 
 )
 
--&gt u32
+-&gt u64
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn from_be32 (
+</p><h4> fn to_be64 (
 
-    u32
+    u64
     x,
 
 )
 
--&gt u32
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_be64 (
+
+    u64
+    x,
+
+)
+
+-&gt u64
 
 </h4>
 
@@ -129,26 +129,26 @@
 
 </p><h4> fn complete (
 
-    ::slice::slice::Slice
-    pkt,
-
-    ::carrier::channel::Transfer*
-    chan,
-
-    ::carrier::initiator::Initiator*
-    self,
-
-    usize
-    et,
-
-    ::carrier::vault::Broker*
-    redirect,
-
     ::carrier::identity::Identity*
     expect_identity,
 
     ::err::Err*+et
     e,
+
+    ::carrier::channel::Transfer*
+    chan,
+
+    ::carrier::vault::Broker*
+    redirect,
+
+    ::slice::slice::Slice
+    pkt,
+
+    usize
+    et,
+
+    ::carrier::initiator::Initiator*
+    self,
 
 )
 
@@ -160,20 +160,8 @@
 
 </p><h4> fn initiate (
 
-    ::carrier::initiator::Initiator*
-    self,
-
-    ::slice::mut_slice::MutSlice
-    pkt,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::identity::Address*
-    xaddr,
-
-    bool
-    secure,
+    usize
+    et,
 
     ::carrier::initiator::Move
     move,
@@ -181,11 +169,23 @@
     ::carrier::identity::Identity*
     cluster_target,
 
+    bool
+    secure,
+
+    ::slice::mut_slice::MutSlice
+    pkt,
+
+    ::err::Err*+et
+    e,
+
     ::carrier::vault::Vault*
     vault,
 
-    usize
-    et,
+    ::carrier::identity::Address*
+    xaddr,
+
+    ::carrier::initiator::Initiator*
+    self,
 
     u64
     vector_time,

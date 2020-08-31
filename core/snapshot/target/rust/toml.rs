@@ -11,6 +11,15 @@ pub enum ValueType {
 
 }
 
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct Value {
+    pub t :super::toml::ValueType ,
+    pub string :*const u8 ,
+    pub integer :std::os::raw::c_int ,
+    pub index :usize ,
+}
 #[derive(Clone)]
 #[repr(C)]
 pub enum ParserState {
@@ -26,27 +35,18 @@ pub enum ParserState {
 
 }
 
-pub const MAX_DEPTH : usize = 64;
-
-#[derive(Clone)]
-#[repr(C)]
-pub struct Value {
-    pub t :super::toml::ValueType ,
-    pub string :*const u8 ,
-    pub integer :std::os::raw::c_int ,
-    pub index :usize ,
-}
-#[derive(Clone)]
-#[repr(C)]
-pub struct Iter {
-    pub ctx: *mut std::ffi::c_void,
-    pub f: extern fn ( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value, ctx: *mut std::ffi::c_void),
-}
 #[derive(Clone)]
 #[repr(C)]
 pub struct Pop {
     pub ctx: *mut std::ffi::c_void,
     pub f: extern fn ( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize, ctx: *mut std::ffi::c_void),
+}
+pub const MAX_DEPTH : usize = 64;
+#[derive(Clone)]
+#[repr(C)]
+pub struct Iter {
+    pub ctx: *mut std::ffi::c_void,
+    pub f: extern fn ( Zu: *const u8,  Ze: *mut u8,  Zet: usize,  Zp: *mut u8,  Zpt: usize,  Zk: *const u8,  Zv: super::toml::Value, ctx: *mut std::ffi::c_void),
 }
 
 #[derive(Clone)]
@@ -291,33 +291,33 @@ impl Parser {
 }
 extern {
 
-
-    #[link_name = "toml_close"]
-    pub fn r#close( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize);
-
-
     #[link_name = "sizeof_toml_Value"]
     pub fn sizeof_Value() -> libc::size_t;
+
+
+
 
 
 
     #[link_name = "sizeof_toml_U"]
     pub fn sizeof_U() -> libc::size_t;
 
-    #[link_name = "toml_next"]
-    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
-
-    #[link_name = "toml_parser"]
-    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
-
-
-    #[link_name = "toml_push"]
-    pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
-
     #[link_name = "sizeof_toml_ParserStack"]
     pub fn sizeof_ParserStack() -> libc::size_t;
 
     #[link_name = "sizeof_toml_Parser"]
     pub fn sizeof_Parser(tail: libc::size_t) -> libc::size_t;
+
+    #[link_name = "toml_parser"]
+    pub fn r#parser( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
+
+    #[link_name = "toml_close"]
+    pub fn r#close( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize);
+
+    #[link_name = "toml_push"]
+    pub fn r#push( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zstr: *const u8,  Zstrlen: usize);
+
+    #[link_name = "toml_next"]
+    pub fn r#next( Zself: *mut u8,  Ztail: usize,  Ze: *mut u8,  Zet: usize,  Zu: super::toml::U);
 
 }

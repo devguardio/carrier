@@ -1,40 +1,6 @@
 
 <h1> module carrier::cipher </h1>
-<h4> fn decrypt (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    u8*
-    ciphertext,
-
-    usize
-    cipherlen,
-
-    u64
-    nonce,
-
-    usize
-    plainlen_max,
-
-    usize
-    et,
-
-    u8*
-    plain,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn swap32 (
+<h4> fn swap32 (
 
     u32
     x,
@@ -73,85 +39,8 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decrypt_ad (
-
-    u8*
-    authtext,
-
-    usize
-    authtext_len,
-
-    u8*
-    plain,
-
-    u64
-    nonce,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    plainlen_max,
-
-    usize
-    cipherlen,
-
-    u8*
-    ciphertext,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn encrypt (
-
-    u8*
-    ciphertext,
-
-    usize
-    et,
-
-    ::carrier::cipher::CipherState*
-    self,
-
-    u64
-    nonce,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    plainlen,
-
-    u8*
-    plain,
-
-    usize
-    cipherlen_max,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn encrypt_ad (
 
-    u8*
-    authtext,
-
     usize
     plainlen,
 
@@ -159,13 +48,16 @@
     et,
 
     usize
-    authtext_len,
+    cipherlen_max,
 
-    ::err::Err*+et
-    e,
+    u64
+    nonce,
 
     u8*
-    plain,
+    authtext,
+
+    usize
+    authtext_len,
 
     u8*
     ciphertext,
@@ -173,11 +65,11 @@
     ::carrier::cipher::CipherState*
     self,
 
-    usize
-    cipherlen_max,
+    ::err::Err*+et
+    e,
 
-    u64
-    nonce,
+    u8*
+    plain,
 
 )
 
@@ -189,15 +81,123 @@
 
 </p><h4> fn init (
 
-    u8*
-    k,
-
     ::carrier::cipher::CipherState*
     self,
+
+    u8*
+    k,
 
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt (
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    u8*
+    plain,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    usize
+    cipherlen_max,
+
+    usize
+    plainlen,
+
+    u64
+    nonce,
+
+    u8*
+    ciphertext,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt_ad (
+
+    u8*
+    authtext,
+
+    usize
+    plainlen_max,
+
+    u64
+    nonce,
+
+    usize
+    cipherlen,
+
+    usize
+    et,
+
+    usize
+    authtext_len,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    u8*
+    plain,
+
+    ::err::Err*+et
+    e,
+
+    u8*
+    ciphertext,
+
+)
+
+-&gt usize
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt (
+
+    u8*
+    plain,
+
+    usize
+    cipherlen,
+
+    usize
+    plainlen_max,
+
+    ::carrier::cipher::CipherState*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    u8*
+    ciphertext,
+
+    u64
+    nonce,
+
+)
+
+-&gt usize
 
 </h4>
 

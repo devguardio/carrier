@@ -1,22 +1,72 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
+#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
+#define ZZ_FORWARD_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_integrity
+#define ZZ_FORWARD_slice_mut_slice_integrity
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_space
+#define ZZ_FORWARD_slice_mut_slice_space
+#endif
+#ifndef ZZ_FORWARD_err_Err
+#define ZZ_FORWARD_err_Err
+struct err_Err_t;
+typedef struct err_Err_t err_Err;
+#endif
 #ifndef ZZ_FORWARD__stddef_h_
 #define ZZ_FORWARD__stddef_h_
 #endif
-#ifndef ZZ_FORWARD_buffer_strlen
-#define ZZ_FORWARD_buffer_strlen
+#ifndef ZZ_FORWARD_err_checked
+#define ZZ_FORWARD_err_checked
 #endif
-#ifndef ZZ_FORWARD_madpack_Encoder
-#define ZZ_FORWARD_madpack_Encoder
-struct madpack_Encoder_t;
-typedef struct madpack_Encoder_t madpack_Encoder;
+#ifndef ZZ_FORWARD_err_fail_with_system_error
+#define ZZ_FORWARD_err_fail_with_system_error
 #endif
-#ifndef ZZ_FORWARD_madpack_integrity
-#define ZZ_FORWARD_madpack_integrity
+#ifndef ZZ_FORWARD__stdio_h_
+#define ZZ_FORWARD__stdio_h_
 #endif
-#ifndef ZZ_FORWARD_madpack_kv_cstr
-#define ZZ_FORWARD_madpack_kv_cstr
+#ifndef ZZ_FORWARD_buffer_Buffer
+#define ZZ_FORWARD_buffer_Buffer
+struct buffer_Buffer_t;
+typedef struct buffer_Buffer_t buffer_Buffer;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_100
+#define ZZ_FORWARD_buffer_Buffer_100
+struct buffer_Buffer_100_t;
+typedef struct buffer_Buffer_100_t buffer_Buffer_100;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_1000
+#define ZZ_FORWARD_buffer_Buffer_1000
+struct buffer_Buffer_1000_t;
+typedef struct buffer_Buffer_1000_t buffer_Buffer_1000;
+#endif
+#ifndef ZZ_FORWARD_buffer_integrity
+#define ZZ_FORWARD_buffer_integrity
+#endif
+#ifndef ZZ_FORWARD_buffer_pop
+#define ZZ_FORWARD_buffer_pop
+#endif
+#ifndef ZZ_FORWARD_madpack_Index
+#define ZZ_FORWARD_madpack_Index
+struct madpack_Index_t;
+typedef struct madpack_Index_t madpack_Index;
+#endif
+#ifndef ZZ_FORWARD_madpack_Index_10
+#define ZZ_FORWARD_madpack_Index_10
+struct madpack_Index_10_t;
+typedef struct madpack_Index_10_t madpack_Index_10;
+#endif
+#ifndef ZZ_FORWARD_madpack_empty_index
+#define ZZ_FORWARD_madpack_empty_index
+#endif
+#ifndef ZZ_FORWARD_madpack_Decoder
+#define ZZ_FORWARD_madpack_Decoder
+struct madpack_Decoder_t;
+typedef struct madpack_Decoder_t madpack_Decoder;
 #endif
 #ifndef ZZ_FORWARD_slice_slice_Slice
 #define ZZ_FORWARD_slice_slice_Slice
@@ -26,16 +76,81 @@ typedef struct slice_slice_Slice_t slice_slice_Slice;
 #ifndef ZZ_FORWARD_slice_slice_integrity
 #define ZZ_FORWARD_slice_slice_integrity
 #endif
-#ifndef ZZ_FORWARD_slice_slice_atoi
-#define ZZ_FORWARD_slice_slice_atoi
+#ifndef ZZ_FORWARD_madpack_decode
+#define ZZ_FORWARD_madpack_decode
 #endif
 #ifndef ZZ_FORWARD_madpack_Item
 #define ZZ_FORWARD_madpack_Item
+#endif
+#ifndef ZZ_FORWARD_slice_slice_empty
+#define ZZ_FORWARD_slice_slice_empty
+#endif
+#ifndef ZZ_FORWARD_madpack_from_preshared_index
+#define ZZ_FORWARD_madpack_from_preshared_index
+#endif
+#ifndef ZZ_FORWARD_err_fail_with_errno
+#define ZZ_FORWARD_err_fail_with_errno
+#endif
+#ifndef ZZ_FORWARD__stddef_h_
+#define ZZ_FORWARD__stddef_h_
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer
+#define ZZ_FORWARD_buffer_Buffer
+struct buffer_Buffer_t;
+typedef struct buffer_Buffer_t buffer_Buffer;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_100
+#define ZZ_FORWARD_buffer_Buffer_100
+struct buffer_Buffer_100_t;
+typedef struct buffer_Buffer_100_t buffer_Buffer_100;
+#endif
+#ifndef ZZ_FORWARD_buffer_Buffer_1000
+#define ZZ_FORWARD_buffer_Buffer_1000
+struct buffer_Buffer_1000_t;
+typedef struct buffer_Buffer_1000_t buffer_Buffer_1000;
 #endif
 #ifndef ZZ_FORWARD_err_Err
 #define ZZ_FORWARD_err_Err
 struct err_Err_t;
 typedef struct err_Err_t err_Err;
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_bytes
+#define ZZ_FORWARD_buffer_copy_bytes
+#endif
+#ifndef ZZ_FORWARD_madpack_Value
+#define ZZ_FORWARD_madpack_Value
+union madpack_Value_t;
+typedef union madpack_Value_t madpack_Value;
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq_cstr
+#define ZZ_FORWARD_slice_slice_eq_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_substr
+#define ZZ_FORWARD_buffer_substr
+#endif
+#ifndef ZZ_FORWARD_buffer_slen
+#define ZZ_FORWARD_buffer_slen
+#endif
+#ifndef ZZ_FORWARD___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
+#define ZZ_FORWARD___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
+#endif
+#ifndef ZZ_FORWARD_byteorder_swap16
+#define ZZ_FORWARD_byteorder_swap16
+#endif
+#ifndef ZZ_FORWARD_byteorder_to_le16
+#define ZZ_FORWARD_byteorder_to_le16
+#endif
+#ifndef ZZ_FORWARD_byteorder_from_le16
+#define ZZ_FORWARD_byteorder_from_le16
+#endif
+#ifndef ZZ_FORWARD_buffer_append_bytes
+#define ZZ_FORWARD_buffer_append_bytes
+#endif
+#ifndef ZZ_FORWARD_buffer_strlen
+#define ZZ_FORWARD_buffer_strlen
+#endif
+#ifndef ZZ_FORWARD_buffer_starts_with_cstr
+#define ZZ_FORWARD_buffer_starts_with_cstr
 #endif
 #ifndef ZZ_FORWARD_json_Parser
 #define ZZ_FORWARD_json_Parser
@@ -61,234 +176,11 @@ typedef struct json_Value_t json_Value;
 struct json_U_t;
 typedef struct json_U_t json_U;
 #endif
-#ifndef ZZ_FORWARD_buffer_Buffer
-#define ZZ_FORWARD_buffer_Buffer
-struct buffer_Buffer_t;
-typedef struct buffer_Buffer_t buffer_Buffer;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_1000
-#define ZZ_FORWARD_buffer_Buffer_1000
-struct buffer_Buffer_1000_t;
-typedef struct buffer_Buffer_1000_t buffer_Buffer_1000;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_100
-#define ZZ_FORWARD_buffer_Buffer_100
-struct buffer_Buffer_100_t;
-typedef struct buffer_Buffer_100_t buffer_Buffer_100;
-#endif
-#ifndef ZZ_FORWARD_buffer_integrity
-#define ZZ_FORWARD_buffer_integrity
-#endif
-#ifndef ZZ_FORWARD_buffer_substr
-#define ZZ_FORWARD_buffer_substr
-#endif
-#ifndef ZZ_FORWARD_slice_slice_make
-#define ZZ_FORWARD_slice_slice_make
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
-#define ZZ_FORWARD_slice_mut_slice_MutSlice
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_integrity
-#define ZZ_FORWARD_slice_mut_slice_integrity
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_cstr
-#define ZZ_FORWARD_slice_mut_slice_append_cstr
-#endif
-#ifndef ZZ_FORWARD_buffer_append_bytes
-#define ZZ_FORWARD_buffer_append_bytes
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_bytes
-#define ZZ_FORWARD_slice_mut_slice_append_bytes
-#endif
-#ifndef ZZ_FORWARD_madpack_v_map
-#define ZZ_FORWARD_madpack_v_map
-#endif
-#ifndef ZZ_FORWARD_err_checked
-#define ZZ_FORWARD_err_checked
-#endif
-#ifndef ZZ_FORWARD_err_fail
-#define ZZ_FORWARD_err_fail
-#endif
-#ifndef ZZ_FORWARD_madpack_macrohelper_preshare
-#define ZZ_FORWARD_madpack_macrohelper_preshare
-#endif
-#ifndef ZZ_FORWARD_madpack_Tuning
-#define ZZ_FORWARD_madpack_Tuning
-struct madpack_Tuning_t;
-typedef struct madpack_Tuning_t madpack_Tuning;
-#endif
-#ifndef ZZ_FORWARD_slice_slice_Slice
-#define ZZ_FORWARD_slice_slice_Slice
-struct slice_slice_Slice_t;
-typedef struct slice_slice_Slice_t slice_slice_Slice;
-#endif
-#ifndef ZZ_FORWARD_madpack_Index
-#define ZZ_FORWARD_madpack_Index
-struct madpack_Index_t;
-typedef struct madpack_Index_t madpack_Index;
-#endif
-#ifndef ZZ_FORWARD_madpack_Index_10
-#define ZZ_FORWARD_madpack_Index_10
-struct madpack_Index_10_t;
-typedef struct madpack_Index_10_t madpack_Index_10;
-#endif
-#ifndef ZZ_FORWARD_madpack_to_preshared_index
-#define ZZ_FORWARD_madpack_to_preshared_index
-#endif
-#ifndef ZZ_FORWARD_madpack_v_null
-#define ZZ_FORWARD_madpack_v_null
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_slice
-#define ZZ_FORWARD_slice_mut_slice_append_slice
-#endif
-#ifndef ZZ_FORWARD_log_warn
-#define ZZ_FORWARD_log_warn
-#endif
-#ifndef ZZ_FORWARD_json_push
-#define ZZ_FORWARD_json_push
-#endif
-#ifndef ZZ_FORWARD_slice_slice_eq_bytes
-#define ZZ_FORWARD_slice_slice_eq_bytes
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push64
-#define ZZ_FORWARD_slice_mut_slice_push64
-#endif
-#ifndef ZZ_FORWARD_madpack_Decoder
-#define ZZ_FORWARD_madpack_Decoder
-struct madpack_Decoder_t;
-typedef struct madpack_Decoder_t madpack_Decoder;
-#endif
-#ifndef ZZ_FORWARD_madpack_skip
-#define ZZ_FORWARD_madpack_skip
-#endif
-#ifndef ZZ_FORWARD_mem_copy
-#define ZZ_FORWARD_mem_copy
-#endif
-#ifndef ZZ_FORWARD___home_aep_proj_zz_modules_byteorder_src_lib_h_
-#define ZZ_FORWARD___home_aep_proj_zz_modules_byteorder_src_lib_h_
-#endif
-#ifndef ZZ_FORWARD_byteorder_swap16
-#define ZZ_FORWARD_byteorder_swap16
-#endif
-#ifndef ZZ_FORWARD_byteorder_to_le16
-#define ZZ_FORWARD_byteorder_to_le16
-#endif
-#ifndef ZZ_FORWARD_byteorder_from_le16
-#define ZZ_FORWARD_byteorder_from_le16
-#endif
-#ifndef ZZ_FORWARD_byteorder_swap32
-#define ZZ_FORWARD_byteorder_swap32
-#endif
-#ifndef ZZ_FORWARD_byteorder_to_le32
-#define ZZ_FORWARD_byteorder_to_le32
-#endif
-#ifndef ZZ_FORWARD_byteorder_from_le32
-#define ZZ_FORWARD_byteorder_from_le32
-#endif
-#ifndef ZZ_FORWARD_slice_slice_empty
-#define ZZ_FORWARD_slice_slice_empty
-#endif
-#ifndef ZZ_FORWARD_madpack_next_kv
-#define ZZ_FORWARD_madpack_next_kv
-#endif
-#ifndef ZZ_FORWARD_buffer_make
-#define ZZ_FORWARD_buffer_make
-#endif
-#ifndef ZZ_FORWARD__stdarg_h_
-#define ZZ_FORWARD__stdarg_h_
-#endif
-#ifndef ZZ_FORWARD_madpack_gindex
-#define ZZ_FORWARD_madpack_gindex
-#endif
-#ifndef ZZ_FORWARD_madpack_key
-#define ZZ_FORWARD_madpack_key
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_space
-#define ZZ_FORWARD_slice_mut_slice_space
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push16
-#define ZZ_FORWARD_slice_mut_slice_push16
-#endif
-#ifndef ZZ_FORWARD__stdio_h_
-#define ZZ_FORWARD__stdio_h_
-#endif
-#ifndef ZZ_FORWARD_buffer_fgets
-#define ZZ_FORWARD_buffer_fgets
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
-#define ZZ_FORWARD_slice_mut_slice_MutSlice
-struct slice_mut_slice_MutSlice_t;
-typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
-#endif
-#ifndef ZZ_FORWARD__stddef_h_
-#define ZZ_FORWARD__stddef_h_
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer
-#define ZZ_FORWARD_buffer_Buffer
-struct buffer_Buffer_t;
-typedef struct buffer_Buffer_t buffer_Buffer;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_1000
-#define ZZ_FORWARD_buffer_Buffer_1000
-struct buffer_Buffer_1000_t;
-typedef struct buffer_Buffer_1000_t buffer_Buffer_1000;
-#endif
-#ifndef ZZ_FORWARD_buffer_Buffer_100
-#define ZZ_FORWARD_buffer_Buffer_100
-struct buffer_Buffer_100_t;
-typedef struct buffer_Buffer_100_t buffer_Buffer_100;
-#endif
-#ifndef ZZ_FORWARD_madpack_Index
-#define ZZ_FORWARD_madpack_Index
-struct madpack_Index_t;
-typedef struct madpack_Index_t madpack_Index;
-#endif
-#ifndef ZZ_FORWARD_madpack_Index_10
-#define ZZ_FORWARD_madpack_Index_10
-struct madpack_Index_10_t;
-typedef struct madpack_Index_10_t madpack_Index_10;
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_make
-#define ZZ_FORWARD_slice_mut_slice_make
-#endif
-#ifndef ZZ_FORWARD_buffer_available
-#define ZZ_FORWARD_buffer_available
-#endif
-#ifndef ZZ_FORWARD_buffer_copy_cstr
-#define ZZ_FORWARD_buffer_copy_cstr
-#endif
-#ifndef ZZ_FORWARD_madpack_kv_byteslice
-#define ZZ_FORWARD_madpack_kv_byteslice
-#endif
-#ifndef ZZ_FORWARD_buffer_clear
-#define ZZ_FORWARD_buffer_clear
-#endif
-#ifndef ZZ_FORWARD_buffer_cstr
-#define ZZ_FORWARD_buffer_cstr
-#endif
-#ifndef ZZ_FORWARD_buffer_as_mut_slice
-#define ZZ_FORWARD_buffer_as_mut_slice
-#endif
-#ifndef ZZ_FORWARD_slice_slice_eq_cstr
-#define ZZ_FORWARD_slice_slice_eq_cstr
-#endif
-#ifndef ZZ_FORWARD_madpack_Value
-#define ZZ_FORWARD_madpack_Value
-union madpack_Value_t;
-typedef union madpack_Value_t madpack_Value;
-#endif
-#ifndef ZZ_FORWARD_madpack_Decoder
-#define ZZ_FORWARD_madpack_Decoder
-struct madpack_Decoder_t;
-typedef struct madpack_Decoder_t madpack_Decoder;
-#endif
-#ifndef ZZ_FORWARD_buffer_copy_bytes
-#define ZZ_FORWARD_buffer_copy_bytes
-#endif
-#ifndef ZZ_FORWARD_madpack_v_cstr
-#define ZZ_FORWARD_madpack_v_cstr
+#ifndef ZZ_FORWARD_json_parser
+#define ZZ_FORWARD_json_parser
+#endif
+#ifndef ZZ_FORWARD_buffer_format
+#define ZZ_FORWARD_buffer_format
 #endif
 #ifndef ZZ_FORWARD_mem_zero
 #define ZZ_FORWARD_mem_zero
@@ -296,14 +188,139 @@ typedef struct madpack_Decoder_t madpack_Decoder;
 #ifndef ZZ_FORWARD_madpack_empty_index
 #define ZZ_FORWARD_madpack_empty_index
 #endif
-#ifndef ZZ_FORWARD_madpack_as_slice
-#define ZZ_FORWARD_madpack_as_slice
+#ifndef ZZ_FORWARD_madpack_Encoder
+#define ZZ_FORWARD_madpack_Encoder
+struct madpack_Encoder_t;
+typedef struct madpack_Encoder_t madpack_Encoder;
+#endif
+#ifndef ZZ_FORWARD_madpack_integrity
+#define ZZ_FORWARD_madpack_integrity
+#endif
+#ifndef ZZ_FORWARD_madpack_v_cstr
+#define ZZ_FORWARD_madpack_v_cstr
+#endif
+#ifndef ZZ_FORWARD_madpack_v_null
+#define ZZ_FORWARD_madpack_v_null
+#endif
+#ifndef ZZ_FORWARD_err_ignore
+#define ZZ_FORWARD_err_ignore
+#endif
+#ifndef ZZ_FORWARD_buffer_push
+#define ZZ_FORWARD_buffer_push
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_MutSlice
+#define ZZ_FORWARD_slice_mut_slice_MutSlice
+struct slice_mut_slice_MutSlice_t;
+typedef struct slice_mut_slice_MutSlice_t slice_mut_slice_MutSlice;
+#endif
+#ifndef ZZ_FORWARD_madpack_Tuning
+#define ZZ_FORWARD_madpack_Tuning
+struct madpack_Tuning_t;
+typedef struct madpack_Tuning_t madpack_Tuning;
+#endif
+#ifndef ZZ_FORWARD_madpack_Encoder
+#define ZZ_FORWARD_madpack_Encoder
+struct madpack_Encoder_t;
+typedef struct madpack_Encoder_t madpack_Encoder;
+#endif
+#ifndef ZZ_FORWARD_madpack_encode
+#define ZZ_FORWARD_madpack_encode
+#endif
+#ifndef ZZ_FORWARD_madpack_gindex
+#define ZZ_FORWARD_madpack_gindex
+#endif
+#ifndef ZZ_FORWARD_madpack_key
+#define ZZ_FORWARD_madpack_key
+#endif
+#ifndef ZZ_FORWARD_madpack_kv_map
+#define ZZ_FORWARD_madpack_kv_map
+#endif
+#ifndef ZZ_FORWARD_madpack_v_bool
+#define ZZ_FORWARD_madpack_v_bool
+#endif
+#ifndef ZZ_FORWARD_slice_slice_atoi
+#define ZZ_FORWARD_slice_slice_atoi
+#endif
+#ifndef ZZ_FORWARD_json_ParserState
+#define ZZ_FORWARD_json_ParserState
+#endif
+#ifndef ZZ_FORWARD_buffer_cstr
+#define ZZ_FORWARD_buffer_cstr
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq
+#define ZZ_FORWARD_slice_slice_eq
+#endif
+#ifndef ZZ_FORWARD_madpack_Index
+#define ZZ_FORWARD_madpack_Index
+struct madpack_Index_t;
+typedef struct madpack_Index_t madpack_Index;
+#endif
+#ifndef ZZ_FORWARD_madpack_Index_10
+#define ZZ_FORWARD_madpack_Index_10
+struct madpack_Index_10_t;
+typedef struct madpack_Index_10_t madpack_Index_10;
+#endif
+#ifndef ZZ_FORWARD_madpack_kv_array
+#define ZZ_FORWARD_madpack_kv_array
+#endif
+#ifndef ZZ_FORWARD_madpack_kv_bool
+#define ZZ_FORWARD_madpack_kv_bool
+#endif
+#ifndef ZZ_FORWARD_madpack_skip
+#define ZZ_FORWARD_madpack_skip
+#endif
+#ifndef ZZ_FORWARD_buffer_split
+#define ZZ_FORWARD_buffer_split
+#endif
+#ifndef ZZ_FORWARD_madpack_macrohelper_preshare
+#define ZZ_FORWARD_madpack_macrohelper_preshare
+#endif
+#ifndef ZZ_FORWARD_madpack_preshare
+#define ZZ_FORWARD_madpack_preshare
+#endif
+#ifndef ZZ_FORWARD_buffer_fgets
+#define ZZ_FORWARD_buffer_fgets
+#endif
+#ifndef ZZ_FORWARD_madpack_Decoder
+#define ZZ_FORWARD_madpack_Decoder
+struct madpack_Decoder_t;
+typedef struct madpack_Decoder_t madpack_Decoder;
+#endif
+#ifndef ZZ_FORWARD_err_elog
+#define ZZ_FORWARD_err_elog
+#endif
+#ifndef ZZ_FORWARD_mem_copy
+#define ZZ_FORWARD_mem_copy
+#endif
+#ifndef ZZ_FORWARD_err_to_str
+#define ZZ_FORWARD_err_to_str
+#endif
+#ifndef ZZ_FORWARD_madpack_kv_null
+#define ZZ_FORWARD_madpack_kv_null
+#endif
+#ifndef ZZ_FORWARD_err_check
+#define ZZ_FORWARD_err_check
+#endif
+#ifndef ZZ_FORWARD_buffer_eq_cstr
+#define ZZ_FORWARD_buffer_eq_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_cstr
+#define ZZ_FORWARD_buffer_copy_cstr
 #endif
 #ifndef ZZ_FORWARD_err_abort
 #define ZZ_FORWARD_err_abort
 #endif
-#ifndef ZZ_FORWARD_madpack_kv_strslice
-#define ZZ_FORWARD_madpack_kv_strslice
+#ifndef ZZ_FORWARD_slice_mut_slice_append_cstr
+#define ZZ_FORWARD_slice_mut_slice_append_cstr
+#endif
+#ifndef ZZ_FORWARD_err_eprintf
+#define ZZ_FORWARD_err_eprintf
+#endif
+#ifndef ZZ_FORWARD_buffer_as_mut_slice
+#define ZZ_FORWARD_buffer_as_mut_slice
+#endif
+#ifndef ZZ_FORWARD_byteorder_swap32
+#define ZZ_FORWARD_byteorder_swap32
 #endif
 #ifndef ZZ_FORWARD_byteorder_swap64
 #define ZZ_FORWARD_byteorder_swap64
@@ -314,148 +331,162 @@ typedef struct madpack_Decoder_t madpack_Decoder;
 #ifndef ZZ_FORWARD_byteorder_from_le64
 #define ZZ_FORWARD_byteorder_from_le64
 #endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_obj
+#define ZZ_FORWARD_slice_mut_slice_append_obj
+#endif
+#ifndef ZZ_FORWARD_buffer_append_slice
+#define ZZ_FORWARD_buffer_append_slice
+#endif
+#ifndef ZZ_FORWARD_byteorder_to_le32
+#define ZZ_FORWARD_byteorder_to_le32
+#endif
+#ifndef ZZ_FORWARD_byteorder_from_le32
+#define ZZ_FORWARD_byteorder_from_le32
+#endif
+#ifndef ZZ_FORWARD_log_warn
+#define ZZ_FORWARD_log_warn
+#endif
+#ifndef ZZ_FORWARD_madpack_next_v
+#define ZZ_FORWARD_madpack_next_v
+#endif
+#ifndef ZZ_FORWARD_madpack_as_slice
+#define ZZ_FORWARD_madpack_as_slice
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_as_slice
+#define ZZ_FORWARD_slice_mut_slice_as_slice
+#endif
+#ifndef ZZ_FORWARD_err_make
+#define ZZ_FORWARD_err_make
+#endif
+#ifndef ZZ_FORWARD_json_MAX_DEPTH
+#define ZZ_FORWARD_json_MAX_DEPTH
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push32
+#define ZZ_FORWARD_slice_mut_slice_push32
+#endif
 #ifndef ZZ_FORWARD_madpack_integrity
 #define ZZ_FORWARD_madpack_integrity
-#endif
-#ifndef ZZ_FORWARD_buffer_push
-#define ZZ_FORWARD_buffer_push
 #endif
 #ifndef ZZ_FORWARD_madpack_v_uint
 #define ZZ_FORWARD_madpack_v_uint
 #endif
-#ifndef ZZ_FORWARD_json_ParserState
-#define ZZ_FORWARD_json_ParserState
+#ifndef ZZ_FORWARD_madpack_kv_byteslice
+#define ZZ_FORWARD_madpack_kv_byteslice
+#endif
+#ifndef ZZ_FORWARD_json_push
+#define ZZ_FORWARD_json_push
+#endif
+#ifndef ZZ_FORWARD_madpack_end
+#define ZZ_FORWARD_madpack_end
+#endif
+#ifndef ZZ_FORWARD_madpack_next_kv
+#define ZZ_FORWARD_madpack_next_kv
+#endif
+#ifndef ZZ_FORWARD_madpack_to_preshared_index
+#define ZZ_FORWARD_madpack_to_preshared_index
+#endif
+#ifndef ZZ_FORWARD_buffer_clear
+#define ZZ_FORWARD_buffer_clear
+#endif
+#ifndef ZZ_FORWARD_buffer_append_cstr
+#define ZZ_FORWARD_buffer_append_cstr
+#endif
+#ifndef ZZ_FORWARD_buffer_available
+#define ZZ_FORWARD_buffer_available
 #endif
 #ifndef ZZ_FORWARD_json_ParserStack
 #define ZZ_FORWARD_json_ParserStack
 struct json_ParserStack_t;
 typedef struct json_ParserStack_t json_ParserStack;
 #endif
-#ifndef ZZ_FORWARD_json_MAX_DEPTH
-#define ZZ_FORWARD_json_MAX_DEPTH
+#ifndef ZZ_FORWARD_slice_mut_slice_push
+#define ZZ_FORWARD_slice_mut_slice_push
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_slice
+#define ZZ_FORWARD_slice_mut_slice_append_slice
+#endif
+#ifndef ZZ_FORWARD_err_backtrace
+#define ZZ_FORWARD_err_backtrace
+#endif
+#ifndef ZZ_FORWARD_madpack_v_array
+#define ZZ_FORWARD_madpack_v_array
+#endif
+#ifndef ZZ_FORWARD_err_fail_with_win32
+#define ZZ_FORWARD_err_fail_with_win32
+#endif
+#ifndef ZZ_FORWARD_buffer_as_slice
+#define ZZ_FORWARD_buffer_as_slice
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_append_bytes
+#define ZZ_FORWARD_slice_mut_slice_append_bytes
+#endif
+#ifndef ZZ_FORWARD_madpack_kv_cstr
+#define ZZ_FORWARD_madpack_kv_cstr
+#endif
+#ifndef ZZ_FORWARD_madpack_gindex
+#define ZZ_FORWARD_madpack_gindex
+#endif
+#ifndef ZZ_FORWARD_buffer_copy_slice
+#define ZZ_FORWARD_buffer_copy_slice
+#endif
+#ifndef ZZ_FORWARD_slice_slice_sub
+#define ZZ_FORWARD_slice_slice_sub
+#endif
+#ifndef ZZ_FORWARD_err_fail
+#define ZZ_FORWARD_err_fail
+#endif
+#ifndef ZZ_FORWARD__stdarg_h_
+#define ZZ_FORWARD__stdarg_h_
+#endif
+#ifndef ZZ_FORWARD_madpack_v_strslice
+#define ZZ_FORWARD_madpack_v_strslice
+#endif
+#ifndef ZZ_FORWARD_buffer_make
+#define ZZ_FORWARD_buffer_make
+#endif
+#ifndef ZZ_FORWARD_madpack_lookup
+#define ZZ_FORWARD_madpack_lookup
+#endif
+#ifndef ZZ_FORWARD_json_advance
+#define ZZ_FORWARD_json_advance
+#endif
+#ifndef ZZ_FORWARD_slice_slice_make
+#define ZZ_FORWARD_slice_slice_make
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push16
+#define ZZ_FORWARD_slice_mut_slice_push16
+#endif
+#ifndef ZZ_FORWARD_madpack_decode
+#define ZZ_FORWARD_madpack_decode
+#endif
+#ifndef ZZ_FORWARD_madpack_kv_strslice
+#define ZZ_FORWARD_madpack_kv_strslice
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_make
+#define ZZ_FORWARD_slice_mut_slice_make
+#endif
+#ifndef ZZ_FORWARD_buffer_ends_with_cstr
+#define ZZ_FORWARD_buffer_ends_with_cstr
+#endif
+#ifndef ZZ_FORWARD_madpack_v_map
+#define ZZ_FORWARD_madpack_v_map
+#endif
+#ifndef ZZ_FORWARD_slice_slice_split
+#define ZZ_FORWARD_slice_slice_split
+#endif
+#ifndef ZZ_FORWARD_slice_slice_eq_bytes
+#define ZZ_FORWARD_slice_slice_eq_bytes
+#endif
+#ifndef ZZ_FORWARD_slice_mut_slice_push64
+#define ZZ_FORWARD_slice_mut_slice_push64
+#endif
+#ifndef ZZ_FORWARD_json_next
+#define ZZ_FORWARD_json_next
 #endif
 #ifndef ZZ_FORWARD_json_Parser
 #define ZZ_FORWARD_json_Parser
 struct json_Parser_t;
 typedef struct json_Parser_t json_Parser;
-#endif
-#ifndef ZZ_FORWARD_err_to_str
-#define ZZ_FORWARD_err_to_str
-#endif
-#ifndef ZZ_FORWARD_madpack_preshare
-#define ZZ_FORWARD_madpack_preshare
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_append_obj
-#define ZZ_FORWARD_slice_mut_slice_append_obj
-#endif
-#ifndef ZZ_FORWARD_err_make
-#define ZZ_FORWARD_err_make
-#endif
-#ifndef ZZ_FORWARD_madpack_Encoder
-#define ZZ_FORWARD_madpack_Encoder
-struct madpack_Encoder_t;
-typedef struct madpack_Encoder_t madpack_Encoder;
-#endif
-#ifndef ZZ_FORWARD_buffer_append_slice
-#define ZZ_FORWARD_buffer_append_slice
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push32
-#define ZZ_FORWARD_slice_mut_slice_push32
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_as_slice
-#define ZZ_FORWARD_slice_mut_slice_as_slice
-#endif
-#ifndef ZZ_FORWARD_buffer_eq_cstr
-#define ZZ_FORWARD_buffer_eq_cstr
-#endif
-#ifndef ZZ_FORWARD_buffer_ends_with_cstr
-#define ZZ_FORWARD_buffer_ends_with_cstr
-#endif
-#ifndef ZZ_FORWARD_madpack_kv_bool
-#define ZZ_FORWARD_madpack_kv_bool
-#endif
-#ifndef ZZ_FORWARD_err_ignore
-#define ZZ_FORWARD_err_ignore
-#endif
-#ifndef ZZ_FORWARD_buffer_split
-#define ZZ_FORWARD_buffer_split
-#endif
-#ifndef ZZ_FORWARD_err_elog
-#define ZZ_FORWARD_err_elog
-#endif
-#ifndef ZZ_FORWARD_madpack_v_strslice
-#define ZZ_FORWARD_madpack_v_strslice
-#endif
-#ifndef ZZ_FORWARD_err_Err
-#define ZZ_FORWARD_err_Err
-struct err_Err_t;
-typedef struct err_Err_t err_Err;
-#endif
-#ifndef ZZ_FORWARD_buffer_starts_with_cstr
-#define ZZ_FORWARD_buffer_starts_with_cstr
-#endif
-#ifndef ZZ_FORWARD_err_backtrace
-#define ZZ_FORWARD_err_backtrace
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_win32
-#define ZZ_FORWARD_err_fail_with_win32
-#endif
-#ifndef ZZ_FORWARD_buffer_pop
-#define ZZ_FORWARD_buffer_pop
-#endif
-#ifndef ZZ_FORWARD_slice_slice_sub
-#define ZZ_FORWARD_slice_slice_sub
-#endif
-#ifndef ZZ_FORWARD_json_advance
-#define ZZ_FORWARD_json_advance
-#endif
-#ifndef ZZ_FORWARD_err_eprintf
-#define ZZ_FORWARD_err_eprintf
-#endif
-#ifndef ZZ_FORWARD_madpack_encode
-#define ZZ_FORWARD_madpack_encode
-#endif
-#ifndef ZZ_FORWARD_madpack_kv_null
-#define ZZ_FORWARD_madpack_kv_null
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_system_error
-#define ZZ_FORWARD_err_fail_with_system_error
-#endif
-#ifndef ZZ_FORWARD_madpack_end
-#define ZZ_FORWARD_madpack_end
-#endif
-#ifndef ZZ_FORWARD_err_check
-#define ZZ_FORWARD_err_check
-#endif
-#ifndef ZZ_FORWARD_madpack_next_v
-#define ZZ_FORWARD_madpack_next_v
-#endif
-#ifndef ZZ_FORWARD_buffer_as_slice
-#define ZZ_FORWARD_buffer_as_slice
-#endif
-#ifndef ZZ_FORWARD_madpack_gindex
-#define ZZ_FORWARD_madpack_gindex
-#endif
-#ifndef ZZ_FORWARD_madpack_decode
-#define ZZ_FORWARD_madpack_decode
-#endif
-#ifndef ZZ_FORWARD_madpack_from_preshared_index
-#define ZZ_FORWARD_madpack_from_preshared_index
-#endif
-#ifndef ZZ_FORWARD_madpack_lookup
-#define ZZ_FORWARD_madpack_lookup
-#endif
-#ifndef ZZ_FORWARD_err_fail_with_errno
-#define ZZ_FORWARD_err_fail_with_errno
-#endif
-#ifndef ZZ_FORWARD_buffer_format
-#define ZZ_FORWARD_buffer_format
-#endif
-#ifndef ZZ_FORWARD_slice_mut_slice_push
-#define ZZ_FORWARD_slice_mut_slice_push
-#endif
-#ifndef ZZ_FORWARD_madpack_kv_uint
-#define ZZ_FORWARD_madpack_kv_uint
 #endif
 #ifndef ZZ_FORWARD__stdarg_h_
 #define ZZ_FORWARD__stdarg_h_
@@ -463,68 +494,68 @@ typedef struct err_Err_t err_Err;
 #ifndef ZZ_FORWARD_buffer_vformat
 #define ZZ_FORWARD_buffer_vformat
 #endif
-#ifndef ZZ_FORWARD_json_parser
-#define ZZ_FORWARD_json_parser
+#ifndef ZZ_FORWARD_madpack_kv_uint
+#define ZZ_FORWARD_madpack_kv_uint
 #endif
-#ifndef ZZ_FORWARD_buffer_slen
-#define ZZ_FORWARD_buffer_slen
+#ifndef ZZ_EXPORT_slice_mut_slice_integrity
+#define ZZ_EXPORT_slice_mut_slice_integrity
+
 #endif
-#ifndef ZZ_FORWARD_madpack_kv_map
-#define ZZ_FORWARD_madpack_kv_map
-#endif
-#ifndef ZZ_FORWARD_json_next
-#define ZZ_FORWARD_json_next
-#endif
-#ifndef ZZ_FORWARD_slice_slice_split
-#define ZZ_FORWARD_slice_slice_split
-#endif
-#ifndef ZZ_FORWARD_madpack_kv_array
-#define ZZ_FORWARD_madpack_kv_array
-#endif
-#ifndef ZZ_FORWARD_slice_slice_eq
-#define ZZ_FORWARD_slice_slice_eq
-#endif
-#ifndef ZZ_FORWARD_madpack_decode
-#define ZZ_FORWARD_madpack_decode
-#endif
-#ifndef ZZ_FORWARD_madpack_v_array
-#define ZZ_FORWARD_madpack_v_array
-#endif
-#ifndef ZZ_FORWARD_buffer_copy_slice
-#define ZZ_FORWARD_buffer_copy_slice
-#endif
-#ifndef ZZ_FORWARD_buffer_append_cstr
-#define ZZ_FORWARD_buffer_append_cstr
-#endif
-#ifndef ZZ_FORWARD_madpack_v_bool
-#define ZZ_FORWARD_madpack_v_bool
+#ifndef ZZ_EXPORT_slice_mut_slice_space
+#define ZZ_EXPORT_slice_mut_slice_space
+uintptr_t slice_mut_slice_space (slice_mut_slice_MutSlice*  const  self);
+
 #endif
 #ifndef ZZ_EXPORT__stddef_h_
 #define ZZ_EXPORT__stddef_h_
 #include <stddef.h>
 
 #endif
-#ifndef ZZ_EXPORT_buffer_strlen
-#define ZZ_EXPORT_buffer_strlen
-uintptr_t buffer_strlen (char const *  s);
+#ifndef ZZ_EXPORT_err_checked
+#define ZZ_EXPORT_err_checked
 
 #endif
-#ifndef ZZ_EXPORT_madpack_integrity
-#define ZZ_EXPORT_madpack_integrity
+#ifndef ZZ_EXPORT_err_fail_with_system_error
+#define ZZ_EXPORT_err_fail_with_system_error
+void err_fail_with_system_error (err_Err*  const  self, uintptr_t const  tail, int const  merrno, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_kv_cstr
-#define ZZ_EXPORT_madpack_kv_cstr
-bool madpack_kv_cstr (madpack_Encoder*  const  self, char const *  const  key, char const *  const  value);
+#ifndef ZZ_EXPORT__stdio_h_
+#define ZZ_EXPORT__stdio_h_
+#include <stdio.h>
+
+#endif
+#ifndef ZZ_EXPORT_buffer_integrity
+#define ZZ_EXPORT_buffer_integrity
+
+#endif
+#ifndef ZZ_EXPORT_buffer_pop
+#define ZZ_EXPORT_buffer_pop
+bool buffer_pop (buffer_Buffer*  const  self, uintptr_t const  t);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_empty_index
+#define ZZ_EXPORT_madpack_empty_index
+void madpack_empty_index (madpack_Index*  const  self, uintptr_t const  t);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_Slice
+#define ZZ_EXPORT_slice_slice_Slice
+struct slice_slice_Slice_t {
+   uint8_t const *  mem ;
+   uintptr_t size ;
+}
+;
+size_t sizeof_slice_slice_Slice();
 
 #endif
 #ifndef ZZ_EXPORT_slice_slice_integrity
 #define ZZ_EXPORT_slice_slice_integrity
 
 #endif
-#ifndef ZZ_EXPORT_slice_slice_atoi
-#define ZZ_EXPORT_slice_slice_atoi
-int64_t slice_slice_atoi (slice_slice_Slice const *  const  self, uintptr_t const  base);
+#ifndef ZZ_EXPORT_madpack_decode
+#define ZZ_EXPORT_madpack_decode
+void madpack_decode (madpack_Decoder*  const  self, slice_slice_Slice const  sl, madpack_Index*  const  index);
 
 #endif
 #ifndef ZZ_EXPORT_madpack_Item
@@ -544,6 +575,173 @@ typedef enum {
     madpack_Item_End = 11,
 
 } madpack_Item;
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_empty
+#define ZZ_EXPORT_slice_slice_empty
+void slice_slice_empty (slice_slice_Slice*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_from_preshared_index
+#define ZZ_EXPORT_madpack_from_preshared_index
+void madpack_from_preshared_index (madpack_Index*  const  self, uintptr_t const  t, slice_slice_Slice const  v);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail_with_errno
+#define ZZ_EXPORT_err_fail_with_errno
+void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT__stddef_h_
+#define ZZ_EXPORT__stddef_h_
+
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer
+#define ZZ_EXPORT_buffer_Buffer
+struct buffer_Buffer_t {
+   uintptr_t at ;
+   char mem[] ;
+}
+;
+size_t sizeof_buffer_Buffer(size_t tail);
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_100_100
+#define ZZ_EXPORT_buffer_Buffer_100_100
+struct buffer_Buffer_100_t {
+   uintptr_t at ;
+   char mem[100] ;
+}
+;
+size_t sizeof_buffer_Buffer_100();
+#endif
+#ifndef ZZ_EXPORT_buffer_Buffer_1000_1000
+#define ZZ_EXPORT_buffer_Buffer_1000_1000
+struct buffer_Buffer_1000_t {
+   uintptr_t at ;
+   char mem[1000] ;
+}
+;
+size_t sizeof_buffer_Buffer_1000();
+
+#endif
+#ifndef ZZ_EXPORT_err_Err
+#define ZZ_EXPORT_err_Err
+struct err_Err_t {
+   uintptr_t error ;
+   int system ;
+   buffer_Buffer trace ;
+}
+;
+size_t sizeof_err_Err(size_t tail);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_bytes
+#define ZZ_EXPORT_buffer_copy_bytes
+void buffer_copy_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_Value
+#define ZZ_EXPORT_madpack_Value
+union madpack_Value_t {
+   uint64_t v_uint ;
+   int64_t v_sint ;
+   double v_float ;
+   slice_slice_Slice v_slice ;
+}
+;
+size_t sizeof_madpack_Value();
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq_cstr
+#define ZZ_EXPORT_slice_slice_eq_cstr
+bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_substr
+#define ZZ_EXPORT_buffer_substr
+void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, buffer_Buffer*  const  other, uintptr_t const  tail2);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_slen
+#define ZZ_EXPORT_buffer_slen
+uintptr_t buffer_slen (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
+#define ZZ_EXPORT___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
+
+#line 1 "/home/runner/work/carrier/carrier/modules/byteorder/src/lib.h"
+#if !defined(BYTE_ORDER)
+    #if defined(__BYTE_ORDER__)
+        #define BYTE_ORDER __BYTE_ORDER__
+    #elif defined(__BYTE_ORDER)
+        #define BYTE_ORDER __BYTE_ORDER
+    #else
+        #error cannot find a definition of BYTE_ORDER
+    #endif
+#endif
+
+#if !defined(LITTLE_ENDIAN)
+    #if defined(__LITTLE_ENDIAN)
+        #define LITTLE_ENDIAN __LITTLE_ENDIAN
+    #elif defined(__ORDER_LITTLE_ENDIAN__)
+        #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
+    #else
+        #error cannot find a definition of LITTLE_ENDIAN
+    #endif
+#endif
+
+#if !defined(BIG_ENDIAN)
+    #if defined(__BIG_ENDIAN)
+        #define BIG_ENDIAN __BIG_ENDIAN
+    #elif defined(__ORDER_BIG_ENDIAN__)
+        #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
+    #else
+        #error cannot find a definition of BIG_ENDIAN
+    #endif
+#endif
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+    #if BYTE_ORDER == BIG_ENDIAN
+        #error "compiler claims byte order is both little and big endian"
+    #endif
+#else
+    #if BYTE_ORDER == BIG_ENDIAN
+
+    #else
+        #error "compiler claims byte order is neither little nor big endian"
+    #endif
+#endif
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_swap16
+#define ZZ_EXPORT_byteorder_swap16
+uint16_t  static inline byteorder_swap16 (uint16_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_to_le16
+#define ZZ_EXPORT_byteorder_to_le16
+uint16_t  static inline byteorder_to_le16 (uint16_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_from_le16
+#define ZZ_EXPORT_byteorder_from_le16
+uint16_t  static inline byteorder_from_le16 (uint16_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_append_bytes
+#define ZZ_EXPORT_buffer_append_bytes
+void buffer_append_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_strlen
+#define ZZ_EXPORT_buffer_strlen
+uintptr_t buffer_strlen (char const *  s);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_starts_with_cstr
+#define ZZ_EXPORT_buffer_starts_with_cstr
+bool buffer_starts_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
 
 #endif
 #ifndef ZZ_EXPORT_json_ValueType
@@ -605,80 +803,33 @@ struct json_U_t {
 size_t sizeof_json_U();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_integrity
-#define ZZ_EXPORT_buffer_integrity
+#ifndef ZZ_EXPORT_json_parser
+#define ZZ_EXPORT_json_parser
+void json_parser (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_U const  u);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_substr
-#define ZZ_EXPORT_buffer_substr
-void buffer_substr (buffer_Buffer const *  const  self, uintptr_t const  tail, uintptr_t const  from, uintptr_t size, buffer_Buffer*  const  other, uintptr_t const  tail2);
+#ifndef ZZ_EXPORT_buffer_format
+#define ZZ_EXPORT_buffer_format
+int buffer_format (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
 
 #endif
-#ifndef ZZ_EXPORT_slice_slice_make
-#define ZZ_EXPORT_slice_slice_make
-void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+#ifndef ZZ_EXPORT_mem_zero
+#define ZZ_EXPORT_mem_zero
+extern void mem_zero (void*  const  dst, uintptr_t const  vt);
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_integrity
-#define ZZ_EXPORT_slice_mut_slice_integrity
+#ifndef ZZ_EXPORT_madpack_empty_index
+#define ZZ_EXPORT_madpack_empty_index
+void madpack_empty_index (madpack_Index*  const  self, uintptr_t const  t);
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_cstr
-#define ZZ_EXPORT_slice_mut_slice_append_cstr
-bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+#ifndef ZZ_EXPORT_madpack_integrity
+#define ZZ_EXPORT_madpack_integrity
 
 #endif
-#ifndef ZZ_EXPORT_buffer_append_bytes
-#define ZZ_EXPORT_buffer_append_bytes
-void buffer_append_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_bytes
-#define ZZ_EXPORT_slice_mut_slice_append_bytes
-bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_v_map
-#define ZZ_EXPORT_madpack_v_map
-bool madpack_v_map (madpack_Encoder*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_err_checked
-#define ZZ_EXPORT_err_checked
-
-#endif
-#ifndef ZZ_EXPORT_err_fail
-#define ZZ_EXPORT_err_fail
-void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_macrohelper_preshare
-#define ZZ_EXPORT_madpack_macrohelper_preshare
-extern void madpack_macrohelper_preshare ();
-
-#endif
-#ifndef ZZ_EXPORT_madpack_Tuning
-#define ZZ_EXPORT_madpack_Tuning
-struct madpack_Tuning_t {
-   uint8_t config ;
-}
-;
-size_t sizeof_madpack_Tuning();
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_Slice
-#define ZZ_EXPORT_slice_slice_Slice
-struct slice_slice_Slice_t {
-   uint8_t const *  mem ;
-   uintptr_t size ;
-}
-;
-size_t sizeof_slice_slice_Slice();
-
-#endif
-#ifndef ZZ_EXPORT_madpack_to_preshared_index
-#define ZZ_EXPORT_madpack_to_preshared_index
-slice_slice_Slice madpack_to_preshared_index (madpack_Index const *  const  self);
+#ifndef ZZ_EXPORT_madpack_v_cstr
+#define ZZ_EXPORT_madpack_v_cstr
+bool madpack_v_cstr (madpack_Encoder*  const  self, char const *  const  value);
 
 #endif
 #ifndef ZZ_EXPORT_madpack_v_null
@@ -686,166 +837,14 @@ slice_slice_Slice madpack_to_preshared_index (madpack_Index const *  const  self
 bool madpack_v_null (madpack_Encoder*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_slice
-#define ZZ_EXPORT_slice_mut_slice_append_slice
-bool slice_mut_slice_append_slice (slice_mut_slice_MutSlice*  const  self, slice_slice_Slice const  other);
+#ifndef ZZ_EXPORT_err_ignore
+#define ZZ_EXPORT_err_ignore
+void err_ignore (err_Err*  const  self, uintptr_t const  tail);
 
 #endif
-#ifndef ZZ_EXPORT_log_warn
-#define ZZ_EXPORT_log_warn
-void log_warn (char const *  const  module, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_json_push
-#define ZZ_EXPORT_json_push
-void json_push (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq_bytes
-#define ZZ_EXPORT_slice_slice_eq_bytes
-bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push64
-#define ZZ_EXPORT_slice_mut_slice_push64
-bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_skip
-#define ZZ_EXPORT_madpack_skip
-void madpack_skip (madpack_Decoder*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_mem_copy
-#define ZZ_EXPORT_mem_copy
-extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
-
-#endif
-#ifndef ZZ_EXPORT___home_aep_proj_zz_modules_byteorder_src_lib_h_
-#define ZZ_EXPORT___home_aep_proj_zz_modules_byteorder_src_lib_h_
-
-#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.h"
-#if !defined(BYTE_ORDER)
-    #if defined(__BYTE_ORDER__)
-        #define BYTE_ORDER __BYTE_ORDER__
-    #elif defined(__BYTE_ORDER)
-        #define BYTE_ORDER __BYTE_ORDER
-    #else
-        #error cannot find a definition of BYTE_ORDER
-    #endif
-#endif
-
-#if !defined(LITTLE_ENDIAN)
-    #if defined(__LITTLE_ENDIAN)
-        #define LITTLE_ENDIAN __LITTLE_ENDIAN
-    #elif defined(__ORDER_LITTLE_ENDIAN__)
-        #define LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
-    #else
-        #error cannot find a definition of LITTLE_ENDIAN
-    #endif
-#endif
-
-#if !defined(BIG_ENDIAN)
-    #if defined(__BIG_ENDIAN)
-        #define BIG_ENDIAN __BIG_ENDIAN
-    #elif defined(__ORDER_BIG_ENDIAN__)
-        #define BIG_ENDIAN __ORDER_BIG_ENDIAN__
-    #else
-        #error cannot find a definition of BIG_ENDIAN
-    #endif
-#endif
-
-#if BYTE_ORDER == LITTLE_ENDIAN
-    #if BYTE_ORDER == BIG_ENDIAN
-        #error "compiler claims byte order is both little and big endian"
-    #endif
-#else
-    #if BYTE_ORDER == BIG_ENDIAN
-
-    #else
-        #error "compiler claims byte order is neither little nor big endian"
-    #endif
-#endif
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_swap16
-#define ZZ_EXPORT_byteorder_swap16
-uint16_t  static inline byteorder_swap16 (uint16_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_to_le16
-#define ZZ_EXPORT_byteorder_to_le16
-uint16_t  static inline byteorder_to_le16 (uint16_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_from_le16
-#define ZZ_EXPORT_byteorder_from_le16
-uint16_t  static inline byteorder_from_le16 (uint16_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_swap32
-#define ZZ_EXPORT_byteorder_swap32
-uint32_t  static inline byteorder_swap32 (uint32_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_to_le32
-#define ZZ_EXPORT_byteorder_to_le32
-uint32_t  static inline byteorder_to_le32 (uint32_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_from_le32
-#define ZZ_EXPORT_byteorder_from_le32
-uint32_t  static inline byteorder_from_le32 (uint32_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_empty
-#define ZZ_EXPORT_slice_slice_empty
-void slice_slice_empty (slice_slice_Slice*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_next_kv
-#define ZZ_EXPORT_madpack_next_kv
-bool madpack_next_kv (madpack_Decoder*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_make
-#define ZZ_EXPORT_buffer_make
-void buffer_make (buffer_Buffer*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT__stdarg_h_
-#define ZZ_EXPORT__stdarg_h_
-#include <stdarg.h>
-
-#endif
-#ifndef ZZ_EXPORT_madpack_gindex
-#define ZZ_EXPORT_madpack_gindex
-extern uintptr_t madpack_gindex (madpack_Index*  const  self, slice_slice_Slice const  key);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_key
-#define ZZ_EXPORT_madpack_key
-static bool madpack_key (madpack_Encoder*  const  self, char const *  const  keystr, uint8_t const  valbits);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_space
-#define ZZ_EXPORT_slice_mut_slice_space
-uintptr_t slice_mut_slice_space (slice_mut_slice_MutSlice*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push16
-#define ZZ_EXPORT_slice_mut_slice_push16
-bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT__stdio_h_
-#define ZZ_EXPORT__stdio_h_
-#include <stdio.h>
-
-#endif
-#ifndef ZZ_EXPORT_buffer_fgets
-#define ZZ_EXPORT_buffer_fgets
-bool buffer_fgets (buffer_Buffer*  const  self, uintptr_t const  tail, FILE*  const  stream);
+#ifndef ZZ_EXPORT_buffer_push
+#define ZZ_EXPORT_buffer_push
+bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b);
 
 #endif
 #ifndef ZZ_EXPORT_slice_mut_slice_MutSlice
@@ -859,36 +858,81 @@ struct slice_mut_slice_MutSlice_t {
 size_t sizeof_slice_mut_slice_MutSlice();
 
 #endif
-#ifndef ZZ_EXPORT__stddef_h_
-#define ZZ_EXPORT__stddef_h_
+#ifndef ZZ_EXPORT_madpack_Tuning
+#define ZZ_EXPORT_madpack_Tuning
+struct madpack_Tuning_t {
+   uint8_t config ;
+}
+;
+size_t sizeof_madpack_Tuning();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_Buffer
-#define ZZ_EXPORT_buffer_Buffer
-struct buffer_Buffer_t {
-   uintptr_t at ;
-   char mem[] ;
+#ifndef ZZ_EXPORT_madpack_Encoder
+#define ZZ_EXPORT_madpack_Encoder
+struct madpack_Encoder_t {
+   slice_mut_slice_MutSlice sl ;
+   madpack_Tuning tuning ;
+   madpack_Index*  index ;
 }
 ;
-size_t sizeof_buffer_Buffer(size_t tail);
+size_t sizeof_madpack_Encoder();
+
 #endif
-#ifndef ZZ_EXPORT_buffer_Buffer_1000_1000
-#define ZZ_EXPORT_buffer_Buffer_1000_1000
-struct buffer_Buffer_1000_t {
-   uintptr_t at ;
-   char mem[1000] ;
-}
-;
-size_t sizeof_buffer_Buffer_1000();
+#ifndef ZZ_EXPORT_madpack_encode
+#define ZZ_EXPORT_madpack_encode
+void madpack_encode (madpack_Encoder*  const  self, slice_mut_slice_MutSlice sl, madpack_Index*  const  index);
+
 #endif
-#ifndef ZZ_EXPORT_buffer_Buffer_100_100
-#define ZZ_EXPORT_buffer_Buffer_100_100
-struct buffer_Buffer_100_t {
-   uintptr_t at ;
-   char mem[100] ;
-}
-;
-size_t sizeof_buffer_Buffer_100();
+#ifndef ZZ_EXPORT_madpack_gindex
+#define ZZ_EXPORT_madpack_gindex
+extern uintptr_t madpack_gindex (madpack_Index*  const  self, slice_slice_Slice const  key);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_key
+#define ZZ_EXPORT_madpack_key
+static bool madpack_key (madpack_Encoder*  const  self, char const *  const  keystr, uint8_t const  valbits);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_kv_map
+#define ZZ_EXPORT_madpack_kv_map
+bool madpack_kv_map (madpack_Encoder*  const  self, char const *  const  key);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_v_bool
+#define ZZ_EXPORT_madpack_v_bool
+bool madpack_v_bool (madpack_Encoder*  const  self, bool const  value);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_atoi
+#define ZZ_EXPORT_slice_slice_atoi
+int64_t slice_slice_atoi (slice_slice_Slice const *  const  self, uintptr_t const  base);
+
+#endif
+#ifndef ZZ_EXPORT_json_ParserState
+#define ZZ_EXPORT_json_ParserState
+typedef enum {
+    json_ParserState_Document = 0,
+    json_ParserState_Object = 1,
+    json_ParserState_Key = 2,
+    json_ParserState_PostKey = 3,
+    json_ParserState_PreVal = 4,
+    json_ParserState_StringVal = 5,
+    json_ParserState_IntVal = 6,
+    json_ParserState_BoolVal = 7,
+    json_ParserState_NullVal = 8,
+    json_ParserState_PostVal = 9,
+
+} json_ParserState;
+
+#endif
+#ifndef ZZ_EXPORT_buffer_cstr
+#define ZZ_EXPORT_buffer_cstr
+char  const * buffer_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq
+#define ZZ_EXPORT_slice_slice_eq
+bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const  other);
 
 #endif
 #ifndef ZZ_EXPORT_madpack_Index
@@ -917,56 +961,38 @@ struct madpack_Index_10_t {
 size_t sizeof_madpack_Index_10();
 
 #endif
-#ifndef ZZ_EXPORT_slice_mut_slice_make
-#define ZZ_EXPORT_slice_mut_slice_make
-void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size, uintptr_t*  const  at);
+#ifndef ZZ_EXPORT_madpack_kv_array
+#define ZZ_EXPORT_madpack_kv_array
+bool madpack_kv_array (madpack_Encoder*  const  self, char const *  const  key);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_available
-#define ZZ_EXPORT_buffer_available
-uintptr_t buffer_available (buffer_Buffer const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_madpack_kv_bool
+#define ZZ_EXPORT_madpack_kv_bool
+bool madpack_kv_bool (madpack_Encoder*  const  self, char const *  const  key, bool const  value);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_copy_cstr
-#define ZZ_EXPORT_buffer_copy_cstr
-void buffer_copy_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  s);
+#ifndef ZZ_EXPORT_madpack_skip
+#define ZZ_EXPORT_madpack_skip
+void madpack_skip (madpack_Decoder*  const  self);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_kv_byteslice
-#define ZZ_EXPORT_madpack_kv_byteslice
-bool madpack_kv_byteslice (madpack_Encoder*  const  self, char const *  const  key, slice_slice_Slice const  value);
+#ifndef ZZ_EXPORT_buffer_split
+#define ZZ_EXPORT_buffer_split
+bool buffer_split (buffer_Buffer const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, buffer_Buffer*  const  other, uintptr_t const  tail2);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_clear
-#define ZZ_EXPORT_buffer_clear
-void buffer_clear (buffer_Buffer*  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_madpack_macrohelper_preshare
+#define ZZ_EXPORT_madpack_macrohelper_preshare
+extern void madpack_macrohelper_preshare ();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_cstr
-#define ZZ_EXPORT_buffer_cstr
-char  const * buffer_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail);
+#ifndef ZZ_EXPORT_madpack_preshare
+#define ZZ_EXPORT_madpack_preshare
 
 #endif
-#ifndef ZZ_EXPORT_buffer_as_mut_slice
-#define ZZ_EXPORT_buffer_as_mut_slice
-slice_mut_slice_MutSlice buffer_as_mut_slice (buffer_Buffer*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq_cstr
-#define ZZ_EXPORT_slice_slice_eq_cstr
-bool slice_slice_eq_cstr (slice_slice_Slice const *  const  self, char const *  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_Value
-#define ZZ_EXPORT_madpack_Value
-union madpack_Value_t {
-   uint64_t v_uint ;
-   int64_t v_sint ;
-   double v_float ;
-   slice_slice_Slice v_slice ;
-}
-;
-size_t sizeof_madpack_Value();
+#ifndef ZZ_EXPORT_buffer_fgets
+#define ZZ_EXPORT_buffer_fgets
+bool buffer_fgets (buffer_Buffer*  const  self, uintptr_t const  tail, FILE*  const  stream);
 
 #endif
 #ifndef ZZ_EXPORT_madpack_Decoder
@@ -983,29 +1009,39 @@ struct madpack_Decoder_t {
 size_t sizeof_madpack_Decoder();
 
 #endif
-#ifndef ZZ_EXPORT_buffer_copy_bytes
-#define ZZ_EXPORT_buffer_copy_bytes
-void buffer_copy_bytes (buffer_Buffer*  const  self, uintptr_t const  t, uint8_t const *  const  bytes, uintptr_t inlen);
+#ifndef ZZ_EXPORT_err_elog
+#define ZZ_EXPORT_err_elog
+void err_elog (err_Err const *  const  self, uintptr_t const  tail);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_v_cstr
-#define ZZ_EXPORT_madpack_v_cstr
-bool madpack_v_cstr (madpack_Encoder*  const  self, char const *  const  value);
+#ifndef ZZ_EXPORT_mem_copy
+#define ZZ_EXPORT_mem_copy
+extern void mem_copy (void const *  const  src, void*  const  dst, uintptr_t const  n);
 
 #endif
-#ifndef ZZ_EXPORT_mem_zero
-#define ZZ_EXPORT_mem_zero
-extern void mem_zero (void*  const  dst, uintptr_t const  vt);
+#ifndef ZZ_EXPORT_err_to_str
+#define ZZ_EXPORT_err_to_str
+void err_to_str (err_Err const *  const  self, uintptr_t const  et, char*  const  dest, uintptr_t const  dest_len);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_empty_index
-#define ZZ_EXPORT_madpack_empty_index
-void madpack_empty_index (madpack_Index*  const  self, uintptr_t const  t);
+#ifndef ZZ_EXPORT_madpack_kv_null
+#define ZZ_EXPORT_madpack_kv_null
+bool madpack_kv_null (madpack_Encoder*  const  self, char const *  const  key);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_as_slice
-#define ZZ_EXPORT_madpack_as_slice
-slice_slice_Slice madpack_as_slice (madpack_Encoder const *  const  self);
+#ifndef ZZ_EXPORT_err_check
+#define ZZ_EXPORT_err_check
+bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_eq_cstr
+#define ZZ_EXPORT_buffer_eq_cstr
+bool buffer_eq_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_cstr
+#define ZZ_EXPORT_buffer_copy_cstr
+void buffer_copy_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  s);
 
 #endif
 #ifndef ZZ_EXPORT_err_abort
@@ -1013,9 +1049,24 @@ slice_slice_Slice madpack_as_slice (madpack_Encoder const *  const  self);
 void err_abort (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_kv_strslice
-#define ZZ_EXPORT_madpack_kv_strslice
-bool madpack_kv_strslice (madpack_Encoder*  const  self, char const *  const  key, slice_slice_Slice const  value);
+#ifndef ZZ_EXPORT_slice_mut_slice_append_cstr
+#define ZZ_EXPORT_slice_mut_slice_append_cstr
+bool slice_mut_slice_append_cstr (slice_mut_slice_MutSlice*  const  self, char const *  const  b);
+
+#endif
+#ifndef ZZ_EXPORT_err_eprintf
+#define ZZ_EXPORT_err_eprintf
+void err_eprintf (err_Err const *  const  self, uintptr_t const  tail, FILE*  const  out);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_as_mut_slice
+#define ZZ_EXPORT_buffer_as_mut_slice
+slice_mut_slice_MutSlice buffer_as_mut_slice (buffer_Buffer*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_swap32
+#define ZZ_EXPORT_byteorder_swap32
+uint32_t  static inline byteorder_swap32 (uint32_t const  x);
 
 #endif
 #ifndef ZZ_EXPORT_byteorder_swap64
@@ -1033,13 +1084,63 @@ uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
 uint64_t  static inline byteorder_from_le64 (uint64_t const  x);
 
 #endif
-#ifndef ZZ_EXPORT_madpack_integrity
-#define ZZ_EXPORT_madpack_integrity
+#ifndef ZZ_EXPORT_slice_mut_slice_append_obj
+#define ZZ_EXPORT_slice_mut_slice_append_obj
+bool slice_mut_slice_append_obj (slice_mut_slice_MutSlice*  const  self, void const *  const  b, uintptr_t const  vt);
 
 #endif
-#ifndef ZZ_EXPORT_buffer_push
-#define ZZ_EXPORT_buffer_push
-bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b);
+#ifndef ZZ_EXPORT_buffer_append_slice
+#define ZZ_EXPORT_buffer_append_slice
+void buffer_append_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_to_le32
+#define ZZ_EXPORT_byteorder_to_le32
+uint32_t  static inline byteorder_to_le32 (uint32_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_from_le32
+#define ZZ_EXPORT_byteorder_from_le32
+uint32_t  static inline byteorder_from_le32 (uint32_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_log_warn
+#define ZZ_EXPORT_log_warn
+void log_warn (char const *  const  module, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_next_v
+#define ZZ_EXPORT_madpack_next_v
+bool madpack_next_v (madpack_Decoder*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_as_slice
+#define ZZ_EXPORT_madpack_as_slice
+slice_slice_Slice madpack_as_slice (madpack_Encoder const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_as_slice
+#define ZZ_EXPORT_slice_mut_slice_as_slice
+slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_err_make
+#define ZZ_EXPORT_err_make
+void err_make (err_Err*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_json_MAX_DEPTH
+#define ZZ_EXPORT_json_MAX_DEPTH
+#define json_MAX_DEPTH (    64)
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push32
+#define ZZ_EXPORT_slice_mut_slice_push32
+bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_integrity
+#define ZZ_EXPORT_madpack_integrity
 
 #endif
 #ifndef ZZ_EXPORT_madpack_v_uint
@@ -1047,21 +1148,44 @@ bool buffer_push (buffer_Buffer*  const  self, uintptr_t const  t, char const  b
 bool madpack_v_uint (madpack_Encoder*  const  self, uint64_t const  value);
 
 #endif
-#ifndef ZZ_EXPORT_json_ParserState
-#define ZZ_EXPORT_json_ParserState
-typedef enum {
-    json_ParserState_Document = 0,
-    json_ParserState_Object = 1,
-    json_ParserState_Key = 2,
-    json_ParserState_PostKey = 3,
-    json_ParserState_PreVal = 4,
-    json_ParserState_StringVal = 5,
-    json_ParserState_IntVal = 6,
-    json_ParserState_BoolVal = 7,
-    json_ParserState_NullVal = 8,
-    json_ParserState_PostVal = 9,
+#ifndef ZZ_EXPORT_madpack_kv_byteslice
+#define ZZ_EXPORT_madpack_kv_byteslice
+bool madpack_kv_byteslice (madpack_Encoder*  const  self, char const *  const  key, slice_slice_Slice const  value);
 
-} json_ParserState;
+#endif
+#ifndef ZZ_EXPORT_json_push
+#define ZZ_EXPORT_json_push
+void json_push (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const *  const  str, uintptr_t const  strlen);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_end
+#define ZZ_EXPORT_madpack_end
+bool madpack_end (madpack_Encoder*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_next_kv
+#define ZZ_EXPORT_madpack_next_kv
+bool madpack_next_kv (madpack_Decoder*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_to_preshared_index
+#define ZZ_EXPORT_madpack_to_preshared_index
+slice_slice_Slice madpack_to_preshared_index (madpack_Index const *  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_clear
+#define ZZ_EXPORT_buffer_clear
+void buffer_clear (buffer_Buffer*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_append_cstr
+#define ZZ_EXPORT_buffer_append_cstr
+void buffer_append_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  cstr);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_available
+#define ZZ_EXPORT_buffer_available
+uintptr_t buffer_available (buffer_Buffer const *  const  self, uintptr_t const  tail);
 
 #endif
 #ifndef ZZ_EXPORT_json_ParserStack
@@ -1076,9 +1200,144 @@ struct json_ParserStack_t {
 size_t sizeof_json_ParserStack();
 
 #endif
-#ifndef ZZ_EXPORT_json_MAX_DEPTH
-#define ZZ_EXPORT_json_MAX_DEPTH
-#define json_MAX_DEPTH (    64)
+#ifndef ZZ_EXPORT_slice_mut_slice_push
+#define ZZ_EXPORT_slice_mut_slice_push
+bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_slice
+#define ZZ_EXPORT_slice_mut_slice_append_slice
+bool slice_mut_slice_append_slice (slice_mut_slice_MutSlice*  const  self, slice_slice_Slice const  other);
+
+#endif
+#ifndef ZZ_EXPORT_err_backtrace
+#define ZZ_EXPORT_err_backtrace
+void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_v_array
+#define ZZ_EXPORT_madpack_v_array
+bool madpack_v_array (madpack_Encoder*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail_with_win32
+#define ZZ_EXPORT_err_fail_with_win32
+void err_fail_with_win32 (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_as_slice
+#define ZZ_EXPORT_buffer_as_slice
+slice_slice_Slice buffer_as_slice (buffer_Buffer const *  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_append_bytes
+#define ZZ_EXPORT_slice_mut_slice_append_bytes
+bool slice_mut_slice_append_bytes (slice_mut_slice_MutSlice*  const  self, uint8_t const *  const  b, uintptr_t const  l);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_kv_cstr
+#define ZZ_EXPORT_madpack_kv_cstr
+bool madpack_kv_cstr (madpack_Encoder*  const  self, char const *  const  key, char const *  const  value);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_gindex
+#define ZZ_EXPORT_madpack_gindex
+extern uintptr_t madpack_gindex (madpack_Index*  const  self, slice_slice_Slice const  key);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_copy_slice
+#define ZZ_EXPORT_buffer_copy_slice
+void buffer_copy_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_sub
+#define ZZ_EXPORT_slice_slice_sub
+slice_slice_Slice slice_slice_sub (slice_slice_Slice const *  const  self, uintptr_t const  from, uintptr_t size);
+
+#endif
+#ifndef ZZ_EXPORT_err_fail
+#define ZZ_EXPORT_err_fail
+void err_fail (err_Err*  const  self, uintptr_t const  tail, uintptr_t const  e, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
+
+#endif
+#ifndef ZZ_EXPORT__stdarg_h_
+#define ZZ_EXPORT__stdarg_h_
+#include <stdarg.h>
+
+#endif
+#ifndef ZZ_EXPORT_madpack_v_strslice
+#define ZZ_EXPORT_madpack_v_strslice
+bool madpack_v_strslice (madpack_Encoder*  const  self, slice_slice_Slice const  value);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_make
+#define ZZ_EXPORT_buffer_make
+void buffer_make (buffer_Buffer*  const  self, uintptr_t const  tail);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_lookup
+#define ZZ_EXPORT_madpack_lookup
+static slice_slice_Slice madpack_lookup (madpack_Index*  const  self, uint16_t i);
+
+#endif
+#ifndef ZZ_EXPORT_json_advance
+#define ZZ_EXPORT_json_advance
+static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const  token);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_make
+#define ZZ_EXPORT_slice_slice_make
+void slice_slice_make (slice_slice_Slice*  const  self, uint8_t const *  const  mem, uintptr_t const  size);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push16
+#define ZZ_EXPORT_slice_mut_slice_push16
+bool slice_mut_slice_push16 (slice_mut_slice_MutSlice*  const  self, uint16_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_decode
+#define ZZ_EXPORT_madpack_decode
+void madpack_decode (madpack_Decoder*  const  self, slice_slice_Slice const  sl, madpack_Index*  const  index);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_kv_strslice
+#define ZZ_EXPORT_madpack_kv_strslice
+bool madpack_kv_strslice (madpack_Encoder*  const  self, char const *  const  key, slice_slice_Slice const  value);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_make
+#define ZZ_EXPORT_slice_mut_slice_make
+void slice_mut_slice_make (slice_mut_slice_MutSlice*  const  self, uint8_t*  const  mem, uintptr_t const  size, uintptr_t*  const  at);
+
+#endif
+#ifndef ZZ_EXPORT_buffer_ends_with_cstr
+#define ZZ_EXPORT_buffer_ends_with_cstr
+bool buffer_ends_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
+
+#endif
+#ifndef ZZ_EXPORT_madpack_v_map
+#define ZZ_EXPORT_madpack_v_map
+bool madpack_v_map (madpack_Encoder*  const  self);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_split
+#define ZZ_EXPORT_slice_slice_split
+bool slice_slice_split (slice_slice_Slice const *  const  self, uint8_t const  token, uintptr_t*  const  iterator, slice_slice_Slice*  const  other);
+
+#endif
+#ifndef ZZ_EXPORT_slice_slice_eq_bytes
+#define ZZ_EXPORT_slice_slice_eq_bytes
+bool slice_slice_eq_bytes (slice_slice_Slice const *  const  self, uint8_t const *  const  other, uintptr_t const  othersize);
+
+#endif
+#ifndef ZZ_EXPORT_slice_mut_slice_push64
+#define ZZ_EXPORT_slice_mut_slice_push64
+bool slice_mut_slice_push64 (slice_mut_slice_MutSlice*  const  self, uint64_t const  b);
+
+#endif
+#ifndef ZZ_EXPORT_json_next
+#define ZZ_EXPORT_json_next
+void json_next (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_U const  u);
 
 #endif
 #ifndef ZZ_EXPORT_json_Parser
@@ -1096,207 +1355,6 @@ struct json_Parser_t {
 size_t sizeof_json_Parser(size_t tail);
 
 #endif
-#ifndef ZZ_EXPORT_err_to_str
-#define ZZ_EXPORT_err_to_str
-void err_to_str (err_Err const *  const  self, uintptr_t const  et, char*  const  dest, uintptr_t const  dest_len);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_preshare
-#define ZZ_EXPORT_madpack_preshare
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_append_obj
-#define ZZ_EXPORT_slice_mut_slice_append_obj
-bool slice_mut_slice_append_obj (slice_mut_slice_MutSlice*  const  self, void const *  const  b, uintptr_t const  vt);
-
-#endif
-#ifndef ZZ_EXPORT_err_make
-#define ZZ_EXPORT_err_make
-void err_make (err_Err*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_Encoder
-#define ZZ_EXPORT_madpack_Encoder
-struct madpack_Encoder_t {
-   slice_mut_slice_MutSlice sl ;
-   madpack_Tuning tuning ;
-   madpack_Index*  index ;
-}
-;
-size_t sizeof_madpack_Encoder();
-
-#endif
-#ifndef ZZ_EXPORT_buffer_append_slice
-#define ZZ_EXPORT_buffer_append_slice
-void buffer_append_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push32
-#define ZZ_EXPORT_slice_mut_slice_push32
-bool slice_mut_slice_push32 (slice_mut_slice_MutSlice*  const  self, uint32_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_as_slice
-#define ZZ_EXPORT_slice_mut_slice_as_slice
-slice_slice_Slice slice_mut_slice_as_slice (slice_mut_slice_MutSlice const *  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_eq_cstr
-#define ZZ_EXPORT_buffer_eq_cstr
-bool buffer_eq_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  b);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_ends_with_cstr
-#define ZZ_EXPORT_buffer_ends_with_cstr
-bool buffer_ends_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_kv_bool
-#define ZZ_EXPORT_madpack_kv_bool
-bool madpack_kv_bool (madpack_Encoder*  const  self, char const *  const  key, bool const  value);
-
-#endif
-#ifndef ZZ_EXPORT_err_ignore
-#define ZZ_EXPORT_err_ignore
-void err_ignore (err_Err*  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_split
-#define ZZ_EXPORT_buffer_split
-bool buffer_split (buffer_Buffer const *  const  self, uintptr_t const  tail, char const  token, uintptr_t*  const  iterator, buffer_Buffer*  const  other, uintptr_t const  tail2);
-
-#endif
-#ifndef ZZ_EXPORT_err_elog
-#define ZZ_EXPORT_err_elog
-void err_elog (err_Err const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_v_strslice
-#define ZZ_EXPORT_madpack_v_strslice
-bool madpack_v_strslice (madpack_Encoder*  const  self, slice_slice_Slice const  value);
-
-#endif
-#ifndef ZZ_EXPORT_err_Err
-#define ZZ_EXPORT_err_Err
-struct err_Err_t {
-   uintptr_t error ;
-   int system ;
-   buffer_Buffer trace ;
-}
-;
-size_t sizeof_err_Err(size_t tail);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_starts_with_cstr
-#define ZZ_EXPORT_buffer_starts_with_cstr
-bool buffer_starts_with_cstr (buffer_Buffer const *  const  self, uintptr_t const  tail, char const *  const  a);
-
-#endif
-#ifndef ZZ_EXPORT_err_backtrace
-#define ZZ_EXPORT_err_backtrace
-void err_backtrace (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_win32
-#define ZZ_EXPORT_err_fail_with_win32
-void err_fail_with_win32 (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_pop
-#define ZZ_EXPORT_buffer_pop
-bool buffer_pop (buffer_Buffer*  const  self, uintptr_t const  t);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_sub
-#define ZZ_EXPORT_slice_slice_sub
-slice_slice_Slice slice_slice_sub (slice_slice_Slice const *  const  self, uintptr_t const  from, uintptr_t size);
-
-#endif
-#ifndef ZZ_EXPORT_json_advance
-#define ZZ_EXPORT_json_advance
-static void json_advance (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, char const  token);
-
-#endif
-#ifndef ZZ_EXPORT_err_eprintf
-#define ZZ_EXPORT_err_eprintf
-void err_eprintf (err_Err const *  const  self, uintptr_t const  tail, FILE*  const  out);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_encode
-#define ZZ_EXPORT_madpack_encode
-void madpack_encode (madpack_Encoder*  const  self, slice_mut_slice_MutSlice sl, madpack_Index*  const  index);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_kv_null
-#define ZZ_EXPORT_madpack_kv_null
-bool madpack_kv_null (madpack_Encoder*  const  self, char const *  const  key);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_system_error
-#define ZZ_EXPORT_err_fail_with_system_error
-void err_fail_with_system_error (err_Err*  const  self, uintptr_t const  tail, int const  merrno, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_end
-#define ZZ_EXPORT_madpack_end
-bool madpack_end (madpack_Encoder*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_err_check
-#define ZZ_EXPORT_err_check
-bool err_check (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_next_v
-#define ZZ_EXPORT_madpack_next_v
-bool madpack_next_v (madpack_Decoder*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_as_slice
-#define ZZ_EXPORT_buffer_as_slice
-slice_slice_Slice buffer_as_slice (buffer_Buffer const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_gindex
-#define ZZ_EXPORT_madpack_gindex
-extern uintptr_t madpack_gindex (madpack_Index*  const  self, slice_slice_Slice const  key);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_decode
-#define ZZ_EXPORT_madpack_decode
-void madpack_decode (madpack_Decoder*  const  self, slice_slice_Slice const  sl, madpack_Index*  const  index);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_from_preshared_index
-#define ZZ_EXPORT_madpack_from_preshared_index
-void madpack_from_preshared_index (madpack_Index*  const  self, uintptr_t const  t, slice_slice_Slice const  v);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_lookup
-#define ZZ_EXPORT_madpack_lookup
-static slice_slice_Slice madpack_lookup (madpack_Index*  const  self, uint16_t i);
-
-#endif
-#ifndef ZZ_EXPORT_err_fail_with_errno
-#define ZZ_EXPORT_err_fail_with_errno
-void err_fail_with_errno (err_Err*  const  self, uintptr_t const  tail, char const *  const  file, char const *  const  scope, uintptr_t const  line, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_format
-#define ZZ_EXPORT_buffer_format
-int buffer_format (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, ...);
-
-#endif
-#ifndef ZZ_EXPORT_slice_mut_slice_push
-#define ZZ_EXPORT_slice_mut_slice_push
-bool slice_mut_slice_push (slice_mut_slice_MutSlice*  const  self, uint8_t const  b);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_kv_uint
-#define ZZ_EXPORT_madpack_kv_uint
-bool madpack_kv_uint (madpack_Encoder*  const  self, char const *  const  key, uint64_t const  value);
-
-#endif
 #ifndef ZZ_EXPORT__stdarg_h_
 #define ZZ_EXPORT__stdarg_h_
 
@@ -1306,63 +1364,8 @@ bool madpack_kv_uint (madpack_Encoder*  const  self, char const *  const  key, u
 int buffer_vformat (buffer_Buffer*  const  self, uintptr_t const  tail, char const *  const  fmt, va_list args);
 
 #endif
-#ifndef ZZ_EXPORT_json_parser
-#define ZZ_EXPORT_json_parser
-void json_parser (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_U const  u);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_slen
-#define ZZ_EXPORT_buffer_slen
-uintptr_t buffer_slen (buffer_Buffer const *  const  self, uintptr_t const  tail);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_kv_map
-#define ZZ_EXPORT_madpack_kv_map
-bool madpack_kv_map (madpack_Encoder*  const  self, char const *  const  key);
-
-#endif
-#ifndef ZZ_EXPORT_json_next
-#define ZZ_EXPORT_json_next
-void json_next (json_Parser*  const  self, uintptr_t const  tail, err_Err*  const  e, uintptr_t const  et, json_U const  u);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_split
-#define ZZ_EXPORT_slice_slice_split
-bool slice_slice_split (slice_slice_Slice const *  const  self, uint8_t const  token, uintptr_t*  const  iterator, slice_slice_Slice*  const  other);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_kv_array
-#define ZZ_EXPORT_madpack_kv_array
-bool madpack_kv_array (madpack_Encoder*  const  self, char const *  const  key);
-
-#endif
-#ifndef ZZ_EXPORT_slice_slice_eq
-#define ZZ_EXPORT_slice_slice_eq
-bool slice_slice_eq (slice_slice_Slice const *  const  self, slice_slice_Slice const  other);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_decode
-#define ZZ_EXPORT_madpack_decode
-void madpack_decode (madpack_Decoder*  const  self, slice_slice_Slice const  sl, madpack_Index*  const  index);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_v_array
-#define ZZ_EXPORT_madpack_v_array
-bool madpack_v_array (madpack_Encoder*  const  self);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_copy_slice
-#define ZZ_EXPORT_buffer_copy_slice
-void buffer_copy_slice (buffer_Buffer*  const  self, uintptr_t const  t, slice_slice_Slice const  slice);
-
-#endif
-#ifndef ZZ_EXPORT_buffer_append_cstr
-#define ZZ_EXPORT_buffer_append_cstr
-void buffer_append_cstr (buffer_Buffer*  const  self, uintptr_t const  t, char const *  const  cstr);
-
-#endif
-#ifndef ZZ_EXPORT_madpack_v_bool
-#define ZZ_EXPORT_madpack_v_bool
-bool madpack_v_bool (madpack_Encoder*  const  self, bool const  value);
+#ifndef ZZ_EXPORT_madpack_kv_uint
+#define ZZ_EXPORT_madpack_kv_uint
+bool madpack_kv_uint (madpack_Encoder*  const  self, char const *  const  key, uint64_t const  value);
 
 #endif

@@ -1,6 +1,6 @@
 
 <h1> module carrier::pq </h1>
-<h4> fn clear (
+<h4> fn window (
 
     ::carrier::pq::Q*+qt
     self,
@@ -10,13 +10,13 @@
 
 )
 
-
+-&gt usize
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn cancel (
+</p><h4> fn clear (
 
     usize
     qt,
@@ -31,7 +31,7 @@
 </h4>
 
 <p class='doc_comments'>
- undo last allocation without sending anything&lt;br&gt;
+
 </p><h4> fn swap16 (
 
     u16
@@ -58,29 +58,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn keepalive (
-
-    ::carrier::pq::Q*+qt
-    self,
-
-    usize
-    qt,
-
-    u64
-    now,
-
-)
-
--&gt u64
-
-</h4>
-
-<p class='doc_comments'>
- tail loss probe or ping and return the time when we need to call this function again&lt;br&gt;
 </p><h4> fn alloc (
 
     usize
     et,
+
+    ::carrier::channel::FrameType
+    typ,
+
+    usize
+    qt,
 
     ::carrier::pq::Q*+qt
     self,
@@ -89,13 +76,7 @@
     e,
 
     usize
-    qt,
-
-    usize
     size,
-
-    ::carrier::channel::FrameType
-    typ,
 
 )
 
@@ -105,25 +86,47 @@
 
 <p class='doc_comments'>
  allocate the next frame in the queue&lt;br&gt;
+</p><h4> fn ack (
+
+    u64
+    time,
+
+    usize
+    qt,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    u64
+    counter,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
 </p><h4> fn send (
 
     u64
     time,
+
+    u16
+    buflen,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    u64
+    counter,
 
     u8*
     buf,
 
     usize
     qt,
-
-    u16
-    buflen,
-
-    u64
-    counter,
-
-    ::carrier::pq::Q*+qt
-    self,
 
 )
 
@@ -133,35 +136,13 @@
 
 <p class='doc_comments'>
  send frames out of the queue&lt;br&gt;
-</p><h4> fn window (
-
-    usize
-    qt,
+</p><h4> fn cancel (
 
     ::carrier::pq::Q*+qt
     self,
 
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn ack (
-
     usize
     qt,
-
-    ::carrier::pq::Q*+qt
-    self,
-
-    u64
-    counter,
-
-    u64
-    time,
 
 )
 
@@ -170,7 +151,26 @@
 </h4>
 
 <p class='doc_comments'>
+ undo last allocation without sending anything&lt;br&gt;
+</p><h4> fn keepalive (
 
+    u64
+    now,
+
+    ::carrier::pq::Q*+qt
+    self,
+
+    usize
+    qt,
+
+)
+
+-&gt u64
+
+</h4>
+
+<p class='doc_comments'>
+ tail loss probe or ping and return the time when we need to call this function again&lt;br&gt;
 </p>
 
 

@@ -1,30 +1,49 @@
 
 <h1> module carrier::symmetric </h1>
-<h4> fn encrypt_and_mix_hash (
+<h4> fn mix_hash (
+
+    u8*
+    data,
+
+    usize
+    l,
 
     ::carrier::symmetric::SymmetricState*
     self,
 
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn decrypt_and_mix_hash (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    cipher_len,
+
     u8*
     plain,
-
-    usize
-    plain_len,
-
-    usize
-    et,
-
-    usize
-    cipher_len_max,
 
     u8*
     ciphertext,
 
+    usize
+    plain_len_max,
+
+    usize
+    et,
+
+    ::carrier::symmetric::SymmetricState*
+    self,
+
     u64
     nonce,
-
-    ::err::Err*+et
-    e,
 
 )
 
@@ -34,13 +53,26 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn decrypt_and_mix_hash (
+</p><h4> fn init (
 
-    usize
-    cipher_len,
+    ::ext::&lt;stddef.h&gt;::char*
+    protocolname,
 
-    usize
-    et,
+    ::carrier::symmetric::SymmetricState*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn encrypt_and_mix_hash (
+
+    ::carrier::symmetric::SymmetricState*
+    self,
 
     u8*
     plain,
@@ -48,17 +80,20 @@
     ::err::Err*+et
     e,
 
-    u64
-    nonce,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
+    usize
+    cipher_len_max,
 
     u8*
     ciphertext,
 
     usize
-    plain_len_max,
+    et,
+
+    usize
+    plain_len,
+
+    u64
+    nonce,
 
 )
 
@@ -73,27 +108,11 @@
     ::carrier::cipher::CipherState*
     ini,
 
+    ::carrier::symmetric::SymmetricState*
+    self,
+
     ::carrier::cipher::CipherState*
     resp,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn init (
-
-    ::carrier::symmetric::SymmetricState*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    protocolname,
 
 )
 
@@ -108,30 +127,11 @@
     usize
     l,
 
-    u8*
-    data,
-
     ::carrier::symmetric::SymmetricState*
     self,
 
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn mix_hash (
-
     u8*
     data,
-
-    usize
-    l,
-
-    ::carrier::symmetric::SymmetricState*
-    self,
 
 )
 

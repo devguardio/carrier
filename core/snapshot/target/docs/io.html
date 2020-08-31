@@ -1,46 +1,21 @@
 
 <h1> module io </h1>
-<h4> fn select (
-
-    ::io::Async*
-    self,
-
-    ::io::Context*
-    ctx,
-
-    ::io::Ready
-    w,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn write (
-
-    ::buffer::Buffer*+st
-    str,
-
-    usize
-    st,
+<h4> fn read (
 
     ::io::Io*
     self,
 
-    usize
-    et,
+    ::buffer::Buffer*+st
+    str,
 
     ::err::Err*+et
     e,
+
+    usize
+    et,
+
+    usize
+    st,
 
 )
 
@@ -50,38 +25,22 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn wake (
+</p><h4> fn read_bytes (
 
-    ::io::Async*
+    ::io::Io*
     self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn await (
-
-    ::ext::&lt;stddef.h&gt;::void*
-    user,
 
     ::err::Err*+et
     e,
 
-    ::io::Async*
-    self,
-
-    ::ext::&lt;stddef.h&gt;::void*
-    poll,
-
-    ::time::Time
-    timeout_,
-
     usize
     et,
+
+    usize*
+    memlen,
+
+    u8*
+    mem,
 
 )
 
@@ -91,7 +50,32 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn timeout (
+</p><h4> fn readline (
+
+    usize
+    st,
+
+    ::buffer::Buffer*+st
+    str,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::io::Io*
+    self,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn write_bytes (
 
     usize
     et,
@@ -99,15 +83,56 @@
     ::err::Err*+et
     e,
 
-    ::time::Time
-    t2,
+    ::io::Io*
+    self,
 
-    ::io::Async*
+    u8*
+    b,
+
+    usize*
+    blen,
+
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn valid (
+
+    ::io::Context*
     self,
 
 )
 
--&gt ::io::Io
+-&gt bool
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn channel (
+
+    ::io::Async*
+    self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::io::Io*
+    read,
+
+    ::io::Io*
+    write,
+
+)
+
+
 
 </h4>
 
@@ -126,51 +151,14 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn channel (
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
-
-    ::io::Io*
-    read,
+</p><h4> fn wake (
 
     ::io::Async*
     self,
 
-    ::io::Io*
-    write,
-
 )
 
 
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn write_bytes (
-
-    ::io::Io*
-    self,
-
-    usize
-    et,
-
-    u8*
-    b,
-
-    usize*
-    blen,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt ::io::Result
 
 </h4>
 
@@ -181,12 +169,12 @@
     ::err::Err*+et
     e,
 
+    usize
+    et,
+
     ::io::Async*
     self,
 
-    usize
-    et,
-
 )
 
 
@@ -195,60 +183,10 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn read_bytes (
+</p><h4> fn timeout (
 
-    usize
-    et,
-
-    usize*
-    memlen,
-
-    ::io::Io*
-    self,
-
-    u8*
-    mem,
-
-    ::err::Err*+et
-    e,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn read (
-
-    ::buffer::Buffer*+st
-    str,
-
-    ::io::Io*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    st,
-
-)
-
--&gt ::io::Result
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn write_cstr (
-
-    ::ext::&lt;stddef.h&gt;::char*
-    b,
+    ::time::Time
+    t2,
 
     ::err::Err*+et
     e,
@@ -256,12 +194,12 @@
     usize
     et,
 
-    ::io::Io*
+    ::io::Async*
     self,
 
 )
 
--&gt ::io::Result
+-&gt ::io::Io
 
 </h4>
 
@@ -272,14 +210,14 @@
     usize
     et,
 
-    ::err::Err*+et
-    e,
+    ::slice::mut_slice::MutSlice*
+    slice,
 
     ::io::Io*
     self,
 
-    ::slice::mut_slice::MutSlice*
-    slice,
+    ::err::Err*+et
+    e,
 
 )
 
@@ -289,7 +227,16 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn readline (
+</p><h4> fn write (
+
+    ::buffer::Buffer*+st
+    str,
+
+    ::err::Err*+et
+    e,
+
+    ::io::Io*
+    self,
 
     usize
     st,
@@ -297,14 +244,52 @@
     usize
     et,
 
+)
+
+-&gt ::io::Result
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn select (
+
+    ::io::Async*
+    self,
+
     ::err::Err*+et
     e,
 
-    ::buffer::Buffer*+st
-    str,
+    usize
+    et,
+
+    ::io::Ready
+    w,
+
+    ::io::Context*
+    ctx,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn write_cstr (
 
     ::io::Io*
     self,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    b,
 
 )
 
@@ -314,14 +299,29 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn valid (
+</p><h4> fn await (
 
-    ::io::Context*
+    ::io::Async*
     self,
+
+    usize
+    et,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    poll,
+
+    ::ext::&lt;stddef.h&gt;::void*
+    user,
+
+    ::time::Time
+    timeout_,
+
+    ::err::Err*+et
+    e,
 
 )
 
--&gt bool
+-&gt ::io::Result
 
 </h4>
 

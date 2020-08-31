@@ -28,13 +28,13 @@ extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
 extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_err_Err;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_protonerf_Decoder;
 extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
 extern PyTypeObject py_Type_protonerf_Value;
 extern PyTypeObject py_Type_protonerf_Field;
-extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_protonerf_Decoder;
 
 

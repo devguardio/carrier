@@ -2,8 +2,8 @@
 <h1> module netio::udp </h1>
 <h4> fn recvfrom (
 
-    ::buffer::Buffer*+st
-    buf,
+    ::err::Err*+et
+    e,
 
     ::netio::udp::Socket*
     self,
@@ -11,14 +11,14 @@
     usize
     et,
 
-    ::err::Err*+et
-    e,
-
-    usize
-    st,
+    ::buffer::Buffer*+st
+    buf,
 
     ::net::address::Address*
     from,
+
+    usize
+    st,
 
 )
 
@@ -33,17 +33,17 @@
     ::err::Err*+et
     e,
 
-    ::net::address::Address*
-    to,
-
-    ::netio::udp::Socket*
-    self,
-
     usize
     et,
 
     ::slice::slice::Slice
     buf,
+
+    ::net::address::Address*
+    to,
+
+    ::netio::udp::Socket*
+    self,
 
 )
 
@@ -68,20 +68,20 @@
 
 </p><h4> fn bind (
 
-    ::err::Err*+et
-    e,
+    ::netio::udp::Socket*
+    self,
 
     ::io::Async*
     async,
 
-    usize
-    et,
-
-    ::netio::udp::Socket*
-    self,
-
     ::net::address::Address
     addr,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 

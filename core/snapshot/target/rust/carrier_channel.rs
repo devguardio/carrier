@@ -164,57 +164,57 @@ extern {
     #[link_name = "sizeof_carrier_channel_Transfer"]
     pub fn sizeof_Transfer() -> libc::size_t;
 
-    #[link_name = "carrier_channel_transfer_from_symmetric"]
-    pub fn r#transfer_from_symmetric( Zsymm: *const u8,  Zversion: u8,  Zrevision: u32,  Zroute: u64,  Zresponder: bool)  -> super::carrier_channel::Transfer;
+    #[link_name = "carrier_channel_from_transfer"]
+    pub fn r#from_transfer( Zself: *mut u8,  Ztr: super::carrier_channel::Transfer);
 
-
-    #[link_name = "carrier_channel_disco"]
-    pub fn r#disco( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstream_id: u32);
-
-    #[link_name = "sizeof_carrier_channel_Channel"]
-    pub fn sizeof_Channel() -> libc::size_t;
-
-    #[link_name = "carrier_channel_poll"]
-    pub fn r#poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8,  Zbuf: *mut u8,  Zst: usize)  -> super::io::Result;
-
-    #[link_name = "carrier_channel_open"]
-    pub fn r#open( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zconf: *const u8)  -> *mut u8;
-
-
-    #[link_name = "carrier_channel_clean_closed"]
-    pub fn r#clean_closed( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
-
-    #[link_name = "carrier_channel_alloc_stream"]
-    pub fn r#alloc_stream( Zself: *mut u8,  Zstreamid: u32,  Zconfig: *const u8)  -> *mut u8;
-
-    #[link_name = "carrier_channel_shutdown"]
-    pub fn r#shutdown( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
     #[link_name = "carrier_channel_cleanup"]
     pub fn r#cleanup( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
-    #[link_name = "carrier_channel_send_close_frame"]
-    pub fn r#send_close_frame( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstreamid: u32,  Zorder: u64);
+    #[link_name = "carrier_channel_ack"]
+    pub fn r#ack( Zself: *mut u8,  Ze: *mut u8,  Zackd: u64);
 
-    #[link_name = "carrier_channel_from_transfer"]
-    pub fn r#from_transfer( Zself: *mut u8,  Ztr: super::carrier_channel::Transfer);
-
-    #[link_name = "carrier_channel_open_with_headers"]
-    pub fn r#open_with_headers( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zconf: *const u8,  Zextraheaders: super::slice_slice::Slice)  -> *mut u8;
-
-    #[link_name = "carrier_channel_handle_open_frame"]
-    pub fn r#handle_open_frame( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstreamid: u32,  Zheader_slice: super::slice_slice::Slice)  -> bool;
-
-    #[link_name = "carrier_channel_push"]
-    pub fn r#push( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbody: *mut u8,  Zl: usize,  Zcounter: u64,  Zversion: u8);
+    #[link_name = "carrier_channel_poll"]
+    pub fn r#poll( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zasync: *mut u8,  Zbuf: *mut u8,  Zst: usize)  -> super::io::Result;
 
     #[link_name = "carrier_channel_disconnect"]
     pub fn r#disconnect( Zthis: *mut u8,  Ze: *mut u8,  Zet: usize);
 
+    #[link_name = "carrier_channel_open_with_headers"]
+    pub fn r#open_with_headers( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zconf: *const u8,  Zextraheaders: super::slice_slice::Slice)  -> *mut u8;
+
+    #[link_name = "carrier_channel_disco"]
+    pub fn r#disco( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstream_id: u32);
+
+
+    #[link_name = "carrier_channel_push"]
+    pub fn r#push( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zbody: *mut u8,  Zl: usize,  Zcounter: u64,  Zversion: u8);
+
+    #[link_name = "carrier_channel_shutdown"]
+    pub fn r#shutdown( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+
     #[link_name = "carrier_channel_stream_exists"]
     pub fn r#stream_exists( Zself: *mut u8,  Zstreamid: u32)  -> bool;
 
-    #[link_name = "carrier_channel_ack"]
-    pub fn r#ack( Zself: *mut u8,  Ze: *mut u8,  Zackd: u64);
+    #[link_name = "carrier_channel_handle_open_frame"]
+    pub fn r#handle_open_frame( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstreamid: u32,  Zheader_slice: super::slice_slice::Slice)  -> bool;
+
+    #[link_name = "carrier_channel_clean_closed"]
+    pub fn r#clean_closed( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+
+    #[link_name = "sizeof_carrier_channel_Channel"]
+    pub fn sizeof_Channel() -> libc::size_t;
+
+    #[link_name = "carrier_channel_alloc_stream"]
+    pub fn r#alloc_stream( Zself: *mut u8,  Zstreamid: u32,  Zconfig: *const u8)  -> *mut u8;
+
+    #[link_name = "carrier_channel_transfer_from_symmetric"]
+    pub fn r#transfer_from_symmetric( Zsymm: *const u8,  Zversion: u8,  Zrevision: u32,  Zroute: u64,  Zresponder: bool)  -> super::carrier_channel::Transfer;
+
+    #[link_name = "carrier_channel_open"]
+    pub fn r#open( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zconf: *const u8)  -> *mut u8;
+
+    #[link_name = "carrier_channel_send_close_frame"]
+    pub fn r#send_close_frame( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zstreamid: u32,  Zorder: u64);
 
 }

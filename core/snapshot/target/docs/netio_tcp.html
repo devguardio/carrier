@@ -1,9 +1,34 @@
 
 <h1> module netio::tcp </h1>
-<h4> fn recv (
+<h4> fn connect (
+
+    ::io::Async*
+    async,
+
+    ::err::Err*+et
+    e,
+
+    ::net::address::Address
+    addr,
 
     usize
-    st,
+    et,
+
+    ::netio::tcp::Socket*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn recv (
+
+    ::err::Err*+et
+    e,
 
     usize
     et,
@@ -14,8 +39,8 @@
     ::buffer::Buffer*+st
     buf,
 
-    ::err::Err*+et
-    e,
+    usize
+    st,
 
 )
 
@@ -27,17 +52,17 @@
 
 </p><h4> fn send (
 
-    ::err::Err*+et
-    e,
-
     ::netio::tcp::Socket*
     self,
 
-    usize
-    et,
-
     ::slice::slice::Slice
     buf,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
 
 )
 
@@ -51,31 +76,6 @@
 
     ::netio::tcp::Socket*
     self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn connect (
-
-    ::net::address::Address
-    addr,
-
-    ::netio::tcp::Socket*
-    self,
-
-    ::io::Async*
-    async,
-
-    ::err::Err*+et
-    e,
-
-    usize
-    et,
 
 )
 

@@ -3,19 +3,19 @@
 <h4> fn fail_with_errno (
 
     ::ext::&lt;stddef.h&gt;::char*
-    scope,
+    file,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    fmt,
 
     usize
     tail,
 
     ::ext::&lt;stddef.h&gt;::char*
-    file,
+    scope,
 
     ::err::Err*+tail
     self,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    fmt,
 
     usize
     line,
@@ -31,10 +31,10 @@
 </p><h4> fn rand (
 
     usize
-    et,
+    size,
 
     usize
-    size,
+    et,
 
     ::err::Err*+et
     e,

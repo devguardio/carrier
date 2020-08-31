@@ -64,23 +64,23 @@ impl CipherState {
 }
 }
 extern {
-    #[link_name = "carrier_cipher_decrypt"]
-    pub fn r#decrypt( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zciphertext: *const u8,  Zcipherlen: usize,  Znonce: u64,  Zplain: *mut u8,  Zplainlen_max: usize)  -> usize;
+    #[link_name = "carrier_cipher_encrypt_ad"]
+    pub fn r#encrypt_ad( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zauthtext: *const u8,  Zauthtext_len: usize,  Zplain: *const u8,  Zplainlen: usize,  Znonce: u64,  Zciphertext: *mut u8,  Zcipherlen_max: usize)  -> usize;
+
+    #[link_name = "sizeof_carrier_cipher_CipherState"]
+    pub fn sizeof_CipherState() -> libc::size_t;
+
+    #[link_name = "carrier_cipher_init"]
+    pub fn r#init( Zself: *mut u8,  Zk: *const u8);
+
+    #[link_name = "carrier_cipher_encrypt"]
+    pub fn r#encrypt( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zplain: *const u8,  Zplainlen: usize,  Znonce: u64,  Zciphertext: *mut u8,  Zcipherlen_max: usize)  -> usize;
 
 
     #[link_name = "carrier_cipher_decrypt_ad"]
     pub fn r#decrypt_ad( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zauthtext: *const u8,  Zauthtext_len: usize,  Zciphertext: *const u8,  Zcipherlen: usize,  Znonce: u64,  Zplain: *mut u8,  Zplainlen_max: usize)  -> usize;
 
-    #[link_name = "carrier_cipher_encrypt"]
-    pub fn r#encrypt( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zplain: *const u8,  Zplainlen: usize,  Znonce: u64,  Zciphertext: *mut u8,  Zcipherlen_max: usize)  -> usize;
-
-    #[link_name = "carrier_cipher_encrypt_ad"]
-    pub fn r#encrypt_ad( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zauthtext: *const u8,  Zauthtext_len: usize,  Zplain: *const u8,  Zplainlen: usize,  Znonce: u64,  Zciphertext: *mut u8,  Zcipherlen_max: usize)  -> usize;
-
-    #[link_name = "carrier_cipher_init"]
-    pub fn r#init( Zself: *mut u8,  Zk: *const u8);
-
-    #[link_name = "sizeof_carrier_cipher_CipherState"]
-    pub fn sizeof_CipherState() -> libc::size_t;
+    #[link_name = "carrier_cipher_decrypt"]
+    pub fn r#decrypt( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zciphertext: *const u8,  Zcipherlen: usize,  Znonce: u64,  Zplain: *mut u8,  Zplainlen_max: usize)  -> usize;
 
 }

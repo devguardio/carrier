@@ -24,20 +24,20 @@ static inline void * pyFATGetPtr(PyObject * obj , char * expected_type) {
     return fat->ptr;
 }
 
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_toml_ParserStack;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_toml_Parser;
+extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_buffer_Buffer;
-extern PyTypeObject py_Type_err_Err;
-extern PyTypeObject py_Type_slice_slice_Slice;
-extern PyTypeObject py_Type_slice_slice_Slice;
 extern PyTypeObject py_Type_toml_Value;
+extern PyTypeObject py_Type_err_Err;
 extern PyTypeObject py_Type_toml_U;
-extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
-extern PyTypeObject py_Type_toml_ParserStack;
 extern PyTypeObject py_Type_toml_Parser;
-
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_slice_slice_Slice;
+extern PyTypeObject py_Type_toml_U;
+extern PyTypeObject py_Type_toml_ParserStack;
+extern PyTypeObject py_Type_buffer_Buffer;
+extern PyTypeObject py_Type_toml_Parser;
+extern PyTypeObject py_Type_slice_mut_slice_MutSlice;
+extern PyTypeObject py_Type_err_Err;
 static PyObject * py_get_toml_Value_t(PyObject *pyself, void *closure) {
 
     toml_Value * self = pyFATGetPtr(pyself, "toml_Value");
@@ -134,7 +134,6 @@ PyTypeObject py_Type_toml_Value  = {
     .tp_dealloc     = py_free_toml_Value,
 };
 
-
 static void  py_CLOSURE_toml_Pop (toml_U const *  const  arg0, err_Err*  const  arg1, uintptr_t const  arg2, toml_Parser*  const  arg3, uintptr_t const  arg4, void * _ctx) {
     PyObject *callobject = (PyObject *)_ctx;
 
@@ -155,6 +154,8 @@ static void  py_CLOSURE_toml_Pop (toml_U const *  const  arg0, err_Err*  const  
     if (PyErr_Occurred()) {PyErr_WriteUnraisable(callobject);} 
     Py_DECREF(rrrr);
 } 
+
+
 
 static PyObject * py_get_toml_U_it(PyObject *pyself, void *closure) {
 
@@ -251,10 +252,6 @@ PyTypeObject py_Type_toml_U  = {
     .tp_getset      = py_getset_toml_U,
     .tp_dealloc     = py_free_toml_U,
 };
-
-
-
-
 
 static PyObject * py_get_toml_Parser_col(PyObject *pyself, void *closure) {
 
@@ -398,6 +395,10 @@ PyTypeObject py_Type_toml_Parser  = {
     .tp_getset      = py_getset_toml_Parser,
     .tp_dealloc     = py_free_toml_Parser,
 };
+
+
+
+
 
 
 static PyObject* py_toml_close(PyObject *pyself, PyObject *args) {

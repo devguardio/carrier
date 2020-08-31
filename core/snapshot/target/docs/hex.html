@@ -1,53 +1,15 @@
 
 <h1> module hex </h1>
-<h4> fn dump (
-
-    usize
-    l,
-
-    u8*
-    data,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn str2bin (
-
-    usize
-    outlen,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    in,
-
-    u8*
-    out,
-
-    usize
-    inlen,
-
-)
-
--&gt usize
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn fdump (
+<h4> fn fdump (
 
     ::ext::&lt;stdio.h&gt;::FILE*
     f,
 
-    usize
-    l,
-
     u8*
     data,
+
+    usize
+    l,
 
 )
 
@@ -65,6 +27,44 @@
 )
 
 
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn dump (
+
+    usize
+    l,
+
+    u8*
+    data,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn str2bin (
+
+    u8*
+    out,
+
+    usize
+    outlen,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    in,
+
+    usize
+    inlen,
+
+)
+
+-&gt usize
 
 </h4>
 

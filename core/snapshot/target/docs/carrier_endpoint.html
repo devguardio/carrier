@@ -1,25 +1,63 @@
 
 <h1> module carrier::endpoint </h1>
-<h4> fn broker (
+<h4> fn do_not_move (
 
     ::carrier::endpoint::Endpoint*
     self,
 
 )
 
--&gt ::carrier::channel::Channel*
+
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn none (
+</p><h4> fn close (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ close endpoint immediately&lt;br&gt;
+</p><h4> fn cluster_target (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+    ::carrier::identity::Identity*
+    target,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_vault (
+
+    usize
+    xt,
+
+    ::err::Err*+et
+    e,
 
     ::carrier::endpoint::Endpoint*+xt
     self,
 
+    ::carrier::vault::Vault
+    vault,
+
     usize
-    xt,
+    et,
 
 )
 
@@ -55,10 +93,7 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn poll (
-
-    usize
-    et,
+</p><h4> fn start (
 
     ::carrier::endpoint::Endpoint*
     self,
@@ -66,12 +101,72 @@
     ::err::Err*+et
     e,
 
+    usize
+    et,
+
     ::io::Async*
     async,
 
 )
 
--&gt ::io::Result
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn from_secretkit (
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    usize
+    xt,
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::identity::SecretKit
+    ik,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn shutdown (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+ gracefully disconnect everything and shutdown&lt;br&gt;
+</p><h4> fn broker (
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+-&gt ::carrier::channel::Channel*
 
 </h4>
 
@@ -93,60 +188,13 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_carriertoml (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    usize
-    xt,
-
-    ::ext::&lt;stddef.h&gt;::char*
-    file_name,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn from_secretkit (
-
-    ::err::Err*+et
-    e,
-
-    ::carrier::identity::SecretKit
-    ik,
-
-    ::carrier::endpoint::Endpoint*+xt
-    self,
-
-    usize
-    xt,
-
-    usize
-    et,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn start (
+</p><h4> fn poll (
 
     ::carrier::endpoint::Endpoint*
     self,
+
+    usize
+    et,
 
     ::err::Err*+et
     e,
@@ -154,91 +202,21 @@
     ::io::Async*
     async,
 
-    usize
-    et,
-
 )
 
-
+-&gt ::io::Result
 
 </h4>
 
 <p class='doc_comments'>
 
-</p><h4> fn close (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- close endpoint immediately&lt;br&gt;
-</p><h4> fn do_not_move (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn native (
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
+</p><h4> fn none (
 
     ::carrier::endpoint::Endpoint*+xt
     self,
 
     usize
     xt,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn shutdown (
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-    usize
-    et,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
-
-</h4>
-
-<p class='doc_comments'>
- gracefully disconnect everything and shutdown&lt;br&gt;
-</p><h4> fn cluster_target (
-
-    ::carrier::identity::Identity*
-    target,
-
-    ::carrier::endpoint::Endpoint*
-    self,
 
 )
 
@@ -250,9 +228,6 @@
 
 </p><h4> fn from_home_carriertoml (
 
-    usize
-    et,
-
     ::err::Err*+et
     e,
 
@@ -261,6 +236,9 @@
 
     usize
     xt,
+
+    usize
+    et,
 
 )
 
@@ -270,22 +248,44 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn from_vault (
+</p><h4> fn from_carriertoml (
+
+    ::err::Err*+et
+    e,
+
+    ::ext::&lt;stddef.h&gt;::char*
+    file_name,
+
+    usize
+    xt,
 
     ::carrier::endpoint::Endpoint*+xt
     self,
+
+    usize
+    et,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn native (
+
+    ::carrier::endpoint::Endpoint*+xt
+    self,
+
+    usize
+    et,
 
     usize
     xt,
 
     ::err::Err*+et
     e,
-
-    usize
-    et,
-
-    ::carrier::vault::Vault
-    vault,
 
 )
 

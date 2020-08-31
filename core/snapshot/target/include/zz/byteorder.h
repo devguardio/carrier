@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdbool.h>
-#ifndef ZZ_FORWARD___home_aep_proj_zz_modules_byteorder_src_lib_h_
-#define ZZ_FORWARD___home_aep_proj_zz_modules_byteorder_src_lib_h_
+#ifndef ZZ_FORWARD___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
+#define ZZ_FORWARD___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
 #endif
 #ifndef ZZ_FORWARD_byteorder_swap16
 #define ZZ_FORWARD_byteorder_swap16
@@ -19,23 +19,29 @@
 #ifndef ZZ_FORWARD_byteorder_swap64
 #define ZZ_FORWARD_byteorder_swap64
 #endif
+#ifndef ZZ_FORWARD_byteorder_to_be32
+#define ZZ_FORWARD_byteorder_to_be32
+#endif
+#ifndef ZZ_FORWARD_byteorder_from_be32
+#define ZZ_FORWARD_byteorder_from_be32
+#endif
+#ifndef ZZ_FORWARD_byteorder_to_le16
+#define ZZ_FORWARD_byteorder_to_le16
+#endif
+#ifndef ZZ_FORWARD_byteorder_from_le16
+#define ZZ_FORWARD_byteorder_from_le16
+#endif
+#ifndef ZZ_FORWARD_byteorder_to_le64
+#define ZZ_FORWARD_byteorder_to_le64
+#endif
 #ifndef ZZ_FORWARD_byteorder_to_be64
 #define ZZ_FORWARD_byteorder_to_be64
 #endif
 #ifndef ZZ_FORWARD_byteorder_from_be64
 #define ZZ_FORWARD_byteorder_from_be64
 #endif
-#ifndef ZZ_FORWARD_byteorder_to_be32
-#define ZZ_FORWARD_byteorder_to_be32
-#endif
-#ifndef ZZ_FORWARD_byteorder_to_le64
-#define ZZ_FORWARD_byteorder_to_le64
-#endif
 #ifndef ZZ_FORWARD_byteorder_from_le64
 #define ZZ_FORWARD_byteorder_from_le64
-#endif
-#ifndef ZZ_FORWARD_byteorder_to_le16
-#define ZZ_FORWARD_byteorder_to_le16
 #endif
 #ifndef ZZ_FORWARD_byteorder_to_le32
 #define ZZ_FORWARD_byteorder_to_le32
@@ -43,16 +49,10 @@
 #ifndef ZZ_FORWARD_byteorder_from_le32
 #define ZZ_FORWARD_byteorder_from_le32
 #endif
-#ifndef ZZ_FORWARD_byteorder_from_le16
-#define ZZ_FORWARD_byteorder_from_le16
-#endif
-#ifndef ZZ_FORWARD_byteorder_from_be32
-#define ZZ_FORWARD_byteorder_from_be32
-#endif
-#ifndef ZZ_EXPORT___home_aep_proj_zz_modules_byteorder_src_lib_h_
-#define ZZ_EXPORT___home_aep_proj_zz_modules_byteorder_src_lib_h_
+#ifndef ZZ_EXPORT___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
+#define ZZ_EXPORT___home_runner_work_carrier_carrier_modules_byteorder_src_lib_h_
 
-#line 1 "/home/aep/proj/zz/modules/byteorder/src/lib.h"
+#line 1 "/home/runner/work/carrier/carrier/modules/byteorder/src/lib.h"
 #if !defined(BYTE_ORDER)
     #if defined(__BYTE_ORDER__)
         #define BYTE_ORDER __BYTE_ORDER__
@@ -121,6 +121,31 @@ uint32_t  static inline byteorder_swap32 (uint32_t const  x);
 uint64_t  static inline byteorder_swap64 (uint64_t const  x);
 
 #endif
+#ifndef ZZ_EXPORT_byteorder_to_be32
+#define ZZ_EXPORT_byteorder_to_be32
+uint32_t  static inline byteorder_to_be32 (uint32_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_from_be32
+#define ZZ_EXPORT_byteorder_from_be32
+uint32_t  static inline byteorder_from_be32 (uint32_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_to_le16
+#define ZZ_EXPORT_byteorder_to_le16
+uint16_t  static inline byteorder_to_le16 (uint16_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_from_le16
+#define ZZ_EXPORT_byteorder_from_le16
+uint16_t  static inline byteorder_from_le16 (uint16_t const  x);
+
+#endif
+#ifndef ZZ_EXPORT_byteorder_to_le64
+#define ZZ_EXPORT_byteorder_to_le64
+uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
+
+#endif
 #ifndef ZZ_EXPORT_byteorder_to_be64
 #define ZZ_EXPORT_byteorder_to_be64
 uint64_t  static inline byteorder_to_be64 (uint64_t const  x);
@@ -131,24 +156,9 @@ uint64_t  static inline byteorder_to_be64 (uint64_t const  x);
 uint64_t  static inline byteorder_from_be64 (uint64_t const  x);
 
 #endif
-#ifndef ZZ_EXPORT_byteorder_to_be32
-#define ZZ_EXPORT_byteorder_to_be32
-uint32_t  static inline byteorder_to_be32 (uint32_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_to_le64
-#define ZZ_EXPORT_byteorder_to_le64
-uint64_t  static inline byteorder_to_le64 (uint64_t const  x);
-
-#endif
 #ifndef ZZ_EXPORT_byteorder_from_le64
 #define ZZ_EXPORT_byteorder_from_le64
 uint64_t  static inline byteorder_from_le64 (uint64_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_to_le16
-#define ZZ_EXPORT_byteorder_to_le16
-uint16_t  static inline byteorder_to_le16 (uint16_t const  x);
 
 #endif
 #ifndef ZZ_EXPORT_byteorder_to_le32
@@ -159,15 +169,5 @@ uint32_t  static inline byteorder_to_le32 (uint32_t const  x);
 #ifndef ZZ_EXPORT_byteorder_from_le32
 #define ZZ_EXPORT_byteorder_from_le32
 uint32_t  static inline byteorder_from_le32 (uint32_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_from_le16
-#define ZZ_EXPORT_byteorder_from_le16
-uint16_t  static inline byteorder_from_le16 (uint16_t const  x);
-
-#endif
-#ifndef ZZ_EXPORT_byteorder_from_be32
-#define ZZ_EXPORT_byteorder_from_be32
-uint32_t  static inline byteorder_from_be32 (uint32_t const  x);
 
 #endif

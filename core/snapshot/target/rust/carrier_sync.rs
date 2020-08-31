@@ -68,35 +68,35 @@ impl Sync {
 }
 }
 extern {
+    #[link_name = "carrier_sync_on_connect"]
+    pub fn r#on_connect( Zcon: *mut u8,  Zchan: *mut u8);
 
-    #[link_name = "carrier_sync_open_with_headers"]
-    pub fn r#open_with_headers( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zsc: *const u8,  Zextraheaders: super::slice_slice::Slice)  -> *mut u8;
 
-    #[link_name = "sizeof_carrier_sync_Sync"]
-    pub fn sizeof_Sync() -> libc::size_t;
-
-    #[link_name = "carrier_sync_start"]
-    pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zep: *mut u8);
-
-    #[link_name = "carrier_sync_wait"]
-    pub fn r#wait( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+    #[link_name = "carrier_sync_close"]
+    pub fn r#close( Zself: *mut u8,  Zexit_code: std::os::raw::c_int);
 
     #[link_name = "carrier_sync_on_disconnect"]
     pub fn r#on_disconnect( Zcon: *mut u8,  Zep: *mut u8);
 
-    #[link_name = "carrier_sync_iwait"]
-    pub fn r#iwait( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+    #[link_name = "carrier_sync_wait"]
+    pub fn r#wait( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
 
     #[link_name = "carrier_sync_open"]
     pub fn r#open( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zsc: *const u8)  -> *mut u8;
 
-    #[link_name = "carrier_sync_on_connect"]
-    pub fn r#on_connect( Zcon: *mut u8,  Zchan: *mut u8);
+    #[link_name = "carrier_sync_iwait"]
+    pub fn r#iwait( Zself: *mut u8,  Ze: *mut u8,  Zet: usize);
+
+    #[link_name = "sizeof_carrier_sync_Sync"]
+    pub fn sizeof_Sync() -> libc::size_t;
 
     #[link_name = "carrier_sync_connect"]
     pub fn r#connect( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Ztarget: *const u8);
 
-    #[link_name = "carrier_sync_close"]
-    pub fn r#close( Zself: *mut u8,  Zexit_code: std::os::raw::c_int);
+    #[link_name = "carrier_sync_open_with_headers"]
+    pub fn r#open_with_headers( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zsc: *const u8,  Zextraheaders: super::slice_slice::Slice)  -> *mut u8;
+
+    #[link_name = "carrier_sync_start"]
+    pub fn r#start( Zself: *mut u8,  Ze: *mut u8,  Zet: usize,  Zep: *mut u8);
 
 }

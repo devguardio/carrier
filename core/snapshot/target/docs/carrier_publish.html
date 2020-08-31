@@ -1,6 +1,38 @@
 
 <h1> module carrier::publish </h1>
-<h4> fn swap32 (
+<h4> fn publish (
+
+    ::err::Err*+et
+    e,
+
+    usize
+    et,
+
+    ::carrier::endpoint::Endpoint*
+    self,
+
+)
+
+
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn swap32 (
+
+    u32
+    x,
+
+)
+
+-&gt u32
+
+</h4>
+
+<p class='doc_comments'>
+
+</p><h4> fn to_be32 (
 
     u32
     x,
@@ -39,19 +71,6 @@
 
 <p class='doc_comments'>
 
-</p><h4> fn to_be32 (
-
-    u32
-    x,
-
-)
-
--&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
 </p><h4> fn from_be32 (
 
     u32
@@ -60,25 +79,6 @@
 )
 
 -&gt u32
-
-</h4>
-
-<p class='doc_comments'>
-
-</p><h4> fn publish (
-
-    usize
-    et,
-
-    ::carrier::endpoint::Endpoint*
-    self,
-
-    ::err::Err*+et
-    e,
-
-)
-
-
 
 </h4>
 

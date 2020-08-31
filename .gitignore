@@ -1,5 +1,7 @@
-/target
+/core/target
+/core/snapshot
 **/*.o
 **/*.parsecache
 **/*.buildcache
 **/*.rs.bk
+

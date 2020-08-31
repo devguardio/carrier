@@ -61,7 +61,7 @@ jobs:
         ./snapshot.sh
         git config --local user.email "aep@exys.org"
         git config --local user.name "Snapshot Bot"
-        git add snapshot
+        git add snapshot -f
         git commit -m "snapshot"
 
 

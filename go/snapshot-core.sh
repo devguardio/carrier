@@ -9,3 +9,4 @@ mkdir core
 mkdir core/target/
 cp -av ../core/target/go ./core/target/
 cp -av ../core/target/c  ./core/target/
+rm core/target/go/carrier/go.mod

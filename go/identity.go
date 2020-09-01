@@ -9,10 +9,11 @@ import (
 )
 
 
-type Identity   C.carrier_identity_Identity;
-type Secret     C.carrier_identity_Secret;
-type Address    C.carrier_identity_Address;
-type SecretKit  C.carrier_identity_SecretKit;
+type Identity       C.carrier_identity_Identity;
+type Secret         C.carrier_identity_Secret;
+type Address        C.carrier_identity_Address;
+type SecretKit      C.carrier_identity_SecretKit;
+type IdentityKit    C.carrier_identity_IdentityKit;
 
 
 // -- secret
@@ -209,4 +210,66 @@ func SecretKitFromStringParts(identity string, network string) (*SecretKit, erro
     }
 
     return (*SecretKit)(id), nil;
+}
+
+
+
+// -- identitykit
+
+
+func (self *IdentityKit) String() (string, error) {
+
+    var e = ErrNew();
+    defer C.free(unsafe.Pointer(e));
+
+    var buf [300]byte
+    var ptr = (*C.char)(unsafe.Pointer(&buf[0]))
+
+    var l = C.carrier_identity_identitykit_to_str(e, TAIL_ERR, ptr, 300, (*C.carrier_identity_IdentityKit)(unsafe.Pointer(self)));
+    if err := ErrCheck(e); err != nil { return "", err; }
+    return C.GoStringN(ptr, (C.int)(l)), nil;
+}
+
+func IdentityKitFromString (s string) (*IdentityKit, error) {
+    var e = ErrNew();
+    defer C.free(unsafe.Pointer(e));
+
+    var id = &IdentityKit{}
+
+    var s_c = C.CString(s);
+    C.carrier_identity_identitykit_from_str((*C.carrier_identity_IdentityKit)(unsafe.Pointer(id)), e, TAIL_ERR, s_c, C.strlen(s_c));
+    C.free(unsafe.Pointer(s_c));
+
+    var err = ErrCheck(e);
+    if err != nil {
+        return nil, err;
+    }
+
+    return id, nil;
+}
+
+func IdentityKitFromStringParts(identity string, network string) (*IdentityKit, error) {
+
+    var e = ErrNew();
+    defer C.free(unsafe.Pointer(e));
+
+    var id = &C.carrier_identity_IdentityKit{};
+
+    var s1  = C.CString(identity);
+    C.carrier_identity_identity_from_str(&id.identity, e, TAIL_ERR, s1, C.strlen(s1));
+    C.free(unsafe.Pointer(s1));
+
+    var err = ErrCheck(e);
+    if err != nil {
+        return nil, err;
+    }
+
+    var s2 = C.CString(network);
+    C.carrier_identity_address_from_str(&id.network, e, TAIL_ERR, s2, C.strlen(s2));
+    C.free(unsafe.Pointer(s2));
+    if err != nil {
+        return nil, err;
+    }
+
+    return (*IdentityKit)(id), nil;
 }

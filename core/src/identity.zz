@@ -28,7 +28,8 @@ export struct Address       { u8 k[32]; }; // type 6
 export struct Identity      { u8 k[32]; }; // type 9
 export struct Signature     { u8 k[64]; }; // type 10
 export struct Alias         { u8 k[8];  }; // type 11
-export struct SecretKit   { Secret identity; Secret network; }; // type 1
+export struct SecretKit     { Secret identity; Secret network; }; // type 1
+export struct IdentityKit   { Identity identity; Address network; }; // type 2
 
 using <stdio.h>::{printf};
 
@@ -431,6 +432,22 @@ export fn secretkit_generate (SecretKit mut new* self, err::Err+et mut* e)
     rand::rand(e, k, 64);
 }
 
+export fn identitykit_from_str (IdentityKit mut* self, err::Err+et mut* e, char* from, usize l)
+    where err::checked(*e)
+    where l <= len(from)
+{
+    let k = (u8 mut*)self;
+    static_attest(len(k) >= 64);
+    from_str(64, e, k, from, l, 2);
+}
+export fn identitykit_to_str (err::Err+et mut* e, char mut* to, usize l, IdentityKit * from) -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+{
+    let k = (u8 mut*)from;
+    static_attest(len(k) >= 64);
+    return to_str(64, e, to, l, 1, 2, k);
+}
 
 
 export fn identity_from_secret (Identity mut* pk, Secret* sk) {

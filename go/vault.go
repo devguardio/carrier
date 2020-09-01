@@ -20,6 +20,24 @@ func (self *Vault) GetIdentity() *Identity {
     return (*Identity)(v);
 }
 
+func (self *Vault) GetIdentityKit() *IdentityKit {
+
+    var v = &C.carrier_identity_IdentityKit{};
+
+    C.carrier_vault_get_local_identity(
+        (*C.carrier_vault_Vault)(unsafe.Pointer(self)),
+        &v.identity,
+    );
+
+    C.carrier_vault_get_network(
+        (*C.carrier_vault_Vault)(unsafe.Pointer(self)),
+        &v.network,
+    );
+
+
+    return (*IdentityKit)(v);
+}
+
 func (self *Vault) GetNetwork() *Address{
     var v = &C.carrier_identity_Address{};
     C.carrier_vault_get_network(

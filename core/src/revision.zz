@@ -8,7 +8,7 @@ pub macro m_revision() {
     system("git rev-list --count HEAD | tr -d '\\n' ");
 }
 
-export inline fn revision() -> u32 {
+export fn revision() -> u32 {
     return @m_revision();
 }
 

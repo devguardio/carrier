@@ -67,7 +67,7 @@ main = "carrier::python"
 [[artifacts]]
 type = "npm"
 name = "carrier"
-main = "carrier::nodejs"
+main = "carrier"
 
 [[artifacts]]
 type = "go"

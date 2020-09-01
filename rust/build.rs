@@ -104,9 +104,7 @@ pub fn main() {
             &[
                 "../core/proto/carrier.broker.v1.proto",
                 "../core/proto/carrier.certificate.v1.proto",
-                "../core/proto/carrier.sysinfo.v1.proto",
                 "../core/proto/carrier.discovery.v1.proto",
-                "../core/proto/genesis.v1.proto",
             ],
             &["../core/proto"],
         )

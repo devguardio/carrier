@@ -59,7 +59,5 @@ include!(concat!(env!("OUT_DIR"), "/build_id.rs"));
 pub mod proto {
     include!(concat!(env!("OUT_DIR"), "/carrier.broker.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/carrier.certificate.v1.rs"));
-    include!(concat!(env!("OUT_DIR"), "/carrier.sysinfo.v1.rs"));
     include!(concat!(env!("OUT_DIR"), "/carrier.discovery.v1.rs"));
-    include!(concat!(env!("OUT_DIR"), "/genesis.v1.rs"));
 }

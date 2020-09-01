@@ -30,10 +30,26 @@ func init() {
         },
     };
 
+    showCmd := &cobra.Command{
+        Use:    "address",
+        Short:  "show network address",
+        Run: func(cmd *cobra.Command, args []string) {
+            vault, err := NewVault();
+            if err != nil { log.Fatal(err) }
+            defer vault.Close();
+
+            id, err := vault.GetNetwork().String();
+            if err != nil { log.Fatal(err) }
+            fmt.Println(id);
+        },
+    };
+
     netCmd := &cobra.Command{
         Use:    "net <subcommand>",
         Short:  "network related subcommands",
     };
+
     netCmd.AddCommand(subscribeCmd);
+    netCmd.AddCommand(showCmd);
     rootCmd.AddCommand(netCmd);
 }

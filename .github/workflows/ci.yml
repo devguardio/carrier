@@ -47,8 +47,8 @@ jobs:
         cd core
         zz clean
         zz test
-        ./snapshot.sh
         cd ../go
+        ./snapshot-core.sh
         go test
         cd ../cli
         go test
@@ -57,11 +57,9 @@ jobs:
       if: matrix.os == 'ubuntu-latest'
       run: |
         export "PATH=$PATH:$PWD/target/release/"
-        cd core
-        ./snapshot.sh
-        git config --local user.email "aep@exys.org"
+        git config --local user.email "snapbot@devguard.io"
         git config --local user.name "Snapshot Bot"
-        git add snapshot -f
+        git add go/core -f
         git commit -m "snapshot"
 
 

@@ -1,5 +1,5 @@
-/core/target
-/core/snapshot
+core/target
+go/core
 **/*.o
 **/*.parsecache
 **/*.buildcache

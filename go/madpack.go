@@ -14,7 +14,7 @@ import (
 
 const TAIL_INDEX = 1000;
 
-func MadpackDecode(preshared []byte, b []byte) (map[string]interface{}, error) {
+func MadpackDecode(preshared *PresharedIndex, b []byte) (map[string]interface{}, error) {
 
     var mem = C.CBytes(b);
     defer C.free(mem);
@@ -23,16 +23,14 @@ func MadpackDecode(preshared []byte, b []byte) (map[string]interface{}, error) {
         size:   (C.size_t)(len(b)),
     };
 
-    var index_mem = C.CBytes(preshared);
-    defer C.free(index_mem);
-    index_sl := C.slice_slice_Slice{
-        mem:    (*C.uint8_t)(unsafe.Pointer(index_mem)),
-        size:   (C.size_t)(len(preshared)),
-    };
-
     var index = (*C.madpack_Index)(C.calloc(1, C.real_sizeof_madpack_Index(TAIL_INDEX)));
     defer C.free(unsafe.Pointer(index));
-    C.madpack_from_preshared_index(index, TAIL_INDEX, index_sl);
+
+    if preshared != nil {
+        C.madpack_from_preshared_index(index, TAIL_INDEX, preshared.sl);
+    } else {
+        C.madpack_empty_index(index, TAIL_INDEX);
+    }
 
     var decoder = (*C.madpack_Decoder)(C.calloc(1, C.real_sizeof_madpack_Decoder()));
     defer C.free(unsafe.Pointer(decoder));
@@ -42,19 +40,16 @@ func MadpackDecode(preshared []byte, b []byte) (map[string]interface{}, error) {
 
 }
 
-func MadpackEncode(preshared []byte, v map[string]interface{}) ([]byte, error) {
-
-    var index_mem = C.CBytes(preshared);
-    defer C.free(index_mem);
-    index_sl := C.slice_slice_Slice{
-        mem:    (*C.uint8_t)(unsafe.Pointer(index_mem)),
-        size:   (C.size_t)(len(preshared)),
-    };
+func MadpackEncode(preshared *PresharedIndex,  v map[string]interface{}) ([]byte, error) {
 
     var index = (*C.madpack_Index)(C.calloc(1, C.real_sizeof_madpack_Index(TAIL_INDEX)));
     defer C.free(unsafe.Pointer(index));
-    C.madpack_from_preshared_index(index, TAIL_INDEX, index_sl);
 
+    if preshared != nil {
+        C.madpack_from_preshared_index(index, TAIL_INDEX, preshared.sl);
+    } else {
+        C.madpack_empty_index(index, TAIL_INDEX);
+    }
 
 
     const buffertail = 10000;
@@ -160,11 +155,11 @@ func decode_map(decoder *C.madpack_Decoder) (map[string]interface{}, error)  {
             case C.madpack_Item_False:
                 rr[key] = false;
             case C.madpack_Item_Float:
-                rr[key] = *(*C.double)(unsafe.Pointer(&decoder.value))
+                rr[key] = (float64)(*(*C.double)(unsafe.Pointer(&decoder.value)))
             case C.madpack_Item_Uint:
-                rr[key] = *(*C.uint64_t)(unsafe.Pointer(&decoder.value))
+                rr[key] = (uint64)(*(*C.uint64_t)(unsafe.Pointer(&decoder.value)))
             case C.madpack_Item_Sint:
-                rr[key] = *(*C.int64_t)(unsafe.Pointer(&decoder.value))
+                rr[key] = (int64)(*(*C.int64_t)(unsafe.Pointer(&decoder.value)))
             case C.madpack_Item_String:
                 var sl = *(*C.slice_slice_Slice)(unsafe.Pointer(&decoder.value));
                 rr[key] = (string)(C.GoBytes(unsafe.Pointer(sl.mem), C.int(sl.size)))

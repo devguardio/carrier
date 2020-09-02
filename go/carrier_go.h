@@ -59,3 +59,8 @@ static unsigned long real_sizeof_buffer_Buffer(size_t tail)
 {
     return sizeof_buffer_Buffer(tail);
 }
+
+static unsigned long real_sizeof_carrier_vault_Vault()
+{
+    return sizeof_carrier_vault_Vault();
+}

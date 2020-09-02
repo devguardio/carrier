@@ -14,6 +14,8 @@ using config;
 using pub_sysinfo;
 using sync;
 using subscribe;
+using connect;
+using vault;
 
 export fn hellozz() -> int {
     printf("hello carrier\n");

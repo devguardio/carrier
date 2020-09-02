@@ -1,0 +1,205 @@
+{{define "content"}}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="header-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Pretitle -->
+                            <h6 class="header-pretitle">
+                                {{.user.Id}}
+                            </h6>
+
+                            <!-- Title -->
+                            <h1 class="header-title">
+                                <i class="fe fe-cloud-snow"></i> Network
+                            </h1>
+
+                        </div>
+                        <div class="col-auto">
+                            &nbsp;
+                        </div>
+                    </div>
+                    <!--
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <ul class="nav nav-tabs nav-overflow header-tabs">
+                                <li class="nav-item">
+                                    <a href="#!" class="nav-link active">
+                                        Discovery
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#!" class="nav-link">
+                                        Identities
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#!" class="nav-link">
+                                        Networks
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div class="card" data-list='{"valueNames": ["identities-ref", "identities-public", "identities-date", "identities-item", "identities-status"]}'>
+                <div class='card-body'>
+                    <div class='row'>
+                        <div class='col-auto'>
+                            <h6 class="text-uppercase text-muted mb-2">
+                                Devices Online
+                            </h6>
+                            <span class="h2 mb-0">
+                                <span id="data_publishers"> {{.publishers}} </span>
+                            </span>
+                        </div>
+                        <div class='col-auto'>
+                            <h6 class="text-uppercase text-muted mb-2">
+                                Network Messages
+                            </h6>
+                            <span class="h2 mb-0">
+                                <span id="data_traffic"> {{.traffic}} </span>
+                                <i class="fe fe-activity" id="data_publishers_pulse"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="chart">
+                        <div id='wait_for_chart'> A few seconds please ...</div>
+
+                        <canvas class="chart-canvas" id="overviewChart"></canvas>
+
+                    </div>
+
+                </div> <!-- class='card-body -->
+
+            </div>
+
+        </div>
+    </div> <!-- / .row -->
+</div>
+
+
+<script>
+
+$(function() {
+    Chart.defaults.global.defaultFontFamily= 'sans-serif';
+
+    var chart  = new Chart('overviewChart', {
+        options: {
+            animation: {
+                duration: 0,
+            },
+            scales: {
+                yAxes: [
+                {
+                    id: 'count',
+                    ticks: {
+                        display: false,
+                        maxTicksLimit: 10,
+                        suggestedMin: 1000,
+                        suggestedMax: 8000,
+                    },
+                    gridLines: {
+                        drawBorder: false,
+                        lineWidth: 0,
+                        zeroLineWidth: 0,
+                    }
+                },
+                {
+                    id: 'bytes',
+                    ticks: {
+                        display: false,
+                        maxTicksLimit: 10,
+                        suggestedMax: 100,
+                    },
+                    gridLines: {
+                        drawBorder: false,
+                        lineWidth: 0,
+                        zeroLineWidth: 0,
+                    }
+                }
+                ],
+                xAxes: [{
+                    type: 'time',
+                    ticks: {
+                        maxTicksLimit: 7,
+                        maxRotation: 0,
+                    },
+                    time: {
+                        //round: 'minute',
+                        displayFormats: {
+                            millisecond: 'HH:mm:ss',
+                            second: 'HH:mm',
+                            minute: 'HH:mm',
+                            hour:   'HH:mm'
+                        }
+                    },
+                    gridLines: {
+                        drawBorder: false,
+                        lineWidth: 0,
+                        color:"#fafafa",
+                        zeroLineWidth: 0,
+                        zeroLineColor: "#fafafa",
+                    }
+                }],
+            }
+        },
+        type: 'line',
+        data: {},
+    });
+
+
+    var loc = window.location, new_uri;
+    if (loc.protocol === "https:") {
+        new_uri = "wss:";
+    } else {
+        new_uri = "ws:";
+    }
+    new_uri += "//" + loc.host;
+    new_uri += loc.pathname + "/stream";
+
+    let socket = new WebSocket(new_uri);
+
+
+    socket.onmessage = function(event) {
+        var b = JSON.parse(event.data);
+        console.log(b);
+
+        $("#data_publishers_pulse").toggleClass("pulse_activity_animation");
+
+        $("#data_publishers").html(b.publishers);
+        chart.data.labels  = b.chart.labels;
+        chart.data.datasets = b.chart.datasets;
+        chart.data.datasets[1].borderColor = "#8a6";
+        chart.update();
+
+        if (chart.data.datasets[1].data.length > 1) {
+            $("#wait_for_chart").hide();
+        }
+
+        $("#data_traffic").html(b.chart._now_bytes_per_second);
+
+
+
+    };
+
+
+
+
+
+});
+</script>
+
+{{end}}

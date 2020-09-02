@@ -417,7 +417,7 @@ func go_call_cb_carrier_connect_connect_t(
     vf(self, cha);
 }
 
-func make_cb_carrier_connect_connect_t(v interface{}) C.carrier_connect_connect_t {
+func MakeConnectFn(v interface{}) C.carrier_connect_connect_t {
     var ptr unsafe.Pointer = C.malloc(C.size_t(1));
     if ptr == nil {
         panic("can't allocate 'cgo-pointer hack index pointer': ptr == nil")
@@ -430,7 +430,7 @@ func make_cb_carrier_connect_connect_t(v interface{}) C.carrier_connect_connect_
     return C.make_cb_carrier_connect_connect_t(ptr);
 }
 
-func release_cb_carrier_connect_connect_t(f C.carrier_connect_connect_t) {
+func (f C.carrier_connect_connect_t) Delete() { 
 	cb_mutex.Lock()
 	delete(cb_store, f.ctx)
 	cb_mutex.Unlock()
@@ -460,7 +460,7 @@ func go_call_cb_carrier_connect_disconnect_t(
     vf(self, ep);
 }
 
-func make_cb_carrier_connect_disconnect_t(v interface{}) C.carrier_connect_disconnect_t {
+func MakeDisconnectFn(v interface{}) C.carrier_connect_disconnect_t {
     var ptr unsafe.Pointer = C.malloc(C.size_t(1));
     if ptr == nil {
         panic("can't allocate 'cgo-pointer hack index pointer': ptr == nil")
@@ -473,7 +473,7 @@ func make_cb_carrier_connect_disconnect_t(v interface{}) C.carrier_connect_disco
     return C.make_cb_carrier_connect_disconnect_t(ptr);
 }
 
-func release_cb_carrier_connect_disconnect_t(f C.carrier_connect_disconnect_t) {
+func (f C.carrier_connect_disconnect_t) Delete() {
 	cb_mutex.Lock()
 	delete(cb_store, f.ctx)
 	cb_mutex.Unlock()
@@ -552,7 +552,7 @@ func go_call_cb_carrier_subscribe_identity_change_event_cb(
     );
 }
 
-func make_cb_carrier_subscribe_identity_change_event_cb(v interface{}) C.carrier_subscribe_identity_change_event_cb {
+func MakeSubscribeIdentityChangeEventFn(v interface{}) C.carrier_subscribe_identity_change_event_cb {
     var ptr unsafe.Pointer = C.malloc(C.size_t(1));
     if ptr == nil {
         panic("can't allocate 'cgo-pointer hack index pointer': ptr == nil")
@@ -565,7 +565,7 @@ func make_cb_carrier_subscribe_identity_change_event_cb(v interface{}) C.carrier
     return C.make_cb_carrier_subscribe_identity_change_event_cb(ptr);
 }
 
-func release_cb_carrier_subscribe_identity_change_event_cb(f C.carrier_subscribe_identity_change_event_cb) {
+func (f C.carrier_subscribe_identity_change_event_cb) Delete() {
 	cb_mutex.Lock()
 	delete(cb_store, f.ctx)
 	cb_mutex.Unlock()

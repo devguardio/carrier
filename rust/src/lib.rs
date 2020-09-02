@@ -45,8 +45,12 @@ pub mod recovery;
 pub mod replay;
 pub mod stream;
 pub mod util;
+pub mod madpack;
 
 mod hacl_star;
+
+
+pub use carrier::carrier_preshared as preshared;
 
 pub use error::Error;
 pub use identity::Identity;

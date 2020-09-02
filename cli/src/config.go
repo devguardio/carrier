@@ -22,7 +22,7 @@ func init() {
 
             vault, err := carrier.VaultFromHomeCarrierToml();
             if err != nil { log.Fatal(err) }
-            defer vault.Close();
+            defer vault.Delete();
             var target *string;
 
             if args[0] != "self" {

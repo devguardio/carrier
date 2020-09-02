@@ -5,6 +5,7 @@ import (
     "os"
     "github.com/spf13/cobra"
     "github.com/devguardio/carrier/go"
+    "github.com/devguardio/carrier/cli/conduit"
     "log"
 
 )
@@ -24,11 +25,19 @@ func Main() {
         Run: func(cmd *cobra.Command, args []string) {
             vault, err := NewVault();
             if err != nil { log.Fatal(err) }
-            defer vault.Close();
+            defer vault.Delete();
 
             id, err := vault.GetIdentity().String();
             if err != nil { log.Fatal(err) }
             fmt.Println(id);
+        },
+    });
+
+    rootCmd.AddCommand(&cobra.Command{
+        Use:    "conduit",
+        Short:  "Start a conduit on this machine",
+        Run: func(cmd *cobra.Command, args []string) {
+            conduit.Main();
         },
     });
 

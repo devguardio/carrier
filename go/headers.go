@@ -9,8 +9,8 @@ import (
 )
 
 func DecodeHeaders(b []byte) (map[string][][]byte, error) {
-    e := ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    e := ErrorNew(1000);
+    defer e.Delete();
 
     var mem = C.CBytes(b);
     defer C.free(mem);
@@ -25,10 +25,10 @@ func DecodeHeaders(b []byte) (map[string][][]byte, error) {
     var kv = make(map[string][][]byte);
 
     for {
-        if !C.hpack_decoder_next(&it, e, TAIL_ERR) {
+        if !C.hpack_decoder_next(&it, e.d, e.tail) {
             break;
         }
-        if err := ErrCheck(e); err != nil {
+        if err := e.Check(); err != nil {
             return nil, err;
         }
         var key = C.GoStringN((*C.char)(unsafe.Pointer(it.key.mem)), (C.int)(it.key.size));

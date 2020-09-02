@@ -5,6 +5,8 @@ import (
     "github.com/spf13/cobra"
     "log"
     "fmt"
+    "os"
+    "encoding/json"
 )
 
 func init() {
@@ -30,13 +32,27 @@ func init() {
         },
     };
 
+    traceCmd := &cobra.Command{
+        Use:    "trace",
+        Short:  "dump network stats",
+        Run: func(cmd *cobra.Command, args []string) {
+            net, err := carrier.NetTrace();
+            if err != nil { log.Fatal(err) }
+
+            j, err := json.MarshalIndent(net, "", "  ")
+            if err != nil {log.Fatal(err); }
+            os.Stdout.Write(j);
+            os.Stdout.Write([]byte("\n"));
+        },
+    };
+
     showCmd := &cobra.Command{
         Use:    "address",
         Short:  "show network address",
         Run: func(cmd *cobra.Command, args []string) {
             vault, err := NewVault();
             if err != nil { log.Fatal(err) }
-            defer vault.Close();
+            defer vault.Delete();
 
             id, err := vault.GetNetwork().String();
             if err != nil { log.Fatal(err) }
@@ -51,5 +67,6 @@ func init() {
 
     netCmd.AddCommand(subscribeCmd);
     netCmd.AddCommand(showCmd);
+    netCmd.AddCommand(traceCmd);
     rootCmd.AddCommand(netCmd);
 }

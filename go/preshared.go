@@ -6,9 +6,41 @@ package carrier;
 import "C"
 import (
     "unsafe"
+    "runtime"
 )
 
-func PresharedDiscovery() []byte {
-    var sl = C.carrier_preshared_discovery();
-    return C.GoBytes(unsafe.Pointer(sl.mem), C.int(sl.size));
+type PresharedIndex struct {
+    sl      C.slice_slice_Slice
+}
+
+func PresharedIndexDiscovery() *PresharedIndex {
+    return &PresharedIndex{
+        sl: C.carrier_preshared_discovery(),
+    };
+}
+
+func PresharedIndexSubscribe () *PresharedIndex {
+    return &PresharedIndex{
+        sl: C.carrier_preshared_subscribe(),
+    };
+}
+
+func PresharedIndexNetTrace() *PresharedIndex {
+    return &PresharedIndex{
+        sl: C.carrier_preshared_nettrace(),
+    };
+}
+
+func PresharedIndexFrom (b []byte) *PresharedIndex {
+    var mem = C.CBytes(b);
+    sl := C.slice_slice_Slice{
+        mem:    (*C.uint8_t)(unsafe.Pointer(mem)),
+        size:   (C.size_t)(len(b)),
+    };
+
+    self := &PresharedIndex{sl}
+    runtime.SetFinalizer(self, func(self *Error){
+        defer C.free(mem);
+    });
+    return self;
 }

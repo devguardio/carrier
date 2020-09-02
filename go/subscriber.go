@@ -5,7 +5,6 @@ package carrier;
 */
 import "C"
 import (
-    "unsafe"
     "log"
 )
 
@@ -22,39 +21,41 @@ type Event struct {
 }
 
 type Subscriber struct {
-    eps []*C.carrier_endpoint_Endpoint
+    eps [] * Endpoint
     EventRx chan Event
 }
 
 
-const TAIL_ASYNC = 100;
+func (self *Subscriber) nettrace() {
+
+}
 
 func Subscribe() (*Subscriber, error) {
 
-    e := ErrNew();
-    defer C.free(unsafe.Pointer(e));
-
-    async := (*C.io_unix_Async)(C.calloc(1, C.real_sizeof_io_unix_Async(TAIL_ASYNC)));
-    defer C.free(unsafe.Pointer(async));
-    C.io_unix_make(async, TAIL_ASYNC);
+    e := ErrorNew(1000);
+    defer e.Delete();
 
     va, err := VaultFromHomeCarrierToml();
+    defer va.Delete();
     if err != nil {
         return nil, err;
     }
 
-    C.carrier_bootstrap_sync(e, TAIL_ERR, (*C.carrier_vault_Vault)(va), (*C.io_Async)(unsafe.Pointer(async)), C.time_from_seconds(10));
-    if err := ErrCheck(e); err != nil {
+    async := AsyncNew(100);
+    defer async.Delete();
+
+    C.carrier_bootstrap_sync(e.d, e.tail, va.d, async.Base(), C.time_from_seconds(10));
+    if err := e.Check(); err != nil {
         return nil, err;
     }
 
     // gots them brokers here
 
     var rx = make(chan Event);
-    eps := make([]*C.carrier_endpoint_Endpoint, 0);
+    eps := make([]*Endpoint, 0);
 
     for i := 0; i < C.carrier_vault_MAX_BROKERS; i++ {
-        if va.broker[i].protocol == 0 {
+        if va.d.broker[i].protocol == 0 {
             continue;
         }
 
@@ -62,9 +63,9 @@ func Subscribe() (*Subscriber, error) {
         if err != nil {
             return nil, err;
         }
-        va2.broker[0] = va.broker[i];
+        va2.d.broker[0] = va.d.broker[i];
 
-        ep, err := sub(*va2, rx);
+        ep, err := sub(va2, rx);
         if err != nil {
             return nil, err;
         }
@@ -77,88 +78,102 @@ func Subscribe() (*Subscriber, error) {
     }, nil;
 }
 
-func sub(va Vault, rx chan Event) (*C.carrier_endpoint_Endpoint, error) {
+func sub(va *Vault, rx chan Event) (*Endpoint, error) {
 
-    var destructors []func();
-    destroy := func() {
-        for i := len(destructors) -1; i >= 0; i-- {
-            destructors[i]();
-        }
-    }
+    ep := EndpointNew(10000);
 
-    e := ErrNew();
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(e));});
+    e := ErrorNew(1000);
+    ep.CoDelete(e);
 
-    async := (*C.io_unix_Async)(C.calloc(1, C.real_sizeof_io_unix_Async(TAIL_ASYNC)));
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(async)); });
-    C.io_unix_make(async, TAIL_ASYNC);
+    netstr, err := va.GetNetwork().String()
+    if err != nil { ep.Delete(); return nil, err; }
 
-    ep := (*C.carrier_endpoint_Endpoint)(C.calloc(1, C.real_sizeof_carrier_endpoint_Endpoint(TAIL_EP)));
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(ep));});
+    C.carrier_endpoint_from_vault(ep.d, ep.tail, e.d, e.tail, va.Take());
+    if err := e.Check(); err != nil { ep.Delete(); return nil, err; }
 
-    C.carrier_endpoint_from_vault(ep, TAIL_EP, e, TAIL_ERR, (C.carrier_vault_Vault)(va));
-    if err := ErrCheck(e); err != nil {
-        destroy();
-        return nil, err;
-    }
-    C.carrier_endpoint_do_not_move(ep);
+    ep.ClusterDoNotMove();
 
-    C.carrier_endpoint_start(ep, e, TAIL_ERR, (*C.io_Async)(unsafe.Pointer(async)));
+    err = ep.Link();
+    if err != nil { ep.Delete(); return nil, err; }
 
-    C.io_await(
-        (*C.io_Async)(unsafe.Pointer(async)),
-        e, TAIL_ERR,
-        C.carrier_endpoint_poll, unsafe.Pointer(ep),
-        C.time_from_seconds(30),
+    subscribemsg, err := MadpackEncode(PresharedIndexSubscribe(), map[string]interface{}{
+        "address": netstr,
+    })
+    if err != nil { log.Fatal(err) }
+
+    _, err = openStream(
+        C.carrier_endpoint_broker(ep.d),
+        "/carrier.broker.v2/broker/subscribe",
+        OpenStreamOptions {
+            Critical: true,
+            OnMessage: func(b []byte) {
+                msg, err := MadpackDecode(PresharedIndexSubscribe(), b);
+                if err != nil {
+                    log.Println(err);
+                    return;
+                }
+                if pub, ok := msg["publish"].(map[string]interface{}); ok {
+                    idstr, ok := pub["identity"].(string);
+                    if !ok{ return; }
+
+                    id, err := IdentityFromString(idstr);
+                    if err != nil {
+                        log.Println(err);
+                        return;
+                    }
+                    rx <- Event {
+                        T:          PublishEvent,
+                        Identity:   *id,
+                    }
+                }
+                if pub, ok := msg["unpublish"].(map[string]interface{}); ok {
+                    idstr, ok := pub["identity"].(string);
+                    if !ok{ return; }
+
+                    id, err := IdentityFromString(idstr);
+                    if err != nil {
+                        log.Println(err);
+                        return;
+                    }
+                    rx <- Event {
+                        T:          UnpublishEvent,
+                        Identity:   *id,
+                    }
+                }
+            },
+            OnClose: func() {
+                log.Println("subscribe closed unexpectedly");
+                ep.Close();
+            },
+            OnPoll: func() *[]byte {
+                if subscribemsg == nil {
+                    return nil;
+                }
+                tmp := subscribemsg;
+                subscribemsg = nil;
+                return &tmp;
+            },
+        },
     );
-    if err := ErrCheck(e); err != nil {
-        destroy();
+    if err := e.Check(); err != nil {
+        ep.Delete();
         return nil, err;
     }
 
-    sub := (*C.carrier_subscribe_Subscribe)(C.calloc(1, C.real_sizeof_carrier_subscribe_Subscribe()));
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(sub));});
-    C.carrier_subscribe_start(ep, e, TAIL_ERR, sub);
-    if err := ErrCheck(e); err != nil {
-        destroy();
-        return nil, err;
-    }
 
-    sub.on_publish = make_cb_carrier_subscribe_identity_change_event_cb(func(
-        sub     *C.carrier_subscribe_Subscribe,
-        id      *Identity,
-        stream  *C.carrier_stream_Stream,
-    ){
-        rx <- Event {
-            T:          PublishEvent,
-            Identity:   *id,
-        }
-    });
-    destructors = append(destructors, func() { release_cb_carrier_subscribe_identity_change_event_cb(sub.on_publish)});
-
-    sub.on_unpublish = make_cb_carrier_subscribe_identity_change_event_cb(func(
-        sub     *C.carrier_subscribe_Subscribe,
-        id      *Identity,
-        stream  *C.carrier_stream_Stream,
-    ){
-        rx <- Event {
-            T:          UnpublishEvent,
-            Identity:   *id,
-        }
-    });
-    destructors = append(destructors, func() { release_cb_carrier_subscribe_identity_change_event_cb(sub.on_unpublish)});
 
 
     go func() {
-        defer destroy();
-        C.io_await(
-            (*C.io_Async)(unsafe.Pointer(async)),
-            e, TAIL_ERR,
-            C.carrier_endpoint_poll, unsafe.Pointer(ep),
-            C.time_from_seconds(30),
-        );
-        if err := ErrCheck(e); err != nil {
-            log.Fatal(err);
+        for {
+            ready, err := ep.WaitEvent()
+            if err != nil {
+                log.Fatal("endpoint failed", err);
+                return;
+            }
+            if ready {
+                log.Fatal("unexpected unlink");
+                return;
+            }
         }
     }();
     return ep, nil;
@@ -166,7 +181,8 @@ func sub(va Vault, rx chan Event) (*C.carrier_endpoint_Endpoint, error) {
 
 func (self *Subscriber) Shutdown() {
     for _,ep := range self.eps {
-        C.carrier_endpoint_close(ep);
+        ep.Shutdown();
+        ep.Delete();
     }
 
     defer close(self.EventRx);

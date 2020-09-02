@@ -19,14 +19,15 @@ type IdentityKit    C.carrier_identity_IdentityKit;
 // -- secret
 
 func CreateSecret() (*Secret, error) {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var secret = &Secret{};
     C.carrier_identity_secret_generate (
         (*C.carrier_identity_Secret)(unsafe.Pointer(secret)),
-    e, TAIL_ERR);
-    if err := ErrCheck(e); err != nil {
+        e.d, e.tail,
+    );
+    if err := e.Check(); err != nil {
         return secret, err;
     }
 
@@ -35,28 +36,28 @@ func CreateSecret() (*Secret, error) {
 
 func (self *Secret) String() (string, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var buf [300]byte
     var ptr = (*C.char)(unsafe.Pointer(&buf[0]))
 
-    var l = C.carrier_identity_secret_to_str(e, TAIL_ERR, ptr, 300, (*C.carrier_identity_Secret)(unsafe.Pointer(self)));
-    if err := ErrCheck(e); err != nil { return "", err; }
+    var l = C.carrier_identity_secret_to_str(e.d, e.tail, ptr, 300, (*C.carrier_identity_Secret)(unsafe.Pointer(self)));
+    if err := e.Check(); err != nil { return "", err; }
     return C.GoStringN(ptr, (C.int)(l)), nil;
 }
 
 func SecretFromString (s string) (*Secret, error) {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &Secret{}
 
     var s_c = C.CString(s);
-    C.carrier_identity_secret_from_str((*C.carrier_identity_Secret)(unsafe.Pointer(id)), e, TAIL_ERR, s_c, C.strlen(s_c));
+    C.carrier_identity_secret_from_str((*C.carrier_identity_Secret)(unsafe.Pointer(id)), e.d, e.tail, s_c, C.strlen(s_c));
     C.free(unsafe.Pointer(s_c));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
@@ -78,28 +79,28 @@ func IdentityFromSecret(secret *Secret) (*Identity, error) {
 
 func (self *Identity) String() (string, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var buf [300]byte
     var ptr = (*C.char)(unsafe.Pointer(&buf[0]))
 
-    var l = C.carrier_identity_identity_to_str(e, TAIL_ERR, ptr, 300, (*C.carrier_identity_Identity)(unsafe.Pointer(self)));
-    if err := ErrCheck(e); err != nil { return "", err; }
+    var l = C.carrier_identity_identity_to_str(e.d, e.tail, ptr, 300, (*C.carrier_identity_Identity)(unsafe.Pointer(self)));
+    if err := e.Check(); err != nil { return "", err; }
     return C.GoStringN(ptr, (C.int)(l)), nil;
 }
 
 func IdentityFromString (s string) (*Identity, error) {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &Identity{}
 
     var s_c = C.CString(s);
-    C.carrier_identity_identity_from_str((*C.carrier_identity_Identity)(unsafe.Pointer(id)), e, TAIL_ERR, s_c, C.strlen(s_c));
+    C.carrier_identity_identity_from_str((*C.carrier_identity_Identity)(unsafe.Pointer(id)), e.d, e.tail, s_c, C.strlen(s_c));
     C.free(unsafe.Pointer(s_c));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
@@ -121,28 +122,28 @@ func AddressFromSecret(secret *Secret) (*Address , error) {
 
 func (self *Address) String() (string, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var buf [300]byte
     var ptr = (*C.char)(unsafe.Pointer(&buf[0]))
 
-    var l = C.carrier_identity_address_to_str(e, TAIL_ERR, ptr, 300, (*C.carrier_identity_Address)(unsafe.Pointer(self)));
-    if err := ErrCheck(e); err != nil { return "", err; }
+    var l = C.carrier_identity_address_to_str(e.d, e.tail, ptr, 300, (*C.carrier_identity_Address)(unsafe.Pointer(self)));
+    if err := e.Check(); err != nil { return "", err; }
     return C.GoStringN(ptr, (C.int)(l)), nil;
 }
 
 func AddressFromString (s string) (*Address, error) {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &Address{}
 
     var s_c = C.CString(s);
-    C.carrier_identity_address_from_str((*C.carrier_identity_Address)(unsafe.Pointer(id)), e, TAIL_ERR, s_c, C.strlen(s_c));
+    C.carrier_identity_address_from_str((*C.carrier_identity_Address)(unsafe.Pointer(id)), e.d, e.tail, s_c, C.strlen(s_c));
     C.free(unsafe.Pointer(s_c));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
@@ -157,28 +158,28 @@ func AddressFromString (s string) (*Address, error) {
 
 func (self *SecretKit) String() (string, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var buf [300]byte
     var ptr = (*C.char)(unsafe.Pointer(&buf[0]))
 
-    var l = C.carrier_identity_secretkit_to_str(e, TAIL_ERR, ptr, 300, (*C.carrier_identity_SecretKit)(unsafe.Pointer(self)));
-    if err := ErrCheck(e); err != nil { return "", err; }
+    var l = C.carrier_identity_secretkit_to_str(e.d, e.tail, ptr, 300, (*C.carrier_identity_SecretKit)(unsafe.Pointer(self)));
+    if err := e.Check(); err != nil { return "", err; }
     return C.GoStringN(ptr, (C.int)(l)), nil;
 }
 
 func SecretKitFromString (s string) (*SecretKit, error) {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &SecretKit{}
 
     var s_c = C.CString(s);
-    C.carrier_identity_secretkit_from_str((*C.carrier_identity_SecretKit)(unsafe.Pointer(id)), e, TAIL_ERR, s_c, C.strlen(s_c));
+    C.carrier_identity_secretkit_from_str((*C.carrier_identity_SecretKit)(unsafe.Pointer(id)), e.d, e.tail, s_c, C.strlen(s_c));
     C.free(unsafe.Pointer(s_c));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
@@ -188,22 +189,22 @@ func SecretKitFromString (s string) (*SecretKit, error) {
 
 func SecretKitFromStringParts(identity string, network string) (*SecretKit, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &C.carrier_identity_SecretKit{};
 
     var s1  = C.CString(identity);
-    C.carrier_identity_secret_from_str(&id.identity, e, TAIL_ERR, s1, C.strlen(s1));
+    C.carrier_identity_secret_from_str(&id.identity, e.d, e.tail, s1, C.strlen(s1));
     C.free(unsafe.Pointer(s1));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
 
     var s2 = C.CString(network);
-    C.carrier_identity_secret_from_str(&id.network, e, TAIL_ERR, s2, C.strlen(s2));
+    C.carrier_identity_secret_from_str(&id.network, e.d, e.tail, s2, C.strlen(s2));
     C.free(unsafe.Pointer(s2));
     if err != nil {
         return nil, err;
@@ -219,28 +220,28 @@ func SecretKitFromStringParts(identity string, network string) (*SecretKit, erro
 
 func (self *IdentityKit) String() (string, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var buf [300]byte
     var ptr = (*C.char)(unsafe.Pointer(&buf[0]))
 
-    var l = C.carrier_identity_identitykit_to_str(e, TAIL_ERR, ptr, 300, (*C.carrier_identity_IdentityKit)(unsafe.Pointer(self)));
-    if err := ErrCheck(e); err != nil { return "", err; }
+    var l = C.carrier_identity_identitykit_to_str(e.d, e.tail, ptr, 300, (*C.carrier_identity_IdentityKit)(unsafe.Pointer(self)));
+    if err := e.Check(); err != nil { return "", err; }
     return C.GoStringN(ptr, (C.int)(l)), nil;
 }
 
 func IdentityKitFromString (s string) (*IdentityKit, error) {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &IdentityKit{}
 
     var s_c = C.CString(s);
-    C.carrier_identity_identitykit_from_str((*C.carrier_identity_IdentityKit)(unsafe.Pointer(id)), e, TAIL_ERR, s_c, C.strlen(s_c));
+    C.carrier_identity_identitykit_from_str((*C.carrier_identity_IdentityKit)(unsafe.Pointer(id)), e.d, e.tail, s_c, C.strlen(s_c));
     C.free(unsafe.Pointer(s_c));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
@@ -250,22 +251,22 @@ func IdentityKitFromString (s string) (*IdentityKit, error) {
 
 func IdentityKitFromStringParts(identity string, network string) (*IdentityKit, error) {
 
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    var e = ErrorNew(1000);
+    defer e.Delete();
 
     var id = &C.carrier_identity_IdentityKit{};
 
     var s1  = C.CString(identity);
-    C.carrier_identity_identity_from_str(&id.identity, e, TAIL_ERR, s1, C.strlen(s1));
+    C.carrier_identity_identity_from_str(&id.identity, e.d, e.tail, s1, C.strlen(s1));
     C.free(unsafe.Pointer(s1));
 
-    var err = ErrCheck(e);
+    var err = e.Check();
     if err != nil {
         return nil, err;
     }
 
     var s2 = C.CString(network);
-    C.carrier_identity_address_from_str(&id.network, e, TAIL_ERR, s2, C.strlen(s2));
+    C.carrier_identity_address_from_str(&id.network, e.d, e.tail, s2, C.strlen(s2));
     C.free(unsafe.Pointer(s2));
     if err != nil {
         return nil, err;

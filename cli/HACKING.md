@@ -4,4 +4,6 @@
     sh gen.sh
 
 
+    go get github.com/GeertJohan/go.rice/rice
 
+    rice append --exec cli -i github.com/devguardio/carrier/cli/conduit

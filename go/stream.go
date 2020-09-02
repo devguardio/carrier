@@ -90,7 +90,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
                 break;
             }
             frame := C.carrier_stream_stream(stream, e, et, (C.ulong)(len(backbuffered[0])));
-            if err := ErrCheck(e); err != nil {
+            if err := ErrorCheck(e,et); err != nil {
                 log.Println("cannot queue frame (will retry):", err);
                 return;
             }
@@ -106,8 +106,8 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
     });
     destructors = append(destructors, func() { release_cb_carrier_stream_poll_fn(sc.poll) });
 
-    e := ErrNew();
-    defer C.free(unsafe.Pointer(e));
+    e := ErrorNew(1000);
+    defer e.Delete();
 
 
 
@@ -132,7 +132,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
 
             C.hpack_encoder_encode(
                 encoderslice,
-                e, TAIL_ERR,
+                e.d, e.tail,
                 (*C.uint8_t)(unsafe.Pointer(key)),    (C.size_t)(len(k)),
                 (*C.uint8_t)(unsafe.Pointer(value)),  (C.size_t)(len(val)),
             );
@@ -146,8 +146,8 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
     };
 
 
-    var stx = C.carrier_channel_open_with_headers(_chan, e, TAIL_ERR, sc, extraheaders);
-    if err := ErrCheck(e); err != nil {
+    var stx = C.carrier_channel_open_with_headers(_chan, e.d, e.tail, sc, extraheaders);
+    if err := e.Check(); err != nil {
         destroy();
         return nil, err;
     }

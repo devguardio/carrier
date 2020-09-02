@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc." />
+
+        <link rel="stylesheet" href="/_ui/static/fonts/feather/feather.css" />
+        <link rel="stylesheet" href="/_ui/static/css/theme.min.css">
+        <link rel="stylesheet" href="/_ui/static/css/app.css">
+
+        <title>devguard IoT Commander</title>
+
+    </head>
+<body>
+
+    <script src="/_ui/static/js/jquery.min.js"></script>
+    <script src="/_ui/static/js/bootstrap.bundle.min.js"></script>
+    <script src="/_ui/static/js/Chart.bundle.min.js"></script>
+
+    <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-dark" id="sidebar">
+        <div class="container-fluid">
+
+            <!-- Toggler -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Brand -->
+            <a class="navbar-brand" href="/">
+                <img src="/_ui/static/img/logo.png" class="navbar-brand-img mx-auto" alt="...">
+            </a>
+
+            {{ if .user }}
+            <!-- User (xs) -->
+            <div class="navbar-user d-md-none">
+                <!-- Dropdown -->
+                <div class="dropdown">
+                    <!-- Toggle -->
+                    <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="avatar avatar-sm">
+                            {{if .user.Picture}}
+                                <img src="{{.user.Picture}}" class="avatar-img rounded-circle" alt="...">
+                            {{else}}
+                                <span class="avatar-title rounded-circle">{{.user.Initials}}</span>
+                            {{end}}
+                        </div>
+                    </a>
+                    <!-- Menu -->
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
+                        <a href="/_ui/logout" class="dropdown-item">Logout</a>
+                    </div>
+
+                </div>
+            </div>
+            {{end}}
+
+
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="sidebarCollapse">
+
+                <!-- Form -->
+                <form class="mt-4 mb-3 d-md-none">
+                    <div class="input-group input-group-rounded input-group-merge">
+                        <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="fe fe-search"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Navigation -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{if eq .page "network" }} active {{end}}}" href="/_ui/network">
+                            <i class="fe fe-cloud-snow"></i> Network
+                        </a>
+                        <a class="nav-link disabled" href="/_ui/devices">
+                            <i class="fe fe-cpu"></i> Devices
+                        </a>
+                        <a class="nav-link {{if eq .page "vault" }} active {{end}}}" href="/_ui/vault">
+                            <i class="fe fe-shield"></i> Vault
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Divider -->
+                <hr class="navbar-divider my-3">
+
+                <!-- Heading -->
+                <h6 class="navbar-heading">
+                    Documentation
+                </h6>
+
+                <!-- Navigation -->
+                <ul class="navbar-nav mb-md-4">
+                    <li class="nav-item">
+                        <a class="nav-link " href="http://book.devguard.io">
+                            <i class="fe fe-book"></i> Book
+                        </a>
+                        <a class="nav-link " href="/_ui/api/">
+                            <i class="fe fe-code"></i> Api
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Push content down -->
+                <div class="mt-auto"></div>
+
+
+
+
+                {{ if .user }}
+
+                <!-- User (md) -->
+                <div class="navbar-user d-none d-md-flex" id="sidebarUser">
+                    <div class="dropup">
+                        <a href="#" id="sidebarIconCopy" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <div class="avatar avatar-sm">
+                                {{if .user.Picture}}
+                                    <img src="{{.user.Picture}}" class="avatar-img rounded-circle" alt="...">
+                                {{else}}
+                                    <span class="avatar-title rounded-circle">{{.user.Initials}}</span>
+                                {{end}}
+                            </div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="sidebarIconCopy">
+                            <!--
+                            <a href="./profile-posts.html" class="dropdown-item">Profile</a>
+                            <a href="./account-general.html" class="dropdown-item">Settings</a>
+                            <hr class="dropdown-divider">
+                            -->
+                            <a href="/_ui/logout" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                {{ end }}
+
+
+            </div> <!-- / .navbar-collapse -->
+
+        </div>
+    </nav>
+
+    <div class="main-content">
+        {{template "content" .}}
+    </div>
+
+    <script src="/_ui/static/js/theme.min.js"></script>
+
+</body>
+</html>
+

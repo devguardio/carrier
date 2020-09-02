@@ -84,3 +84,39 @@ export fn sensors() -> slice::slice::Slice
     return r;
 }
 
+
+export const slice::slice::Slice SUBSCRIBE = @madpack::preshare({
+    "publish",
+    "unpublish",
+    "identity",
+});
+
+export fn subscribe() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = SUBSCRIBE;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+
+
+export const slice::slice::Slice NETTRACE = @madpack::preshare({
+    "address",
+    "publishers",
+    "limits",
+    "hard",
+    "soft",
+    "traffic",
+    "tx32",  // * 32 byte  total transmitted
+    "rx32",  // * 32 byte  total received
+    "tx32d", // * 32 byte per second transmitted
+    "rx32d", // * 32 byte per second received
+});
+
+export fn nettrace() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = NETTRACE;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}

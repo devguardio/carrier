@@ -1,0 +1,105 @@
+{{define "content"}}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
+
+            <!-- Header -->
+            <div class="header">
+                <div class="header-body">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <!-- Pretitle -->
+                            <h6 class="header-pretitle">
+                                 {{.user.Id}}
+                            </h6>
+
+                            <!-- Title -->
+                            <h1 class="header-title">
+                                <i class="fe fe-shield"></i> Vault
+                            </h1>
+
+                        </div>
+                        <div class="col-auto">
+                            &nbsp;
+
+                            <!--
+                            <a href="#" class="btn btn-primary lift">
+                                New Identity
+                            </a>
+                            -->
+
+
+                        </div>
+                    </div> <!-- / .row -->
+                    <!--
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                            <ul class="nav nav-tabs nav-overflow header-tabs">
+                                <li class="nav-item">
+                                    <a href="#!" class="nav-link active">
+                                        Identities
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#!" class="nav-link">
+                                        Audit
+                                    </a>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+
+            <!-- Card -->
+            <div class="card" data-list='{"valueNames": ["identities-ref", "identities-public", "identities-date", "identities-item", "identities-status"]}'>
+                <div class='card-header'>
+                    <h4 class="card-header-title">
+                        IdentityKit from local file system
+                    </h4>
+                </div>
+                <div class='card-body'>
+
+                <div class="row align-items-center flex-nowrap overflow-hidden">
+                    <div class="col-auto">
+                        <img src= "/_ui/identityqr/{{.identitykit}}" class="img-responsive"
+                             style="width:120px"
+                        >
+                    </div>
+                    <div class="col-auto">
+                        <!-- Title -->
+                        <h4 class="mb-1 name">
+                            <a href="#!">public</a>
+                        </h4>
+
+                        <table>
+                            <tr class="card-text small text-muted mb-1">
+                                <td> Identity </td>
+                                <td> {{.identity}} </td>
+                            </tr>
+                            <tr class="card-text small text-muted mb-1">
+                                <td> Network</td>
+                                <td> {{.network}} </td>
+                            </tr>
+                        </table>
+
+
+
+
+                    </div>
+                </div>
+
+                </div> <!-- class='card-body -->
+
+            </div>
+
+        </div>
+    </div> <!-- / .row -->
+</div>
+
+{{end}}

@@ -24,9 +24,8 @@ type ConnectOpt struct {
 
 type Channel struct {
     Revision    uint32
-
     synx        chan *synx
-    wakeup      *C.io_Io
+    endpoint    *Endpoint
 }
 
 type synxOpen struct {
@@ -38,11 +37,18 @@ type synxOpen struct {
 type synx struct {
     shutdown    bool
     open        *synxOpen
-    death       chan bool
+    death       Delete
 }
 
 
-const TAIL_EP   = 10000;
+type deathchan struct {
+    death chan bool
+}
+func (self *deathchan) Delete() {
+    select { case self.death <- true: default: }
+    close(self.death);
+}
+
 
 
 // reaper loop that runs until Shutdown to avoid race conditions
@@ -59,76 +65,82 @@ func (self *Channel) ded() {
 
 func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
 
-    var destructors []func();
-    destroy := func() {
-        for i := len(destructors) -1; i >= 0; i-- {
-            destructors[i]();
+    target, err := IdentityFromString(target_str)
+    if err != nil {
+        return nil, errors.Wrap(err, "can not parse target identity")
+    }
+
+    ep, err := EndpointFromHomeCarrierToml(100000);
+    if err != nil { return nil, err; }
+
+    e := ErrorNew(1000);
+    ep.CoDelete(e)
+
+    ep.ClusterMoveTarget(target);
+
+    err = ep.Bootstrap();
+    if err != nil { ep.Delete(); return nil, err; }
+
+    err = ep.Link();
+    if err != nil { ep.Delete(); return nil, err; }
+
+    connect, err := IConnectStart(ep, target);
+    if err != nil { ep.Delete(); return nil, err; }
+    ep.CoDelete(connect);
+
+    var connectFail error = nil;
+    var cha *C.carrier_channel_Channel = nil;
+
+    connect.OnConnect(func(self*C.carrier_connect_Connect, c*C.carrier_channel_Channel){
+        cha = c;
+    });
+
+    connect.OnDisconnect(func(self*C.carrier_connect_Connect, ep * C.carrier_endpoint_Endpoint){
+        if cha == nil {
+            if connect.d.remoteError.at > 0 {
+                connectFail = errors.New("remote rejected: " +
+                    (string)(C.GoBytes(unsafe.Pointer(&connect.d.remoteError.mem), (C.int)(connect.d.remoteError.at))));
+            } else {
+                connectFail = errors.New("connection failed");
+            }
+        }
+        e := ErrorNew(100);
+        defer e.Delete();
+        C.carrier_endpoint_shutdown(ep, e.d, e.tail);
+    });
+
+
+    /// wait for channel
+    for {
+        ready, err := ep.WaitEvent()
+        if err != nil {
+            ep.Delete();
+            return nil, err;
+        }
+        if ready {
+            ep.Delete();
+            return nil, errors.New("unexpected unlink");
+        }
+        if connectFail != nil {
+            ep.Delete();
+            return nil, connectFail;
+        }
+        if cha != nil {
+            break;
         }
     }
 
-    target, err := IdentityFromString(target_str)
-    if err != nil {
-        destroy();
-        return nil, errors.Wrap(err, "cannot parse target identity")
-    }
-
-    e := ErrNew();
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(e));});
-
-    ep := (*C.carrier_endpoint_Endpoint)(C.calloc(1, C.real_sizeof_carrier_endpoint_Endpoint(TAIL_EP)));
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(ep));});
-
-    //C.carrier_endpoint_from_secretkit(ep, TAIL_EP, e, TAIL_ERR, C.carrier_identity_SecretKit(opt.SecretKit));
-    C.carrier_endpoint_from_home_carriertoml(ep, TAIL_EP, e, TAIL_ERR);
-    if err := ErrCheck(e); err != nil {
-        destroy();
-        return nil, err;
-    }
-
-    mx := (*C.carrier_sync_Sync)(C.calloc(1, C.real_sizeof_carrier_sync_Sync()));
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(mx));});
-
-    C.carrier_sync_start(mx, e, TAIL_ERR, ep);
-    if err := ErrCheck(e); err != nil {
-        destroy();
-        return nil, err;
-    }
-
-    C.carrier_sync_connect(mx, e, TAIL_ERR, (*C.carrier_identity_Identity)(unsafe.Pointer(target)));
-    if err := ErrCheck(e); err != nil {
-        destroy();
-        return nil, err;
-    }
-
-    var interrupt_tx = &C.io_Io{};
-    var interrupt_rx = &C.io_Io{};
-
-    C.io_channel(
-        (*C.io_Async)(unsafe.Pointer(&mx.async)),
-        e, TAIL_ERR,
-        interrupt_rx,
-        interrupt_tx,
-    );
-    if err := ErrCheck(e); err != nil {
-        destroy();
-        return nil, err;
-    }
-    C.io_unix_make_read_async(interrupt_rx, (*C.io_Async)(unsafe.Pointer(&mx.async)));
-
 
     channel := &Channel{
-        wakeup:     interrupt_tx,
+        endpoint:   ep,
         synx:       make(chan *synx),
-        Revision:   (uint32)(mx._chan.revision),
+        Revision:   (uint32)(cha.revision),
     };
 
     go func() {
         defer func() {
-            C.io_close(interrupt_tx);
-            C.io_close(interrupt_rx);
-
-            C.carrier_endpoint_close(ep);
-            destroy();
+            ep.Close();
+            ep.Delete();
 
             channel.ded();
             log.Print("channel ended");
@@ -136,75 +148,41 @@ func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
 
         for {
 
-            // read the wakeup channel
-            var buf = make([]byte, 10);
-            var l C.size_t = 1;
-            var res = C.io_read_bytes(
-                interrupt_rx,
-                e, TAIL_ERR,
-                (*C.uint8_t)(&buf[0]),
-                &l,
-            )
-            if err := ErrCheck(e); err != nil {
-                log.Print("read interrupt failed", err);
-                return;
-            }
-
-
-
-
-
             // read the command channel
-            for {select {case synx := <- channel.synx:
-
-
-
-
-
-
-            if synx.death != nil {
-                destructors = append(destructors, func() {
-                    select { case synx.death <- true: default: }
-                    close(synx.death);
-                });
-            }
-            if synx.open != nil {
-                stx, err := openStream(
-                    mx._chan,
-                    synx.open.path,
-                    synx.open.opt,
-                );
-                synx.open.ack <- &openAck{
-                    Error:  err,
-                    Stream: stx,
-                }
-            }
-            if synx.shutdown{
-                C.carrier_endpoint_shutdown(ep,e,TAIL_ERR);
-                return;
-
+            for {
+                select {
+                    case synx := <- channel.synx:
+                        if synx.death != nil {
+                            ep.CoDelete(synx.death)
+                        }
+                        if synx.open != nil {
+                            stx, err := openStream(
+                                cha,
+                                synx.open.path,
+                                synx.open.opt,
+                            );
+                            synx.open.ack <- &openAck{
+                                Error:  err,
+                                Stream: stx,
+                            }
+                        }
+                        if synx.shutdown{
+                            ep.Shutdown();
+                            return;
+                        }
+                        continue;
+                    default:
+                };
+                break;
             }
 
-            default:}; break;}
-
-
-            // poll endpoint
-            res = C.carrier_endpoint_poll(mx.ep, e, TAIL_ERR, (*C.io_Async)(unsafe.Pointer(&mx.async)));
-            if err := ErrCheck(e); err != nil {
+            ready, err := ep.WaitEvent()
+            if err != nil {
                 log.Print("endpoint failed", err);
                 return;
             }
-
-            if res != C.io_Result_Later {
-                log.Print("endpoint is bye bye", res);
-                return;
-            }
-
-
-            // wait for wakeup or endpoint
-            C.io_wait((*C.io_Async)(unsafe.Pointer(&mx.async)),  e, TAIL_ERR);
-            if err := ErrCheck(e); err != nil {
-                log.Print("io wait failed", err);
+            if ready {
+                log.Print("unexpected unlink");
                 return;
             }
 
@@ -215,29 +193,13 @@ func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
 }
 
 
-
-
-func (self *Channel) dowakeup() {
-    var e = ErrNew();
-    defer C.free(unsafe.Pointer(e));
-
-    var buf = make([]byte, 2);
-    var l = C.size_t(1);
-    C.io_write_bytes(
-        self.wakeup,
-        e, TAIL_ERR,
-        (*C.uint8_t)(unsafe.Pointer(&buf[0])),
-        &l,
-    );
-}
-
 func (self *Channel) Shutdown() {
     death := make(chan bool);
 
-    self.dowakeup();
+    self.endpoint.Wakeup();
     self.synx <- &synx {
         shutdown:   true,
-        death:      death,
+        death:      &deathchan{death},
     };
 
     <- death;
@@ -252,7 +214,7 @@ type openAck struct {
 
 type Stream struct {
     ResponseHeaders     map[string][][]byte
-    Index               []byte
+    Index               *PresharedIndex
     Rx                  chan []byte
     Tx                  chan []byte
     Death               chan bool
@@ -319,9 +281,9 @@ func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, err
         frag_expected   = frags;
     };
 
-    self.dowakeup();
+    self.endpoint.Wakeup();
     self.synx <- &synx {
-        death: death_notifier,
+        death: &deathchan{death_notifier},
         open: &synxOpen {
             path:   path,
             ack:    ack,
@@ -360,9 +322,14 @@ func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, err
                 return nil, errors.New(em)
             }
 
+            var index_ps *PresharedIndex = nil;
+            if len(index) > 0 {
+                index_ps = PresharedIndexFrom(index)
+            }
+
             return &Stream{
                 ResponseHeaders:    headers,
-                Index:              index,
+                Index:              index_ps,
                 Rx:                 rx,
                 Tx:                 tx,
                 Death:              death_notifier,
@@ -410,7 +377,7 @@ func (self *Stream) Send(msg map[string]interface{}) error {
         return errors.New("oversized");
     }
 
-    self.channel.dowakeup();
+    self.channel.endpoint.Wakeup()
 
     select {
         case self.Tx <- v:
@@ -426,7 +393,7 @@ func (self *Stream) SendRaw(v []byte) error {
         return errors.New("oversized");
     }
 
-    self.channel.dowakeup();
+    self.channel.endpoint.Wakeup()
 
     select {
         case self.Tx <- v:

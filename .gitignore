@@ -1,5 +1,4 @@
 core/target
-go/core
 **/*.o
 **/*.parsecache
 **/*.buildcache

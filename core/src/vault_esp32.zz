@@ -20,7 +20,7 @@ struct Authorize {
 fn close(vault::Vault mut*self) {
 }
 
-export fn open(vault::Vault mut new *self, err::Err+et mut *e)
+export fn open(vault::Vault mut new *self, err::Err mut *e)
     where err::checked(*e)
 {
     memset(self, 0, sizeof(vault::Vault));
@@ -153,7 +153,7 @@ fn i_get_network (vault::Vault *self, identity::Address mut * addr)
     identity::address_from_secret(addr, &secret);
 }
 
-fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * secret)
+fn i_set_network (vault::Vault *self, err::Err mut *e, identity::Secret * secret)
     where err::checked(*e)
 {
     esp::nvs_handle_t mut handle = 0;
@@ -172,7 +172,7 @@ fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * sec
 }
 
 
-fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_authorizations_cb cb, void mut *user)
+fn i_list_authorizations(vault::Vault *self, err::Err mut*e, vault::list_authorizations_cb cb, void mut *user)
     where err::checked(*e)
     where safe(cb)
 {
@@ -195,7 +195,7 @@ fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_auth
         new id = identity::identity_from_str(e, val, val_l - 1);
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
             continue;
         }
 
@@ -213,7 +213,7 @@ fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_auth
 }
 
 
-fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *delme, char *resource)
+fn i_del_authorization(vault::Vault mut*self, err::Err mut*e, identity::Identity *delme, char *resource)
     where err::checked(*e)
     where nullterm(resource)
 {
@@ -236,7 +236,7 @@ fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
         new id = identity::identity_from_str(e, val, val_l - 1);
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
             continue;
         }
 
@@ -262,7 +262,7 @@ fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
     esp::nvs_close(handle);
 }
 
-fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *addme, char *resource)
+fn i_add_authorization(vault::Vault mut*self, err::Err mut*e, identity::Identity *addme, char *resource)
     where err::checked(*e)
     where nullterm(resource)
 {
@@ -286,7 +286,7 @@ fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Ident
         new id = identity::identity_from_str(e, val, val_l - 1);
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
             continue;
         }
 

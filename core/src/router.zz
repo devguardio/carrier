@@ -42,7 +42,7 @@ export struct Router {
     channel::Channel        mut channels[MAX_CHANNELS];
 }
 
-pub fn shutdown(Router mut* self, err::Err+et mut*e)
+pub fn shutdown(Router mut* self, err::Err mut*e)
     where err::checked(*e)
 {
     self->inshutdown = true;
@@ -53,7 +53,7 @@ pub fn shutdown(Router mut* self, err::Err+et mut*e)
         self->channels[j].shutdown(e);
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
         }
     }
 }
@@ -66,7 +66,7 @@ pub fn close(Router mut* self)
     self->ded = true;
 }
 
-pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Result
+pub fn poll(Router mut*self, err::Err mut*e, io::Async mut* async) -> io::Result
     where err::checked(*e)
 {
     if self->ded {
@@ -79,7 +79,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
             io::Result rr = self->shutdown_timeout.read_bytes(e, buf, &l);
             if err::check(e) {
                 e->elog();
-                e->make();
+                e->ignore();
             }
             if rr != io::Result::Later {
                 self->close();
@@ -89,12 +89,12 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
             // so it is set really low for now
             self->shutdown_timeout = io::timeout(async, e, time::from_millis(1000));
             if err::check(e) {
-                e->make();
+                e->ignore();
                 self->close();
             }
             async->select(e, &self->shutdown_timeout, io::Ready::Read);
             if err::check(e) {
-                e->make();
+                e->ignore();
                 self->close();
             }
         }
@@ -128,7 +128,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
         }
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
         }
         pkt.clear();
     }
@@ -158,7 +158,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
                         continue;
                     }
                     static_attest(i < len(pkt.mem));
-                    static_attest(buffer::integrity(&self->tcp_buf, static(len(self->tcp_buf.mem))));
+                    static_attest(buffer::integrity(&self->tcp_buf));
                     self->tcp_buf.push(pkt.mem[i]);
                     if --self->tcp_expected == 0 {
                         if !self->push(e, self->tcp_buf.as_slice()) {
@@ -171,7 +171,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
         }
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
         }
         pkt.clear();
     }
@@ -208,7 +208,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
                                     header_ms.push(0x03);
                                     header_ms.push(0x03);
                                     header_ms.push16(byteorder::to_be16(pkt.at));
-                                    static_attest(buffer::integrity(&header, static(len(header.mem))));
+                                    static_attest(buffer::integrity(&header));
                                     self->tcp4.send(e, header.as_slice());
                                     if err::check(e) { e->elog(); e->ignore(); }
                                     self->tcp4.send(e, pkt.as_slice());
@@ -226,14 +226,14 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
                                             if err::check(e) {
                                                 e->elog();
                                             }
-                                            e->make();
+                                            e->ignore();
                                         }
                                     }
                                     address::Type::Ipv6 => {
                                         if io::valid(&self->udp6) {
                                             log::debug("    sending %d bytes to udp6:%s", pkt.at, s.cstr());
                                             self->udp6.sendto(e, pkt.as_slice(), &self->channels[j].peering.paths[i].addr);
-                                            e->make();
+                                            e->ignore();
                                         }
                                     }
                                 }
@@ -255,7 +255,7 @@ pub fn poll(Router mut*self, err::Err+et mut*e, io::Async mut* async) -> io::Res
     return io::Result::Later;
 }
 
-pub fn push(Router mut* self, err::Err+et mut* e, slice::slice::Slice pkt) -> bool /*keep going*/
+pub fn push(Router mut* self, err::Err mut* e, slice::slice::Slice pkt) -> bool /*keep going*/
     where err::checked(*e)
     where slice::slice::integrity(&pkt)
 {
@@ -303,7 +303,7 @@ pub fn push(Router mut* self, err::Err+et mut* e, slice::slice::Slice pkt) -> bo
                     return false;
                 } else {
                     e->elog();
-                    e->make();
+                    e->ignore();
                 }
             }
             return true;
@@ -354,7 +354,7 @@ pub fn next_channel(Router mut* self) -> channel::Channel mut * {
 
 export symbol Disconnected;
 
-pub fn disconnect(Router mut* self, err::Err+et mut*e, u64 route)
+pub fn disconnect(Router mut* self, err::Err mut*e, u64 route)
     where err::checked(*e)
 {
     for (usize mut i = 0; i < static(len(self->channels)); i++) {

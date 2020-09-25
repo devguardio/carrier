@@ -87,7 +87,7 @@ export fn clear(Q+qt mut* self) {
 
 
 /// allocate the next frame in the queue
-export fn alloc(Q+qt mut* self, err::Err+et mut*e, FrameType typ, usize size) -> slice::MutSlice
+export fn alloc(Q+qt mut* self, err::Err mut*e, FrameType typ, usize size) -> slice::MutSlice
     where   err::checked(*e)
     model   slice::mut_slice::integrity(&return)
 {

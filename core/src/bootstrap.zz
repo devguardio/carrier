@@ -14,7 +14,7 @@ using identity;
 using io;
 using vault;
 
-export fn sync(err::Err+et mut * e, vault::Vault mut* store, io::Async mut* async, time::Time timeout)
+export fn sync(err::Err mut * e, vault::Vault mut* store, io::Async mut* async, time::Time timeout)
     where err::checked(*e)
 {
     new bs = bootstrap(e, store, async);
@@ -44,7 +44,7 @@ export struct Bootstrap {
     vault::Vault        mut* store;
 }
 
-export fn bootstrap(Bootstrap mut new*self, err::Err+et mut * e, vault::Vault mut*store, io::Async mut* async)
+export fn bootstrap(Bootstrap mut new*self, err::Err mut * e, vault::Vault mut*store, io::Async mut* async)
     where err::checked(*e)
 {
     self->store = store;
@@ -66,7 +66,7 @@ export fn bootstrap(Bootstrap mut new*self, err::Err+et mut * e, vault::Vault mu
     new addr6 = address::from_cstr("[::1]:0");
     udp::bind(&self->sock6, e, addr6, async);
     // ignore v6 creation error
-    err::make(e);
+    e->ignore();
 }
 
 
@@ -75,7 +75,7 @@ export fn close(Bootstrap mut * self) {
     self->sock6.close();
 }
 
-export fn poll(Bootstrap mut * self, err::Err+et mut * e, io::Async mut* async) -> io::Result
+export fn poll(Bootstrap mut * self, err::Err mut * e, io::Async mut* async) -> io::Result
     where err::checked(*e)
 {
     new+1500 mut xbuf = buffer::make();
@@ -164,13 +164,13 @@ struct DnsPacket packed {
 }
 
 fn send_query(
-        err::Err+et mut *e,
-        buffer::Buffer+st *name,
+        err::Err mut *e,
+        buffer::Buffer *name,
         udp::Socket mut*sock,
         address::Address *dns_server
     )
     where err::checked(*e)
-    where buffer::integrity(name, st)
+    where buffer::integrity(name)
 {
 
     /*
@@ -193,7 +193,7 @@ fn send_query(
     head->additionals = byteorder::to_be16(1);
 
     pkt.at += as<usize>(sizeof(DnsPacket));
-    static_attest(buffer::integrity(&pkt, static(len(pkt.mem))));
+    static_attest(buffer::integrity(&pkt));
 
     usize mut it = 0;
     new+256 mut part = buffer::make();
@@ -232,7 +232,7 @@ fn send_query(
     udp::sendto(sock, e, pkt.as_slice(), dns_server);
     //e->abort();
     // don't care if send failed
-    err::make(e);
+    err::ignore(e);
 }
 
 pub fn parse_query(buffer::Buffer+t *pkt, vault::Vault mut*store) -> bool
@@ -348,8 +348,8 @@ pub fn parse_query(buffer::Buffer+t *pkt, vault::Vault mut*store) -> bool
 }
 
 
-pub fn parse_record(buffer::Buffer+st * record, vault::Broker mut *entry) -> bool
-    where buffer::integrity(record, st)
+pub fn parse_record(buffer::Buffer * record, vault::Broker mut *entry) -> bool
+    where buffer::integrity(record)
 {
     new+1 e = err::make();
 

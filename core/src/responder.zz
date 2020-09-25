@@ -17,7 +17,7 @@ using vault;
 
 pub fn accept_insecure(
     noise::Responder mut* self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     vault::Vault *store,
     u64 mut route,
     u64 timestamp,

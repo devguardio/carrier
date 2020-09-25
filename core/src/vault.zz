@@ -14,12 +14,12 @@ export closure get_secret_fn         (Vault *self, identity::Secret  mut * secre
 export closure get_network_fn        (Vault *self, identity::Address mut * address);
 export closure get_network_secret_fn (Vault *self, identity::Secret   mut * address);
 export closure advance_clock_fn      (Vault *self) -> u64;
-export closure set_network_fn        (Vault *self, err::Err+et mut *e, identity::Secret * secret);
+export closure set_network_fn        (Vault *self, err::Err mut *e, identity::Secret * secret);
 
-export closure del_authorization_fn(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource);
-export closure add_authorization_fn(Vault mut * self,err::Err+et mut *e, identity::Identity *addme, char *resource);
+export closure del_authorization_fn(Vault mut * self, err::Err mut *e, identity::Identity *delme, char *resource);
+export closure add_authorization_fn(Vault mut * self,err::Err mut *e, identity::Identity *addme, char *resource);
 export closure list_authorizations_cb(void mut * unsafe user, identity::Identity *id, char *resource);
-export closure list_authorizations_fn(Vault * self, err::Err+et mut *e, list_authorizations_cb cb, void mut * unsafe user);
+export closure list_authorizations_fn(Vault * self, err::Err mut *e, list_authorizations_cb cb, void mut * unsafe user);
 
 
 export const usize MAX_BROKERS = 16;
@@ -87,7 +87,7 @@ fn check_existing_authorizations_cb(void mut * unsafe user, identity::Identity *
     }
 }
 
-export fn add_authorization(Vault mut * self, err::Err+et mut *e, identity::Identity *addme, char *resource)
+export fn add_authorization(Vault mut * self, err::Err mut *e, identity::Identity *addme, char *resource)
 {
     static_attest(safe(self->i_add_authorization));
     static_attest(safe(self->i_list_authorizations));
@@ -104,13 +104,13 @@ export fn add_authorization(Vault mut * self, err::Err+et mut *e, identity::Iden
     self->i_add_authorization(self, e, addme, resource);
 }
 
-export fn del_authorization(Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource)
+export fn del_authorization(Vault mut * self, err::Err mut *e, identity::Identity *delme, char *resource)
 {
     static_attest(safe(self->i_del_authorization));
     self->i_del_authorization(self, e, delme, resource);
 }
 
-export fn list_authorizations(Vault mut * self, err::Err+et mut *e, list_authorizations_cb cb, void mut * unsafe user)
+export fn list_authorizations(Vault mut * self, err::Err mut *e, list_authorizations_cb cb, void mut * unsafe user)
 {
     static_attest(safe(self->i_list_authorizations));
     self->i_list_authorizations(self, e, cb, user);
@@ -128,7 +128,7 @@ export fn get_network_secret(Vault * self, identity::Secret mut *addr)
     self->i_get_network_secret(self, addr);
 }
 
-export fn set_network(Vault mut * self,err::Err+et mut *e, identity::Secret *network)
+export fn set_network(Vault mut * self,err::Err mut *e, identity::Secret *network)
 {
     static_attest(safe(self->i_set_network));
     self->i_set_network(self, e, network);

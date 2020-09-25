@@ -232,7 +232,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
 /*
 export symbol RemoteOpFailed;
 
-pub fn on_result_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+pub fn on_result_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where slice::slice::integrity(&msg)
     where err::checked(*e)
 {

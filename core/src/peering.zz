@@ -49,7 +49,7 @@ export fn received(Peering mut *self, Transport transport, address::Address addr
     }
 }
 
-export fn from_proto(Peering mut *self, err::Err+et mut*e, protonerf::Field field)
+export fn from_proto(Peering mut *self, err::Err mut*e, protonerf::Field field)
     where err::checked(*e)
 {
     if field.a == 0 {

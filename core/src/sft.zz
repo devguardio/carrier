@@ -30,7 +30,7 @@ static stream::Config StupidFileTransfer = stream::Config {
     stream:     sft_stream,
 };
 
-fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn sft_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
@@ -89,7 +89,7 @@ fn sft_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     log::info("SFT open %u", self->id);
 }
 
-pub fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+pub fn sft_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 
@@ -127,7 +127,7 @@ pub fn sft_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg)
     return true;
 }
 
-fn sft_close(stream::Stream mut *self, err::Err+et mut*e)
+fn sft_close(stream::Stream mut *self, err::Err mut*e)
 {
     let this = (State mut*)self->user2;
     err::assert_safe(this);

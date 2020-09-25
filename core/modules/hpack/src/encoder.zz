@@ -3,7 +3,7 @@ using <string.h>::{strlen, memcpy};
 using slice;
 using slice::mut_slice;
 
-export fn encode(slice::MutSlice slice, err::Err+et mut *e, u8* key, usize keylen, u8* val, usize vallen)
+export fn encode(slice::MutSlice slice, err::Err mut *e, u8* key, usize keylen, u8* val, usize vallen)
     where len(key)    >= keylen
     where len(val)    >= vallen
     where err::checked(*e)
@@ -56,7 +56,7 @@ export fn encode(slice::MutSlice slice, err::Err+et mut *e, u8* key, usize keyle
 
 
 
-pub fn encode_integer(slice::MutSlice slice, err::Err+et mut *e, usize mut value, u8 prefix_size)
+pub fn encode_integer(slice::MutSlice slice, err::Err mut *e, usize mut value, u8 prefix_size)
     where err::checked(*e)
     where mut_slice::integrity(&slice)
 {

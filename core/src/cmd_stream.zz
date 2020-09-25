@@ -90,7 +90,7 @@ static io::Io mut stdinio = {0};
 static buffer::Buffer+500 mut inbuf = {0};
 static bool mut inbufready = false;
 
-fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+fn out_poll(stream::Stream mut *self, err::Err mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     if inbufready {
@@ -99,12 +99,12 @@ fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
         let mut frame = self->stream(e, inbuf.at);
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
             return;
         }
         frame.append_bytes((u8*)inbuf.mem, inbuf.at);
         inbufready = false;
-        inbuf.clear();
+        inbuf.make();
     }
 
     if !stdinio.valid() {
@@ -150,7 +150,7 @@ fn out_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
 
 export symbol OpenResponse;
 
-fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn out_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -185,7 +185,7 @@ fn out_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> 
     }
 }
 
-fn out_close(stream::Stream mut *self, err::Err+et mut*e)
+fn out_close(stream::Stream mut *self, err::Err mut*e)
 {
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));

@@ -6,7 +6,7 @@ using time;
 using mem;
 using <memory.h>::{memset};
 
-export fn from_ik(vault::Vault mut new *self, err::Err+et mut *e, identity::SecretKit ik)
+export fn from_ik(vault::Vault mut new *self, err::Err mut *e, identity::SecretKit ik)
     where err::checked(*e)
 {
     memset(self, 0, sizeof(vault::Vault));
@@ -48,26 +48,26 @@ fn i_get_network (vault::Vault *self, identity::Address mut * addr)
     identity::address_from_secret (addr, &self->ik.network);
 }
 
-fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * secret)
+fn i_set_network (vault::Vault *self, err::Err mut *e, identity::Secret * secret)
     where err::checked(*e)
 {
     err::fail(e, err::NotImplemented, "secretkit is immutable");
 }
 
-fn i_list_authorizations(vault::Vault *self, err::Err+et mut*e, vault::list_authorizations_cb cb, void mut *user)
+fn i_list_authorizations(vault::Vault *self, err::Err mut*e, vault::list_authorizations_cb cb, void mut *user)
     where err::checked(*e)
     where safe(cb)
 {
 }
 
-fn i_del_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *delme, char *resource)
+fn i_del_authorization(vault::Vault mut*self, err::Err mut*e, identity::Identity *delme, char *resource)
     where err::checked(*e)
     where nullterm(resource)
 {
     err::fail(e, err::NotImplemented, "secretkit is immutable");
 }
 
-fn i_add_authorization(vault::Vault mut*self, err::Err+et mut*e, identity::Identity *addme, char *resource)
+fn i_add_authorization(vault::Vault mut*self, err::Err mut*e, identity::Identity *addme, char *resource)
     where err::checked(*e)
     where nullterm(resource)
 {

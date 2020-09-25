@@ -30,7 +30,7 @@ pub fn print_identity(endpoint::Endpoint *self)
     log::info("principal: %s", buf);
 }
 
-pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+pub fn on_printer_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -85,7 +85,7 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Sli
 }
 
 
-export fn on_stream_want_header_200(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+export fn on_stream_want_header_200(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where slice::slice::integrity(&msg)
     where err::checked(*e)
 {

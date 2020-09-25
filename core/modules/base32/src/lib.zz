@@ -26,7 +26,7 @@ fn encode_base32_block(u8 * from, char mut* to)
     to[7] = unsafe<char>(ALPHABET[c8]);
 }
 
-export fn encode(err::Err+et mut*e, u8 *src, usize inlen, char mut* out, usize outlen) -> usize
+export fn encode(err::Err mut*e, u8 *src, usize inlen, char mut* out, usize outlen) -> usize
     where err::checked(*e)
     where inlen   <= len(src)
     where outlen <= len(out)
@@ -84,7 +84,7 @@ export fn encode(err::Err+et mut*e, u8 *src, usize inlen, char mut* out, usize o
 }
 
 
-export fn decode(err::Err+et mut*e, char *src, usize inlen, u8 mut* out, usize outlen) -> usize
+export fn decode(err::Err mut*e, char *src, usize inlen, u8 mut* out, usize outlen) -> usize
     where err::checked(*e)
     where inlen   <= len(src)
     where outlen <= len(out)

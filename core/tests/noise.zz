@@ -9,7 +9,65 @@ using <assert.h>::{assert};
 using <stdio.h>::{printf, fread, stdin, stderr};
 using buffer;
 using json;
+using slice;
+using vec;
+using pool;
+using mem;
 
+
+struct Message @json::from()
+{
+    u64         nonce;
+    HexString   payload;
+    HexString   ciphertext;
+}
+
+type Messages @json::from() = vec::Vec[vec::item = Message];
+
+struct Testcase @json::from() {
+    slice::Slice    protocol_name;
+    HexString       init_prologue;
+    HexString       init_ephemeral;
+    HexString       init_remote_static;
+    HexString       resp_prologue;
+    HexString       resp_static;
+    HexString       resp_ephemeral;
+    HexString       handshake_hash;
+    Messages        messages;
+}
+
+type HexString = slice::slice::Slice;
+
+pub fn HexString_from_json(
+    slice::slice::Slice mut*self,
+    err::Err mut *e,
+    json::Decoder mut *dec,
+    pool::Pool mut*pl,
+)
+    where err::checked(*e)
+{
+    switch dec->item {
+        json::Item::String => {
+            u8 mut b[1000];
+            static_attest(slice::slice::integrity(&dec->val));
+            usize l = hex::str2bin((char*)dec->val.mem, dec->val.size, b, static(len(b)));
+            char mut * num = pl->malloc(l);
+            if num != 0 {
+                static_attest(safe(num));
+                static_attest(len(num) == l);
+                mem::copy(b, num, l);
+            }
+            *self = slice::slice::Slice {
+                mem:  (u8*)num,
+                size: l,
+            };
+        }
+        default => {
+            e->fail(err::InvalidArgument, "can only decode string to slice::slice::Slice");
+            return;
+        }
+    }
+}
 
 
 
@@ -87,191 +145,47 @@ test snow {
 }
 
 
-struct Message {
-    bool set;
-    buffer::Buffer+500 ciphertext;
-    buffer::Buffer+500 payload;
-    u64 nonce;
-}
-
-struct Testcase {
-    buffer::Buffer+500 mut init_prologue;
-    u8 init_ephermal[32];
-    u8 init_remote_static[32];
-    buffer::Buffer+500 mut resp_prologue;
-    u8 resp_static[32];
-    u8 resp_ephemeral[32];
-    u8 handshake_hash[32];
-    Message messages[10];
-}
-
-fn deser_message(json::U * u,err::Err+et mut *e, json::Parser+pt mut* p, char *k, json::Value v)
-    where err::checked(*e)
-    where nullterm(k)
-{
-    let tc = (Message mut*)u->user1;
-    static_attest(safe(tc));
-
-    static_attest(safe(v.string));
-    static_attest(nullterm(v.string));
-    tc->set = true;
-    if buffer::cstr_eq(k, "payload") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        usize l = hex::str2bin(v.string, buffer::strlen(v.string), (u8 mut*)tc->payload.mem, static(len(tc->payload.mem)));
-        tc->payload.at = l;
-    } else if buffer::cstr_eq(k, "ciphertext") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        usize l = hex::str2bin(v.string, buffer::strlen(v.string), (u8 mut*)tc->ciphertext.mem, static(len(tc->ciphertext.mem)));
-        tc->ciphertext.at = l;
-    } else if buffer::cstr_eq(k, "nonce") {
-        if(v.t != json::ValueType::Integer) {
-            err::fail(e, err::InvalidArgument, "expected int");
-            return;
-        }
-        tc->nonce = (u64)v.integer;
-    }
-}
-
-fn deser_messages(json::U * u, err::Err+et mut *e, json::Parser+pt mut* p, char *k, json::Value v)
-    where err::checked(*e)
-    where nullterm(k)
-{
-    let tc = (Testcase mut*)u->user1;
-    static_attest(safe(tc));
-
-    if v.index > 9 {
-        err::fail(e, err::InvalidArgument, "too many messages");
-        return;
-    }
-    if(v.t != json::ValueType::Object) {
-        err::fail(e, err::InvalidArgument, "expected object");
-        return;
-    }
-    json::next(p,  e, json::U{it:deser_message, user1: &tc->messages[v.index]});
-}
-
-fn deser_tc(json::U * u, err::Err+et mut *e, json::Parser+pt mut* p,  char *k, json::Value v)
-    where err::checked(*e)
-    where nullterm(k)
-{
-    let tc = (Testcase mut*)u->user1;
-    static_attest(safe(tc));
-    static_attest(safe(v.string));
-    static_attest(nullterm(v.string));
-
-    if buffer::cstr_eq(k, "init_prologue") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        usize l = hex::str2bin(v.string, buffer::strlen(v.string), (u8 mut*)tc->init_prologue.mem, static(len(tc->init_prologue.mem)));
-        tc->init_prologue.at = l;
-    } else if buffer::cstr_eq(k, "init_ephemeral") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        hex::str2bin(v.string, buffer::strlen(v.string), tc->init_ephermal, static(len(tc->init_ephermal)));
-    } else if buffer::cstr_eq(k, "init_remote_static") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        hex::str2bin(v.string, buffer::strlen(v.string), tc->init_remote_static, static(len(tc->init_remote_static)));
-    } else if buffer::cstr_eq(k, "resp_prologue") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        usize l = hex::str2bin(v.string, buffer::strlen(v.string), (u8 mut*)tc->resp_prologue.mem, static(len(tc->resp_prologue.mem)));
-        tc->resp_prologue.at = l;
-    } else if buffer::cstr_eq(k, "resp_static") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        hex::str2bin(v.string, buffer::strlen(v.string), tc->resp_static, static(len(tc->resp_static)));
-    } else if buffer::cstr_eq(k, "resp_ephemeral") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        hex::str2bin(v.string, buffer::strlen(v.string), tc->resp_ephemeral, static(len(tc->resp_ephemeral)));
-    } else if buffer::cstr_eq(k, "resp_ephemeral") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        hex::str2bin(v.string, buffer::strlen(v.string), tc->handshake_hash, static(len(tc->handshake_hash)));
-    } else if buffer::cstr_eq(k, "handshake_hash") {
-        if(v.t != json::ValueType::String) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        hex::str2bin(v.string, buffer::strlen(v.string), tc->handshake_hash, static(len(tc->handshake_hash)));
-    } else if buffer::cstr_eq(k, "messages") {
-        if(v.t != json::ValueType::Array) {
-            err::fail(e, err::InvalidArgument, "expected string");
-            return;
-        }
-        json::next(p,  e, json::U { it: deser_messages, user1: tc} );
-        if err::check(e) {
-            return;
-        }
-    }
-}
-
 pub fn main() -> int {
     if t2() != 0  {
         return 18;
     }
 
-    err::Err+1000 mut e = {0};
-    e.make();
+
+    new+1000 e = err::make();
+    new+10000 pl = pool::make(64);
+    new+10000 s = buffer::make();
+    for (; s.fread(stdin) ; ) {}
+    new+6000  decoder  = json::decode_value(&e, s.cstr(), s.slen());
+    e.abort();
 
     Testcase mut tc = {0};
-    new+1000 parser = json::parser(&e, json::U{it: deser_tc, user1: &tc} );
-    if err::check(&e) {
-        e.eprintf(stderr);
-        return (int)e.error;
-    }
-    for(;;) {
-        u8 mut buf[1000];
-        usize r = (usize)fread(buf, 1, static(len(buf)), stdin);
-        if r < 1 {
-            break;
-        }
-        static_attest(r < len(buf));
-        json::push(&parser, &e, (char*)buf, r);
-        if err::check(&e) {
-            err::eprintf(&e, stderr);
-            return 2;
-        }
-    }
+    (@json::from(Testcase))(&tc, &e, &decoder, &pl);
+    e.abort();
+
 
     noise::Initiator mut init = {0};
-    memcpy(init.ephemeral.k, tc.init_ephermal, 32);
+    memcpy(init.ephemeral.k, tc.init_ephemeral.mem, 32);
     memcpy(init.remote_static.k, tc.init_remote_static, 32);
 
-    static_attest(tc.init_prologue.at < len(tc.init_prologue.mem));
-    static_attest(tc.messages[0].payload.at < len(tc.messages[0].payload.mem));
-    static_attest(tc.messages[0].ciphertext.at < len(tc.messages[0].ciphertext.mem));
+    static_attest(slice::integrity(&tc.init_prologue));
+    static_attest(vec::integrity(&tc.messages));
+    err::assert(tc.messages.count > 0);
+    let msg1 = (Message*)tc.messages.items[0].mem;
+    err::assert_safe(msg1);
+    static_attest(slice::integrity(&msg1->payload));
+    static_attest(slice::integrity(&msg1->ciphertext));
 
     u8 mut pkt1[1024] = {0};
+    err::assert(msg1->payload.size < static(len(pkt1)) - 32);
+
     usize pkt1len = noise::initiate(
         &init, &e,
         pkt1,
         static(len(pkt1)),
         (u8*)tc.init_prologue.mem,
-        tc.init_prologue.at,
-        (u8*)tc.messages[0].payload.mem,
-        tc.messages[0].payload.at
+        tc.init_prologue.size,
+        (u8*)msg1->payload.mem,
+        msg1->payload.size
     );
 
     if err::check(&e) {
@@ -280,12 +194,12 @@ pub fn main() -> int {
     }
 
 
-    if pkt1len != tc.messages[0].ciphertext.at {
+    if pkt1len != msg1->ciphertext.size {
         return 1;
     }
-    if memcmp(pkt1, tc.messages[0].ciphertext.mem, tc.messages[0].ciphertext.at) != 0 {
+    if memcmp(pkt1, msg1->ciphertext.mem, msg1->ciphertext.size) != 0 {
         hex::dump(pkt1, pkt1len);
-        hex::dump((u8*)tc.messages[0].ciphertext.mem, tc.messages[0].ciphertext.at);
+        hex::dump((u8*)msg1->ciphertext.mem, msg1->ciphertext.size);
         return 1;
     }
 
@@ -296,17 +210,17 @@ pub fn main() -> int {
     memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
     memcpy(resp.statickey.k,  tc.resp_static, 32);
 
-    static_attest(tc.resp_prologue.at < len(tc.resp_prologue.mem));
+    static_attest(slice::integrity(&tc.resp_prologue));
     usize pkt1r_size = noise::receive(&resp, &e,
-        pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.at, pkt1, pkt1len);
+        pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
     if err::check(&e) {
         e.eprintf(stderr);
         return (int)e.error;
     }
 
 
-    assert(pkt1r_size == tc.messages[0].payload.at);
-    assert(memcmp(pkt1r, tc.messages[0].payload.mem, tc.messages[0].payload.at) == 0);
+    assert(pkt1r_size == msg1->payload.size);
+    assert(memcmp(pkt1r, msg1->payload.mem, msg1->payload.size) == 0);
 
     // bad mac
     {
@@ -321,7 +235,7 @@ pub fn main() -> int {
         memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
         memcpy(resp.statickey.k,  tc.resp_static, 32);
 
-        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.at, pkt_bad, pkt1len);
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
         if !err::check(&e) {
             return 3;
         }
@@ -339,7 +253,7 @@ pub fn main() -> int {
         memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
         memcpy(resp.statickey.k,  tc.resp_static, 32);
 
-        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.at, pkt_bad, pkt1len);
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
         if !err::check(&e) {
             return 3;
         }
@@ -358,7 +272,7 @@ pub fn main() -> int {
         memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
         memcpy(resp.statickey.k,  tc.resp_static, 32);
 
-        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.at, pkt_bad, pkt1len);
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
         if !err::check(&e) {
             return 3;
         }
@@ -371,20 +285,26 @@ pub fn main() -> int {
 
 
     // respond
-    static_attest(tc.messages[1].payload.at < len(tc.messages[1].payload.mem));
-    static_attest(tc.messages[1].ciphertext.at < len(tc.messages[1].ciphertext.mem));
+
+    err::assert(tc.messages.count > 1);
+    let msg2 = (Message*)tc.messages.items[1].mem;
+    err::assert_safe(msg2);
+    static_attest(slice::integrity(&msg2->payload));
+    static_attest(slice::integrity(&msg2->ciphertext));
+
 
     u8 mut pkt2[1200] = {0};
-    usize pkt2len = noise::accept(&resp, &e, pkt2, static(len(pkt2)), (u8*)tc.messages[1].payload.mem, tc.messages[1].payload.at);
+    err::assert(msg2->payload.size < static(len(pkt2)) - 32 - 16);
+    usize pkt2len = noise::accept(&resp, &e, pkt2, static(len(pkt2)), msg2->payload.mem, msg2->payload.size);
     err::abort(&e);
 
     assert(memcmp((resp.symm).ck, (init.symm).ck, 32) != 0);
     assert(memcmp((resp.symm).h, (init.symm).h, 32) != 0);
 
-    assert(pkt2len == tc.messages[1].ciphertext.at);
-    if memcmp(pkt2, tc.messages[1].ciphertext.mem, tc.messages[1].ciphertext.at) != 0 {
+    assert(pkt2len == msg2->ciphertext.size);
+    if memcmp(pkt2, msg2->ciphertext.mem, msg2->ciphertext.size) != 0 {
         hex::dump(pkt2, pkt2len);
-        hex::dump((u8*)tc.messages[1].ciphertext.mem, tc.messages[1].ciphertext.at);
+        hex::dump_slice(msg2->ciphertext);
         return 10;
     }
     //memcpy(pkt2, msg2_ciphertext, msg2_ciphertext_len);
@@ -398,8 +318,8 @@ pub fn main() -> int {
     assert(memcmp((resp.symm).h, (init.symm).h, 32) == 0);
 
 
-    if tc.handshake_hash[0] != 0 {
-        if (memcmp((resp.symm).h, tc.handshake_hash, 32) != 0) {
+    if tc.handshake_hash.size == 32 {
+        if (memcmp((resp.symm).h, tc.handshake_hash.mem, 32) != 0) {
             return 12;
         }
     }
@@ -419,46 +339,47 @@ pub fn main() -> int {
     // transport mode
 
 
-    for (usize mut msgat = 2; msgat< static(len(tc.messages)); msgat++) {
-        if tc.messages[msgat].set == false {
-            break;
-        }
+    bool initiator_msg = true;
+    for let i = tc.messages.iter(); i.next(); {
+        let msg = (Message*)i.val.mem;
+        err::assert_safe(msg);
+        static_attest(slice::integrity(&msg->payload));
+        static_attest(slice::integrity(&msg->ciphertext));
 
         cipher::CipherState mut * mut sender   = 0;
         cipher::CipherState mut * mut receiver = 0;
         // initiator -> responder
-        if msgat % 2 == 0 {
+        if initiator_msg  {
             sender   = &init_cipher_init;
             receiver = &resp_cipher_init;
         } else {
             sender   = &resp_cipher_resp;
             receiver = &init_cipher_resp;
         }
+
+        initiator_msg = !initiator_msg;
+
         static_attest(safe(sender));
         static_attest(safe(receiver));
 
-        usize payloadlen = tc.messages[msgat].payload.at;
-        static_attest(payloadlen < len(tc.messages[msgat].payload.mem));
-        usize cipherlen = tc.messages[msgat].ciphertext.at;
-        static_attest(cipherlen < len(tc.messages[msgat].ciphertext.mem));
-
         u8 mut pkt3[1124] = {0};
+        err::assert(msg->payload.size < static(len(pkt3)) - 16);
         usize pkt3len = cipher::encrypt(
-                sender, &e,
-                (u8*)tc.messages[msgat].payload.mem, payloadlen,
-                tc.messages[msgat].nonce,
-                pkt3, static(len(pkt3))
-                );
+            sender, &e,
+            msg->payload.mem, msg->payload.size,
+            msg->nonce,
+            pkt3, static(len(pkt3))
+        );
 
         if err::check(&e) {
             e.eprintf(stderr);
             return (int)e.error;
         }
 
-        if memcmp(pkt3, tc.messages[msgat].ciphertext.mem, tc.messages[msgat].ciphertext.at) != 0 {
-            printf("message %zu didn't encrypt correctly. size: %zu <> %zu\n", msgat, pkt3len, tc.messages[msgat].ciphertext.at);
+        if memcmp(pkt3, msg->ciphertext.mem, msg->ciphertext.size) != 0 {
+            printf("message didn't encrypt correctly. size: %zu <> %zu\n", pkt3len, msg->ciphertext.size);
             hex::dump(pkt3, pkt3len);
-            hex::dump((u8*)tc.messages[msgat].ciphertext.mem, cipherlen);
+            hex::dump_slice(msg->ciphertext);
             return 10;
         }
 
@@ -614,4 +535,6 @@ pub fn t2() ->int {
 
     return 0;
 }
+
+
 

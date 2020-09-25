@@ -64,12 +64,12 @@ fn auth_get_cb(void mut * u, identity::Identity *id, char *resource)
     if err::check(&e) { e.elog();  return; }
 
     enc->v_map();
-    enc->kv_cstr("identity",     identity_str);
-    enc->kv_cstr("path",         resource);
+    enc->kv_cstr(slice::from_cstr("identity"),     identity_str);
+    enc->kv_cstr(slice::from_cstr("path"),         resource);
     enc->end();
 }
 
-fn auth_get(stream::Stream mut *self, err::Err+e2 mut*e, slice::Slice headers)
+fn auth_get(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where err::checked(*e)
     where slice::slice::integrity(&headers)
 {
@@ -81,14 +81,14 @@ fn auth_get(stream::Stream mut *self, err::Err+e2 mut*e, slice::Slice headers)
 
     new+512 idx = madpack::from_preshared_index(preshared::config());
     new mad = madpack::encode(frame, &idx);
-    mad.kv_array("auth");
+    mad.kv_array(slice::from_cstr("auth"));
     self->chan->endpoint->vault.list_authorizations(e, auth_get_cb, &mad);
     mad.end();
 
     self->close();
 }
 
-fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn net_get(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where err::checked(*e)
     where slice::slice::integrity(&headers)
 {
@@ -105,12 +105,12 @@ fn net_get(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
 
     new+512 idx = madpack::from_preshared_index(preshared::config());
     new mad = madpack::encode(frame, &idx);
-    mad.kv_cstr("address", buf);
+    mad.kv_cstr(slice::from_cstr("address"), buf);
 
     self->close();
 }
 
-fn return_ok(stream::Stream mut *self, err::Err+et mut*e) -> bool
+fn return_ok(stream::Stream mut *self, err::Err mut*e) -> bool
     where err::checked(*e)
 {
     let frame = self->stream(e, 20);
@@ -120,16 +120,16 @@ fn return_ok(stream::Stream mut *self, err::Err+et mut*e) -> bool
 
     new+512 idx = madpack::from_preshared_index(preshared::config());
     new mad = madpack::encode(frame, &idx);
-    mad.kv_bool("ok", true);
+    mad.kv_bool(slice::from_cstr("ok"), true);
     mad.end();
 
     self->close();
     return true;
 }
 
-fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
+fn return_err(stream::Stream mut *self, err::Err mut*e) -> bool
 {
-    static_attest(buffer::integrity(&e->trace, et));
+    static_attest(buffer::integrity(&e->trace));
     let ch  = e->trace.cstr();
     static_attest(safe(ch));
     let mut chl = buffer::strlen(ch);
@@ -146,10 +146,10 @@ fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
 
     new+512 idx = madpack::from_preshared_index(preshared::config());
     new mad = madpack::encode(frame, &idx);
-    mad.kv_bool("ok", false);
-    mad.kv_map("error");
-    mad.kv_uint("code", e->error);
-    mad.kv_array("trace");
+    mad.kv_bool(slice::from_cstr("ok"), false);
+    mad.kv_map(slice::from_cstr("error"));
+    mad.kv_uint(slice::from_cstr("code"), e->error);
+    mad.kv_array(slice::from_cstr("trace"));
     mad.v_strslice(slice::slice::Slice{
         mem:    (u8*)ch,
         size:   chl,
@@ -162,21 +162,21 @@ fn return_err(stream::Stream mut *self, err::Err+et mut*e) -> bool
     return true;
 }
 
-fn auth_add_stream(stream::Stream mut *self, err::Err+ex mut*e, slice::Slice msg) -> bool
+fn auth_add_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
     return auth_add_del_stream(self, e, msg, 1);
 }
 
-fn auth_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn auth_del_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
     return auth_add_del_stream(self, e, msg, 2);
 }
 
-fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg, int impl) -> bool
+fn auth_add_del_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg, int impl) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -220,7 +220,7 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice
     return return_ok(self, e);
 }
 
-fn net_join_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn net_join_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {

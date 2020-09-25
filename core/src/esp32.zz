@@ -39,7 +39,7 @@ using <esp_err.h>::{
 };
 
 export  fn check_err (
-        err::Err+tail mut* self,
+        err::Err mut* self,
         esp_err_t ec,
         char* callsite_source<file>      unsafe file,
         char* callsite_source<function>  unsafe scope,
@@ -68,7 +68,7 @@ static stream::Config RebootConfig = stream::Config{
     open:   reboot_stream_open,
 };
 
-fn reboot_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice headers)
+fn reboot_stream_open(stream::Stream mut* self, err::Err mut *e, slice::Slice headers)
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
@@ -111,7 +111,7 @@ static stream::Config OtaConfig = stream::Config{
     stream: ota_stream_stream
 };
 
-fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice headers)
+fn ota_stream_open(stream::Stream mut* self, err::Err mut *e, slice::Slice headers)
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
@@ -150,7 +150,7 @@ fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice he
 
     ota_partition = unsafe<esp::esp_partition_t*>(esp::esp_ota_get_next_update_partition(0));
     if check_err(e, unsafe<esp_err_t>(esp_ota_begin(ota_partition, esp::OTA_SIZE_UNKNOWN, &ota_handle))) {
-        static_attest(buffer::integrity(&e->trace, et));
+        static_attest(buffer::integrity(&e->trace));
         char *estr = e->trace.cstr();
         usize el   = e->trace.slen();
         static_attest(err::checked(*e));
@@ -171,7 +171,7 @@ fn ota_stream_open(stream::Stream mut* self, err::Err+et mut *e, slice::Slice he
 
 
 
-fn ota_stream_close (stream::Stream mut* self, err::Err+et mut *e)
+fn ota_stream_close (stream::Stream mut* self, err::Err mut *e)
     where err::checked(*e)
 {
     if ota_handle != 0 {
@@ -182,7 +182,7 @@ fn ota_stream_close (stream::Stream mut* self, err::Err+et mut *e)
 
 
 
-fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice msg) -> bool
+fn ota_stream_stream (stream::Stream mut* self, err::Err mut *e, slice::Slice msg) -> bool
     where err::checked(*e)
 {
     let frame = self->stream(e, 100);
@@ -212,7 +212,7 @@ fn ota_stream_stream (stream::Stream mut* self, err::Err+et mut *e, slice::Slice
     if (unsafe<bool>(ee == ESP_OK)) { ee = unsafe<esp_err_t>(esp_ota_set_boot_partition(ota_partition)); }
 
     if check_err(e, ee) {
-        static_attest(buffer::integrity(&e->trace, et));
+        static_attest(buffer::integrity(&e->trace));
         char *estr = e->trace.cstr();
         usize el   = e->trace.slen();
         static_attest(err::checked(*e));

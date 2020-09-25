@@ -27,7 +27,7 @@ export fn close(Socket mut*self)
     self->ctx.isvalid = false;
 }
 
-export fn bind(Socket mut new *self,  err::Err+et mut*e, address::Address addr, io::Async mut* unsafe async)
+export fn bind(Socket mut new *self,  err::Err mut*e, address::Address addr, io::Async mut* unsafe async)
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
 {
@@ -51,7 +51,7 @@ export fn bind(Socket mut new *self,  err::Err+et mut*e, address::Address addr, 
     self->ctx.isvalid = true;
 }
 
-export fn recvfrom(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *buf, address::Address mut*from) -> io::Result
+export fn recvfrom(Socket mut *self, err::Err mut*e, buffer::Buffer+st mut *buf, address::Address mut*from) -> io::Result
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
 {
@@ -94,7 +94,7 @@ export fn recvfrom(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *b
     return io::Result::Ready;
 }
 
-export fn sendto(Socket mut *self, err::Err+et mut*e, slice::slice::Slice buf, address::Address * to) -> io::Result
+export fn sendto(Socket mut *self, err::Err mut*e, slice::slice::Slice buf, address::Address * to) -> io::Result
     where slice::slice::integrity(&buf)
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)

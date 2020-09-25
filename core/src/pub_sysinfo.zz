@@ -29,7 +29,7 @@ static stream::Config ConfigSensors = stream::Config {
     index:      preshared::SENSORS,
 };
 
-fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn sysinfo_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {
@@ -40,32 +40,32 @@ fn sysinfo_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice header
     new enc = madpack::encode(frame, &idx);
 
     let bi = revision::build_id();
-    enc.kv_cstr("build_id", bi);
+    enc.kv_cstr(slice::from_cstr("build_id"), bi);
 
-    enc.kv_map("uname");
+    enc.kv_map(slice::from_cstr("uname"));
     sysinfo::uname(&enc, e);
-    if err::check(e) {e->elog(); e->make(); }
+    if err::check(e) {e->elog(); e->ignore(); }
     enc.end();
 
-    enc.kv_map("mem");
+    enc.kv_map(slice::from_cstr("mem"));
     sysinfo::mem(&enc, e);
-    if err::check(e) {e->elog(); e->make(); }
+    if err::check(e) {e->elog(); e->ignore(); }
     enc.end();
 
-    enc.kv_map("cpu");
+    enc.kv_map(slice::from_cstr("cpu"));
     sysinfo::cpu(&enc, e);
-    if err::check(e) {e->elog(); e->make(); }
+    if err::check(e) {e->elog(); e->ignore(); }
     enc.end();
 
-    enc.kv_map("firmware");
+    enc.kv_map(slice::from_cstr("firmware"));
     sysinfo::firmware(&enc, e);
-    if err::check(e) {e->elog(); e->make(); }
+    if err::check(e) {e->elog(); e->ignore(); }
     enc.end();
 
     self->close();
 }
 
-fn sensors_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn sensors_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where slice::slice::integrity(&headers)
     where err::checked(*e)
 {

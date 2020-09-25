@@ -27,7 +27,7 @@ fn run_self_auth_list_print(void mut * unsafe _, identity::Identity *id, char *r
 }
 
 export fn run_self(
-    err::Err+et mut *e,
+    err::Err mut *e,
     endpoint::Endpoint mut*endpoint,
 )
     where err::checked(*e)
@@ -41,7 +41,7 @@ export fn run_self(
 
 /*
 export fn run_remote(
-    err::Err+et mut *e,
+    err::Err mut *e,
     endpoint::Endpoint mut*endpoint,
     identity::Identity *target,
 )
@@ -66,7 +66,7 @@ static stream::Config AuthListStream = stream::Config {
     close:  on_close,
 };
 
-fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -127,7 +127,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> b
 }
 
 symbol RemoteOpFailed;
-fn on_close(stream::Stream mut* self, err::Err+et mut*e)
+fn on_close(stream::Stream mut* self, err::Err mut*e)
 {
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));

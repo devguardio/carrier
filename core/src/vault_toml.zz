@@ -30,7 +30,7 @@ struct Mem {
     buffer::Buffer+2000 mut file_name;
 }
 
-export fn from_home_carriertoml(vault::Vault mut new *self, err::Err+et mut *e)
+export fn from_home_carriertoml(vault::Vault mut new *self, err::Err mut *e)
     where err::checked(*e)
     if #(os::defined(os::OPENWRT_BUILD))
 {
@@ -57,7 +57,7 @@ fn close(vault::Vault mut*self) {
     }
 }
 
-export fn from_carriertoml_and_secret(vault::Vault mut new *self, err::Err+et mut *e, char * file_name, identity::Secret * secret)
+export fn from_carriertoml_and_secret(vault::Vault mut new *self, err::Err mut *e, char * file_name, identity::Secret * secret)
     where err::checked(*e)
     where nullterm(file_name)
 {
@@ -73,7 +73,7 @@ export fn from_carriertoml_and_secret(vault::Vault mut new *self, err::Err+et mu
     if err::check(e) { return; }
 }
 
-export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * file_name)
+export fn from_carriertoml(vault::Vault mut new *self, err::Err mut *e, char * file_name)
     where err::checked(*e)
     where nullterm(file_name)
 {
@@ -87,7 +87,7 @@ export fn from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char 
     if err::check(e) { return; }
 }
 
-fn i_from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * file_name)
+fn i_from_carriertoml(vault::Vault mut new *self, err::Err mut *e, char * file_name)
     where err::checked(*e)
     where nullterm(file_name)
 {
@@ -118,7 +118,7 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * fil
     });
     if err::check(e) {return;}
 
-    this->file_name.clear();
+    this->file_name.make();
     this->file_name.append_cstr(file_name);
 
     let mut f = (FILE mut*)fopen(this->file_name.cstr(), "r");
@@ -161,7 +161,7 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err+et mut *e, char * fil
 }
 
 
-fn load_from_toml_cb_publish(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, char *k, toml::Value v)
+fn load_from_toml_cb_publish(toml::U *u, err::Err mut *e, toml::Parser mut* p, char *k, toml::Value v)
     where err::checked(*e)
     where nullterm(k)
 {
@@ -181,7 +181,7 @@ fn load_from_toml_cb_publish(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut
     }
 }
 
-fn load_from_toml_authorize_iter(toml::U *self, err::Err+et mut *e, toml::Parser+pt mut* p, char *k, toml::Value v)
+fn load_from_toml_authorize_iter(toml::U *self, err::Err mut *e, toml::Parser mut* p, char *k, toml::Value v)
     where err::checked(*e)
     where nullterm(k)
 {
@@ -201,7 +201,7 @@ fn load_from_toml_authorize_iter(toml::U *self, err::Err+et mut *e, toml::Parser
         );
         if err::check(e) { return; }
     } else if buffer::cstr_eq(k, "resource") {
-        a->path.clear();
+        a->path.make();
         a->path.append_cstr(v.string);
     }
 
@@ -210,7 +210,7 @@ fn load_from_toml_authorize_iter(toml::U *self, err::Err+et mut *e, toml::Parser
     }
 }
 
-fn load_from_toml_identity_secret(Mem mut *this, err::Err+et mut *e,  toml::Value v)
+fn load_from_toml_identity_secret(Mem mut *this, err::Err mut *e,  toml::Value v)
     where err::checked(*e)
 
 if #(os::defined(os::OPENWRT_BUILD))
@@ -306,7 +306,7 @@ else
     identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
 }
 
-fn findmtdindex(err::Err+et mut *e, char *mtdname) -> usize
+fn findmtdindex(err::Err mut *e, char *mtdname) -> usize
     where err::checked(*e)
     where nullterm(mtdname)
 {
@@ -344,7 +344,7 @@ fn findmtdindex(err::Err+et mut *e, char *mtdname) -> usize
     return 0;
 }
 
-fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, char *k, toml::Value v)
+fn load_from_toml_cb(toml::U *u, err::Err mut *e, toml::Parser mut* p, char *k, toml::Value v)
     where err::checked(*e)
     where nullterm(k)
 {
@@ -381,10 +381,10 @@ fn load_from_toml_cb(toml::U *u, err::Err+et mut *e, toml::Parser+pt mut* p, cha
 
 
 
-fn save_to_toml(Mem *self, err::Err+et mut *e)
+fn save_to_toml(Mem *self, err::Err mut *e)
     where err::checked(*e)
 {
-    static_attest(buffer::integrity(&self->file_name, 2000));
+    static_attest(buffer::integrity(&self->file_name));
     let out = (FILE mut*)fopen(self->file_name.cstr(), "w");
     if out == 0 {
         err::fail_with_errno(e, "open %s", self->file_name.cstr());
@@ -485,7 +485,7 @@ fn i_advance_clock (vault::Vault *self) -> u64
     return now.to_millis();
 }
 
-fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * secret)
+fn i_set_network (vault::Vault *self, err::Err mut *e, identity::Secret * secret)
     where err::checked(*e)
 {
     let this = (Mem mut*)self->user;
@@ -497,7 +497,7 @@ fn i_set_network (vault::Vault *self, err::Err+et mut *e, identity::Secret * sec
     save_to_toml(this, e);
 }
 
-fn i_del_authorization(vault::Vault mut * self, err::Err+et mut *e, identity::Identity *delme, char *resource)
+fn i_del_authorization(vault::Vault mut * self, err::Err mut *e, identity::Identity *delme, char *resource)
     where err::checked(*e)
     where nullterm(resource)
 {
@@ -509,7 +509,7 @@ fn i_del_authorization(vault::Vault mut * self, err::Err+et mut *e, identity::Id
             continue;
         }
         let fe = &this->auth[i].path;
-        static_attest(buffer::integrity(fe, static(len(fe->mem))));
+        static_attest(buffer::integrity(fe));
         if this->auth[i].identity.eq(delme) && fe->eq_cstr(resource) {
             this->auth[i].used = false;
             memset(this->auth + i, 0, sizeof(Authorize));
@@ -518,7 +518,7 @@ fn i_del_authorization(vault::Vault mut * self, err::Err+et mut *e, identity::Id
     save_to_toml(this, e);
 }
 
-fn i_add_authorization(vault::Vault mut * self,err::Err+et mut *e, identity::Identity *addme, char *resource)
+fn i_add_authorization(vault::Vault mut * self,err::Err mut *e, identity::Identity *addme, char *resource)
     where err::checked(*e)
     where nullterm(resource)
 {
@@ -530,10 +530,10 @@ fn i_add_authorization(vault::Vault mut * self,err::Err+et mut *e, identity::Ide
             continue;
         }
         memcpy(&this->auth[i].identity, addme, sizeof(identity::Identity));
-        this->auth[i].path.clear();
+        this->auth[i].path.make();
 
         let fe = &this->auth[i].path;
-        static_attest(buffer::integrity(fe, static(len(fe->mem))));
+        static_attest(buffer::integrity(fe));
         fe->append_cstr(resource);
 
         this->auth[i].used = true;
@@ -544,7 +544,7 @@ fn i_add_authorization(vault::Vault mut * self,err::Err+et mut *e, identity::Ide
     return;
 }
 
-fn i_list_authorizations(vault::Vault * self, err::Err+et mut *e, vault::list_authorizations_cb cb, void mut * unsafe user)
+fn i_list_authorizations(vault::Vault * self, err::Err mut *e, vault::list_authorizations_cb cb, void mut * unsafe user)
     where err::checked(*e)
     where safe(cb)
 {
@@ -556,7 +556,7 @@ fn i_list_authorizations(vault::Vault * self, err::Err+et mut *e, vault::list_au
             continue;
         }
         let fe = &this->auth[i].path;
-        static_attest(buffer::integrity(fe, static(len(fe->mem))));
+        static_attest(buffer::integrity(fe));
         cb(user, &this->auth[i].identity, fe->cstr());
     }
 }

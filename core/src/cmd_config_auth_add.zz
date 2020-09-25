@@ -18,7 +18,7 @@ using cmd_config;
 using log;
 
 export fn run_self(
-    err::Err+et mut *e,
+    err::Err mut *e,
     endpoint::Endpoint mut*endpoint,
     char *addme_s,
     char *resource,
@@ -48,7 +48,7 @@ export fn run_self(
 
 /*
 export fn run_remote(
-    err::Err+et mut *e,
+    err::Err mut *e,
     endpoint::Endpoint mut* ep,
     identity::Identity *target,
     char *addme,
@@ -110,7 +110,7 @@ static stream::Config AuthDelStream = stream::Config {
 };
 
 
-fn on_close(stream::Stream mut* self, err::Err+et mut*e)
+fn on_close(stream::Stream mut* self, err::Err mut*e)
 {
     static_attest(safe(self->chan));
     static_attest(safe(self->chan->endpoint));

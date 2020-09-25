@@ -12,7 +12,7 @@ using time;
 
 inline using "os.h" as os;
 
-export fn uname(madpack::Encoder mut *enc, err::Err+et mut *e)
+export fn uname(madpack::Encoder mut *enc, err::Err mut *e)
     where err::checked(*e)
     where madpack::integrity(enc)
     if #(os::defined(os::__linux__))
@@ -24,17 +24,17 @@ export fn uname(madpack::Encoder mut *enc, err::Err+et mut *e)
     }
 
     unsafe {
-        madpack::kv_cstr(enc, "sysname",   name.sysname);
-        madpack::kv_cstr(enc, "nodename",  name.nodename);
-        madpack::kv_cstr(enc, "release",   name.release);
-        madpack::kv_cstr(enc, "version",   name.version);
-        madpack::kv_cstr(enc, "machine",   name.machine);
+        madpack::kv_cstr(enc, slice::from_cstr("sysname"),   name.sysname);
+        madpack::kv_cstr(enc, slice::from_cstr("nodename"),  name.nodename);
+        madpack::kv_cstr(enc, slice::from_cstr("release"),   name.release);
+        madpack::kv_cstr(enc, slice::from_cstr("version"),   name.version);
+        madpack::kv_cstr(enc, slice::from_cstr("machine"),   name.machine);
     }
 
 } else {
 }
 
-export fn mem(madpack::Encoder mut *enc, err::Err+et mut *e)
+export fn mem(madpack::Encoder mut *enc, err::Err mut *e)
     where err::checked(*e)
     where madpack::integrity(enc)
     if #(os::defined(os::__linux__))
@@ -45,15 +45,15 @@ export fn mem(madpack::Encoder mut *enc, err::Err+et mut *e)
         return;
     }
 
-    madpack::kv_uint(enc, "total",      (u64)unsafe<int>(info.totalram));
-    madpack::kv_uint(enc, "free",       (u64)unsafe<int>(info.freeram));
+    madpack::kv_uint(enc, slice::from_cstr("total"),      (u64)unsafe<int>(info.totalram));
+    madpack::kv_uint(enc, slice::from_cstr("free"),       (u64)unsafe<int>(info.freeram));
 } else {
 }
 
 
 
 
-export fn cpu(madpack::Encoder mut *enc, err::Err+et mut *e)
+export fn cpu(madpack::Encoder mut *enc, err::Err mut *e)
     where err::checked(*e)
     where madpack::integrity(enc)
     if #(os::defined(os::__linux__))
@@ -67,22 +67,22 @@ export fn cpu(madpack::Encoder mut *enc, err::Err+et mut *e)
     new+100 b1 = buffer::make();
     usize mut iterator = 0;
     if b.split(' ', &iterator, &b1) {
-        enc->kv_cstr("avg_1", b1.mem);
+        enc->kv_cstr(slice::from_cstr("avg_1"), b1.mem);
     }
     if b.split(' ', &iterator, &b1) {
-        enc->kv_cstr("avg_5", b1.mem);
+        enc->kv_cstr(slice::from_cstr("avg_5"), b1.mem);
     }
     if b.split(' ', &iterator, &b1) {
-        enc->kv_cstr("avg_15", b1.mem);
+        enc->kv_cstr(slice::from_cstr("avg_15"), b1.mem);
     }
     if b.split(' ', &iterator, &b1) {
         new+100 b2 = buffer::make();
         usize mut iterator = 0;
         if b1.split('/', &iterator, &b2) {
-            enc->kv_cstr("proc_active", b2.mem);
+            enc->kv_cstr(slice::from_cstr("proc_active"), b2.mem);
         }
         if b1.split('/', &iterator, &b2) {
-            enc->kv_cstr("proc_total", b2.mem);
+            enc->kv_cstr(slice::from_cstr("proc_total"), b2.mem);
         }
     }
 
@@ -90,25 +90,25 @@ export fn cpu(madpack::Encoder mut *enc, err::Err+et mut *e)
 
 
     let t1 = time::real();
-    enc->kv_uint("clock", t1.to_millis());
+    enc->kv_uint(slice::from_cstr("clock"), t1.to_millis());
     let t2 = time::tick();
-    enc->kv_uint("uptime", t2.to_millis());
+    enc->kv_uint(slice::from_cstr("uptime"), t2.to_millis());
 
 
     cores(enc, e);
 } else {
 }
 
-export fn cores(madpack::Encoder mut *enc, err::Err+et mut *e)
+export fn cores(madpack::Encoder mut *enc, err::Err mut *e)
     where err::checked(*e)
     where madpack::integrity(enc)
     if #(os::defined(os::__linux__) && !os::defined(os::__ANDROID__))
 {
-    enc->kv_uint("threads", os::get_nprocs());
+    enc->kv_uint(slice::from_cstr("threads"), os::get_nprocs());
 } else {}
 
 
-export fn firmware(madpack::Encoder mut *enc, err::Err+et mut *e)
+export fn firmware(madpack::Encoder mut *enc, err::Err mut *e)
     where err::checked(*e)
     where madpack::integrity(enc)
     if #(os::defined(os::__linux__) && !os::defined(os::__ANDROID__))
@@ -130,13 +130,13 @@ export fn firmware(madpack::Encoder mut *enc, err::Err+et mut *e)
         usize mut iterator = 0;
         if b.split('=', &iterator, &k) && b.split('=', &iterator, &v){
             if k.eq_cstr("DISTRIB_ID") && v.at > 1 {
-                enc->kv_cstr("distro", clean(&v));
+                enc->kv_cstr(slice::from_cstr("distro"), clean(&v));
             } else if k.eq_cstr("DISTRIB_RELEASE") && v.at > 1 {
-                enc->kv_cstr("release", clean(&v));
+                enc->kv_cstr(slice::from_cstr("release"), clean(&v));
             } else if k.eq_cstr("DISTRIB_REVISION") && v.at > 1 {
-                enc->kv_cstr("revision", clean(&v));
+                enc->kv_cstr(slice::from_cstr("revision"), clean(&v));
             } else if k.eq_cstr("DISTRIB_TARGET") && v.at > 1 {
-                enc->kv_cstr("board", clean(&v));
+                enc->kv_cstr(slice::from_cstr("board"), clean(&v));
             }
         }
     }
@@ -150,8 +150,8 @@ export fn firmware(madpack::Encoder mut *enc, err::Err+et mut *e)
 
 
 
-fn clean(buffer::Buffer+bt mut*v) -> char *
-    where buffer::integrity(v, bt)
+fn clean(buffer::Buffer mut*v) -> char *
+    where buffer::integrity(v)
     where v->at > 1
     model safe(return)
     model nullterm(return)

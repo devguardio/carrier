@@ -8,11 +8,11 @@ using time;
 using buffer;
 using madpack;
 
-export closure open_fn       (Stream mut* self, err::Err+et mut *e, slice::Slice headers);
-export closure close_fn      (Stream mut* self, err::Err+et mut *e);
-export closure stream_fn     (Stream mut* self, err::Err+et mut *e, slice::Slice b) -> bool;
-export closure fragmented_fn (Stream mut* self, err::Err+et mut *e, u32 fragments) -> bool;
-export closure poll_fn       (Stream mut* self, err::Err+et mut *e, io::Async mut *async);
+export closure open_fn       (Stream mut* self, err::Err mut *e, slice::Slice headers);
+export closure close_fn      (Stream mut* self, err::Err mut *e);
+export closure stream_fn     (Stream mut* self, err::Err mut *e, slice::Slice b) -> bool;
+export closure fragmented_fn (Stream mut* self, err::Err mut *e, u32 fragments) -> bool;
+export closure poll_fn       (Stream mut* self, err::Err mut *e, io::Async mut *async);
 
 export struct Config {
     char *          path;
@@ -56,7 +56,7 @@ export fn index(Stream *self) -> slice::slice::Slice
 }
 
 /// allocate a frame for sending later
-export fn stream(Stream mut * self, err::Err+et mut*e, usize reserved_size) -> slice::MutSlice
+export fn stream(Stream mut * self, err::Err mut*e, usize reserved_size) -> slice::MutSlice
     where err::checked(*e)
     where reserved_size < 100000
     model slice::mut_slice::integrity(&return)
@@ -114,7 +114,7 @@ export fn close(Stream mut* self)
     }
 }
 
-pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, slice::Slice b) -> bool
+pub fn incomming_stream(Stream mut*self, err::Err mut *e, u64 order, slice::Slice b) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&b)
 {
@@ -152,7 +152,7 @@ pub fn incomming_stream(Stream mut*self, err::Err+et mut *e, u64 order, slice::S
     return accepted;
 }
 
-pub fn incomming_fragmented(Stream mut*self, err::Err+et mut *e, u64 order, u32 fragments) -> bool
+pub fn incomming_fragmented(Stream mut*self, err::Err mut *e, u64 order, u32 fragments) -> bool
     where err::checked(*e)
 {
     if self->closing {
@@ -190,7 +190,7 @@ pub fn incomming_fragmented(Stream mut*self, err::Err+et mut *e, u64 order, u32 
 }
 
 
-pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
+pub fn incomming_close(Stream mut*self, err::Err mut *e, u64 order) -> bool
     where err::checked(*e)
 {
     if self->closing {
@@ -213,7 +213,7 @@ pub fn incomming_close(Stream mut*self, err::Err+et mut *e, u64 order) -> bool
     return true;
 }
 
-pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
+pub fn do_poll(Stream mut*self, err::Err mut *e, io::Async mut*async)
     where err::checked(*e)
 {
     if self->closing  || self->config == 0{
@@ -244,7 +244,7 @@ pub fn do_poll(Stream mut*self, err::Err+et mut *e, io::Async mut*async)
                 return;
             } else {
                 e->elog();
-                e->make();
+                e->ignore();
             }
         }
     }

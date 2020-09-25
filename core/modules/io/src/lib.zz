@@ -9,11 +9,11 @@ using log;
 export symbol NotImplemented;
 export symbol Timeout;
 
-export closure make_timeout_fn   (Async mut* async, err::Err+et mut*e, time::Time t2) -> Io;
-export closure make_channel_fn   (Async mut* async, err::Err+et mut*e, Io mut *read, Io mut *write);
-export closure select_fn         (Async mut* async, err::Err+et mut* e, Context mut*ctx, Ready w);
+export closure make_timeout_fn   (Async mut* async, err::Err mut*e, time::Time t2) -> Io;
+export closure make_channel_fn   (Async mut* async, err::Err mut*e, Io mut *read, Io mut *write);
+export closure select_fn         (Async mut* async, err::Err mut* e, Context mut*ctx, Ready w);
 export closure wake_fn           (Async mut* async);
-export closure wait_fn           (Async mut* async, err::Err+et mut* e);
+export closure wait_fn           (Async mut* async, err::Err mut* e);
 
 export struct Async {
     void * upper;
@@ -38,8 +38,8 @@ export enum Result {
     Eof,
 }
 
-export closure read_fn  (Context mut* ctx, err::Err+et mut* e, u8 mut* to, usize mut* len) -> Result;
-export closure write_fn (Context mut* ctx, err::Err+et mut* e, u8* to, usize mut* len) -> Result;
+export closure read_fn  (Context mut* ctx, err::Err mut* e, u8 mut* to, usize mut* len) -> Result;
+export closure write_fn (Context mut* ctx, err::Err mut* e, u8* to, usize mut* len) -> Result;
 export closure close_fn (Context mut* ctx);
 
 
@@ -64,7 +64,7 @@ export fn valid(Context *self) -> bool {
     return self->isvalid;
 }
 
-export fn read(Io mut* self, err::Err+et mut* e, buffer::Buffer+st mut* str) -> Result
+export fn read(Io mut* self, err::Err mut* e, buffer::Buffer+st mut* str) -> Result
     where st > 1
     where err::checked(*e)
 {
@@ -90,7 +90,7 @@ export fn read(Io mut* self, err::Err+et mut* e, buffer::Buffer+st mut* str) -> 
     return rr;
 }
 
-export fn read_slice(Io mut* self, err::Err+et mut* e, slice::MutSlice mut* slice) -> Result
+export fn read_slice(Io mut* self, err::Err mut* e, slice::MutSlice mut* slice) -> Result
     where err::checked(*e)
     where mut_slice::integrity(slice)
 {
@@ -121,7 +121,7 @@ export fn read_slice(Io mut* self, err::Err+et mut* e, slice::MutSlice mut* slic
     return rr;
 }
 
-export fn read_bytes(Io mut* self, err::Err+et mut* e, u8 mut* mem, usize mut *memlen) -> Result
+export fn read_bytes(Io mut* self, err::Err mut* e, u8 mut* mem, usize mut *memlen) -> Result
     where err::checked(*e)
 {
     if self->read_impl.fn == 0 {
@@ -140,11 +140,9 @@ export fn read_bytes(Io mut* self, err::Err+et mut* e, u8 mut* mem, usize mut *m
     return rr;
 }
 
-export fn readline(Io mut* self, err::Err+et mut* e, buffer::Buffer+st mut* str) -> Result
-    where st > 1
+export fn readline(Io mut* self, err::Err mut* e, buffer::Buffer mut* str) -> Result
     where err::checked(*e)
-    where st > 2
-    where buffer::integrity(str, st)
+    where buffer::integrity(str)
 {
     if self->read_impl.fn == 0 {
         err::fail(e, NotImplemented, "noimpl");
@@ -176,7 +174,7 @@ export fn readline(Io mut* self, err::Err+et mut* e, buffer::Buffer+st mut* str)
     return Result::Later;
 }
 
-export fn write(Io mut* self, err::Err+et mut* e, buffer::Buffer+st mut* str) -> Result
+export fn write(Io mut* self, err::Err mut* e, buffer::Buffer+st mut* str) -> Result
     where st > 1
     where err::checked(*e)
 {
@@ -185,7 +183,7 @@ export fn write(Io mut* self, err::Err+et mut* e, buffer::Buffer+st mut* str) ->
     return write_bytes(self, e, (u8*)(str->mem), &blen);
 }
 
-export fn write_bytes(Io mut* self, err::Err+et mut* e, u8 *b, usize mut *blen) -> Result
+export fn write_bytes(Io mut* self, err::Err mut* e, u8 *b, usize mut *blen) -> Result
     where err::checked(*e)
 {
     if self->write_impl.fn == 0 {
@@ -202,7 +200,7 @@ export fn write_bytes(Io mut* self, err::Err+et mut* e, u8 *b, usize mut *blen) 
     return rr;
 }
 
-export fn write_cstr(Io mut* self, err::Err+et mut* e, char *b) -> Result
+export fn write_cstr(Io mut* self, err::Err mut* e, char *b) -> Result
     where nullterm(b)
     where err::checked(*e)
 {
@@ -231,7 +229,7 @@ export fn close(Io mut* self)
     self->close_impl(&self->ctx);
 }
 
-export fn select(Async mut *self, err::Err+et mut* e, Context mut*ctx, Ready w)
+export fn select(Async mut *self, err::Err mut* e, Context mut*ctx, Ready w)
     where err::checked(*e)
 {
     if self->impl_select.fn == 0 {
@@ -242,7 +240,7 @@ export fn select(Async mut *self, err::Err+et mut* e, Context mut*ctx, Ready w)
 }
 
 
-export fn timeout(Async mut* self, err::Err+et mut*e, time::Time t2) -> Io
+export fn timeout(Async mut* self, err::Err mut*e, time::Time t2) -> Io
     where err::checked(*e)
 {
     if self->impl_make_timeout.fn != 0 {
@@ -254,7 +252,7 @@ export fn timeout(Async mut* self, err::Err+et mut*e, time::Time t2) -> Io
     };
 }
 
-export fn channel(Async mut* self, err::Err+et mut*e, Io mut*read, Io mut*write)
+export fn channel(Async mut* self, err::Err mut*e, Io mut*read, Io mut*write)
     where err::checked(*e)
 {
     if self->impl_make_channel.fn != 0 {
@@ -271,7 +269,7 @@ export fn wake(Async mut* self) {
     }
 }
 
-export fn wait(Async mut* self, err::Err+et mut*e)
+export fn wait(Async mut* self, err::Err mut*e)
      where err::checked(*e)
 {
     if self->impl_wait.fn != 0 {
@@ -280,8 +278,8 @@ export fn wait(Async mut* self, err::Err+et mut*e)
     }
 }
 
-export closure poll_fn    (void mut *user, err::Err+et mut* e, Async mut* async) -> Result;
-export fn await(Async mut* self, err::Err+et mut*e, void *poll, void mut* user, time::Time timeout_) -> Result
+export closure poll_fn    (void mut *user, err::Err mut* e, Async mut* async) -> Result;
+export fn await(Async mut* self, err::Err mut*e, void *poll, void mut* user, time::Time timeout_) -> Result
     where err::checked(*e)
     where safe(user)
     where safe(poll)

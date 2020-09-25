@@ -1,11 +1,11 @@
 using err;
 inline using (needs err::fail_with_errno) "rand_os.h"::{os_rand};
 
-pub fn rand(err::Err+et mut* e, u8 mut* mut bytes, usize mut size)
+pub fn rand(err::Err mut* e, u8 mut* mut bytes, usize mut size)
     where err::checked(*e)
     where len(bytes) >= size
 {
-    os_rand(e, et, bytes, size);
+    os_rand(e, bytes, size);
 }
 
 

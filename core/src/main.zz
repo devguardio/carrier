@@ -8,7 +8,6 @@ using revision;
 using cmd_publish;
 using cmd_shell;
 using cmd_vault;
-using cmd_subscribe;
 using cmd_stream;
 
 static char * USAGE = "
@@ -22,7 +21,6 @@ Subcommands:
     identity            print out identity
     vault               vault subcommands
     publish             publish services on carrier
-    subscribe           receive network updates
     shell               open a shell
     stream              connect a stream to stdio
 ";
@@ -51,8 +49,6 @@ export fn main(int mut argc, char ** argv) -> int
             return cmd_publish::cmd(va, argc, argv);
         } else if buffer::cstr_eq(arg, "shell") {
             return cmd_shell::cmd(argc, argv);
-        } else if buffer::cstr_eq(arg, "subscribe") {
-            return cmd_subscribe::cmd(argc, argv);
         } else if buffer::cstr_eq(arg, "vault") {
             new+1000  e     = err::make();
             new va = vault_toml::from_home_carriertoml(&e);

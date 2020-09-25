@@ -9,7 +9,6 @@ using log;
 using cmd_shell;
 using cmd_config;
 using cmd_vault;
-using cmd_subscribe;
 using cmd_stream;
 
 static char * USAGE = "
@@ -136,7 +135,7 @@ struct OTAState {
     buffer::Buffer+300 mut inbuf;
 }
 
-fn ota_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
+fn ota_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where err::checked(*e)
     where slice::slice::integrity(&headers)
 {
@@ -186,7 +185,7 @@ fn ota_open(stream::Stream mut *self, err::Err+et mut*e, slice::Slice headers)
     log::info("OTA open %u", self->id);
 }
 
-fn ota_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn ota_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
 {
@@ -229,7 +228,7 @@ fn ota_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> 
     return true;
 }
 
-fn ota_close(stream::Stream mut *self, err::Err+et mut*e)
+fn ota_close(stream::Stream mut *self, err::Err mut*e)
 {
     log::warn("ota closing");
     let this = (OTAState mut*)self->user2;
@@ -252,7 +251,7 @@ fn ota_close(stream::Stream mut *self, err::Err+et mut*e)
     free(this);
 }
 
-fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
+fn ota_poll(stream::Stream mut *self, err::Err mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     OTAState mut * state = (OTAState mut*)self->user2;
@@ -279,7 +278,7 @@ fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
                 default => {}
             }
             log::info("] %d", state->inbuf.at);
-            e->make();
+            e->ignore();
         }
     }
 
@@ -288,12 +287,12 @@ fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
         let mut frame = self->stream(e, 1 + state->inbuf.at);
         if err::check(e) {
             e->elog();
-            e->make();
+            e->ignore();
             return;
         }
         err::assert(frame.push(1));
         err::assert(frame.append_bytes((u8*)state->inbuf.mem, state->inbuf.at));
-        state->inbuf.clear();
+        state->inbuf.make();
     }
 
 
@@ -301,7 +300,7 @@ fn ota_poll(stream::Stream mut *self, err::Err+et mut*e, io::Async mut* async)
 
 
 
-fn ota_spawn(OTAState mut*self, err::Err+et mut*e)
+fn ota_spawn(OTAState mut*self, err::Err mut*e)
     where err::checked(*e)
 {
     int mut pipe_out[2] = {0};

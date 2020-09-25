@@ -29,7 +29,7 @@ export enum FieldType {
 
 export symbol Invalid;
 
-export fn encode_bytes_start(slice::MutSlice mut str, err::Err+et mut*e, u8 index, usize l)
+export fn encode_bytes_start(slice::MutSlice mut str, err::Err mut*e, u8 index, usize l)
     where   err::checked(*e)
     where   slice::mut_slice::integrity(&str)
     model   slice::mut_slice::integrity(&str)
@@ -44,7 +44,7 @@ export fn encode_bytes_start(slice::MutSlice mut str, err::Err+et mut*e, u8 inde
     write_varint(str, e, (u32)l, 0);
 }
 
-export fn encode_bytes(slice::MutSlice mut str, err::Err+et mut*e, u8 index, u8*b, usize l)
+export fn encode_bytes(slice::MutSlice mut str, err::Err mut*e, u8 index, u8*b, usize l)
     where   len(b) >= l
     where   err::checked(*e)
     where   slice::mut_slice::integrity(&str)
@@ -65,7 +65,7 @@ export fn encode_bytes(slice::MutSlice mut str, err::Err+et mut*e, u8 index, u8*
     }
 }
 
-export fn encode_varint(slice::MutSlice mut str, err::Err+et mut*e, u8 index, u64 mut value)
+export fn encode_varint(slice::MutSlice mut str, err::Err mut*e, u8 index, u64 mut value)
     where   err::checked(*e)
     where   slice::mut_slice::integrity(&str)
     model   slice::mut_slice::integrity(&str)
@@ -77,7 +77,7 @@ export fn encode_varint(slice::MutSlice mut str, err::Err+et mut*e, u8 index, u6
     write_varint(str, e, (u32)value, (u32)(value >> 32));
 }
 
-export fn encode_f64(slice::MutSlice mut str, err::Err+et mut*e, u8 index, f64 mut value)
+export fn encode_f64(slice::MutSlice mut str, err::Err mut*e, u8 index, f64 mut value)
     where   err::checked(*e)
     where   slice::mut_slice::integrity(&str)
     model   slice::mut_slice::integrity(&str)
@@ -124,7 +124,7 @@ export struct Field {
 
 
 
-fn write_varint(slice::MutSlice mut str, err::Err+et mut*e, u32 mut low, u32 mut high)
+fn write_varint(slice::MutSlice mut str, err::Err mut*e, u32 mut low, u32 mut high)
     where err::checked(*e)
     where slice::mut_slice::integrity(&str)
     model slice::mut_slice::integrity(&str)
@@ -168,7 +168,7 @@ fn write_varint(slice::MutSlice mut str, err::Err+et mut*e, u32 mut low, u32 mut
 }
 
 
-fn read_varint(Decoder mut*self, err::Err+et mut*e) -> u64
+fn read_varint(Decoder mut*self, err::Err mut*e) -> u64
     where err::checked(*e)
 {
     u64 mut val = 0;
@@ -191,7 +191,7 @@ fn read_varint(Decoder mut*self, err::Err+et mut*e) -> u64
 
 
 
-export fn next(Decoder mut*self, err::Err+et mut*e, Field mut*v) -> bool
+export fn next(Decoder mut*self, err::Err mut*e, Field mut*v) -> bool
     where err::checked(*e)
 {
 

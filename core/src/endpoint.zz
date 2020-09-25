@@ -22,8 +22,6 @@ using pool;
 using slice;
 using hpack;
 using stream;
-using protonerf;
-using proto;
 using noise;
 using responder;
 using peering;
@@ -94,58 +92,58 @@ export struct Endpoint+ {
     pool::Pool+     mut framebuffer;
 }
 
-export fn start(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
+export fn start(Endpoint mut* self, err::Err mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     self->state = State::Connecting;
     self->do_state_connect(e, async);
 }
 
-export fn none(Endpoint+xt mut new* self)
+export fn none(Endpoint mut new* self, usize xt = static(len(self->framebuffer.pmem)))
     where xt > xt/32
 {
     memset(self, 0, sizeof(Endpoint));
     self->streampool.make(sizeof(stream::Stream));
-    self->framebuffer.make(32);
+    self->framebuffer.make(32, xt);
 }
 
-export fn from_secretkit(Endpoint+xt mut new* self, err::Err+et mut*e, identity::SecretKit ik)
+export fn from_secretkit(Endpoint mut new* self, err::Err mut*e, identity::SecretKit ik, usize xt = static(len(self->framebuffer.pmem)))
     where err::checked(*e)
     where xt > xt/32
 {
-    none(self);
+    none(self, xt);
     vault_ik::from_ik(&self->vault, e, ik);
 }
-export fn from_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e, char *file_name)
+export fn from_carriertoml(Endpoint mut new* self, err::Err mut*e, char *file_name, usize xt = static(len(self->framebuffer.pmem)))
     where err::checked(*e)
     where xt > xt/32
     where nullterm(file_name)
 {
-    none(self);
+    none(self, xt);
     vault_toml::from_carriertoml(&self->vault, e, file_name);
 }
 
-export fn from_home_carriertoml(Endpoint+xt mut new* self, err::Err+et mut*e)
+export fn from_home_carriertoml(Endpoint mut new* self, err::Err mut*e, usize xt = static(len(self->framebuffer.pmem)))
     where err::checked(*e)
     where xt > xt/32
 {
-    none(self);
+    none(self, xt);
     vault_toml::from_home_carriertoml(&self->vault, e);
 }
 
-export fn native(Endpoint+xt mut new* self, err::Err+et mut*e)
+export fn native(Endpoint mut new* self, err::Err mut*e, usize xt = static(len(self->framebuffer.pmem)))
     where err::checked(*e)
     where xt > xt/32
 {
-    none(self);
-    os_carrier_endpoint_open(self, e, et);
+    none(self, xt);
+    os_carrier_endpoint_open(self, e);
 }
 
-export fn from_vault(Endpoint+xt mut new* self, err::Err+et mut*e, vault::Vault vault)
+export fn from_vault(Endpoint mut new* self, err::Err mut*e, vault::Vault vault, usize xt = static(len(self->framebuffer.pmem)))
     where err::checked(*e)
     where xt > xt/32
 {
-    none(self);
+    none(self, xt);
     self->vault = vault;
 }
 
@@ -192,7 +190,7 @@ export fn close(Endpoint mut* self)
 
 
 /// gracefully disconnect everything and shutdown
-export fn shutdown(Endpoint mut* self, err::Err+et mut*e)
+export fn shutdown(Endpoint mut* self, err::Err mut*e)
     where err::checked(*e)
 {
     switch self->state {
@@ -242,7 +240,7 @@ static u16 PORTS[] = {53, 443, 8443, 80, 123};
 
 
 
-fn do_state_connect(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
+fn do_state_connect(Endpoint mut* self, err::Err mut*e, io::Async mut* async)
     where err::checked(*e)
 {
     log::debug("trustvector complete, ring has %zu brokers", self->vault.broker_count());
@@ -266,14 +264,14 @@ fn do_state_connect(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async)
     }
 }
 
-fn do_complete(Endpoint mut* self, err::Err+et mut*e, peering::Transport trp, address::Address fromaddr) -> bool
+fn do_complete(Endpoint mut* self, err::Err mut*e, peering::Transport trp, address::Address fromaddr) -> bool
     where err::checked(*e)
 {
     channel::Transfer mut broker_chan = {0};
 
     vault::Broker mut redir = {0};
 
-    static_attest(buffer::integrity(&self->statem.connecting.pkt_in, static(len(self->statem.connecting.pkt_in.mem))));
+    static_attest(buffer::integrity(&self->statem.connecting.pkt_in));
     let mut udpkt = self->statem.connecting.pkt_in.as_slice();
 
     if trp == peering::Transport::Tcp {
@@ -320,7 +318,7 @@ fn do_complete(Endpoint mut* self, err::Err+et mut*e, peering::Transport trp, ad
     }
 }
 
-export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> io::Result
+export fn poll(Endpoint mut* self, err::Err mut*e, io::Async mut* async) -> io::Result
     where err::checked(*e)
 {
 
@@ -344,7 +342,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
             // receive
             address::Address    mut fromaddr = {0};
 
-            self->statem.connecting.pkt_in.clear();
+            self->statem.connecting.pkt_in.make();
             if self->udp4.ctx.valid() && self->udp4.recvfrom(e, &self->statem.connecting.pkt_in, &fromaddr) == io::Result::Ready {
                 if err::check(e) {return io::Result::Error; }
 
@@ -522,8 +520,7 @@ export fn poll(Endpoint mut* self, err::Err+et mut*e, io::Async mut* async) -> i
             }
 
             if io::valid(&self->tcp4) {
-                static_attest(buffer::integrity(&self->statem.connecting.pkt_out,
-                    static(len(self->statem.connecting.pkt_out.mem))));
+                static_attest(buffer::integrity(&self->statem.connecting.pkt_out));
 
                 self->tcp4.send(e, self->statem.connecting.pkt_out.as_slice());
                 e->ignore();

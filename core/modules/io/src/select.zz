@@ -68,7 +68,7 @@ pub fn select_write_fd(Async mut* self, int fd) -> bool {
     return true;
 }
 
-fn impl_unix_select(io::Async mut* async, err::Err+et mut*e, io::Context mut*ctx, io::Ready w)
+fn impl_unix_select(io::Async mut* async, err::Err mut*e, io::Context mut*ctx, io::Ready w)
     where err::checked(*e)
 {
     let self = (Async mut *)async->upper;
@@ -97,7 +97,7 @@ fn impl_unix_select(io::Async mut* async, err::Err+et mut*e, io::Context mut*ctx
 }
 
 
-fn impl_wait(io::Async mut* async, err::Err+et mut*e)
+fn impl_wait(io::Async mut* async, err::Err mut*e)
     where err::checked(*e)
 {
     let self = (Async mut *)async->upper;
@@ -173,7 +173,7 @@ export fn make_read_async(io::Io mut *i, io::Async mut* unsafe async) -> bool {
     return ((int)fcntl((i->ctx).fd, F_SETFL, flags) == 0);
 }
 
-fn impl_unix_read(io::Context mut*ctx, err::Err+et mut*e, u8 mut* to, usize mut *l) -> io::Result
+fn impl_unix_read(io::Context mut*ctx, err::Err mut*e, u8 mut* to, usize mut *l) -> io::Result
     where err::checked(*e)
 {
     if ctx->async != 0 {
@@ -204,7 +204,7 @@ fn impl_unix_read(io::Context mut*ctx, err::Err+et mut*e, u8 mut* to, usize mut 
 }
 
 
-fn impl_unix_write(io::Context mut*ctx, err::Err+et mut*e, u8 * to, usize mut *l) -> io::Result
+fn impl_unix_write(io::Context mut*ctx, err::Err mut*e, u8 * to, usize mut *l) -> io::Result
     where err::checked(*e)
 {
     for (usize mut attempt = 0;attempt<100;attempt++) {
@@ -243,7 +243,7 @@ fn impl_wake(io::Async mut *async)
     self->timeout = 0;
 }
 
-fn impl_make_timeout(io::Async mut *async, err::Err+et mut*e, time::Time t2) -> io::Io
+fn impl_make_timeout(io::Async mut *async, err::Err mut*e, time::Time t2) -> io::Io
     where err::checked(*e)
 {
     if !t2.finite {
@@ -269,12 +269,12 @@ fn impl_make_timeout(io::Async mut *async, err::Err+et mut*e, time::Time t2) -> 
     };
 }
 
-fn impl_never(io::Context mut*ctx, err::Err+et mut*e, u8 mut* to, usize mut *l) -> io::Result
+fn impl_never(io::Context mut*ctx, err::Err mut*e, u8 mut* to, usize mut *l) -> io::Result
 {
     return io::Result::Later;
 }
 
-fn impl_timeout_read(io::Context mut*ctx, err::Err+et mut*e, u8 mut* to, usize mut *l) -> io::Result
+fn impl_timeout_read(io::Context mut*ctx, err::Err mut*e, u8 mut* to, usize mut *l) -> io::Result
     where err::checked(*e)
 {
 
@@ -304,7 +304,7 @@ fn impl_timer_close(io::Context mut*ctx) {
     ctx->isvalid  = false;
 }
 
-fn impl_make_channel(io::Async mut *async, err::Err+et mut*e, io::Io mut*read, io::Io mut*write)
+fn impl_make_channel(io::Async mut *async, err::Err mut*e, io::Io mut*read, io::Io mut*write)
     where err::checked(*e)
 {
     e->fail(err::NotImplemented, "pipe noimpl");

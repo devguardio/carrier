@@ -41,7 +41,7 @@ static stream::Config ConnectStream = stream::Config {
     close:  on_close,
 };
 
-export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut*ep, identity::Identity *target)
+export fn start(Connect mut new *self, err::Err mut*e, endpoint::Endpoint mut*ep, identity::Identity *target)
     where err::checked(*e)
 {
     memcpy(&self->target.k, target->k, static(len(self->target.k)));
@@ -71,7 +71,7 @@ export fn start(Connect mut new *self, err::Err+et mut*e, endpoint::Endpoint mut
     streami->user2 = self;
 }
 
-fn on_close(stream::Stream mut *self, err::Err+et mut*e) {
+fn on_close(stream::Stream mut *self, err::Err mut*e) {
 
     log::warn("connect closed");
 
@@ -86,7 +86,7 @@ fn on_close(stream::Stream mut *self, err::Err+et mut*e) {
     }
 }
 
-fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice bs) -> bool
+fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice bs) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&bs)
 {
@@ -163,7 +163,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice bs) -> bo
                     if field.a != 0 {
                         static_attest(safe(field.a));
                         static_attest(len(field.a) >= field.value.v_len);
-                        this->remoteError.clear();
+                        this->remoteError.make();
                         this->remoteError.append_bytes(field.a, field.value.v_len);
                         log::error("error: %.*s", field.value.v_len, field.a);
                     }
@@ -214,7 +214,7 @@ fn on_stream(stream::Stream mut *self, err::Err+et mut*e, slice::Slice bs) -> bo
             static_attest(safe(nuchan));
 
             channel::Transfer mut chan_trans = {0};
-            static_attest(buffer::integrity(&this->initiator_pkt, static(len(this->initiator_pkt.mem))));
+            static_attest(buffer::integrity(&this->initiator_pkt));
             this->initiator.complete(e, &chan_trans, 0, this->initiator_pkt.as_slice(), &this->target);
             if err::check(e) {
                 return true;

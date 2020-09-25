@@ -5,16 +5,16 @@ inline using "native.h"::{
     os_get_homedir,
 }
 
-export fn get_homedir(err::Err+et mut *e, buffer::Buffer+st mut *to)
+export fn get_homedir(err::Err mut *e, buffer::Buffer mut *to)
     where err::checked(*e)
-    where buffer::integrity(to, st)
+    where buffer::integrity(to)
 {
-    let rr = (usize)os_get_homedir(to->mem + to->at, st - to->at);
+    let rr = (usize)os_get_homedir(to->mem + to->at, to->size - to->at);
     if rr == 0 {
         err::fail_with_errno(e, "homedir");
     }
 
     to->at += rr;
-    err::assert(to->at < st);
+    err::assert(to->at < to->size);
     to->mem[to->at] = 0;
 }

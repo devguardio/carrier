@@ -33,7 +33,7 @@ export struct IdentityKit   { Identity identity; Address network; }; // type 2
 
 using <stdio.h>::{printf};
 
-fn from_str(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+fn from_str(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
     where l <= len(from)
     where size == 8 || size == 64 || size == 32
     where len(to) >= size
@@ -68,7 +68,7 @@ fn type_string(u8 typ) -> char* {
 }
 
 
-fn from_str_base32(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+fn from_str_base32(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
     where l <= len(from)
     where size == 8 || size == 64 || size == 32
     where len(to) >= size
@@ -128,7 +128,7 @@ fn from_str_base32(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize
     }
 }
 
-fn from_str_base58(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+fn from_str_base58(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
     where l <= len(from)
     where size == 8 || size == 64 || size == 32
     where len(to) >= size
@@ -181,7 +181,7 @@ fn from_str_base58(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize
 }
 
 
-fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
+fn to_str(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     where size <= len(k)
@@ -229,7 +229,7 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
     return 1 + outlen;
 }
 
-fn to_str_bc58(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
+fn to_str_bc58(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     where size == 32 || size == 64
@@ -264,14 +264,14 @@ fn to_str_bc58(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8
     return l;
 }
 
-export fn identity_from_str (Identity mut new* self, err::Err+et mut* e, char* from, usize l)
+export fn identity_from_str (Identity mut new* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(32, e, self->k, from, l, 9);
 }
 
-export fn identity_from_cstr (Identity mut new* self, err::Err+et mut* e, char* from)
+export fn identity_from_cstr (Identity mut new* self, err::Err mut* e, char* from)
     where nullterm(from)
     where err::checked(*e)
 {
@@ -280,14 +280,14 @@ export fn identity_from_cstr (Identity mut new* self, err::Err+et mut* e, char* 
     identity_from_str(self, e, from, l);
 }
 
-export fn address_from_str (Address mut new*self, err::Err+et mut* e, char* from, usize l)
+export fn address_from_str (Address mut new*self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(32, e, self->k, from, l, 6);
 }
 
-export fn address_from_cstr (Address mut new* self, err::Err+et mut* e, char* from)
+export fn address_from_cstr (Address mut new* self, err::Err mut* e, char* from)
     where nullterm(from)
     where err::checked(*e)
 {
@@ -296,14 +296,14 @@ export fn address_from_cstr (Address mut new* self, err::Err+et mut* e, char* fr
     address_from_str(self, e, from, l);
 }
 
-export fn secret_from_str (Secret mut new*self, err::Err+et mut* e, char* from, usize l)
+export fn secret_from_str (Secret mut new*self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(32, e, self->k, from, l, 3);
 }
 
-export fn secret_from_cstr (Secret mut new* self, err::Err+et mut* e, char* from)
+export fn secret_from_cstr (Secret mut new* self, err::Err mut* e, char* from)
     where nullterm(from)
     where err::checked(*e)
 {
@@ -312,7 +312,7 @@ export fn secret_from_cstr (Secret mut new* self, err::Err+et mut* e, char* from
     secret_from_str(self, e, from, l);
 }
 
-export fn identity_to_str (err::Err+et mut* e, char mut* to, usize l, Identity* from)  -> usize
+export fn identity_to_str (err::Err mut* e, char mut* to, usize l, Identity* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
@@ -320,7 +320,7 @@ export fn identity_to_str (err::Err+et mut* e, char mut* to, usize l, Identity* 
     return to_str(32, e, to, l, 1, 9, from->k);
 }
 
-export fn identity_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Identity* from)  -> usize
+export fn identity_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Identity* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
@@ -328,18 +328,18 @@ export fn identity_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Ident
     return to_str_bc58(32, e, to, l, 8, 9, from->k);
 }
 
-export fn identity_to_string (Identity* self, err::Err+et mut* e, buffer::Buffer+st mut*str)
+export fn identity_to_string (Identity* self, err::Err mut* e, buffer::Buffer mut*str)
     where   err::checked(*e)
-    where   buffer::integrity(str, st)
-    model   buffer::integrity(str, st)
+    where   buffer::integrity(str)
+    model   buffer::integrity(str)
 {
     static_attest(str->at < len(str->mem));
-    let ur = to_str(32, e, str->mem + str->at , st - str->at , 1, 9, self->k);
+    let ur = to_str(32, e, str->mem + str->at , str->size- str->at , 1, 9, self->k);
     str->at += ur;
-    static_attest(buffer::integrity(str, st))
+    static_attest(buffer::integrity(str))
 }
 
-export fn address_to_str (err::Err+et mut* e,     char mut* to, usize l, Address* from)  -> usize
+export fn address_to_str (err::Err mut* e,     char mut* to, usize l, Address* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
@@ -347,7 +347,7 @@ export fn address_to_str (err::Err+et mut* e,     char mut* to, usize l, Address
     return to_str(32, e, to, l, 1, 6, from->k);
 }
 
-export fn address_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Address* from)  -> usize
+export fn address_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Address* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
@@ -356,7 +356,7 @@ export fn address_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Addres
 }
 
 
-export fn secret_to_str (err::Err+et mut* e,      char mut* to, usize l, Secret* from) -> usize 
+export fn secret_to_str (err::Err mut* e,      char mut* to, usize l, Secret* from) -> usize 
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
@@ -364,7 +364,7 @@ export fn secret_to_str (err::Err+et mut* e,      char mut* to, usize l, Secret*
     return to_str(32, e, to, l, 1, 3, from->k);
 }
 
-export fn secret_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Secret* from)  -> usize
+export fn secret_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Secret* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
@@ -372,19 +372,19 @@ export fn secret_to_str_bc58 (err::Err+et mut* e, char mut* to, usize l, Secret*
     return to_str_bc58(32, e, to, l, 8, 3, from->k);
 }
 
-export fn secret_generate (Secret mut new* self, err::Err+et mut* e)
+export fn secret_generate (Secret mut new* self, err::Err mut* e)
     where err::checked(*e)
 {
     rand::rand(e, self->k, 32);
 }
 
-export fn signature_from_str (Signature mut* self, err::Err+et mut* e, char* from, usize l)
+export fn signature_from_str (Signature mut* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(64, e, self->k, from, l, 10);
 }
-export fn signature_to_str (err::Err+et mut* e,      char mut* to, usize l, Signature* from) -> usize
+export fn signature_to_str (err::Err mut* e,      char mut* to, usize l, Signature* from) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
 {
@@ -392,13 +392,13 @@ export fn signature_to_str (err::Err+et mut* e,      char mut* to, usize l, Sign
 }
 
 
-export fn alias_from_str (Alias new mut* self, err::Err+et mut* e, char* from, usize l)
+export fn alias_from_str (Alias new mut* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(8, e, self->k, from, l, 11);
 }
-export fn alias_to_str (err::Err+et mut* e,      char mut* to, usize l, Alias * from) -> usize
+export fn alias_to_str (err::Err mut* e,      char mut* to, usize l, Alias * from) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
 {
@@ -407,7 +407,7 @@ export fn alias_to_str (err::Err+et mut* e,      char mut* to, usize l, Alias * 
 
 
 
-export fn secretkit_from_str (SecretKit mut* self, err::Err+et mut* e, char* from, usize l)
+export fn secretkit_from_str (SecretKit mut* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
@@ -415,7 +415,7 @@ export fn secretkit_from_str (SecretKit mut* self, err::Err+et mut* e, char* fro
     static_attest(len(k) >= 64);
     from_str(64, e, k, from, l, 1);
 }
-export fn secretkit_to_str (err::Err+et mut* e, char mut* to, usize l, SecretKit * from) -> usize
+export fn secretkit_to_str (err::Err mut* e, char mut* to, usize l, SecretKit * from) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
 {
@@ -424,7 +424,7 @@ export fn secretkit_to_str (err::Err+et mut* e, char mut* to, usize l, SecretKit
     return to_str(64, e, to, l, 1, 1, k);
 }
 
-export fn secretkit_generate (SecretKit mut new* self, err::Err+et mut* e)
+export fn secretkit_generate (SecretKit mut new* self, err::Err mut* e)
     where err::checked(*e)
 {
     let k = (u8 mut*)self;
@@ -432,7 +432,7 @@ export fn secretkit_generate (SecretKit mut new* self, err::Err+et mut* e)
     rand::rand(e, k, 64);
 }
 
-export fn identitykit_from_str (IdentityKit mut* self, err::Err+et mut* e, char* from, usize l)
+export fn identitykit_from_str (IdentityKit mut* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
@@ -440,7 +440,7 @@ export fn identitykit_from_str (IdentityKit mut* self, err::Err+et mut* e, char*
     static_attest(len(k) >= 64);
     from_str(64, e, k, from, l, 2);
 }
-export fn identitykit_to_str (err::Err+et mut* e, char mut* to, usize l, IdentityKit * from) -> usize
+export fn identitykit_to_str (err::Err mut* e, char mut* to, usize l, IdentityKit * from) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
 {
@@ -502,7 +502,7 @@ export fn isnull(u8 * k) -> bool
     return true;
 }
 
-export fn nullcheck(err::Err+et mut* e, u8 * k)
+export fn nullcheck(err::Err mut* e, u8 * k)
     where err::checked(*e)
     where len(k) >= 32
 {

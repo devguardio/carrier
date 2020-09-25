@@ -2,6 +2,7 @@ using sysinfo;
 using madpack;
 using buffer;
 using err;
+using slice;
 using <stdio.h>::{fwrite, stdout};
 
 pub fn main() {
@@ -11,22 +12,22 @@ pub fn main() {
 
     new enc = madpack::encode(b.as_mut_slice(), &idx);
 
-    enc.kv_map("uname");
+    enc.kv_map(slice::from_cstr("uname"));
     sysinfo::uname(&enc, &e);
     enc.end();
     e.abort();
 
-    enc.kv_map("mem");
+    enc.kv_map(slice::from_cstr("mem"));
     sysinfo::mem(&enc, &e);
     enc.end();
     e.abort();
 
-    enc.kv_map("cpu");
+    enc.kv_map(slice::from_cstr("cpu"));
     sysinfo::cpu(&enc, &e);
     enc.end();
     e.abort();
 
-    enc.kv_map("firmware");
+    enc.kv_map(slice::from_cstr("firmware"));
     sysinfo::firmware(&enc, &e);
     enc.end();
     e.abort();

@@ -7,7 +7,7 @@ inline using "os.h"::{
     (struct sockaddr_in6)   as sockaddr_in6,
 };
 
-pub fn alen(address::Address *addr, err::Err+et mut *e) -> usize
+pub fn alen(address::Address *addr, err::Err mut *e) -> usize
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
 {
@@ -25,7 +25,7 @@ pub fn alen(address::Address *addr, err::Err+et mut *e) -> usize
     }
 }
 
-pub fn socket(address::Address *addr, err::Err+et mut *e, int typ) -> int
+pub fn socket(address::Address *addr, err::Err mut *e, int typ) -> int
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
 {
@@ -59,7 +59,7 @@ else
 {
 }
 
-pub fn make_async(int fd, err::Err+et mut *e)
+pub fn make_async(int fd, err::Err mut *e)
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
 {

@@ -34,7 +34,7 @@ static stream::Config PublishStream = stream::Config {
     close:  close_publish,
 };
 
-export fn publish(endpoint::Endpoint mut*self, err::Err+et mut*e)
+export fn publish(endpoint::Endpoint mut*self, err::Err mut*e)
     where err::checked(*e)
 {
     self->broker_stream_registry[0] = &PeerConnect;
@@ -47,14 +47,14 @@ export fn publish(endpoint::Endpoint mut*self, err::Err+et mut*e)
     streami->user2 = self;
 }
 
-fn close_publish(stream::Stream mut *self, err::Err+et mut*e) {
+fn close_publish(stream::Stream mut *self, err::Err mut*e) {
     log::error("publish closed\n");
     err::assert_safe(self->chan);
     err::assert_safe(self->chan->endpoint);
     self->chan->endpoint->close();
 }
 
-fn stream_to_publish(stream::Stream mut *self, err::Err+et mut*e, Slice bs) -> bool
+fn stream_to_publish(stream::Stream mut *self, err::Err mut*e, Slice bs) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&bs)
 {
@@ -129,7 +129,7 @@ static stream::Config PeerConnect = stream::Config {
     stream:     stream_connect,
 };
 
-fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg) -> bool
+fn stream_connect(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where slice::slice::integrity(&msg)
     where err::checked(*e)
 {
@@ -307,7 +307,7 @@ fn stream_connect(stream::Stream mut *self, err::Err+et mut*e, slice::Slice msg)
         if err::check(e) {
             e->elog();
             frameok = false;
-            e->make();
+            e->ignore();
         }
 
         // oom

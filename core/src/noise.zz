@@ -28,7 +28,7 @@ export struct Initiator {
 
 pub fn initiate(
     Initiator mut *self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8 mut * mut pkt,
     usize pktlen,
     u8 * prologue,
@@ -94,7 +94,7 @@ pub fn initiate(
 
 pub fn initiate_insecure(
     Initiator mut *self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8 mut * mut pkt,
     usize pktlen,
     u8 * prologue,
@@ -170,7 +170,7 @@ pub fn receive_insecure(
 
 pub fn receive(
     Responder mut* self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8 mut* mut payload,
     usize payload_len,
     u8 * prologue,
@@ -238,7 +238,7 @@ pub fn receive(
 
 pub fn accept(
     Responder mut* self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8 mut * mut pkt,
     usize pktlen,
     u8 * payload,
@@ -287,7 +287,7 @@ pub fn accept(
 
 pub fn complete(
     Initiator mut* self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8 mut* mut payload,
     usize payload_len,
     u8 * packet,

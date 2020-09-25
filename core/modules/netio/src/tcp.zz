@@ -16,7 +16,7 @@ export struct Socket {
     address::Address    remote_addr;
 }
 
-export fn connect(Socket mut new *self,  err::Err+et mut*e, address::Address addr, io::Async mut* unsafe async)
+export fn connect(Socket mut new *self,  err::Err mut*e, address::Address addr, io::Async mut* unsafe async)
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX)
 {
@@ -44,10 +44,10 @@ export fn connect(Socket mut new *self,  err::Err+et mut*e, address::Address add
     self->ctx.isvalid = true;
 }
 
-export fn recv(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *buf) -> io::Result
+export fn recv(Socket mut *self, err::Err mut*e, buffer::Buffer mut *buf) -> io::Result
     where   err::checked(*e)
-    where   buffer::integrity(buf, st)
-    model   buffer::integrity(buf, st)
+    where   buffer::integrity(buf)
+    model   buffer::integrity(buf)
     if #(os::ZZ_NETIO_UNIX)
 {
     if (self->ctx.async != 0) {
@@ -56,7 +56,7 @@ export fn recv(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *buf) 
         if err::check(e) {return io::Result::Error; }
     }
 
-    isize r = unsafe<isize>(os::recv(self->ctx.fd, buf->mem + buf->at, st - buf->at, 0));
+    isize r = unsafe<isize>(os::recv(self->ctx.fd, buf->mem + buf->at, buf->size - buf->at, 0));
     if r < 0 {
         if unsafe<bool>(os::errno == os::EAGAIN) {
             return io::Result::Later;
@@ -67,11 +67,11 @@ export fn recv(Socket mut *self, err::Err+et mut*e, buffer::Buffer+st mut *buf) 
     }
 
     buf->at += (usize)r;
-    static_attest(buffer::integrity(buf, st));
+    static_attest(buffer::integrity(buf));
     return io::Result::Ready;
 }
 
-export fn send(Socket mut *self, err::Err+et mut*e, slice::Slice buf) -> io::Result
+export fn send(Socket mut *self, err::Err mut*e, slice::Slice buf) -> io::Result
     where err::checked(*e)
     if #(os::ZZ_NETIO_UNIX  && os::defined(os::MSG_NOSIGNAL))
 {

@@ -39,7 +39,7 @@ export enum Move {
 //     dont forget fuzzing when implementing v10
 pub fn initiate(
     Initiator mut new*      self,
-    err::Err+et mut*    e,
+    err::Err mut*    e,
     bool                secure,
     vault::Vault*       vault,
     Move                move,
@@ -227,7 +227,7 @@ pub fn initiate(
 
 pub fn complete (
     Initiator       mut* self,
-    err::Err+et     mut* e,
+    err::Err     mut* e,
 
     channel::Transfer mut* chan,
     vault::Broker   mut* unsafe redirect,

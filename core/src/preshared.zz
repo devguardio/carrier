@@ -2,12 +2,12 @@ using slice;
 using madpack;
 
 
-export const slice::slice::Slice DISCOVERY = @madpack::preshare({
+export const slice::slice::Slice DISCOVERY = @madpack::preshare(
     "carrier_revision",
     "carrier_build_id",
     "application",
-    "paths",
-});
+    "paths"
+);
 
 export fn discovery() -> slice::slice::Slice
     model slice::slice::integrity(&return)
@@ -17,7 +17,7 @@ export fn discovery() -> slice::slice::Slice
     return r;
 }
 
-export const slice::slice::Slice CONFIG = @madpack::preshare({
+export const slice::slice::Slice CONFIG = @madpack::preshare(
     "auth",
     "identity",
     "path",
@@ -25,8 +25,8 @@ export const slice::slice::Slice CONFIG = @madpack::preshare({
     "error",
     "ok",
     "code",
-    "trace",
-});
+    "trace"
+);
 
 export fn config() -> slice::slice::Slice
     model slice::slice::integrity(&return)
@@ -36,7 +36,7 @@ export fn config() -> slice::slice::Slice
     return r;
 }
 
-export const slice::slice::Slice SYSINFO = @madpack::preshare({
+export const slice::slice::Slice SYSINFO = @madpack::preshare(
     "uname",
     "sysname",
     "nodename",
@@ -60,8 +60,8 @@ export const slice::slice::Slice SYSINFO = @madpack::preshare({
     "distro",
     "release",
     "revision",
-    "board",
-});
+    "board"
+);
 
 export fn sysinfo() -> slice::slice::Slice
     model slice::slice::integrity(&return)
@@ -72,9 +72,9 @@ export fn sysinfo() -> slice::slice::Slice
 }
 
 
-export const slice::slice::Slice SENSORS = @madpack::preshare({
-    "",
-});
+export const slice::slice::Slice SENSORS = @madpack::preshare(
+    ""
+);
 
 export fn sensors() -> slice::slice::Slice
     model slice::slice::integrity(&return)
@@ -85,11 +85,11 @@ export fn sensors() -> slice::slice::Slice
 }
 
 
-export const slice::slice::Slice SUBSCRIBE = @madpack::preshare({
+export const slice::slice::Slice SUBSCRIBE = @madpack::preshare(
     "publish",
     "unpublish",
-    "identity",
-});
+    "identity"
+);
 
 export fn subscribe() -> slice::slice::Slice
     model slice::slice::integrity(&return)
@@ -100,7 +100,7 @@ export fn subscribe() -> slice::slice::Slice
 }
 
 
-export const slice::slice::Slice NETTRACE = @madpack::preshare({
+export const slice::slice::Slice NETTRACE = @madpack::preshare(
     "address",
     "publishers",
     "limits",
@@ -110,8 +110,8 @@ export const slice::slice::Slice NETTRACE = @madpack::preshare({
     "tx32",  // * 32 byte  total transmitted
     "rx32",  // * 32 byte  total received
     "tx32d", // * 32 byte per second transmitted
-    "rx32d", // * 32 byte per second received
-});
+    "rx32d" // * 32 byte per second received
+);
 
 export fn nettrace() -> slice::slice::Slice
     model slice::slice::integrity(&return)

@@ -25,7 +25,7 @@ func DecodeHeaders(b []byte) (map[string][][]byte, error) {
     var kv = make(map[string][][]byte);
 
     for {
-        if !C.hpack_decoder_next(&it, e.d, e.tail) {
+        if !C.hpack_decoder_next(&it, e.d) {
             break;
         }
         if err := e.Check(); err != nil {

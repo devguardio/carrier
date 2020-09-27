@@ -44,7 +44,7 @@ func Subscribe() (*Subscriber, error) {
     async := AsyncNew(100);
     defer async.Delete();
 
-    C.carrier_bootstrap_sync(e.d, e.tail, va.d, async.Base(), C.time_from_seconds(10));
+    C.carrier_bootstrap_sync(e.d, va.d, async.Base(), C.time_from_seconds(10));
     if err := e.Check(); err != nil {
         return nil, err;
     }
@@ -88,7 +88,7 @@ func sub(va *Vault, rx chan Event) (*Endpoint, error) {
     netstr, err := va.GetNetwork().String()
     if err != nil { ep.Delete(); return nil, err; }
 
-    C.carrier_endpoint_from_vault(ep.d, ep.tail, e.d, e.tail, va.Take());
+    C.carrier_endpoint_from_vault(ep.d, e.d, va.Take(), ep.tail);
     if err := e.Check(); err != nil { ep.Delete(); return nil, err; }
 
     ep.ClusterDoNotMove();

@@ -13,6 +13,7 @@ using time;
 using identity;
 using io;
 using vault;
+using mem;
 
 export fn sync(err::Err mut * e, vault::Vault mut* store, io::Async mut* async, time::Time timeout)
     where err::checked(*e)
@@ -47,6 +48,7 @@ export struct Bootstrap {
 export fn bootstrap(Bootstrap mut new*self, err::Err mut * e, vault::Vault mut*store, io::Async mut* async)
     where err::checked(*e)
 {
+    mem::zero(self);
     self->store = store;
 
     address::from_cstr(self->dns_servers+0,"8.8.8.8:53");

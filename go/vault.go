@@ -48,7 +48,7 @@ func VaultFromHomeCarrierToml() (*Vault, error) {
     var e = ErrorNew(1000);
     defer e.Delete();
 
-    C.carrier_vault_toml_from_home_carriertoml(self.d, e.d, e.tail);
+    C.carrier_vault_toml_from_home_carriertoml(self.d, e.d);
     if err := e.Check(); err != nil {
         return nil, err;
     }
@@ -70,7 +70,7 @@ func VaultFromCarrierToml(file_name string) (*Vault, error) {
     var file_name_cstr = C.CString(file_name);
     C.free(unsafe.Pointer(file_name_cstr));
 
-    C.carrier_vault_toml_from_carriertoml(self.d, e.d, e.tail, file_name_cstr);
+    C.carrier_vault_toml_from_carriertoml(self.d, e.d, file_name_cstr);
     if err := e.Check(); err != nil {
         return nil, err;
     }
@@ -89,7 +89,7 @@ func VaultFromSecretKit(sk *SecretKit) (*Vault, error) {
     var e = ErrorNew(1000);
     defer e.Delete();
 
-    C.carrier_vault_ik_from_ik(self.d, e.d, e.tail, *(*C.carrier_identity_SecretKit)(unsafe.Pointer(sk)));
+    C.carrier_vault_ik_from_ik(self.d, e.d, *(*C.carrier_identity_SecretKit)(unsafe.Pointer(sk)));
     if err := e.Check(); err != nil {
         return nil, err;
     }
@@ -141,7 +141,7 @@ func (self *Vault) SetNetwork(join *Secret) error {
 
     C.carrier_vault_set_network(
         self.d,
-        e.d, e.tail,
+        e.d,
         (*C.carrier_identity_Secret)(join),
     );
     if err := e.Check(); err != nil {
@@ -161,7 +161,7 @@ func (self *Vault) ListAuthorizations(cb func(*Identity, string)) error {
 
     C.carrier_vault_list_authorizations(
         self.d,
-        e.d, e.tail,
+        e.d,
         cbc, nil,
     )
 
@@ -181,7 +181,7 @@ func (self *Vault) AddAuthorization( addme * Identity, path string) error {
 
     C.carrier_vault_add_authorization(
         self.d,
-        e.d, e.tail,
+        e.d,
         (*C.carrier_identity_Identity)(addme),
         path_cstr,
     )
@@ -202,7 +202,7 @@ func (self *Vault) DelAuthorization( addme * Identity, path string) error {
 
     C.carrier_vault_del_authorization(
         self.d,
-        e.d, e.tail,
+        e.d,
         (*C.carrier_identity_Identity)(addme),
         path_cstr,
     )

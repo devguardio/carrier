@@ -8,7 +8,6 @@ package carrier;
 extern uint8_t go_call_cb_carrier_stream_stream_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     slice_slice_Slice b,
     void *ctx
 );
@@ -16,12 +15,11 @@ extern uint8_t go_call_cb_carrier_stream_stream_fn(
 static bool transfer_go_call_cb_carrier_stream_stream_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     slice_slice_Slice b,
     void *ctx
 )
 {
-    return go_call_cb_carrier_stream_stream_fn(self, e, et, b, ctx);
+    return go_call_cb_carrier_stream_stream_fn(self, e, b, ctx);
 }
 
 static carrier_stream_stream_fn make_cb_carrier_stream_stream_fn(void* ctx)
@@ -37,7 +35,6 @@ static carrier_stream_stream_fn make_cb_carrier_stream_stream_fn(void* ctx)
 extern uint8_t go_call_cb_carrier_stream_fragmented_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     uint32_t fragments,
     void *ctx
 );
@@ -45,12 +42,11 @@ extern uint8_t go_call_cb_carrier_stream_fragmented_fn(
 static bool transfer_go_call_cb_carrier_stream_fragmented_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     uint32_t fragments,
     void *ctx
 )
 {
-    bool r = go_call_cb_carrier_stream_fragmented_fn(self, e, et, fragments, ctx);
+    bool r = go_call_cb_carrier_stream_fragmented_fn(self, e, fragments, ctx);
     return r;
 
 }
@@ -69,18 +65,16 @@ static carrier_stream_fragmented_fn make_cb_carrier_stream_fragmented_fn(void* c
 extern void go_call_cb_carrier_stream_close_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     void *ctx
 );
 
 static void transfer_go_call_cb_carrier_stream_close_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     void *ctx
 )
 {
-    return go_call_cb_carrier_stream_close_fn(self, e, et, ctx);
+    return go_call_cb_carrier_stream_close_fn(self, e, ctx);
 }
 
 static carrier_stream_close_fn make_cb_carrier_stream_close_fn(void* ctx)
@@ -96,7 +90,6 @@ static carrier_stream_close_fn make_cb_carrier_stream_close_fn(void* ctx)
 extern void go_call_cb_carrier_stream_poll_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     io_Async * async,
     void *ctx
 );
@@ -104,12 +97,11 @@ extern void go_call_cb_carrier_stream_poll_fn(
 static void transfer_go_call_cb_carrier_stream_poll_fn(
     carrier_stream_Stream*  self,
     err_Err*  e,
-    uintptr_t et,
     io_Async * async,
     void *ctx
 )
 {
-    return go_call_cb_carrier_stream_poll_fn(self, e, et, async, ctx);
+    return go_call_cb_carrier_stream_poll_fn(self, e, async, ctx);
 }
 
 static carrier_stream_poll_fn make_cb_carrier_stream_poll_fn(void* ctx)
@@ -182,38 +174,6 @@ static carrier_vault_list_authorizations_cb  make_cb_carrier_vault_list_authoriz
 }
 
 
-// on_identity_change_event_t
-
-extern void go_call_cb_carrier_subscribe_identity_change_event_cb (
-    carrier_subscribe_Subscribe *self,
-    carrier_identity_Identity *id,
-    carrier_stream_Stream *st,
-    void * ctx
-);
-
-static void transfer_go_call_cb_carrier_subscribe_identity_change_event_cb(
-    carrier_subscribe_Subscribe *self,
-    carrier_identity_Identity const *id,
-    carrier_stream_Stream *st,
-    void * ctx
-) {
-    go_call_cb_carrier_subscribe_identity_change_event_cb(
-        self,
-        (carrier_identity_Identity *)id,
-        st,
-        ctx
-    );
-}
-
-static carrier_subscribe_identity_change_event_cb  make_cb_carrier_subscribe_identity_change_event_cb(void* ctx)
-{
-    return (carrier_subscribe_identity_change_event_cb){
-        .ctx = ctx,
-        .fn  = transfer_go_call_cb_carrier_subscribe_identity_change_event_cb,
-    };
-}
-
-
 */
 import "C"
 import "C"
@@ -233,7 +193,7 @@ var (
 //export go_call_cb_carrier_stream_stream_fn
 func go_call_cb_carrier_stream_stream_fn(
     self *C.carrier_stream_Stream,
-    e *C.err_Err, et C.uintptr_t,
+    e *C.err_Err, 
     b C.slice_slice_Slice,
     ctx unsafe.Pointer,
 ) bool {
@@ -243,10 +203,10 @@ func go_call_cb_carrier_stream_stream_fn(
 
     vf := v.(func(
         self *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
         b C.slice_slice_Slice,
     )bool);
-    return vf(self, e, et, b);
+    return vf(self, e, b);
 }
 
 func make_cb_carrier_stream_stream_fn(v interface{}) C.carrier_stream_stream_fn {
@@ -274,7 +234,7 @@ func release_cb_carrier_stream_stream_fn(f C.carrier_stream_stream_fn) {
 //export go_call_cb_carrier_stream_fragmented_fn
 func go_call_cb_carrier_stream_fragmented_fn(
     self *C.carrier_stream_Stream,
-    e *C.err_Err, et C.uintptr_t,
+    e *C.err_Err,
     fragments uint32,
     ctx unsafe.Pointer,
 ) bool {
@@ -284,11 +244,11 @@ func go_call_cb_carrier_stream_fragmented_fn(
 
     vf := v.(func(
         self *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
         fragments uint32,
     )bool);
 
-    return vf(self, e, et, fragments);
+    return vf(self, e, fragments);
 }
 
 func make_cb_carrier_stream_fragmented_fn(v interface{}) C.carrier_stream_fragmented_fn {
@@ -318,7 +278,7 @@ func release_cb_carrier_stream_fragmented_fn(f C.carrier_stream_fragmented_fn) {
 //export go_call_cb_carrier_stream_close_fn
 func go_call_cb_carrier_stream_close_fn(
     self *C.carrier_stream_Stream,
-    e *C.err_Err, et C.uintptr_t,
+    e *C.err_Err,
     ctx unsafe.Pointer,
 ){
     cb_mutex.Lock()
@@ -327,9 +287,9 @@ func go_call_cb_carrier_stream_close_fn(
 
     vf := v.(func(
         self *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
     ));
-    vf(self, e, et);
+    vf(self, e);
 }
 
 func make_cb_carrier_stream_close_fn(v interface{}) C.carrier_stream_close_fn {
@@ -360,7 +320,7 @@ func release_cb_carrier_stream_close_fn(f C.carrier_stream_close_fn) {
 //export go_call_cb_carrier_stream_poll_fn
 func go_call_cb_carrier_stream_poll_fn(
     self *C.carrier_stream_Stream,
-    e *C.err_Err, et C.uintptr_t,
+    e *C.err_Err,
     async *C.io_Async,
     ctx unsafe.Pointer,
 ){
@@ -370,10 +330,10 @@ func go_call_cb_carrier_stream_poll_fn(
 
     vf := v.(func(
         self *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
         async *C.io_Async,
     ));
-    vf(self, e, et, async);
+    vf(self, e, async);
 }
 
 func make_cb_carrier_stream_poll_fn(v interface{}) C.carrier_stream_poll_fn {
@@ -526,48 +486,3 @@ func release_cb_carrier_vault_list_authorizations_cb(f C.carrier_vault_list_auth
 }
 
 
-//----- on_identity_change_event_t
-
-//export go_call_cb_carrier_subscribe_identity_change_event_cb
-func go_call_cb_carrier_subscribe_identity_change_event_cb(
-    self *C.carrier_subscribe_Subscribe,
-    id *C.carrier_identity_Identity,
-    st *C.carrier_stream_Stream,
-    ctx unsafe.Pointer,
-){
-    cb_mutex.Lock()
-    v := cb_store[ctx]
-    cb_mutex.Unlock()
-
-    vf := v.(func(
-        *C.carrier_subscribe_Subscribe,
-        *Identity,
-        *C.carrier_stream_Stream,
-    ));
-
-    vf(
-        self,
-        ((*Identity)(id)),
-        st,
-    );
-}
-
-func MakeSubscribeIdentityChangeEventFn(v interface{}) C.carrier_subscribe_identity_change_event_cb {
-    var ptr unsafe.Pointer = C.malloc(C.size_t(1));
-    if ptr == nil {
-        panic("can't allocate 'cgo-pointer hack index pointer': ptr == nil")
-    }
-
-    cb_mutex.Lock()
-    cb_store[ptr] = v;
-    cb_mutex.Unlock()
-
-    return C.make_cb_carrier_subscribe_identity_change_event_cb(ptr);
-}
-
-func (f C.carrier_subscribe_identity_change_event_cb) Delete() {
-	cb_mutex.Lock()
-	delete(cb_store, f.ctx)
-	cb_mutex.Unlock()
-	C.free(f.ctx)
-}

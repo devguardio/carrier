@@ -40,7 +40,7 @@ func EndpointNew(tail uint) *Endpoint {
     e := ErrorNew(1000);
     C.io_channel(
         self.async.Base(),
-        e.d, e.tail,
+        e.d,
         self.wakeup_rx,
         self.wakeup_tx,
     );
@@ -60,7 +60,7 @@ func EndpointFromHomeCarrierToml(tail uint) (*Endpoint, error) {
     defer e.Delete();
 
     ep := EndpointNew(tail)
-    C.carrier_endpoint_from_home_carriertoml(ep.d, ep.tail, e.d, e.tail);
+    C.carrier_endpoint_from_home_carriertoml(ep.d, e.d, ep.tail);
     if err := e.Check(); err != nil {
         ep.Delete();
         return nil, err;
@@ -76,7 +76,7 @@ func (self *Endpoint) Shutdown() error {
     e := ErrorNew(1000);
     defer e.Delete();
 
-    C.carrier_endpoint_shutdown(self.d,e.d,e.tail);
+    C.carrier_endpoint_shutdown(self.d,e.d);
     return e.Check();
 }
 
@@ -136,7 +136,7 @@ func(self *Endpoint) Bootstrap() error {
     e := ErrorNew(1000);
     defer e.Delete();
 
-    C.carrier_bootstrap_sync(e.d, e.tail, &self.d.vault, self.async.Base(), C.time_from_seconds(20));
+    C.carrier_bootstrap_sync(e.d, &self.d.vault, self.async.Base(), C.time_from_seconds(20));
     if err := e.Check(); err != nil {
         return err;
     }
@@ -148,12 +148,12 @@ func(self *Endpoint) Link() error {
     e := ErrorNew(1000);
     defer e.Delete();
 
-    C.carrier_endpoint_start(self.d, e.d, e.tail, self.async.Base());
+    C.carrier_endpoint_start(self.d, e.d, self.async.Base());
     if err := e.Check(); err != nil { return err; }
 
     C.io_await(
         self.async.Base(),
-        e.d, e.tail,
+        e.d, 
         C.carrier_endpoint_poll, unsafe.Pointer(self.d),
         C.time_from_seconds(30),
     );
@@ -169,7 +169,7 @@ func (self *Endpoint) WaitEvent() (bool, error) {
     defer e.Delete();
 
     // wait for any event
-    C.io_wait(self.async.Base(), e.d, e.tail);
+    C.io_wait(self.async.Base(), e.d);
     if err := e.Check(); err != nil {
         return false, err;
     }
@@ -179,7 +179,7 @@ func (self *Endpoint) WaitEvent() (bool, error) {
     var l C.size_t = 1;
     C.io_read_bytes(
         self.wakeup_rx,
-        e.d, e.tail,
+        e.d,
         (*C.uint8_t)(&buf[0]),
         &l,
     )
@@ -189,7 +189,7 @@ func (self *Endpoint) WaitEvent() (bool, error) {
     }
 
     // read endpoint
-    var res = C.carrier_endpoint_poll(self.d, e.d, e.tail, self.async.Base())
+    var res = C.carrier_endpoint_poll(self.d, e.d, self.async.Base())
     if err := e.Check(); err != nil {
         return false, err;
     }
@@ -211,7 +211,7 @@ func (self *Endpoint) Wakeup() error {
     var l = C.size_t(1);
     C.io_write_bytes(
         self.wakeup_tx,
-        e.d, e.tail,
+        e.d, 
         (*C.uint8_t)(unsafe.Pointer(&buf[0])),
         &l,
     );

@@ -41,16 +41,15 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
     sc.stream = make_cb_carrier_stream_stream_fn(func(
         stream  *C.carrier_stream_Stream,
         e       *C.err_Err,
-        et      C.uintptr_t,
         msg     C.slice_slice_Slice,
     ) bool {
-        return on_stream(stream, e, et, msg, opt.OnHeaders, opt.OnMessage);
+        return on_stream(stream, e, msg, opt.OnHeaders, opt.OnMessage);
     });
     destructors = append(destructors, func() { release_cb_carrier_stream_stream_fn(sc.stream) });
 
     sc.close = make_cb_carrier_stream_close_fn(func(
         stream *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
     ) {
         if opt.OnClose != nil {
             opt.OnClose();
@@ -61,7 +60,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
 
     sc.fragmented = make_cb_carrier_stream_fragmented_fn(func(
         stream *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
         fragments uint32,
     ) bool {
         if opt.OnFragmented != nil {
@@ -75,7 +74,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
 
     sc.poll = make_cb_carrier_stream_poll_fn(func(
         stream *C.carrier_stream_Stream,
-        e *C.err_Err, et C.uintptr_t,
+        e *C.err_Err,
         async *C.io_Async,
     ) {
         if opt.OnPoll != nil {
@@ -89,8 +88,8 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
             if len(backbuffered) < 1 {
                 break;
             }
-            frame := C.carrier_stream_stream(stream, e, et, (C.ulong)(len(backbuffered[0])));
-            if err := ErrorCheck(e,et); err != nil {
+            frame := C.carrier_stream_stream(stream, e, (C.ulong)(len(backbuffered[0])));
+            if err := ErrorCheck(e); err != nil {
                 log.Println("cannot queue frame (will retry):", err);
                 return;
             }
@@ -132,7 +131,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
 
             C.hpack_encoder_encode(
                 encoderslice,
-                e.d, e.tail,
+                e.d,
                 (*C.uint8_t)(unsafe.Pointer(key)),    (C.size_t)(len(k)),
                 (*C.uint8_t)(unsafe.Pointer(value)),  (C.size_t)(len(val)),
             );
@@ -146,7 +145,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
     };
 
 
-    var stx = C.carrier_channel_open_with_headers(_chan, e.d, e.tail, sc, extraheaders);
+    var stx = C.carrier_channel_open_with_headers(_chan, e.d, sc, extraheaders);
     if err := e.Check(); err != nil {
         destroy();
         return nil, err;
@@ -162,7 +161,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
 
 func on_stream(
     self    *C.carrier_stream_Stream,
-    e       *C.err_Err, et C.uintptr_t,
+    e       *C.err_Err,
     msg     C.slice_slice_Slice,
 
     onheaders   func(headers map[string][][]byte),
@@ -176,7 +175,7 @@ func on_stream(
         var kv = make(map[string][][]byte);
 
         for {
-            if !C.hpack_decoder_next(&it, e, et) {
+            if !C.hpack_decoder_next(&it, e) {
                 break;
             }
             var key = C.GoStringN((*C.char)(unsafe.Pointer(it.key.mem)), (C.int)(it.key.size));

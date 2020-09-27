@@ -27,7 +27,7 @@ func MadpackDecode(preshared *PresharedIndex, b []byte) (map[string]interface{},
     defer C.free(unsafe.Pointer(index));
 
     if preshared != nil {
-        C.madpack_from_preshared_index(index, TAIL_INDEX, preshared.sl);
+        C.madpack_from_preshared_index(index, preshared.sl, TAIL_INDEX);
     } else {
         C.madpack_empty_index(index, TAIL_INDEX);
     }
@@ -46,7 +46,7 @@ func MadpackEncode(preshared *PresharedIndex,  v map[string]interface{}) ([]byte
     defer C.free(unsafe.Pointer(index));
 
     if preshared != nil {
-        C.madpack_from_preshared_index(index, TAIL_INDEX, preshared.sl);
+        C.madpack_from_preshared_index(index, preshared.sl, TAIL_INDEX);
     } else {
         C.madpack_empty_index(index, TAIL_INDEX);
     }
@@ -56,7 +56,7 @@ func MadpackEncode(preshared *PresharedIndex,  v map[string]interface{}) ([]byte
     var buffer = (*C.buffer_Buffer)(C.calloc(1, C.real_sizeof_buffer_Buffer(buffertail)));
     defer C.free(unsafe.Pointer(buffer));
     C.buffer_make(buffer, buffertail);
-    var msl = C.buffer_as_mut_slice(buffer, buffertail)
+    var msl = C.buffer_as_mut_slice(buffer)
 
 
     var encoder = (*C.madpack_Encoder)(C.calloc(1, C.real_sizeof_madpack_Encoder()));
@@ -75,8 +75,9 @@ func MadpackEncode(preshared *PresharedIndex,  v map[string]interface{}) ([]byte
 func encode_map(encoder *C.madpack_Encoder, v map[string]interface{}) {
     for k,v := range v {
 
-        var key = C.CString(k);
-        defer C.free(unsafe.Pointer(key));
+        var key_cstr = C.CString(k);
+        defer C.free(unsafe.Pointer(key_cstr));
+        key := C.slice_slice_from_cstr(key_cstr);
 
         if s, ok := v.(string); ok {
             var val = C.CString(s);

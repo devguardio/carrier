@@ -13,19 +13,17 @@ import (
 
 type Error struct {
     d       *C.err_Err
-    tail    C.size_t
 }
 
 func ErrorNew(tail uint) *Error {
     var self = &Error{
-        tail:   (C.size_t)(tail),
         d:      (*C.err_Err)(C.calloc(1, C.real_sizeof_err_Err((C.size_t)(tail)))),
     };
     runtime.SetFinalizer(self, func(self *Error){
         self.Delete()
     });
 
-    C.err_make(self.d, self.tail);
+    C.err_make(self.d, (C.size_t)(tail));
 
     return self;
 }
@@ -37,9 +35,9 @@ func(self *Error) Delete() {
     }
 }
 
-func ErrorCheck(e *C.err_Err, et C.size_t) error {
+func ErrorCheck(e *C.err_Err) error {
     if e.error != 0 {
-        message := C.GoString(C.buffer_cstr(&e.trace, et));
+        message := C.GoString(C.buffer_cstr(&e.trace));
         message  = strings.Split(message, "\n")[0]
 
 
@@ -55,5 +53,5 @@ func ErrorCheck(e *C.err_Err, et C.size_t) error {
 }
 
 func(self *Error) Check() error {
-    return ErrorCheck(self.d, self.tail)
+    return ErrorCheck(self.d)
 }

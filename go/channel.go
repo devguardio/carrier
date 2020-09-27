@@ -106,7 +106,7 @@ func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
         }
         e := ErrorNew(100);
         defer e.Delete();
-        C.carrier_endpoint_shutdown(ep, e.d, e.tail);
+        C.carrier_endpoint_shutdown(ep, e.d);
     });
 
 

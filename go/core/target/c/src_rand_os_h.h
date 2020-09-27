@@ -5,11 +5,11 @@
 
 
 #if defined(__linux__) || defined(__APPLE__)
-static void os_rand(err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, uintptr_t size)
+static void os_rand(err_Err*  const  e, uint8_t*  bytes, uintptr_t size)
 {
     int const  fd  =     (int)(    open(    "/dev/urandom",    O_RDONLY    ));
     if (fd < 0){
-        err_fail_with_errno(e, et, __FILE__, __FUNCTION__, __LINE__, "cannot open /dev/urandom");
+        err_fail_with_errno(e,  __FILE__, __FUNCTION__, __LINE__, "cannot open /dev/urandom");
         return ;
     }
 
@@ -20,7 +20,7 @@ static void os_rand(err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, ui
                 continue;
             }
 
-            err_fail_with_errno(e, et, __FILE__, __FUNCTION__, __LINE__, "cannot read /dev/urandom");
+            err_fail_with_errno(e, __FILE__, __FUNCTION__, __LINE__, "cannot read /dev/urandom");
             close(fd);
             return;
         }
@@ -37,7 +37,7 @@ static void os_rand(err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, ui
 }
 #elif defined(ESP_PLATFORM)
 #include "esp_system.h"
-static void os_rand(err_Err*  const  e, uintptr_t const  et, uint8_t*  bytes, uintptr_t size)
+static void os_rand(err_Err*  const  e, uint8_t*  bytes, uintptr_t size)
 {
     esp_fill_random(bytes, size);
 }

@@ -27,7 +27,7 @@ func IConnectStart(ep *Endpoint, target *Identity) (*IConnect, error) {
 
 
     e := ErrorNew(1000)
-    C.carrier_connect_start(self.d, e.d, e.tail, ep.d, (*C.carrier_identity_Identity)(target));
+    C.carrier_connect_start(self.d, e.d, ep.d, (*C.carrier_identity_Identity)(target));
     if err := e.Check(); err != nil {self.Delete(); return nil, err}
 
     return self, nil;

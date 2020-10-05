@@ -11,17 +11,23 @@ using pool;
 using io::unix;
 using channel;
 
-inline using "posix.h"::{O_RDWR, O_NOCTTY, posix_openpt, grantpt, unlockpt, ptsname, open as stdopen, makerawpty};
-using <unistd.h>::{close, fork, dup2, execv, write};
-using <sys/types.h>::{pid_t};
-using <signal.h>::{kill, SIGTERM};
-using <sys/wait.h>::{waitpid, WNOHANG};
-using <stdlib.h>::{exit, setsid};
-using <sys/ioctl.h>::{ioctl, TIOCSCTTY};
-using <stdio.h>::{printf};
-inline using "shell.h"::{SHPATH};
+inline using "shell.h"::{
+    O_RDWR, O_NOCTTY, posix_openpt, grantpt, unlockpt, ptsname, open as stdopen, makerawpty,
+    close, fork, dup2, execv, write,
+    pid_t,
+    kill, SIGTERM,
+    waitpid, WNOHANG,
+    exit, setsid,
+    ioctl, TIOCSCTTY,
+    printf,
+    SHPATH,
+    defined,
+    HAS_SHELL,
+    HAS_SHELL_POSIX,
+};
 
 export fn register(endpoint::Endpoint mut*ep)
+if #(defined(HAS_SHELL))
 {
     ep->register_stream(&ShellConfig);
 }
@@ -101,6 +107,7 @@ static stream::Config ShellConfig = stream::Config {
 
 export fn in_shell_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     where err::checked(*e)
+    if #(defined(HAS_SHELL_POSIX))
 {
     let mut frame = self->stream(e, 14);
     if err::check(e) { return; }
@@ -141,6 +148,7 @@ export fn in_shell_open(stream::Stream mut *self, err::Err mut*e, slice::Slice h
 fn in_shell_open_impl(Shell mut *self, err::Err mut*e, char * command)
     where err::checked(*e)
     where nullterm(command)
+    if #(defined(HAS_SHELL_POSIX))
 {
     int masterfd = (int)posix_openpt((int)O_RDWR|(int)O_NOCTTY);
     if masterfd <= 0 {
@@ -217,6 +225,7 @@ fn in_shell_open_impl(Shell mut *self, err::Err mut*e, char * command)
 export fn in_shell_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&msg)
+    if #(defined(HAS_SHELL_POSIX))
 {
     Shell mut * state = (Shell mut*)self->user2;
     static_attest(safe(state));
@@ -244,6 +253,7 @@ export fn in_shell_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice
 }
 
 export fn in_shell_close(stream::Stream mut *self, err::Err mut*e)
+    if #(defined(HAS_SHELL_POSIX))
 {
     log::warn("shell closed");
 
@@ -268,6 +278,7 @@ export fn in_shell_close(stream::Stream mut *self, err::Err mut*e)
 
 export fn in_shell_poll(stream::Stream mut *self, err::Err mut*e, io::Async mut* async)
     where err::checked(*e)
+    if #(defined(HAS_SHELL_POSIX))
 {
     Shell mut * state = (Shell mut*)self->user2;
     static_attest(safe(state));

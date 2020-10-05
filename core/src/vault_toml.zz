@@ -210,7 +210,7 @@ fn load_from_toml_authorize_iter(toml::U *self, err::Err mut *e, toml::Parser mu
     }
 }
 
-fn load_from_toml_identity_secret(Mem mut *this, err::Err mut *e,  toml::Value v)
+fn load_from_toml_identity_secret(Mem mut *that, err::Err mut *e,  toml::Value v)
     where err::checked(*e)
 
 if #(os::defined(os::OPENWRT_BUILD))
@@ -254,14 +254,14 @@ if #(os::defined(os::OPENWRT_BUILD))
                     return;
                 }
 
-                if unsafe<int>(fread(this->secret.k, 1, 32, f)) != 32 {
+                if unsafe<int>(fread(that->secret.k, 1, 32, f)) != 32 {
                     e->fail_with_errno("cannot read %s", mtdpath.mem);
                     fclose(f);
                     return;
                 }
 
-                if identity::isnull(this->secret.k) {
-                    identity::secret_generate(&this->secret, e);
+                if identity::isnull(that->secret.k) {
+                    identity::secret_generate(&that->secret, e);
                     if err::check(e) {
                         fclose(f);
                         return;
@@ -272,7 +272,7 @@ if #(os::defined(os::OPENWRT_BUILD))
                         return;
                     }
 
-                    if unsafe<int>(fwrite(this->secret.k, 1, 32, f)) != 32 {
+                    if unsafe<int>(fwrite(that->secret.k, 1, 32, f)) != 32 {
                         e->fail_with_errno("cannot write %s", mtdpath.mem);
                         fclose(f);
                         return;
@@ -283,7 +283,7 @@ if #(os::defined(os::OPENWRT_BUILD))
                         return;
                     }
 
-                    if unsafe<int>(fread(this->secret.k, 1, 32, f)) != 32 {
+                    if unsafe<int>(fread(that->secret.k, 1, 32, f)) != 32 {
                         e->fail_with_errno("cannot read %s", mtdpath.mem);
                         fclose(f);
                         return;
@@ -297,13 +297,13 @@ if #(os::defined(os::OPENWRT_BUILD))
     }
 
 
-    identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
+    identity::secret_from_cstr((identity::Secret mut*)&that->secret, e, v.string);
 }
 else
 {
     static_attest(nullterm(v.string));
     static_attest(safe(v.string));
-    identity::secret_from_cstr((identity::Secret mut*)&this->secret, e, v.string);
+    identity::secret_from_cstr((identity::Secret mut*)&that->secret, e, v.string);
 }
 
 fn findmtdindex(err::Err mut *e, char *mtdname) -> usize

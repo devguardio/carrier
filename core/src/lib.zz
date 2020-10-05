@@ -8,7 +8,7 @@ using hpack::encoder;
 using hpack::decoder;
 using bootstrap;
 using endpoint;
-//using shell;
+using shell;
 using sft;
 using config;
 using pub_sysinfo;

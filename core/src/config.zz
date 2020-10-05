@@ -79,7 +79,7 @@ fn auth_get(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     slice::MutSlice mut frame = self->stream(e, 500);
     if err::check(e) { return; }
 
-    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new+512 idx = madpack::from_preshared_index(e, preshared::config());
     new mad = madpack::encode(frame, &idx);
     mad.kv_array(slice::from_cstr("auth"));
     self->chan->endpoint->vault.list_authorizations(e, auth_get_cb, &mad);
@@ -103,7 +103,7 @@ fn net_get(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     identity::address_to_str(e, buf, 64, &addr);
     if err::check(e) { return; }
 
-    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new+512 idx = madpack::from_preshared_index(e, preshared::config());
     new mad = madpack::encode(frame, &idx);
     mad.kv_cstr(slice::from_cstr("address"), buf);
 
@@ -118,7 +118,7 @@ fn return_ok(stream::Stream mut *self, err::Err mut*e) -> bool
         return false;
     }
 
-    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new+512 idx = madpack::from_preshared_index(e, preshared::config());
     new mad = madpack::encode(frame, &idx);
     mad.kv_bool(slice::from_cstr("ok"), true);
     mad.end();
@@ -144,7 +144,7 @@ fn return_err(stream::Stream mut *self, err::Err mut*e) -> bool
         return false;
     }
 
-    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new+512 idx = madpack::from_preshared_index(&e2, preshared::config());
     new mad = madpack::encode(frame, &idx);
     mad.kv_bool(slice::from_cstr("ok"), false);
     mad.kv_map(slice::from_cstr("error"));
@@ -184,9 +184,11 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice ms
     new+256 mut path = buffer::make();
     // prover doesnt advance path temporal :(
 
-    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new+512 idx = madpack::from_preshared_index(e, preshared::config());
+    e->abort();
     new dc = madpack::decode(msg, &idx);
-    while dc.next_kv() {
+    while dc.next_kv(e) {
+        static_attest(err::checked(*e));
         if dc.key.eq_cstr("identity") && dc.item == madpack::Item::String {
             static_attest(slice::slice::integrity(&dc.value.v_slice));
             identity::identity_from_str(&addme, e, (char*)dc.value.v_slice.mem, dc.value.v_slice.size);
@@ -198,7 +200,7 @@ fn auth_add_del_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice ms
             path.clear();
             path.append_slice(dc.value.v_slice);
         }
-        dc.skip()
+        dc.skip(e)
     }
 
     if path.slen() == 0 || identity::isnull(addme.k) {
@@ -226,9 +228,11 @@ fn net_join_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -
 {
     identity::Secret mut nusecret = {0};
 
-    new+512 idx = madpack::from_preshared_index(preshared::config());
+    new+512 idx = madpack::from_preshared_index(e, preshared::config());
+    e->abort();
     new dc = madpack::decode(msg, &idx);
-    while dc.next_kv() {
+    while dc.next_kv(e) {
+        static_attest(err::checked(*e));
         if dc.key.eq_cstr("secret") && dc.item == madpack::Item::String {
             static_attest(slice::slice::integrity(&dc.value.v_slice));
             identity::secret_from_str(&nusecret, e, (char*)dc.value.v_slice.mem, dc.value.v_slice.size);
@@ -236,7 +240,7 @@ fn net_join_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) -
                 return return_err(self, e);
             }
         }
-        dc.skip()
+        dc.skip(e)
     }
 
     if identity::isnull(nusecret.k) {

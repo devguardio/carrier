@@ -39,8 +39,9 @@ func PresharedIndexFrom (b []byte) *PresharedIndex {
     };
 
     self := &PresharedIndex{sl}
-    runtime.SetFinalizer(self, func(self *Error){
-        defer C.free(mem);
+    runtime.SetFinalizer(self, func(self *PresharedIndex){
+        C.free(unsafe.Pointer(self.sl.mem));
+        self.sl.mem = nil
     });
     return self;
 }

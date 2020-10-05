@@ -74,10 +74,33 @@ export fn stream(Stream mut * self, err::Err mut*e, usize reserved_size) -> slic
         }
     }
 
-    err::assert(frame.push32(byteorder::to_be32(self->id)));
-    err::assert(frame.push64(byteorder::to_be64((self->order_outgoing)++)));
-    err::assert(frame.push16(0));
+    err::assert(
+        frame.push32(byteorder::to_be32(self->id)) &&
+        frame.push64(byteorder::to_be64((self->order_outgoing)++)) &&
+        frame.push16(0)
+    );
     return frame;
+}
+
+/// indicate the next N frames are actually one frame
+export fn fragmented(Stream mut * self, err::Err mut*e, u32 fragments)
+    where err::checked(*e)
+{
+    log::debug("req frag frame with count %d", fragments);
+    static_attest(safe(self->chan));
+    let mut frame = self->chan->q.alloc(e, channel::FrameType::Fragmented, 16);
+    if err::check(e) {
+        if e->error == err::OutOfTail {
+            self->memory_pressure = true;
+        }
+        return;
+    }
+
+    err::assert(
+        frame.push32(byteorder::to_be32(self->id)) &&
+        frame.push64(byteorder::to_be64((self->order_outgoing)++)) &&
+        frame.push32(byteorder::to_be32(fragments))
+    );
 }
 
 
@@ -177,8 +200,9 @@ pub fn incomming_fragmented(Stream mut*self, err::Err mut *e, u64 order, u32 fra
     static_attest(safe(self->config));
 
     if self->config->fragmented.fn == 0 {
-        self->order_incomming += 1;
-        return true;
+        self->close();
+        e->fail(err::NotImplemented, "stream does not support fragments");
+        return false;
     }
     static_attest(safe(self->config->fragmented));
 

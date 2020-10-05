@@ -125,14 +125,13 @@ impl Cipher for CipherChaChaPoly {
 
     fn encrypt(&self, nonce: u64, authtext: &[u8], plaintext: &[u8], out: &mut [u8]) -> usize {
         unsafe {
-            let mut err = error::ZZError::new();
+            let mut err = error::ZZError::new(2000);
             let mut state = vec![0u8;cipher::sizeof_CipherState()];
             cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
             let r = cipher::encrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
-                error::ZERR_TAIL,
                 authtext.as_ptr(),
                 authtext.len(),
                 plaintext.as_ptr(),
@@ -149,14 +148,13 @@ impl Cipher for CipherChaChaPoly {
 
     fn decrypt(&self, nonce: u64, authtext: &[u8], ciphertext: &[u8], out: &mut [u8]) -> Result<usize, ()> {
         unsafe {
-            let mut err = error::ZZError::new();
+            let mut err = error::ZZError::new(2000);
             let mut state = vec![0u8;cipher::sizeof_CipherState()];
             cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
             let s = cipher::decrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
-                error::ZERR_TAIL,
                 authtext.as_ptr(),
                 authtext.len(),
                 ciphertext.as_ptr(),

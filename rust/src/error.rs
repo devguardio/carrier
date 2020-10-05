@@ -9,11 +9,9 @@ use carrier::err;
 
 pub struct ZZError  (pub Vec<u8>);
 
-pub const ZERR_TAIL : usize = 1000;
-
 impl ZZError {
-    pub fn new() -> Self {
-        Self(vec![0;unsafe{err::sizeof_Err(ZERR_TAIL)}])
+    pub fn new(tail: usize) -> Self {
+        Self(vec![0;unsafe{err::sizeof_Err(tail)}])
     }
     pub fn as_mut_ptr(&mut self) -> *mut u8{
         self.0.as_mut_ptr()
@@ -22,10 +20,10 @@ impl ZZError {
         unsafe {
             let this_file = file!();
             let this_line = line!();
-            let e = err::check(self.as_mut_ptr(), ZERR_TAIL, this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
+            let e = err::check(self.as_mut_ptr(), this_file.as_bytes().as_ptr(), std::ptr::null(), this_line as usize);
             if e  {
                 let mut s = [0u8;1024];
-                err::to_str(self.as_mut_ptr(), ZERR_TAIL, s.as_mut_ptr(), s.len());
+                err::to_str(self.as_mut_ptr(), s.as_mut_ptr(), s.len());
                 Err(Error::ZZ(e as isize, String::from_utf8_lossy(&s).into()))
             } else {
                 Ok(())

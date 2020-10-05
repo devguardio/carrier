@@ -369,29 +369,12 @@ func (self *Stream) ReceiveRaw() ([]byte, error) {
 }
 
 func (self *Stream) Send(msg map[string]interface{}) error {
-
     v, err := MadpackEncode(self.Index, msg)
     if err != nil { log.Fatal(err) }
-
-    if len(v) > 500 {
-        return errors.New("oversized");
-    }
-
-    self.channel.endpoint.Wakeup()
-
-    select {
-        case self.Tx <- v:
-        case <- self.Death: return errors.New("channel disconnected");
-    }
-
-    return nil;
+    return self.SendRaw(v);
 }
 
 func (self *Stream) SendRaw(v []byte) error {
-
-    if len(v) > 500 {
-        return errors.New("oversized");
-    }
 
     self.channel.endpoint.Wakeup()
 

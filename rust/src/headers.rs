@@ -98,7 +98,7 @@ impl Headers {
     }
 
     pub fn encode(&self) -> Vec<u8> {
-        let mut err = error::ZZError::new();
+        let mut err = error::ZZError::new(2000);
 
         let mut mem     = vec![0;2000];
         let mut memat   = 0;
@@ -114,7 +114,6 @@ impl Headers {
                     slice.clone(),
 
                     err.as_mut_ptr(),
-                    error::ZERR_TAIL,
 
                     k.as_ptr(),
                     k.len(),
@@ -132,7 +131,7 @@ impl Headers {
 
     pub fn decode(b: &[u8]) -> Result<Self, error::Error> {
         let mut nu = Self::default();
-        let mut err = error::ZZError::new();
+        let mut err = error::ZZError::new(2000);
 
         let slice = slice::Slice{
             mem:    b.as_ptr(),
@@ -145,7 +144,7 @@ impl Headers {
         }
 
         unsafe {
-            while hpack_decoder::next(decoder._self_mut(), err.as_mut_ptr(), error::ZERR_TAIL)
+            while hpack_decoder::next(decoder._self_mut(), err.as_mut_ptr())
             {
                 let k = std::slice::from_raw_parts(decoder.key.mem, decoder.key.size).to_vec();
                 let v = std::slice::from_raw_parts(decoder.val.mem, decoder.val.size).to_vec();

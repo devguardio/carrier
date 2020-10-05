@@ -242,7 +242,7 @@ export fn authorize_open_stream(Vault * self, identity::Identity *ii, char * uns
             log::warn("no authorizations configured, accepting config");
             return true;
         }
-        if buffer::cstr_eq(path, "/v2/carrier.config.v1/auth_add") {
+        if buffer::cstr_eq(path, "/v3/carrier.config.v1/auth_add") {
             log::warn("no authorizations configured, accepting %s", path);
             return true;
         }

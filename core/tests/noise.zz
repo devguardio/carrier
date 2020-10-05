@@ -6,14 +6,14 @@ using carrier::symmetric;
 using hex;
 using <string.h>::{memcmp, memcpy};
 using <assert.h>::{assert};
-using <stdio.h>::{printf, fread, stdin, stderr};
+using <stdio.h>::{printf, fread, stdin, stderr, fprintf};
 using buffer;
 using json;
 using slice;
 using vec;
 using pool;
 using mem;
-
+using log;
 
 struct Message @json::from()
 {
@@ -155,7 +155,7 @@ pub fn main() -> int {
     new+10000 pl = pool::make(64);
     new+10000 s = buffer::make();
     for (; s.fread(stdin) ; ) {}
-    new+6000  decoder  = json::decode_value(&e, s.cstr(), s.slen());
+    new+6000  decoder  = json::decode(&e, s.cstr(), s.slen());
     e.abort();
 
     Testcase mut tc = {0};
@@ -165,7 +165,7 @@ pub fn main() -> int {
 
     noise::Initiator mut init = {0};
     memcpy(init.ephemeral.k, tc.init_ephemeral.mem, 32);
-    memcpy(init.remote_static.k, tc.init_remote_static, 32);
+    memcpy(init.remote_static.k, tc.init_remote_static.mem, 32);
 
     static_attest(slice::integrity(&tc.init_prologue));
     static_attest(vec::integrity(&tc.messages));
@@ -207,12 +207,13 @@ pub fn main() -> int {
     // receive
     u8 mut pkt1r[1024] = {0};
     noise::Responder mut resp = {0};
-    memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
-    memcpy(resp.statickey.k,  tc.resp_static, 32);
+    memcpy(resp.ephemeral.k,   tc.resp_ephemeral.mem, 32);
+    memcpy(resp.statickey.k,  tc.resp_static.mem, 32);
 
     static_attest(slice::integrity(&tc.resp_prologue));
     usize pkt1r_size = noise::receive(&resp, &e,
         pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
+
     if err::check(&e) {
         e.eprintf(stderr);
         return (int)e.error;
@@ -227,15 +228,15 @@ pub fn main() -> int {
         u8 mut pkt_bad[1024] = {0};
         memcpy(pkt_bad, pkt1, pkt1len);
         unsafe {
-        pkt_bad[pkt1len - 2] = 0x08;
+            pkt_bad[pkt1len - 2] = 0x08;
         }
 
         u8 mut pkt1r[1024] = {0};
         noise::Responder mut resp = {0};
-        memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
-        memcpy(resp.statickey.k,  tc.resp_static, 32);
+        memcpy(resp.ephemeral.k,   tc.resp_ephemeral.mem, 32);
+        memcpy(resp.statickey.k,  tc.resp_static.mem, 32);
 
-        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt_bad, pkt1len);
         if !err::check(&e) {
             return 3;
         }
@@ -250,10 +251,10 @@ pub fn main() -> int {
 
         u8 mut pkt1r[1024] = {0};
         noise::Responder mut resp = {0};
-        memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
-        memcpy(resp.statickey.k,  tc.resp_static, 32);
+        memcpy(resp.ephemeral.k,   tc.resp_ephemeral.mem, 32);
+        memcpy(resp.statickey.k,  tc.resp_static.mem, 32);
 
-        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt_bad, pkt1len);
         if !err::check(&e) {
             return 3;
         }
@@ -269,10 +270,10 @@ pub fn main() -> int {
 
         u8 mut pkt1r[1024] = {0};
         noise::Responder mut resp = {0};
-        memcpy(resp.ephemeral.k,   tc.resp_ephemeral, 32);
-        memcpy(resp.statickey.k,  tc.resp_static, 32);
+        memcpy(resp.ephemeral.k,   tc.resp_ephemeral.mem, 32);
+        memcpy(resp.statickey.k,  tc.resp_static.mem, 32);
 
-        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt1, pkt1len);
+        noise::receive(&resp, &e, pkt1r, static(len(pkt1r)), (u8*)tc.resp_prologue.mem, tc.resp_prologue.size, pkt_bad, pkt1len);
         if !err::check(&e) {
             return 3;
         }
@@ -339,9 +340,8 @@ pub fn main() -> int {
     // transport mode
 
 
-    bool initiator_msg = true;
-    for let i = tc.messages.iter(); i.next(); {
-        let msg = (Message*)i.val.mem;
+    for usize mut msgat = 2; msgat < tc.messages.count; msgat += 1 {
+        let msg = (Message*)tc.messages.items[msgat].mem;
         err::assert_safe(msg);
         static_attest(slice::integrity(&msg->payload));
         static_attest(slice::integrity(&msg->ciphertext));
@@ -349,7 +349,7 @@ pub fn main() -> int {
         cipher::CipherState mut * mut sender   = 0;
         cipher::CipherState mut * mut receiver = 0;
         // initiator -> responder
-        if initiator_msg  {
+        if msgat % 2 == 0 {
             sender   = &init_cipher_init;
             receiver = &resp_cipher_init;
         } else {
@@ -357,7 +357,6 @@ pub fn main() -> int {
             receiver = &init_cipher_resp;
         }
 
-        initiator_msg = !initiator_msg;
 
         static_attest(safe(sender));
         static_attest(safe(receiver));
@@ -377,7 +376,7 @@ pub fn main() -> int {
         }
 
         if memcmp(pkt3, msg->ciphertext.mem, msg->ciphertext.size) != 0 {
-            printf("message didn't encrypt correctly. size: %zu <> %zu\n", pkt3len, msg->ciphertext.size);
+            fprintf(stderr, "message %zu didn't encrypt correctly. size: %zu <> %zu\n", msgat, pkt3len, msg->ciphertext.size);
             hex::dump(pkt3, pkt3len);
             hex::dump_slice(msg->ciphertext);
             return 10;

@@ -8,7 +8,6 @@ import (
     "encoding/json"
     "io/ioutil"
     "os/exec"
-    "fmt"
 )
 
 func init() {
@@ -26,29 +25,33 @@ func init() {
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
-            var headers = make(map[string][][]byte);
-            headers[":method"]  = [][]byte{[]byte("GET")};
-            stream , err := con.Open("/v2/genesis.v2", carrier.OpenStreamOptions{
-                SendHeaders: headers,
-            });
+            stream , err := con.Open("/v3/genesis.v2/get")
             if err != nil { log.Fatal(err); }
 
-
-            fmt.Println(stream.ResponseHeaders);
-            j, err := json.Marshal(stream.ResponseHeaders)
-            if err != nil {log.Fatal(err); }
-            os.Stdout.Write(j);
-            os.Stdout.Write([]byte("\n"));
-
-            file, err := ioutil.TempFile("", "genesis.*.toml")
+            file, err := ioutil.TempFile("", "genesis.*.json")
             if err != nil {
                 log.Fatal(err)
             }
             defer os.Remove(file.Name())
 
-            for msg := range stream.Rx {
-                file.Write(msg);
+            js, err := stream.Receive()
+            if err != nil {
+                log.Fatal(err)
             }
+
+            if i, ok := js["stable"].(map[string]interface {}); ok {
+                js = i;
+            }
+            if i, ok := js["current"].(map[string]interface {}); ok {
+                js = i;
+            }
+
+            txt, err := json.MarshalIndent(js, "", "    ")
+            if err != nil {log.Fatal(err); }
+            file.Write(txt);
+            file.Write([]byte("\n"));
+            file.Sync();
+
 
             editor := exec.Command("vim", file.Name())
             editor.Stdout = os.Stdout
@@ -59,8 +62,32 @@ func init() {
                 log.Fatal(err)
             }
 
-            
+            txt, err = ioutil.ReadFile(file.Name())
+            if err != nil {log.Fatal(err); }
+            err = json.Unmarshal(txt, &js);
+            if err != nil {log.Fatal(err);}
 
+            j2 := make(map[string]interface {});
+            j2["apply"] = js;
+
+
+            log.Println("applying new genesis");
+
+            stream , err = con.Open("/v3/genesis.v2/apply")
+            if err != nil {log.Fatal(err); }
+            err = stream.Send(j2);
+            if err != nil {log.Fatal(err); }
+
+            js, err = stream.Receive()
+            if err != nil {
+                log.Fatal(err)
+            }
+
+            txt, err = json.MarshalIndent(js, "", "    ")
+            if err != nil {log.Fatal(err); }
+            os.Stdout.Write(txt);
+            os.Stdout.Write([]byte("\n"));
+            os.Stdout.Sync();
 
         },
     };

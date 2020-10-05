@@ -23,6 +23,7 @@ export struct Sha256 {
 }
 
 export fn init(Sha256 mut new *self) {
+    mem::zero(self);
     hacl::Hacl_Hash_Core_SHA2_init_256(self->state);
     self->at = 0;
 }

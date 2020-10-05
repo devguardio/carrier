@@ -591,26 +591,29 @@ fn handle_open_frame(Channel mut* self, err::Err mut* e, u32 streamid, slice::Sl
             err::assert_safe(conf->path);
             static_attest(nullterm(conf->path));
 
-            static_attest(slice::slice::integrity(&conf->index));
-            // TODO send only when peer doesnt have it
-            if conf->index.size > 0 {
-                self->q.cancel();
-                response_header = self->q.alloc(e, FrameType::Stream, 40 + conf->index.size);
-                if err::check(e) {
-                    e->elog();
-                    e->ignore();
-                    return true;
-                }
-                response_header.push32(byteorder::to_be32(streamid)); // stream
-                response_header.push64(byteorder::to_be64(1)); // order
-                response_header.push16(0); // size placeholder
-
-                hpack::encoder::encode(response_header, e, (u8*)"index", 5, conf->index.mem, conf->index.size);
-                e->abort();
-            }
 
             if path.eq_cstr(conf->path) {
                 accepted = true;
+
+                static_attest(slice::slice::integrity(&conf->index));
+                // TODO send only when peer doesnt have it
+                if conf->index.size > 0 {
+
+                    self->q.cancel();
+                    response_header = self->q.alloc(e, FrameType::Stream, 40 + conf->index.size);
+                    if err::check(e) {
+                        e->elog();
+                        e->ignore();
+                        return true;
+                    }
+                    response_header.push32(byteorder::to_be32(streamid)); // stream
+                    response_header.push64(byteorder::to_be64(1)); // order
+                    response_header.push16(0); // size placeholder
+
+                    hpack::encoder::encode(response_header, e, (u8*)"index", 5, conf->index.mem, conf->index.size);
+                    e->abort();
+                }
+
                 stream::Stream mut* streami = self->alloc_stream(streamid, conf);
                 if streami == 0 {
                     hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"500",   3);
@@ -646,7 +649,7 @@ fn handle_open_frame(Channel mut* self, err::Err mut* e, u32 streamid, slice::Sl
     }
 
     if !accepted {
-        log::warn("[%u] no service accepts path '%s'", self->route, path.cstr());
+        log::warn("[%llu] no service accepts path '%s'", self->route, path.cstr());
         hpack::encoder::encode(response_header, e, (u8*)":status", 7, (u8*)"404", 3);
         e->abort();
         self->send_close_frame(e, streamid, 2);
@@ -1107,7 +1110,8 @@ fn disco(Channel mut* self, err::Err mut* e, u32 stream_id)
 
 
 
-    new+512 idx = madpack::from_preshared_index(preshared::discovery());
+    new+512 idx = madpack::from_preshared_index(e, preshared::discovery());
+    e->abort();
     new mad = madpack::encode(frame2, &idx);
 
     mad.kv_uint(slice::from_cstr("carrier_revision"), revision::revision());

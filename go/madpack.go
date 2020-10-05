@@ -6,15 +6,18 @@ package carrier;
 import "C"
 import (
     "unsafe"
+    "github.com/pkg/errors"
 )
 
 
 
 //TODO https://godoc.org/github.com/mitchellh/mapstructure
 
-const TAIL_INDEX = 1000;
+const TAIL_INDEX = 10000;
 
 func MadpackDecode(preshared *PresharedIndex, b []byte) (map[string]interface{}, error) {
+
+    var e = ErrorNew(1000);
 
     var mem = C.CBytes(b);
     defer C.free(mem);
@@ -27,28 +30,36 @@ func MadpackDecode(preshared *PresharedIndex, b []byte) (map[string]interface{},
     defer C.free(unsafe.Pointer(index));
 
     if preshared != nil {
-        C.madpack_from_preshared_index(index, preshared.sl, TAIL_INDEX);
+        C.madpack_from_preshared_index(index, e.d, preshared.sl, TAIL_INDEX);
     } else {
         C.madpack_empty_index(index, TAIL_INDEX);
+    }
+    if err := e.Check(); err != nil {
+        return nil, errors.Wrap(err, "decoding index")
     }
 
     var decoder = (*C.madpack_Decoder)(C.calloc(1, C.real_sizeof_madpack_Decoder()));
     defer C.free(unsafe.Pointer(decoder));
 
     C.madpack_decode(decoder, sl, index);
-    return decode_map(decoder);
+    return decode_map(decoder, e);
 
 }
 
 func MadpackEncode(preshared *PresharedIndex,  v map[string]interface{}) ([]byte, error) {
 
+    var e = ErrorNew(1000);
+
     var index = (*C.madpack_Index)(C.calloc(1, C.real_sizeof_madpack_Index(TAIL_INDEX)));
     defer C.free(unsafe.Pointer(index));
 
     if preshared != nil {
-        C.madpack_from_preshared_index(index, preshared.sl, TAIL_INDEX);
+        C.madpack_from_preshared_index(index, e.d, preshared.sl, TAIL_INDEX);
     } else {
         C.madpack_empty_index(index, TAIL_INDEX);
+    }
+    if err := e.Check(); err != nil {
+        return nil, errors.Wrap(err, "decoding index")
     }
 
 
@@ -133,11 +144,11 @@ func encode_array(encoder *C.madpack_Encoder, v []interface{}) {
     }
 }
 
-func decode_map(decoder *C.madpack_Decoder) (map[string]interface{}, error)  {
+func decode_map(decoder *C.madpack_Decoder, e * Error) (map[string]interface{}, error)  {
     var rr = make(map[string]interface{});
 
     for  {
-        if !C.madpack_next_kv(decoder) {
+        if !C.madpack_next_kv(decoder, e.d) {
             break;
         }
         if decoder.item == C.madpack_Item_End {
@@ -168,13 +179,13 @@ func decode_map(decoder *C.madpack_Decoder) (map[string]interface{}, error)  {
                 var sl = *(*C.slice_slice_Slice)(unsafe.Pointer(&decoder.value));
                 rr[key] = (string)(C.GoBytes(unsafe.Pointer(sl.mem), C.int(sl.size)))
             case C.madpack_Item_Map:
-                val,err := decode_map(decoder);
+                val,err := decode_map(decoder, e);
                 if err != nil {
                     return nil, err;
                 }
                 rr[key] = val;
             case C.madpack_Item_Array:
-                val,err := decode_array(decoder);
+                val,err := decode_array(decoder, e);
                 if err != nil {
                     return nil, err;
                 }
@@ -185,11 +196,11 @@ func decode_map(decoder *C.madpack_Decoder) (map[string]interface{}, error)  {
     return rr, nil;
 }
 
-func decode_array(decoder *C.madpack_Decoder) ([]interface{}, error)  {
+func decode_array(decoder *C.madpack_Decoder, e *Error) ([]interface{}, error)  {
     var rr = []interface{}{};
 
     for  {
-        if !C.madpack_next_v(decoder) {
+        if !C.madpack_next_v(decoder,e.d) {
             break;
         }
         if decoder.item == C.madpack_Item_End {
@@ -218,13 +229,13 @@ func decode_array(decoder *C.madpack_Decoder) ([]interface{}, error)  {
                 var sl = *(*C.slice_slice_Slice)(unsafe.Pointer(&decoder.value));
                 rr = append(rr,  (string)(C.GoBytes(unsafe.Pointer(sl.mem), C.int(sl.size))));
             case C.madpack_Item_Map:
-                val,err := decode_map(decoder);
+                val,err := decode_map(decoder, e);
                 if err != nil {
                     return nil, err;
                 }
                 rr = append(rr, val);
             case C.madpack_Item_Array:
-                val,err := decode_array(decoder);
+                val,err := decode_array(decoder, e);
                 if err != nil {
                     return nil, err;
                 }

@@ -130,9 +130,11 @@ pub fn sft_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) ->
 fn sft_close(stream::Stream mut *self, err::Err mut*e)
 {
     let this = (State mut*)self->user2;
-    err::assert_safe(this);
-    fclose(this->f);
-    free(this);
-    self->user2 = 0;
+    if this != 0 {
+        static_attest(safe(this));
+        fclose(this->f);
+        free(this);
+        self->user2 = 0;
+    }
 }
 

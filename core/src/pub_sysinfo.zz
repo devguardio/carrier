@@ -36,7 +36,8 @@ fn sysinfo_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
     let mut frame = self->stream(e, 1500);
     if err::check(e) { return; }
 
-    new+512 idx = madpack::from_preshared_index(preshared::sysinfo());
+    new+512 idx = madpack::from_preshared_index(e, preshared::sysinfo());
+    e->abort();
     new enc = madpack::encode(frame, &idx);
 
     let bi = revision::build_id();

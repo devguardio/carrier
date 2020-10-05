@@ -120,3 +120,38 @@ export fn nettrace() -> slice::slice::Slice
     static_attest(slice::slice::integrity(&r));
     return r;
 }
+
+
+export const slice::slice::Slice GENESIS = @madpack::preshare(
+    "genesis",
+    "revision",
+    "interfaces",
+    "class",
+    "bridge",
+    "ipaddrs",
+    "zone",
+    "class",
+    "dhcp",
+    "eth0",
+    "device",
+    "eth1",
+    "mode",
+    "ssid",
+    "channel",
+    "zone",
+    "wan",
+    "input",
+    "output",
+    "forward",
+    "devices",
+    "path"
+);
+
+export fn genesis() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = GENESIS;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+

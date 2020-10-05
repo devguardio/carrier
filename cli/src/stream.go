@@ -36,6 +36,7 @@ func init() {
             });
             if err != nil { log.Fatal(err) }
 
+
             if strings.HasPrefix(args[1], "/v3") {
                 margs, err := cmd.Flags().GetStringToString("args");
                 if err != nil { log.Fatal(err) }
@@ -60,7 +61,8 @@ func init() {
                         var v = make(map[string]interface{});
                         err = json.Unmarshal(text, &v);
                         if err != nil { log.Fatal(err) }
-                        stream.Send(v)
+                        err = stream.Send(v)
+                        if err != nil { log.Fatal(err) }
                     }
                 }();
 
@@ -92,6 +94,9 @@ func init() {
                     b1 := make([]byte, 300)
                     for {
                         n1, err := os.Stdin.Read(b1)
+                        if err == io.EOF {
+                            break
+                        }
                         if err != nil { log.Fatal(err) }
                         if n1 == 0 {
                             stream.Close();

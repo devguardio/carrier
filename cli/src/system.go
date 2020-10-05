@@ -106,6 +106,8 @@ func init() {
                 stream, err := con.Open("/v3/carrier.discovery.v1/discover");
                 if err != nil { log.Fatal(err); }
 
+                stream.Index = carrier.PresharedIndexDiscovery();
+
                 msg, err := stream.Receive();
                 if err != nil { log.Fatal(err); }
 

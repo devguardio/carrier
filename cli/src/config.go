@@ -40,7 +40,7 @@ func init() {
                         if err != nil { log.Fatal(err) }
                         return;
                     } else {
-                        con , err := carrier.Connect(*target);
+                        con , err := carrier.Connect(IdentityOrNameFromCli(*target));
                         if err != nil { log.Fatal(err); }
                         defer con.Shutdown();
 

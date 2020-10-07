@@ -43,7 +43,7 @@ jobs:
 
     - name: build
       run: |
-        export "PATH=$PATH:$PWD/target/release/"
+        export "PATH=$PATH:$(go env GOPATH)/bin:$PWD/target/release/"
         cd core
         zz clean
         zz test
@@ -51,6 +51,12 @@ jobs:
         go test
         cd ../cli
         go test
+        go build
+        go get github.com/GeertJohan/go.rice
+        go get github.com/GeertJohan/go.rice/rice
+        rice append --exec cli -i github.com/devguardio/carrier/cli/conduit
+
+
 
 
     - name: artifact-ubuntu

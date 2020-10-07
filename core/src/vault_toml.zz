@@ -128,15 +128,23 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err mut *e, char * file_n
             err::fail_with_errno(e, "open %s", this->file_name.cstr());
             return;
         }
+        fclose(f);
+
         identity::secret_generate (&this->secret, e);
-        if err::check(e) {fclose(f); return;}
+        if err::check(e) {return;}
         identity::secret_generate (&this->network_secret, e);
-        if err::check(e) {fclose(f); return;}
+        if err::check(e) {return;}
         identity::address_from_secret(&this->network, &this->network_secret);
 
         save_to_toml(this, e);
-        if err::check(e) {fclose(f); return;}
+        if err::check(e) {return;}
+
         log::info("created %s\n", this->file_name.cstr());
+        f = (FILE mut*)fopen(this->file_name.cstr(), "r");
+        if f == 0 {
+            err::fail_with_errno(e, "open %s", this->file_name.cstr());
+            return;
+        }
     }
 
     char mut buf[300];
@@ -149,15 +157,26 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err mut *e, char * file_n
         parser.push(e, buf, bin);
         if err::check(e) { fclose(f); return; }
     }
-
-    parser.close(e);
-    if err::check(e) { fclose(f); return; }
-
     fclose(f);
 
-    identity::nullcheck(e, this->network.k);
+    parser.close(e);
     if err::check(e) { return; }
 
+
+    if identity::isnull(this->network.k) {
+        identity::secret_generate (&this->network_secret, e);
+        if err::check(e) {return;}
+        identity::address_from_secret(&this->network, &this->network_secret);
+        save_to_toml(this, e);
+        if err::check(e) {return;}
+    }
+
+    if identity::isnull(this->secret.k) {
+        identity::secret_generate (&this->secret, e);
+        if err::check(e) {return;}
+        save_to_toml(this, e);
+        if err::check(e) {return;}
+    }
 }
 
 
@@ -396,13 +415,21 @@ fn save_to_toml(Mem *self, err::Err mut *e)
     if err::check(e) { fclose(out); return; }
     fprintf(out , "secret = \"%s\"\n", buf);
 
+    if self->has_principal && !identity::isnull(self->principal.k)  {
+        memset(buf, 0, static(len(buf)));
+        identity::secret_to_str(e, buf, static(len(buf)), &self->principal);
+        if err::check(e) { fclose(out); return; }
+        fprintf(out, "principal = \"%s\"\n", buf);
+    }
 
     if !identity::isnull(self->network.k) {
+        memset(buf, 0, static(len(buf)));
         identity::address_to_str(e, buf, static(len(buf)), &self->network);
         if err::check(e) { fclose(out); return; }
         fprintf(out , "\n[network]\naddress = \"%s\"\n", buf);
 
         if !identity::isnull(self->network_secret.k) {
+            memset(buf, 0, static(len(buf)));
             identity::secret_to_str(e, buf, static(len(buf)), &self->network_secret);
             if err::check(e) { fclose(out); return; }
             fprintf(out, "secret = \"%s\"\n", buf);
@@ -413,6 +440,7 @@ fn save_to_toml(Mem *self, err::Err mut *e)
         if !self->auth[i].used {
             continue;
         }
+        memset(buf, 0, static(len(buf)));
         identity::identity_to_str(e, buf, static(len(buf)), &self->auth[i].identity);
         fprintf(out , "\n[[authorize]]\nidentity = \"%s\"\nresource = ", buf);
         fprintf(out , "\"%.*s\"\n", (int)self->auth[i].path.at, self->auth[i].path.mem);

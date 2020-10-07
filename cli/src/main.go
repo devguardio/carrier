@@ -11,8 +11,9 @@ import (
 )
 
 var rootCmd = cobra.Command{
-    Use:   "carrier",
-    Short: "carrier " + carrier.BuildId() + "\nThe devguard carrier cli",
+    Use:        "carrier",
+    Short:      "carrier " + carrier.BuildId() + "\nThe devguard carrier cli",
+    Version:    carrier.BuildId(),
 }
 
 
@@ -40,6 +41,9 @@ func Main() {
             conduit.Main();
         },
     });
+
+
+    rootCmd.SetVersionTemplate("{{printf \"%s\\n\" .Version}}");
 
     if err := rootCmd.Execute(); err != nil {
         os.Exit(1);

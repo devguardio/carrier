@@ -33,7 +33,7 @@ func init() {
             var shasum = hasher.Sum(nil);
 
 
-            con , err := carrier.Connect(args[0]);
+            con , err := carrier.Connect(IdentityOrNameFromCli(args[0]));
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
@@ -106,7 +106,7 @@ func init() {
             var shasum = hasher.Sum(nil);
 
 
-            con , err := carrier.Connect(args[0]);
+            con , err := carrier.Connect(IdentityOrNameFromCli(args[0]));
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 

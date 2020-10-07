@@ -21,7 +21,7 @@ func init() {
                 return;
             }
 
-            con , err := carrier.Connect(args[0]);
+            con , err := carrier.Connect(IdentityOrNameFromCli(args[0]));
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 

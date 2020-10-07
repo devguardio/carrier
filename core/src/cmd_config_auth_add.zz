@@ -4,7 +4,6 @@ using identity;
 using connect;
 using sync;
 using hpack;
-using protonerf;
 using slice;
 using proto;
 using stream;
@@ -12,8 +11,6 @@ using buffer;
 using cmd_common;
 using channel;
 using <stdlib.h>::{atoi, exit};
-using protonerf;
-using proto;
 using cmd_config;
 using log;
 

@@ -33,6 +33,7 @@ export enum Move {
     Self,
     Never,
     Target,
+    Alias,
 }
 
 //TODO this is minimal prototype code to get v9 working.
@@ -43,7 +44,7 @@ pub fn initiate(
     bool                secure,
     vault::Vault*       vault,
     Move                move,
-    identity::Identity* unsafe cluster_target,
+    identity::Target * unsafe cluster_target,
     identity::Address*  unsafe xaddr,
     u64                 vector_time,
     slice::mut_slice::MutSlice mut pkt,
@@ -82,6 +83,9 @@ pub fn initiate(
         Move::Target => {
             plaintext[1] = 0b00100000;
         }
+        Move::Alias => {
+            plaintext[1] = 0b01100000;
+        }
     }
 
     usize mut plaintext_len = 0;
@@ -105,8 +109,14 @@ pub fn initiate(
         // move target 32B
         if move == Move::Target && cluster_target != 0 {
             static_attest(safe(cluster_target));
-            mem::copy(cluster_target->k, plaintext + plaintext_len, 32);
+            mem::copy(cluster_target->v, plaintext + plaintext_len, 32);
             plaintext_len += 32;
+        }
+        // move target 8B
+        else if move == Move::Alias && cluster_target != 0 {
+            static_attest(safe(cluster_target));
+            mem::copy(cluster_target->v, plaintext + plaintext_len, 8);
+            plaintext_len += 8;
         }
 
         // padding expected ciphertext size to nearest 64 byte before authentication tag

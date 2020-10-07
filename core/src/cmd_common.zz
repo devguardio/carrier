@@ -8,8 +8,6 @@ using slice;
 using hpack;
 using <stdlib.h>::{atoi};
 using <stdio.h>::{printf};
-using protonerf;
-using proto;
 
 export symbol OpenResponse;
 
@@ -64,21 +62,7 @@ pub fn on_printer_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice 
         err::assert_safe(self->user2);
         static_attest(nullterm(self->user2));
 
-        log::warn("%s.proto unavailable, printing unlabeled data. see documentation for CARRIER_PROTO_PATHS", self->user2);
-
-        new mut decoder = protonerf::decode(msg);
-        for (protonerf::Field mut field;decoder.next(e, &field);) {
-             if err::check(e) { return true; }
-
-             if field.a != 0 {
-                 log::warn("field %u:\n", field.index);
-                 static_attest(len(field.a) > field.value.v_len);
-                 hex::dump(field.a, field.value.v_len);
-             } else {
-                 log::warn("field %u : %u\n", field.index, field.value.v_u64);
-             }
-        }
-        if err::check(e) { return true; }
+        hex::dump_slice(msg);
 
         return true;
     }

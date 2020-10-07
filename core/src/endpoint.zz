@@ -74,7 +74,7 @@ export struct Endpoint+ {
     vault::Vault            vault;
 
     initiator::Move         cluster_move;
-    identity::Identity      cluster_target;
+    identity::Target        cluster_target;
 
     stream::Config *        broker_stream_registry[2];
     stream::Config *        p2p_stream_registry[32];
@@ -153,10 +153,14 @@ export fn broker(Endpoint mut* self) -> channel::Channel mut *
     return &self->statem.connected.channels[0];
 }
 
-export fn cluster_target(Endpoint mut* self, identity::Identity * target)
+export fn cluster_target(Endpoint mut* self, identity::Target * target)
 {
-    memcpy(&self->cluster_target, target, sizeof(identity::Identity));
-    self->cluster_move = initiator::Move::Target;
+    memcpy(&self->cluster_target, target, sizeof(identity::Target));
+    if target->t == 11 {
+        self->cluster_move = initiator::Move::Alias;
+    } else {
+        self->cluster_move = initiator::Move::Target;
+    }
 }
 
 export fn do_not_move(Endpoint mut* self)

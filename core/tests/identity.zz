@@ -142,7 +142,7 @@ fn test_alias(err::Err+et mut* e)
     if err::check(e) { return; }
 
     Alias mut pk = {0};
-    pk.k[4] = sk.k[0];
+    //pk.k[4] = sk.k[0];
     pk.k[5] = sk.k[1];
     pk.k[6] = sk.k[2];
     pk.k[7] = sk.k[3];
@@ -154,9 +154,9 @@ fn test_alias(err::Err+et mut* e)
 
     for (usize mut i = 0; i < ll; i++) {
         printf("%c", buf[i]);
-        if i % 4 == 0 {
-            printf(" ");
-        }
+        //if i % 3 == 2 {
+        //    printf(" ");
+        //}
     }
     printf("\n", buf);
 

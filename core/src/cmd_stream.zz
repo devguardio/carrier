@@ -15,6 +15,7 @@ using <unistd.h>::{write};
 using buffer;
 using hpack;
 using <stdlib.h>::{atoi};
+using buffer;
 
 fn stream_usage() -> int {
     fprintf(stderr, "USAGE:\n    carrier stream [OPTIONS] <target> <path>\n");
@@ -50,7 +51,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
     static_attest(nullterm(arg_path));
     static_attest(safe(arg_path));
 
-    new target = carrier::identity::identity_from_cstr (&e, arg_target);
+    new target = carrier::identity::target_from_str (&e, arg_target, buffer::strlen(arg_target));
     if err::check(&e) {
         static_attest(err::checked(e));
         err::fail(&e, err::InvalidArgument, "parsing identity: %s", arg_target);

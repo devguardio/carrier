@@ -1,4 +1,4 @@
-using <stdio.h>::{printf};
+using <stdio.h>::{printf, stdout};
 using <string.h>::{memcpy, memset};
 using <assert.h>::{assert};
 using err;
@@ -15,7 +15,6 @@ using log;
 using pq;
 using byteorder;
 using identity;
-using protonerf;
 using buffer;
 using stream;
 using slice;
@@ -23,10 +22,13 @@ using net::address;
 using hpack;
 using slice::{Slice};
 using peering;
-using proto;
 using noise;
 using responder;
 using mem;
+using madpack;
+using preshared;
+using proto;
+using protonerf;
 
 static stream::Config PublishStream = stream::Config {
     path:   "/carrier.broker.v1/broker/publish",
@@ -60,6 +62,7 @@ fn stream_to_publish(stream::Stream mut *self, err::Err mut*e, Slice bs) -> bool
 {
     static_attest(safe(self->chan));
     if self->state == 0 {
+        self->state = 1;
         log::info("publish response headers:");
         new it = hpack::decoder::decode(bs);
         while it.next(e) {
@@ -70,55 +73,48 @@ fn stream_to_publish(stream::Stream mut *self, err::Err mut*e, Slice bs) -> bool
         }
 
 
-        let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, 100);
+        let mut frame = self->stream(e, 100);
         if err::check(e) {
             return false;
         }
-
-        self->state = 1;
-
-        frame.push32(byteorder::to_be32(1)); // stream
-        frame.push64(byteorder::to_be64(2)); // order
-        frame.push16(0); // size placeholder
 
         static_attest(safe(self->chan->endpoint));
-
-
         identity::Address mut network = {0};
         self->chan->endpoint->vault.get_network(&network);
-        protonerf::encode_bytes(frame, e, proto::PublishRequest::Network, network.k, 32);
-        if err::check(e) {
-            return false;
+
+        char mut buf[300] = {0};
+        identity::address_to_str(e, buf, static(len(buf)), &network);
+        if err::check(e) { return false; }
+
+        new+512 idx = madpack::from_preshared_index(e, preshared::publish());
+        e->abort();
+        new mad = madpack::encode(frame, &idx);
+        mad.kv_cstr(slice::from_cstr("address"), buf);
+
+        if self->chan->endpoint->vault.count_authorizations()  == 0 {
+            mad.kv_bool(slice::from_cstr("alias"), true);
         }
 
-        protonerf::encode_varint(frame, e, proto::PublishRequest::ReceiveAlias, 1);
-        if err::check(e) {
-            return false;
+    } else {
+        new+512 idx = madpack::from_preshared_index(e, preshared::publish());
+        e->abort();
+
+        new mad = madpack::decode(bs, &idx);
+        while mad.next_kv(e) {
+            static_attest(err::checked(*e));
+            if mad.key.eq_cstr("alias") && mad.item == madpack::Item::Uint{
+                new alias = identity::alias_from_u64(mad.value.v_uint);
+                char mut to[100] = {0};
+                identity::alias_to_str (e, to, static(len(to)), &alias);
+                log::info("alias %s", to);
+            }
         }
 
-    } else if self->state == 1 {
-        new mut dec = protonerf::decode(bs);
-        for (protonerf::Field mut field; dec.next(e,&field);) {
-            if err::check(e) {
-                return true;
-            }
-            switch field.index {
-                proto::PublishChange::Alias => {
-                    static_attest(safe(field.a));
-                    static_attest(len(field.a) >= field.value.v_len);
-                    new mut dec2 = protonerf::decode(slice::slice::Slice{mem: field.a, size: field.value.v_len});
-                    for (protonerf::Field mut field; dec2.next(e,&field);) {
-                        switch field.index {
-                            proto::Alias::Alias => {
-                                if field.a != 0 {
-                                    log::info("alias %.*s", field.value.v_len, field.a);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        e->ignore();
+        madpack::decode(&mad, bs, &idx);
+        printf("{");
+        madpack::to_json(&mad, e, stdout, true, 0, false);
+        printf("}\n");
     }
 
     return true;

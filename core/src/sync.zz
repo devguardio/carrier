@@ -56,7 +56,7 @@ export fn close(Sync mut *self, int exit_code)
     self->ep->close();
 }
 
-export fn connect(Sync mut new * self, err::Err mut*e, identity::Identity *target)
+export fn connect(Sync mut new * self, err::Err mut*e, identity::Target *target)
     where err::checked(*e)
     model safe(self->chan)
 {

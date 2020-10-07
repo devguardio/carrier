@@ -84,7 +84,7 @@ message ConnectRequest {
     uint32  timeout         = 6;
     enum TargetType {
         Identity = 0;
-        Alias    = 1;
+        Alias    = 11;
     }
     TargetType  target_type = 7;
 }
@@ -153,7 +153,7 @@ message TraceResponse {
     uint64  pkts_sent           = 9;
     uint64  pkts_lost           = 10;
     uint64  rtt                 = 11;
-    // string alias = 12
+    reserved 12; // string  alias               = 12;
     uint64  alias               = 13;
 }
 

@@ -16,8 +16,6 @@ using cmd_config_auth_list;
 using cmd_config_auth_add;
 using cmd_config_net;
 using slice;
-using proto;
-using protonerf;
 
 static char * USAGE = "
 Usage:

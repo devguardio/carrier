@@ -8,6 +8,7 @@ using endpoint;
 using <stdio.h>::{fprintf, stderr};
 using cmd_common::{print_identity};
 using sync;
+using buffer;
 
 fn shell_usage() -> int {
     fprintf(stderr, "USAGE:\n    carrier shell [OPTIONS] <target>\n");
@@ -35,7 +36,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
 
     static_attest(nullterm(posarg));
     static_attest(safe(posarg));
-    new target = carrier::identity::identity_from_cstr (&e, posarg);
+    new target = carrier::identity::target_from_str (&e, posarg, buffer::strlen(posarg));
     if err::check(&e) {
         static_attest(err::checked(e));
         err::fail(&e, err::InvalidArgument, "parsing identity: %s", posarg);

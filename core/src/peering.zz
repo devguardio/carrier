@@ -4,10 +4,10 @@
 using <stdio.h>::{printf};
 using net::address;
 using err;
-using proto;
-using protonerf;
 using log;
 using slice;
+using proto;
+using protonerf;
 
 export enum Transport {
     Tcp,

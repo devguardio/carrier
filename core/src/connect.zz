@@ -20,7 +20,7 @@ export closure disconnect_t  (Connect mut *con, endpoint::Endpoint mut *ep);
 export closure connect_t     (Connect mut *con, channel::Channel mut *chan);
 
 export struct Connect {
-    identity::Identity      target;
+    identity::Target        target;
     identity::Identity      principal;
     initiator::Initiator    initiator;
     u64                     initiator_time;
@@ -41,10 +41,10 @@ static stream::Config ConnectStream = stream::Config {
     close:  on_close,
 };
 
-export fn start(Connect mut new *self, err::Err mut*e, endpoint::Endpoint mut*ep, identity::Identity *target)
+export fn start(Connect mut new *self, err::Err mut*e, endpoint::Endpoint mut*ep, identity::Target *target)
     where err::checked(*e)
 {
-    memcpy(&self->target.k, target->k, static(len(self->target.k)));
+    memcpy(&self->target, target, sizeof(identity::Target));
 
     ep->vault.get_principal_identity(&self->principal);
 
@@ -131,8 +131,17 @@ fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice bs) -> bool
         protonerf::encode_bytes(frame, e, proto::ConnectRequest::Principal, this->principal.k, 32);
         e->abort();
 
-        protonerf::encode_bytes(frame, e, proto::ConnectRequest::Target, this->target.k, 32);
-        e->abort();
+        if this->target.t == 11 {
+            protonerf::encode_bytes(frame, e, proto::ConnectRequest::Target, this->target.v, 8);
+            e->abort();
+            protonerf::encode_varint(frame, e, proto::ConnectRequest::TargetType, 11);
+            e->abort();
+        } else {
+            protonerf::encode_bytes(frame, e, proto::ConnectRequest::Target, this->target.v, 32);
+            e->abort();
+            protonerf::encode_varint(frame, e, proto::ConnectRequest::TargetType, 0);
+            e->abort();
+        }
 
         protonerf::encode_varint(frame, e, proto::ConnectRequest::Timestamp, this->initiator_time);
         e->abort();
@@ -215,7 +224,11 @@ fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice bs) -> bool
 
             channel::Transfer mut chan_trans = {0};
             static_attest(buffer::integrity(&this->initiator_pkt));
-            this->initiator.complete(e, &chan_trans, 0, this->initiator_pkt.as_slice(), &this->target);
+            identity::Identity * mut expect_identity = (identity::Identity *)&this->target;
+            if this->target.t == 11 {
+                expect_identity = 0;
+            }
+            this->initiator.complete(e, &chan_trans, 0, this->initiator_pkt.as_slice(), expect_identity);
             if err::check(e) {
                 return true;
             }

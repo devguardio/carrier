@@ -8,8 +8,6 @@ using <stdio.h>::{fprintf, stderr, printf};
 using stream;
 using cmd_common;
 using cmd_config;
-using proto;
-using protonerf;
 using slice;
 using hex;
 using buffer;

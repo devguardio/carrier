@@ -418,11 +418,16 @@ impl Alias {
         Self(b)
     }
 
+    pub fn to_u64(&self) -> u64 {
+        use byteorder::{BigEndian, ReadBytesExt};
+        (&self.0[..]).read_u64::<BigEndian>().unwrap()
+    }
+
     pub fn to_string(&self) -> String {
         let mut to = vec![0u8;64];
         let mut err = error::ZZError::new(2000);
         let len = unsafe {
-            carrier_identity::address_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity::alias_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()

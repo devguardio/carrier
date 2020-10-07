@@ -254,3 +254,19 @@ export fn authorize_open_stream(Vault * self, identity::Identity *ii, char * uns
 
 }
 
+fn count_authorizations_cb_i(void mut * user, identity::Identity *id, char *resource)
+    where nullterm(resource)
+{
+    let count = (usize mut*)user;
+    *count += 1;
+}
+
+export fn count_authorizations(Vault mut * self) usize
+{
+    static_attest(safe(self->i_list_authorizations));
+    usize mut count = 0;
+    new+200 e = err::make();
+    self->i_list_authorizations(self, &e, count_authorizations_cb_i, &count);
+    return count;
+}
+

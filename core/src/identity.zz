@@ -20,6 +20,8 @@ using crc8;
 using rand;
 using buffer;
 using base32;
+using byteorder;
+using slice;
 
 export symbol Invalid;
 
@@ -30,8 +32,35 @@ export struct Signature     { u8 k[64]; }; // type 10
 export struct Alias         { u8 k[8];  }; // type 11
 export struct SecretKit     { Secret identity; Secret network; }; // type 1
 export struct IdentityKit   { Identity identity; Address network; }; // type 2
+export struct Target        { u8 v[32]; u8 t;}
 
-using <stdio.h>::{printf};
+export fn target_from_str (Target new mut* self, err::Err mut* e, char* mut from, usize mut l)
+    where l <= len(from)
+    where err::checked(*e)
+{
+    if l < 3 {
+        err::fail(e, Invalid, "Too Small");
+        return;
+    }
+
+    switch from[0] {
+        'a'  => {
+            self->t = 11;
+            alias_from_str ((Alias mut*)self, e, from, l);
+            if err::check(e) { return; }
+        }
+        'c'  => {
+            from_str_base32(32, e, self->v, from + 1, l -1, 9);
+            if err::check(e) { return; }
+            self->t = 9;
+        }
+        default => {
+            from_str_base58(32, e, self->v, from, l, 9);
+            if err::check(e) { return; }
+            self->t = 9;
+        }
+    }
+}
 
 fn from_str(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
     where l <= len(from)
@@ -46,6 +75,7 @@ fn from_str(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 exp
 
     switch from[0] {
         'c' => {
+            static_attest(err::checked(*e));
             from_str_base32(size, e, to, from + 1, l -1, expect_type);
         }
         default => {
@@ -97,15 +127,11 @@ fn from_str_base32(usize size, err::Err mut* e, u8 mut* to, char* from, usize l,
         return;
     }
 
-
     u8 mut crc = crc8::crc8(0, b, 1);
 
-    usize mut s2 = bs - 1;
-    if expect_type == 11 {
-        s2 = bs;
-    }
-
+    usize s2 = bs - 1;
     let start = size - s2 + 1;
+
     for (usize mut i = 0; i < size; i++)  {
         if i >= start {
             to[i] = b[1 + i - start];
@@ -114,13 +140,12 @@ fn from_str_base32(usize size, err::Err mut* e, u8 mut* to, char* from, usize l,
         }
     }
 
-    if expect_type != 11 {
-        crc = crc8::crc8(crc, to, size);
-        if (crc != b[s2]) {
-            err::fail(e, Invalid, "invalid checksum. %d != %d\n", b[s2], crc);
-            return;
-        }
+    crc = crc8::crc8(crc, to, size);
+    if (crc != b[s2]) {
+        err::fail(e, Invalid, "invalid checksum. %d != %d\n", b[s2], crc);
+        return;
     }
+
     static_attest(err::checked(*e));
 
     if size >= 32 {
@@ -183,7 +208,7 @@ fn from_str_base58(usize size, err::Err mut* e, u8 mut* to, char* from, usize l,
 
 fn to_str(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
     where err::checked(*e)
-    where len(to) >= l && l > 0
+    where len(to) >= l
     where size <= len(k)
     where version == 1
     where size == 8 || size == 32 || size == 64
@@ -195,17 +220,24 @@ fn to_str(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version
         static_attest(nullterm(to));
         return 0;
     }
-    to[0] = 'c';
 
     u8 mut b[64 + 2] = {0};
-    b[0] = version << 4 | typ ;
-    usize mut bs = 1;
+    usize mut bs = 0;
+
+    if typ == 11 {
+        to[0] = 'a';
+    } else {
+        to[0] = 'c';
+
+        b[0] = version << 4 | typ ;
+        bs += 1;
+    }
 
     u8 mut crc = crc8::crc8(0, b, 1);
     crc = crc8::crc8(crc, k, size);
 
     usize mut i = 0;
-    for (; i < size && size - i > 4; i++) {
+    for (; i < size && size - i > 2; i++) {
         if k[i] != 0 {
             break;
         }
@@ -320,6 +352,14 @@ export fn identity_to_str (err::Err mut* e, char mut* to, usize l, Identity* fro
     return to_str(32, e, to, l, 1, 9, from->k);
 }
 
+export fn identity_to_slice (err::Err mut* e, Identity* from, slice::mut_slice::MutSlice sl)
+    where err::checked(*e)
+    where slice::mut_slice::integrity(&sl)
+{
+    let r = to_str(32, e, (char mut*)sl.mem, sl.size, 1, 9, from->k);
+    *sl.at += r;
+}
+
 export fn identity_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Identity* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
@@ -391,12 +431,53 @@ export fn signature_to_str (err::Err mut* e,      char mut* to, usize l, Signatu
     return to_str(64, e, to, l, 1, 10, from->k);
 }
 
+export fn alias_from_u64 (Alias new mut* self, u64 from)
+{
+    u64 s = byteorder::to_be64(from);
+    memcpy(self->k, &s, 8);
+}
 
-export fn alias_from_str (Alias new mut* self, err::Err mut* e, char* from, usize l)
+export fn alias_to_u64 (Alias * self) u64
+{
+    u64 mut s;
+    memcpy(&s, self->k, 8);
+    return byteorder::from_be64(s);
+}
+
+export fn alias_from_str (Alias new mut* self, err::Err mut* e, char* mut from, usize mut l)
     where err::checked(*e)
     where l <= len(from)
 {
-    from_str(8, e, self->k, from, l, 11);
+    if l < 3 {
+        err::fail(e, Invalid, "Too Small");
+        return;
+    }
+
+    if from[0] == 'a' {
+        from = from + 1;
+        l = l - 1;
+    }
+
+    u8 mut b[80] = {0};
+    usize bs = base32::decode(e, from, l, b, static(len(b)));
+    if err::check(e) { return; }
+
+    usize size = static(len(self->k));
+
+    if bs > size + 2 || bs < 2 {
+        err::fail(e, Invalid, "invalid size. expected %d got %d", size + 2, bs);
+        return;
+    }
+
+    let start = size - bs;
+
+    for (usize mut i = 0; i < size; i++)  {
+        if i >= start {
+            self->k[i] = b[i - start];
+        } else {
+            self->k[i] = 0;
+        }
+    }
 }
 export fn alias_to_str (err::Err mut* e,      char mut* to, usize l, Alias * from) -> usize
     where err::checked(*e)

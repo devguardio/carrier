@@ -12,7 +12,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-16.04]
 
 
 
@@ -35,7 +35,7 @@ jobs:
         unzip zz*.zip
 
     - name: prep-ubuntu
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.os == 'ubuntu-16.04'
       run: |
         sudo apt-get install -y z3
         wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-ubuntu.zip
@@ -52,8 +52,23 @@ jobs:
         cd ../cli
         go test
 
+
+    - name: artifact-ubuntu
+      if: matrix.os == 'ubuntu-16.04'
+      uses: actions/upload-artifact@v2
+      with:
+        name: carrier-0.14-x86_64-pc-linux
+        path: cli/cli
+
+    - name: artifact-osx
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v2
+      with:
+        name: carrier-0.14-x86_64-pc-osx
+        path: cli/cli
+
     #- name: Snapshot
-    #  if: matrix.os == 'ubuntu-latest'
+    #  if: matrix.os == 'ubuntu-16.04'
     #  run: |
     #    export "PATH=$PATH:$PWD/target/release/"
     #    git config --local user.email "snapbot@devguard.io"
@@ -63,7 +78,7 @@ jobs:
 
 
     #- name: Push changes
-    #  if:   matrix.os == 'ubuntu-latest'
+    #  if:   matrix.os == 'ubuntu-16.04'
     #  uses: ad-m/github-push-action@master
     #  with:
     #    github_token: ${{ secrets.GITHUB_TOKEN }}

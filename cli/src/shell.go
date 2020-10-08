@@ -9,11 +9,18 @@ import (
 )
 
 func init() {
-    rootCmd.AddCommand(&cobra.Command{
+    cmd := &cobra.Command{
         Use:    "shell <target>",
         Short:  "Open remote shell",
         Long:   `Open remote shell`,
         Run: func(cmd *cobra.Command, args []string) {
+
+            command , err := cmd.Flags().GetString("command");
+            if err != nil { log.Fatal(err) }
+            headers := make (map[string][][]byte);
+            if command != "" {
+                headers["command"] = [][]byte{([]byte)(command)};
+            }
 
             if len(args) < 1 {
                 cmd.Help();
@@ -24,7 +31,10 @@ func init() {
             if err != nil { log.Fatal("error while connecting:  ", err)}
             defer channel.Shutdown();
 
-            stream, err := channel.Open("/v0/shell");
+            stream, err := channel.Open("/v0/shell", carrier.OpenStreamOptions{
+                SendHeaders: headers,
+            });
+
             if err != nil { log.Fatal(err) }
 
             os.Stdout.Write([]byte("\n\r"));
@@ -54,6 +64,7 @@ func init() {
                 os.Stdout.Write(msg[1:]);
             }
         },
-
-    })
+    };
+    cmd.Flags().StringP("command", "c", "", "immediately exec remote command in shell")
+    rootCmd.AddCommand(cmd);
 }

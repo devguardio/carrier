@@ -113,6 +113,30 @@ export fn publish() -> slice::slice::Slice
     return r;
 }
 
+export const slice::slice::Slice CONNECT = @madpack::preshare(
+    "target",
+    "principal",
+    "handshake",
+    "route",
+    "timeout",
+    "timestamp",
+    "error",
+    "paths",
+    "priority",
+    "local",
+    "internet",
+    "broker",
+    "ipaddr"
+);
+
+export fn connect() -> slice::slice::Slice
+    model slice::slice::integrity(&return)
+{
+    slice::slice::Slice r = CONNECT;
+    static_attest(slice::slice::integrity(&r));
+    return r;
+}
+
 export const slice::slice::Slice TRACE = @madpack::preshare(
     "target",
     "publishers",

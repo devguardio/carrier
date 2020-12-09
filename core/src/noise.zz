@@ -150,22 +150,22 @@ pub fn receive_insecure(
     Responder mut* self,
     u8 * prologue,
     usize prologue_len,
-    u8 * packet,
-    usize packet_len,
+    u8 * ephermal,
+    usize ephermal_len,
 )
     where len(prologue) >= prologue_len
-    where len(packet) >= packet_len
-    where len(packet) > 32
+    where len(ephermal) >= ephermal_len
+    where len(ephermal) >= 32
 {
     symmetric::init(&self->symm, "Noise_NN_25519_ChaChaPoly_SHA256");
     symmetric::mix_hash(&self->symm, prologue, prologue_len);
 
     // -> e ,
-    memcpy((self->remote_ephemeral).k, packet, 32);
+    memcpy((self->remote_ephemeral).k, ephermal, 32);
     symmetric::mix_hash(&self->symm, (self->remote_ephemeral).k, 32);
 
-    static_attest(packet_len < 0xffffffffffffff00 && packet_len > 32);
-    symmetric::mix_hash(&self->symm, packet + 32, packet_len - 32);
+    static_attest(ephermal_len < 0xffffffffffffff00 && ephermal_len > 32);
+    symmetric::mix_hash(&self->symm, ephermal + 32, ephermal_len - 32);
 }
 
 pub fn receive(

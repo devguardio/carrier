@@ -7,6 +7,7 @@ use snow::{self, params::NoiseParams, Builder};
 use std::io::Read;
 use std::io::Write;
 use hacl_star;
+use log;
 
 #[derive(Debug,Clone)]
 pub enum MoveRequest {
@@ -342,7 +343,7 @@ fn recv_handshake(
 ) -> Result<RecvHandshake, Error> {
     let mut signature = [0; 64];
     signature.copy_from_slice(&pkt.payload[pkt.payload.len() - 64..pkt.payload.len()]);
-    println!("signature: {:x?}", &signature[..]);
+    log::trace!("signature: {:x?}", &signature[..]);
     let signature = Signature::from_array(signature);
 
 
@@ -394,8 +395,8 @@ fn recv_handshake(
         }
     };
 
-    println!("handshake hash: {:x?}", noise.get_handshake_hash()?);
-    println!("identity: {:x?}", identity.0);
+    log::trace!("handshake hash: {:x?}", noise.get_handshake_hash()?);
+    log::trace!("identity: {:x?}", identity.0);
     identity.verify(b"carrier handshake hash 1", noise.get_handshake_hash()?, &signature)?;
 
     Ok(RecvHandshake {

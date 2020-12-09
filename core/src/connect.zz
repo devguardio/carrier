@@ -181,7 +181,7 @@ fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice bs) -> bool
                     ok = field.value.v_bool != 0;
                 }
                 proto::ConnectResponse::Paths => {
-                    peerings.from_proto(e, field);
+                    //peerings.from_proto(e, field);
                     if err::check(e) {
                         e->elog();
                         return true;

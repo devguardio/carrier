@@ -137,6 +137,8 @@ export fn close(Stream mut* self)
     }
 }
 
+/// handle incomming stream frame
+/// returns false if frame can currently not be accepted and needs to be resent
 pub fn incomming_stream(Stream mut*self, err::Err mut *e, u64 order, slice::Slice b) -> bool
     where err::checked(*e)
     where slice::slice::integrity(&b)

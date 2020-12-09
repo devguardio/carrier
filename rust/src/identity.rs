@@ -18,6 +18,13 @@ pub struct SignedAddress(Address, Signature);
 #[derive(Clone)]
 pub struct Alias(pub [u8; 8]);
 
+
+#[derive(Clone)]
+pub enum Target {
+    Alias(Alias),
+    Identity(Identity),
+}
+
 // --- Secret
 
 
@@ -443,5 +450,31 @@ impl fmt::Display for Alias {
 impl fmt::Debug for Alias {
     fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
         self.to_string().fmt(fmt)
+    }
+}
+
+
+
+
+
+impl Target {
+}
+
+impl FromStr for Target {
+    type Err = Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let mut to = [0u8;33];
+        unsafe {
+            let mut err = error::ZZError::new(2000);
+            let s = s.as_bytes();
+            carrier_identity::target_from_str (to.as_mut_ptr(), err.as_mut_ptr(),  s.as_ptr(), s.len() );
+            err.check()?;
+        }
+
+        if to[32] == 11 {
+            Ok(Self::Alias(Alias::from_bytes(&to[..8])?))
+        } else {
+            Ok(Self::Identity(Identity::from_bytes(&to[..32])?))
+        }
     }
 }

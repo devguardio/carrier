@@ -95,6 +95,7 @@ fn on_connect(connectI::Connect mut *con, channel::Channel mut*chan)
 
 fn on_disconnect(connectI::Connect mut*con, endpoint::Endpoint mut*ep)
 {
+    log::debug("sync disconnect");
     Sync mut *self = (Sync mut*)con->user1;
     err::assert_safe(self);
     self->error = true;

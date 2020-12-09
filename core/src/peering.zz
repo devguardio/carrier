@@ -6,8 +6,7 @@ using net::address;
 using err;
 using log;
 using slice;
-using proto;
-using protonerf;
+using madpack;
 
 export enum Transport {
     Tcp,
@@ -49,53 +48,41 @@ export fn received(Peering mut *self, Transport transport, address::Address addr
     }
 }
 
-export fn from_proto(Peering mut *self, err::Err mut*e, protonerf::Field field)
+export fn from_madpack(Peering mut *self, err::Err mut*e, madpack::Decoder mut *mad)
     where err::checked(*e)
 {
-    if field.a == 0 {
-        return;
-    }
-    static_attest(len(field.a) == field.value.v_len);
-    static_attest(safe(field.a));
-    new mut dec2 = protonerf::decode(slice::slice::Slice {mem: field.a, size: field.value.v_len});
-
-    address::Address mut ip = {0};
-    Class mut cat = Class::Invalid;
-    for (protonerf::Field mut field;dec2.next(e, &field);) {
-        if err::check(e) {
-            return;
-        }
-        switch field.index {
-            proto::Path::Category => {
-                switch field.value.v_u64 {
-                    1 => {
+    while mad->next_v(e) {
+        static_attest(err::checked(*e));
+        if mad->item == madpack::Item::End {
+            break;
+        } else if mad->item == madpack::Item::Map {
+            address::Address mut ip = {0};
+            Class mut cat = Class::Invalid;
+            while mad->next_kv(e) {
+                if mad->item == madpack::Item::End {
+                    break;
+                } else if mad->key.eq_cstr("ipaddr") && mad->item == madpack::Item::String {
+                    address::from_str(&ip, (char*)mad->value.v_slice.mem, mad->value.v_slice.size);
+                    if ip.valid() {
+                        log::debug("path: %.*s", mad->value.v_slice.size, mad->value.v_slice.mem);
+                    } else {
+                        log::debug("cannot parse path: %.*s", mad->value.v_slice.size, mad->value.v_slice.mem);
+                    }
+                } else if mad->key.eq_cstr("category") && mad->item == madpack::Item::String {
+                    if mad->value.v_slice.eq_cstr("local") {
                         cat = Class::Local;
-                    }
-                    2 => {
-                        cat = Class::Internet;
-                    }
-                    3 => {
+                    } else if mad->value.v_slice.eq_cstr("internet") {
+                        cat = Class::Local;
+                    } else if mad->value.v_slice.eq_cstr("broker") {
                         cat = Class::BrokerOrigin;
                     }
-                    default => {
-                    }
                 }
             }
-            proto::Path::Ipaddr => {
-                if field.a != 0 {
-                    static_attest(len(field.a) == field.value.v_len);
-                    static_attest(safe(field.a));
-                    address::from_str(&ip, (char*)field.a, field.value.v_len);
-                    if ip.valid() {
-                        log::debug("path: %.*s", field.value.v_len, field.a);
-                    } else {
-                        log::debug("cannot parse path: %.*s", field.value.v_len, field.a);
-                    }
-                }
+            if ip.valid() {
+                self->received(Transport::Udp, ip, cat);
             }
+        } else {
+            mad->skip(e);
         }
-    }
-    if ip.valid() {
-        self->received(Transport::Udp, ip, cat);
     }
 }

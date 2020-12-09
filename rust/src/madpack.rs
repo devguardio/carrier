@@ -60,19 +60,34 @@ impl Encoder {
     }
 
     pub fn kv_str(&mut self, k: &str, v: &str) -> bool {
-        let kc = CString::new(k).unwrap();
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
         let ks = slice::Slice{
             mem:    kc.as_ptr() as *const u8,
             size:   k.len()
         };
-        let val = CString::new(v).unwrap();
+        let val = CString::new(v).unwrap_or(CString::new("<invalid c string>").unwrap());
         unsafe {madpack::kv_cstr(self.i._self_mut(),
             ks,
             val.as_ptr() as *const u8,
         )}
     }
+    pub fn kv_bytes(&mut self, k: &str, v: &[u8]) -> bool {
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
+        let ks = slice::Slice{
+            mem:    kc.as_ptr() as *const u8,
+            size:   k.len()
+        };
+        let val  = slice::Slice{
+            mem:    v.as_ptr() as *const u8,
+            size:   v.len()
+        };
+        unsafe {madpack::kv_byteslice(self.i._self_mut(),
+            ks,
+            val,
+        )}
+    }
     pub fn kv_map(&mut self, k: &str) -> bool {
-        let kc = CString::new(k).unwrap();
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
         let ks = slice::Slice{
             mem:    kc.as_ptr() as *const u8,
             size:   k.len()
@@ -80,7 +95,7 @@ impl Encoder {
         unsafe {madpack::kv_map(self.i._self_mut(), ks ) }
     }
     pub fn kv_array(&mut self, k: &str) -> bool {
-        let kc = CString::new(k).unwrap();
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
         let ks = slice::Slice{
             mem:    kc.as_ptr() as *const u8,
             size:   k.len()
@@ -88,7 +103,7 @@ impl Encoder {
         unsafe {madpack::kv_array(self.i._self_mut(), ks )}
     }
     pub fn kv_bool(&mut self, k: &str, v : bool) -> bool {
-        let kc = CString::new(k).unwrap();
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
         let ks = slice::Slice{
             mem:    kc.as_ptr() as *const u8,
             size:   k.len()
@@ -96,7 +111,7 @@ impl Encoder {
         unsafe {madpack::kv_bool(self.i._self_mut(), ks, v )}
     }
     pub fn kv_uint(&mut self, k: &str, v : u64) -> bool {
-        let kc = CString::new(k).unwrap();
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
         let ks = slice::Slice{
             mem:    kc.as_ptr() as *const u8,
             size:   k.len()
@@ -104,7 +119,7 @@ impl Encoder {
         unsafe {madpack::kv_uint(self.i._self_mut(), ks, v )}
     }
     pub fn kv_null(&mut self, k: &str) -> bool {
-        let kc = CString::new(k).unwrap();
+        let kc = CString::new(k).unwrap_or(CString::new("<invalid c string>").unwrap());
         let ks = slice::Slice{
             mem:    kc.as_ptr() as *const u8,
             size:   k.len()
@@ -114,7 +129,7 @@ impl Encoder {
 
 
     pub fn v_str(&mut self, v: &str) -> bool {
-        let val = CString::new(v).unwrap();
+        let val = CString::new(v).unwrap_or(CString::new("<invalid c string>").unwrap());
         unsafe {madpack::v_cstr(self.i._self_mut(),
             val.as_ptr() as *const u8,
         )}
@@ -202,6 +217,11 @@ impl Decoder {
     pub fn value_string(&self) -> String {
         let sl = unsafe { std::slice::from_raw_parts(self.0.inner.value.v_slice.mem, self.0.inner.value.v_slice.size) };
         String::from_utf8_lossy(sl).to_string()
+    }
+
+    pub fn value_bytes(&self) -> Vec<u8> {
+        let sl = unsafe { std::slice::from_raw_parts(self.0.inner.value.v_slice.mem, self.0.inner.value.v_slice.size) };
+        sl.to_vec()
     }
 
     pub fn item(&self) -> Item {

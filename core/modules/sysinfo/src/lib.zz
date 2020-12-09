@@ -1,9 +1,7 @@
 using <stdio.h>::{printf, fopen, fclose, FILE};
 using slice;
-using proto;
 using buffer;
 using err;
-using protonerf;
 using hex;
 using log;
 using time;

@@ -14,6 +14,7 @@ type Secret         C.carrier_identity_Secret;
 type Address        C.carrier_identity_Address;
 type SecretKit      C.carrier_identity_SecretKit;
 type IdentityKit    C.carrier_identity_IdentityKit;
+type Target         C.carrier_identity_Target;
 
 
 // -- secret
@@ -98,6 +99,24 @@ func IdentityFromString (s string) (*Identity, error) {
 
     var s_c = C.CString(s);
     C.carrier_identity_identity_from_str((*C.carrier_identity_Identity)(unsafe.Pointer(id)), e.d, s_c, C.strlen(s_c));
+    C.free(unsafe.Pointer(s_c));
+
+    var err = e.Check();
+    if err != nil {
+        return nil, err;
+    }
+
+    return id, nil;
+}
+
+func TargetFromString (s string) (*Target, error) {
+    var e = ErrorNew(1000);
+    defer e.Delete();
+
+    var id = &Target{}
+
+    var s_c = C.CString(s);
+    C.carrier_identity_target_from_str((*C.carrier_identity_Target)(unsafe.Pointer(id)), e.d, s_c, C.strlen(s_c));
     C.free(unsafe.Pointer(s_c));
 
     var err = e.Check();

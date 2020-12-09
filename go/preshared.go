@@ -25,9 +25,9 @@ func PresharedIndexSubscribe () *PresharedIndex {
     };
 }
 
-func PresharedIndexNetTrace() *PresharedIndex {
+func PresharedIndexTrace() *PresharedIndex {
     return &PresharedIndex{
-        sl: C.carrier_preshared_nettrace(),
+        sl: C.carrier_preshared_trace(),
     };
 }
 

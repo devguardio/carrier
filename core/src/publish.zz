@@ -259,7 +259,11 @@ fn stream_connect(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) ->
         let authorized = self->chan->endpoint->vault.authorize_connect(&principal);
 
         if !authorized {
-            log::error("UNAUTHORIZED");
+
+            char mut buff[128] = {0};
+            identity::identity_to_str(e, buff, static(len(buff)), &principal);
+            e->ignore();
+            log::error("UNAUTHORIZED ACCESS FROM %s", buff);
             let mut frame = self->stream(e, 100);
             if err::check(e) {
                 return false;

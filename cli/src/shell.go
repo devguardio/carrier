@@ -61,6 +61,9 @@ func init() {
 
 
             for msg := range stream.Rx {
+                if len(msg) < 1 {
+                    break;
+                }
                 os.Stdout.Write(msg[1:]);
             }
         },

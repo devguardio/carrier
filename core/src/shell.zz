@@ -109,8 +109,8 @@ export fn in_shell_open(stream::Stream mut *self, err::Err mut*e, slice::Slice h
     where err::checked(*e)
     if #(defined(HAS_SHELL_POSIX))
 {
-    let mut frame = self->stream(e, 14);
-    if err::check(e) { return; }
+    //let mut frame = self->stream(e, 14);
+    //if err::check(e) { return; }
 
 
     Shell mut * state = alloc(e);
@@ -132,16 +132,12 @@ export fn in_shell_open(stream::Stream mut *self, err::Err mut*e, slice::Slice h
 
     in_shell_open_impl(state, e, command.cstr());
     if err::check(e) {
-        e->elog();
-        e->ignore();
-        hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"500", 3);
-        if err::check(e) { e->ignore(); }
         self->close();
         return;
     }
 
-    hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
-    if err::check(e) { return; }
+    //hpack::encoder::encode(frame, e, (u8*)":status", 7, (u8*)"200", 3);
+    //if err::check(e) { return; }
 }
 
 

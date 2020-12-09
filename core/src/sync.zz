@@ -60,6 +60,7 @@ export fn connect(Sync mut new * self, err::Err mut*e, identity::Target *target)
     where err::checked(*e)
     model safe(self->chan)
 {
+
     static_attest(safe(self->ep));
     self->chan = 0;
     static_attest(safe(self->chan));
@@ -72,12 +73,12 @@ export fn connect(Sync mut new * self, err::Err mut*e, identity::Target *target)
     io::await(&self->async, e, endpoint::poll, self->ep, time::from_seconds(30));
     if err::check(e) { return ; }
 
-    connectI::start(&self->con, e, self->ep, target);
-    if err::check(e) { return; }
-
     self->con.user1 = self;
     self->con.on_disconnect = on_disconnect;
     self->con.on_connect    = on_connect;
+
+    connectI::start(&self->con, e, self->ep, target);
+    if err::check(e) { return; }
 
     self->iwait(e);
     if err::check(e) { return; }

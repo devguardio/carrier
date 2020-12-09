@@ -70,7 +70,7 @@ func NetTrace() (*NetTraceResult , error) {
         err = ep.Link();
         if err != nil { ep.Delete(); return nil, err; }
 
-        subscribemsg2, err := MadpackEncode(PresharedIndexNetTrace(), map[string]interface{}{
+        subscribemsg2, err := MadpackEncode(PresharedIndexTrace(), map[string]interface{}{
             "address": netstr,
         })
         if err != nil { log.Fatal(err) }
@@ -80,7 +80,7 @@ func NetTrace() (*NetTraceResult , error) {
             OpenStreamOptions {
                 Critical: true,
                 OnMessage: func(b []byte) {
-                    msg, err := MadpackDecode(PresharedIndexNetTrace(), b);
+                    msg, err := MadpackDecode(PresharedIndexTrace(), b);
                     if err != nil {
                         log.Println(err);
                         return;

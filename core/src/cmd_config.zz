@@ -13,7 +13,7 @@ using mem;
 using stream;
 using cmd_common;
 using cmd_config_auth_list;
-using cmd_config_auth_add;
+//using cmd_config_auth_add;
 using cmd_config_net;
 using slice;
 
@@ -181,7 +181,7 @@ pub fn cmd(usize mut argc, char ** argv) -> int
 
             } else if method == Method::Remove || method == Method::Add {
                 if target == Target::Self {
-                    cmd_config_auth_add::run_self(&e, &ep, auth_id, arg, method);
+                    //cmd_config_auth_add::run_self(&e, &ep, auth_id, arg, method);
                     e.abort();
                     ep.close();
                     return 0;

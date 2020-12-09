@@ -65,7 +65,7 @@ func (self *Channel) ded() {
 
 func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
 
-    target, err := IdentityFromString(target_str)
+    target, err := TargetFromString(target_str)
     if err != nil {
         return nil, errors.Wrap(err, "can not parse target identity")
     }

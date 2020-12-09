@@ -113,8 +113,8 @@ export fn publish() -> slice::slice::Slice
     return r;
 }
 
-export const slice::slice::Slice NETTRACE = @madpack::preshare(
-    "address",
+export const slice::slice::Slice TRACE = @madpack::preshare(
+    "target",
     "publishers",
     "limits",
     "hard",
@@ -126,10 +126,10 @@ export const slice::slice::Slice NETTRACE = @madpack::preshare(
     "rx32d" // * 32 byte per second received
 );
 
-export fn nettrace() -> slice::slice::Slice
+export fn trace() -> slice::slice::Slice
     model slice::slice::integrity(&return)
 {
-    slice::slice::Slice r = NETTRACE;
+    slice::slice::Slice r = TRACE;
     static_attest(slice::slice::integrity(&r));
     return r;
 }

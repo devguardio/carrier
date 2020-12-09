@@ -17,7 +17,7 @@ func init() {
         Short:  "Get sysinfo",
         Args:   cobra.MinimumNArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            con , err := carrier.Connect(args[0]);
+            con , err := carrier.Connect(IdentityOrNameFromCli(args[0]));
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
@@ -56,7 +56,7 @@ func init() {
         Short:  "Get sensors",
         Args:   cobra.MinimumNArgs(1),
         Run: func(cmd *cobra.Command, args []string) {
-            con , err := carrier.Connect(args[0]);
+            con , err := carrier.Connect(IdentityOrNameFromCli(args[0]));
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 
@@ -98,7 +98,7 @@ func init() {
         Aliases: []string{"disco"},
         Run: func(cmd *cobra.Command, args []string) {
 
-            con , err := carrier.Connect(args[0]);
+            con , err := carrier.Connect(IdentityOrNameFromCli(args[0]));
             if err != nil { log.Fatal(err); }
             defer con.Shutdown();
 

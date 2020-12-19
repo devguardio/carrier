@@ -2,21 +2,23 @@ package conduit;
 
 
 import (
-	"log"
-    "github.com/gin-gonic/gin"
-    "net/http"
+	 "log"
+     "net/http"
     _ "html/template"
     _ "io/ioutil"
     _ "strings"
     "github.com/GeertJohan/go.rice"
-    "github.com/foolin/goview/supports/gorice"
-    "github.com/foolin/goview"
-    "github.com/foolin/goview/supports/ginview"
-    "github.com/gorilla/websocket"
     "time"
     "encoding/json"
     "github.com/devguardio/carrier/go"
     "github.com/skip2/go-qrcode"
+
+    "github.com/gofiber/fiber/v2"
+    "github.com/gofiber/fiber/v2/middleware/logger"
+    "github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/template/html"
+    "github.com/aep/fibers"
+    "github.com/gofiber/websocket/v2"
 
 )
 
@@ -26,35 +28,44 @@ func Main() {
     DbInit();
     ConduitInit();
 
-    router := gin.Default()
+    views := html.NewFileSystem(rice.MustFindBox("views").HTTPBox(), ".html")
 
-    staticfs, err := rice.FindBox("static")
-    if err != nil { log.Fatal(err) }
-    router.StaticFS("/_ui/static", staticfs.HTTPBox())
+    //TODO development only
+    views.Reload(true)
 
-    router.HTMLRender = ginview.Wrap(gorice.NewWithConfig(rice.MustFindBox("views"), goview.Config {
-        DisableCache:   true, //if disable cache, auto reload template file for debug.
-        Master:       "layouts/master.html",
-    }));
+    app := fiber.New(fiber.Config{
+        Views: views,
+    });
 
-    router.GET("/", func(c *gin.Context) {
-        c.Redirect(http.StatusFound, "/_ui/")
-    })
+    app.Use(logger.New())
+    app.Use(recover.New())
+    app.Use(fibers.StaticMiddleware(rice.MustFindBox("static"), "/_ui/static/"));
 
-    router.GET("/_ui/", func(c *gin.Context) {
-        c.Redirect(http.StatusFound, "/_ui/network/")
-    })
+    app.Get("/", func(c *fiber.Ctx) error {
+        return c.Redirect("/_ui/", http.StatusFound);
+    });
 
-    router.GET("/_ui/network", func(c *gin.Context) {
-        c.HTML(http.StatusOK, "network.html", gin.H{
-            "page": "network",
-        })
-    })
-    router.GET("/_ui/network/stream", func(c *gin.Context) {
-        uiNetworkStream(c.Writer, c.Request)
-    })
+    app.Get("/_ui/", func(c *fiber.Ctx) error {
+        return c.Redirect("/_ui/network", http.StatusFound);
+    });
+    app.Get("/_ui/network", func(c *fiber.Ctx) error {
+        return c.Render("network", fiber.Map{
+            "static":   fibers.Static,
+            "page":     "network",
+        }, "layout")
+    });
 
-    router.GET("/_ui/vault", func(c *gin.Context) {
+    app.Get("/_ui/identityqr/:text", func(c *fiber.Ctx) error {
+        var text = c.Params("text")
+        var png []byte
+        png, err := qrcode.Encode("https://0x.pt/_/"+text, qrcode.Medium, 256)
+        if err != nil { log.Fatal(err);}
+        c.Set("Content-Type", "image/png")
+        c.Response().AppendBody(png);
+        return nil;
+    });
+
+    app.Get("/_ui/vault", func(c *fiber.Ctx) error {
 
         v, err := carrier.VaultFromHomeCarrierToml();
         if err != nil { log.Fatal(err);}
@@ -69,26 +80,39 @@ func Main() {
         network, err := v.GetNetwork().String()
         if err != nil { log.Fatal(err);}
 
-        c.HTML(http.StatusOK, "vault.html", gin.H{
+        return c.Render("vault", fiber.Map{
+            "static":   fibers.Static,
             "page":         "vault",
             "identitykit":  identitykit,
             "identity":     identity,
             "network":      network,
-        })
+
+        }, "layout")
     })
 
-    router.GET("/_ui/identityqr/:text", func(c *gin.Context) {
-        var text = c.Param("text")
-        var png []byte
-        png, err := qrcode.Encode("https://0x.pt/_/"+text, qrcode.Medium, 256)
-        if err != nil { log.Fatal(err);}
-        c.Header("Content-Type", "image/png")
-        c.Writer.WriteHeaderNow()
-        c.Writer.Write(png);
-    });
+    app.Get("/_ui/network/stream", websocket.New(func(c *websocket.Conn) {
+        for {
+            v, err := json.Marshal(fiber.Map{
+                "publishers":   len(NetworkPublishers),
+                "chart":        DbGraphPublishersMinute(),
+            });
+            if err != nil { log.Fatal(err) }
+            err = c.WriteMessage(websocket.TextMessage, v);
+            if err != nil { break; }
 
-    log.Fatal(router.Run(":8080"))
+            time.Sleep(1 * time.Second);
+        }
+
+    }))
+
+    app.Use(func(c *fiber.Ctx) error {
+        c.SendStatus(404)
+        return nil;
+    })
+    log.Fatal(app.Listen(":8080"))
 }
+
+/*
 
 func uiNetworkStream(w http.ResponseWriter, r *http.Request) {
 
@@ -99,16 +123,6 @@ func uiNetworkStream(w http.ResponseWriter, r *http.Request) {
     conn, err := wsupgrader.Upgrade(w, r, nil)
     if err != nil { log.Fatal(err) }
 
-    for {
-        v, err := json.Marshal(gin.H{
-            "publishers":   len(NetworkPublishers),
-            "chart":        DbGraphPublishersMinute(),
-        });
-        if err != nil { log.Fatal(err) }
-        err = conn.WriteMessage(websocket.TextMessage, v);
-        if err != nil { break; }
-
-        time.Sleep(1 * time.Second);
-    }
 }
 
+*/

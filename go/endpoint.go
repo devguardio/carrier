@@ -1,7 +1,7 @@
 package carrier;
 
 /*
-#cgo CFLAGS: -Wno-attributes
+#cgo CFLAGS: -Wno-attributes -Wno-parentheses-equality -Wno-gnu-variable-sized-type-not-at-end -Wno-duplicate-decl-specifier
 #include "carrier_go.h"
 // DO NOT PUT INTO RELEASE BINARIES
 //#cgo CFLAGS: -g -fsanitize=address -fstack-protector-all

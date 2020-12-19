@@ -5,30 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc." />
 
-        <link rel="stylesheet" href="/_ui/static/fonts/feather/feather.css" />
-        <link rel="stylesheet" href="/_ui/static/css/theme.min.css">
-        <link rel="stylesheet" href="/_ui/static/css/app.css">
+        <link rel="stylesheet" href="{{ call .static "/_ui/static/fonts/feather/feather.css"}}" />
+        <link rel="stylesheet" href="{{ call .static "/_ui/static/css/theme.min.css"}}">
+        <link rel="stylesheet" href="{{ call .static "/_ui/static/css/app.css"}}">
 
         <title>devguard IoT Commander</title>
 
     </head>
 <body>
 
-    <script src="/_ui/static/js/jquery.min.js"></script>
-    <script src="/_ui/static/js/bootstrap.bundle.min.js"></script>
-    <script src="/_ui/static/js/Chart.bundle.min.js"></script>
+    <script src="{{ call .static "/_ui/static/js/jquery.min.js" }}"></script>
+    <script src="{{ call .static "/_ui/static/js/bootstrap.bundle.min.js"}}"></script>
+    <script src="{{ call .static "/_ui/static/js/Chart.bundle.min.js"}}"></script>
 
     <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-dark" id="sidebar">
         <div class="container-fluid">
 
             <!-- Toggler -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#sidebarCollapse" aria-controls="sidebarCollapse"
+                aria-expanded="false" aria-label="Toggle navigation"
+            >
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <!-- Brand -->
             <a class="navbar-brand" href="/">
-                <img src="/_ui/static/img/logo.png" class="navbar-brand-img mx-auto" alt="...">
+                <img src="{{ call .static "/_ui/static/img/logo.png"}}" class="navbar-brand-img mx-auto" alt="...">
             </a>
 
             {{ if .user }}
@@ -37,7 +40,9 @@
                 <!-- Dropdown -->
                 <div class="dropdown">
                     <!-- Toggle -->
-                    <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    >
                         <div class="avatar avatar-sm">
                             {{if .user.Picture}}
                                 <img src="{{.user.Picture}}" class="avatar-img rounded-circle" alt="...">
@@ -146,10 +151,10 @@
     </nav>
 
     <div class="main-content">
-        {{template "content" .}}
+        {{embed}}
     </div>
 
-    <script src="/_ui/static/js/theme.min.js"></script>
+    <script src="{{ call .static "/_ui/static/js/theme.min.js"}}"></script>
 
 </body>
 </html>

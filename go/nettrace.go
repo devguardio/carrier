@@ -6,10 +6,8 @@ package carrier;
 import "C"
 import (
     "log"
+    "sync"
 )
-
-
-
 
 type NetTraceResult struct {
     Publishers              uint64 `json:"publishers"`
@@ -19,10 +17,7 @@ type NetTraceResult struct {
     BytesRecvPerSecond      uint64 `json:"bytes_recv_per_second"`
 }
 
-func NetTrace() (*NetTraceResult , error) {
-
-    e := ErrorNew(1000);
-    defer e.Delete();
+func (self *Conduit) NetTrace() (*NetTraceResult , error) {
 
     va, err := VaultFromHomeCarrierToml();
     defer va.Delete();
@@ -33,46 +28,16 @@ func NetTrace() (*NetTraceResult , error) {
     netstr, err := va.GetNetwork().String()
     if err != nil { return nil, err; }
 
-    async := AsyncNew(100);
-    defer async.Delete();
-
-    C.carrier_bootstrap_sync(e.d, va.d, async.Base(), C.time_from_seconds(10));
-    if err := e.Check(); err != nil {
-        return nil, err;
-    }
 
     ret := &NetTraceResult{};
-    for i := 0; i < C.carrier_vault_MAX_BROKERS; i++ {
-        if va.d.broker[i].protocol == 0 {
-            continue;
-        }
-
-        va2, err := VaultFromHomeCarrierToml();
-        defer va2.Delete();
-        if err != nil {
-            return nil, err;
-        }
-        va2.d.broker[0] = va.d.broker[i];
+    var wg sync.WaitGroup
 
 
-        ep := EndpointNew(10000);
-        defer ep.Delete();
-
-        e := ErrorNew(1000);
-        ep.CoDelete(e);
-
-        C.carrier_endpoint_from_vault(ep.d, e.d, va2.Take(), ep.tail);
-        if err := e.Check(); err != nil { ep.Delete(); return nil, err; }
-
-        ep.ClusterDoNotMove();
-
-
-        err = ep.Link();
-        if err != nil { ep.Delete(); return nil, err; }
-
+    self.Each(func(ep *Endpoint) {
         subscribemsg2, err := MadpackEncode(PresharedIndexTrace(), map[string]interface{}{
             "address": netstr,
         })
+        wg.Add(1)
         if err != nil { log.Fatal(err) }
         _, err = openStream(
             C.carrier_endpoint_broker(ep.d),
@@ -112,26 +77,17 @@ func NetTrace() (*NetTraceResult , error) {
                     return &tmp;
                 },
                 OnClose: func() {
-                    ep.Shutdown();
-                    ep.Close();
+                    wg.Done()
                 },
             },
         );
-        if err := e.Check(); err != nil {
-            ep.Delete();
-            return nil, err;
+        if err != nil {
+            log.Println(err);
+            ep.Shutdown();
         }
+    });
 
-        for {
-            ready, err := ep.WaitEvent()
-            if err != nil {
-                return nil, err;
-            }
-            if ready {
-                break;
-            }
-        }
-    }
+    wg.Wait()
 
     return ret, nil;
 }

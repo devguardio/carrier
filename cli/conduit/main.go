@@ -12,6 +12,7 @@ import (
     "encoding/json"
     "github.com/devguardio/carrier/go"
     "github.com/skip2/go-qrcode"
+    "fmt"
 
     "github.com/gofiber/fiber/v2"
     "github.com/gofiber/fiber/v2/middleware/logger"
@@ -35,11 +36,25 @@ func Main() {
 
     app := fiber.New(fiber.Config{
         Views: views,
+        ErrorHandler: func(ctx *fiber.Ctx, err error) error {
+            // Statuscode defaults to 500
+            code := fiber.StatusInternalServerError
+            // Retreive the custom statuscode if it's an fiber.*Error
+            if e, ok := err.(*fiber.Error); ok {
+                code = e.Code
+            }
+            ctx.Status(code).JSON(fiber.Map{
+                "error":  fmt.Sprintf("%v", err),
+            });
+            return nil
+        },
     });
 
     app.Use(logger.New())
     app.Use(recover.New())
     app.Use(fibers.StaticMiddleware(rice.MustFindBox("static"), "/_ui/static/"));
+
+    Api(app);
 
     app.Get("/", func(c *fiber.Ctx) error {
         return c.Redirect("/_ui/", http.StatusFound);
@@ -111,18 +126,3 @@ func Main() {
     })
     log.Fatal(app.Listen(":8080"))
 }
-
-/*
-
-func uiNetworkStream(w http.ResponseWriter, r *http.Request) {
-
-    var wsupgrader = websocket.Upgrader{
-        ReadBufferSize:  1024,
-        WriteBufferSize: 1024,
-    }
-    conn, err := wsupgrader.Upgrade(w, r, nil)
-    if err != nil { log.Fatal(err) }
-
-}
-
-*/

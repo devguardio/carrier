@@ -10,14 +10,14 @@ import (
 )
 
 type OpenStreamOptions struct {
-    SendHeaders map[string][][]byte
-    OnHeaders   func (headers map[string][][]byte)
-    OnMessage   func(msg []byte)
-    OnFragmented func(uint32)
-    OnClose     func()
-    OnPoll      func() *[]byte
+    SendHeaders     map[string][][]byte
+    OnHeaders       func (headers map[string][][]byte)
+    OnMessage       func(msg []byte)
+    OnFragmented    func(uint32)
+    OnClose         func()
+    OnPoll          func() *[]byte
 
-    Critical    bool
+    Critical        bool
 };
 
 func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOptions) (*C.carrier_stream_Stream, error) {

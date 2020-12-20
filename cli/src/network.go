@@ -15,10 +15,14 @@ func init() {
         Use:    "subscribe",
         Short:  "subscribe to network events",
         Run: func(cmd *cobra.Command, args []string) {
-            net, err := carrier.Subscribe();
-            if err != nil { log.Fatal("error while connecting:  ", err)}
+            conduit, err := carrier.StartConduit();
+            if err != nil {
+                log.Fatal(err);
+            }
+            defer conduit.Close();
 
-            defer net.Shutdown();
+            net, err := conduit.Subscribe();
+            if err != nil { log.Fatal("error while connecting:  ", err)}
 
             for event := range net.EventRx {
                 if event.T == carrier.PublishEvent {
@@ -36,7 +40,14 @@ func init() {
         Use:    "trace",
         Short:  "dump network stats",
         Run: func(cmd *cobra.Command, args []string) {
-            net, err := carrier.NetTrace();
+
+            conduit, err := carrier.StartConduit();
+            if err != nil {
+                log.Fatal(err);
+            }
+            defer conduit.Close();
+
+            net, err := conduit.NetTrace();
             if err != nil { log.Fatal(err) }
 
             j, err := json.MarshalIndent(net, "", "  ")

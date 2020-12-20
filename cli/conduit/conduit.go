@@ -2,20 +2,21 @@ package conduit;
 
 import (
     "github.com/devguardio/carrier/go"
-    "log"
     "time"
+    "log"
 )
 
-
 var NetworkPublishers = make(map[string]interface{});
-
+var conduit *carrier.Conduit;
 
 func ConduitInit() {
-    go func() {
-        net, err := carrier.Subscribe();
-        if err != nil { log.Fatal("error while connecting:  ", err)}
-        defer net.Shutdown();
+    var err error;
+    conduit, err = carrier.StartConduit();
+    if err != nil {
+        panic(err);
+    }
 
+    go func() {
         _, err = Database.Query(`
             delete
             from network_stats
@@ -24,48 +25,10 @@ func ConduitInit() {
         `);
         if err != nil { log.Fatal(err) }
 
+        sub, err := conduit.Subscribe();
+        if err != nil { log.Fatal("error while subscribing:  ", err)}
 
-        go func() {
-            time.Sleep(1 * time.Second)
-            for {
-
-
-                net, err := carrier.NetTrace();
-                if err != nil {
-                    log.Println(err);
-                } else {
-                    statement, err := Database.Prepare(`INSERT INTO network_stats(
-                        publishers_seen,
-                        publishers_broker,
-                        bytes_sent_per_epoch,
-                        bytes_recv_per_epoch,
-                        bytes_sent_per_second,
-                        bytes_recv_per_second
-                    ) VALUES (?,?,?,?,?,?)`);
-                    if err != nil { log.Fatal(err) }
-                    statement.Exec(
-                        len(NetworkPublishers),
-                        net.Publishers,
-                        net.BytesSentPerEpoch,
-                        net.BytesRecvPerEpoch,
-                        net.BytesSentPerSecond,
-                        net.BytesRecvPerSecond,
-                    );
-                }
-
-
-                var numrows int;
-                err = Database.QueryRow("SELECT count(*) from network_stats;").Scan(&numrows);
-                if err != nil { log.Fatal(err) }
-                if numrows > 60 {
-                    time.Sleep(30 * time.Second)
-                } else {
-                    time.Sleep(1  * time.Second)
-                }
-            }
-        }();
-
-        for event := range net.EventRx {
+        for event := range sub.EventRx {
             if event.T == carrier.PublishEvent {
                 id, _ := event.Identity.String();
                 NetworkPublishers[id] = true
@@ -74,5 +37,43 @@ func ConduitInit() {
                 delete(NetworkPublishers, id);
             }
         }
+
+        for {
+            net, err := conduit.NetTrace();
+
+            if err != nil {
+                log.Println(err);
+            } else {
+                log.Println(net);
+                statement, err := Database.Prepare(`INSERT INTO network_stats(
+                    publishers_seen,
+                    publishers_broker,
+                    bytes_sent_per_epoch,
+                    bytes_recv_per_epoch,
+                    bytes_sent_per_second,
+                    bytes_recv_per_second
+                ) VALUES (?,?,?,?,?,?)`);
+                if err != nil { log.Fatal(err) }
+                statement.Exec(
+                    len(NetworkPublishers),
+                    net.Publishers,
+                    net.BytesSentPerEpoch,
+                    net.BytesRecvPerEpoch,
+                    net.BytesSentPerSecond,
+                    net.BytesRecvPerSecond,
+                );
+            }
+
+            var numrows int;
+            err = Database.QueryRow("SELECT count(*) from network_stats;").Scan(&numrows);
+            if err != nil { log.Fatal(err) }
+            if numrows > 60 {
+                time.Sleep(30 * time.Second)
+            } else {
+                time.Sleep(1  * time.Second)
+            }
+        }
     }();
+
+
 }

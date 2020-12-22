@@ -11,8 +11,10 @@ require (
 	github.com/GeertJohan/go.rice v1.0.2
 	github.com/aep/sour v0.0.0-20201222172635-50a85fb34ee6
 	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/daaku/go.zipexe v1.0.1 // indirect
 	github.com/devguardio/carrier/go v0.0.0-20201222160904-e93e1634be2d
+	github.com/fatih/color v1.10.0 // indirect
 	github.com/foolin/goview v0.3.0
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
@@ -20,6 +22,7 @@ require (
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/gorilla/websocket v1.4.2
+	github.com/hashrocket/ws v0.2.1 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/klauspost/compress v1.11.4 // indirect
 	github.com/kr/text v0.2.0 // indirect

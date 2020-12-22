@@ -71,7 +71,11 @@ func ConduitInit() {
             }
 
             var numrows int;
-            err = Database.QueryRow("SELECT count(*) from network_stats;").Scan(&numrows);
+            err = Database.QueryRow(`SELECT count(*) from network_stats
+            where
+            timestamp > datetime('now','-10 minutes')
+            `).Scan(&numrows);
+
             if err != nil { log.Fatal(err) }
             if numrows > 60 {
                 time.Sleep(30 * time.Second)

@@ -12,15 +12,14 @@ import (
     "encoding/json"
     "github.com/devguardio/carrier/go"
     "github.com/skip2/go-qrcode"
-    "fmt"
 
-    "github.com/gofiber/fiber/v2"
-    "github.com/gofiber/fiber/v2/middleware/logger"
-    "github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/template/html"
-    "github.com/aep/fibers"
-    "github.com/gofiber/websocket/v2"
+    "github.com/gin-gonic/gin"
+    "github.com/foolin/goview/supports/gorice"
+    "github.com/foolin/goview"
+    "github.com/foolin/goview/supports/ginview"
+    "github.com/gorilla/websocket"
 
+    "github.com/aep/sour"
 )
 
 
@@ -29,58 +28,39 @@ func Main() {
     DbInit();
     ConduitInit();
 
-    views := html.NewFileSystem(rice.MustFindBox("views").HTTPBox(), ".html")
+    router := gin.Default()
+    router.HTMLRender = ginview.Wrap(gorice.NewWithConfig(rice.MustFindBox("views"), goview.Config {
+        DisableCache:   true, //TODO only for debug
+        Master:         "layout.html",
+    }));
 
-    //TODO development only
-    views.Reload(true)
+    sour.StaticMount(router, "/_ui/static/", rice.MustFindBox("static"))
 
-    app := fiber.New(fiber.Config{
-        Views: views,
-        ErrorHandler: func(ctx *fiber.Ctx, err error) error {
-            // Statuscode defaults to 500
-            code := fiber.StatusInternalServerError
-            // Retreive the custom statuscode if it's an fiber.*Error
-            if e, ok := err.(*fiber.Error); ok {
-                code = e.Code
-            }
-            ctx.Status(code).JSON(fiber.Map{
-                "error":  fmt.Sprintf("%v", err),
-            });
-            return nil
-        },
-    });
+    router.GET("/", func(c *gin.Context) {
+        c.Redirect(http.StatusFound, "/_ui/")
+    })
+    router.GET("/_ui/", func(c *gin.Context) {
+        c.Redirect(http.StatusFound, "/_ui/network/")
+    })
 
-    app.Use(logger.New())
-    app.Use(recover.New())
-    app.Use(fibers.StaticMiddleware(rice.MustFindBox("static"), "/_ui/static/"));
-
-    Api(app);
-
-    app.Get("/", func(c *fiber.Ctx) error {
-        return c.Redirect("/_ui/", http.StatusFound);
-    });
-
-    app.Get("/_ui/", func(c *fiber.Ctx) error {
-        return c.Redirect("/_ui/network", http.StatusFound);
-    });
-    app.Get("/_ui/network", func(c *fiber.Ctx) error {
-        return c.Render("network", fiber.Map{
-            "static":   fibers.Static,
+    router.GET("/_ui/network", func(c *gin.Context) {
+        c.HTML(http.StatusOK, "network.html", gin.H{
+            "static":   sour.Static,
             "page":     "network",
-        }, "layout")
-    });
+        })
+    })
 
-    app.Get("/_ui/identityqr/:text", func(c *fiber.Ctx) error {
-        var text = c.Params("text")
+    router.GET("/_ui/identityqr/:text", func(c *gin.Context) {
+        var text = c.Param("text")
         var png []byte
         png, err := qrcode.Encode("https://0x.pt/_/"+text, qrcode.Medium, 256)
-        if err != nil { log.Fatal(err);}
-        c.Set("Content-Type", "image/png")
-        c.Response().AppendBody(png);
-        return nil;
+        if err != nil { panic(err);}
+        c.Header("Content-Type", "image/png")
+        c.Writer.WriteHeaderNow()
+        c.Writer.Write(png);
     });
 
-    app.Get("/_ui/vault", func(c *fiber.Ctx) error {
+    router.GET("/_ui/vault", func(c *gin.Context) {
 
         v, err := carrier.VaultFromHomeCarrierToml();
         if err != nil { log.Fatal(err);}
@@ -95,34 +75,36 @@ func Main() {
         network, err := v.GetNetwork().String()
         if err != nil { log.Fatal(err);}
 
-        return c.Render("vault", fiber.Map{
-            "static":   fibers.Static,
+        c.HTML(http.StatusOK, "vault.html", gin.H{
+            "static":       sour.Static,
             "page":         "vault",
             "identitykit":  identitykit,
             "identity":     identity,
             "network":      network,
-
-        }, "layout")
+        })
     })
 
-    app.Get("/_ui/network/stream", websocket.New(func(c *websocket.Conn) {
+
+    var wsupgrader = websocket.Upgrader{
+        ReadBufferSize:  1024,
+        WriteBufferSize: 1024,
+    }
+    router.GET("/_ui/network/stream", func(c *gin.Context) {
+        conn, err := wsupgrader.Upgrade(c.Writer, c.Request, nil)
+        if err != nil { log.Fatal(err) }
+
         for {
-            v, err := json.Marshal(fiber.Map{
+            v, err := json.Marshal(gin.H{
                 "publishers":   len(NetworkPublishers),
                 "chart":        DbGraphPublishersMinute(),
             });
             if err != nil { log.Fatal(err) }
-            err = c.WriteMessage(websocket.TextMessage, v);
+            err = conn.WriteMessage(websocket.TextMessage, v);
             if err != nil { break; }
 
             time.Sleep(1 * time.Second);
         }
-
-    }))
-
-    app.Use(func(c *fiber.Ctx) error {
-        c.SendStatus(404)
-        return nil;
     })
-    log.Fatal(app.Listen(":8080"))
+
+    log.Fatal(router.Run(":8080"))
 }

@@ -28,18 +28,24 @@ func ConduitInit() {
         sub, err := conduit.Subscribe();
         if err != nil { log.Fatal("error while subscribing:  ", err)}
 
-        for event := range sub.EventRx {
-            if event.T == carrier.PublishEvent {
-                id, _ := event.Identity.String();
-                NetworkPublishers[id] = true
-            } else if event.T == carrier.UnpublishEvent {
-                id, _ := event.Identity.String();
-                delete(NetworkPublishers, id);
+        go func() {
+            defer panic("subscribe closed");
+
+            for event := range sub.EventRx {
+                if event.T == carrier.PublishEvent {
+                    id, _ := event.Identity.String();
+                    NetworkPublishers[id] = true
+                } else if event.T == carrier.UnpublishEvent {
+                    id, _ := event.Identity.String();
+                    delete(NetworkPublishers, id);
+                }
             }
-        }
+        }();
 
         for {
             net, err := conduit.NetTrace();
+
+            log.Println(net);
 
             if err != nil {
                 log.Println(err);

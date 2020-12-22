@@ -11,9 +11,14 @@ import (
     "fmt"
 )
 
+type ConduitConfig struct {
+    SecretKit *SecretKit
+}
 
 // broadcast endpoint, a link to all carrier brokers
 type Conduit struct {
+    config      ConduitConfig
+
     shutdown    chan <- chan <- bool
     // list of channels to brokers. only written from the main thread in StartConduit
     brokers     map[C.carrier_vault_Broker]*conduit2broker
@@ -38,13 +43,26 @@ func (self *Conduit) Close() {
     <- sync
 }
 
-func StartConduit() (*Conduit, error) {
+func (self *Conduit) NewVault() (*Vault, error) {
+    if self.config.SecretKit != nil {
+        return VaultFromSecretKit(self.config.SecretKit);
+    } else {
+        return VaultFromHomeCarrierToml();
+    }
+
+}
+
+func StartConduit(opts ...ConduitConfig) (*Conduit, error) {
 
     shutdown := make(chan chan <- bool);
 
     self := &Conduit{
         shutdown: shutdown,
         brokers: make(map[C.carrier_vault_Broker]*conduit2broker),
+    }
+
+    if len(opts) > 0 {
+        self.config = opts[0];
     }
 
     err := self.syncBrokerList();
@@ -117,11 +135,11 @@ func (self *Conduit) syncBrokerList() error {
 
     log.Println("bootstrap");
 
-    va, err := VaultFromHomeCarrierToml();
-    defer va.Delete();
+    va, err := self.NewVault();
     if err != nil {
         return err;
     }
+    defer va.Delete();
 
     async := AsyncNew(100);
     defer async.Delete();
@@ -152,11 +170,11 @@ func (pool *Conduit) startConduit2Broker(va C.carrier_vault_Broker) error {
         shutdown: shutdown,
     }
 
-    va2, err := VaultFromHomeCarrierToml();
-    defer va2.Delete();
+    va2, err := pool.NewVault();
     if err != nil {
         return fmt.Errorf("vault  %w", err);
     }
+    defer va2.Delete();
     va2.d.broker[0] = va;
 
 

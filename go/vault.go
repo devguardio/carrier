@@ -126,6 +126,20 @@ func (self *Vault) GetIdentityKit() *IdentityKit {
     return (*IdentityKit)(v);
 }
 
+func (self *Vault) GetSecretKit() *SecretKit {
+
+    var v = &C.carrier_identity_SecretKit{};
+
+    if C.carrier_vault_get_secretkit(
+        self.d,
+        v,
+    ) == false {
+        return nil;
+    }
+
+    return (*SecretKit)(v);
+}
+
 func (self *Vault) GetNetwork() *Address{
     var v = &C.carrier_identity_Address{};
     C.carrier_vault_get_network(

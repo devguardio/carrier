@@ -188,6 +188,19 @@ func (self *SecretKit) String() (string, error) {
     return C.GoStringN(ptr, (C.int)(l)), nil;
 }
 
+func (self *SecretKit) IdentityKit() (*IdentityKit, error) {
+
+    var e = ErrorNew(1000);
+    defer e.Delete();
+
+    var id = &C.carrier_identity_IdentityKit{};
+
+    C.carrier_identity_identity_from_secret (&id.identity,  &self.identity);
+    C.carrier_identity_address_from_secret  (&id.network,   &self.identity);
+
+    return (*IdentityKit)(id), nil;
+}
+
 func SecretKitFromString (s string) (*SecretKit, error) {
     var e = ErrorNew(1000);
     defer e.Delete();
@@ -248,6 +261,14 @@ func (self *IdentityKit) String() (string, error) {
     var l = C.carrier_identity_identitykit_to_str(e.d, ptr, 300, (*C.carrier_identity_IdentityKit)(unsafe.Pointer(self)));
     if err := e.Check(); err != nil { return "", err; }
     return C.GoStringN(ptr, (C.int)(l)), nil;
+}
+
+func (self *IdentityKit) Identity() *Identity {
+    return (*Identity)(&self.identity);
+}
+
+func (self *IdentityKit) Network() *Address {
+    return (*Address)(&self.network);
 }
 
 func IdentityKitFromString (s string) (*IdentityKit, error) {

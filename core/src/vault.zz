@@ -10,7 +10,7 @@ export closure close_fn (Vault mut*self);
 export closure sign_fn         (Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len);
 export closure get_identity_fn (Vault * self, identity::Identity mut*id);
 
-export closure get_secret_fn         (Vault *self, identity::Secret  mut * secret);
+export closure get_secretkit_fn      (Vault *self, identity::SecretKit  mut * secretkit);
 export closure get_network_fn        (Vault *self, identity::Address mut * address);
 export closure get_network_secret_fn (Vault *self, identity::Secret   mut * address);
 export closure advance_clock_fn      (Vault *self) -> u64;
@@ -45,6 +45,7 @@ export struct Vault
     advance_clock_fn        i_advance_clock;
     set_network_fn          i_set_network;
     get_network_secret_fn   i_get_network_secret;
+    get_secretkit_fn        i_get_secretkit;
 
     list_authorizations_fn  i_list_authorizations;
     del_authorization_fn    i_del_authorization;
@@ -169,6 +170,16 @@ export fn get_principal_identity(Vault * self, identity::Identity mut*id)
     }
     static_attest(safe(self->i_get_principal_identity));
     self->i_get_principal_identity(self, id);
+}
+
+export fn get_secretkit(Vault * self, identity::SecretKit mut *addr) bool
+{
+    if self->i_get_secretkit.fn == 0 {
+        return false;
+    }
+    static_attest(safe(self->i_get_secretkit));
+    self->i_get_secretkit(self, addr);
+    return true;
 }
 
 export fn broker_count(Vault * self) -> usize

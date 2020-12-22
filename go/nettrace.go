@@ -19,11 +19,11 @@ type NetTraceResult struct {
 
 func (self *Conduit) NetTrace() (*NetTraceResult , error) {
 
-    va, err := VaultFromHomeCarrierToml();
-    defer va.Delete();
+    va, err := self.NewVault();
     if err != nil {
         return nil, err;
     }
+    defer va.Delete();
 
     netstr, err := va.GetNetwork().String()
     if err != nil { return nil, err; }
@@ -46,6 +46,7 @@ func (self *Conduit) NetTrace() (*NetTraceResult , error) {
                 Critical: true,
                 OnMessage: func(b []byte) {
                     msg, err := MadpackDecode(PresharedIndexTrace(), b);
+                    log.Println(msg);
                     if err != nil {
                         log.Println(err);
                         return;

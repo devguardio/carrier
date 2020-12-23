@@ -219,6 +219,16 @@ func SecretKitFromString (s string) (*SecretKit, error) {
     return id, nil;
 }
 
+func SecretKitFromParts(identity *Secret, network *Secret) *SecretKit {
+
+    var id = &C.carrier_identity_SecretKit{};
+
+    C.memcpy(unsafe.Pointer(&id.identity), unsafe.Pointer(identity), C.size_t(unsafe.Sizeof(Secret{})));
+    C.memcpy(unsafe.Pointer(&id.network),  unsafe.Pointer(network),  C.size_t(unsafe.Sizeof(Secret{})));
+
+    return (*SecretKit)(id);
+}
+
 func SecretKitFromStringParts(identity string, network string) (*SecretKit, error) {
 
     var e = ErrorNew(1000);

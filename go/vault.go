@@ -149,6 +149,18 @@ func (self *Vault) GetNetwork() *Address{
     return (*Address)(v);
 }
 
+func (self *Vault) GetNetworkSecret() *Secret{
+    var v = &C.carrier_identity_Secret{};
+    C.carrier_vault_get_network_secret(
+        self.d,
+        v,
+    );
+    if C.carrier_identity_isnull((*C.uint8_t)(unsafe.Pointer(&v.k))) {
+        return nil;
+    }
+    return (*Secret)(v);
+}
+
 func (self *Vault) SetNetwork(join *Secret) error {
     var e = ErrorNew(1000);
     defer e.Delete();

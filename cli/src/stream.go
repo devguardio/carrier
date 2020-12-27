@@ -27,7 +27,12 @@ func init() {
                 headers[k] = append(headers[k], []byte(v));
             }
 
-            channel , err := carrier.Connect(args[0]);
+            psn, err := cmd.Flags().GetBool("psn");
+            if err != nil { log.Fatal(err) }
+
+            channel , err := carrier.Connect(args[0], carrier.ConnectOpt{
+                WithNetworkSecret: psn,
+            });
             if err != nil { log.Fatal("error while connecting:  ", err)}
             defer channel.Shutdown();
 
@@ -116,5 +121,6 @@ func init() {
     }
     cmd.Flags().StringToStringP("args", "a", map[string]string{}, "send first message from cli argument")
     cmd.Flags().StringToStringP("header", "H", map[string]string{}, "add arbitrary header")
+    cmd.Flags().BoolP("psn", "p", false, "extra encryption using preshared network secret")
     rootCmd.AddCommand(cmd);
 }

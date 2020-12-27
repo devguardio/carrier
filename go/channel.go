@@ -18,6 +18,7 @@ import (
 
 
 type ConnectOpt struct {
+    WithNetworkSecret bool
     //SecretKit   SecretKit
     //Cancel      <-chan struct{}
 }
@@ -84,7 +85,17 @@ func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
     err = ep.Link();
     if err != nil { ep.Delete(); return nil, err; }
 
-    connect, err := IConnectStart(ep, target);
+    var network_psk *Secret = nil;
+    if len(opt) > 0 {
+        if opt[0].WithNetworkSecret {
+            vault, err  := VaultFromHomeCarrierToml();
+            if err != nil { return nil, err; }
+            defer vault.Delete();
+            network_psk = vault.GetNetworkSecret();
+        }
+    }
+
+    connect, err := IConnectStart(ep, target, network_psk);
     if err != nil { ep.Delete(); return nil, err; }
     ep.CoDelete(connect);
 

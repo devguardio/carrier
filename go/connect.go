@@ -16,7 +16,7 @@ type IConnect struct {
     destructors []Delete
 }
 
-func IConnectStart(ep *Endpoint, target *Target) (*IConnect, error) {
+func IConnectStart(ep *Endpoint, target *Target, network *Secret) (*IConnect, error) {
     self := &IConnect {
         d: (*C.carrier_connect_Connect)(C.calloc(1, C.real_sizeof_carrier_connect_Connect())),
     };
@@ -27,7 +27,11 @@ func IConnectStart(ep *Endpoint, target *Target) (*IConnect, error) {
 
 
     e := ErrorNew(1000)
-    C.carrier_connect_start(self.d, e.d, ep.d, (*C.carrier_identity_Target)(target));
+    if network == nil {
+        C.carrier_connect_start(self.d, e.d, ep.d, (*C.carrier_identity_Target)(target));
+    } else {
+        C.carrier_connect_start_in_network(self.d, e.d, ep.d, (*C.carrier_identity_Target)(target), (*C.carrier_identity_Secret)(network));
+    }
     if err := e.Check(); err != nil {self.Delete(); return nil, err}
 
     return self, nil;

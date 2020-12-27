@@ -8,6 +8,7 @@ using <string.h>::{memcpy};
 export closure close_fn (Vault mut*self);
 
 export closure sign_fn         (Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len);
+export closure dh_fn           (Vault * self, identity::Address mut *out, identity::Address * them);
 export closure get_identity_fn (Vault * self, identity::Identity mut*id);
 
 export closure get_secretkit_fn      (Vault *self, identity::SecretKit  mut * secretkit);
@@ -36,6 +37,7 @@ export struct Vault
 {
     close_fn                i_close;
 
+    dh_fn                   i_eddh;
     sign_fn                 i_sign_local;
     sign_fn                 i_sign_principal;
     get_identity_fn         i_get_local_identity;
@@ -150,6 +152,12 @@ export fn get_local_identity(Vault * self, identity::Identity mut*id)
 {
     static_attest(safe(self->i_get_local_identity));
     self->i_get_local_identity(self, id);
+}
+
+export fn eddh (Vault * self, identity::Address mut *out, identity::Address * them)
+{
+    static_attest(safe(self->i_eddh));
+    self->i_eddh(self, out, them);
 }
 
 export fn sign_principal(Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len) {

@@ -1,0 +1,56 @@
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Ed25519.c"  as ed25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Curve25519_51.h"  as x25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Hash.h" as hash;
+
+using log;
+using hex;
+using <stdio.h>::{stderr};
+using <string.h>::{memcpy, memcmp, strlen, memset};
+
+
+pub fn ed2x_pub(u8 *i, u8 mut*out) bool
+    where len(i)    >= 32
+    where len(out)  >= 32
+{
+    u64 mut pk_field[20] = {0};
+    if !unsafe<bool>(ed25519::point_decompress(pk_field, (u8 mut*)i)) {
+        return false;
+    }
+
+    u64 mut *Y = pk_field + 5;
+    u64 mut *Z = pk_field + 10;
+
+    u64 mut U[10] = {0};
+    x25519::Hacl_Impl_Curve25519_Field51_fadd(U, Z, Y);
+
+    u64 mut W[10] = {0};
+    x25519::Hacl_Impl_Curve25519_Field51_fsub(W, Z, Y);
+
+    x25519::FStar_UInt128_uint128 mut tmp[10] = {0};
+    memset(tmp, 0, sizeof(tmp));
+    u64 mut Winv[10] = {0};
+    x25519::Hacl_Curve25519_51_finv(Winv, W, tmp);
+
+    memset(tmp, 0, sizeof(tmp));
+    u64 mut pa_field[10] = {0};
+    x25519::Hacl_Impl_Curve25519_Field51_fmul(pa_field, U, Winv, tmp);
+
+    ed25519::store_51(out, pa_field);
+
+    return true;
+}
+
+pub fn ed2x_priv(u8 *i, u8 mut*out)
+    where len(i)    >= 32
+    where len(out)  >= 32
+{
+    u8 mut h[64];
+    hash::Hacl_Hash_SHA2_hash_512((u8 mut*)i, 32, h);
+
+    h[0]  &= 248;
+    h[31] &= 127;
+    h[31] |= 64;
+
+    memcpy(out, h, 32);
+}
+

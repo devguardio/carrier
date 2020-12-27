@@ -9,10 +9,12 @@ carrier identity string encodings
 
 using <stdint.h>::{uint8_t};
 using <stdint.h>::{size_t};
-using <string.h>::{memcpy, memcmp, strlen};
+using <string.h>::{memcpy, memcmp, strlen, memset};
 using <assert.h>::{assert};
 using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Ed25519.h"        as ed25519;
 using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Curve25519_51.h"  as x25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Hash.h" as hash;
+using curve25519;
 
 inline using (needs size_t) "base58.h" as b58;
 using err;
@@ -531,7 +533,7 @@ export fn identitykit_to_str (err::Err mut* e, char mut* to, usize l, IdentityKi
 }
 
 
-export fn identity_from_secret (Identity mut* pk, Secret* sk) {
+export fn identity_from_secret (Identity mut new* pk, Secret* sk) {
     err::Err+200 mut e;
     e.make();
     nullcheck(&e, sk->k);
@@ -542,7 +544,7 @@ export fn identity_from_secret (Identity mut* pk, Secret* sk) {
 
 static uint8_t BASEPOINT [32]  = {9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-export fn address_from_secret (Address mut* pk, Secret* sk) {
+export fn address_from_secret (Address mut new* pk, Secret* sk) {
     err::Err+200 mut e;
     e.make();
     nullcheck(&e, sk->k);
@@ -555,6 +557,22 @@ export fn dh(Address mut *out, Secret* me, Address * them) {
     x25519::Hacl_Curve25519_51_scalarmult(out->k, (u8 mut *)(me->k), (u8 mut *)(them->k));
 }
 
+/// use ed25519 pubkey as x25519 pubkey for DH
+///
+/// only use with address_secret_from_identity_secret and dh()
+export fn address_from_identity(Address mut new *out, Identity *i) bool {
+    return curve25519::ed2x_pub(i->k, out->k);
+}
+
+/// use ed25519 secretkey as x25519 secretkey for DH
+///
+/// only use with address_from_identity and dh()
+export fn address_secret_from_identity_secret(Secret mut new *out, Secret *i) {
+    curve25519::ed2x_priv(i->k, out->k);
+}
+
+
+///TODO sign bit
 export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
     err::Err+200 mut e;
     e.make();
@@ -565,11 +583,8 @@ export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
 }
 
 export fn verify(Identity *pk, Signature *s, u8 * subject, usize subject_len) -> bool{
-
     return (bool)ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, subject_len, (u8 mut*)subject, (u8 mut* )s->k);
-
 }
-
 
 export fn isnull(u8 * k) -> bool
     where len(k) >= 32

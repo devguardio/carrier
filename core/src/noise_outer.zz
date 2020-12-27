@@ -1,0 +1,175 @@
+using err;
+using hex;
+using identity;
+using log;
+using slice;
+using symmetric;
+using vault;
+using byteorder;
+using revision;
+using symmetric;
+using buffer;
+using mem;
+
+using <stdio.h>::{printf};
+
+
+export struct Initiator {
+    symmetric::SymmetricState   mut symm;
+    identity::Secret            mut ephemeral;
+    identity::Identity          mut responder;
+}
+
+export const char* PROLOGUE = "carrier has arrived";
+export const char* SIGN_PURPOSE = "carrier handshake hash 2";
+
+/// revision 10, outer handshake
+///
+/// IK:
+///   <- s
+///   ...
+///   -> e, es, s, ss
+///   <- e, ee, se
+///
+/// we're converting identities to addresses for the static keys
+/// but additionally sign using the identity key
+///
+/// everything is LITTLE endian, as opposed to v9
+
+
+pub fn initiate (
+    Initiator mut new*          self,
+    err::Err mut*               e,
+    slice::mut_slice::MutSlice  mut pkt,
+    identity::Identity*         target,
+    vault::Vault*               vault,
+    u64                         vector_time,
+)
+    where slice::mut_slice::integrity(&pkt)
+    where err::checked(*e)
+{
+    mem::zero(self);
+
+    // ephemeral
+    identity::secret_generate(&self->ephemeral, e);
+    if err::check(e) { return; }
+    identity::Address mut ephemeral_address = {0};
+    identity::address_from_secret(&ephemeral_address, &self->ephemeral);
+
+    // remote identity as static
+    mem::copy(target->k, self->responder.k, 32);
+    identity::nullcheck(e, target->k);
+    if err::check(e) { return; }
+    identity::Address mut responder_address = {0};
+    if !identity::address_from_identity(&responder_address, target) {
+        e->fail(err::InvalidArgument, "invalid pubkey");
+        return;
+    }
+
+    // my identity as static
+    identity::Identity mut my_identity = {0};
+    vault->get_principal_identity(&my_identity);
+    identity::Address  mut my_static = {0};
+    if !identity::address_from_identity(&my_static, &my_identity) {
+        e->fail(err::InvalidArgument, "invalid identity");
+        return;
+    }
+
+    // network address as psk
+    identity::Address mut psk;
+    vault->get_network(&psk);
+
+
+    // header
+    u8 header[] = {
+        10,                 // version
+        0,0,0,              // reserved
+        0,0,0,0, 0,0,0,0,   // route
+        0,0,0,0, 0,0,0,0,   // counter
+    };
+
+
+    // ---------------
+    // crypto
+
+    symmetric::init(&self->symm, "Noise_IK_25519_ChaChaPoly_SHA256");
+    symmetric::mix_hash(&self->symm, PROLOGUE, static(len(PROLOGUE) -1));
+
+    // header
+    symmetric::mix_hash(&self->symm, header, static(len(header)));
+    pkt.append_bytes(header, static(len(header)));
+
+    // <-  s
+    symmetric::mix_hash(&self->symm, responder_address.k, 32);
+
+    // -> e
+    symmetric::mix_hash(&self->symm, ephemeral_address.k, 32);
+    pkt.append_bytes(ephemeral_address.k, 32);
+
+    // ,es
+    identity::Address mut dh = {0};
+    identity::dh(&dh, &self->ephemeral, &responder_address);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+    // -> s
+    symmetric::mix_hash(&self->symm, my_identity.k, 32);
+    pkt.append_bytes(my_identity.k, 32);
+
+    // ,ss
+    vault->eddh(&dh, &responder_address);
+    symmetric::mix_key(&self->symm, dh.k, 32);
+
+
+    // ---------------
+    // message
+    new+256 plaintext_buf = buffer::make();
+    let plaintext = plaintext_buf.as_mut_slice();
+
+    // 1. our library revision
+    plaintext.push32(byteorder::to_le32(revision::revision()));
+
+    // 2. our clock
+    plaintext.push64(byteorder::to_le64(vector_time));
+
+    /// 
+    switch move {
+        Move::Never => {
+            plaintext[1] = 0b01000000;
+        }
+        Move::Self  => {}
+        Move::Target => {
+            plaintext[1] = 0b00100000;
+        }
+        Move::Alias => {
+            plaintext[1] = 0b01100000;
+        }
+    }
+
+    // because message is the last field, any new field can just be added here
+    // and the peer can detect presence simply by checking the length
+
+    // encrypt message
+    u8 mut ciphertext[300] = {0};
+    static_attest(*plaintext.at < len(plaintext_buf.mem));
+    usize rs = symmetric::encrypt_and_mix_hash(&self->symm, e, plaintext.mem, *plaintext.at, 0, ciphertext, static(len(ciphertext)));
+    if err::check(e) {
+        return 0;
+    }
+
+    // sign handshake hash
+    u8 mut signme[static(len(SIGN_PURPOSE) - 1) + static(len((self->symm).h))] = {0};
+    mem::copy(SIGN_PURPOSE, signme, static(len(SIGN_PURPOSE) -1));
+
+    u8 mut * mm = signme + static(len(SIGN_PURPOSE) -1);
+    mem::copy(self->symm.h,  mm, static(len(self->symm.h)));
+
+    identity::Signature mut sig = {0};
+    vault->sign_principal(&sig, signme, static(len(signme)));
+
+    pkt.append_bytes(sig.k, 64);
+
+
+    // finally, append encrypted payload
+    pkt.append_bytes(ciphertext, rs);
+
+}

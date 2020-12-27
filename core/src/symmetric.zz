@@ -47,6 +47,20 @@ pub fn mix_key(SymmetricState mut * mut self, u8 * data, usize mut l)
     cipher::init(&(self->cipher), h2);
 }
 
+pub fn mix_key_and_hash(SymmetricState mut * mut self, u8 * data, usize mut l)
+    where len(data) >= l
+{
+    u8 mut h1[sha256::HASHLEN] = {0};
+    u8 mut h2[sha256::HASHLEN] = {0};
+    u8 mut h3[sha256::HASHLEN] = {0};
+    static_attest(sha256::HASHLEN == len(self->ck));
+
+    sha256::hkdf(self->ck, data, l, h1, h2, h3);
+    memcpy(self->ck, h1, sha256::HASHLEN);
+    self->mix_hash(h2, sha256::HASHLEN);
+    cipher::init(&(self->cipher), h3);
+}
+
 pub fn encrypt_and_mix_hash(
     SymmetricState mut * mut self,
     err::Err mut* e,
@@ -60,6 +74,7 @@ pub fn encrypt_and_mix_hash(
     where len(ciphertext) >= cipher_len_max
     where len(plain)      >= plain_len
     where len(ciphertext) > plain_len
+    model return == plain_len + 16
 {
 
     usize cipher_len = cipher::encrypt_ad(
@@ -69,8 +84,10 @@ pub fn encrypt_and_mix_hash(
         nonce,
         ciphertext, cipher_len_max);
 
+    err::assert(cipher_len == plain_len + 16);
+
     if err::check(e) {
-        return 0;
+        unsafe{ return 0; }
     }
 
     mix_hash(self, ciphertext, cipher_len);

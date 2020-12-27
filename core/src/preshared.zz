@@ -126,7 +126,8 @@ export const slice::slice::Slice CONNECT = @madpack::preshare(
     "local",
     "internet",
     "broker",
-    "ipaddr"
+    "ipaddr",
+    "network"
 );
 
 export fn connect() -> slice::slice::Slice

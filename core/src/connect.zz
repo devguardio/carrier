@@ -27,7 +27,6 @@ export struct Connect {
     disconnect_t            on_disconnect;
     connect_t               on_connect;
 
-
     buffer::Buffer+1024     mut remoteError;
 
     void mut *user1;
@@ -115,7 +114,7 @@ fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice bs) -> bool
         }
 
         static_attest(buffer::integrity(&this->initiator_pkt));
-        let frame = self->stream(e, 100 + this->initiator_pkt.at);
+        let frame = self->stream(e, 140 + this->initiator_pkt.at);
         if err::check(e) {
             return false;
         }
@@ -137,10 +136,14 @@ fn on_stream(stream::Stream mut *self, err::Err mut*e, slice::Slice bs) -> bool
         if err::check(e) {
             return false;
         }
+
         enc.kv_cstr(slice::from_cstr("target"), buf);
         enc.kv_uint(slice::from_cstr("timestamp"), this->initiator_time);
         enc.kv_uint(slice::from_cstr("timeout"), 5);
-        enc.kv_byteslice(slice::from_cstr("handshake"), this->initiator_pkt.as_slice());
+
+        if !enc.kv_byteslice(slice::from_cstr("handshake"), this->initiator_pkt.as_slice()) {
+            log::error("connect enc oom");
+        };
 
     } else if self->state == 1 {
 

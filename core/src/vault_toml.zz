@@ -95,6 +95,7 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err mut *e, char * file_n
 
     self->i_get_local_identity      = i_get_local_identity;
     self->i_sign_local              = i_sign_local;
+    self->i_eddh                    = i_eddh;
     self->i_get_principal_identity  = i_get_principal_identity;
     self->i_sign_principal          = i_sign_principal;
     self->i_get_network             = i_get_network;
@@ -467,6 +468,15 @@ fn i_sign_local(vault::Vault * self, identity::Signature mut *s, u8 * subject, u
 
     identity::sign(&this->secret, s, subject, subject_len);
 }
+
+fn i_eddh (vault::Vault * self, identity::Address mut *out, identity::Address * them)
+{
+    let this = (Mem mut*)self->user;
+    static_attest(safe(this));
+    new x = identity::address_secret_from_identity_secret(&this->secret);
+    return identity::dh(out, &x, them);
+}
+
 
 fn i_get_principal_identity (vault::Vault *self, identity::Identity mut *id)
 {

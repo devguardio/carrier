@@ -24,8 +24,9 @@ using slice;
 
 export struct Initiator {
     noise::Initiator mut    noise;
-    u64 tick_time_start;
-    bool secure;
+    u64     tick_time_start;
+    bool    secure;
+    u8      version;
 }
 
 
@@ -39,12 +40,12 @@ export enum Move {
 //TODO this is minimal prototype code to get v9 working.
 //     dont forget fuzzing when implementing v10
 pub fn initiate(
-    Initiator mut new*      self,
-    err::Err mut*    e,
+    Initiator mut new*  self,
+    err::Err mut*       e,
     bool                secure,
     vault::Vault*       vault,
     Move                move,
-    identity::Target * unsafe cluster_target,
+    identity::Target *  unsafe cluster_target,
     identity::Address*  unsafe xaddr,
     u64                 vector_time,
     slice::mut_slice::MutSlice mut pkt,
@@ -53,6 +54,7 @@ pub fn initiate(
     where err::checked(*e)
 {
     memset(self, 0, sizeof(Initiator));
+    self->version = 9;
     self->secure = secure;
 
     identity::Identity mut eid = {0};
@@ -143,6 +145,9 @@ pub fn initiate(
         };
         pkt.append_bytes(header, static(len(header)));
     } else {
+        // these bytes are wasted for historic reason.
+        // nothing actually reads them,
+        // and they can't be re-used because they're not signed
         u8 header[] = {
             8,                  // version
             0xff,0xff,0xff,     // reserved
@@ -155,7 +160,8 @@ pub fn initiate(
 
 
     if secure {
-        // this is so stupid
+        // the header should have been signed by the handshake hash,
+        // but the original rust implementation was poorly designed and didnt allow that.
         plaintext[0] = crc8::broken_crc8(0,
             pkt.mem + pkt_starts_at,
             *pkt.at - pkt_starts_at
@@ -187,7 +193,8 @@ pub fn initiate(
             &self->noise, e,
             pp, pplen,
             (u8*)endpoint::PROLOGUE, prologue_len,
-            plaintext, plaintext_len
+            plaintext, plaintext_len,
+            0,0
         );
     }
 

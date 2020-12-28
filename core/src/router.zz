@@ -42,6 +42,10 @@ export struct Router {
     channel::Channel        mut channels[MAX_CHANNELS];
 }
 
+pub fn make(Router mut new* self) {
+    self->tcp_buf.make();
+}
+
 pub fn shutdown(Router mut* self, err::Err mut*e)
     where err::checked(*e)
 {
@@ -139,9 +143,7 @@ pub fn poll(Router mut*self, err::Err mut*e, io::Async mut* async) -> io::Result
                 self->tcp4.close();
             }
             io::Result::Ready => {
-
                 log::debug("received from tcp4");
-
                 e->ignore();
                 for (usize mut i = 0; i < pkt.at; i++) {
                     if self->tcp_expected == 0 {

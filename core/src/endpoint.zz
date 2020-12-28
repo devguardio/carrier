@@ -303,7 +303,7 @@ fn do_complete(Endpoint mut* self, err::Err mut*e, peering::Transport trp, addre
         log::debug("accepted HS");
         self->state = State::Connected;
         memset(&self->statem , 0, sizeof(StateM));
-
+        self->statem.connected.make();
         self->statem.connected.udp4 = self->udp4;
         self->statem.connected.tcp4 = self->tcp4;
 

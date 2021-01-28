@@ -167,8 +167,8 @@ fn stream_connect(stream::Stream mut *self, err::Err mut*e, slice::Slice msg) ->
             }
         }
         if err::check(e) {
-            self->close();
-            return true;
+            e->elog();
+            e->ignore();
         }
 
         if handshake.size == 0 || identity::isnull(principal.k) || route == 0 || timestamp_expected == 0 {

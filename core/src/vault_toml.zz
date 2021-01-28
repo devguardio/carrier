@@ -261,9 +261,9 @@ if #(os::defined(os::OPENWRT_BUILD))
                 new+1000 mtdpath = buffer::make();
                 mtdpath.format("/dev/mtdblock%u", mtdindex);
 
-                log::info("reading secrets from %s:%lld", part.cstr(), offset);
+                log::info("reading secrets from %s:%d", mtdpath.mem, offset);
 
-                FILE mut * f = fopen(mtdpath.mem, "rw");
+                FILE mut * f = fopen(mtdpath.mem, "a+");
                 if f == 0 {
                     e->fail_with_errno("cannot open %s", mtdpath.cstr());
                     return;

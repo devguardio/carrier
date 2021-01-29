@@ -8,7 +8,7 @@ use std::fs::{rename, File};
 use std::io::Write;
 use std::path::Path;
 
-#[path = "../../target/release/rs/carrier_sha256.rs"]
+#[path = "../../target/rust/carrier_sha256.rs"]
 mod sha256;
 
 pub fn main(
@@ -66,7 +66,7 @@ pub fn sft_(_poll: osaka::Poll, mut stream: endpoint::Stream, path: String, sha:
 
     stream.send(Headers::with(":status", "100").encode());
 
-    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256}];
+    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256()}];
     unsafe { sha256::init(state.as_mut_ptr()); }
 
     loop {

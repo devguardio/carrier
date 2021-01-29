@@ -143,11 +143,20 @@ dependencies = [
 
 [[package]]
 name = "carrier"
+version = "0.0.1"
+dependencies = [
+ "cc",
+ "libc",
+]
+
+[[package]]
+name = "carrier_rs"
 version = "0.12.2"
 dependencies = [
  "axon",
  "byteorder",
  "bytes",
+ "carrier",
  "clap",
  "clear_on_drop",
  "cluproccmdline",

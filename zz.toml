@@ -1,48 +1,35 @@
 [project]
-version = "0.1.0"
+version = "0.13.0"
 name = "carrier"
-cincludes = []
+cincludes = [
+    "3rdparty/hacl-star/dist/kremlin/include/",
+    "3rdparty/hacl-star/dist/kremlin/kremlib/dist/minimal/",
+]
 cobjects = [
-    "3rdparty/libbase58/base58.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/FStar.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/kremlib.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_HMAC_SHA2_256.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/AEAD_Poly1305_64.c",
-    "3rdparty/hacl-star/snapshots/hacl-c/Hacl_Policies.c",
+    "3rdparty/hacl-star/dist/gcc-compatible/Hacl_Chacha20Poly1305_32.c",
+    "3rdparty/hacl-star/dist/gcc-compatible/Hacl_Hash.c",
+    "3rdparty/hacl-star/dist/gcc-compatible/Hacl_Ed25519.c",
+    "3rdparty/hacl-star/dist/gcc-compatible/Hacl_Curve25519_51.c",
+    "3rdparty/hacl-star/dist/gcc-compatible/Hacl_Poly1305_32.c",
+    "3rdparty/hacl-star/dist/gcc-compatible/Hacl_Chacha20.c",
 ]
 pkgconfig = []
-cflags = [ "-D", "KRML_NOUINT128", "-Os"]
-lflags = []
-asan = false
+cflags = [ "-D", "KRML_NOUINT128", "-g"]
+lflags = ["-lpthread", "-g"]
 
 [dependencies]
 err         = "1"
-hex         = "1"
-std         = "1"
-byteorder   = "1"
+mem         = "1"
+err         = "1"
+slice       = "1"
+base32      = "1"
+buffer      = "1"
 hpack       = "1"
-net         = "1"
-string      = "1"
-json        = "1"
-log         = "1"
-protonerf   = "1"
-pool        = "1"
-toml        = "1"
-fs          = "1"
 
 [variants]
 default = []
 
 [[artifacts]]
+type = "rust"
 name = "carrier"
-type = "staticlib"
 main = "carrier"
-
-[repos]
-extra = "git://github.com/zetzit/nursery.git"
-

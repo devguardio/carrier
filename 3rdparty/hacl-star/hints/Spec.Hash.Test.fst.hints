@@ -1,0 +1,85 @@
+[
+  "¿„é\u001d’\u0007\u001fQZÙUp¡¢m‰",
+  [
+    [
+      "Spec.Hash.Test.vec",
+      1,
+      2,
+      1,
+      [
+        "@MaxIFuel_assumption", "@query", "disc_equation_Prims.Cons",
+        "disc_equation_Prims.Nil", "disc_equation_Spec.Hash.Definitions.MD5",
+        "disc_equation_Spec.Hash.Definitions.SHA1",
+        "disc_equation_Spec.Hash.Definitions.SHA2_224",
+        "disc_equation_Spec.Hash.Definitions.SHA2_256",
+        "disc_equation_Spec.Hash.Definitions.SHA2_384",
+        "disc_equation_Spec.Hash.Definitions.SHA2_512",
+        "fuel_guarded_inversion_Prims.list",
+        "fuel_guarded_inversion_Spec.Hash.Definitions.hash_alg"
+      ],
+      0,
+      "f0f94def8e222e8c6843785904c75222"
+    ],
+    [
+      "Spec.Hash.Test.vec",
+      2,
+      2,
+      1,
+      [
+        "@MaxIFuel_assumption", "@query", "disc_equation_Prims.Cons",
+        "disc_equation_Prims.Nil", "disc_equation_Spec.Hash.Definitions.MD5",
+        "disc_equation_Spec.Hash.Definitions.SHA1",
+        "disc_equation_Spec.Hash.Definitions.SHA2_224",
+        "disc_equation_Spec.Hash.Definitions.SHA2_256",
+        "disc_equation_Spec.Hash.Definitions.SHA2_384",
+        "disc_equation_Spec.Hash.Definitions.SHA2_512",
+        "fuel_guarded_inversion_Prims.list",
+        "fuel_guarded_inversion_Spec.Hash.Definitions.hash_alg"
+      ],
+      0,
+      "beef7c43bfeccf590b555ca35fb36bbf"
+    ],
+    [
+      "Spec.Hash.Test.vec",
+      3,
+      2,
+      1,
+      [
+        "@MaxIFuel_assumption", "@query",
+        "assumption_Prims.list__uu___haseq",
+        "assumption_Spec.Hash.Definitions.hash_alg__uu___haseq",
+        "equation_Prims.eqtype",
+        "refinement_interpretation_Tm_refine_414d0a9f578ab0048252f8c8f552b99f",
+        "typing_FStar.UInt8.t"
+      ],
+      0,
+      "d0dc68088ac401de936093d7a3efee95"
+    ],
+    [
+      "Spec.Hash.Test.__proj__Vec__item__plain",
+      1,
+      2,
+      1,
+      [
+        "@MaxIFuel_assumption", "@query",
+        "fuel_guarded_inversion_Spec.Hash.Definitions.hash_alg",
+        "projection_inverse_Spec.Hash.Test.Vec_a"
+      ],
+      0,
+      "2f41da796b1896358ac6c6fb31e5503a"
+    ],
+    [
+      "Spec.Hash.Test.__proj__Vec__item__hash",
+      1,
+      2,
+      1,
+      [
+        "@MaxIFuel_assumption", "@query",
+        "fuel_guarded_inversion_Spec.Hash.Definitions.hash_alg",
+        "projection_inverse_Spec.Hash.Test.Vec_a"
+      ],
+      0,
+      "a9325fe9b8195c28d17fe3d2d0c84628"
+    ]
+  ]
+]

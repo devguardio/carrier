@@ -3,12 +3,10 @@ use snow::params::{DHChoice, HashChoice, CipherChoice};
 use snow::types::{Random, Dh, Hash, Cipher};
 use identity;
 use error;
-
-#[path = "../target/release/rs/carrier_cipher.rs"]
-mod cipher;
-
-#[ path = "../target/release/rs/carrier_sha256.rs"]
-mod sha256;
+use carrier::{
+    carrier_sha256 as sha256,
+    carrier_cipher as cipher,
+};
 
 #[derive(Default)]
 pub struct HaclStarResolver;
@@ -64,7 +62,7 @@ struct HashSHA256(Vec<u8>);
 impl Default for HashSHA256 {
     fn default() -> Self {
         unsafe {
-            let mut state = vec![0; sha256::sizeof_Sha256];
+            let mut state = vec![0; sha256::sizeof_Sha256()];
             sha256::init(state.as_mut_ptr());
             Self(state)
         }
@@ -127,14 +125,13 @@ impl Cipher for CipherChaChaPoly {
 
     fn encrypt(&self, nonce: u64, authtext: &[u8], plaintext: &[u8], out: &mut [u8]) -> usize {
         unsafe {
-            let mut err = error::ZZError::new();
-            let mut state = vec![0u8;cipher::sizeof_CipherState];
+            let mut err = error::ZZError::new(2000);
+            let mut state = vec![0u8;cipher::sizeof_CipherState()];
             cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
             let r = cipher::encrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
-                error::ZERR_TAIL,
                 authtext.as_ptr(),
                 authtext.len(),
                 plaintext.as_ptr(),
@@ -151,14 +148,13 @@ impl Cipher for CipherChaChaPoly {
 
     fn decrypt(&self, nonce: u64, authtext: &[u8], ciphertext: &[u8], out: &mut [u8]) -> Result<usize, ()> {
         unsafe {
-            let mut err = error::ZZError::new();
-            let mut state = vec![0u8;cipher::sizeof_CipherState];
+            let mut err = error::ZZError::new(2000);
+            let mut state = vec![0u8;cipher::sizeof_CipherState()];
             cipher::init(state.as_mut_ptr(), self.key.as_ptr());
 
             let s = cipher::decrypt_ad(
                 state.as_mut_ptr(),
                 err.as_mut_ptr(),
-                error::ZERR_TAIL,
                 authtext.as_ptr(),
                 authtext.len(),
                 ciphertext.as_ptr(),

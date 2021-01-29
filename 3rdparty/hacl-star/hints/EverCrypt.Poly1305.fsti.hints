@@ -1,0 +1,21 @@
+[
+  "ÈÑ≠çq∂xEõ7†\u00127&Q‘",
+  [
+    [
+      "EverCrypt.Poly1305.poly1305",
+      1,
+      2,
+      1,
+      [
+        "@MaxIFuel_assumption", "@query", "equation_LowStar.Buffer.buffer",
+        "equation_Prims.eqtype", "equation_Spec.Poly1305.size_key",
+        "lemma_LowStar.Monotonic.Buffer.length_as_seq",
+        "refinement_interpretation_Tm_refine_414d0a9f578ab0048252f8c8f552b99f",
+        "refinement_interpretation_Tm_refine_c3f1ae340fad01fe0790c06290a638f4",
+        "typing_FStar.UInt8.t", "typing_LowStar.Buffer.trivial_preorder"
+      ],
+      0,
+      "b6092b662a82aa40b0aea6e127c9989d"
+    ]
+  ]
+]

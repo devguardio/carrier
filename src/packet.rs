@@ -2,7 +2,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use error::Error;
 use std::io::{Read, Write};
 
-#[path =  "../target/release/rs/carrier_crc8.rs"]
+#[path =  "../target/rust/carrier_crc8.rs"]
 mod crc8;
 
 pub const LATEST_VERSION: u8 = 0x9;

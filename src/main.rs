@@ -1,6 +1,7 @@
 #![feature(generators, generator_trait)]
 
 extern crate carrier;
+extern crate carrier_rs;
 extern crate clap;
 extern crate libc;
 extern crate log;
@@ -12,7 +13,7 @@ extern crate rand;
 extern crate tinylogger;
 extern crate byteorder;
 
-use carrier::error::Error;
+use carrier_rs::error::Error;
 use log::{info, warn};
 use osaka::osaka;
 use pbr::ProgressBar;
@@ -56,18 +57,18 @@ pub fn _main() -> Result<(), Error> {
 
 
     let matches = cli::build_cli()
-        .version(carrier::BUILD_ID)
+        .version(carrier_rs::BUILD_ID)
         .get_matches();
 
     match matches.subcommand() {
-        ("setup", Some(_submatches)) => carrier::config::setup(),
+        ("setup", Some(_submatches)) => carrier_rs::config::setup(),
         ("mkshadow", Some(_submatches)) => {
             use rand::RngCore;
 
             let mut secret = vec![0; 32];
             let mut rng = rand::rngs::OsRng::new().expect("os rng");
             rng.try_fill_bytes(&mut secret).expect("rng fill");
-            let secret = carrier::Secret::from_bytes(&mut secret).expect("secret from rng");
+            let secret = carrier_rs::Secret::from_bytes(&mut secret).expect("secret from rng");
 
             let address = secret.address();
 
@@ -76,14 +77,14 @@ pub fn _main() -> Result<(), Error> {
             Ok(())
         }
         ("identity", Some(_submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             println!("{}", config.secret.identity());
             Ok(())
         }
         ("sign", Some(submatches)) => {
             use std::io::Read;
 
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let purpose = submatches
                 .value_of("purpose")
                 .unwrap()
@@ -100,9 +101,9 @@ pub fn _main() -> Result<(), Error> {
             Ok(())
         }
         ("authorize", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             if let Some(identity) = submatches.value_of("identity") {
-                let mut headers = carrier::headers::Headers::with_path("/v2/carrier.certificate.v1/authorize");
+                let mut headers = carrier_rs::headers::Headers::with_path("/v2/carrier.certificate.v1/authorize");
                 headers.add(":method".into(),  "POST".into());
                 headers.add("identity".into(), identity.to_string().as_bytes().to_vec());
                 headers.add("resource".into(), "*".into());
@@ -111,7 +112,7 @@ pub fn _main() -> Result<(), Error> {
                     .resolve_identity(submatches.value_of("identity_or_target").unwrap().to_string())
                     .expect("resolving identity from cli");
 
-                carrier::connect(config).open(target, headers, print_handler).run()
+                carrier_rs::connect(config).open(target, headers, print_handler).run()
             } else {
                 let identity = submatches
                     .value_of("identity_or_target")
@@ -119,13 +120,13 @@ pub fn _main() -> Result<(), Error> {
                     .to_string()
                     .parse()
                     .expect("parsing identity");
-                carrier::config::authorize(identity, "*".to_string())
+                carrier_rs::config::authorize(identity, "*".to_string())
             }
         }
         ("deauthorize", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             if let Some(identity) = submatches.value_of("identity") {
-                let mut headers = carrier::headers::Headers::with_path("/v2/carrier.certificate.v1/authorize");
+                let mut headers = carrier_rs::headers::Headers::with_path("/v2/carrier.certificate.v1/authorize");
                 headers.add(":method".into(),  "DELETE".into());
                 headers.add("identity".into(), identity.to_string().as_bytes().to_vec());
 
@@ -133,7 +134,7 @@ pub fn _main() -> Result<(), Error> {
                     .resolve_identity(submatches.value_of("identity_or_target").unwrap().to_string())
                     .expect("resolving identity from cli");
 
-                carrier::connect(config).open(target, headers, print_handler).run()
+                carrier_rs::connect(config).open(target, headers, print_handler).run()
             } else {
                 let identity = submatches
                     .value_of("identity_or_target")
@@ -141,29 +142,29 @@ pub fn _main() -> Result<(), Error> {
                     .to_string()
                     .parse()
                     .expect("parsing identity");
-                carrier::config::deauthorize(identity)
+                carrier_rs::config::deauthorize(identity)
             }
         }
 
         #[cfg(any(target_os = "linux", target_os = "macos", target_os = "android",))]
         ("publish", Some(_submatches)) => {
             let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
-            let mut publisher = carrier::publisher::new(config)
-                .route("/v0/shell", None, carrier::publisher::shell::main)
-                .route("/v0/sft",   None, carrier::publisher::sft::main)
-                .route("/v0/tcp",   None, carrier::publisher::tcp::main)
-                .route("/v2/carrier.certificate.v1/authorize",   None, carrier::publisher::authorization::main)
-                .route("/v2/carrier.sysinfo.v1/sysinfo",         None, carrier::publisher::sysinfo::sysinfo)
-                .route("/v2/carrier.sysinfo.v1/trace",           None, carrier::publisher::trace::main)
-                .with_disco("carrier-cli".into(), carrier::BUILD_ID.into())
+            let config = carrier_rs::config::load()?;
+            let mut publisher = carrier_rs::publisher::new(config)
+                .route("/v0/shell", None, carrier_rs::publisher::shell::main)
+                .route("/v0/sft",   None, carrier_rs::publisher::sft::main)
+                .route("/v0/tcp",   None, carrier_rs::publisher::tcp::main)
+                .route("/v2/carrier.certificate.v1/authorize",   None, carrier_rs::publisher::authorization::main)
+                .route("/v2/carrier.sysinfo.v1/sysinfo",         None, carrier_rs::publisher::sysinfo::sysinfo)
+                .route("/v2/carrier.sysinfo.v1/trace",           None, carrier_rs::publisher::trace::main)
+                .with_disco("carrier-cli".into(), carrier_rs::BUILD_ID.into())
                 .publish(poll);
 
             publisher.run()
         }
         ("subscribe", Some(submatches)) => {
             let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let shadow = submatches
                 .value_of("address")
                 .unwrap()
@@ -171,58 +172,58 @@ pub fn _main() -> Result<(), Error> {
                 .parse()
                 .expect("parsing shadow");
 
-            let mut subscriber = carrier::subscriber::new(config)
+            let mut subscriber = carrier_rs::subscriber::new(config)
                 .on_publish(|identity| println!("+ {}", identity))
                 .on_unpublish(|identity| println!("- {}", identity))
                 .subscribe(poll, shadow, None);
             subscriber.run()
         }
         ("get", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
             let resource = submatches.value_of("resource").unwrap().to_string();
 
-            let mut headers = carrier::headers::Headers::with_path(resource.as_bytes());
+            let mut headers = carrier_rs::headers::Headers::with_path(resource.as_bytes());
             if let Some(h) = submatches.values_of("headers") {
                 for h in h.collect::<Vec<&str>>().chunks(2) {
                     headers.add(h[0].as_bytes().to_vec(), h[1].as_bytes().to_vec());
                 }
             }
             if submatches.is_present("hex") {
-                carrier::connect(config).open(target, headers, hexprint_handler).run()
+                carrier_rs::connect(config).open(target, headers, hexprint_handler).run()
             } else {
-                carrier::connect(config).open(target, headers, print_handler).run()
+                carrier_rs::connect(config).open(target, headers, print_handler).run()
             }
         }
         ("sysinfo", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
             match submatches.value_of("v") {
-                Some("0") => carrier::connect(config).open(
+                Some("0") => carrier_rs::connect(config).open(
                     target,
-                    carrier::headers::Headers::with_path("/v0/sysinfo"),
-                    message_handler::<carrier::proto::Sysinfo>
+                    carrier_rs::headers::Headers::with_path("/v0/sysinfo"),
+                    message_handler::<carrier_rs::proto::Sysinfo>
                     ),
-                Some("1") => carrier::connect(config).open(
+                Some("1") => carrier_rs::connect(config).open(
                     target,
-                    carrier::headers::Headers::with_path("/v1/sysinfo"),
-                    message_handler_ph::<carrier::proto::Sysinfo>
+                    carrier_rs::headers::Headers::with_path("/v1/sysinfo"),
+                    message_handler_ph::<carrier_rs::proto::Sysinfo>
                     ),
-                    Some("2") | _ => carrier::connect(config).open(
+                    Some("2") | _ => carrier_rs::connect(config).open(
                         target,
-                        carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
-                        message_handler::<carrier::proto::Sysinfo>,
+                        carrier_rs::headers::Headers::with_path("/v2/carrier.sysinfo.v1/sysinfo"),
+                        message_handler::<carrier_rs::proto::Sysinfo>,
                         ),
             }
             .run()
         }
         ("trace", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
@@ -235,7 +236,7 @@ pub fn _main() -> Result<(), Error> {
             use std::io::Read;
             use std::io::BufRead;
 
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
@@ -244,9 +245,9 @@ pub fn _main() -> Result<(), Error> {
             let filep   = dir.path().join("genesis.toml");
             let filep_  = filep.clone();
 
-            carrier::connect(config.clone()).open(
+            carrier_rs::connect(config.clone()).open(
                 target.clone(),
-                carrier::headers::Headers::with_path("/v2/genesis.v1"),
+                carrier_rs::headers::Headers::with_path("/v2/genesis.v1"),
                 move |a,b,c|genesis_get_handler(a,b,c, filep_),
             ).run()?;
 
@@ -295,16 +296,16 @@ pub fn _main() -> Result<(), Error> {
             let mut data = Vec::new();
             f.read_to_end(&mut data).unwrap();
 
-            let msg = carrier::proto::GenesisUpdate {
+            let msg = carrier_rs::proto::GenesisUpdate {
                 sha256:             shab,
                 previous_sha256:    shaa,
                 commit,
                 data,
             };
 
-            let mut headers = carrier::headers::Headers::with_path("/v2/genesis.v1");
+            let mut headers = carrier_rs::headers::Headers::with_path("/v2/genesis.v1");
             headers.add(":method".into(), "POST".into());
-            carrier::connect(config).open(
+            carrier_rs::connect(config).open(
                 target,
                 headers,
                 move |a,b,c|genesis_post_handler(a,b,c, msg),
@@ -314,15 +315,15 @@ pub fn _main() -> Result<(), Error> {
             Ok(())
         }
         ("locate", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-            carrier::connect(config).open(
+            carrier_rs::connect(config).open(
                 target,
-                carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/locate"),
-                message_handler::<carrier::proto::Location>,
+                carrier_rs::headers::Headers::with_path("/v2/carrier.sysinfo.v1/locate"),
+                message_handler::<carrier_rs::proto::Location>,
             )
             .run()
         }
@@ -331,7 +332,7 @@ pub fn _main() -> Result<(), Error> {
             use std::net::{TcpListener};
             use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
@@ -340,7 +341,7 @@ pub fn _main() -> Result<(), Error> {
             let remote_port = submatches.value_of("remote-port").unwrap().to_string();
             let remote_host = submatches.value_of("remote-host").unwrap().to_string();
 
-            let mut headers = carrier::headers::Headers::with_path("/v0/tcp");
+            let mut headers = carrier_rs::headers::Headers::with_path("/v0/tcp");
             headers.add("port".into(), remote_port.into_bytes());
             headers.add("host".into(), remote_host.into_bytes());
 
@@ -354,7 +355,7 @@ pub fn _main() -> Result<(), Error> {
                 let target  = target.clone();
                 let config  = config.clone();
                 std::thread::spawn(move ||{
-                    carrier::connect(config).open(
+                    carrier_rs::connect(config).open(
                         target,
                         headers,
                         move |poll, ep, stream| tcp_handler(poll, ep, stream, tcp)
@@ -366,12 +367,12 @@ pub fn _main() -> Result<(), Error> {
         #[cfg(not(target_os = "android",))]
         ("shell", Some(submatches)) => {
             let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-            let mut headers = carrier::headers::Headers::with_path("/v0/shell");
+            let mut headers = carrier_rs::headers::Headers::with_path("/v0/shell");
             if let Some(c) = submatches.value_of("command") {
                 headers.add("command".into(), c.as_bytes().to_vec());
             }
@@ -387,7 +388,7 @@ pub fn _main() -> Result<(), Error> {
         }
         ("push", Some(submatches)) => {
             let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
@@ -397,7 +398,7 @@ pub fn _main() -> Result<(), Error> {
 
             let sha = sha256file(&local_file).unwrap();
 
-            let headers = carrier::headers::Headers::with_path("/v0/sft")
+            let headers = carrier_rs::headers::Headers::with_path("/v0/sft")
                 .and(":method".into(), "PUT".into())
                 .and("sha256".into(), sha)
                 .and("file".into(), remote_file.into());
@@ -406,7 +407,7 @@ pub fn _main() -> Result<(), Error> {
         }
         ("ota", Some(submatches)) => {
             let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
@@ -415,7 +416,7 @@ pub fn _main() -> Result<(), Error> {
 
             let sha = sha256file(&local_file).unwrap();
 
-            let headers = carrier::headers::Headers::with_path("/v0/ota")
+            let headers = carrier_rs::headers::Headers::with_path("/v0/ota")
                 .and(":method".into(), "PUT".into())
                 .and("sha256".into(), sha);
 
@@ -423,7 +424,7 @@ pub fn _main() -> Result<(), Error> {
         }
         ("exec", Some(submatches)) => {
             let poll = osaka::Poll::new();
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
@@ -432,7 +433,7 @@ pub fn _main() -> Result<(), Error> {
 
             let sha = sha256file(&local_file).unwrap();
 
-            let mut headers = carrier::headers::Headers::with_path("/v0/belltower.exec.v0")
+            let mut headers = carrier_rs::headers::Headers::with_path("/v0/belltower.exec.v0")
                 .and(":method".into(), "PUT".into())
                 .and("sha256".into(), sha);
 
@@ -443,45 +444,45 @@ pub fn _main() -> Result<(), Error> {
             push(poll, config, target, local_file, headers).run()
         }
         ("netsurvey", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
             match submatches.value_of("v") {
-                Some("0") => carrier::connect(config).open(
+                Some("0") => carrier_rs::connect(config).open(
                     target,
-                    carrier::headers::Headers::with_path("/v0/netsurvey"),
-                    message_handler::<carrier::proto::NetSurvey>,
+                    carrier_rs::headers::Headers::with_path("/v0/netsurvey"),
+                    message_handler::<carrier_rs::proto::NetSurvey>,
                     ),
-                Some("1") => carrier::connect(config).open(
+                Some("1") => carrier_rs::connect(config).open(
                     target,
-                    carrier::headers::Headers::with_path("/v1/netsurvey"),
-                    message_handler_ph::<carrier::proto::NetSurvey>,
+                    carrier_rs::headers::Headers::with_path("/v1/netsurvey"),
+                    message_handler_ph::<carrier_rs::proto::NetSurvey>,
                     ),
-                    Some("2") | _ => carrier::connect(config).open(
+                    Some("2") | _ => carrier_rs::connect(config).open(
                         target,
-                        carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
-                        message_handler::<carrier::proto::NetSurvey>,
+                        carrier_rs::headers::Headers::with_path("/v2/carrier.sysinfo.v1/netsurvey"),
+                        message_handler::<carrier_rs::proto::NetSurvey>,
                         ),
             }
             .run()
         }
         ("discovery", Some(submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             let target = config
                 .resolve_identity(submatches.value_of("target").unwrap().to_string())
                 .expect("resolving identity from cli");
 
-            let headers = carrier::headers::Headers::with_path("/v2/carrier.discovery.v1/discover");
-            carrier::connect(config).open(
+            let headers = carrier_rs::headers::Headers::with_path("/v2/carrier.discovery.v1/discover");
+            carrier_rs::connect(config).open(
                 target,
                 headers,
-                message_handler::<carrier::proto::DiscoveryResponse>,
+                message_handler::<carrier_rs::proto::DiscoveryResponse>,
                 )
                 .run()
         }
         ("names", Some(_submatches)) => {
-            let config = carrier::config::load()?;
+            let config = carrier_rs::config::load()?;
             for (name,identity) in config.names {
                 println!("{}\t{}", identity, name);
             }
@@ -492,18 +493,18 @@ pub fn _main() -> Result<(), Error> {
 }
 
 #[osaka]
-fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
+fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier_rs::endpoint::Handle, mut stream: carrier_rs::endpoint::Stream) {
     use prost::Message;
 
-    let _d = carrier::util::defer(|| {
+    let _d = carrier_rs::util::defer(|| {
         std::process::exit(0);
     });
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     println!("{:?}", headers);
 
     loop {
         let ph = osaka::sync!(stream);
-        let ph = carrier::proto::ProtoHeader::decode(&ph).unwrap();
+        let ph = carrier_rs::proto::ProtoHeader::decode(&ph).unwrap();
 
         let mut b = Vec::new();
         while (b.len() as u64) < ph.len {
@@ -516,11 +517,11 @@ fn message_handler_ph<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carr
 }
 
 #[osaka]
-fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
-    let _d = carrier::util::defer(|| {
+fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier_rs::endpoint::Handle, mut stream: carrier_rs::endpoint::Stream) {
+    let _d = carrier_rs::util::defer(|| {
         std::process::exit(0);
     });
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
     if headers.status().unwrap_or(999) > 299 {
         std::process::exit(1);
@@ -532,21 +533,21 @@ fn message_handler<T: prost::Message + Default>(_poll: osaka::Poll, _ep: carrier
 }
 
 #[osaka]
-fn genesis_get_handler(_poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream, filep: std::path::PathBuf) {
+fn genesis_get_handler(_poll: osaka::Poll, ep: carrier_rs::endpoint::Handle, mut stream: carrier_rs::endpoint::Stream, filep: std::path::PathBuf) {
     use prost::Message;
     use std::io::Write;
 
-    let _d = carrier::util::defer(move || {
-        ep.disconnect(ep.broker(), carrier::packet::DisconnectReason::Application);
+    let _d = carrier_rs::util::defer(move || {
+        ep.disconnect(ep.broker(), carrier_rs::packet::DisconnectReason::Application);
     });
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
     if headers.status().unwrap_or(999) > 299 {
         std::process::exit(1);
     }
 
     let m = osaka::sync!(stream);
-    let m = carrier::proto::GenesisCurrent::decode(&m).unwrap();
+    let m = carrier_rs::proto::GenesisCurrent::decode(&m).unwrap();
 
     {
         let mut file = std::fs::File::create(&filep).unwrap();
@@ -561,16 +562,16 @@ fn genesis_get_handler(_poll: osaka::Poll, ep: carrier::endpoint::Handle, mut st
 }
 
 #[osaka]
-fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
-    mut stream: carrier::endpoint::Stream, msg: carrier::proto::GenesisUpdate
+fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier_rs::endpoint::Handle,
+    mut stream: carrier_rs::endpoint::Stream, msg: carrier_rs::proto::GenesisUpdate
 ) {
     use std::io::{Write};
-    let _d = carrier::util::defer(|| {
+    let _d = carrier_rs::util::defer(|| {
         info!("stream ended");
         std::process::exit(0);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
     if headers.status().unwrap_or(999) > 299 {
         std::process::exit(1);
@@ -578,7 +579,7 @@ fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
 
     stream.message(msg);
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
     if headers.status().unwrap_or(999) > 299 {
         std::process::exit(1);
@@ -586,18 +587,18 @@ fn genesis_post_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle,
 
     loop {
         let b = osaka::sync!(stream);
-        std::io::stdout().write_all(&b).unwrap();
+        std::io::stdout().write_all(&b[..]).unwrap();
     }
 }
 
 #[osaka]
-fn hexprint_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
-    let _d = carrier::util::defer(|| {
+fn hexprint_handler(_poll: osaka::Poll, _ep: carrier_rs::endpoint::Handle, mut stream: carrier_rs::endpoint::Stream) {
+    let _d = carrier_rs::util::defer(|| {
         info!("stream ended");
         std::process::exit(0);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
 
     loop {
@@ -615,15 +616,15 @@ fn hexprint_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stre
     }
 }
 #[osaka]
-fn print_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream) {
+fn print_handler(_poll: osaka::Poll, _ep: carrier_rs::endpoint::Handle, mut stream: carrier_rs::endpoint::Stream) {
     use std::io::{self, Write};
 
-    let _d = carrier::util::defer(|| {
+    let _d = carrier_rs::util::defer(|| {
         info!("stream ended");
         std::process::exit(0);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
 
     loop {
@@ -635,12 +636,12 @@ fn print_handler(_poll: osaka::Poll, _ep: carrier::endpoint::Handle, mut stream:
 #[osaka]
 fn push(
     poll: osaka::Poll,
-    config: carrier::config::Config,
-    target: carrier::identity::Identity,
+    config: carrier_rs::config::Config,
+    target: carrier_rs::identity::Identity,
     local_file: String,
-    headers: carrier::headers::Headers,
+    headers: carrier_rs::headers::Headers,
     ) -> Result<(), Error> {
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
+    let mut ep = carrier_rs::endpoint::EndpointBuilder::new(&config)?;
     ep.move_target(target.clone());
     let mut ep = ep.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
@@ -648,7 +649,7 @@ fn push(
 
     let q = loop {
         match osaka::sync!(ep)? {
-            carrier::endpoint::Event::OutgoingConnect(q) => {
+            carrier_rs::endpoint::Event::OutgoingConnect(q) => {
                 break q;
             }
             _ => (),
@@ -660,15 +661,15 @@ fn push(
         route,
         headers.clone(),
         Some(0xfffffff),
-        |poll: osaka::Poll, mut stream: carrier::endpoint::Stream| {
+        |poll: osaka::Poll, mut stream: carrier_rs::endpoint::Stream| {
             let never = poll.never();
             osaka::Task::new(
                 Box::new(move || {
-                    let _d = carrier::util::defer(|| {
+                    let _d = carrier_rs::util::defer(|| {
                         info!("stream ended");
                         std::process::exit(0);
                     });
-                    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+                    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
                     println!("{:?}", headers);
                     if headers.get(b":status") != Some(b"100") {
                         std::process::exit(1);
@@ -712,7 +713,7 @@ fn push(
                     }
                     stream.send(Vec::new());
 
-                    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+                    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
                     println!("{:?}", headers);
                     if headers.status().unwrap_or(999) > 299 {
                         std::process::exit(1);
@@ -720,7 +721,7 @@ fn push(
 
                     loop {
                         let v = osaka::sync!(stream);
-                        println!("{}", String::from_utf8_lossy(&v));
+                        println!("{}", String::from_utf8_lossy(&v[..]));
                     }
                 }),
                 never,
@@ -730,13 +731,13 @@ fn push(
 
     loop {
         match osaka::sync!(ep)? {
-            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
-            carrier::endpoint::Event::OutgoingConnect(_) => (),
-            carrier::endpoint::Event::Disconnect { identity, reason, .. } => {
+            carrier_rs::endpoint::Event::BrokerGone => panic!("broker gone"),
+            carrier_rs::endpoint::Event::OutgoingConnect(_) => (),
+            carrier_rs::endpoint::Event::Disconnect { identity, reason, .. } => {
                 warn!("{} disconnected {:?}", identity, reason);
                 return Ok(());
             }
-            carrier::endpoint::Event::IncommingConnect(_) => (),
+            carrier_rs::endpoint::Event::IncommingConnect(_) => (),
         };
     }
 }
@@ -744,17 +745,17 @@ fn push(
 
 
 #[osaka]
-fn tcp_handler(poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: carrier::endpoint::Stream, tcp: std::net::TcpStream) {
+fn tcp_handler(poll: osaka::Poll, ep: carrier_rs::endpoint::Handle, mut stream: carrier_rs::endpoint::Stream, tcp: std::net::TcpStream) {
     use osaka::mio::net::TcpStream;
     use std::io::{Read, Write};
     use osaka::Future;
 
-    let _d = carrier::util::defer(move || {
+    let _d = carrier_rs::util::defer(move || {
         warn!("tcp stream ends");
-        ep.disconnect(ep.broker(), carrier::packet::DisconnectReason::Application);
+        ep.disconnect(ep.broker(), carrier_rs::packet::DisconnectReason::Application);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     println!("{:?}", headers);
 
     let mut tcp = TcpStream::from_stream(tcp).unwrap();
@@ -804,16 +805,16 @@ fn tcp_handler(poll: osaka::Poll, ep: carrier::endpoint::Handle, mut stream: car
 
 
 #[osaka]
-pub fn trace(target: carrier::identity::Identity) -> Result<(), Error> {
+pub fn trace(target: carrier_rs::identity::Identity) -> Result<(), Error> {
 
-    let config = carrier::config::load()?;
+    let config = carrier_rs::config::load()?;
     let poll = osaka::Poll::new();
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
+    let mut ep = carrier_rs::endpoint::EndpointBuilder::new(&config)?;
     ep.move_target(target.clone());
     let mut ep = ep.connect(poll.clone());
     let mut ep = ep.run().unwrap();
 
-    let headers = carrier::headers::Headers::with_path("/carrier.broker.v1/broker/trace");
+    let headers = carrier_rs::headers::Headers::with_path("/carrier.broker.v1/broker/trace");
 
     let handle = ep.handle();
     let broker = ep.broker();
@@ -824,8 +825,8 @@ pub fn trace(target: carrier::identity::Identity) -> Result<(), Error> {
         broker,
         headers,
         Some(1024),
-        |poll: osaka::Poll, mut stream: carrier::endpoint::Stream|  {
-            stream.message(carrier::proto::TraceRequest{
+        |poll: osaka::Poll, mut stream: carrier_rs::endpoint::Stream|  {
+            stream.message(carrier_rs::proto::TraceRequest{
                 target: target.to_string(),
             });
             trace_stream_handler(poll, stream, handle, target.clone())
@@ -834,8 +835,8 @@ pub fn trace(target: carrier::identity::Identity) -> Result<(), Error> {
 
     loop {
         match osaka::sync!(ep)? {
-            carrier::endpoint::Event::BrokerGone => return Ok(()),
-            carrier::endpoint::Event::OutgoingConnect(q) => {
+            carrier_rs::endpoint::Event::BrokerGone => return Ok(()),
+            carrier_rs::endpoint::Event::OutgoingConnect(q) => {
                 match (&q.cr, &q.requester) {
                     (Some(cr), _) => {
                         if !cr.ok {
@@ -852,17 +853,17 @@ pub fn trace(target: carrier::identity::Identity) -> Result<(), Error> {
 
                 let ep_   = ep_.clone();
                 let route = ep.accept_outgoing(q, move |_,_|None)?;
-                let headers = carrier::headers::Headers::with_path("/v2/carrier.sysinfo.v1/trace");
+                let headers = carrier_rs::headers::Headers::with_path("/v2/carrier.sysinfo.v1/trace");
                 ep.open(route,
                         headers,
                         Some(1000),
-                        |poll: osaka::Poll, stream: carrier::endpoint::Stream|  {
+                        |poll: osaka::Poll, stream: carrier_rs::endpoint::Stream|  {
                             trace_inner_handler(poll, ep_.clone() , stream)
                         }
                 )?;
             }
-            carrier::endpoint::Event::Disconnect { .. } => {}
-            carrier::endpoint::Event::IncommingConnect(_) => (),
+            carrier_rs::endpoint::Event::Disconnect { .. } => {}
+            carrier_rs::endpoint::Event::IncommingConnect(_) => (),
         };
     }
 }
@@ -870,26 +871,26 @@ pub fn trace(target: carrier::identity::Identity) -> Result<(), Error> {
 #[osaka]
 fn trace_stream_handler(
    _poll: osaka::Poll,
-   mut stream: carrier::endpoint::Stream,
-   ep: carrier::endpoint::Handle,
-   target: carrier::identity::Identity,
+   mut stream: carrier_rs::endpoint::Stream,
+   ep: carrier_rs::endpoint::Handle,
+   target: carrier_rs::identity::Identity,
 )
 {
     use prost::Message;
 
     let target_ = target.clone();
-    let _d = carrier::util::defer(move || {
+    let _d = carrier_rs::util::defer(move || {
         ep.connect(target_, 2);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     eprintln!("{:?}", headers);
     if headers.status().unwrap_or(999) > 299 {
         return;
     }
 
     let m = osaka::sync!(stream);
-    let m = carrier::proto::TraceResponse::decode(&m).unwrap();
+    let m = carrier_rs::proto::TraceResponse::decode(&m).unwrap();
     println!("---------------------------");
     println!("tracing:     {}", target);
 
@@ -920,7 +921,7 @@ fn trace_stream_handler(
 
     if m.publishing.len() > 0 {
         for a in &m.publishing {
-            println!("publishing:  {}", carrier::identity::Address::from_bytes(&a.xaddress).map(|s|s.to_string()).unwrap_or_default());
+            println!("publishing:  {}", carrier_rs::identity::Address::from_bytes(&a.xaddress).map(|s|s.to_string()).unwrap_or_default());
             // currently meaningless because they're not synced
             /*
             println!("  - publishers:      {}", a.publisher_count);
@@ -976,17 +977,17 @@ pub fn humanbytes(mut i: f64) -> String {
 #[osaka]
 fn trace_inner_handler(
    _poll: osaka::Poll,
-   ep: carrier::endpoint::Handle,
-   mut stream: carrier::endpoint::Stream,
+   ep: carrier_rs::endpoint::Handle,
+   mut stream: carrier_rs::endpoint::Stream,
 )
 {
     use prost::Message;
 
-    let _d = carrier::util::defer(move || {
-        ep.disconnect(ep.broker(), carrier::packet::DisconnectReason::Application);
+    let _d = carrier_rs::util::defer(move || {
+        ep.disconnect(ep.broker(), carrier_rs::packet::DisconnectReason::Application);
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).unwrap();
     if headers.status().unwrap_or(999) > 299 {
         println!("p2p trace:   unavailable {}", headers.status().unwrap_or(999));
         return;
@@ -994,13 +995,13 @@ fn trace_inner_handler(
     println!("p2p trace:   connected");
     let addrs = stream.addrs();
     match addrs {
-        carrier::endpoint::AddressMode::Discovering(paths) => {
+        carrier_rs::endpoint::AddressMode::Discovering(paths) => {
             println!("peering:     discovering");
             for (addr, path) in paths {
                 println!("  - path:    {} {:?}/{}", addr, path.0, path.1);
             }
         },
-        carrier::endpoint::AddressMode::Established(addr, _paths) => {
+        carrier_rs::endpoint::AddressMode::Established(addr, _paths) => {
             println!("peering:     settled");
             println!("  - path:    {}",         addr);
         },
@@ -1008,21 +1009,21 @@ fn trace_inner_handler(
 
 
     for i in 0..100 {
-        stream.message(carrier::proto::InnerTraceRequest{
-            m: Some(carrier::proto::inner_trace_request::M::Ping(Vec::new())),
+        stream.message(carrier_rs::proto::InnerTraceRequest{
+            m: Some(carrier_rs::proto::inner_trace_request::M::Ping(Vec::new())),
         });
         let msg = osaka::sync!(stream);
     }
 
     let addrs = stream.addrs();
     match addrs {
-        carrier::endpoint::AddressMode::Discovering(paths) => {
+        carrier_rs::endpoint::AddressMode::Discovering(paths) => {
             println!("peering:     discovering");
             for (addr, path) in paths {
                 println!("  - path:    {} {:?}/{}", addr, path.0, path.1);
             }
         },
-        carrier::endpoint::AddressMode::Established(addr, _paths) => {
+        carrier_rs::endpoint::AddressMode::Established(addr, _paths) => {
             println!("peering:     settled");
             println!("  - path:    {}",         addr);
         },
@@ -1037,11 +1038,12 @@ fn trace_inner_handler(
 }
 
 
-#[path = "../target/release/rs/carrier_sha256.rs"]
-mod sha256;
+use carrier::{
+    carrier_sha256 as sha256,
+};
 
-pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, carrier::Error> {
-    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256}];
+pub fn sha256file<P: AsRef<std::path::Path>>  (p: P) -> Result<Vec<u8>, carrier_rs::Error> {
+    let mut state = vec![0; unsafe{ sha256::sizeof_Sha256()}];
     unsafe { sha256::init(state.as_mut_ptr()); }
 
     let mut file = std::fs::File::open(p)?;

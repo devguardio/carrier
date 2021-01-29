@@ -1,41 +1,181 @@
+/**
+
+carrier identity string encodings
+
+    first character: serializer prefix
+       [o, bitcoin base58 [0x08, type, identity, broken rust crc8]]
+       [c, base32         [type, identity, crc8]]
+*/
+
 using <stdint.h>::{uint8_t};
 using <stdint.h>::{size_t};
 using <string.h>::{memcpy, memcmp, strlen};
 using <assert.h>::{assert};
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Curve25519.h" as x25519;
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Ed25519.h" as ed25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Ed25519.h"        as ed25519;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Curve25519_51.h"  as x25519;
 
-using (needs size_t) "../3rdparty/libbase58/libbase58.h" as b58;
+inline using (needs size_t) "base58.h" as b58;
 using err;
 using crc8;
 using rand;
-using string;
+using buffer;
+using base32;
+using byteorder;
+using slice;
 
-export struct Secret    { u8 k[32]; };
-export struct Address   { u8 k[32]; };
-export struct Identity  { u8 k[32]; };
-export struct Signature { u8 k[64]; };
+export symbol Invalid;
 
-fn from_str(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+export struct Secret        { u8 k[32]; }; // type 3
+export struct Address       { u8 k[32]; }; // type 6
+export struct Identity      { u8 k[32]; }; // type 9
+export struct Signature     { u8 k[64]; }; // type 10
+export struct Alias         { u8 k[8];  }; // type 11
+export struct SecretKit     { Secret identity; Secret network; }; // type 1
+export struct IdentityKit   { Identity identity; Address network; }; // type 2
+export struct Target        { u8 v[32]; u8 t;}
+
+export fn target_from_str (Target new mut* self, err::Err mut* e, char* mut from, usize mut l)
     where l <= len(from)
-    where size == 64 || size == 32
+    where err::checked(*e)
+{
+    if l < 3 {
+        err::fail(e, Invalid, "Too Small");
+        return;
+    }
+
+    switch from[0] {
+        'a'  => {
+            self->t = 11;
+            alias_from_str ((Alias mut*)self, e, from, l);
+            if err::check(e) { return; }
+        }
+        'c'  => {
+            from_str_base32(32, e, self->v, from + 1, l -1, 9);
+            if err::check(e) { return; }
+            self->t = 9;
+        }
+        default => {
+            from_str_base58(32, e, self->v, from, l, 9);
+            if err::check(e) { return; }
+            self->t = 9;
+        }
+    }
+}
+
+fn from_str(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+    where l <= len(from)
+    where size == 8 || size == 64 || size == 32
+    where len(to) >= size
+    where err::checked(*e)
+{
+    if l < 3 {
+        err::fail(e, Invalid, "Too Small");
+        return;
+    }
+
+    switch from[0] {
+        'c' => {
+            static_attest(err::checked(*e));
+            from_str_base32(size, e, to, from + 1, l -1, expect_type);
+        }
+        default => {
+            static_attest(err::checked(*e));
+            from_str_base58(size, e, to, from, l, expect_type);
+        }
+    }
+}
+
+fn type_string(u8 typ) -> char* {
+    switch typ {
+        1   => { return "secretkit";}
+        3   => { return "secret";}
+        6   => { return "address";}
+        9   => { return "identity";}
+        10  => { return "signature";}
+        11  => { return "alias";}
+        default  => { return "unknown";}
+    }
+}
+
+
+fn from_str_base32(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+    where l <= len(from)
+    where size == 8 || size == 64 || size == 32
+    where len(to) >= size
+    where err::checked(*e)
+{
+    u8 mut b[80] = {0};
+    usize bs = base32::decode(e, from, l, b, static(len(b)));
+    if err::check(e) { return; }
+
+    if bs > size + 2 || bs < 2 {
+        err::fail(e, Invalid, "invalid size. expected %d got %d", size + 2, bs);
+        return;
+    }
+
+    if ((b[0] >> 4) != 1) {
+        err::fail(e, Invalid, "invalid version %d", b[0]);
+        return;
+    }
+
+    if ((b[0] & 0x0f) != expect_type) {
+        err::fail(e, Invalid, "expected %s, got %s (%d)\n",
+            type_string(expect_type),
+            type_string(b[1]),
+            b[1]
+        );
+        return;
+    }
+
+    u8 mut crc = crc8::crc8(0, b, 1);
+
+    usize s2 = bs - 1;
+    let start = size - s2 + 1;
+
+    for (usize mut i = 0; i < size; i++)  {
+        if i >= start {
+            to[i] = b[1 + i - start];
+        } else {
+            to[i] = 0;
+        }
+    }
+
+    crc = crc8::crc8(crc, to, size);
+    if (crc != b[s2]) {
+        err::fail(e, Invalid, "invalid checksum. %d != %d\n", b[s2], crc);
+        return;
+    }
+
+    static_attest(err::checked(*e));
+
+    if size >= 32 {
+        nullcheck(e, to);
+    }
+}
+
+fn from_str_base58(usize size, err::Err mut* e, u8 mut* to, char* from, usize l, u8 expect_type)
+    where l <= len(from)
+    where size == 8 || size == 64 || size == 32
     where len(to) >= size
     where err::checked(*e)
 {
     u8 mut b[64 + 3] = {0};
-    usize mut bs = size + 3;
+    usize mut bs;
+    unsafe {bs = size + 3;}
     if !as<bool>(b58::b58tobin(b, &bs, from, l)) {
-        err::fail(e, 22, "invalid bs58");
+        err::fail(e, Invalid, "invalid bs58");
         return;
     }
-    static_attest(err::checked(*e));
+
+    if bs != size + 3 {
+        err::fail(e, Invalid, "invalid size");
+        return;
+    }
 
     if (b[0] != 8 && b[0] != 9) {
-        err::fail(e, 22, "invalid version %d", b[0]);
+        err::fail(e, Invalid, "invalid version %d", b[0]);
         return;
     }
-    static_attest(err::checked(*e));
 
 
     usize s2 = size + 2;
@@ -48,21 +188,80 @@ fn from_str(usize size, err::Err+et mut* e, u8 mut* to, char* from, usize l, u8 
     }
 
     if (crc != b[s2]) {
-        err::fail(e, 22, "invalid checksum. %d != %d\n", b[34], crc);
+        err::fail(e, Invalid, "invalid checksum. %d != %d\n", b[34], crc);
         return;
     }
     static_attest(err::checked(*e));
 
     if (b[1] != expect_type) {
-        err::fail(e, 22, "expected identity type %d got %d\n", expect_type, b[1]);
+        err::fail(e, Invalid, "expected identity type %d got %d\n", expect_type, b[1]);
         return;
     }
 
     memcpy(to, b + 2, size);
-    nullcheck(e, to);
+    if size >= 32 {
+        nullcheck(e, to);
+    }
+
 }
 
-fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
+
+fn to_str(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
+    where err::checked(*e)
+    where len(to) >= l
+    where size <= len(k)
+    where version == 1
+    where size == 8 || size == 32 || size == 64
+    model nullterm(to)
+{
+
+    if l < 3 {
+        err::fail(e, err::OutOfTail, "buffer too small");
+        static_attest(nullterm(to));
+        return 0;
+    }
+
+    u8 mut b[64 + 2] = {0};
+    usize mut bs = 0;
+
+    if typ == 11 {
+        to[0] = 'a';
+    } else {
+        to[0] = 'c';
+
+        b[0] = version << 4 | typ ;
+        bs += 1;
+    }
+
+    u8 mut crc = crc8::crc8(0, b, 1);
+    crc = crc8::crc8(crc, k, size);
+
+    usize mut i = 0;
+    for (; i < size && size - i > 2; i++) {
+        if k[i] != 0 {
+            break;
+        }
+    }
+    for (; i < size; i++) {
+        b[bs] = k[i];
+        bs += 1;
+    }
+    static_attest(bs < size);
+
+    if typ != 11 {
+        b[bs] = crc;
+        bs += 1;
+    }
+
+    usize outlen = base32::encode(e, b, bs, to + 1, l - 1);
+    if err::check(e) { return 0; }
+
+
+
+    return 1 + outlen;
+}
+
+fn to_str_bc58(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version, u8 typ, u8* k) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     where size == 32 || size == 64
@@ -70,7 +269,7 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
 {
     u8 static zero[64] = { 0 };
     if (as<int>(memcmp(zero, k, size)) == 0) {
-        err::fail(e, 22, "invalid address: zero");
+        err::fail(e, Invalid, "invalid address: zero");
         static_attest(nullterm(to));
         return 0;
     }
@@ -81,17 +280,13 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
     memcpy(b + 2, k, size);
 
     usize s2 = size + 2;
-    if version == 8 {
-        b[s2] = crc8::broken_crc8(0, b, s2);
-    } else {
-        b[s2] = crc8::crc8(0, b, s2);
-    }
+    b[s2] = crc8::broken_crc8(0, b, s2);
 
     static_attest(err::checked(*e));
 
     //l -= 1;
     if (!as<bool>(b58::b58enc(to, &l, b, size + 3))) {
-        err::fail(e, 22, "invalid bs58");
+        err::fail(e, Invalid, "invalid bs58");
         return 0;
     }
 
@@ -101,14 +296,14 @@ fn to_str(usize size, err::Err+et mut* e, char mut* mut to, usize mut l, u8 vers
     return l;
 }
 
-export fn identity_from_str (Identity mut new* self, err::Err+et mut* e, char* from, usize l)
+export fn identity_from_str (Identity mut new* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(32, e, self->k, from, l, 9);
 }
 
-export fn identity_from_cstr (Identity mut new* self, err::Err+et mut* e, char* from)
+export fn identity_from_cstr (Identity mut new* self, err::Err mut* e, char* from)
     where nullterm(from)
     where err::checked(*e)
 {
@@ -117,14 +312,14 @@ export fn identity_from_cstr (Identity mut new* self, err::Err+et mut* e, char* 
     identity_from_str(self, e, from, l);
 }
 
-export fn address_from_str (Address mut new*self, err::Err+et mut* e, char* from, usize l)
+export fn address_from_str (Address mut new*self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(32, e, self->k, from, l, 6);
 }
 
-export fn address_from_cstr (Address mut new* self, err::Err+et mut* e, char* from)
+export fn address_from_cstr (Address mut new* self, err::Err mut* e, char* from)
     where nullterm(from)
     where err::checked(*e)
 {
@@ -133,14 +328,14 @@ export fn address_from_cstr (Address mut new* self, err::Err+et mut* e, char* fr
     address_from_str(self, e, from, l);
 }
 
-export fn secret_from_str (Secret mut new*self, err::Err+et mut* e, char* from, usize l)
+export fn secret_from_str (Secret mut new*self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
     from_str(32, e, self->k, from, l, 3);
 }
 
-export fn secret_from_cstr (Secret mut new* self, err::Err+et mut* e, char* from)
+export fn secret_from_cstr (Secret mut new* self, err::Err mut* e, char* from)
     where nullterm(from)
     where err::checked(*e)
 {
@@ -149,55 +344,190 @@ export fn secret_from_cstr (Secret mut new* self, err::Err+et mut* e, char* from
     secret_from_str(self, e, from, l);
 }
 
-export fn identity_to_str (err::Err+et mut* e, char mut* to, usize l, Identity* from)  -> usize
+export fn identity_to_str (err::Err mut* e, char mut* to, usize l, Identity* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
 {
-    return to_str(32, e, to, l, 8, 9, from->k);
+    return to_str(32, e, to, l, 1, 9, from->k);
 }
 
-export fn identity_to_string (Identity* self, err::Err+et mut* e, string::String+st mut*str)
+export fn identity_to_slice (err::Err mut* e, Identity* from, slice::mut_slice::MutSlice sl)
     where err::checked(*e)
+    where slice::mut_slice::integrity(&sl)
 {
-    static_attest(str->len < len(str->mem));
-    let ur = to_str(32, e, str->mem + str->len, st - str->len, 8, 9, self->k);
-    str->len += ur;
+    let r = to_str(32, e, (char mut*)sl.mem, sl.size, 1, 9, from->k);
+    *sl.at += r;
 }
 
-export fn address_to_str (err::Err+et mut* e,     char mut* to, usize l, Address* from)  -> usize
-    where err::checked(*e)
-    where len(to) >= l && l > 0
-    model nullterm(to)
-{
-    return to_str(32, e, to, l, 8, 6, from->k);
-}
-
-export fn secret_to_str (err::Err+et mut* e,      char mut* to, usize l, Secret* from) -> usize 
+export fn identity_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Identity* from)  -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
     model nullterm(to)
 {
-    return to_str(32, e, to, l, 8, 3, from->k);
+    return to_str_bc58(32, e, to, l, 8, 9, from->k);
 }
 
-export fn secret_generate (Secret mut new* self, err::Err+et mut* e)
+export fn identity_to_string (Identity* self, err::Err mut* e, buffer::Buffer mut*str)
+    where   err::checked(*e)
+    where   buffer::integrity(str)
+    model   buffer::integrity(str)
+{
+    static_attest(str->at < len(str->mem));
+    let ur = to_str(32, e, str->mem + str->at , str->size- str->at , 1, 9, self->k);
+    str->at += ur;
+    static_attest(buffer::integrity(str))
+}
+
+export fn address_to_str (err::Err mut* e,     char mut* to, usize l, Address* from)  -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+    model nullterm(to)
+{
+    return to_str(32, e, to, l, 1, 6, from->k);
+}
+
+export fn address_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Address* from)  -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+    model nullterm(to)
+{
+    return to_str_bc58(32, e, to, l, 8, 6, from->k);
+}
+
+
+export fn secret_to_str (err::Err mut* e,      char mut* to, usize l, Secret* from) -> usize 
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+    model nullterm(to)
+{
+    return to_str(32, e, to, l, 1, 3, from->k);
+}
+
+export fn secret_to_str_bc58 (err::Err mut* e, char mut* to, usize l, Secret* from)  -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+    model nullterm(to)
+{
+    return to_str_bc58(32, e, to, l, 8, 3, from->k);
+}
+
+export fn secret_generate (Secret mut new* self, err::Err mut* e)
     where err::checked(*e)
 {
     rand::rand(e, self->k, 32);
 }
 
-export fn signature_from_str (Signature mut* self, err::Err+et mut* e, char* from, usize l)
+export fn signature_from_str (Signature mut* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
-    from_str(64, e, self->k, from, l, 9);
+    from_str(64, e, self->k, from, l, 10);
 }
-export fn signature_to_str (err::Err+et mut* e,      char mut* to, usize l, Signature* from) -> usize
+export fn signature_to_str (err::Err mut* e,      char mut* to, usize l, Signature* from) -> usize
     where err::checked(*e)
     where len(to) >= l && l > 0
 {
-    return to_str(64, e, to, l, 8, 3, from->k);
+    return to_str(64, e, to, l, 1, 10, from->k);
+}
+
+export fn alias_from_u64 (Alias new mut* self, u64 from)
+{
+    u64 s = byteorder::to_be64(from);
+    memcpy(self->k, &s, 8);
+}
+
+export fn alias_to_u64 (Alias * self) u64
+{
+    u64 mut s;
+    memcpy(&s, self->k, 8);
+    return byteorder::from_be64(s);
+}
+
+export fn alias_from_str (Alias new mut* self, err::Err mut* e, char* mut from, usize mut l)
+    where err::checked(*e)
+    where l <= len(from)
+{
+    if l < 3 {
+        err::fail(e, Invalid, "Too Small");
+        return;
+    }
+
+    if from[0] == 'a' {
+        from = from + 1;
+        l = l - 1;
+    }
+
+    u8 mut b[80] = {0};
+    usize bs = base32::decode(e, from, l, b, static(len(b)));
+    if err::check(e) { return; }
+
+    usize size = static(len(self->k));
+
+    if bs > size + 2 || bs < 2 {
+        err::fail(e, Invalid, "invalid size. expected %d got %d", size + 2, bs);
+        return;
+    }
+
+    let start = size - bs;
+
+    for (usize mut i = 0; i < size; i++)  {
+        if i >= start {
+            self->k[i] = b[i - start];
+        } else {
+            self->k[i] = 0;
+        }
+    }
+}
+export fn alias_to_str (err::Err mut* e,      char mut* to, usize l, Alias * from) -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+{
+    return to_str(8, e, to, l, 1, 11, from->k);
+}
+
+
+
+export fn secretkit_from_str (SecretKit mut* self, err::Err mut* e, char* from, usize l)
+    where err::checked(*e)
+    where l <= len(from)
+{
+    let k = (u8 mut*)self;
+    static_attest(len(k) >= 64);
+    from_str(64, e, k, from, l, 1);
+}
+export fn secretkit_to_str (err::Err mut* e, char mut* to, usize l, SecretKit * from) -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+{
+    let k = (u8 mut*)from;
+    static_attest(len(k) >= 64);
+    return to_str(64, e, to, l, 1, 1, k);
+}
+
+export fn secretkit_generate (SecretKit mut new* self, err::Err mut* e)
+    where err::checked(*e)
+{
+    let k = (u8 mut*)self;
+    static_attest(len(k) >= 64);
+    rand::rand(e, k, 64);
+}
+
+export fn identitykit_from_str (IdentityKit mut* self, err::Err mut* e, char* from, usize l)
+    where err::checked(*e)
+    where l <= len(from)
+{
+    let k = (u8 mut*)self;
+    static_attest(len(k) >= 64);
+    from_str(64, e, k, from, l, 2);
+}
+export fn identitykit_to_str (err::Err mut* e, char mut* to, usize l, IdentityKit * from) -> usize
+    where err::checked(*e)
+    where len(to) >= l && l > 0
+{
+    let k = (u8 mut*)from;
+    static_attest(len(k) >= 64);
+    return to_str(64, e, to, l, 1, 2, k);
 }
 
 
@@ -218,11 +548,11 @@ export fn address_from_secret (Address mut* pk, Secret* sk) {
     nullcheck(&e, sk->k);
     e.abort();
 
-    x25519::Hacl_Curve25519_crypto_scalarmult(pk->k, (u8 mut*)sk->k, (uint8_t mut*)(BASEPOINT));
+    x25519::Hacl_Curve25519_51_scalarmult(pk->k, (u8 mut*)sk->k, (uint8_t mut*)(BASEPOINT));
 }
 
 export fn dh(Address mut *out, Secret* me, Address * them) {
-    x25519::Hacl_Curve25519_crypto_scalarmult(out->k, (u8 mut *)(me->k), (u8 mut *)(them->k));
+    x25519::Hacl_Curve25519_51_scalarmult(out->k, (u8 mut *)(me->k), (u8 mut *)(them->k));
 }
 
 export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
@@ -231,26 +561,35 @@ export fn sign(Secret *key, Signature mut *s, u8 * subject, usize subject_len) {
     nullcheck(&e, key->k);
     e.abort();
 
-    ed25519::Hacl_Ed25519_sign(s->k, (u8 mut* )key->k, (u8 mut* )subject, subject_len);
+    ed25519::Hacl_Ed25519_sign(s->k, (u8 mut* )key->k, subject_len, (u8 mut* )subject);
 }
 
 export fn verify(Identity *pk, Signature *s, u8 * subject, usize subject_len) -> bool{
-    return (bool)ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, (u8 mut*)subject, subject_len, (u8 mut* )s->k);
+
+    return (bool)ed25519::Hacl_Ed25519_verify((u8 mut* )pk->k, subject_len, (u8 mut*)subject, (u8 mut* )s->k);
+
 }
 
 
-export fn nullcheck(err::Err+et mut* e, u8 * k)
-    where err::checked(*e)
+export fn isnull(u8 * k) -> bool
     where len(k) >= 32
 {
     u8 first = k[0];
     for (usize mut i = 1; i < 32; i++) {
         if first != k[i] {
-            return;
+            return false;
         }
     }
-    err::fail(e, 22, "invalid ed25519: 32 identical bytes");
-    return;
+    return true;
+}
+
+export fn nullcheck(err::Err mut* e, u8 * k)
+    where err::checked(*e)
+    where len(k) >= 32
+{
+    if isnull(k) {
+        err::fail(e, Invalid, "invalid ed25519: 32 identical bytes");
+    }
 }
 
 

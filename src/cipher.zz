@@ -2,7 +2,7 @@
 ///
 /// ciphertext has 16 bytes hmac at the end
 
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_Chacha20Poly1305.h" as hacl_chacha;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Chacha20Poly1305_32.h" as hacl_chacha;
 using <assert.h>::{assert};
 using <string.h>::{memcpy, memset};
 using sha256;
@@ -19,9 +19,12 @@ export fn init(CipherState mut * self, u8 *k) {
     self->has_key = true;
 }
 
+
+export symbol EncryptionError;
+
 export fn encrypt_ad(
     CipherState mut*    self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8*         unsafe authtext,
     usize       authtext_len,
     u8 *        plain,
@@ -39,8 +42,7 @@ export fn encrypt_ad(
     assert(self->has_key);
 
     usize cipherlen = plainlen + 16;
-    assert(cipherlen_max >= cipherlen);
-    static_attest(cipherlen_max >= cipherlen);
+    err::assert(cipherlen_max >= cipherlen);
 
     u8 mut* mac = ciphertext + plainlen;
 
@@ -49,26 +51,22 @@ export fn encrypt_ad(
     u64 nonce_le = byteorder::to_le64(nonce);
     memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
 
-    int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_aead_encrypt(
-        ciphertext,
-        mac,
-        (u8 mut*)plain,
-        plainlen,
-        (u8 mut*)authtext,
-        authtext_len,
+    hacl_chacha::Hacl_Chacha20Poly1305_32_aead_encrypt(
         self->key,
-        nonce12
-    ));
-    if xr != 0 {
-        err::fail(e, (u8)xr, "encrypt");
-        return 0;
-    }
+        nonce12,
+        authtext_len,
+        (u8 mut*)authtext,
+        plainlen,
+        (u8 mut*)plain,
+        ciphertext,
+        mac
+    );
     return cipherlen;
 }
 
 export fn decrypt_ad(
     CipherState mut*    self,
-    err::Err+et mut* e,
+    err::Err mut* e,
     u8*     unsafe authtext,
     usize   authtext_len,
     u8 *    ciphertext,
@@ -84,11 +82,8 @@ export fn decrypt_ad(
     assert(self->has_key);
     usize plainlen = cipherlen - 16;
 
-    assert(plainlen_max >= plainlen);
-    static_attest(plainlen_max >= plainlen);
-
-    assert(cipherlen > 16);
-    static_attest(cipherlen > 16);
+    err::assert(plainlen_max >= plainlen);
+    err::assert(cipherlen > 16);
 
     u8 * mac = ciphertext + plainlen;
 
@@ -96,18 +91,18 @@ export fn decrypt_ad(
     u64 nonce_le = byteorder::to_le64(nonce);
     memcpy(nonce12 + 4, (u8*)&nonce_le, 8);
 
-    int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_aead_decrypt(
+    int xr = as<int>(hacl_chacha::Hacl_Chacha20Poly1305_32_aead_decrypt(
+        self->key,
+        nonce12,
+        authtext_len,
+        (u8 mut*)authtext,
+        plainlen,
         plain,
         (u8 mut*)ciphertext,
-        plainlen,
-        (u8 mut*)mac,
-        (u8 mut*)authtext,
-        authtext_len,
-        self->key,
-        nonce12
+        (u8 mut*)mac
     ));
     if xr != 0 {
-        err::fail(e, (u8)xr, "decrypt");
+        err::fail(e, EncryptionError, "decrypt");
         return 0;
     }
     return plainlen;
@@ -116,7 +111,7 @@ export fn decrypt_ad(
 
 export fn encrypt(
     CipherState mut*    self,
-    err::Err+et set<err> mut* e,
+    err::Err set<err> mut* e,
     u8 *        plain,
     usize       plainlen,
     u64         nonce,
@@ -135,7 +130,7 @@ export fn encrypt(
 
 export fn decrypt(
     CipherState mut*    self,
-    err::Err+et set<err> mut* e,
+    err::Err set<err> mut* e,
     u8 *    ciphertext,
     usize   cipherlen,
     u64     nonce,

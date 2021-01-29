@@ -2,6 +2,7 @@ use certificate;
 use dirs;
 use error::Error;
 use identity;
+use mtdparts::parse_mtd;
 use rand::{RngCore, thread_rng, OsRng};
 use std::collections::HashMap;
 use std::fs::File;
@@ -117,6 +118,89 @@ pub fn persistence_dir() -> std::path::PathBuf {
 impl ConfigToml {
     fn secret(o: Option<&String>) -> Result<identity::Secret, Error> {
         if let Some(ref s) = o {
+            if s.starts_with(":") {
+                let mut fu_brwcheck: String;
+                let mut s: Vec<&str> = s.split(":").collect();
+
+                if s.get(1) == Some(&"mtdname") || s.get(1) == Some(&"mtdblock") {
+                    if let Some(name) = s.get(2).map(|v| v.to_string()) {
+                        let f = File::open("/proc/mtd").expect("open /proc/mtd");
+                        let names = parse_mtd(f).expect("parsing /proc/mtd");
+                        let dev = names.get(&name).expect(&format!("mtd partition {} not found", name));
+                        fu_brwcheck = format!("/dev/{}", dev);
+
+                        if s.get(1) == Some(&"mtdblock") {
+                            if !fu_brwcheck.contains("mtdblock") {
+                                fu_brwcheck = fu_brwcheck.replace("mtd", "mtdblock");
+                            }
+                        }
+                        s[1] = "mtd";
+                        s[2] = &fu_brwcheck;
+                    }
+                }
+
+                if s.get(1) == Some(&"mtd") {
+                    if let Some(mtd) = s.get(2) {
+                        info!("reading secret from mtd {}", mtd);
+                        let offset = s.get(3).and_then(|v| v.parse().ok()).unwrap_or(40);
+                        let mut f = OpenOptions::new()
+                            .read(true)
+                            .write(true)
+                            .open(mtd)
+                            .expect(&format!("cannot open {}", mtd));
+                        f.seek(SeekFrom::Start(offset))?;
+                        let mut b = [0u8; 32];
+                        f.read_exact(&mut b)?;
+
+                        if b == [0xff; 32] || b == [0x0; 32] {
+                            f.seek(SeekFrom::Start(offset))?;
+                            firstgen_identity(&mut b);
+                            f.write(&b)?;
+                        }
+                        return Ok(identity::Secret::from_array(b));
+                    }
+                } else if s.get(1) == Some(&"efi") {
+                #[cfg(feature = "uefi")]
+                {
+                    info!("reading secret from UEFI");
+                    let path = "/sys/firmware/efi/efivars/DevguardIdentity-287d44ea-82f4-11e9-bd4d-d0509993593e";
+
+                    if std::fs::metadata(path).is_err() {
+                        let mut b = [0u8; 68];
+                        b[0] = 0x7;
+                        firstgen_identity(&mut b[4..]);
+                        let mut f = OpenOptions::new()
+                            .write(true)
+                            .create(true)
+                            .open(path)
+                            .expect(&format!("cannot open {}", path));
+                        f.write(&b)?;
+                    }
+
+                    let mut f = OpenOptions::new()
+                        .read(true)
+                        .open(path)
+                        .expect(&format!("cannot open {}", path));
+
+                    let mut bb = [0u8; 68];
+                    f.read_exact(&mut bb)?;
+                    let mut b = [0u8; 32];
+                    b.copy_from_slice(&bb[4..36]);
+
+                    if let Some(xor) = s.get(2) {
+                        let s2: identity::Secret = xor.parse()?;
+                        let b2 = s2.as_bytes();
+                        for i in 0..32 {
+                            b[i] ^= b2[i];
+                        }
+                    }
+
+                    return Ok(identity::Secret::from_array(b));
+                }
+
+                return Err(Error::NoSecrets);
+            }}
+
             let s: identity::Secret = s.parse()?;
             return Ok(s);
         }
@@ -470,3 +554,27 @@ pub fn deauthorize(identity: identity::Identity) -> Result<(), Error> {
     Ok(())
 }
 
+
+
+pub static mut IDENTITY_GENERATOR: Option<Box<Fn(&mut[u8])>> = None;
+
+fn firstgen_identity(b: &mut [u8]) {
+    unsafe {
+        if let Some(cb) = &mut IDENTITY_GENERATOR {
+            cb(b);
+        }
+    }
+
+    if b == [0xff; 32] || b == [0x0; 32] {
+        panic!("secret file is zero and IDENTITY_GENERATOR is not set or not working. check your system specific carrier manual why identity might be missing");
+    }
+}
+
+pub fn default_identity_generator(b: &mut [u8]) {
+    use error;
+    let mut err = error::ZZError::new(2000);
+    unsafe {
+        carrier::carrier_rand::rand(err.as_mut_ptr(), b.as_mut_ptr(), b.len());
+    }
+    err.check().unwrap();
+}

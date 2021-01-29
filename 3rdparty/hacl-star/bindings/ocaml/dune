@@ -1,0 +1,12 @@
+(library
+ (name        hacl_star)
+ (public_name hacl-star)
+ (libraries hacl-star-raw
+            zarith)
+ (preprocessor_deps config.h)
+ (preprocess (action (run %{bin:cppo} %{input-file})))
+ (flags (:standard -warn-error -3)))
+
+(rule (targets config.h) (deps)
+ (action
+  (bash "cp %{lib:hacl-star-raw:config.h} .")))

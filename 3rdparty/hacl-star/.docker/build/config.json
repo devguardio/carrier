@@ -1,0 +1,40 @@
+{
+    "ProjectName" : "hacl-star",
+
+    "BaseContainerIsEverestImage" : true,
+    "BaseContainerImageName" : "fstar",
+    "BaseContainerImageTagOrCommitId": "latest",
+    "BranchName" : "master",
+    "GithubCommitUrl" : "https://github.com/FStarLang/FStar/commit",
+    "OnDemandBuildDefinition" : "FStar\\FStar-{agentOS}",
+
+    "DockerFile": ".docker/build/{agentOS}/Dockerfile",
+    "DependencyFiles" : [
+        ".docker/build/build_helper.sh",
+        ".docker/build/build.sh"
+    ],
+
+    "ArtifactPath": "",
+    "DockerCommand": "docker",
+    "DockerCacheEnabled" : true,
+    "CIBuildTarget" : "hacl-ci",
+    "NightlyBuildTarget" : "hacl-nightly",
+    "HasLogsToExtract" : true,
+
+    "NotificationEnabled" : true,
+    "NotificationChannel" : "#hacl-build",
+    "PublicBranches" : [ "dev", "_dev", "fstar-master", "master" ],
+
+    "CompressBuildFolder": true,
+    "FolderToCompress" : "hacl-star",
+    "FoldersToExclude" : [ ],
+
+    "TrackPerformance" : false,
+
+    "RepoVersions" : {
+        "kremlin_version" : "origin/master",
+        "mitls_version" : "origin/master",
+        "mlcrypto_version" : "origin/master",
+        ".vale_version" : "origin/master"
+    }
+}

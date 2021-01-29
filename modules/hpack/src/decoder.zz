@@ -1,7 +1,8 @@
 using <stdio.h>::{printf};
-using <string.h>::{strlen};
+using <string.h>::{strlen, memset};
 using err;
 using slice::{Slice};
+using slice;
 using <string.h>::{memcpy};
 
 const usize DYNSIZE = 16;
@@ -12,6 +13,7 @@ struct Entry {
 }
 
 
+export symbol Invalid;
 
 enum Repr {
     Indexed,
@@ -21,7 +23,7 @@ enum Repr {
     LiteralWithoutIndexing,
 }
 
-fntype callback(err::Err+et mut*e, void mut*user, Slice *key, Slice *val);
+closure callback(err::Err mut*e, void mut*user, Slice *key, Slice *val);
 
 
 fn get_repr(u8 b) -> Repr {
@@ -38,7 +40,7 @@ fn get_repr(u8 b) -> Repr {
     }
 }
 
-pub fn decode_integer(Iterator mut* self, err::Err+et mut*e, u8 prefix_size) -> uint
+pub fn decode_integer(Iterator mut* self, err::Err mut*e, u8 prefix_size) -> uint
     where err::checked(*e)
     where prefix_size > 0
     where prefix_size < 9
@@ -83,20 +85,20 @@ pub fn decode_integer(Iterator mut* self, err::Err+et mut*e, u8 prefix_size) -> 
         // never overflow an unsigned 32-bit integer. The maximum value of any
         // integer that can be encoded with 5 octets is ~2^28
         if consumed >= 5 {
-            err::fail(e, 15, "integer overflow");
+            err::fail(e, Invalid, "integer overflow");
             return 0;
         }
 
     }
 
     static_attest(err::checked(*e));
-    err::fail(e, 15, "eof");
+    err::fail(e, Invalid, "short read");
     return 0;
 }
 
 
 
-fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
+fn decode_literal(Iterator mut* self, err::Err mut*e, bool index) -> bool
     where err::checked(*e)
 {
 
@@ -113,7 +115,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
         return false;
     }
     if self->wire.size <= self->at  {
-        err::fail(e, 15, "eof");
+        err::fail(e, Invalid, "short read");
         return false;
     }
     static_attest(self->wire.size  > self->at);
@@ -124,7 +126,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
             return false;
         }
         if (self->at  + (usize)strlen1) >= self->wire.size {
-            err::fail(e, 15, "eof");
+            err::fail(e, Invalid, "short read");
             return false;
         }
         static_attest(len(self->wire.mem) > self->at);
@@ -143,7 +145,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
         Entry *de = &(self->dyn[di]);
         self->key = de->key;
     } else {
-        err::fail(e, 1, "%u not implemented", x);
+        err::fail(e, err::NotImplemented, "%u not implemented", x);
         return false;
     }
 
@@ -153,7 +155,7 @@ fn decode_literal(Iterator mut* self, err::Err+et mut*e, bool index) -> bool
         return false;
     }
     if (self->at  + (usize)strlen2) > self->wire.size {
-        err::fail(e, 15, "eof");
+        err::fail(e, Invalid, "short read");
         return false;
     }
 
@@ -187,18 +189,27 @@ export struct Iterator {
     Entry mut dyn[DYNSIZE];
 }
 
-export fn decode(Slice wire) -> Iterator
+pub theory integrity(Iterator mut*self) -> bool (
+    safe(self)
+    && slice::slice::integrity(&self->key)
+    && slice::slice::integrity(&self->val)
+    && slice::slice::integrity(&self->wire)
+)
+
+export fn decode(Iterator mut new*self, Slice wire)
+    model integrity(self)
 {
-    return Iterator {
-        wire: wire,
-        at:   0,
-    };
+    memset(self, 0, sizeof(Iterator));
+    memcpy(&self->wire, &wire, sizeof(Slice));
+    self->at   = 0;
+    static_attest(integrity(self));
 }
 
-export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
+export fn next(Iterator mut *self, err::Err mut*e) -> bool
     where err::checked(*e)
     model len(self->key.mem) >= self->key.size
     model len(self->val.mem) >= self->val.size
+    model integrity(self)
 {
 
     self->key = Slice{mem:0};
@@ -212,6 +223,7 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
             Repr::Indexed => {
                 uint x = self->decode_integer(e, 7);
                 if err::check(e) {
+                    static_attest(integrity(self));
                     return false;
                 }
 
@@ -231,7 +243,7 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
                     self->val = self->dyn[di].val;
                     return true;
                 } else {
-                    err::fail(e, 1, "%u not implemented", x);
+                    err::fail(e, err::NotImplemented, "%u not implemented", x);
                     return false;
                 }
             }
@@ -239,7 +251,7 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
                 return self->decode_literal(e, true);
             }
             Repr::SizeUpdate => {
-                err::fail(e, 1, "Repr::SizeUpdate not implemented");
+                err::fail(e, err::NotImplemented, "Repr::SizeUpdate not implemented");
                 return false;
             }
             Repr::LiteralNeverIndexed => {
@@ -254,6 +266,8 @@ export fn next(Iterator mut *self, err::Err+et mut*e) -> bool
 }
 
 
+// they are no longer compatible with hpack.
+// we've not encoded using these for quite a while, so this is fine.
 
 static char* STATIC_KEYS[] = {
     0,
@@ -271,53 +285,6 @@ static char* STATIC_KEYS[] = {
     ":status",
     ":status",
     ":status",
-    "accept-charset",
-    "accept-encoding",
-    "accept-language",
-    "accept-ranges",
-    "accept",
-    "access-control-allow-origin",
-    "age",
-    "allow",
-    "authorization",
-    "cache-control",
-    "content-disposition",
-    "content-encoding",
-    "content-language",
-    "content-length",
-    "content-location",
-    "content-range",
-    "content-type",
-    "cookie",
-    "date",
-    "etag",
-    "expect",
-    "expires",
-    "from",
-    "host",
-    "if-match",
-    "if-modified-since",
-    "if-none-match",
-    "if-range",
-    "if-unmodified-since",
-    "last-modified",
-    "link",
-    "location",
-    "max-forwards",
-    "proxy-authenticate",
-    "proxy-authorization",
-    "range",
-    "referer",
-    "refresh",
-    "retry-after",
-    "server",
-    "set-cookie",
-    "strict-transport-security",
-    "transfer-encoding",
-    "user-agent",
-    "vary",
-    "via",
-    "www-authenticate",
 };
 
 static char* STATIC_VALS[] = {
@@ -326,9 +293,9 @@ static char* STATIC_VALS[] = {
     "GET",
     "POST",
     "/",
-    "/index.html",
-    "http",
-    "https",
+    "",
+    "",
+    "",
     "200",
     "204",
     "206",
@@ -336,53 +303,6 @@ static char* STATIC_VALS[] = {
     "400",
     "404",
     "500",
-    "",
-    "gzip, deflate",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
-    "",
 };
 
 

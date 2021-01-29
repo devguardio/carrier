@@ -1,5 +1,7 @@
 #![feature(generators, generator_trait)]
 
+extern crate carrier;
+
 extern crate byteorder;
 extern crate clear_on_drop;
 extern crate snow;

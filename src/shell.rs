@@ -1,4 +1,4 @@
-use carrier::error::Error;
+use carrier_rs::error::Error;
 use libc;
 use log::warn;
 use nix::fcntl;
@@ -49,7 +49,7 @@ pub fn into_raw_mode() -> Result<(), Error> {
 
 #[cfg(not(target_os = "android"))]
 #[osaka]
-fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
+fn message_handler(poll: osaka::Poll, mut stream: carrier_rs::endpoint::Stream) {
     let mut stdout = std::io::stdout();
     let mut stdin = std::io::stdin();
     let mut flags =
@@ -68,11 +68,11 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
 
     let exitcode = Arc::new(std::sync::atomic::AtomicI32::new(0));
     let exitcode_ = exitcode.clone();
-    let _d = carrier::util::defer(move || {
+    let _d = carrier_rs::util::defer(move || {
         std::process::exit(exitcode_.load(std::sync::atomic::Ordering::Relaxed));
     });
 
-    let headers = carrier::headers::Headers::decode(&osaka::sync!(stream)).expect("headers");
+    let headers = carrier_rs::headers::Headers::decode(&osaka::sync!(stream)).expect("headers");
     println!("{:?}", headers);
 
     into_raw_mode().expect("into raw mode");
@@ -142,11 +142,11 @@ fn message_handler(poll: osaka::Poll, mut stream: carrier::endpoint::Stream) {
 #[osaka]
 pub fn ui(
     poll: osaka::Poll,
-    config: carrier::config::Config,
-    target: carrier::identity::Identity,
-    mut headers: carrier::headers::Headers,
+    config: carrier_rs::config::Config,
+    target: carrier_rs::identity::Identity,
+    mut headers: carrier_rs::headers::Headers,
 ) -> Result<(), Error> {
-    let mut ep = carrier::endpoint::EndpointBuilder::new(&config)?;
+    let mut ep = carrier_rs::endpoint::EndpointBuilder::new(&config)?;
     ep.move_target(target.clone());
     let mut ep = ep.connect(poll.clone());
     let mut ep = osaka::sync!(ep)?;
@@ -154,7 +154,7 @@ pub fn ui(
 
     let q = loop {
         match osaka::sync!(ep)? {
-            carrier::endpoint::Event::OutgoingConnect(q) => {
+            carrier_rs::endpoint::Event::OutgoingConnect(q) => {
                 break q;
             }
             _ => (),
@@ -181,13 +181,13 @@ pub fn ui(
 
     loop {
         match osaka::sync!(ep)? {
-            carrier::endpoint::Event::BrokerGone => panic!("broker gone"),
-            carrier::endpoint::Event::OutgoingConnect(_) => (),
-            carrier::endpoint::Event::Disconnect { identity, reason, .. } => {
+            carrier_rs::endpoint::Event::BrokerGone => panic!("broker gone"),
+            carrier_rs::endpoint::Event::OutgoingConnect(_) => (),
+            carrier_rs::endpoint::Event::Disconnect { identity, reason, .. } => {
                 warn!("{} disconnected {:?}", identity, reason);
                 return Ok(());
             }
-            carrier::endpoint::Event::IncommingConnect(_) => (),
+            carrier_rs::endpoint::Event::IncommingConnect(_) => (),
         };
     }
 }

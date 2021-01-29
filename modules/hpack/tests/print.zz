@@ -1,4 +1,4 @@
-using <stdio.h>::{printf, fread, stdin};
+using <stdio.h>::{printf, fread, stdin, stderr};
 
 using err;
 using hpack::decoder;
@@ -90,16 +90,16 @@ test largeval {
 
 
 export fn main() -> int {
-    err::Err+1000 mut e;
-    err::new(&e);
+    new+1000 e = err::make();
 
     u8 mut wire[2000];
     usize wirelen = as<usize>(fread(wire, sizeof(char), static(len(wire)), stdin));
     static_attest(len(wire) >= wirelen);
-    let s  = slice::slice::new(wire, wirelen);
-    for (let mut it = decoder::decode(s); it.next(&e);) {
+    new s  = slice::slice::make(wire, wirelen);
+    new it = decoder::decode(s);
+    for (; it.next(&e);) {
         if err::check(&e) {
-            err::eprint(&e);
+            err::eprintf(&e, stderr);
             return 2;
         }
         printf(">%.*s< = >%.*s<\n", it.key.size, it.key.mem, it.val.size, it.val.mem);

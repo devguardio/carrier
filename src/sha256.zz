@@ -1,7 +1,8 @@
-using "../3rdparty/hacl-star/snapshots/hacl-c/Hacl_SHA2_256.h" as hacl;
+using "../3rdparty/hacl-star/dist/gcc-compatible/Hacl_Hash.h" as hacl;
 using <assert.h>::{assert};
 using <string.h>::{memset};
-using std;
+using mem;
+using log;
 
 pub const usize HASHLEN   = 32;
 pub const usize BLOCKLEN  = 64;
@@ -15,13 +16,15 @@ export fn blocklen() -> usize {
 }
 
 export struct Sha256 {
-    u32 mut state[137];
+    u32 mut state[8];
     u8  mut block[64];
     u8  mut at;
+    usize mut blockcounter;
 }
 
-export fn init(Sha256 mut set<isinit> *self) {
-    hacl::Hacl_SHA2_256_init(self->state);
+export fn init(Sha256 mut new *self) {
+    mem::zero(self);
+    hacl::Hacl_Hash_Core_SHA2_init_256(self->state);
     self->at = 0;
 }
 
@@ -35,8 +38,9 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
         usize fill = as<usize>(64 - self->at);
         if l >= fill {
             static_attest(len(data) > fill);
-            std::memcpy(self->block + self->at, data, fill);
-            hacl::Hacl_SHA2_256_update(self->state, self->block);
+            mem::copy(data, self->block + self->at, fill);
+            hacl::Hacl_Hash_Core_SHA2_update_256(self->state, self->block);
+            self->blockcounter += 1;
             l    -= fill;
             data = data + fill;
             self->at = 0;
@@ -47,16 +51,18 @@ export fn update(Sha256 mut *self, u8 * mut data, usize mut l)
             static_attest(len(dst) > l);
             static_attest(safe(data));
             static_attest(len(data) > l);
-            std::memcpy(dst, data, l);
+            mem::copy(data, dst, l);
             self->at += (u8)l;
             break;
         }
     }
 }
 
-export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out) {
-    hacl::Hacl_SHA2_256_update_last(self->state, self->block, self->at);
-    hacl::Hacl_SHA2_256_finish(self->state, out);
+export fn finish(Sha256 mut unset<isinit> *self, u8 mut *out)
+    where len(out) >= HASHLEN
+{
+    hacl::Hacl_Hash_SHA2_update_last_256(self->state, self->blockcounter * 64, self->block, self->at);
+    hacl::Hacl_Hash_Core_SHA2_finish_256(self->state, out);
 }
 
 pub fn hkdf(
@@ -93,7 +99,7 @@ pub fn hkdf(
         return;
     }
     static_attest(safe(out2));
-    std::memcpy(temp_hash, out1, HASHLEN);
+    mem::copy(out1, temp_hash, HASHLEN);
     temp_hash[HASHLEN] = 0x02;
     hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out2);
 
@@ -102,7 +108,7 @@ pub fn hkdf(
         return;
     }
     static_attest(safe(out3));
-    std::memcpy(temp_hash, out2, HASHLEN);
+    mem::copy(out2, temp_hash, HASHLEN);
     temp_hash[HASHLEN] = 0x03;
     hmac(temp_key, HASHLEN, temp_hash, HASHLEN + 1, out3);
 }
@@ -111,6 +117,7 @@ pub fn hkdf(
 pub fn hmac(u8 *key, usize keylen, u8* data, usize datalen, u8 mut *out)
     where keylen  <= len(key)  && keylen < BLOCKLEN
     where datalen <= len(data) && keylen < BLOCKLEN
+    where len(out) >= HASHLEN
 {
     assert(keylen <= BLOCKLEN);
 

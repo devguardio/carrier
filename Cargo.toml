@@ -1,5 +1,5 @@
 [package]
-name        = "carrier"
+name        = "carrier_rs"
 version     = "0.12.2"
 authors     = ["Arvid E. Picciani <arvid@devguard.io>"]
 license     = "MIT"
@@ -16,6 +16,8 @@ uefi    = ["smbios", "cluproccmdline"]
 
 
 [dependencies]
+
+carrier = {path = "./target/rust/carrier/"}
 
 # not no-std
 prost               = "0.5.0"
@@ -91,11 +93,11 @@ proptest = "0.9.2"
 
 
 [lib]
-name = "carrier"
+name = "carrier_rs"
 path = "src/lib.rs"
 
 [[bin]]
-name = "carrier"
+name = "carrier_rs"
 path = "src/main.rs"
 
 [build-dependencies]

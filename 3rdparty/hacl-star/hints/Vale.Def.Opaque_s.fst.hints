@@ -1,0 +1,35 @@
+[
+  "ú}C&[»±úõòÈÀÄ ð\u0007",
+  [
+    [
+      "Vale.Def.Opaque_s.opaque_reveal",
+      1,
+      1,
+      0,
+      [
+        "@query", "eq2-interp", "equation_Prims.logical",
+        "equation_Vale.Def.Opaque_s.opaque_make"
+      ],
+      0,
+      "857977e04248c27bc740235e27ce3413"
+    ],
+    [
+      "Vale.Def.Opaque_s.opaque_assert",
+      1,
+      1,
+      0,
+      [ "@query", "eq2-interp", "equation_Vale.Def.Opaque_s.opaque_make" ],
+      0,
+      "df73d317d385004ecd07968eff94be22"
+    ],
+    [
+      "Vale.Def.Opaque_s.opaque_revealer",
+      1,
+      1,
+      0,
+      [ "@query", "equation_Prims.pure_pre" ],
+      0,
+      "cd37b780ea7a842433edc2282b9bb5c3"
+    ]
+  ]
+]

@@ -15,11 +15,21 @@ pub struct Signature(pub [u8; 64]);
 pub struct Address([u8; 32]);
 #[derive(Clone)]
 pub struct SignedAddress(Address, Signature);
+#[derive(Clone)]
+pub struct Alias(pub [u8; 8]);
+
+
+#[derive(Clone)]
+pub enum Target {
+    Alias(Alias),
+    Identity(Identity),
+}
 
 // --- Secret
 
-#[path = "../target/release/rs/carrier_identity.rs"]
-mod carrier_identity;
+
+use carrier::carrier_identity;
+
 
 impl Secret {
     pub fn identity(&self) -> Identity {
@@ -77,9 +87,9 @@ impl Secret {
 
     pub fn to_string(&self) -> String {
         let mut to = vec![0u8;64];
-        let mut err = error::ZZError::new();
+        let mut err = error::ZZError::new(2000);
         let len = unsafe {
-            carrier_identity::secret_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity::secret_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -99,11 +109,11 @@ impl FromStr for Secret {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut to = [0u8;32];
         unsafe {
-            let mut err = error::ZZError::new();
+            let mut err = error::ZZError::new(2000);
             let s = s.as_bytes();
             carrier_identity::secret_from_str (
                 to.as_mut_ptr(),
-                err.as_mut_ptr(), error::ZERR_TAIL,  s.as_ptr(), s.len() );
+                err.as_mut_ptr(), s.as_ptr(), s.len() );
 
             err.check()?;
         }
@@ -140,9 +150,9 @@ impl Address {
 
     pub fn to_string(&self) -> String {
         let mut to = vec![0u8;64];
-        let mut err = error::ZZError::new();
+        let mut err = error::ZZError::new(2000);
         let len = unsafe {
-            carrier_identity::address_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity::address_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -154,9 +164,9 @@ impl FromStr for Address {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut to = [0u8;32];
         unsafe {
-            let mut err = error::ZZError::new();
+            let mut err = error::ZZError::new(2000);
             let s = s.as_bytes();
-            carrier_identity::address_from_str (to.as_mut_ptr(), err.as_mut_ptr(), error::ZERR_TAIL,  s.as_ptr(), s.len() );
+            carrier_identity::address_from_str (to.as_mut_ptr(), err.as_mut_ptr(), s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(to))
@@ -180,9 +190,9 @@ impl fmt::Debug for Address {
 impl Signature {
     pub fn to_string(&self) -> String {
         let mut to = vec![0u8;128];
-        let mut err = error::ZZError::new();
+        let mut err = error::ZZError::new(2000);
         let len = unsafe {
-            carrier_identity::signature_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity::signature_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -212,9 +222,9 @@ impl FromStr for Signature {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut to = [0u8;64];
         unsafe {
-            let mut err = error::ZZError::new();
+            let mut err = error::ZZError::new(2000);
             let s = s.as_bytes();
-            carrier_identity::signature_from_str (to.as_mut_ptr(), err.as_mut_ptr(), error::ZERR_TAIL, s.as_ptr(), s.len() );
+            carrier_identity::signature_from_str (to.as_mut_ptr(), err.as_mut_ptr(), s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(to))
@@ -261,9 +271,9 @@ impl Identity {
 
     pub fn to_string(&self) -> String {
         let mut to = vec![0u8;64];
-        let mut err = error::ZZError::new();
+        let mut err = error::ZZError::new(2000);
         let len = unsafe {
-            carrier_identity::identity_to_str(err.as_mut_ptr(), error::ZERR_TAIL, to.as_mut_ptr(), to.len(), self.0.as_ptr())
+            carrier_identity::identity_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
         };
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
@@ -275,9 +285,9 @@ impl FromStr for Identity {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut to = [0u8;32];
         unsafe {
-            let mut err = error::ZZError::new();
+            let mut err = error::ZZError::new(2000);
             let s = s.as_bytes();
-            carrier_identity::identity_from_str (to.as_mut_ptr(), err.as_mut_ptr(),  error::ZERR_TAIL, s.as_ptr(), s.len() );
+            carrier_identity::identity_from_str (to.as_mut_ptr(), err.as_mut_ptr(),  s.as_ptr(), s.len() );
             err.check()?;
         }
         Ok(Self(to))
@@ -391,4 +401,80 @@ fn sign() {
     assert!(client_identity
         .verify(b"goes on postcards", &text_invalid, &signature)
         .is_err());
+}
+
+impl Alias {
+    pub fn from_bytes<B: AsRef<[u8]>>(b: B) -> Result<Self, Error> {
+        let b = b.as_ref();
+        if b.len() != 8 {
+            return Err(Error::InvalidLen.into());
+        }
+        let mut a = [0u8; 8];
+        a.copy_from_slice(b);
+        Ok(Self(a))
+    }
+
+    pub fn as_bytes(&self) -> &[u8] {
+        &self.0
+    }
+
+    pub fn from_u64(v: u64) -> Self {
+        use byteorder::{BigEndian, WriteBytesExt};
+        let mut b = [0;8];
+        (&mut b[..]).write_u64::<BigEndian>(v).unwrap();
+        Self(b)
+    }
+
+    pub fn to_u64(&self) -> u64 {
+        use byteorder::{BigEndian, ReadBytesExt};
+        (&self.0[..]).read_u64::<BigEndian>().unwrap()
+    }
+
+    pub fn to_string(&self) -> String {
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new(2000);
+        let len = unsafe {
+            carrier_identity::alias_to_str(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
+    }
+}
+
+impl fmt::Display for Alias {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        self.to_string().fmt(fmt)
+    }
+}
+
+impl fmt::Debug for Alias {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        self.to_string().fmt(fmt)
+    }
+}
+
+
+
+
+
+impl Target {
+}
+
+impl FromStr for Target {
+    type Err = Error;
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let mut to = [0u8;33];
+        unsafe {
+            let mut err = error::ZZError::new(2000);
+            let s = s.as_bytes();
+            carrier_identity::target_from_str (to.as_mut_ptr(), err.as_mut_ptr(),  s.as_ptr(), s.len() );
+            err.check()?;
+        }
+
+        if to[32] == 11 {
+            Ok(Self::Alias(Alias::from_bytes(&to[..8])?))
+        } else {
+            Ok(Self::Identity(Identity::from_bytes(&to[..32])?))
+        }
+    }
 }

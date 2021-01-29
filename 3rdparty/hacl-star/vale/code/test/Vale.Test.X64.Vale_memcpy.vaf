@@ -1,0 +1,85 @@
+include "../arch/x64/Vale.X64.InsBasic.vaf"
+include "../arch/x64/Vale.X64.InsMem.vaf"
+include "../arch/x64/Vale.X64.InsVector.vaf"
+
+module Vale.Test.X64.Vale_memcpy
+#verbatim{:interface}{:implementation}
+
+open Vale.Arch.HeapImpl
+open Vale.X64.Machine_s
+open Vale.X64.Memory
+open Vale.X64.State
+open Vale.X64.Decls
+open Vale.X64.InsBasic
+open Vale.X64.InsMem
+open Vale.X64.InsVector
+open Vale.X64.QuickCode
+open Vale.X64.QuickCodes
+#set-options "--z3rlimit 20"
+#endverbatim
+
+procedure InnerMemcpy(ghost dst:buffer64, ghost src:buffer64)
+    {:quick}
+    reads
+        rdx;
+        memLayout; heap0;
+    modifies
+        rax; rcx; r9;
+        heap1;
+    requires
+        validSrcAddrs64(heap0, rdx, src, 2, memLayout, Secret);
+        validDstAddrs64(heap1, rcx, dst, 2, memLayout, Secret);
+        buffer_length(src) == 2;
+        buffer_length(dst) == 2;
+    ensures
+        buffer_as_seq(heap1, dst) == buffer_as_seq(heap0, src);
+        modifies_mem(loc_buffer(dst), old(heap1), heap1);
+{
+    Load64_buffer(heap0, rax, rdx, 0, Secret, src, 0);
+    Load64_buffer(heap0, r9, rdx, 8, Secret, src, 1);
+    Store64_buffer(heap1, rcx, rax, 0, Secret, dst, 0);
+    Store64_buffer(heap1, rcx, r9, 8, Secret, dst, 1);
+    assert(Seq.equal(buffer_as_seq(heap1, dst), buffer_as_seq(heap0, src)));
+}
+
+procedure Memcpy(inline win:bool, ghost dst:buffer64, ghost src:buffer64)
+    {:public}
+    {:exportSpecs}
+    {:quick}
+    reads
+        rdx; rsi; rdi;
+        heap0;
+    modifies
+        rax; rcx; r9;
+        memLayout; heap1;
+    requires
+        is_initial_heap(memLayout, mem);
+        locs_disjoint(list(loc_buffer(dst), loc_buffer(src)));
+        validSrcAddrs64(mem, (if win then rdx else rsi), src, 2, memLayout, Secret);
+        validDstAddrs64(mem, (if win then rcx else rdi), dst, 2, memLayout, Secret);
+        buffer_length(src) == 2;
+        buffer_length(dst) == 2;
+    ensures
+        buffer_as_seq(mem, dst) == buffer_as_seq(mem, src);
+    //    forall(i) 0 <= i && i < 2 ==> buffer64_read(dst, i, mem) == buffer64_read(src, i, mem);
+        modifies_mem(loc_buffer(dst), old(mem), mem);
+{
+    CreateHeaplets(list(
+        declare_buffer64(src, 0, Secret, Immutable),
+        declare_buffer64(dst, 1, Secret, Mutable)));
+
+    inline if (win)
+    {
+        InnerMemcpy(dst, src);
+    }
+    else
+    {
+        Mov64(rax, Mem64(heap0, rsi, 0, src, 0, Secret));
+        Mov64(rcx, Mem64(heap0, rsi, 8, src, 1, Secret));
+        Store64_buffer(heap1, rdi, rax, 0, Secret, dst, 0);
+        Store64_buffer(heap1, rdi, rcx, 8, Secret, dst, 1);
+    }
+    assert(Seq.equal(buffer_as_seq(heap1, dst), buffer_as_seq(heap0, src)));
+
+    DestroyHeaplets();
+}

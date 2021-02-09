@@ -23,6 +23,14 @@ impl Index {
         err.check()?;
         return Ok(r);
     }
+    pub fn empty(tail: usize) -> Index {
+        let mut r = Index(madpack::heap::Index::new(tail));
+        unsafe {madpack::empty_index(
+            r.0._self_mut(),
+            r.0._tail(),
+        )};
+        return r;
+    }
 }
 
 

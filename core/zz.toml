@@ -35,6 +35,7 @@ base32      = "1"
 io          = "1"
 netio       = "1"
 madpack     = "1"
+websocket   = "1"
 
 [repos]
 #madpack = "git://github.com/aep/madpack.git"

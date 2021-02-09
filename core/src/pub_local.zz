@@ -1,0 +1,220 @@
+using endpoint;
+using stream;
+using err;
+using slice;
+using io;
+using log;
+using hpack;
+using buffer;
+using mem;
+using <unistd.h>::{close};
+using sysinfo;
+using revision;
+using madpack;
+using preshared;
+using pool;
+using net::address;
+using <sys/socket.h>::{
+    socket,
+    connect,
+    AF_UNIX,
+    SOCK_SEQPACKET,
+    send,
+    recv,
+    MSG_PEEK,
+};
+using <sys/un.h>::{
+    (struct sockaddr_un) as sockaddr_un,
+    (struct sockaddr) as sockaddr,
+}
+using <string.h>::{strcpy};
+using <fcntl.h>::{fcntl, F_GETFL, O_NONBLOCK, F_SETFL};
+using <errno.h>::{errno, EAGAIN};
+using <poll.h>::{POLLIN};
+
+
+export enum Op {
+    Invalid        = 0,
+    RawStream      = 1,
+    RawFragmented  = 2,
+}
+
+struct Specific {
+    char * localpath;
+}
+
+export fn register(endpoint::Endpoint mut*ep, char *path, char * localpath)
+    where nullterm(localpath)
+{
+    let cfg  = (stream::Config mut*)ep->framebuffer.malloc(sizeof(stream::Config) + sizeof(Specific));
+    let spec = unsafe<Specific mut*>((Specific mut*)(cfg + sizeof(stream::Config)));
+    err::assert_safe(cfg);
+    err::assert_safe(spec);
+
+    cfg->path   = path;
+    cfg->open   = local_open;
+    cfg->close  = local_close;
+    cfg->poll   = local_poll;
+    cfg->stream = local_stream;
+    cfg->fragmented = local_fragmented;
+    ep->register_stream(cfg);
+
+    spec->localpath = localpath;
+}
+
+fn local_open(stream::Stream mut *self, err::Err mut*e, slice::Slice headers)
+    where slice::slice::integrity(&headers)
+    where err::checked(*e)
+{
+    let cfg  = self->config;
+    let spec = unsafe<Specific mut*>((Specific mut*)(cfg + sizeof(stream::Config)));
+    err::assert_safe(cfg);
+    err::assert_safe(spec);
+
+    static_attest(safe(self->chan));
+    static_attest(safe(self->chan->endpoint));
+
+
+    int fd = unsafe<int>(socket(AF_UNIX, SOCK_SEQPACKET, 0));
+    if fd < 0 {
+        e->fail_with_errno("cannot create socket SOCK_SEQPACKET");
+        return;
+    }
+
+
+	sockaddr_un mut addr = {0};
+    unsafe {
+        addr.sun_family = AF_UNIX;
+        strcpy(addr.sun_path, spec->localpath);
+    }
+
+    if unsafe<bool>(connect(fd, (sockaddr mut *)&addr, sizeof(addr)) == -1) {
+        close(fd);
+        e->fail_with_errno("cannot connect to %s", spec->localpath);
+        return;
+    }
+
+    int mut flags = (int)fcntl(fd, F_GETFL, 0);
+    if (flags == -1) {
+        close(fd);
+        e->fail_with_errno("fcnctl");
+        return;
+    }
+    flags = flags | (int)O_NONBLOCK;
+    fcntl(fd, F_SETFL, flags);
+
+    self->user1 = (u64)fd;
+}
+
+fn local_stream (stream::Stream mut* self, err::Err mut *e, slice::Slice b) bool
+    where err::checked(*e)
+    where slice::integrity(&b)
+{
+    if b.size > 600 {
+        e->fail(err::OutOfTail, "oversized");
+        return true;
+    }
+
+    char mut buf[601];
+    buf[0] = Op::RawStream;
+    unsafe { mem::copy(b.mem, buf+1, b.size); }
+    let l = (int)send(self->user1, buf, b.size + 1, 0);
+    if l != (int)b.size + 1 {
+        if unsafe<bool>(errno == EAGAIN) {
+            return false;
+        } else {
+            e->fail_with_errno("recv");
+            self->close();
+            return true;
+        }
+    }
+    return true;
+}
+
+fn local_fragmented (stream::Stream mut* self, err::Err mut *e, u32 fragments) bool
+    where err::checked(*e)
+{
+    char mut buf[5];
+    buf[0] = Op::RawFragmented;
+    unsafe { mem::copy(&fragments, buf+1, 4); }
+    let l = (int)send(self->user1, buf, 5, 0);
+    if l != 5 {
+        e->fail_with_errno("recv");
+        if unsafe<bool>(errno == EAGAIN) {
+            return false;
+        } else {
+            e->fail_with_errno("recv");
+            self->close();
+            return true;
+        }
+    }
+    return true;
+}
+
+fn local_poll(stream::Stream mut *self, err::Err mut*e, io::Async mut* async)
+    where err::checked(*e)
+{
+    let cfg  = self->config;
+    let spec = unsafe<Specific mut*>((Specific mut*)(cfg + sizeof(stream::Config)));
+    static_attest(safe(spec));
+
+    io::unix::select_fd((io::unix::Async mut*)async, self->user1, (int)POLLIN);
+
+    char mut buf[800];
+
+    let l = (int)recv(self->user1, buf, static(len(buf)), MSG_PEEK);
+    if l < 0 {
+        if unsafe<bool>(errno == EAGAIN) {
+            return;
+        }
+        e->fail_with_errno("recv");
+        self->close();
+        return;
+    }
+    err::assert(l <= static(len(buf)));
+
+    if l == 0 {
+        recv(self->user1, buf, static(len(buf)), 0);
+        self->close();
+        return;
+    }
+
+    switch buf[0] {
+        Op::RawStream => {
+
+            let mut frame = self->stream(e, l);
+            if err::check(e) {
+                return;
+            }
+            frame.append_bytes((u8*)buf + 1, l - 1);
+        }
+        Op::RawFragmented => {
+
+            u32 mut b = 0;
+            if l > 4 {
+                unsafe { mem::copy(buf + 1, &b, 4); }
+            }
+            self->fragmented(e, b);
+            if err::check(e) {
+                return;
+            }
+        }
+        default => {
+            log::warn("unknown op %d from %s", buf[0], spec->localpath);
+        }
+    }
+    //consume
+    recv(self->user1, buf, static(len(buf)), 0);
+}
+
+fn local_close(stream::Stream mut *self, err::Err mut*e)
+    where err::checked(*e)
+{
+    log::info("local_close");
+
+    if self->user1 != 0 {
+        close(self->user1);
+        self->user1 = 0;
+    }
+}
+

@@ -10,6 +10,7 @@ using time;
 using endpoint;
 using pub_sysinfo;
 using vault;
+using pub_local;
 
 pub fn cmd(vault::Vault va, int mut argc, char ** argv) -> int
     where (usize)argc == len(argv)
@@ -39,7 +40,6 @@ pub fn cmd(vault::Vault va, int mut argc, char ** argv) -> int
     sft::register(&ep);
     config::register(&ep);
     pub_sysinfo::register(&ep);
-
 
     io::await(&async, &e, endpoint::poll, &ep, time::infinite());
     e.abort();

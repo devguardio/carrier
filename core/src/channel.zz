@@ -64,6 +64,7 @@ pub fn from_transfer (Channel mut new*self, Transfer tr)
     self->c_mine    = tr.c_mine;
     self->c_them    = tr.c_them;
     self->q.rtt     = tr.rtt;
+    self->q.revision = tr.revision;
     self->counter_out  = tr.counter_out;
     self->outgoing_acks_at = tr.outgoing_acks_at;
 }
@@ -326,6 +327,7 @@ fn clean_closed(Channel mut* self, err::Err mut *e)
                     }
                 }
             } else if now.to_seconds() > strx->closed_linger_until {
+                strx->cleanup();
                 static_attest(safe(self->endpoint));
                 static_attest(pool::member(strx, &self->endpoint->streampool));
                 self->endpoint->streampool.free(strx);
@@ -842,8 +844,8 @@ pub fn push(Channel mut* self, err::Err mut* e, u8 mut* mut body, usize l, u64 c
                 usize size    = (usize)byteorder::from_be16(size_b);
                 i += 2;
 
-                log::debug("[%lu] received stream frame for stream=%u, order=%u, size=%zu",
-                    self->route, streamid, order, size);
+                log::debug("[%u] received stream frame for stream=%u, order=%u, size=%u",
+                    (uint)self->route, (uint)streamid, (uint)order, (uint)size);
 
                 if i > frames_len {
                     err::fail(e, InvalidFrame, "short read");
@@ -886,7 +888,7 @@ pub fn push(Channel mut* self, err::Err mut* e, u8 mut* mut body, usize l, u64 c
                         } else if !accepted {
                             //TODO send backpressure signal
                             log::warn("stream %u ordering is backpressured at position %u, unable to accept %u",
-                                streamid, strx->order_incomming, order);
+                                (uint)streamid, (uint)strx->order_incomming, (uint)order);
                             please_resend = true;
                         }
                     }
@@ -1009,7 +1011,7 @@ pub fn push(Channel mut* self, err::Err mut* e, u8 mut* mut body, usize l, u64 c
                 i += 4;
                 static_attest(i < len(frames));
 
-                log::debug("[%lu] received fragmented for stream=%u, order=%u", self->route, streamid, order);
+                log::debug("[%lu] received fragmented for stream=%u, order=%lu", self->route, streamid, order);
 
 
                 let mut found_channel = false;
@@ -1038,7 +1040,7 @@ pub fn push(Channel mut* self, err::Err mut* e, u8 mut* mut body, usize l, u64 c
                             }
                         } else if !accepted {
                             //TODO send backpressure signal
-                            log::warn("stream %u ordering is backpressured at position %u, unable to accept %u",
+                            log::warn("stream %u ordering is backpressured at position %lu, unable to accept %lu",
                                 streamid, strx->order_incomming, order);
                             please_resend = true;
                         }
@@ -1059,14 +1061,15 @@ pub fn push(Channel mut* self, err::Err mut* e, u8 mut* mut body, usize l, u64 c
                 return;
             }
         }
-        if ack_required && !please_resend {
-            ack(self, e, counter);
-        }
         //log::debug("[%lu] end of frames", self->route);
+    }
+    if ack_required && !please_resend {
+        ack(self, e, counter);
     }
 }
 
 pub fn ack(Channel mut* self, err::Err mut* e, u64 ackd) {
+    log::debug("ack packet %u", (uint)ackd);
     if (usize)self->outgoing_acks_at < (usize)sizeof(self->outgoing_acks) {
         static_attest((usize)self->outgoing_acks_at < len(self->outgoing_acks));
         (self->outgoing_acks)[(usize)self->outgoing_acks_at] = ackd;

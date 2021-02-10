@@ -16,6 +16,7 @@ using buffer;
 using hpack;
 using <stdlib.h>::{atoi};
 using buffer;
+using pq
 
 fn stream_usage() -> int {
     fprintf(stderr, "USAGE:\n    carrier stream [OPTIONS] <target> <path>\n");
@@ -99,8 +100,11 @@ fn out_poll(stream::Stream mut *self, err::Err mut*e, io::Async mut* async)
         static_attest(inbuf.at  <= len(inbuf.mem));
         let mut frame = self->stream(e, inbuf.at);
         if err::check(e) {
+            if e->error == pq::MaxQ {
+                e->ignore();
+                return;
+            }
             e->elog();
-            e->ignore();
             return;
         }
         frame.append_bytes((u8*)inbuf.mem, inbuf.at);
@@ -115,8 +119,8 @@ fn out_poll(stream::Stream mut *self, err::Err mut*e, io::Async mut* async)
     async->select(e, &stdinio, io::Ready::Read);
     if err::check(e) { return; }
 
-    char mut buf[100] = {0};
-    usize mut used = 100;
+    char mut buf[600] = {0};
+    usize mut used = 600;
     switch stdinio.read_bytes(e, (u8 mut*)buf, &used) {
         io::Result::Ready => {}
         io::Result::Eof => {

@@ -13,7 +13,7 @@ func init() {
 
     subscribeCmd := &cobra.Command{
         Use:    "subscribe",
-        Short:  "subscribe to network events",
+        Short:  "Subscribe to network events",
         Run: func(cmd *cobra.Command, args []string) {
             conduit, err := carrier.StartConduit();
             if err != nil {
@@ -38,7 +38,7 @@ func init() {
 
     traceCmd := &cobra.Command{
         Use:    "trace",
-        Short:  "dump network stats",
+        Short:  "Dump network stats",
         Run: func(cmd *cobra.Command, args []string) {
 
             conduit, err := carrier.StartConduit();
@@ -59,7 +59,7 @@ func init() {
 
     showCmd := &cobra.Command{
         Use:    "address",
-        Short:  "show network address",
+        Short:  "Show network address",
         Run: func(cmd *cobra.Command, args []string) {
             vault, err := NewVault();
             if err != nil { log.Fatal(err) }
@@ -73,7 +73,7 @@ func init() {
 
     netCmd := &cobra.Command{
         Use:    "net <subcommand>",
-        Short:  "network related subcommands",
+        Short:  "Network related subcommands",
     };
 
     netCmd.AddCommand(subscribeCmd);

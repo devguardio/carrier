@@ -1,4 +1,3 @@
-/// the outgoing packet queue
 using <string.h>::{memcpy, memset};
 using <math.h>;
 using <assert.h>::{assert};
@@ -32,17 +31,21 @@ pub const u64 DEAD_PINGS = 5;
 pub const u64 BACKOFF = 50;
 
 
+/// backpressure. queue is full
+export symbol MaxQ;
+
 struct Frame {
     u64 mut acked_at;
     u64 mut sent_at;
     u64 packet;
 
-    u8              typ;
+    u8  typ;
 
     usize mut bufat;
     slice::MutSlice mut buf;
 }
 
+/// the outgoing packet queue
 export struct Q+ {
 
     /// how many frames are in queue
@@ -68,6 +71,11 @@ export struct Q+ {
 
     pool::Pool mut* allocator;
 
+
+    /// revision of peer for bug workarounds
+    u32     revision;
+
+
     /// ring buffer
     Frame q[];
 }
@@ -84,6 +92,8 @@ export fn clear(Q+qt mut* self) {
     }
     memset(self, 0, sizeof(Q));
 }
+
+
 
 
 /// allocate the next frame in the queue
@@ -104,17 +114,18 @@ export fn alloc(Q+qt mut* self, err::Err mut*e, FrameType typ, usize size) -> sl
     Frame mut* mut r;
     if (self->count + 1 >= qt) {
         self->allocator->free(payload);
-        err::fail(e, err::OutOfTail, "maxq");
+        err::fail(e, MaxQ, "maxq");
         unsafe {
             slice::MutSlice bad = {0};
             return bad;
         }
     }
     (self->count)++;
+
     unsafe {
         r = self->q + (self->back)++;
     }
-    //log::debug("alloc frame %d|%x", self->back-1, r);
+    log::debug("alloc bucket %u|%x", (uint)(self->back-1), r);
 
     if (self->back >= qt) {
         self->back = 0;
@@ -136,6 +147,8 @@ export fn alloc(Q+qt mut* self, err::Err mut*e, FrameType typ, usize size) -> sl
 export fn cancel(Q+qt mut* self)
 {
     wrapdec(self, &self->back);
+    log::debug("cancel bucket %u", self->back);
+
     unsafe {
         pool::free(self->allocator, (u8 mut*)(self->q[self->back].buf.mem));
     }
@@ -165,7 +178,15 @@ export fn ack(Q+qt mut* self, u64 time, u64 counter) {
         static_attest(f < len(qq));
         // mark as acked
         if ((qq[f]).packet == counter) {
-            //log::debug("  acked packet %zu frame %zu ", counter, f);
+
+
+            if qq[f].typ == 5 {
+                u64 order = byteorder::from_be64(unsafe<u64>(* ( (u64*)(qq[f].buf.mem + 4))));
+                log::debug("  acked packet %zu bucket %zu order %u ", counter, f, (uint)order);
+            } else {
+                log::debug("  acked packet %zu bucket %zu typ %u", counter, f, (uint)qq[f].typ);
+            }
+
             (qq[f]).acked_at = time;
 
             assert(time >= qq[f].sent_at);
@@ -186,6 +207,8 @@ export fn ack(Q+qt mut* self, u64 time, u64 counter) {
         if (f == self->front && (qq[f]).acked_at != 0) {
             static_attest(safe(self->allocator));
 
+            log::debug("  clear bucket %u ", (uint)f);
+
             unsafe {
                 pool::free(self->allocator, (u8 mut*)(qq[f].buf.mem));
             }
@@ -201,32 +224,47 @@ export fn ack(Q+qt mut* self, u64 time, u64 counter) {
             break;
         }
 
+        // TODO some testing suggests resending misordered packets early instead of waiting for TLP leads to worse performance,
+        // but its unclear if this was just a side effect from the ack bug in <= 176
+
+
         // if this frame is not acked and too far behind, move it back to the front of the queue
         if ((qq[f]).acked_at == 0 && (qq[f]).packet > 0 && (qq[f]).packet + REORDER_THRESHOLD < counter) {
             (qq[f]).sent_at = 0;
             (qq[f]).packet  = 0;
 
             Frame mut mov;
+            // copy the frame to be moved
             memcpy(&mov, &(qq[f]), sizeof(Frame));
+            // zero the bucket where it was located
             memset(qq + f, 0, sizeof(Frame));
             wrapinc(self, &self->front);
+
+            //TODO why?
             mov.buf.at = 0;
 
+            // move everything one to the right
             for (usize mut i = wrapinc(self, &self->back); i != self->sent;) {
                 usize p    = wrapdec(self, &i);
                 unsafe {
                     memcpy(qq + p, qq + i, sizeof(Frame));
                 }
+                log::debug("  bucket %u moved to bucket %u", (uint)i, (uint)p);
             }
 
             unsafe {
                 memcpy(qq + self->sent, &mov, sizeof(Frame));
             }
+            log::debug("  bucket %u moved to bucket %u, because it is behind REORDER_THRESHOLD", (uint)f, (uint)self->sent);
+
 
         }
+
         if (f == self->back) {
             break;
         }
+
+
     }
 
     if ack_was_useful {
@@ -241,6 +279,10 @@ export fn ack(Q+qt mut* self, u64 time, u64 counter) {
 export fn keepalive(Q+qt mut* self, u64 now) -> u64
 {
     if self->tlp_counter >= DEAD_TLPS {
+        log::debug("sent %u tlps, but last ack was seen %u ms ago",
+            (uint)self->tlp_counter,
+            (uint)(now - self->time_last_ack_received)
+        );
         return 0;
     }
 
@@ -276,8 +318,21 @@ export fn keepalive(Q+qt mut* self, u64 now) -> u64
             //self->dump();
             // mark all old frames as lost
             for (usize mut i = 0; i < qt; i++) {
-                if self->q[i].sent_at != 0 && self->q[i].acked_at == 0 && now >= self->q[i].sent_at + tt {
-                    //log::debug("  resend %u (lost pkt %zu) typ %u size %u", i, self->q[i].packet, self->q[i].typ, self->q[i].buf.at);
+                if self->q[i].sent_at != 0              // if this bucket was sent before
+                    && self->q[i].acked_at == 0         // but not ackd
+                    && now >= self->q[i].sent_at + tt   // and it was sent more than backoff period ago
+                    {
+
+
+                        if self->q[i].typ == 5 {
+                            u64 order = byteorder::from_be64(unsafe<u64>(* ( (u64*)(self->q[i].buf.mem + 4))));
+                            log::debug("  resend bucket %u (lost in pkt %u) typ %u order %u",
+                                    (uint)i, (uint)(self->q[i].packet), (uint)(self->q[i].typ), (uint)(order));
+
+                        } else {
+                            log::debug("  resend bucket %u (lost in pkt %u) typ %u size %u",
+                                    (uint)i, (uint)(self->q[i].packet), (uint)(self->q[i].typ), (uint)(self->q[i].buf.at));
+                        }
 
                     //unsafe {
                     //    hex::dump(self->q[i].buf.slice.mem, self->q[i].buf.at);
@@ -354,12 +409,29 @@ fn make_frame_size(Frame mut* frame)
 export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) -> usize {
     assert(time != 0);
 
+    log::debug("q::send | self->sent: %u | self->back: %u |",
+        (uint)self->sent,
+        (uint)self->back
+    );
+
     static_attest(self->sent < len(self->q));
 
+    usize mut sent_frames_in_packet = 0;
     u16 mut sent_bytes = 0;
-    for (;self->sent != self->back; ) {
+    for (;(self->sent != self->back) && sent_bytes < 600; ) {
+
+        // workaround for in 176, where peer will send ack if ANY of the frames in the packet is ackd
+        if self->revision <= 176 {
+            if sent_frames_in_packet >0 {
+                break;
+            }
+        }
 
         Frame mut* f = &((self->q)[self->sent]);
+
+        if f->sent_at == 0 && f->typ == 0 {
+            log::warn("BUG: bucket %u has f->typ == 0", (uint)self->sent);
+        }
 
         if (f->sent_at == 0 && f->typ != 0 /*TODO how does this happen?*/) {
 
@@ -368,12 +440,25 @@ export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) 
             }
 
             make_frame_size(f);
-            log::debug("frame: %zu (typ: %d, size %d), sent in pkt %zu",
-                self->sent,
-                f->typ,
-                f->bufat,
-                counter
-            );
+            if f->typ == 5 {
+                u64 order = byteorder::from_be64(unsafe<u64>(* ( (u64*)(f->buf.mem + 4))));
+                log::debug("bucket %u (typ: %u, size %u, order %u), sent in pkt %u",
+                    (uint)self->sent,
+                    (uint)f->typ,
+                    (uint)f->bufat,
+                    (uint)order,
+                    (uint)counter
+                );
+
+
+            } else {
+                log::debug("bucket %u (typ: %u, size %u), sent in pkt %u",
+                    (uint)self->sent,
+                    (uint)f->typ,
+                    (uint)f->bufat,
+                    (uint)counter
+                );
+            }
 
 
             f->packet   = counter;
@@ -388,6 +473,7 @@ export fn send(Q+qt mut* self, u64 time, u8 mut* buf , u16 buflen, u64 counter) 
                 memcpy(buf + sent_bytes, (u8 mut*)f->buf.mem, f->bufat);
             }
             sent_bytes += (u16)f->bufat;
+            sent_frames_in_packet += 1;
         }
         (self->sent)++;
         if (self->sent >= qt) {

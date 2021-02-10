@@ -7,6 +7,9 @@ using io;
 using time;
 using buffer;
 using madpack;
+using mem;
+using pool;
+using pq;
 
 export closure open_fn       (Stream mut* self, err::Err mut *e, slice::Slice headers);
 export closure close_fn      (Stream mut* self, err::Err mut *e);
@@ -31,6 +34,10 @@ export struct Stream {
     u64 order_incomming;
     u64 order_outgoing;
 
+    // incomming out of order packet currently buffered
+    slice::Slice incomming_reorder;
+    u64 incomming_reorder_at;
+
     // don't catch errors. let them bubble to the top
     bool errors_are_fatal;
     bool closing;
@@ -45,6 +52,18 @@ export struct Stream {
 
     bool        memory_pressure;
     io::Io      memory_pressure_timer_io;
+}
+
+export fn cleanup(Stream mut * self)
+{
+    if self->incomming_reorder.mem != 0 {
+        static_attest(safe(self->chan));
+        static_attest(safe(self->chan->endpoint));
+        static_attest(pool::member(self->incomming_reorder.mem, &self->chan->endpoint->framebuffer));
+        self->chan->endpoint->framebuffer.free(self->incomming_reorder.mem);
+        self->incomming_reorder.mem = 0;
+        self->incomming_reorder.size = 0;
+    }
 }
 
 export fn index(Stream *self) -> slice::slice::Slice
@@ -65,7 +84,7 @@ export fn stream(Stream mut * self, err::Err mut*e, usize reserved_size) -> slic
     static_attest(safe(self->chan));
     let mut frame = self->chan->q.alloc(e, channel::FrameType::Stream, reserved_size + 14);
     if err::check(e) {
-        if e->error == err::OutOfTail {
+        if e->error == pq::MaxQ {
             self->memory_pressure = true;
         }
         unsafe {
@@ -90,7 +109,7 @@ export fn fragmented(Stream mut * self, err::Err mut*e, u32 fragments)
     static_attest(safe(self->chan));
     let mut frame = self->chan->q.alloc(e, channel::FrameType::Fragmented, 16);
     if err::check(e) {
-        if e->error == err::OutOfTail {
+        if e->error == pq::MaxQ {
             self->memory_pressure = true;
         }
         return;
@@ -143,6 +162,28 @@ pub fn incomming_stream(Stream mut*self, err::Err mut *e, u64 order, slice::Slic
     where err::checked(*e)
     where slice::slice::integrity(&b)
 {
+
+    // try to empty the reorder queue first
+    if self->incomming_reorder_at == self->order_incomming + 1 && self->incomming_reorder.mem != 0{
+
+        u64 tmp = self->incomming_reorder_at;
+        self->incomming_reorder_at = 0;
+
+        static_attest(slice::slice::integrity(&self->incomming_reorder));
+        bool r = incomming_stream(self, e, tmp, self->incomming_reorder);
+        if r {
+            self->incomming_reorder.mem  = 0;
+            self->incomming_reorder_at   = 0;
+        } else {
+            self->incomming_reorder_at = tmp;
+        }
+        if err::check(e) {
+            return r;
+        }
+    }
+
+
+
     if self->closing {
         return true;
     }
@@ -153,6 +194,25 @@ pub fn incomming_stream(Stream mut*self, err::Err mut *e, u64 order, slice::Slic
         return true;
     }
     if order != self->order_incomming + 1 {
+
+        // if this is +2 , buffer it until we received + 1
+        if order == self->order_incomming + 2 && self->incomming_reorder.mem == 0 {
+            static_attest(safe(self->chan));
+            static_attest(safe(self->chan->endpoint));
+            u8 mut * bcopy = self->chan->endpoint->framebuffer.malloc(b.size);
+            if bcopy == 0 {
+                return false;
+            }
+            unsafe{mem::copy(b.mem, bcopy, b.size);};
+            self->incomming_reorder.mem  = bcopy;
+            self->incomming_reorder.size = b.size;
+
+            self->incomming_reorder_at = order;
+
+            return true;
+        }
+
+
         // TODO buffer
         // cannot accept, resend later
         return false;
@@ -269,7 +329,9 @@ pub fn do_poll(Stream mut*self, err::Err mut *e, io::Async mut*async)
             if self->errors_are_fatal {
                 return;
             } else {
-                e->elog();
+                if e->error != pq::MaxQ {
+                    e->elog();
+                }
                 e->ignore();
             }
         }

@@ -14,8 +14,8 @@ import (
 func init() {
     cmd := &cobra.Command{
         Use:    "stream <target> <path>",
-        Short:  "open remote stream",
-        Long:   `open remote stream`,
+        Short:  "Open remote stream",
+        Long:   `Open remote stream`,
         Args:   cobra.MinimumNArgs(2),
         Run: func(cmd *cobra.Command, args []string) {
 

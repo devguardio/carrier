@@ -2,6 +2,7 @@ package src;
 
 import (
     "github.com/devguardio/carrier/go"
+    "github.com/cheggaaa/pb/v3"
     "github.com/spf13/cobra"
     "os"
     "log"
@@ -27,6 +28,9 @@ func init() {
             if err != nil { log.Fatal(err); }
             defer f.Close()
 
+            fi, err := f.Stat()
+            if err != nil {log.Fatal(err);}
+
             if _, err := io.Copy(hasher, f); err != nil {
                 log.Fatal(err)
             }
@@ -50,9 +54,14 @@ func init() {
             _, err = f.Seek(0, 0);
             if err != nil { log.Fatal(err); }
 
+
+            bar := pb.Full.Start64(fi.Size())
+            bar.Set(pb.Bytes, true)
+            reader := bar.NewProxyReader(f)
+
             for {
-                var bb = make([]byte, 300);
-                var l, err = f.Read(bb);
+                var bb = make([]byte, 500);
+                var l, err = reader.Read(bb);
                 if l == 0 {
                     stream.SendRaw(([]byte)(""));
                     break;
@@ -60,6 +69,7 @@ func init() {
                 if err != nil { log.Fatal(err); }
                 stream.SendRaw(bb[:l]);
             }
+            bar.Finish();
 
 
             msg := <- stream.Rx
@@ -82,7 +92,7 @@ func init() {
             }
 
             for msg := range stream.Rx {
-                fmt.Println(msg);
+                fmt.Println(string(msg));
             }
         },
     };
@@ -99,6 +109,9 @@ func init() {
             f, err := os.Open(args[1]);
             if err != nil { log.Fatal(err); }
             defer f.Close()
+
+            fi, err := f.Stat()
+            if err != nil {log.Fatal(err);}
 
             if _, err := io.Copy(hasher, f); err != nil {
                 log.Fatal(err)
@@ -124,9 +137,13 @@ func init() {
             _, err = f.Seek(0, 0);
             if err != nil { log.Fatal(err); }
 
+            bar := pb.Full.Start64(fi.Size())
+            bar.Set(pb.Bytes, true)
+            reader := bar.NewProxyReader(f)
+
             for {
-                var bb = make([]byte, 300);
-                var l, err = f.Read(bb);
+                var bb = make([]byte, 500);
+                var l, err = reader.Read(bb);
                 if l == 0 {
                     stream.SendRaw(([]byte)(""));
                     break;
@@ -134,6 +151,7 @@ func init() {
                 if err != nil { log.Fatal(err); }
                 stream.SendRaw(bb[:l]);
             }
+            bar.Finish();
 
             for msg := range stream.Rx {
                 headers, err := carrier.DecodeHeaders(msg);

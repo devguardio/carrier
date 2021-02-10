@@ -11,6 +11,7 @@ require (
 	github.com/GeertJohan/go.rice v1.0.2
 	github.com/aep/sour v0.0.0-20201222172635-50a85fb34ee6
 	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/cheggaaa/pb/v3 v3.0.5
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/daaku/go.zipexe v1.0.1 // indirect
 	github.com/devguardio/carrier/go v0.0.0-20201222160904-e93e1634be2d

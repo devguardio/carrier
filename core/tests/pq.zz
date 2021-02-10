@@ -1,6 +1,7 @@
 using err;
 using carrier::pq;
 using carrier::channel;
+using carrier::revision;
 using <stdio.h>::{fprintf, stderr, EOF};
 using <assert.h>::{assert};
 using pool;
@@ -37,7 +38,7 @@ test loss {
     stdin = {
         // enqueue 20 frames
         1, 20,
-        // at buffer of 5 bytes, send 20 packets, each 3 bytes long
+        // at buffer of 5 bytes, send 20 packets, each expected to be 3 bytes long
         2, 5, 20, 3,
         // expect empty queue
         3,
@@ -49,10 +50,12 @@ test loss {
         3,
         // after 2 ms
         4, 2,
-        // the packet 20 was acked, which means we have to resend 2-14
+        // the packet 20 was acked out of order
         5, 20,
-        // at buffer of 5 bytes, send 15 packets, each 3 bytes long
-        2, 5, 15, 3,
+        // nothing happens until keepalive triggers, which means we have to resend 2-19
+        7,
+        // at buffer of 5 bytes, send 18 packets, each expected to be 3 bytes long
+        2, 5, 18, 3,
         // expect empty queue
         3,
         // rtt should be 3, because packet 20 had an rtt of 4  and packet 1 of 2
@@ -71,6 +74,7 @@ fn main() -> int
     pool::Pool+1000 mut p = {0};
     p.make(16);
     pq::Q+100 mut q = {0};
+    q.revision = revision::revision();
     q.allocator = (pool::Pool mut*)&p;
 
     for(;;) {
@@ -79,6 +83,7 @@ fn main() -> int
         let mode        = (usize)getchar();
 
         switch mode {
+            // enqueue
             1 => {
                 let in_times    = (usize)getchar();
                 if in_times     == (usize)EOF { return 0; }
@@ -91,6 +96,7 @@ fn main() -> int
                     frame.push16(123);
                 }
             }
+            // dequeue
             2 => {
                 let outbuf_size = (usize)getchar();
                 if outbuf_size  == (usize)EOF { return 0; }
@@ -103,10 +109,12 @@ fn main() -> int
                 for (usize mut i = 0;i < out_times ; i++) {
                     usize sent1 = q.send(time, outbuf, outbuf_size, out_counter++);
                     if out_expected_size != sent1 {
+                        fprintf(stderr, "test expected out of %u bytes, but it we dequeued %u in iteration %u\n", out_expected_size , sent1, i);
                         return 2;
                     }
                 }
             }
+            // expect empty
             3 => {
                 u8 mut outbuf[1000];
                 usize sent1 = q.send(time, outbuf, static(len(outbuf)), out_counter);
@@ -114,16 +122,19 @@ fn main() -> int
                     return 3;
                 }
             }
+            // advance time
             4 => {
                 let more = (usize)getchar();
                 if more == (usize)EOF { return 0; }
                 time += (u64)more;
             }
+            // ack
             5 => {
                 let counter = (usize)getchar();
                 if counter  == (usize)EOF { return 0; }
                 q.ack(time, counter);
             }
+            // test rtt
             6 => {
                 let val = (u64)getchar();
                 if val  == (u64)EOF { return 0; }
@@ -131,6 +142,11 @@ fn main() -> int
                     fprintf(stderr, "test expected rtt %u, but it is actually %u\n", val, q.rtt);
                     return 6;
                 }
+            }
+            // idle until keepalive
+            7 => {
+                time += q.keepalive(time) + 1;
+                q.keepalive(time);
             }
             default => {
                 return 0;

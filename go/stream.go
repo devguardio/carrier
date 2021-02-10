@@ -91,7 +91,9 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
             if len(backbuffered[0]) > 500 {
                 C.carrier_stream_fragmented(stream, e, (C.uint32_t)((len(backbuffered[0]) / 500) + 1))
                 if err := ErrorCheck(e); err != nil {
-                    log.Println("cannot queue fragmented (will retry):", err);
+                    if e.error != C.carrier_pq_MaxQ {
+                        log.Println("cannot queue fragmented (will retry):", err);
+                    }
                     return;
                 }
 
@@ -110,7 +112,9 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
 
             frame := C.carrier_stream_stream(stream, e, (C.ulong)(len(backbuffered[0])));
             if err := ErrorCheck(e); err != nil {
-                log.Println("cannot queue frame (will retry):", err);
+                if e.error != C.carrier_pq_MaxQ {
+                    log.Println("cannot queue frame (will retry):", err);
+                }
                 return;
             }
             if len(backbuffered[0]) > 0 {

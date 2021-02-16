@@ -4,6 +4,13 @@ extern crate libc;
 
 #[derive(Copy,Clone)]
 #[repr(C)]
+pub struct Target {
+    pub v : [u8;    32] ,
+    pub t :u8 ,
+}
+
+#[derive(Copy,Clone)]
+#[repr(C)]
 pub struct Identity {
     pub k : [u8;    32] ,
 }
@@ -16,15 +23,15 @@ pub struct Address {
 
 #[derive(Copy,Clone)]
 #[repr(C)]
-pub struct IdentityKit {
-    pub identity :super::carrier_identity::Identity ,
-    pub network :super::carrier_identity::Address ,
+pub struct Secret {
+    pub k : [u8;    32] ,
 }
 
 #[derive(Copy,Clone)]
 #[repr(C)]
-pub struct Secret {
-    pub k : [u8;    32] ,
+pub struct IdentityKit {
+    pub identity :super::carrier_identity::Identity ,
+    pub network :super::carrier_identity::Address ,
 }
 
 #[derive(Copy,Clone)]
@@ -46,14 +53,59 @@ pub struct SecretKit {
     pub network :super::carrier_identity::Secret ,
 }
 
-#[derive(Copy,Clone)]
-#[repr(C)]
+pub mod heap {
+
 pub struct Target {
-    pub v : [u8;    32] ,
-    pub t :u8 ,
+    pub inner:  Box<super::Target>,
+    pub tail:   usize,
 }
 
-pub mod heap {
+impl std::ops::Deref for Target {
+    type Target = super::Target;
+
+    fn deref(&self) -> &super::Target {
+        self.inner.deref()
+    }
+}
+
+impl std::clone::Clone for Target {
+    fn clone(&self) -> Self {
+        unsafe {
+            let size = super::sizeof_Target();
+
+            let mut s = Box::new(vec![0u8; size]);
+            std::ptr::copy_nonoverlapping(self._self(), s.as_mut_ptr(), size);
+
+            let ss : *mut super::Target = std::mem::transmute(Box::leak(s).as_mut_ptr());
+
+            Self { inner: Box::from_raw(ss), tail: self.tail }
+        }
+    }
+}
+
+impl Target {
+    pub fn _tail(&mut self) -> usize {
+        self.tail
+    }
+    pub fn _self_mut(&mut self) -> *mut u8 {
+        unsafe { std::mem::transmute(self.inner.as_mut() as *mut super::Target) }
+    }
+    pub fn _self(&self) -> *const u8 {
+        unsafe { std::mem::transmute(self.inner.as_ref() as *const super::Target) }
+    }
+}
+
+impl Target {
+    pub fn new() -> Self {
+        let tail = 0;
+        let size = unsafe{super::sizeof_Target()};
+        unsafe {
+            let s = Box::new(vec![0u8; size]);
+            let ss : *mut super::Target = std::mem::transmute(Box::leak(s).as_mut_ptr());
+            Self { inner: Box::from_raw(ss), tail } 
+        }
+    }
+}
 
 pub struct Identity {
     pub inner:  Box<super::Identity>,
@@ -159,58 +211,6 @@ impl Address {
     }
 }
 
-pub struct IdentityKit {
-    pub inner:  Box<super::IdentityKit>,
-    pub tail:   usize,
-}
-
-impl std::ops::Deref for IdentityKit {
-    type Target = super::IdentityKit;
-
-    fn deref(&self) -> &super::IdentityKit {
-        self.inner.deref()
-    }
-}
-
-impl std::clone::Clone for IdentityKit {
-    fn clone(&self) -> Self {
-        unsafe {
-            let size = super::sizeof_IdentityKit();
-
-            let mut s = Box::new(vec![0u8; size]);
-            std::ptr::copy_nonoverlapping(self._self(), s.as_mut_ptr(), size);
-
-            let ss : *mut super::IdentityKit = std::mem::transmute(Box::leak(s).as_mut_ptr());
-
-            Self { inner: Box::from_raw(ss), tail: self.tail }
-        }
-    }
-}
-
-impl IdentityKit {
-    pub fn _tail(&mut self) -> usize {
-        self.tail
-    }
-    pub fn _self_mut(&mut self) -> *mut u8 {
-        unsafe { std::mem::transmute(self.inner.as_mut() as *mut super::IdentityKit) }
-    }
-    pub fn _self(&self) -> *const u8 {
-        unsafe { std::mem::transmute(self.inner.as_ref() as *const super::IdentityKit) }
-    }
-}
-
-impl IdentityKit {
-    pub fn new() -> Self {
-        let tail = 0;
-        let size = unsafe{super::sizeof_IdentityKit()};
-        unsafe {
-            let s = Box::new(vec![0u8; size]);
-            let ss : *mut super::IdentityKit = std::mem::transmute(Box::leak(s).as_mut_ptr());
-            Self { inner: Box::from_raw(ss), tail } 
-        }
-    }
-}
-
 pub struct Secret {
     pub inner:  Box<super::Secret>,
     pub tail:   usize,
@@ -258,6 +258,58 @@ impl Secret {
         unsafe {
             let s = Box::new(vec![0u8; size]);
             let ss : *mut super::Secret = std::mem::transmute(Box::leak(s).as_mut_ptr());
+            Self { inner: Box::from_raw(ss), tail } 
+        }
+    }
+}
+
+pub struct IdentityKit {
+    pub inner:  Box<super::IdentityKit>,
+    pub tail:   usize,
+}
+
+impl std::ops::Deref for IdentityKit {
+    type Target = super::IdentityKit;
+
+    fn deref(&self) -> &super::IdentityKit {
+        self.inner.deref()
+    }
+}
+
+impl std::clone::Clone for IdentityKit {
+    fn clone(&self) -> Self {
+        unsafe {
+            let size = super::sizeof_IdentityKit();
+
+            let mut s = Box::new(vec![0u8; size]);
+            std::ptr::copy_nonoverlapping(self._self(), s.as_mut_ptr(), size);
+
+            let ss : *mut super::IdentityKit = std::mem::transmute(Box::leak(s).as_mut_ptr());
+
+            Self { inner: Box::from_raw(ss), tail: self.tail }
+        }
+    }
+}
+
+impl IdentityKit {
+    pub fn _tail(&mut self) -> usize {
+        self.tail
+    }
+    pub fn _self_mut(&mut self) -> *mut u8 {
+        unsafe { std::mem::transmute(self.inner.as_mut() as *mut super::IdentityKit) }
+    }
+    pub fn _self(&self) -> *const u8 {
+        unsafe { std::mem::transmute(self.inner.as_ref() as *const super::IdentityKit) }
+    }
+}
+
+impl IdentityKit {
+    pub fn new() -> Self {
+        let tail = 0;
+        let size = unsafe{super::sizeof_IdentityKit()};
+        unsafe {
+            let s = Box::new(vec![0u8; size]);
+            let ss : *mut super::IdentityKit = std::mem::transmute(Box::leak(s).as_mut_ptr());
             Self { inner: Box::from_raw(ss), tail } 
         }
     }
@@ -418,70 +470,84 @@ impl SecretKit {
         }
     }
 }
-
-pub struct Target {
-    pub inner:  Box<super::Target>,
-    pub tail:   usize,
-}
-
-impl std::ops::Deref for Target {
-    type Target = super::Target;
-
-    fn deref(&self) -> &super::Target {
-        self.inner.deref()
-    }
-}
-
-impl std::clone::Clone for Target {
-    fn clone(&self) -> Self {
-        unsafe {
-            let size = super::sizeof_Target();
-
-            let mut s = Box::new(vec![0u8; size]);
-            std::ptr::copy_nonoverlapping(self._self(), s.as_mut_ptr(), size);
-
-            let ss : *mut super::Target = std::mem::transmute(Box::leak(s).as_mut_ptr());
-
-            Self { inner: Box::from_raw(ss), tail: self.tail }
-        }
-    }
-}
-
-impl Target {
-    pub fn _tail(&mut self) -> usize {
-        self.tail
-    }
-    pub fn _self_mut(&mut self) -> *mut u8 {
-        unsafe { std::mem::transmute(self.inner.as_mut() as *mut super::Target) }
-    }
-    pub fn _self(&self) -> *const u8 {
-        unsafe { std::mem::transmute(self.inner.as_ref() as *const super::Target) }
-    }
-}
-
-impl Target {
-    pub fn new() -> Self {
-        let tail = 0;
-        let size = unsafe{super::sizeof_Target()};
-        unsafe {
-            let s = Box::new(vec![0u8; size]);
-            let ss : *mut super::Target = std::mem::transmute(Box::leak(s).as_mut_ptr());
-            Self { inner: Box::from_raw(ss), tail } 
-        }
-    }
-}
 }
 extern {
+    #[link_name = "carrier_identity_identity_from_secret"]
+    pub fn r#identity_from_secret( Zpk: *mut u8,  Zsk: *const u8);
 
-    #[link_name = "carrier_identity_target_from_str"]
-    pub fn r#target_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+    #[link_name = "carrier_identity_address_to_str"]
+    pub fn r#address_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_identity_from_str"]
+    pub fn r#identity_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_dh"]
+    pub fn r#dh( Zout: *mut u8,  Zme: *const u8,  Zthem: *const u8);
+
+    #[link_name = "carrier_identity_secret_to_str_bc58"]
+    pub fn r#secret_to_str_bc58( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_type_string"]
+    pub fn r#type_string( Ztyp: u8)  -> *const u8;
 
 
     #[link_name = "carrier_identity_address_from_secret"]
     pub fn r#address_from_secret( Zpk: *mut u8,  Zsk: *const u8);
 
-    #[link_name = "carrier_identity_from_str_base32"]
-    pub fn r#from_str_base32( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zfrom: *const u8,  Zl: usize,  Zexpect_type: u8);
+    #[link_name = "carrier_identity_address_from_str"]
+    pub fn r#address_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_isnull"]
+    pub fn r#isnull( Zk: *const u8)  -> bool;
+
+    #[link_name = "carrier_identity_alias_to_u64"]
+    pub fn r#alias_to_u64( Zself: *const u8)  -> u64;
+
+    #[link_name = "carrier_identity_identitykit_to_str"]
+    pub fn r#identitykit_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_identity_from_cstr"]
+    pub fn r#identity_from_cstr( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8);
+
+    #[link_name = "carrier_identity_address_from_cstr"]
+    pub fn r#address_from_cstr( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8);
+
+
+    #[link_name = "carrier_identity_from_str_base58"]
+    pub fn r#from_str_base58( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zfrom: *const u8,  Zl: usize,  Zexpect_type: u8);
+
+    #[link_name = "carrier_identity_identity_to_str"]
+    pub fn r#identity_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_target_from_str"]
+    pub fn r#target_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_secretkit_to_str"]
+    pub fn r#secretkit_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_identity_to_slice"]
+    pub fn r#identity_to_slice( Ze: *mut u8,  Zfrom: *const u8,  Zsl: super::slice_mut_slice::MutSlice);
+
+    #[link_name = "sizeof_carrier_identity_Target"]
+    pub fn sizeof_Target() -> libc::size_t;
+
+    #[link_name = "carrier_identity_nullcheck"]
+    pub fn r#nullcheck( Ze: *mut u8,  Zk: *const u8);
+
+    #[link_name = "carrier_identity_secretkit_from_str"]
+    pub fn r#secretkit_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_eq"]
+    pub fn r#eq( Zself: *const u8,  Zother: *const u8)  -> bool;
+
+    #[link_name = "carrier_identity_address_to_str_bc58"]
+    pub fn r#address_to_str_bc58( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_identity_to_str_bc58"]
+    pub fn r#identity_to_str_bc58( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_alias_from_u64"]
+    pub fn r#alias_from_u64( Zself: *mut u8,  Zfrom: u64);
 
     #[link_name = "sizeof_carrier_identity_Identity"]
     pub fn sizeof_Identity() -> libc::size_t;
@@ -489,136 +555,70 @@ extern {
     #[link_name = "sizeof_carrier_identity_Address"]
     pub fn sizeof_Address() -> libc::size_t;
 
-    #[link_name = "sizeof_carrier_identity_IdentityKit"]
-    pub fn sizeof_IdentityKit() -> libc::size_t;
-
-    #[link_name = "carrier_identity_sign"]
-    pub fn r#sign( Zkey: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
+    #[link_name = "carrier_identity_to_str"]
+    pub fn r#to_str( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zversion: u8,  Ztyp: u8,  Zk: *const u8)  -> usize;
 
     #[link_name = "sizeof_carrier_identity_Secret"]
     pub fn sizeof_Secret() -> libc::size_t;
 
-    #[link_name = "sizeof_carrier_identity_Signature"]
-    pub fn sizeof_Signature() -> libc::size_t;
-
     #[link_name = "carrier_identity_secret_from_str"]
     pub fn r#secret_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
 
-    #[link_name = "carrier_identity_identity_from_cstr"]
-    pub fn r#identity_from_cstr( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8);
-
-    #[link_name = "carrier_identity_isnull"]
-    pub fn r#isnull( Zk: *const u8)  -> bool;
-
-    #[link_name = "carrier_identity_secretkit_from_str"]
-    pub fn r#secretkit_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
-
-    #[link_name = "carrier_identity_identitykit_to_str"]
-    pub fn r#identitykit_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_identity_to_str"]
-    pub fn r#identity_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_secret_generate"]
-    pub fn r#secret_generate( Zself: *mut u8,  Ze: *mut u8);
-
-    #[link_name = "sizeof_carrier_identity_Alias"]
-    pub fn sizeof_Alias() -> libc::size_t;
-
-    #[link_name = "carrier_identity_alias_to_str"]
-    pub fn r#alias_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_alias_from_u64"]
-    pub fn r#alias_from_u64( Zself: *mut u8,  Zfrom: u64);
-
-    #[link_name = "carrier_identity_address_to_str_bc58"]
-    pub fn r#address_to_str_bc58( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_address_to_str"]
-    pub fn r#address_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_to_str"]
-    pub fn r#to_str( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zversion: u8,  Ztyp: u8,  Zk: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_identity_to_string"]
-    pub fn r#identity_to_string( Zself: *const u8,  Ze: *mut u8,  Zstr: *mut u8);
-
-    #[link_name = "carrier_identity_from_str"]
-    pub fn r#from_str( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zfrom: *const u8,  Zl: usize,  Zexpect_type: u8);
-
-    #[link_name = "carrier_identity_address_from_cstr"]
-    pub fn r#address_from_cstr( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8);
-
-    #[link_name = "sizeof_carrier_identity_SecretKit"]
-    pub fn sizeof_SecretKit() -> libc::size_t;
-
-    #[link_name = "carrier_identity_secret_to_str_bc58"]
-    pub fn r#secret_to_str_bc58( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_identitykit_from_str"]
-    pub fn r#identitykit_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
-
-    #[link_name = "carrier_identity_secretkit_to_str"]
-    pub fn r#secretkit_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_nullcheck"]
-    pub fn r#nullcheck( Ze: *mut u8,  Zk: *const u8);
-
-    #[link_name = "carrier_identity_verify"]
-    pub fn r#verify( Zpk: *const u8,  Zs: *const u8,  Zsubject: *const u8,  Zsubject_len: usize)  -> bool;
-
-    #[link_name = "carrier_identity_alias_from_str"]
-    pub fn r#alias_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+    #[link_name = "sizeof_carrier_identity_IdentityKit"]
+    pub fn sizeof_IdentityKit() -> libc::size_t;
 
     #[link_name = "carrier_identity_secretkit_generate"]
     pub fn r#secretkit_generate( Zself: *mut u8,  Ze: *mut u8);
 
+    #[link_name = "carrier_identity_from_str"]
+    pub fn r#from_str( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zfrom: *const u8,  Zl: usize,  Zexpect_type: u8);
+
     #[link_name = "carrier_identity_secret_from_cstr"]
     pub fn r#secret_from_cstr( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8);
 
-    #[link_name = "carrier_identity_signature_from_str"]
-    pub fn r#signature_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
-
-    #[link_name = "carrier_identity_dh"]
-    pub fn r#dh( Zout: *mut u8,  Zme: *const u8,  Zthem: *const u8);
-
-    #[link_name = "carrier_identity_identity_to_str_bc58"]
-    pub fn r#identity_to_str_bc58( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_from_str_base58"]
-    pub fn r#from_str_base58( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zfrom: *const u8,  Zl: usize,  Zexpect_type: u8);
-
-    #[link_name = "carrier_identity_signature_to_str"]
-    pub fn r#signature_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_identity_from_secret"]
-    pub fn r#identity_from_secret( Zpk: *mut u8,  Zsk: *const u8);
-
-    #[link_name = "carrier_identity_to_str_bc58"]
-    pub fn r#to_str_bc58( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zversion: u8,  Ztyp: u8,  Zk: *const u8)  -> usize;
-
-    #[link_name = "carrier_identity_alias_to_u64"]
-    pub fn r#alias_to_u64( Zself: *const u8)  -> u64;
-
-    #[link_name = "sizeof_carrier_identity_Target"]
-    pub fn sizeof_Target() -> libc::size_t;
-
-    #[link_name = "carrier_identity_identity_to_slice"]
-    pub fn r#identity_to_slice( Ze: *mut u8,  Zfrom: *const u8,  Zsl: super::slice_mut_slice::MutSlice);
-
-    #[link_name = "carrier_identity_type_string"]
-    pub fn r#type_string( Ztyp: u8)  -> *const u8;
-
-    #[link_name = "carrier_identity_eq"]
-    pub fn r#eq( Zself: *const u8,  Zother: *const u8)  -> bool;
-
-    #[link_name = "carrier_identity_address_from_str"]
-    pub fn r#address_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+    #[link_name = "carrier_identity_secret_generate"]
+    pub fn r#secret_generate( Zself: *mut u8,  Ze: *mut u8);
 
     #[link_name = "carrier_identity_secret_to_str"]
     pub fn r#secret_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
 
-    #[link_name = "carrier_identity_identity_from_str"]
-    pub fn r#identity_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+    #[link_name = "carrier_identity_to_str_bc58"]
+    pub fn r#to_str_bc58( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zversion: u8,  Ztyp: u8,  Zk: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_alias_to_str"]
+    pub fn r#alias_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "carrier_identity_alias_from_str"]
+    pub fn r#alias_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_identitykit_from_str"]
+    pub fn r#identitykit_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_from_str_base32"]
+    pub fn r#from_str_base32( Zsize: usize,  Ze: *mut u8,  Zto: *mut u8,  Zfrom: *const u8,  Zl: usize,  Zexpect_type: u8);
+
+    #[link_name = "carrier_identity_signature_from_str"]
+    pub fn r#signature_from_str( Zself: *mut u8,  Ze: *mut u8,  Zfrom: *const u8,  Zl: usize);
+
+    #[link_name = "carrier_identity_identity_to_string"]
+    pub fn r#identity_to_string( Zself: *const u8,  Ze: *mut u8,  Zstr: *mut u8);
+
+    #[link_name = "carrier_identity_signature_to_str"]
+    pub fn r#signature_to_str( Ze: *mut u8,  Zto: *mut u8,  Zl: usize,  Zfrom: *const u8)  -> usize;
+
+    #[link_name = "sizeof_carrier_identity_Signature"]
+    pub fn sizeof_Signature() -> libc::size_t;
+
+    #[link_name = "sizeof_carrier_identity_Alias"]
+    pub fn sizeof_Alias() -> libc::size_t;
+
+    #[link_name = "carrier_identity_sign"]
+    pub fn r#sign( Zkey: *const u8,  Zs: *mut u8,  Zsubject: *const u8,  Zsubject_len: usize);
+
+    #[link_name = "carrier_identity_verify"]
+    pub fn r#verify( Zpk: *const u8,  Zs: *const u8,  Zsubject: *const u8,  Zsubject_len: usize)  -> bool;
+
+    #[link_name = "sizeof_carrier_identity_SecretKit"]
+    pub fn sizeof_SecretKit() -> libc::size_t;
 
 }

@@ -278,6 +278,16 @@ impl Identity {
         //err.check()?;
         String::from_utf8_lossy(&to[..len]).into()
     }
+
+    pub fn to_string_bc58(&self) -> String {
+        let mut to = vec![0u8;64];
+        let mut err = error::ZZError::new(2000);
+        let len = unsafe {
+            carrier_identity::identity_to_str_bc58(err.as_mut_ptr(), to.as_mut_ptr(), to.len(), self.0.as_ptr())
+        };
+        //err.check()?;
+        String::from_utf8_lossy(&to[..len]).into()
+    }
 }
 
 impl FromStr for Identity {

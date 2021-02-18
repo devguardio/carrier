@@ -6,15 +6,20 @@
 #include <sys/types.h>
 #include <pwd.h>
 #include <string.h>
+#include <stdlib.h>
 
 
 static size_t os_get_homedir(char *to, size_t to_len)
 {
-    struct passwd *pw = getpwuid(getuid());
-    if (pw == 0) {
-        return 0;
+    const char * homedir = getenv("HOME");
+
+    if (homedir == 0) {
+        struct passwd *pw = getpwuid(getuid());
+        if (pw == 0) {
+            return 0;
+        }
+        homedir = pw->pw_dir;
     }
-    const char *homedir = pw->pw_dir;
 
     size_t ll = strlen(homedir);
 

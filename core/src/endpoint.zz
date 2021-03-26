@@ -139,6 +139,7 @@ export fn native(Endpoint mut new* self, err::Err mut*e, usize xt = static(len(s
     os_carrier_endpoint_open(self, e);
 }
 
+//owns the vault, NOT making a clone
 export fn from_vault(Endpoint mut new* self, err::Err mut*e, vault::Vault vault, usize xt = static(len(self->framebuffer.pmem)))
     where err::checked(*e)
     where xt > xt/32

@@ -57,6 +57,16 @@ fn close(vault::Vault mut*self) {
     }
 }
 
+fn clone(vault::Vault mut*self, vault::Vault mut *nu) {
+    if self->user != 0 {
+        if nu->user != 0 {
+            free(nu->user);
+        }
+        nu->user = malloc(sizeof(Mem));
+        memcpy(nu->user, self->user, sizeof(Mem));
+    }
+}
+
 export fn from_carriertoml_and_secret(vault::Vault mut new *self, err::Err mut *e, char * file_name, identity::Secret * secret)
     where err::checked(*e)
     where nullterm(file_name)
@@ -106,6 +116,7 @@ fn i_from_carriertoml(vault::Vault mut new *self, err::Err mut *e, char * file_n
     self->i_del_authorization       = i_del_authorization;
     self->i_add_authorization       = i_add_authorization;
     self->i_close                   = close;
+    self->i_clone                   = clone;
 
 
     self->user = malloc(sizeof(Mem));

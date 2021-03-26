@@ -62,7 +62,7 @@ func Main() {
 
     router.GET("/_ui/vault", func(c *gin.Context) {
 
-        v, err := carrier.VaultFromHomeCarrierToml();
+        v, err := carrier.DefaultVault();
         if err != nil { log.Fatal(err);}
         defer v.Delete();
 

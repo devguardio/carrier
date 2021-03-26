@@ -6,7 +6,7 @@ package carrier;
 import "C"
 import (
     "github.com/pkg/errors"
-    "strings"
+    //"strings"
     "unsafe"
     "runtime"
 )
@@ -38,7 +38,7 @@ func(self *Error) Delete() {
 func ErrorCheck(e *C.err_Err) error {
     if e.error != 0 {
         message := C.GoString(C.buffer_cstr(&e.trace));
-        message  = strings.Split(message, "\n")[0]
+        //message  = strings.Split(message, "\n")[0]
 
 
         codestr  := "";

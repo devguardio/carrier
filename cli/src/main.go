@@ -24,7 +24,7 @@ func Main() {
         Use:    "identity",
         Short:  "Print out identity of this machine",
         Run: func(cmd *cobra.Command, args []string) {
-            vault, err := NewVault();
+            vault, err := carrier.DefaultVault();
             if err != nil { log.Fatal(err) }
             defer vault.Delete();
 

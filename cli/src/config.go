@@ -20,7 +20,7 @@ func init() {
                 return;
             }
 
-            vault, err := carrier.VaultFromHomeCarrierToml();
+            vault, err := carrier.DefaultVault();
             if err != nil { log.Fatal(err) }
             defer vault.Delete();
             var target *string;

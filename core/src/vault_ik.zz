@@ -23,6 +23,14 @@ export fn from_ik(vault::Vault mut new *self, err::Err mut *e, identity::SecretK
     self->ik                    = ik;
 }
 
+export fn from_ik_partial(vault::Vault mut *self, identity::SecretKit ik)
+{
+    self->i_get_local_identity  = i_get_local_identity;
+    self->i_sign_local          = i_sign_local;
+    self->i_get_network         = i_get_network;
+    self->ik                    = ik;
+}
+
 fn i_close(vault::Vault mut*self)
 {
 }

@@ -47,7 +47,7 @@ func (self *Conduit) NewVault() (*Vault, error) {
     if self.config.SecretKit != nil {
         return VaultFromSecretKit(self.config.SecretKit);
     } else {
-        return VaultFromHomeCarrierToml();
+        return DefaultVault();
     }
 
 }
@@ -178,7 +178,7 @@ func (pool *Conduit) startConduit2Broker(va C.carrier_vault_Broker) error {
     va2.d.broker[0] = va;
 
 
-    self.endpoint = EndpointNew(10000);
+    self.endpoint = NewEndpoint(10000);
 
     e := ErrorNew(1000);
     self.endpoint.CoDelete(e);

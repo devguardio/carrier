@@ -37,28 +37,18 @@ func (self *Vault) Take() C.carrier_vault_Vault {
     return d;
 }
 
-func VaultFromHomeCarrierToml() (*Vault, error) {
-
-    var self = &Vault{
+/// make a clone
+func (self *Vault) Clone() *Vault {
+    var nu = &Vault{
         d: (*C.carrier_vault_Vault)(C.calloc(1, C.real_sizeof_carrier_vault_Vault())),
     };
+    runtime.SetFinalizer(nu, func(nu *Vault){ nu.Delete()});
 
-    runtime.SetFinalizer(self, func(self *Vault){ self.Delete()});
-
-    var e = ErrorNew(1000);
-    defer e.Delete();
-
-    C.carrier_vault_toml_from_home_carriertoml(self.d, e.d);
-    if err := e.Check(); err != nil {
-        return nil, err;
-    }
-    self.open = true;
-
-    return self, nil;
+    C.carrier_vault_clone(self.d, nu.d);
+    return nu;
 }
 
-func VaultFromCarrierToml(file_name string) (*Vault, error) {
-
+func DefaultVault() (*Vault, error) {
     var self = &Vault{
         d: (*C.carrier_vault_Vault)(C.calloc(1, C.real_sizeof_carrier_vault_Vault())),
     };
@@ -67,10 +57,7 @@ func VaultFromCarrierToml(file_name string) (*Vault, error) {
     var e = ErrorNew(1000);
     defer e.Delete();
 
-    var file_name_cstr = C.CString(file_name);
-    C.free(unsafe.Pointer(file_name_cstr));
-
-    C.carrier_vault_toml_from_carriertoml(self.d, e.d, file_name_cstr);
+    C.carrier_vault_make(self.d, e.d);
     if err := e.Check(); err != nil {
         return nil, err;
     }

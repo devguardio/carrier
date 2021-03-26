@@ -4,8 +4,12 @@ using log;
 using mem;
 using buffer;
 using <string.h>::{memcpy};
+using <stdlib.h>::{getenv};
+using vault_toml;
+using vault_ik;
 
 export closure close_fn (Vault mut*self);
+export closure clone_fn (Vault mut* self, Vault mut *nu);
 
 export closure sign_fn         (Vault * self, identity::Signature mut *s, u8 * subject, usize subject_len);
 export closure get_identity_fn (Vault * self, identity::Identity mut*id);
@@ -35,6 +39,7 @@ export struct Broker packed {
 export struct Vault
 {
     close_fn                i_close;
+    clone_fn                i_clone;
 
     sign_fn                 i_sign_local;
     sign_fn                 i_sign_principal;
@@ -59,6 +64,23 @@ export struct Vault
     Broker broker[MAX_BROKERS];
 }
 
+
+// makes a clone of self which will still stay valid
+// after self has close()'d.
+// the new clone also needs to be close()'d
+export fn clone(Vault mut * self, Vault mut *nu)
+{
+    unsafe {
+        mem::copy(self, nu, sizeof(Vault));
+    }
+    if self->i_clone.fn != 0 {
+        static_attest(safe(self->i_clone));
+        self->i_clone(self, nu);
+    }
+}
+
+// close vault, freeing any external resources
+// do not use after calling close
 export fn close(Vault mut * self)
 {
     if self->i_close.fn != 0 {
@@ -67,6 +89,25 @@ export fn close(Vault mut * self)
     }
 }
 
+export fn make(Vault mut new *v, err::Err mut *e)
+    where err::checked(*e)
+{
+    vault_toml::from_home_carriertoml(v,e);
+    if err::check(e) {
+        return;
+    }
+
+    char * sks = getenv("CARRIER_SECRETKIT");
+    if sks != 0 {
+        static_attest(safe(sks));
+        static_attest(nullterm(sks));
+        new sk = identity::secretkit_from_str(e, sks, buffer::strlen(sks));
+        if err::check_ctx(e, "parsing CARRIER_SECRETKIT env") {
+            return;
+        }
+        vault_ik::from_ik_partial(v, sk);
+    }
+}
 
 
 struct CheckExistingAuthorizationState {

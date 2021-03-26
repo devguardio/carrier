@@ -22,6 +22,7 @@ using buffer;
 using base32;
 using byteorder;
 using slice;
+using mem;
 
 export symbol Invalid;
 
@@ -488,10 +489,11 @@ export fn alias_to_str (err::Err mut* e,      char mut* to, usize l, Alias * fro
 
 
 
-export fn secretkit_from_str (SecretKit mut* self, err::Err mut* e, char* from, usize l)
+export fn secretkit_from_str (SecretKit mut new* self, err::Err mut* e, char* from, usize l)
     where err::checked(*e)
     where l <= len(from)
 {
+    mem::zero(self);
     let k = (u8 mut*)self;
     static_attest(len(k) >= 64);
     from_str(64, e, k, from, l, 1);

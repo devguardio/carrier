@@ -26,7 +26,7 @@ type Subscriber struct {
 
 func (self *Conduit) Subscribe() (*Subscriber, error) {
 
-    va, err := VaultFromHomeCarrierToml();
+    va, err := DefaultVault();
     defer va.Delete();
     if err != nil {
         return nil, err;

@@ -27,7 +27,7 @@ type Endpoint struct {
 }
 
 // allocate uninitialized endpoint memory
-func EndpointNew(tail uint) *Endpoint {
+func NewEndpoint(tail uint) *Endpoint {
     self := &Endpoint{
         d:      (*C.carrier_endpoint_Endpoint)(C.calloc(1, C.real_sizeof_carrier_endpoint_Endpoint((C.size_t)(tail)))),
         tail:   (C.size_t)(tail),
@@ -54,17 +54,14 @@ func EndpointNew(tail uint) *Endpoint {
     return self;
 }
 
-// create a new endpoint from the default vault loading ~/.devguard/carrier.toml
-func EndpointFromHomeCarrierToml(tail uint) (*Endpoint, error) {
-    e := ErrorNew(1000);
-    defer e.Delete();
-
-    ep := EndpointNew(tail)
-    C.carrier_endpoint_from_home_carriertoml(ep.d, e.d, ep.tail);
-    if err := e.Check(); err != nil {
-        ep.Delete();
+// use default vault
+func DefaultEndpoint(tail uint) (*Endpoint, error) {
+    ep := NewEndpoint(tail);
+    va, err := DefaultVault();
+    if err != nil {
         return nil, err;
     }
+    ep.d.vault = va.Take();
     return ep, nil;
 }
 

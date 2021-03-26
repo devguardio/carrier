@@ -18,7 +18,8 @@ import (
 
 
 type ConnectOpt struct {
-    //SecretKit   SecretKit
+    Vault * Vault
+
     //Cancel      <-chan struct{}
 }
 
@@ -70,8 +71,22 @@ func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
         return nil, errors.Wrap(err, "can not parse target identity")
     }
 
-    ep, err := EndpointFromHomeCarrierToml(100000);
-    if err != nil { return nil, err; }
+    ep := NewEndpoint(100000);
+
+    hasv := false
+    if len(opt) > 0 {
+        if opt[0].Vault != nil {
+            ep.d.vault = opt[0].Vault.Clone().Take();
+            hasv = true
+        }
+    }
+    if !hasv {
+        va, err := DefaultVault();
+        if err != nil {
+            return nil, err;
+        }
+        ep.d.vault = va.Take();
+    }
 
     e := ErrorNew(1000);
     ep.CoDelete(e)

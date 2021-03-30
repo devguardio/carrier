@@ -35,6 +35,8 @@ func NewEndpoint(tail uint) *Endpoint {
         wakeup_rx: &C.io_Io{},
         wakeup_tx: &C.io_Io{},
     };
+    C.carrier_endpoint_none(self.d, self.tail);
+
     runtime.SetFinalizer(self, func(self *Endpoint){ self.Delete()});
 
     e := ErrorNew(1000);

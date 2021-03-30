@@ -126,7 +126,12 @@ export const slice::slice::Slice CONNECT = @madpack::preshare(
     "local",
     "internet",
     "broker",
-    "ipaddr"
+    "ipaddr",
+    "transport",
+    "ingress",
+    "ordered",
+    "reliable",
+    "type"
 );
 
 export fn connect() -> slice::slice::Slice
@@ -147,7 +152,20 @@ export const slice::slice::Slice TRACE = @madpack::preshare(
     "tx32",  // * 32 byte  total transmitted
     "rx32",  // * 32 byte  total received
     "tx32d", // * 32 byte per second transmitted
-    "rx32d" // * 32 byte per second received
+    "rx32d",// * 32 byte per second received
+    "channel",
+    "pkts_sent",
+    "pkts_lost",
+    "rtt",
+    "first_seen",
+    "last_seen",
+    "alias",
+    "allocation",
+    "transport",
+    "ingress",
+    "ordered",
+    "reliable",
+    "type"
 );
 
 export fn trace() -> slice::slice::Slice

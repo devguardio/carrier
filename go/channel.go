@@ -64,6 +64,106 @@ func (self *Channel) ded() {
 }
 
 
+// link but dont connect. return the broker channel
+func Link(target_str string, opt... ConnectOpt) (*Channel, error) {
+    target, err := TargetFromString(target_str)
+    if err != nil {
+        return nil, errors.Wrap(err, "can not parse target identity")
+    }
+
+    ep := NewEndpoint(100000);
+
+    hasv := false
+    if len(opt) > 0 {
+        if opt[0].Vault != nil {
+            ep.d.vault = opt[0].Vault.Clone().Take();
+            hasv = true
+        }
+    }
+    if !hasv {
+        va, err := DefaultVault();
+        if err != nil {
+            return nil, err;
+        }
+        ep.d.vault = va.Take();
+    }
+
+    e := ErrorNew(1000);
+    ep.CoDelete(e)
+
+    ep.ClusterMoveTarget(target);
+
+    err = ep.Bootstrap();
+    if err != nil { ep.Delete(); return nil, err; }
+
+    err = ep.Link();
+    if err != nil { ep.Delete(); return nil, err; }
+
+    var cha *C.carrier_channel_Channel = C.carrier_endpoint_broker(ep.d);
+
+    channel := &Channel{
+        endpoint:   ep,
+        synx:       make(chan *synx),
+        Revision:   (uint32)(cha.revision),
+    };
+
+    go func() {
+        defer func() {
+            ep.Close();
+            ep.Delete();
+
+            channel.ded();
+            log.Print("channel ended");
+        }();
+
+        for {
+
+            // read the command channel
+            for {
+                select {
+                    case synx := <- channel.synx:
+                        if synx.death != nil {
+                            ep.CoDelete(synx.death)
+                        }
+                        if synx.open != nil {
+                            stx, err := openStream(
+                                cha,
+                                synx.open.path,
+                                synx.open.opt,
+                            );
+                            synx.open.ack <- &openAck{
+                                Error:  err,
+                                Stream: stx,
+                            }
+                        }
+                        if synx.shutdown{
+                            ep.Shutdown();
+                            return;
+                        }
+                        continue;
+                    default:
+                };
+                break;
+            }
+
+            ready, err := ep.WaitEvent()
+            if err != nil {
+                log.Print("endpoint failed", err);
+                return;
+            }
+            if ready {
+                log.Print("unexpected unlink");
+                return;
+            }
+
+        }
+    }()
+
+    return channel, nil;
+
+}
+
+// link and connect to target, return the target channel
 func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
 
     target, err := TargetFromString(target_str)

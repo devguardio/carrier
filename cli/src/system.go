@@ -135,6 +135,37 @@ func init() {
         },
     };
 
+    traceCmd := &cobra.Command{
+
+        Use:    "trace <target>",
+        Short:  "Dump target stats",
+        Args:   cobra.MinimumNArgs(1),
+        Run: func(cmd *cobra.Command, args []string) {
+            con , err := carrier.Link(IdentityOrNameFromCli(args[0]));
+            if err != nil { log.Fatal(err); }
+            defer con.Shutdown();
+
+            stream, err := con.Open("/carrier.broker.v2/broker/trace");
+            if err != nil { log.Fatal(err); }
+
+            stream.Index = carrier.PresharedIndexTrace();
+
+            err = stream.Send(map[string]interface{}{
+                "target": args[0],
+            });
+            if err != nil { log.Fatal(err); }
+
+            msg, err := stream.Receive();
+            if err != nil { log.Fatal(err); }
+
+            j, err := json.MarshalIndent(msg, "", "  ")
+            if err != nil {log.Fatal(err); }
+            os.Stdout.Write(j);
+            os.Stdout.Write([]byte("\n"));
+
+        },
+    };
+
     systemCmd := &cobra.Command{
         Use:    "get <subcommand>",
         Short:  "Standard apis",
@@ -142,6 +173,7 @@ func init() {
     systemCmd.AddCommand(getInfoCmd);
     systemCmd.AddCommand(getSensorsCmd);
     systemCmd.AddCommand(getDiscoveryCmd);
+    systemCmd.AddCommand(traceCmd);
 
     rootCmd.AddCommand(systemCmd);
 }

@@ -17,6 +17,9 @@ test oom {
     exit  = 1
 }
 
+
+// we dont do that anymore, for simplicity
+/*
 test packing {
     stdin = {
         // enqueue 5 frames
@@ -33,6 +36,7 @@ test packing {
         3,
     }
 }
+*/
 
 test loss {
     stdin = {
@@ -74,7 +78,7 @@ fn main() -> int
     pool::Pool+1000 mut p = {0};
     p.make(16);
     pq::Q+100 mut q = {0};
-    q.revision = revision::revision();
+    //q.revision = revision::revision();
     q.allocator = (pool::Pool mut*)&p;
 
     for(;;) {

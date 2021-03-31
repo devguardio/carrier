@@ -25,9 +25,13 @@ export fn from_ik(vault::Vault mut new *self, err::Err mut *e, identity::SecretK
 
 export fn from_ik_partial(vault::Vault mut *self, identity::SecretKit ik)
 {
+    self->i_advance_clock       = i_advance_clock;
     self->i_get_local_identity  = i_get_local_identity;
+    self->i_get_principal_identity  = i_get_local_identity;
     self->i_sign_local          = i_sign_local;
+    self->i_sign_principal      = i_sign_local;
     self->i_get_network         = i_get_network;
+    self->i_get_network_secret  = i_get_network_secret;
     self->ik                    = ik;
 }
 
@@ -56,6 +60,13 @@ fn i_get_network (vault::Vault *self, identity::Address mut * addr)
     identity::address_from_secret (addr, &self->ik.network);
 }
 
+fn i_get_network_secret (vault::Vault *self, identity::Secret mut * secret)
+{
+    unsafe {
+        mem::copy(&self->ik.network, secret, sizeof(identity::Secret));
+    }
+}
+
 fn i_set_network (vault::Vault *self, err::Err mut *e, identity::Secret * secret)
     where err::checked(*e)
 {
@@ -80,4 +91,11 @@ fn i_add_authorization(vault::Vault mut*self, err::Err mut*e, identity::Identity
     where nullterm(resource)
 {
     err::fail(e, err::NotImplemented, "secretkit is immutable");
+}
+
+fn i_get_secretkit (vault::Vault *self, identity::SecretKit mut * secret)
+{
+    unsafe {
+        mem::copy(&self->ik, secret, sizeof(identity::SecretKit));
+    }
 }

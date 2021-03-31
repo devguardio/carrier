@@ -64,7 +64,7 @@ pub fn from_transfer (Channel mut new*self, Transfer tr)
     self->c_mine    = tr.c_mine;
     self->c_them    = tr.c_them;
     self->q.rtt     = tr.rtt;
-    self->q.revision = tr.revision;
+    //self->q.revision = tr.revision;
     self->counter_out  = tr.counter_out;
     self->outgoing_acks_at = tr.outgoing_acks_at;
 }

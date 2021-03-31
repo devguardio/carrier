@@ -84,6 +84,10 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
             }
         }
 
+        if len(backbuffered) > 0 {
+            C.io_wake(async);
+        }
+
         for  {
             if len(backbuffered) < 1 {
                 break;
@@ -125,6 +129,7 @@ func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOpt
             }
             backbuffered = backbuffered [1:]
         }
+
 
     });
     destructors = append(destructors, func() { release_cb_carrier_stream_poll_fn(sc.poll) });

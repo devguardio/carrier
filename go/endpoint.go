@@ -122,7 +122,7 @@ func (self *Endpoint) CoDelete(destructor Delete) {
 
 // request to be linked to same cluster node as target
 func (self *Endpoint) ClusterMoveTarget(target *Target) {
-    C.carrier_endpoint_cluster_target(self.d, (*C.carrier_identity_Target)(target));
+    C.carrier_endpoint_cluster_target(self.d, target.CPtr());
 }
 
 // request to be linked static to the first broker in the list

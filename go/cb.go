@@ -459,8 +459,11 @@ func go_call_cb_carrier_vault_list_authorizations_cb(
         string,
     ));
 
+    var gid  = &Identity{};
+    C.memcpy(unsafe.Pointer(gid), unsafe.Pointer(id), C.sizeof_carrier_identity_Identity);
+
     vf(
-        ((*Identity)(id)),
+        ((*Identity)(gid)),
         (C.GoString(resource)),
     );
 }

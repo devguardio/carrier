@@ -33,10 +33,10 @@ func ConduitInit() {
 
             for event := range sub.EventRx {
                 if event.T == carrier.PublishEvent {
-                    id, _ := event.Identity.String();
+                    id := event.Identity.String();
                     NetworkPublishers[id] = true
                 } else if event.T == carrier.UnpublishEvent {
-                    id, _ := event.Identity.String();
+                    id := event.Identity.String();
                     delete(NetworkPublishers, id);
                 }
             }

@@ -87,53 +87,52 @@ func VaultFromSecretKit(sk *SecretKit) (*Vault, error) {
 
 
 func (self *Vault) GetIdentity() *Identity {
-    var v = &C.carrier_identity_Identity{};
+    var v = &Identity{};
     C.carrier_vault_get_local_identity(
         self.d,
-        v,
+        v.CPtr(),
     );
-    return (*Identity)(v);
+    return v;
 }
 
 func (self *Vault) GetIdentityKit() *IdentityKit {
 
-    var v = &C.carrier_identity_IdentityKit{};
+    var v = &IdentityKit{};
 
     C.carrier_vault_get_local_identity(
         self.d,
-        &v.identity,
+        v.Identity.CPtr(),
     );
 
     C.carrier_vault_get_network(
         self.d,
-        &v.network,
+        v.Network.CPtr(),
     );
 
-
-    return (*IdentityKit)(v);
+    return v;
 }
 
 func (self *Vault) GetSecretKit() *SecretKit {
 
-    var v = &C.carrier_identity_SecretKit{};
+    var v = &SecretKit{};
 
     if C.carrier_vault_get_secretkit(
         self.d,
-        v,
+        v.CPtr(),
     ) == false {
         return nil;
     }
 
-    return (*SecretKit)(v);
+    return v;
 }
 
 func (self *Vault) GetNetwork() *Address{
-    var v = &C.carrier_identity_Address{};
+    var v = &Address{};
     C.carrier_vault_get_network(
         self.d,
-        v,
+        v.CPtr(),
     );
-    return (*Address)(v);
+    return v;
 }
 
 func (self *Vault) SetNetwork(join *Secret) error {
@@ -143,7 +142,7 @@ func (self *Vault) SetNetwork(join *Secret) error {
     C.carrier_vault_set_network(
         self.d,
         e.d,
-        (*C.carrier_identity_Secret)(join),
+        join.CPtr(),
     );
     if err := e.Check(); err != nil {
         return err;
@@ -183,7 +182,7 @@ func (self *Vault) AddAuthorization( addme * Identity, path string) error {
     C.carrier_vault_add_authorization(
         self.d,
         e.d,
-        (*C.carrier_identity_Identity)(addme),
+        addme.CPtr(),
         path_cstr,
     )
 
@@ -204,7 +203,7 @@ func (self *Vault) DelAuthorization( addme * Identity, path string) error {
     C.carrier_vault_del_authorization(
         self.d,
         e.d,
-        (*C.carrier_identity_Identity)(addme),
+        addme.CPtr(),
         path_cstr,
     )
 

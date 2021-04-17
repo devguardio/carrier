@@ -32,8 +32,7 @@ func (self *Conduit) Subscribe() (*Subscriber, error) {
         return nil, err;
     }
 
-    netstr, err := va.GetNetwork().String()
-    if err != nil { return nil, err; }
+    netstr := va.GetNetwork().String()
 
     var rx = make(chan Event);
 

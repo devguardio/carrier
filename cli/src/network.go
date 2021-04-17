@@ -26,10 +26,10 @@ func init() {
 
             for event := range net.EventRx {
                 if event.T == carrier.PublishEvent {
-                    id, _ := event.Identity.String();
+                    id := event.Identity.String();
                     fmt.Println("+", id);
                 } else if event.T == carrier.UnpublishEvent {
-                    id, _ := event.Identity.String();
+                    id := event.Identity.String();
                     fmt.Println("-", id);
                 }
             }
@@ -65,8 +65,7 @@ func init() {
             if err != nil { log.Fatal(err) }
             defer vault.Delete();
 
-            id, err := vault.GetNetwork().String();
-            if err != nil { log.Fatal(err) }
+            id := vault.GetNetwork().String();
             fmt.Println(id);
         },
     };

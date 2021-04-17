@@ -33,8 +33,7 @@ func init() {
                 if args[2] == "list" {
                     if target == nil {
                         err = vault.ListAuthorizations(func(id *carrier.Identity, path string) {
-                            idstr, err  := id.String();
-                            if err != nil { log.Fatal(err) }
+                            idstr := id.String();
                             fmt.Println(idstr, path);
                         });
                         if err != nil { log.Fatal(err) }
@@ -88,8 +87,7 @@ func init() {
                 if args[2] == "get" {
                     if target == nil {
                         addr := vault.GetNetwork();
-                        addrstr, err := addr.String();
-                        if err != nil { log.Fatal(err) }
+                        addrstr := addr.String();
                         fmt.Println(addrstr);
                         return;
                     }

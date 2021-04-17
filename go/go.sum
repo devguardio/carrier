@@ -1,2 +1,6 @@
+github.com/go-daq/crc8 v0.0.0-20170116120732-380c22547098 h1:3nEKbx1O3wy7Czi49ALR70ApaFyHp1SDdgTxb7lsrns=
+github.com/go-daq/crc8 v0.0.0-20170116120732-380c22547098/go.mod h1:AaVLbiJT3SvaMMo8D1evl9xPwKu0uhovohUnFuB9ggw=
 github.com/pkg/errors v0.8.1 h1:iURUrRGxPUNPdy5/HRSm+Yj6okJ6UtLINN0Q9M4+h3I=
 github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
+github.com/shengdoushi/base58 v1.0.0 h1:tGe4o6TmdXFJWoI31VoSWvuaKxf0Px3gqa3sUWhAxBs=
+github.com/shengdoushi/base58 v1.0.0/go.mod h1:m5uIILfzcKMw6238iWAhP4l3s5+uXyF3+bJKUNhAL9I=

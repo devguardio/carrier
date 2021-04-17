@@ -28,8 +28,7 @@ func Main() {
             if err != nil { log.Fatal(err) }
             defer vault.Delete();
 
-            id, err := vault.GetIdentity().String();
-            if err != nil { log.Fatal(err) }
+            id := vault.GetIdentity().String();
             fmt.Println(id);
         },
     });

@@ -66,13 +66,13 @@ func Main() {
         if err != nil { log.Fatal(err);}
         defer v.Delete();
 
-        identitykit, err := v.GetIdentityKit().String()
+        identitykit := v.GetIdentityKit().String()
         if err != nil { log.Fatal(err);}
 
-        identity, err := v.GetIdentity().String()
+        identity := v.GetIdentity().String()
         if err != nil { log.Fatal(err);}
 
-        network, err := v.GetNetwork().String()
+        network := v.GetNetwork().String()
         if err != nil { log.Fatal(err);}
 
         c.HTML(http.StatusOK, "vault.html", gin.H{

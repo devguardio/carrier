@@ -22,8 +22,7 @@ func init() {
             if id == nil {
                 log.Fatal("this vault does not allow exporting secrets");
             }
-            ids, err := id.String();
-            if err != nil { log.Fatal(err) }
+            ids := id.AsString();
             fmt.Println(ids);
         },
     };
@@ -35,8 +34,7 @@ func init() {
             if err != nil { log.Fatal(err) }
             defer vault.Delete();
 
-            id, err := vault.GetIdentity().String();
-            if err != nil { log.Fatal(err) }
+            id := vault.GetIdentity().String();
             fmt.Println(id);
         },
     };

@@ -21,7 +21,7 @@ type Conduit struct {
 
     shutdown    chan <- chan <- bool
     // list of channels to brokers. only written from the main thread in StartConduit
-    brokers     map[C.carrier_vault_Broker]*conduit2broker
+    brokers     map[Address]*conduit2broker
     // callbacks to add streams to each broker connection
     each        []func(ep *Endpoint)
 }
@@ -58,7 +58,7 @@ func StartConduit(opts ...ConduitConfig) (*Conduit, error) {
 
     self := &Conduit{
         shutdown: shutdown,
-        brokers: make(map[C.carrier_vault_Broker]*conduit2broker),
+        brokers: make(map[Address]*conduit2broker),
     }
 
     if len(opts) > 0 {
@@ -135,36 +135,50 @@ func (self *Conduit) syncBrokerList() error {
 
     log.Println("bootstrap");
 
-    va, err := self.NewVault();
+    records, err := bootstrap();
     if err != nil {
         return err;
     }
-    defer va.Delete();
 
-    async := AsyncNew(100);
-    defer async.Delete();
-
-    C.carrier_bootstrap_sync(e.d, va.d, async.Base(), C.time_from_seconds(10));
-    if err := e.Check(); err != nil {
-        return err;
-    }
-
-    for i := 0; i < C.carrier_vault_MAX_BROKERS; i++ {
-        if va.d.broker[i].protocol == 0 {
-            continue;
-        }
-
-        if _ , ok := self.brokers[va.d.broker[i]]; !ok {
-            err = self.startConduit2Broker(va.d.broker[i]);
+    for _,record := range records {
+        if _ , ok := self.brokers[record.Xaddr]; !ok {
+            err := self.startConduit2Broker(record);
             if err != nil {
                 return err;
             }
         }
     }
+
+    //va, err := self.NewVault();
+    //if err != nil {
+    //    return err;
+    //}
+    //defer va.Delete();
+
+    //async := AsyncNew(100);
+    //defer async.Delete();
+
+    //C.carrier_bootstrap_sync(e.d, va.d, async.Base(), C.time_from_seconds(10));
+    //if err := e.Check(); err != nil {
+    //    return err;
+    //}
+
+    //for i := 0; i < C.carrier_vault_MAX_BROKERS; i++ {
+    //    if va.d.broker[i].protocol == 0 {
+    //        continue;
+    //    }
+
+    //    if _ , ok := self.brokers[va.d.broker[i]]; !ok {
+    //        err = self.startConduit2Broker(va.d.broker[i]);
+    //        if err != nil {
+    //            return err;
+    //        }
+    //    }
+    //}
     return nil;
 }
 
-func (pool *Conduit) startConduit2Broker(va C.carrier_vault_Broker) error {
+func (pool *Conduit) startConduit2Broker(va Record) error {
     shutdown := make(chan chan <- bool);
     self := &conduit2broker {
         shutdown: shutdown,
@@ -175,7 +189,7 @@ func (pool *Conduit) startConduit2Broker(va C.carrier_vault_Broker) error {
         return fmt.Errorf("vault  %w", err);
     }
     defer va2.Delete();
-    va2.d.broker[0] = va;
+    va2.d.broker[0] = va.ToC();
 
 
     self.endpoint = NewEndpoint(10000);
@@ -197,7 +211,7 @@ func (pool *Conduit) startConduit2Broker(va C.carrier_vault_Broker) error {
         return fmt.Errorf("link %w", err);
     }
 
-    pool.brokers[va] = self;
+    pool.brokers[va.Xaddr] = self;
 
     for _,f := range pool.each {
         f(self.endpoint)
@@ -207,7 +221,7 @@ func (pool *Conduit) startConduit2Broker(va C.carrier_vault_Broker) error {
         log.Println("started broker con");
         defer func() {
             self.endpoint.Delete();
-            pool.brokers[va].dead = true;
+            pool.brokers[va.Xaddr].dead = true;
             log.Println("stopped broker con");
         }();
 

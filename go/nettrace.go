@@ -25,9 +25,7 @@ func (self *Conduit) NetTrace() (*NetTraceResult , error) {
     }
     defer va.Delete();
 
-    netstr, err := va.GetNetwork().String()
-    if err != nil { return nil, err; }
-
+    netstr := va.GetNetwork().String()
 
     ret := &NetTraceResult{};
     var wg sync.WaitGroup

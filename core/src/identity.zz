@@ -238,11 +238,6 @@ fn to_str(usize size, err::Err mut* e, char mut* mut to, usize mut l, u8 version
     crc = crc8::crc8(crc, k, size);
 
     usize mut i = 0;
-    for (; i < size && size - i > 2; i++) {
-        if k[i] != 0 {
-            break;
-        }
-    }
     for (; i < size; i++) {
         b[bs] = k[i];
         bs += 1;

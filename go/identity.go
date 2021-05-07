@@ -310,11 +310,6 @@ func to_str(typ uint8, k []byte) string {
 
 
     i := 0;
-    for ; i < len(k) && len(k) - i > 2; i++ {
-        if k[i] != 0 {
-            break
-        }
-    }
     for ; i < len(k); i++ {
         b.WriteByte(k[i]);
     }

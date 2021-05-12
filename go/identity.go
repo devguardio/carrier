@@ -62,6 +62,10 @@ func (self *Identity) String() string {
     return to_str(9, self[:]);
 }
 
+func (self *Identity) String58() string {
+    return to_str58(9, self[:]);
+}
+
 func IdentityFromSecret(secret *Secret) *Identity {
     pkk := ed25519.NewKeyFromSeed(secret[:]).Public().(ed25519.PublicKey)
     var r Identity;
@@ -271,6 +275,33 @@ var crc8_table = crc8.Table([256]byte{
     0xd0, 0xee, 0xac, 0x92, 0x28, 0x16, 0x54, 0x6a, 0x45, 0x7b, 0x39, 0x07,
     0xbd, 0x83, 0xc1, 0xff,
 });
+
+func to_str58(typ uint8, k []byte) string {
+    var b     bytes.Buffer
+
+    b.WriteByte(8)
+    b.WriteByte(typ)
+    b.Write(k)
+
+    b.WriteByte(broken_crc8(0, b.Bytes()))
+
+    rr := base58.Encode(b.Bytes(), base58.BitcoinAlphabet)
+
+    return rr;
+}
+
+// this is the equivalent of the broken rust code in v8
+func broken_crc8(crc byte, data []byte) byte {
+    for i := 0; i < len(data); i++ {
+        if ((crc ^ data[i]) % 2 > 0) {
+            crc = 84;
+        } else {
+            crc = 0;
+        }
+    }
+    return crc;
+}
+
 
 func to_str(typ uint8, k []byte) string {
 

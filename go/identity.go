@@ -122,6 +122,17 @@ func (self *SecretKit) AsString() string {
     return to_str(1, b[:]);
 }
 
+func SecretKitFromString(from string) (*SecretKit, error) {
+    a, err := from_str(from, 1, 64)
+    if err != nil {
+        return nil, err;
+    }
+
+    var r SecretKit;
+    copy(r.Identity[:], a[:32])
+    copy(r.Network[:], a[32:64])
+    return &r, nil;
+}
 
 
 // -- target

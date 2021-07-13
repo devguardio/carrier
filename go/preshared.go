@@ -6,42 +6,35 @@ package carrier;
 import "C"
 import (
     "unsafe"
-    "runtime"
+    "github.com/aep/madpack/go"
 )
 
-type PresharedIndex struct {
-    sl      C.slice_slice_Slice
+func PresharedIndexDiscovery() * madpack.Index {
+    var sl = C.carrier_preshared_discovery()
+    var val = C.GoBytes((unsafe.Pointer(sl.mem)), (C.int)(sl.size));
+    idx, err := madpack.DecodeIndex(val)
+    if err != nil { panic(err) }
+    return idx
 }
 
-func PresharedIndexDiscovery() *PresharedIndex {
-    return &PresharedIndex{
-        sl: C.carrier_preshared_discovery(),
-    };
+func PresharedIndexSubscribe () *madpack.Index {
+    var sl = C.carrier_preshared_subscribe()
+    var val = C.GoBytes((unsafe.Pointer(sl.mem)), (C.int)(sl.size));
+    idx, err := madpack.DecodeIndex(val)
+    if err != nil { panic(err) }
+    return idx
 }
 
-func PresharedIndexSubscribe () *PresharedIndex {
-    return &PresharedIndex{
-        sl: C.carrier_preshared_subscribe(),
-    };
+func PresharedIndexTrace() *madpack.Index {
+    var sl = C.carrier_preshared_trace()
+    var val = C.GoBytes((unsafe.Pointer(sl.mem)), (C.int)(sl.size));
+    idx, err := madpack.DecodeIndex(val)
+    if err != nil { panic(err) }
+    return idx
 }
 
-func PresharedIndexTrace() *PresharedIndex {
-    return &PresharedIndex{
-        sl: C.carrier_preshared_trace(),
-    };
-}
-
-func PresharedIndexFrom (b []byte) *PresharedIndex {
-    var mem = C.CBytes(b);
-    sl := C.slice_slice_Slice{
-        mem:    (*C.uint8_t)(unsafe.Pointer(mem)),
-        size:   (C.size_t)(len(b)),
-    };
-
-    self := &PresharedIndex{sl}
-    runtime.SetFinalizer(self, func(self *PresharedIndex){
-        C.free(unsafe.Pointer(self.sl.mem));
-        self.sl.mem = nil
-    });
-    return self;
+func PresharedIndexFrom (b []byte) *madpack.Index {
+    idx, err := madpack.DecodeIndex(b)
+    if err != nil { panic(err) }
+    return idx
 }

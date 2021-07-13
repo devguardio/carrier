@@ -14,6 +14,7 @@ import (
     "log"
     "github.com/pkg/errors"
     "io"
+    "github.com/aep/madpack/go"
 )
 
 
@@ -329,7 +330,7 @@ type openAck struct {
 
 type Stream struct {
     ResponseHeaders     map[string][][]byte
-    Index               *PresharedIndex
+    Index               *madpack.Index
     Rx                  chan []byte
     Tx                  chan []byte
     Death               chan bool
@@ -437,7 +438,7 @@ func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, err
                 return nil, errors.New(em)
             }
 
-            var index_ps *PresharedIndex = nil;
+            var index_ps *madpack.Index = nil;
             if len(index) > 0 {
                 index_ps = PresharedIndexFrom(index)
             }

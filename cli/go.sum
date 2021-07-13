@@ -21,6 +21,8 @@ github.com/GeertJohan/go.rice v1.0.2/go.mod h1:af5vUNlDNkCjOZeSGFgIJxDje9qdjsO6h
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/VividCortex/ewma v1.1.1 h1:MnEK4VOv6n0RSY4vtRe3h11qjxL3+t0B8yOL8iMXdcM=
 github.com/VividCortex/ewma v1.1.1/go.mod h1:2Tkkvm3sRDVXaiyucHiACn4cqf7DpdyLvmxzcbUokwA=
+github.com/aep/madpack/go v0.0.0-20210713143643-5dcdb6ddcbff h1:bNgd3kDf0xSYY5f0eg4wdCiTDj4hBu/SOcbtFPA+EN0=
+github.com/aep/madpack/go v0.0.0-20210713143643-5dcdb6ddcbff/go.mod h1:heL/7GqfaX0sp/90gOZHLSKpArDZot+cCfb4Gqf1HBE=
 github.com/aep/sour v0.0.0-20201222172635-50a85fb34ee6 h1:nvDJhFGnC0jAlfgZ0G30s4zX+UTEdSGNXtoWlGepOFI=
 github.com/aep/sour v0.0.0-20201222172635-50a85fb34ee6/go.mod h1:LvXfdMmoKls70WWtRkIPFQPiG0PTkzp74Dpe2w9gUYs=
 github.com/akavel/rsrc v0.8.0/go.mod h1:uLoCtb9J+EyAqh+26kdrTgmzRBFPGOolLWKpdxkKq+c=

@@ -155,13 +155,12 @@ func (self * Initiator) Complete(pkt []byte) (*Channel, *string, error) {
         return nil, &instruction, nil
     }
 
-    return &Channel{
-        identity:       remote_identity,
-        route:          route,
-        s_send:         cs1,
-        s_recv:         cs2,
-    }, nil, nil
-
+    return NewChannel(9,
+        remote_identity,
+        route,
+        cs1,
+        cs2,
+    ), nil, nil
 }
 
 

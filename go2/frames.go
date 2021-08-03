@@ -9,37 +9,62 @@ import (
 )
 
 
-type Frame interface{}
+type Frame interface{
+    AckRequired()   bool
+    Len(version uint8)           int
+}
 
 type HeaderFrame struct {
     Stream  uint32
     Payload []byte
 }
+func (self HeaderFrame) AckRequired() bool { return true }
+func (self HeaderFrame) Len(version uint8) int { return 1 + 4 + 2 + len(self.Payload)}
 
 type StreamFrame struct {
     Stream  uint32
     Order   uint64
     Payload []byte
 }
+func (self StreamFrame) AckRequired() bool { return true }
+func (self StreamFrame) Len(version uint8) int { return 1 + 4 + 8 + 2 + len(self.Payload)}
 
 
 type AckFrame struct {
     Delay   uint16
     Acked   []uint64
 }
+func (self AckFrame) AckRequired() bool { return false }
+func (self AckFrame) Len(version uint8) int { return 1 + 2 + 2 + len(self.Acked) * 8}
 
 type PingFrame struct {}
+func (self PingFrame) AckRequired() bool { return true }
+func (self PingFrame) Len(version uint8) int { return 1 }
 
 type DisconnectFrame struct {}
+func (self DisconnectFrame) AckRequired() bool { return true }
+func (self DisconnectFrame) Len(version uint8) int { return 1 }
+
 
 type CloseFrame struct {
     Stream  uint32
     Order   uint64
+    Reason  uint8
 };
+func (self CloseFrame) AckRequired() bool { return true }
+func (self CloseFrame) Len(version uint8) int { if version >= 9 { return 1 +4 + 8 + 1 } else { return 1 + 4 + 8}}
 
 type ConfigFrame struct {
     Timeout   *uint16
     Sleeping  bool
+}
+func (self ConfigFrame) AckRequired() bool { return true }
+func (self ConfigFrame) Len(version uint8) int {
+    if self.Timeout == nil {
+        return 1 + 1 + 2
+    } else {
+        return 1 + 1 + 2 + 2
+    }
 }
 
 type FragmentedFrame struct {
@@ -47,10 +72,12 @@ type FragmentedFrame struct {
     Order       uint64
     Fragments   uint32
 };
+func (self FragmentedFrame) AckRequired() bool { return true }
+func (self FragmentedFrame) Len(version uint8) int { return 1 + 4 + 4 }
 
 
 
-func EncodeFrames(w  io.Writer, frames []Frame) error {
+func EncodeFrames(w  io.Writer, version uint8, frames []Frame) error {
     var err error
     for _, frame := range frames {
         switch frame.(type) {
@@ -126,7 +153,7 @@ func EncodeFrames(w  io.Writer, frames []Frame) error {
                 err = binary.Write(w, binary.BigEndian, &t)
                 if err != nil {return err}
 
-                var v = frame.(StreamFrame)
+                var v = frame.(CloseFrame)
 
                 err = binary.Write(w, binary.BigEndian, &v.Stream)
                 if err != nil {return err}
@@ -134,6 +161,10 @@ func EncodeFrames(w  io.Writer, frames []Frame) error {
                 err = binary.Write(w, binary.BigEndian, &v.Order)
                 if err != nil {return err}
 
+                if version >= 9 {
+                    err = binary.Write(w, binary.BigEndian, &v.Reason)
+                    if err != nil {return err}
+                }
 
             case FragmentedFrame:
                 var t uint8 = 0x08
@@ -160,7 +191,7 @@ func EncodeFrames(w  io.Writer, frames []Frame) error {
     return nil
 }
 
-func DecodeFrames(r  io.Reader) ([]Frame, error) {
+func DecodeFrames(r  io.Reader, version uint8) ([]Frame, error) {
 
     var rr []Frame
     var err error
@@ -240,6 +271,11 @@ func DecodeFrames(r  io.Reader) ([]Frame, error) {
 
                 err = binary.Read(r, binary.BigEndian, &v.Order)
                 if err != nil {return nil, err}
+
+                if version >= 9 {
+                    err = binary.Read(r, binary.BigEndian, &v.Reason)
+                    if err != nil {return nil, err}
+                }
 
                 rr = append(rr, v)
 

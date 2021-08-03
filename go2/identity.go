@@ -11,6 +11,8 @@ import (
     "crypto/ed25519"
     "github.com/shengdoushi/base58"
     "fmt"
+    "golang.org/x/crypto/curve25519"
+
 )
 
 
@@ -42,6 +44,10 @@ func (self *Secret) AsString() string  {
 
 func (self *Secret) Identity() *Identity {
     return IdentityFromSecret(self)
+}
+
+func (self *Secret) Address() *Address{
+    return AddressFromSecret(self)
 }
 
 func SecretFromString(from string) (*Secret, error) {
@@ -100,6 +106,16 @@ func AddressFromString(from string) (*Address, error) {
 func (self *Address) String() string {
     return to_str(6, self[:]);
 }
+
+func AddressFromSecret(from *Secret) *Address{
+    var base [32]byte
+    copy(base[:], curve25519.Basepoint)
+
+    var r Address;
+    curve25519.ScalarMult((*[32]byte)(&r), (*[32]byte)(from), &base);
+    return &r;
+}
+
 
 // -- identitykit
 

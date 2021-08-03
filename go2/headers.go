@@ -2,7 +2,7 @@ package carrier
 
 
 import (
-    "carrier/hpack"
+    "github.com/devguardio/carrier/go/hpack"
     "bytes"
 )
 

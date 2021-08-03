@@ -41,9 +41,12 @@ type PingFrame struct {}
 func (self PingFrame) AckRequired() bool { return true }
 func (self PingFrame) Len(version uint8) int { return 1 }
 
-type DisconnectFrame struct {}
+type DisconnectFrame struct {
+    Reason  uint8
+    Message string
+}
 func (self DisconnectFrame) AckRequired() bool { return true }
-func (self DisconnectFrame) Len(version uint8) int { return 1 }
+func (self DisconnectFrame) Len(version uint8) int { if version >=9 { return 1 + 1 + 2 + len(self.Message) } else { return 1 } }
 
 
 type CloseFrame struct {
@@ -110,6 +113,20 @@ func EncodeFrames(w  io.Writer, version uint8, frames []Frame) error {
                 var t uint8 = 0x03
                 err = binary.Write(w, binary.BigEndian, &t)
                 if err != nil {return err}
+
+                var v = frame.(DisconnectFrame)
+
+                if version >= 9 {
+                    err = binary.Write(w, binary.BigEndian, &v.Reason)
+                    if err != nil {return err}
+
+                    var l = uint16(len(v.Message))
+                    err = binary.Write(w, binary.BigEndian, &l)
+                    if err != nil {return err}
+
+                    _, err = w.Write([]byte(v.Message))
+                    if err != nil {return err}
+                }
 
             case HeaderFrame:
                 var t uint8 = 0x04
@@ -229,7 +246,22 @@ func DecodeFrames(r  io.Reader, version uint8) ([]Frame, error) {
                 rr = append(rr, PingFrame{})
 
             case 0x03:
-                rr = append(rr, DisconnectFrame{})
+
+                var v DisconnectFrame
+                if version >= 9 {
+                    err = binary.Read(r, binary.BigEndian, &v.Reason)
+                    if err != nil {return nil, err}
+
+                    var l uint16
+                    err = binary.Read(r, binary.BigEndian, &l)
+                    if err != nil {return nil, err}
+
+                    var vp = make([]byte, l)
+                    _, err = io.ReadFull(r, vp[:])
+                    if err != nil {return nil, err}
+                    v.Message = string(vp)
+                }
+                rr = append(rr, v)
 
             case 0x04:
                 var v HeaderFrame;

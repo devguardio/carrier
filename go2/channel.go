@@ -44,7 +44,6 @@ type Endpoint struct {
     tx              chan []byte
     brokerRoute     uint64
     routes          map[uint64]*Channel
-    stopped         bool
 }
 
 func (self * Endpoint) Broker() *Channel {
@@ -52,24 +51,23 @@ func (self * Endpoint) Broker() *Channel {
 }
 
 func (self * Endpoint) Unlink() {
-    for _,ch := range self.routes {
-        ch.Unlink();
-    }
-    for ;; {
-        time.Sleep(10*time.Millisecond)
-        if self.stopped {
-            return
+    for k,ch := range self.routes {
+        if ch == nil {
+            continue
         }
+        ch.Unlink();
+        self.routes[k] = nil
     }
 }
 func (self * Channel) Unlink() {
+    fmt.Println("unlink from", self.identity.String())
     for _,stream := range self.streams {
         stream.Close();
     }
-    self.send([]Frame{DisconnectFrame{}})
+    self.send([]Frame{DisconnectFrame{Reason:1}})
 }
 
-func (self * Channel) send (frames []Frame) error {
+func (self * Channel) send(frames []Frame) error {
 
     self.counter_out += 1;
 
@@ -99,7 +97,6 @@ func (self * Channel) send (frames []Frame) error {
     pkt = append(pkt, ciphertext...)
 
     self.ep.tx <- pkt
-
 
     self.recovery.OnPacketSent(self.counter_out, frames, self.version, uint64(time.Now().Unix()))
 
@@ -226,9 +223,6 @@ func (self * Endpoint) worker(conn *net.UDPConn, ctx context.Context) {
 
     defer close(self.tx)
     defer conn.Close();
-    defer func() {
-        self.stopped = true
-    }()
 
     self.routes[self.brokerRoute].send([]Frame{PingFrame{}})
 
@@ -241,8 +235,18 @@ func (self * Endpoint) worker(conn *net.UDPConn, ctx context.Context) {
                     continue
                 }
             case <- ctx.Done():
+                self.Unlink()
+                //only send what is already queued
+                var qqq = len(self.tx)
+                for i := 0; i < qqq; i++ {
+                    select {
+                        case pkt := <- self.tx:
+                            conn.Write(pkt)
+                        default:
+                    }
+                }
                 return;
-            case pkt,ok := <- self.tx:
+            case pkt, ok := <- self.tx:
                 if !ok {
                     return
                 }

@@ -29,6 +29,24 @@ type Vault struct {
 }
 
 func DefaultVault() (*Vault, error) {
+
+    fromenv  := os.Getenv("CARRIER_SECRETKIT")
+    if fromenv != "" {
+
+        sk, err := SecretKitFromString(fromenv)
+        if err != nil {
+            panic(fmt.Errorf("env var CARRIER_SECRETKIT: %w", err))
+        }
+
+        var self = &Vault{
+            Secret:     sk.Identity,
+            Network:    &sk.Network,
+        };
+        fmt.Println("my identity", self.Secret.Identity().String())
+        return self, nil;
+    }
+
+
     path, err := os.UserHomeDir()
     if err != nil {
         path = "/root/"

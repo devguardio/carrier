@@ -6,6 +6,7 @@ import (
     "strings"
     "log"
     "strconv"
+    "errors"
 )
 
 type Record struct {
@@ -14,7 +15,7 @@ type Record struct {
     Xaddr   Address;
 }
 
-func bootstrap() ([]Record, error) {
+func Bootstrap() ([]Record, error) {
 
     domains := strings.FieldsFunc(os.Getenv("CARRIER_BROKER_DOMAINS"), func(c rune) bool {
         return c == ':' || c == ';' || c == ','
@@ -32,51 +33,67 @@ func bootstrap() ([]Record, error) {
             return records, err;
         }
     	for _, txt := range txtrecords {
-            fields := strings.Fields(txt)
-
-            var netaddr *net.UDPAddr;
-            var xaddr   *Address;
-            var version uint8;
-
-            for _, field := range fields {
-                kv := strings.Split(field, "=")
-                if len(kv) != 2 {
-                    continue
-                }
-
-                if kv[0] == "n" {
-                    p, err := net.ResolveUDPAddr("udp", kv[1])
-                    if err != nil {
-                        log.Println("parsing xaddr from bootstrap: ", err);
-                        continue;
-                    }
-                    netaddr = p;
-                } else if kv[0] == "x" {
-                    p, err := AddressFromString(kv[1]);
-                    if err != nil {
-                        log.Println("parsing xaddr from bootstrap: ", err);
-                        continue;
-                    }
-                    xaddr = p;
-                } else if kv[0] == "carrier" {
-                    p, err := strconv.Atoi(kv[1])
-                    if err != nil {
-                        log.Println("parsing xaddr from bootstrap: ", err);
-                        continue;
-                    }
-                    version = uint8(p)
-                }
+            rc, err := parseTxtRecord(txt)
+            if err != nil {
+                continue
             }
-
-            if netaddr != nil && xaddr != nil {
-                records = append(records, Record {
-                    Netaddr: *netaddr,
-                    Xaddr:   *xaddr,
-                    Version: version,
-                });
-            }
+            records = append(records, rc)
     	}
     }
 
     return records, nil;
+}
+
+
+
+func parseTxtRecord(txt string) (Record, error) {
+
+    fields := strings.Fields(txt)
+
+    var netaddr *net.UDPAddr;
+    var xaddr   *Address;
+    var version uint8;
+
+    for _, field := range fields {
+        kv := strings.Split(field, "=")
+        if len(kv) != 2 {
+            continue
+        }
+
+        if kv[0] == "n" {
+            p, err := net.ResolveUDPAddr("udp", kv[1])
+            if err != nil {
+                log.Println("parsing xaddr from bootstrap: ", err);
+                continue;
+            }
+            netaddr = p;
+        } else if kv[0] == "x" {
+            p, err := AddressFromString(kv[1]);
+            if err != nil {
+                log.Println("parsing xaddr from bootstrap: ", err);
+                continue;
+            }
+            xaddr = p;
+        } else if kv[0] == "carrier" {
+            p, err := strconv.Atoi(kv[1])
+            if err != nil {
+                log.Println("parsing xaddr from bootstrap: ", err);
+                continue;
+            }
+            version = uint8(p)
+        }
+    }
+
+    if netaddr == nil {
+        return Record{}, errors.New("missing n= field")
+    }
+    if xaddr == nil {
+        return Record{}, errors.New("missing x= field")
+    }
+
+    return Record {
+        Netaddr: *netaddr,
+        Xaddr:   *xaddr,
+        Version: version,
+    }, nil
 }

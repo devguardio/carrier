@@ -1,225 +1,178 @@
-package carrier;
+package carrier
 
-/*
-#include "carrier_go.h"
-*/
-import "C"
+
 import (
-    "unsafe"
-    "log"
+    "math/rand"
+    "sync"
+    "io"
+    "errors"
+    "github.com/aep/madpack/go"
+    "bytes"
+    "encoding/json"
 )
 
-type OpenStreamOptions struct {
-    SendHeaders     map[string][][]byte
-    OnHeaders       func (headers map[string][][]byte)
-    OnMessage       func(msg []byte)
-    OnFragmented    func(uint32)
-    OnClose         func()
-    OnPoll          func() *[]byte
 
-    Critical        bool
-};
-
-func openStream(_chan *C.carrier_channel_Channel, path string, opt OpenStreamOptions) (*C.carrier_stream_Stream, error) {
-
-    var destructors [](func());
-    var destroy = func() {
-        for i := len(destructors) -1; i >= 0; i-- {
-            destructors[i]();
-        }
-    }
-
-    var sc = (*C.carrier_stream_Config)(C.calloc(1, C.real_sizeof_carrier_stream_Config()));
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(sc)) });
-
-    var path_c = C.CString(path);
-    destructors = append(destructors, func() { C.free(unsafe.Pointer(path_c)) });
-    sc.path         = path_c;
-
-
-
-    sc.stream = make_cb_carrier_stream_stream_fn(func(
-        stream  *C.carrier_stream_Stream,
-        e       *C.err_Err,
-        msg     C.slice_slice_Slice,
-    ) bool {
-        return on_stream(stream, e, msg, opt.OnHeaders, opt.OnMessage);
-    });
-    destructors = append(destructors, func() { release_cb_carrier_stream_stream_fn(sc.stream) });
-
-    sc.close = make_cb_carrier_stream_close_fn(func(
-        stream *C.carrier_stream_Stream,
-        e *C.err_Err,
-    ) {
-        if opt.OnClose != nil {
-            opt.OnClose();
-        }
-        destroy();
-    });
-    destructors = append(destructors, func() { release_cb_carrier_stream_close_fn(sc.close) });
-
-    sc.fragmented = make_cb_carrier_stream_fragmented_fn(func(
-        stream *C.carrier_stream_Stream,
-        e *C.err_Err,
-        fragments uint32,
-    ) bool {
-        if opt.OnFragmented != nil {
-            opt.OnFragmented(fragments);
-        }
-        return true;
-    });
-    destructors = append(destructors, func() { release_cb_carrier_stream_fragmented_fn(sc.fragmented) });
-
-    var backbuffered [][]byte;
-
-    sc.poll = make_cb_carrier_stream_poll_fn(func(
-        stream *C.carrier_stream_Stream,
-        e *C.err_Err,
-        async *C.io_Async,
-    ) {
-        if opt.OnPoll != nil {
-            maybebytes := opt.OnPoll();
-            if maybebytes != nil {
-                backbuffered = append(backbuffered, *maybebytes);
-            }
-        }
-
-        if len(backbuffered) > 0 {
-            C.io_wake(async);
-        }
-
-        for  {
-            if len(backbuffered) < 1 {
-                break;
-            }
-            if len(backbuffered[0]) > 500 {
-                C.carrier_stream_fragmented(stream, e, (C.uint32_t)((len(backbuffered[0]) / 500) + 1))
-                if err := ErrorCheck(e); err != nil {
-                    if e.error != C.carrier_pq_MaxQ {
-                        log.Println("cannot queue fragmented (will retry):", err);
-                    }
-                    return;
-                }
-
-                var chunk []byte
-                chunks := make([][]byte, 0, len(backbuffered[0])/500+1)
-                for len(backbuffered[0]) > 500 {
-                    chunk, backbuffered[0] = backbuffered[0][:500], backbuffered[0][500:]
-                    chunks = append(chunks, chunk)
-                }
-                if len(backbuffered[0]) > 0 {
-                    chunks = append(chunks, backbuffered[0])
-                }
-                backbuffered = append(chunks, backbuffered [1:]...)
-            }
-
-
-            frame := C.carrier_stream_stream(stream, e, (C.ulong)(len(backbuffered[0])));
-            if err := ErrorCheck(e); err != nil {
-                if e.error != C.carrier_pq_MaxQ {
-                    log.Println("cannot queue frame (will retry):", err);
-                }
-                return;
-            }
-            if len(backbuffered[0]) > 0 {
-                C.slice_mut_slice_append_bytes(
-                    &frame,
-                    (*C.uint8_t)(&backbuffered[0][0]), (C.ulong)(len(backbuffered[0])),
-                );
-            }
-            backbuffered = backbuffered [1:]
-        }
-
-
-    });
-    destructors = append(destructors, func() { release_cb_carrier_stream_poll_fn(sc.poll) });
-
-    e := ErrorNew(1000);
-    defer e.Delete();
-
-
-
-    var headermem = C.calloc(1, 400);
-    defer C.free(unsafe.Pointer(headermem));
-
-
-    var encoderslice_at C.size_t = 0;
-    encoderslice := C.slice_mut_slice_MutSlice {
-        mem:    (*C.uint8_t)(headermem),
-        size:   400,
-        at:     &encoderslice_at,
-    };
-
-    for k, values := range opt.SendHeaders {
-        var key = C.CString(k);
-        defer C.free(unsafe.Pointer(key));
-
-        for _, val := range values {
-            var value = C.CBytes(val);
-            defer C.free(unsafe.Pointer(value));
-
-            C.hpack_encoder_encode(
-                encoderslice,
-                e.d,
-                (*C.uint8_t)(unsafe.Pointer(key)),    (C.size_t)(len(k)),
-                (*C.uint8_t)(unsafe.Pointer(value)),  (C.size_t)(len(val)),
-            );
-        }
-
-    }
-
-    extraheaders := C.slice_slice_Slice{
-        mem:    (*C.uint8_t)(headermem),
-        size:   encoderslice_at,
-    };
-
-
-    var stx = C.carrier_channel_open_with_headers(_chan, e.d, sc, extraheaders);
-    if err := e.Check(); err != nil {
-        destroy();
-        return nil, err;
-    }
-
-    if opt.Critical {
-        stx.errors_are_fatal = true;
-    }
-
-    return stx, nil;
+type Stream struct {
+    Channel     *Channel
+    Stream      uint32
+    inorder     uint64
+    reorder     map[uint64][]byte
+    closedat    uint64
+    inwait      *sync.Cond
+    outorder    uint64
+    stop        bool
 }
 
 
-func on_stream(
-    self    *C.carrier_stream_Stream,
-    e       *C.err_Err,
-    msg     C.slice_slice_Slice,
+func (self * Stream) Close() {
+    self.inwait.L.Lock();
+    self.stop = true
+    self.inwait.L.Unlock();
+    self.inwait.Broadcast();
+}
 
-    onheaders   func(headers map[string][][]byte),
-    onmessage   func(msg []byte),
-) bool {
-    if self.state == 0 {
-        self.state = 1;
-        var it = C.hpack_decoder_Iterator{};
-        C.hpack_decoder_decode(&it, msg);
+func (self * Stream) in_close(order uint64) {
+    self.inwait.L.Lock();
+    self.closedat = order;
+    self.inwait.L.Unlock();
+    self.inwait.Broadcast();
+}
 
-        var kv = make(map[string][][]byte);
+func (self * Stream) in_stream(order uint64, body []byte) {
+    self.inwait.L.Lock();
+    self.reorder[order] = body
+    self.inwait.L.Unlock();
+    self.inwait.Broadcast();
+}
 
-        for {
-            if !C.hpack_decoder_next(&it, e) {
-                break;
-            }
-            var key = C.GoStringN((*C.char)(unsafe.Pointer(it.key.mem)), (C.int)(it.key.size));
-            var val = C.GoBytes((unsafe.Pointer(it.val.mem)), (C.int)(it.val.size));
-            kv[key] = append(kv[key], val);
+//TODO deadlocks when endpoint is closed
+func (self * Stream) RecvRaw() ([]byte, error) {
+
+    self.inwait.L.Lock();
+
+    for ;; {
+        if self.stop {
+            self.inwait.L.Unlock();
+            return nil, io.EOF
+        }
+        if self.inorder == self.closedat {
+            self.inorder+=1;
+            self.inwait.L.Unlock();
+            return nil, io.EOF
         }
 
-        if onheaders != nil {
-            onheaders(kv)
+        if v, ok := self.reorder[self.inorder]; ok {
+            self.inorder+=1;
+            self.inwait.L.Unlock();
+            return v, nil
         }
-    } else {
-        gs := C.GoBytes(unsafe.Pointer(msg.mem), (C.int)(msg.size));
-        if onmessage != nil {
-            onmessage(gs);
+
+        self.inwait.Wait();
+    }
+}
+
+func (self * Stream) RecvMadpack() (map[string]interface{}, error) {
+    v, err := self.RecvRaw()
+    if err != nil {return nil, err}
+
+    var r = bytes.NewBuffer(v)
+    dec := madpack.NewDecoder(r)
+
+    m, err := dec.DecodeMap()
+    if err != nil {return nil, err}
+    return m, nil
+}
+
+func (self * Stream) RecvMadpackJson() (string, error) {
+
+    v, err := self.RecvMadpack()
+    if err != nil {return "", err}
+
+    b, err := json.MarshalIndent(v, "", "  ")
+    if err != nil {return "", err}
+
+    return string(b), nil
+}
+
+func (self * Stream) SendRaw(b []byte) error {
+    self.outorder += 1;
+    return self.Channel.send([]Frame{StreamFrame{
+        Stream:  self.Stream,
+        Order:   self.outorder,
+        Payload: b,
+    }})
+}
+
+func (self * Stream) Send(m map[string]interface{}) error {
+    var w bytes.Buffer
+    enc := madpack.NewEncoder(&w);
+    for k,v := range m {
+        err := enc.EncodeKV(k, v)
+        if err != nil {return err}
+    }
+
+    return self.SendRaw(w.Bytes());
+}
+
+func (self * Channel) Open(path string) (*Stream, error) {
+
+    payload, err := EncodeHeaders(map[string][]string{
+        ":path": []string{path},
+    })
+    if err != nil {return nil, err}
+
+    var are_we_initiator = true
+
+    var i uint32 = 0;
+    for ;; {
+        i = rand.Uint32()
+
+        if are_we_initiator {
+            if i % 2 == 0 { continue }
+        } else {
+            if i % 2 == 1 { continue }
+        }
+
+        if _,ok := self.streams[i]; ok {
+            continue
+        }
+
+        break;
+    };
+
+    var stream = &Stream{
+        Channel:    self,
+        Stream:     i,
+        inwait:     sync.NewCond(&sync.Mutex{}),
+        reorder:    make(map[uint64][]byte),
+        inorder:    1,
+        outorder:   1,
+    }
+    self.streams[i] = stream
+
+    err = self.send([]Frame{HeaderFrame{
+        Stream: i,
+        Payload: payload,
+    }})
+
+    if err != nil {return nil, err}
+
+    h1, err := stream.RecvRaw()
+    if err != nil {return nil, err}
+
+    headers, err := DecodeHeaders(h1);
+    if err != nil {return nil, err}
+
+    if len(headers[":status"]) < 1 {
+        return nil, errors.New("no status")
+    }
+    if headers[":status"][0] != "200" {
+        if len(headers[":error"]) > 0 {
+            return nil, errors.New(headers[":status"][0] + ": " + headers[":error"][0])
+        } else {
+            return nil, errors.New(headers[":status"][0])
         }
     }
-    return true;
+
+    return stream, nil
 }

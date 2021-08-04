@@ -1,506 +1,353 @@
-package carrier;
+package carrier
 
-/*
-#cgo CFLAGS: -Wno-attributes
-#include "carrier_go.h"
-// DO NOT PUT INTO RELEASE BINARIES
-//#cgo CFLAGS: -g -fsanitize=address -fstack-protector-all
-//#cgo LDFLAGS: -g  -fsanitize=address
-*/
-import "C"
+
 import (
-    "unsafe"
-    "strconv"
-    "log"
-    "github.com/pkg/errors"
-    "io"
+    "github.com/flynn/noise"
+    "context"
+    "fmt"
+    "math/rand"
+    "time"
+    "net"
+    "errors"
+    "encoding/binary"
+    "bytes"
 )
 
-
-type ConnectOpt struct {
-    Vault * Vault
-
-    //Cancel      <-chan struct{}
-}
-
 type Channel struct {
-    Revision    uint32
-    synx        chan *synx
-    endpoint    *Endpoint
+    version     uint8
+    ep          *Endpoint
+    route       uint64
+    identity    Identity
+    s_send      *noise.CipherState
+    s_recv      *noise.CipherState
+
+    counter_out uint64
+    recovery    *Recovery
+
+    streams     map[uint32]*Stream
 }
 
-type synxOpen struct {
-    path    string
-    opt     OpenStreamOptions
-    ack     chan *openAck
-}
-
-type synx struct {
-    shutdown    bool
-    open        *synxOpen
-    death       Delete
-}
-
-
-type deathchan struct {
-    death chan bool
-}
-func (self *deathchan) Delete() {
-    select { case self.death <- true: default: }
-    close(self.death);
-}
-
-
-
-// reaper loop that runs until Shutdown to avoid race conditions
-func (self *Channel) ded() {
-    for synx := range self.synx {
-        if synx.open != nil {
-            synx.open.ack <- &openAck{
-                Error: errors.New("endpoint is closed"),
-            }
-        }
+func NewChannel(version uint8, remote_identity Identity, route uint64, cs1 *noise.CipherState, cs2 *noise.CipherState) *Channel {
+    return &Channel{
+        version:        9,
+        recovery:       NewRecovery(),
+        identity:       remote_identity,
+        route:          route,
+        s_send:         cs1,
+        s_recv:         cs2,
+        streams:        make(map[uint32]*Stream),
     }
 }
 
-
-// link but dont connect. return the broker channel
-func Link(target_str string, opt... ConnectOpt) (*Channel, error) {
-    target, err := TargetFromString(target_str)
-    if err != nil {
-        return nil, errors.Wrap(err, "can not parse target identity")
-    }
-
-    ep := NewEndpoint(100000);
-
-    hasv := false
-    if len(opt) > 0 {
-        if opt[0].Vault != nil {
-            ep.d.vault = opt[0].Vault.Clone().Take();
-            hasv = true
-        }
-    }
-    if !hasv {
-        va, err := DefaultVault();
-        if err != nil {
-            return nil, err;
-        }
-        ep.d.vault = va.Take();
-    }
-
-    e := ErrorNew(1000);
-    ep.CoDelete(e)
-
-    ep.ClusterMoveTarget(target);
-
-    err = ep.Bootstrap();
-    if err != nil { ep.Delete(); return nil, err; }
-
-    err = ep.Link();
-    if err != nil { ep.Delete(); return nil, err; }
-
-    var cha *C.carrier_channel_Channel = C.carrier_endpoint_broker(ep.d);
-
-    channel := &Channel{
-        endpoint:   ep,
-        synx:       make(chan *synx),
-        Revision:   (uint32)(cha.revision),
-    };
-
-    go func() {
-        defer func() {
-            ep.Close();
-            ep.Delete();
-
-            channel.ded();
-            log.Print("channel ended");
-        }();
-
-        for {
-
-            // read the command channel
-            for {
-                select {
-                    case synx := <- channel.synx:
-                        if synx.death != nil {
-                            ep.CoDelete(synx.death)
-                        }
-                        if synx.open != nil {
-                            stx, err := openStream(
-                                cha,
-                                synx.open.path,
-                                synx.open.opt,
-                            );
-                            synx.open.ack <- &openAck{
-                                Error:  err,
-                                Stream: stx,
-                            }
-                        }
-                        if synx.shutdown{
-                            ep.Shutdown();
-                            return;
-                        }
-                        continue;
-                    default:
-                };
-                break;
-            }
-
-            ready, err := ep.WaitEvent()
-            if err != nil {
-                log.Print("endpoint failed", err);
-                return;
-            }
-            if ready {
-                log.Print("unexpected unlink");
-                return;
-            }
-
-        }
-    }()
-
-    return channel, nil;
-
+type Endpoint struct {
+    Vault           *Vault
+    tx              chan []byte
+    brokerRoute     uint64
+    routes          map[uint64]*Channel
 }
 
-// link and connect to target, return the target channel
-func Connect(target_str string, opt... ConnectOpt) (*Channel, error) {
-
-    target, err := TargetFromString(target_str)
-    if err != nil {
-        return nil, errors.Wrap(err, "can not parse target identity")
-    }
-
-    ep := NewEndpoint(100000);
-
-    hasv := false
-    if len(opt) > 0 {
-        if opt[0].Vault != nil {
-            ep.d.vault = opt[0].Vault.Clone().Take();
-            hasv = true
-        }
-    }
-    if !hasv {
-        va, err := DefaultVault();
-        if err != nil {
-            return nil, err;
-        }
-        ep.d.vault = va.Take();
-    }
-
-    e := ErrorNew(1000);
-    ep.CoDelete(e)
-
-    ep.ClusterMoveTarget(target);
-
-    err = ep.Bootstrap();
-    if err != nil { ep.Delete(); return nil, err; }
-
-    err = ep.Link();
-    if err != nil { ep.Delete(); return nil, err; }
-
-    connect, err := IConnectStart(ep, target);
-    if err != nil { ep.Delete(); return nil, err; }
-    ep.CoDelete(connect);
-
-    var connectFail error = nil;
-    var cha *C.carrier_channel_Channel = nil;
-
-    connect.OnConnect(func(self*C.carrier_connect_Connect, c*C.carrier_channel_Channel){
-        cha = c;
-    });
-
-    connect.OnDisconnect(func(self*C.carrier_connect_Connect, ep * C.carrier_endpoint_Endpoint){
-        if cha == nil {
-            if connect.d.remoteError.at > 0 {
-                connectFail = errors.New("remote rejected: " +
-                    (string)(C.GoBytes(unsafe.Pointer(&connect.d.remoteError.mem), (C.int)(connect.d.remoteError.at))));
-            } else {
-                connectFail = errors.New("connection failed");
-            }
-        }
-        e := ErrorNew(100);
-        defer e.Delete();
-        C.carrier_endpoint_shutdown(ep, e.d);
-    });
-
-
-    /// wait for channel
-    for {
-        ready, err := ep.WaitEvent()
-        if err != nil {
-            ep.Delete();
-            return nil, err;
-        }
-        if ready {
-            ep.Delete();
-            return nil, errors.New("unexpected unlink");
-        }
-        if connectFail != nil {
-            ep.Delete();
-            return nil, connectFail;
-        }
-        if cha != nil {
-            break;
-        }
-    }
-
-
-    channel := &Channel{
-        endpoint:   ep,
-        synx:       make(chan *synx),
-        Revision:   (uint32)(cha.revision),
-    };
-
-    go func() {
-        defer func() {
-            ep.Close();
-            ep.Delete();
-
-            channel.ded();
-            log.Print("channel ended");
-        }();
-
-        for {
-
-            // read the command channel
-            for {
-                select {
-                    case synx := <- channel.synx:
-                        if synx.death != nil {
-                            ep.CoDelete(synx.death)
-                        }
-                        if synx.open != nil {
-                            stx, err := openStream(
-                                cha,
-                                synx.open.path,
-                                synx.open.opt,
-                            );
-                            synx.open.ack <- &openAck{
-                                Error:  err,
-                                Stream: stx,
-                            }
-                        }
-                        if synx.shutdown{
-                            ep.Shutdown();
-                            return;
-                        }
-                        continue;
-                    default:
-                };
-                break;
-            }
-
-            ready, err := ep.WaitEvent()
-            if err != nil {
-                log.Print("endpoint failed", err);
-                return;
-            }
-            if ready {
-                log.Print("unexpected unlink");
-                return;
-            }
-
-        }
-    }()
-
-    return channel, nil;
+func (self * Endpoint) Broker() *Channel {
+    return self.routes[self.brokerRoute]
 }
 
-
-func (self *Channel) Shutdown() {
-    death := make(chan bool);
-
-    self.endpoint.Wakeup();
-    self.synx <- &synx {
-        shutdown:   true,
-        death:      &deathchan{death},
-    };
-
-    <- death;
-    close(self.synx);
+func (self * Endpoint) Unlink() {
+    for k,ch := range self.routes {
+        if ch == nil {
+            continue
+        }
+        ch.Unlink();
+        self.routes[k] = nil
+    }
+}
+func (self * Channel) Unlink() {
+    fmt.Println("unlink from", self.identity.String())
+    for _,stream := range self.streams {
+        stream.Close();
+    }
+    self.send([]Frame{DisconnectFrame{Reason:1}})
 }
 
+func (self * Channel) send(frames []Frame) error {
 
-type openAck struct {
-    Stream  *C.carrier_stream_Stream
-    Error   error
-}
+    self.counter_out += 1;
 
-type Stream struct {
-    ResponseHeaders     map[string][][]byte
-    Index               *PresharedIndex
-    Rx                  chan []byte
-    Tx                  chan []byte
-    Death               chan bool
-    channel             *Channel
-}
-
-func (self *Channel) Open(path string, opts ... OpenStreamOptions) (*Stream, error) {
-
-    death_notifier  := make(chan bool);
-    await_headers   := make(chan map[string][][]byte)
-    await_close     := make(chan bool)
-    rx              := make(chan []byte, 1000);
-    tx              := make(chan []byte, 100);
-
-    ack := make(chan *openAck)
-
-
-    var frag_expected   uint32;
-    var frag_buffer     []byte;
-
-
-    var opt OpenStreamOptions;
-    if len(opts) > 0 {
-        opt = opts[0];
+    var pkt = []byte{
+        9,                  // version
+        0,0,0,              // reserved
+        0,0,0,0, 0,0,0,0,   // route
+        0,0,0,0, 0,0,0,0,   // counter
     }
 
-    opt.OnHeaders  = func (headers map[string][][]byte) {
-        await_headers <- headers
-    };
-    opt.OnMessage = func(msg []byte) {
-        if frag_expected > 0 {
-            frag_expected--;
-            frag_buffer = append(frag_buffer, msg...);
-            if frag_expected == 0 {
-                select {
-                case rx <- frag_buffer:
-                default:
+    binary.BigEndian.PutUint64(pkt[4:4+8],       self.route)
+    binary.BigEndian.PutUint64(pkt[4+8:4+8+8],   self.counter_out + 1 /* rust version has an off by one*/)
+
+    var w bytes.Buffer
+    w.Write([]byte{broken_crc8(0, pkt[:]), 0, 0, 0})
+
+    err := EncodeFrames(&w, self.version, frames)
+    if err != nil { return err }
+
+    var plaintext = w.Bytes()
+    var l = uint16(len(plaintext) - 4)
+    binary.BigEndian.PutUint16(plaintext[2:2+2], l)
+
+    plaintext = append(plaintext, (make([]byte, 64 - ((len(plaintext) - 16)  % 64)))...)
+
+    var ciphertext = self.s_send.Cipher().Encrypt(nil, self.counter_out, nil, plaintext)
+    pkt = append(pkt, ciphertext...)
+
+    self.ep.tx <- pkt
+
+    self.recovery.OnPacketSent(self.counter_out, frames, self.version, uint64(time.Now().Unix()))
+
+    return nil
+}
+
+func (self * Channel) handle(pkt []byte, n uint64) (error) {
+    plain, err := self.s_recv.Cipher().Decrypt(nil, n - 1, nil, pkt)
+    if err != nil { return err }
+
+    if len(plain) < 4 {
+        return nil
+    }
+
+    // v9: 2 bytes garbage crc
+    // 2 bytes payload real len
+    var reallen = binary.BigEndian.Uint16(plain[2:4])
+
+    if int(reallen) > len(plain) - 4 {
+        return errors.New("invalid encrypted payload len")
+    }
+
+    frames, err := DecodeFrames(bytes.NewBuffer(plain[4:4+reallen]), self.version)
+    if err != nil { return err }
+
+    var ack_required = false
+
+    for _, frame := range frames {
+
+        switch frame.(type) {
+            case HeaderFrame:
+                ack_required = true
+            case CloseFrame:
+                ack_required = true
+                var vv = frame.(CloseFrame);
+                stream := self.streams[vv.Stream];
+                if stream != nil {
+                    stream.in_close(vv.Order)
                 }
-                frag_buffer = []byte{};
-            }
-        } else {
-            select {
-            case rx <- msg:
-            default:
-            }
-        }
-    };
-    opt.OnClose  =  func() {
-        close(rx)
-        select {
-        case await_close <- true:
-        default:
-        }
-    };
-    opt.OnPoll = func() *[]byte {
-        select {
-            case msg := <- tx: {
-                return &msg;
-            }
-            default: return nil;
-        }
-    };
-    opt.OnFragmented = func(frags uint32) {
-        frag_expected   = frags;
-    };
+            case StreamFrame:
+                ack_required = true
+                var vv = frame.(StreamFrame);
+                stream := self.streams[vv.Stream];
+                if stream != nil {
+                    stream.in_stream(vv.Order, vv.Payload)
+                }
+            case PingFrame:
+                ack_required = true
+            case ConfigFrame:
+                ack_required = true
+            case AckFrame:
+                var vv = frame.(AckFrame);
 
-    self.endpoint.Wakeup();
-    self.synx <- &synx {
-        death: &deathchan{death_notifier},
-        open: &synxOpen {
-            path:   path,
-            ack:    ack,
-            opt:    opt,
-        },
-    };
-    oe := <- ack
+                _, frames := self.recovery.OnAckReceived (uint64(vv.Delay), vv.Acked, uint64(time.Now().Unix()))
+                if len(frames) > 0 {
+                    self.send(frames)
+                }
 
-    if oe.Error != nil {
-        return nil, oe.Error
+            case DisconnectFrame:
+                ack_required = true
+            case FragmentedFrame:
+                ack_required = true
+        }
     }
 
-    select {
-        case headers := <- await_headers: {
-            var index = []byte{};
-            var status = 999;
-            if len(headers[":status"]) > 0 {
-                status, _ = strconv.Atoi(string(headers[":status"][0]));
+    if ack_required {
+        err = self.send([]Frame{AckFrame{
+            Acked: []uint64{n},
+        }})
+        if err != nil { return err }
+    }
+
+    return nil
+}
+
+func (self * Endpoint) handle(pkt []byte) error {
+
+    if len(pkt) < 4 + 8 + 8 + 16 {
+        return errors.New("too small")
+    }
+
+    if pkt[0] != 9 {
+        return errors.New("invalid version")
+    }
+
+    route, _ , err := read_routing_key(pkt[4:])
+	if err != nil { return err }
+
+
+    n := binary.BigEndian.Uint64(pkt[4+8:])
+
+    ch := self.routes[route];
+    if ch == nil {
+        fmt.Println("s_recv pkt on unknown route", route);
+        return nil
+    }
+
+    return ch.handle(pkt[4 + 8 + 8:], n)
+}
+
+
+func (self * Endpoint) worker(conn *net.UDPConn, ctx context.Context) {
+
+    ctx, cancel := context.WithCancel(ctx)
+    r := make (chan []byte)
+
+    conn.SetDeadline(time.Time{})
+    go func() {
+        defer cancel()
+        defer close(r)
+        for ;; {
+            var pkt [2000]byte;
+            l, err := conn.Read(pkt[:]);
+            if err != nil {
+                if !errors.Is(err, net.ErrClosed) {
+                    fmt.Println(self.routes[self.brokerRoute].identity.String(), err)
+                }
+                return;
             }
-            for k,v := range headers {
-                if k == "index" {
-                    for _,v := range v {
-                        index = append(index, v[:]...);
+            r <- pkt[:l]
+        }
+    }()
+
+
+    defer close(self.tx)
+    defer conn.Close();
+
+    self.routes[self.brokerRoute].send([]Frame{PingFrame{}})
+
+    for ;; {
+        select {
+            case pkt := <- r:
+                err := self.handle(pkt)
+                if err != nil {
+                    fmt.Println(self.routes[self.brokerRoute].identity.String(), err)
+                    continue
+                }
+            case <- ctx.Done():
+                self.Unlink()
+                //only send what is already queued
+                var qqq = len(self.tx)
+                for i := 0; i < qqq; i++ {
+                    select {
+                        case pkt := <- self.tx:
+                            conn.Write(pkt)
+                        default:
                     }
                 }
-            }
-            if status >= 300 {
-                em := "status: ";
-                if len(headers[":status"]) > 0 {
-                    em += string(headers[":status"][0]);
+                return;
+            case pkt, ok := <- self.tx:
+                if !ok {
+                    return
                 }
-                if len(headers[":error"]) > 0 {
-                    em += " : " + string(headers[":error"][0]);
-                }
-                //TODO close chan
-                return nil, errors.New(em)
+                conn.Write(pkt)
+        }
+    }
+
+}
+
+type LinkOpts struct {
+    MoveNever   bool
+    Records     []Record
+}
+
+
+func Link(ctx context.Context, vault *Vault, timeout time.Duration, opts ... LinkOpts) (*Endpoint, error) {
+
+    var err error
+
+    opt := LinkOpts{}
+    if len(opts) > 0 {
+        opt = opts[0]
+    }
+
+    ctxc, cancel := context.WithTimeout(ctx,timeout)
+    defer cancel()
+
+    for ;; {
+
+        select {
+        case <-ctxc.Done():
+            return nil, ctxc.Err()
+        default:
+        }
+
+        var records = opt.Records
+        if len(records) == 0 {
+            records, err = Bootstrap()
+            if err != nil { return nil, err }
+        }
+        rand.Shuffle(len(records), func(i, j int) { records[i], records[j] = records[j], records[i] })
+
+
+        for i := 0; i <len(records); i++ {
+
+            var record = records[i];
+
+            conn, err := net.DialUDP("udp", nil, &record.Netaddr);
+            if err != nil { return  nil, err }
+
+            initiator, pkt1, err := Initiate(InitiatorConfig{
+                MoveNever:      opt.MoveNever,
+                BrokerAddress:  record.Xaddr,
+                Secret:         vault.Secret,
+            })
+            if err != nil { return nil, err }
+
+            conn.Write(pkt1);
+
+
+            conn.SetDeadline(time.Now().Add(5 * time.Second))
+
+
+            var pkt2 [2000]byte;
+            l, err := conn.Read(pkt2[:]);
+            if err != nil {
+                fmt.Println(err);
+                time.Sleep(100 * time.Millisecond)
+                continue
             }
 
-            var index_ps *PresharedIndex = nil;
-            if len(index) > 0 {
-                index_ps = PresharedIndexFrom(index)
+            ch , redirect, err := initiator.Complete(pkt2[:l])
+            if err != nil {
+                fmt.Println(err);
+                time.Sleep(100 * time.Millisecond)
+                continue
+            }
+            if redirect != nil {
+                fmt.Println("redirect ", *redirect)
+                rec, err := parseTxtRecord(*redirect)
+                if err != nil { panic(fmt.Errorf("in redirect: %w", err))}
+                records = append([]Record{rec}, records...)
+                i = 0
+                continue
             }
 
-            return &Stream{
-                ResponseHeaders:    headers,
-                Index:              index_ps,
-                Rx:                 rx,
-                Tx:                 tx,
-                Death:              death_notifier,
-                channel:            self,
-            }, nil
+            fmt.Println("linked to broker " + ch.identity.String())
+
+            ep := &Endpoint{
+                Vault: vault,
+            }
+            ep.routes = make(map[uint64]*Channel)
+            ep.tx = make(chan []byte, 10)
+            ch.ep = ep
+            ep.routes[ch.route] = ch
+            ep.brokerRoute = ch.route
+
+
+            go ep.worker(conn, ctx)
+
+            return ep, nil
         }
-        case <- await_close: {
-            return nil, errors.New("closed before headers");
-        }
-        case <- death_notifier: {
-            return nil, errors.New("disconnected before headers");
-        }
     }
-}
-
-func (self *Stream) Receive() (map[string]interface{}, error) {
-    msg, ok := <- self.Rx
-
-    if !ok {
-        return nil, io.EOF;
-    }
-
-    v, err := MadpackDecode(self.Index, msg)
-    if err != nil { return nil, err; }
-
-    return v , nil;
-}
-
-func (self *Stream) ReceiveRaw() ([]byte, error) {
-    msg, ok := <- self.Rx
-
-    if !ok {
-        return nil, io.EOF;
-    }
-
-    return msg , nil;
-}
-
-func (self *Stream) Send(msg map[string]interface{}) error {
-    v, err := MadpackEncode(self.Index, msg)
-    if err != nil { log.Fatal(err) }
-    return self.SendRaw(v);
-}
-
-func (self *Stream) SendRaw(v []byte) error {
-
-    self.channel.endpoint.Wakeup()
-
-    select {
-        case self.Tx <- v:
-        case <- self.Death: return errors.New("channel disconnected");
-    }
-
-    return nil;
-}
-
-func (self *Stream) Close() {
-
 }

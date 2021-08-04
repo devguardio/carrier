@@ -1,39 +1,38 @@
-package carrier;
+package carrier
 
-/*
-#include "carrier_go.h"
-*/
-import "C"
+
 import (
-    "unsafe"
+    "github.com/devguardio/carrier/go/hpack"
+    "bytes"
 )
 
-func DecodeHeaders(b []byte) (map[string][][]byte, error) {
-    e := ErrorNew(1000);
-    defer e.Delete();
+func EncodeHeaders(h map[string][]string) ([]byte, error) {
 
-    var mem = C.CBytes(b);
-    defer C.free(mem);
-    msg := C.slice_slice_Slice{
-        mem:    (*C.uint8_t)(unsafe.Pointer(mem)),
-        size:   (C.size_t)(len(b)),
-    };
+    var w bytes.Buffer
 
-    var it = C.hpack_decoder_Iterator{};
-    C.hpack_decoder_decode(&it, msg);
+    var enc  = hpack.NewEncoder(&w)
 
-    var kv = make(map[string][][]byte);
-
-    for {
-        if !C.hpack_decoder_next(&it, e.d) {
-            break;
+    for k,v := range h {
+        for _,vv := range v {
+            err := enc.WriteField(hpack.HeaderField{
+                Name:   k,
+                Value:  vv,
+            })
+            if err != nil { return nil, err}
         }
-        if err := e.Check(); err != nil {
-            return nil, err;
-        }
-        var key = C.GoStringN((*C.char)(unsafe.Pointer(it.key.mem)), (C.int)(it.key.size));
-        var val = C.GoBytes((unsafe.Pointer(it.val.mem)), (C.int)(it.val.size));
-        kv[key] = append(kv[key], val);
     }
-    return kv, nil;
+    return w.Bytes(), nil
 }
+func DecodeHeaders(b []byte) (map[string][]string, error) {
+
+    var r = make(map[string][]string)
+    _, err := hpack.NewDecoder(10000, func(f hpack.HeaderField) {
+        r[f.Name] = append(r[f.Name], f.Value)
+    }).Write(b)
+    if err != nil { return nil, err }
+    return r, nil
+}
+
+
+
+

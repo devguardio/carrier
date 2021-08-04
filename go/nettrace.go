@@ -1,13 +1,10 @@
-package carrier;
+package carrier
 
-/*
-#include "carrier_go.h"
-*/
-import "C"
 import (
-    "log"
-    "sync"
+    "context"
+    "time"
 )
+
 
 type NetTraceResult struct {
     Publishers              uint64 `json:"publishers"`
@@ -17,77 +14,54 @@ type NetTraceResult struct {
     BytesRecvPerSecond      uint64 `json:"bytes_recv_per_second"`
 }
 
-func (self *Conduit) NetTrace() (*NetTraceResult , error) {
+func NetTrace(ctxi context.Context) (ret NetTraceResult, err error) {
 
-    va, err := self.NewVault();
-    if err != nil {
-        return nil, err;
-    }
-    defer va.Delete();
+    ctx, cancel := context.WithTimeout(ctxi, 10*time.Second)
+    defer cancel();
 
-    netstr := va.GetNetwork().String()
+    va, err := DefaultVault()
+    if err != nil { return ret, err }
 
-    ret := &NetTraceResult{};
-    var wg sync.WaitGroup
+    records, err := Bootstrap()
+    if err != nil { return ret, err }
+
+    for _, record := range records {
+        link, err := Link(ctx, va, time.Second, LinkOpts{
+            MoveNever:  true,
+            Records:    []Record{record},
+        });
+        if err != nil { return ret, err }
+
+        stream, err := link.Broker().Open("/carrier.broker.v2/broker/network")
+        if err != nil { return ret, err }
 
 
-    self.Each(func(ep *Endpoint) {
-        subscribemsg2, err := MadpackEncode(PresharedIndexTrace(), map[string]interface{}{
-            "address": netstr,
+        stream.Send(map[string]interface{}{
+            "address": va.Network.Address().String(),
         })
-        wg.Add(1)
-        if err != nil { log.Fatal(err) }
-        _, err = openStream(
-            C.carrier_endpoint_broker(ep.d),
-            "/carrier.broker.v2/broker/network",
-            OpenStreamOptions {
-                Critical: true,
-                OnMessage: func(b []byte) {
-                    msg, err := MadpackDecode(PresharedIndexTrace(), b);
-                    log.Println(msg);
-                    if err != nil {
-                        log.Println(err);
-                        return;
-                    }
-                    if publishers, ok := msg["publishers"].(uint64); ok {
-                        ret.Publishers += publishers;
-                    }
-                    if traffic, ok := msg["traffic"].(map[string]interface{}); ok {
-                        if v, ok := traffic["tx32"].(uint64); ok {
-                            ret.BytesSentPerEpoch += v * 32;
-                        }
-                        if v, ok := traffic["rx32"].(uint64); ok {
-                            ret.BytesRecvPerEpoch += v * 32;
-                        }
-                        if v, ok := traffic["tx32d"].(uint64); ok {
-                            ret.BytesSentPerSecond += v * 32;
-                        }
-                        if v, ok := traffic["rx32d"].(uint64); ok {
-                            ret.BytesRecvPerSecond += v * 32;
-                        }
-                    }
-                },
-                OnPoll: func() *[]byte {
-                    if subscribemsg2 == nil {
-                        return nil;
-                    }
-                    tmp := subscribemsg2;
-                    subscribemsg2 = nil;
-                    return &tmp;
-                },
-                OnClose: func() {
-                    wg.Done()
-                },
-            },
-        );
-        if err != nil {
-            log.Println(err);
-            ep.Shutdown();
+
+        msg, err := stream.RecvMadpack();
+        if err != nil { return ret, err }
+
+        if publishers, ok := msg["publishers"].(uint64); ok {
+            ret.Publishers += publishers;
         }
-    });
+        if traffic, ok := msg["traffic"].(map[string]interface{}); ok {
+            if v, ok := traffic["tx32"].(uint64); ok {
+                ret.BytesSentPerEpoch += v * 32;
+            }
+            if v, ok := traffic["rx32"].(uint64); ok {
+                ret.BytesRecvPerEpoch += v * 32;
+            }
+            if v, ok := traffic["tx32d"].(uint64); ok {
+                ret.BytesSentPerSecond += v * 32;
+            }
+            if v, ok := traffic["rx32d"].(uint64); ok {
+                ret.BytesRecvPerSecond += v * 32;
+            }
+        }
+    }
 
-    wg.Wait()
-
-    return ret, nil;
+    return
 }
 

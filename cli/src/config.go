@@ -57,16 +57,46 @@ func init() {
                         return;
                     }
                 } else if args[2] == "add" {
+
+                    log.Println(args)
                     if len(args) < 5 {
                         cmd.Help();
                         return;
                     }
-                    addme, err := carrier.IdentityFromString(args[3])
-                    if err != nil { log.Fatal("error while parsing identity argument from cli:  ", err) }
+                    var addme *carrier.Identity
+                    if args[3] == "self" {
+                        addme = vault.GetIdentity()
+                    } else {
+                        addme, err = carrier.IdentityFromString(args[3])
+                        if err != nil { log.Fatal("error while parsing identity argument '" + args[3] + "' from cli:  ", err) }
+                    }
 
                     if target == nil {
                         err = vault.AddAuthorization(addme, args[4]);
                         if err != nil { log.Fatal(err) }
+                        return;
+                    } else {
+                        con , err := carrier.Connect(IdentityOrNameFromCli(*target));
+                        if err != nil { log.Fatal(err); }
+                        defer con.Shutdown();
+
+                        channel , err := con.Open("/v3/carrier.config.v1/auth_add");
+                        if err != nil { log.Fatal(err); }
+
+                        var v = make(map[string]interface{});
+                        v["identity"] = addme.String()
+                        v["path"]     = args[4]
+                        err = channel.Send(v)
+                        if err != nil { log.Fatal(err) }
+
+                        msg, err := channel.Receive();
+                        if err != nil { log.Fatal(err);}
+
+                        j, err := json.MarshalIndent(msg, "", "  ")
+                        if err != nil {log.Fatal(err); }
+                        os.Stdout.Write(j);
+                        os.Stdout.Write([]byte("\n"));
+
                         return;
                     }
                 } else if args[2] == "del" {

@@ -22,6 +22,8 @@ func init() {
 
             headers_cli, err := cmd.Flags().GetStringToString("header");
             if err != nil { log.Fatal(err) }
+            multiline, err := cmd.Flags().GetBool("multiline-json");
+            if err != nil { log.Fatal(err) }
             headers := make (map[string][][]byte);
             for k,v := range headers_cli {
                 headers[k] = append(headers[k], []byte(v));
@@ -82,8 +84,12 @@ func init() {
                             }
                         }
                     }
-
-                    j, err := json.MarshalIndent(msg, "", "  ")
+                    var j[] byte
+                    if multiline {
+                        j, err = json.MarshalIndent(msg, "", "  ")
+                    } else {
+                        j, err = json.Marshal(msg)
+                    }
                     if err != nil {log.Fatal(err); }
                     os.Stdout.Write(j);
                     os.Stdout.Write([]byte("\n"));
@@ -116,5 +122,6 @@ func init() {
     }
     cmd.Flags().StringToStringP("args", "a", map[string]string{}, "send first message from cli argument")
     cmd.Flags().StringToStringP("header", "H", map[string]string{}, "add arbitrary header")
+    cmd.Flags().Bool("multiline-json", true, "output JSON in multi-line indented mode")
     rootCmd.AddCommand(cmd);
 }

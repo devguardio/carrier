@@ -16,8 +16,7 @@ require (
 	github.com/devguardio/carrier/go v0.0.0-20201222160904-e93e1634be2d
 	github.com/fatih/color v1.10.0 // indirect
 	github.com/foolin/goview v0.3.0
-	github.com/gin-gonic/gin v1.6.3
-	github.com/go-playground/validator/v10 v10.4.1 // indirect
+	github.com/gin-gonic/gin v1.7.0
 	github.com/gofiber/fiber/v2 v2.3.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect

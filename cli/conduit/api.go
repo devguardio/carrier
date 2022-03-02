@@ -2,22 +2,34 @@ package conduit;
 
 
 import (
-    "github.com/gofiber/fiber/v2"
-    "github.com/devguardio/carrier/go"
-    "fmt"
+    "github.com/gin-gonic/gin"
+    "github.com/gorilla/websocket"
+    "log"
+    "encoding/json"
+    "time"
 )
 
 
-func Api(app fiber.Router) {
-    app.Get("/network/:address", func(c *fiber.Ctx) error {
+func Api(router *gin.Engine) {
 
-        _ , err := carrier.AddressFromString(c.Params("address"))
-        if err != nil {
-            return fmt.Errorf("network address %w", err)
+    var wsupgrader = websocket.Upgrader{
+        ReadBufferSize:  1024,
+        WriteBufferSize: 1024,
+    }
+    router.GET("/_ui/network/stream", func(c *gin.Context) {
+        conn, err := wsupgrader.Upgrade(c.Writer, c.Request, nil)
+        if err != nil { log.Fatal(err) }
+
+        for {
+            v, err := json.Marshal(gin.H{
+                "publishers":   len(NetworkPublishers),
+                "chart":        DbGraphPublishersMinute(),
+            });
+            if err != nil { log.Fatal(err) }
+            err = conn.WriteMessage(websocket.TextMessage, v);
+            if err != nil { break; }
+
+            time.Sleep(1 * time.Second);
         }
-
-        return c.JSON(fiber.Map{
-        })
-    });
-
+    })
 }

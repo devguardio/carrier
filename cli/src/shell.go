@@ -6,17 +6,34 @@ import (
     "github.com/spf13/cobra"
     "log"
     "os"
+    "strings"
 )
 
+var arg_disable_pty bool
+var arg_force_pty  bool
+
 func init() {
+
     cmd := &cobra.Command{
-        Use:    "shell <target>",
+        Use:    "shell <target> [cmd]",
         Short:  "Open remote shell",
         Long:   `Open remote shell`,
         Run: func(cmd *cobra.Command, args []string) {
 
-            command , err := cmd.Flags().GetString("command");
-            if err != nil { log.Fatal(err) }
+            // this is not how ssh behaves, which people expect i guess
+            //c  := ""
+            //for _, arg := range args[1:] {
+            //  c += "'" + strings.ReplaceAll(arg, "'", "'\"'\"'") + "' "
+            //}
+            command  := strings.Join(args[1:], " ")
+
+
+            exitCode := Shell3(args[0], command, arg_disable_pty, arg_force_pty)
+            if exitCode != 8888 {
+                os.Exit(exitCode)
+            }
+
+
             headers := make (map[string][][]byte);
             if command != "" {
                 headers["command"] = [][]byte{([]byte)(command)};
@@ -68,6 +85,9 @@ func init() {
             }
         },
     };
-    cmd.Flags().StringP("command", "c", "", "immediately exec remote command in shell")
+
+    cmd.Flags().BoolVarP(&arg_disable_pty, "disable-pty",  "T", false, "Disable pseudo-terminal allocation")
+    cmd.Flags().BoolVarP(&arg_force_pty, "force-pty",  "t", false, "Request pseudo-terminal allocation, even if stdio is not a terminal")
+
     rootCmd.AddCommand(cmd);
 }

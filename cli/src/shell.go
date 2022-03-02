@@ -27,7 +27,6 @@ func init() {
             //}
             command  := strings.Join(args[1:], " ")
 
-
             exitCode := Shell3(args[0], command, arg_disable_pty, arg_force_pty)
             if exitCode != 8888 {
                 os.Exit(exitCode)

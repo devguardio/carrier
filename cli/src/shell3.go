@@ -29,7 +29,7 @@ func Shell3(target string, cmd string, disable_pty bool, force_pty bool) (exitCo
     }
     var printHeaders = false;
 
-    vault := identity.Vault()
+    vault := identity.Vault().Domain("carrier")
     tlsconf, err := iktls.NewTlsClient(vault)
     if err != nil { panic(err) }
     tlsconf.RootCAs, _ = x509.SystemCertPool()
@@ -85,10 +85,10 @@ func Shell3(target string, cmd string, disable_pty bool, force_pty bool) (exitCo
 
     if resp.StatusCode >= 300 {
         if !printHeaders {
-            fmt.Fprintf(os.Stderr, "%s %s\n", resp.Proto, resp.Status);
+            fmt.Fprintf(os.Stderr, "carrier3: %s %s\n", resp.Proto, resp.Status);
         }
         if resp.StatusCode != 503 {
-            // continue with carrier1
+            fmt.Fprintf(os.Stderr, "retrying with carrier2\n")
             return 8888;
         }
         pw.Close();

@@ -12,16 +12,16 @@ import (
 
 var rootCmd = cobra.Command{
     Use:        "carrier",
-    Short:      "carrier " + carrier.BuildId() + "\nThe devguard carrier cli",
+    Short:      "carrier cli 1.0\nThe devguard carrier cli\ncarrier1: " + carrier.BuildId() + "\n",
     Version:    carrier.BuildId(),
 }
-
 
 func Main() {
     log.SetFlags(log.Lshortfile);
 
     rootCmd.AddCommand(&cobra.Command{
         Use:    "identity",
+        Aliases: []string{"id"},
         Short:  "Print out identity of this machine",
         Run: func(cmd *cobra.Command, args []string) {
             vault, err := carrier.DefaultVault();

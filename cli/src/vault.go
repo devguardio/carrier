@@ -26,8 +26,9 @@ func init() {
             fmt.Println(ids);
         },
     };
-    identityCmd := &cobra.Command{
+    identityCmd := &cobra.Command {
         Use:    "identity",
+        Aliases: []string{"id"},
         Short:  "Print out identity of this machine",
         Run: func(cmd *cobra.Command, args []string) {
             vault, err := carrier.DefaultVault();
@@ -49,7 +50,7 @@ func init() {
 
     vaultCmd := &cobra.Command{
         Use:    "vault <subcommand>",
-        Short:  "Secret storage",
+        Short:  "Secret storage (legacy)",
     };
 
     vaultCmd.AddCommand(skCmd);

@@ -60,17 +60,17 @@ jobs:
 
 
     - name: artifact-ubuntu
-      if: matrix.os == 'ubuntu-16.04'
+      if: matrix.os == 'ubuntu-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: carrier-0.14-x86_64-pc-linux
+        name: carrier-1.0-x86_64-pc-linux
         path: cli/cli
 
     - name: artifact-osx
       if: matrix.os == 'macos-latest'
       uses: actions/upload-artifact@v2
       with:
-        name: carrier-0.14-x86_64-pc-osx
+        name: carrier-1.0-x86_64-pc-osx
         path: cli/cli
 
     #- name: Snapshot

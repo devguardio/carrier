@@ -35,7 +35,7 @@ jobs:
         unzip zz*.zip
 
     - name: prep-ubuntu
-      if: matrix.os == 'ubuntu-16.04'
+      if: matrix.os == 'ubuntu-latest'
       run: |
         sudo apt-get install -y z3
         wget http://bin.zetz.it.s3-eu-west-1.amazonaws.com/zz-master-ubuntu.zip

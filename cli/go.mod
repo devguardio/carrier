@@ -14,6 +14,7 @@ require (
 	github.com/creack/pty v1.1.17
 	github.com/devguardio/carrier/go v0.0.0-00010101000000-000000000000
 	github.com/devguardio/carrier3 v0.0.0-20220302125946-5d49c266be18
+	github.com/devguardio/carrier3/v3 v3.0.0-20220303094206-6b318481b143 // indirect
 	github.com/devguardio/identity/go v0.0.0-20220214220023-621b06891026
 	github.com/foolin/goview v0.3.0
 	github.com/getkin/kin-openapi v0.90.0 // indirect

@@ -34,7 +34,6 @@ func migrateToIkVault() error {
 func init() {
 
     var usersa = false
-    var domain = ""
 
 
     // ensure ik vault is initialized
@@ -123,15 +122,13 @@ func init() {
     ikCmd.AddCommand(compat);
 
     ikCmd.PersistentFlags().BoolVarP(&usersa, "rsa", "r", false, "use rsa instead of ed25519")
-    ikCmd.PersistentFlags().StringVarP(&domain, "domain", "u", "", "use vault in separate user specific domain")
 
     ikCmd.AddCommand(&cobra.Command{
         Use:        "identity ",
         Aliases:    []string{"id"},
         Short:      "print my identity",
         Run: func(cmd *cobra.Command, args []string) {
-            var vault = identity.Vault().Domain("carrier")
-            if domain != "" { vault = vault.Domain(domain) }
+            var vault = identity.Vault().Domain(arg_ik_domain)
 
             if usersa {
                 id, err := vault.RSAPublic()
@@ -150,8 +147,7 @@ func init() {
         Aliases:  []string{"xp", "addr"},
         Short:  "print my DH address",
         Run: func(cmd *cobra.Command, args []string) {
-            var vault = identity.Vault().Domain("carrier")
-            if domain != "" { vault = vault.Domain(domain) }
+            var vault = identity.Vault().Domain(arg_ik_domain)
 
             if usersa {
                 panic("rsa doesn't work with diffie-hellman")
@@ -167,8 +163,7 @@ func init() {
         Use:    "init",
         Short:  "initialize empty vault",
         Run: func(cmd *cobra.Command, args []string) {
-            var vault = identity.Vault().Domain("carrier")
-            if domain != "" { vault = vault.Domain(domain) }
+            var vault = identity.Vault().Domain(arg_ik_domain)
 
             err := vault.Init(true)
             if err != nil { panic(err) }

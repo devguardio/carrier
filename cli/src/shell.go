@@ -7,6 +7,9 @@ import (
     "log"
     "os"
     "strings"
+    carrier3cli "github.com/devguardio/carrier3/v3/cli"
+    "github.com/devguardio/identity/go"
+    "fmt"
 )
 
 var arg_disable_pty bool
@@ -27,10 +30,13 @@ func init() {
             //}
             command  := strings.Join(args[1:], " ")
 
-            exitCode := Shell3(args[0], command, arg_disable_pty, arg_force_pty)
+            var vault = identity.Vault().Domain(arg_ik_domain)
+
+            exitCode := carrier3cli.Shell(vault, args[0], command, arg_disable_pty, arg_force_pty)
             if exitCode != 8888 {
                 os.Exit(exitCode)
             }
+            fmt.Fprintf(os.Stderr, "retrying with carrier2\n")
 
 
             headers := make (map[string][][]byte);

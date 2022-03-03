@@ -16,6 +16,8 @@ var rootCmd = cobra.Command{
     Version:    carrier.BuildId(),
 }
 
+var arg_ik_domain = "carrier"
+
 func Main() {
     log.SetFlags(log.Lshortfile);
 
@@ -41,6 +43,8 @@ func Main() {
         },
     });
 
+
+    rootCmd.PersistentFlags().StringVarP(&arg_ik_domain, "domain", "u", "carrier", "use ik vault in separate user specific domain")
 
     rootCmd.SetVersionTemplate("{{printf \"%s\\n\" .Version}}");
 
